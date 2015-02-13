@@ -23,6 +23,7 @@
 *******************************************************************************/
 
 #include "BaseDialog.h"
+#include "BaseFindWidget.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "TextSelection.h"
@@ -34,179 +35,140 @@
 #include <QLayout>
 #include <QList>
 
-//! find dialog for text editor widgets
+//* find dialog for text editor widgets
 class BaseFindDialog: public BaseDialog, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
-    BaseFindDialog( QWidget* parent = 0, Qt::WindowFlags WindowFlags = 0 );
+    //* constructor
+    BaseFindDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
 
-    //! destructor
-    virtual ~BaseFindDialog( void )
-    {}
+    //* destructor
+    virtual ~BaseFindDialog( void ) = default;
 
-    //! retrieve editor
-    virtual CustomComboBox& editor( void ) const
-    { return *editor_; }
+    //*@name accessors
+    //@{
 
-    //! string to find
-    virtual void setText( const QString& text )
-    {
-        _addSearchedString( text );
-        editor().setEditText( text );
-        editor().lineEdit()->selectAll();
-    }
-
-    //! synchronize searched strings and ComboBox
-    virtual void synchronize( void );
-
-    //! string to find
+    //* string to find
     virtual QString text( void ) const
-    { return editor().currentText(); }
+    { return baseFindWidget_->text(); }
 
-    //! enable/disable entire word
-    virtual void enableEntireWord( const bool& value )
-    {
-        if( !value ) entireWordCheckbox_->setChecked( false );
-        entireWordCheckbox_->setEnabled( value );
-    }
+    //* get selection
+    virtual TextSelection selection( bool value ) const
+    { return baseFindWidget_->selection( value ); }
 
-    //! enable/disable RegExp
-    virtual void enableRegExp( const bool& value )
-    {
-        if( !value ) regexpCheckbox_->setChecked( false );
-        regexpCheckbox_->setEnabled( value );
-    }
+    //* find widget
+    BaseFindWidget& baseFindWidget( void ) const
+    { return *baseFindWidget_; }
 
-    //! get selection
-    virtual TextSelection selection( const bool& noIncrement ) const
-    {
+    //* retrieve editor
+    virtual CustomComboBox& editor( void ) const
+    { return baseFindWidget_->editor(); }
 
-        TextSelection out( editor().currentText() );
-        out.setFlag( TextSelection::Backward, backwardCheckbox_->isChecked() );
-        out.setFlag( TextSelection::CaseSensitive, caseSensitiveCheckbox_->isChecked() );
-        out.setFlag( TextSelection::EntireWord, entireWordCheckbox_->isChecked() );
-        out.setFlag( TextSelection::RegExp, regexpCheckbox_->isChecked() );
-        out.setFlag( TextSelection::NoIncrement, noIncrement );
-        return out;
-    }
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* string to find
+    virtual void setText( const QString& text )
+    { baseFindWidget_->setText( text ); }
+
+    //* synchronize searched strings and ComboBox
+    virtual void synchronize( void )
+    { baseFindWidget_->synchronize(); }
+
+    //* enable/disable entire word
+    virtual void enableEntireWord( bool value )
+    { baseFindWidget_->enableEntireWord( value ); }
+
+    //* enable/disable RegExp
+    virtual void enableRegExp( bool value )
+    { baseFindWidget_->enableRegExp( value ); }
+
+    //@}
 
     Q_SIGNALS:
 
-    //! emmited when Find is pressed
+    //* emmited when Find is pressed
     void find( TextSelection );
 
     public Q_SLOTS:
 
-    //! take action when at least one match is found
-    virtual void matchFound( void );
+    //* take action when at least one match is found
+    virtual void matchFound( void )
+    { baseFindWidget_->matchFound(); }
 
-    //! take action when no match is found
-    virtual void noMatchFound( void );
+    //* take action when no match is found
+    virtual void noMatchFound( void )
+    { baseFindWidget_->noMatchFound(); }
 
     protected Q_SLOTS:
 
-    //! update combo box with current text
+    //* update combo box with current text
     virtual void _updateFindComboBox( void )
-    { _addSearchedString( editor().currentText() ); }
+    { baseFindWidget_->updateFindComboBox(); }
 
-    //! create Selection object when find button is pressed
+    //* create Selection object when find button is pressed
     virtual void _find( void )
-    { emit find( selection( false ) ); }
+    { baseFindWidget_->find(); }
 
-    //! create Selection object when find button is pressed
+    //* create Selection object when find button is pressed
     virtual void _findNoIncrement( void )
-    { if( !regexpCheckbox_->isChecked() ) emit find( selection( true ) ); }
+    { baseFindWidget_->findNoIncrement(); }
 
-    //! update button state when regexp checkbox is checked
-    virtual void _regExpChecked( bool );
-
-    //! update button state depending on the string to find
-    virtual void _updateButtons( const QString& text = QString() );
+    //* update button state when regexp checkbox is checked
+    virtual void _regExpChecked( bool value )
+    { baseFindWidget_->regExpChecked( value ); }
 
     protected:
 
-    //! edtion layout
+    //* edtion layout
     QGridLayout& _editorLayout() const
-    { return *editorLayout_; }
+    { return baseFindWidget_->editorLayout(); }
 
-    //! locations layout
+    //* locations layout
     QBoxLayout& _locationLayout() const
-    { return *locationLayout_; }
+    { return baseFindWidget_->locationLayout(); }
 
-    //! button layout
+    //* button layout
     QBoxLayout& _buttonLayout() const
     { return *buttonLayout_; }
 
-    //! "entire word" checkbox
+    //* "entire word" checkbox
     QCheckBox& _entireWordCheckBox() const
-    { return *entireWordCheckbox_; }
+    { return baseFindWidget_->entireWordCheckBox(); }
 
-    //! "find" button
+    //* "find" button
     QPushButton& _findButton( void ) const
     { return *findButton_; }
 
-    //! add button to disabled button list
+    //* add button to disabled button list
     virtual void _addDisabledButton( QAbstractButton* button )
-    { buttons_ << button; }
+    { baseFindWidget_->addDisabledButton( button ); }
 
-    //! add string to both combo box and static set
+    //* add string to both combo box and static set
     virtual void _addSearchedString( const QString& text  )
-    {
-        if( text.isEmpty() ) return;
-        if( _searchedStrings().find( text ) == _searchedStrings().end() )
-        {
-            _searchedStrings().insert( text );
-            editor().addItem( text );
-        }
-    }
+    { baseFindWidget_->addSearchedString( text ); }
 
-    //! list of disabled buttons
+    //* list of disabled buttons
     virtual QList<QAbstractButton*>& _disabledButtons( void )
-    { return buttons_; }
+    { return baseFindWidget_->disabledButtons(); }
 
     private:
 
-    //! editor layout
-    QGridLayout* editorLayout_;
+    //* find widget
+    BaseFindWidget* baseFindWidget_ = nullptr;
 
-    //! location layout
-    QBoxLayout* locationLayout_;
+    //* button layout
+    QBoxLayout* buttonLayout_ = nullptr;
 
-    //! button layout
-    QBoxLayout* buttonLayout_;
-
-    //! line editor for text to find
-    CustomComboBox* editor_;
-
-    //! backward search if checked
-    QCheckBox* backwardCheckbox_;
-
-    //! case sensitive search if checked
-    QCheckBox* caseSensitiveCheckbox_;
-
-    //! entire word check box
-    QCheckBox* entireWordCheckbox_;
-
-    //! regular expression search if checked
-    QCheckBox* regexpCheckbox_;
-
-    //! find button
-    QPushButton* findButton_;
-
-    //! list of buttons to enable/disable depending of the editor text
-    QList<QAbstractButton*> buttons_;
-
-    //! set of previously searched strings
-    static QOrderedSet<QString>& _searchedStrings( void );
-
-    //! notification label
-    QLabel* label_;
+    //* find button
+    QPushButton* findButton_ = nullptr;
 
 };
 #endif

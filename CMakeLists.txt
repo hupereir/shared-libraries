@@ -71,6 +71,7 @@ set(base_qt_SOURCES
   BaseFileInfoToolTipWidget.cpp
   BaseFileInformationDialog.cpp
   BaseFindDialog.cpp
+  BaseFindWidget.cpp
   BaseMainWindow.cpp
   BaseConfigurationDialog.cpp
   BaseDialog.cpp

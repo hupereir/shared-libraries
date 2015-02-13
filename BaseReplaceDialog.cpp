@@ -45,23 +45,23 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // create aditional widgets
     // insert text editor
-    QLabel* label = new QLabel( tr( "Replace with:" ), this );
+    QLabel* label = new QLabel( tr( "Replace with:" ), editor().parentWidget() );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     _editorLayout().addWidget( label, 1, 0, 1, 1 );
 
     // replacement editor
-    _editorLayout().addWidget( replaceEditor_ = new CustomComboBox( this ), 1, 1, 1, 1 );
+    _editorLayout().addWidget( replaceEditor_ = new CustomComboBox( editor().parentWidget() ), 1, 1, 1, 1 );
     label->setBuddy( &_replaceEditor() );
 
     // disable callbacks on find editor
     disconnect( editor().lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_findNoIncrement()) );
 
-    _replaceEditor().setEditable( true );
-    _replaceEditor().setAutoCompletion( true, Qt::CaseSensitive );
-    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT(_replace()) );
-    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
-    connect( _replaceEditor().lineEdit(), SIGNAL(returnPressed()), SLOT(_updateReplaceComboBox()) );
-    connect( _replaceEditor().lineEdit(), SIGNAL(textChanged(QString)), SLOT(_replaceTextChanged(QString)) );
+    replaceEditor_->setEditable( true );
+    replaceEditor_->setAutoCompletion( true, Qt::CaseSensitive );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_replace()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateReplaceComboBox()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_replaceTextChanged(QString)) );
 
     // change tab order
     setTabOrder( &editor(), &_replaceEditor() );
@@ -71,8 +71,8 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     QPushButton *previous( 0 );
 
     // insert selection button
-    _locationLayout().addWidget( new QLabel( tr( "Replace in:" ), this ) );
-    _locationLayout().addWidget( button = new QPushButton( tr( "Selection" ), this ) );
+    _locationLayout().addWidget( new QLabel( tr( "Replace in:" ), &baseFindWidget() ) );
+    _locationLayout().addWidget( button = new QPushButton( tr( "Selection" ), &baseFindWidget() ) );
     button->setAutoDefault( false );
     connect( button, SIGNAL(clicked()), SLOT(_replaceInSelection()) );
     connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
@@ -86,7 +86,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     previous = button;
 
     // insert window button
-    _locationLayout().addWidget( button = new QPushButton( tr( "Window" ), this ) );
+    _locationLayout().addWidget( button = new QPushButton( tr( "Window" ), &baseFindWidget() ) );
     button->setAutoDefault( false );
     connect( button, SIGNAL(clicked()), SLOT(_replaceInWindow()) );
     connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
@@ -110,9 +110,6 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     setTabOrder( &_findButton(), button );
 
-    // disable buttons
-    _updateButtons();
-
 }
 
 //_____________________________________________________
@@ -124,7 +121,7 @@ TextSelection BaseReplaceDialog::selection( const bool& no_increment ) const
 {
 
     TextSelection out( BaseFindDialog::selection( no_increment ) );
-    out.setReplaceText( _replaceEditor().currentText() );
+    out.setReplaceText( replaceEditor_->currentText() );
     return out;
 
 }
@@ -138,12 +135,12 @@ void BaseReplaceDialog::synchronize( void )
     BaseFindDialog::synchronize();
 
     // replace editor
-    _replaceEditor().clear();
+    replaceEditor_->clear();
     for( QOrderedSet<QString>::iterator iter = _replacedStrings().begin(); iter != _replacedStrings().end(); ++iter )
-    { _replaceEditor().addItem( *iter ); }
+    { replaceEditor_->addItem( *iter ); }
 
     // clear replace combobox text
-    _replaceEditor().setEditText("");
+    replaceEditor_->setEditText("");
 
     // set focus to find editor
     editor().setFocus();
