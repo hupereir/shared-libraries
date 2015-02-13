@@ -359,22 +359,19 @@ void LineEditor::_modified( const QString& text )
         emit modificationChanged( modified_ );
     }
 
-    // clear actiosn enability
-    if( modified )
+    // clear actions enability
+    clearAction_->setEnabled( !(isReadOnly() || text.isEmpty() ) );
+    if( clearButton_ )
     {
-        clearAction_->setEnabled( !(isReadOnly() || text.isEmpty() ) );
-
-        if( clearButton_ )
+        if( text.isEmpty() ) clearButton_->hide();
+        else if( !clearButton_->isVisible() )
         {
-            if( text.isEmpty() ) clearButton_->hide();
-            else if( !clearButton_->isVisible() )
-            {
 
-                clearButton_->show();
-                _updateClearButton();
-            }
+            clearButton_->show();
+            _updateClearButton();
         }
     }
+
 }
 
 //____________________________________________________________
