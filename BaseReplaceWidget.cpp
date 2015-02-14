@@ -48,13 +48,13 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
     label->setBuddy( replaceEditor_ );
 
     // disable callbacks on find editor
-    disconnect( editor().lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(findNoIncrement()) );
+    disconnect( editor().lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_findNoIncrement()) );
 
     replaceEditor_->setEditable( true );
     replaceEditor_->setAutoCompletion( true, Qt::CaseSensitive );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(replace()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(updateFindComboBox()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(updateReplaceComboBox()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_replace()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateFindComboBox()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateReplaceComboBox()) );
     connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), this, SIGNAL(replaceTextChanged(QString)) );
 
     // change tab order
@@ -68,9 +68,9 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
     locationLayout().addWidget( new QLabel( tr( "Replace in:" ), this ) );
     locationLayout().addWidget( button = new QPushButton( tr( "Selection" ), this ) );
     button->setAutoDefault( false );
-    connect( button, SIGNAL(clicked()), this, SLOT(replaceInSelection()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(updateReplaceComboBox()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_replaceInSelection()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateReplaceComboBox()) );
     button->setToolTip( tr( "Replace all occurence of the search string in selected text" ) );
     addDisabledButton( button );
     button->setAutoDefault( false );
@@ -82,9 +82,9 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
     // insert window button
     locationLayout().addWidget( button = new QPushButton( tr( "Window" ), this ) );
     button->setAutoDefault( false );
-    connect( button, SIGNAL(clicked()), this, SLOT(replaceInWindow()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(updateReplaceComboBox()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_replaceInWindow()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateReplaceComboBox()) );
     button->setToolTip( tr( "Replace all occurence of the search string in the entire window" ) );
     addDisabledButton( button );
     button->setAutoDefault( false );
@@ -94,9 +94,9 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
 
     // replace buttons
     button = new QPushButton( tr( "Replace" ), this );
-    connect( button, SIGNAL(clicked()), this, SLOT(replace()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(updateReplaceComboBox()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_replace()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateReplaceComboBox()) );
     addDisabledButton( button );
     buttonLayout().insertWidget( 1, button );
     button->setAutoDefault( false );
@@ -138,16 +138,16 @@ void BaseReplaceWidget::synchronize( void )
 }
 
 //__________________________________________________
-void BaseReplaceWidget::replaceInWindow( void )
+void BaseReplaceWidget::_replaceInWindow( void )
 { emit replaceInWindow( selection( false ) ); }
 
 //__________________________________________________
-void BaseReplaceWidget::replaceInSelection( void )
+void BaseReplaceWidget::_replaceInSelection( void )
 { emit replaceInSelection( selection( false ) ); }
 
 
 //__________________________________________________
-void BaseReplaceWidget::addReplacedString( const QString& text  )
+void BaseReplaceWidget::_addReplacedString( const QString& text  )
 {
     if( text.isEmpty() ) return;
     if( _replacedStrings().find( text ) == _replacedStrings().end() )

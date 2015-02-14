@@ -62,10 +62,10 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
     editor_->setEditable( true );
     editor_->setAutoCompletion( true, Qt::CaseSensitive );
 
-    connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(find()) );
-    connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(updateFindComboBox()) );
-    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(updateButtons(QString)) );
-    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(findNoIncrement()) );
+    connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_find()) );
+    connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
+    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_updateButtons(QString)) );
+    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_findNoIncrement()) );
 
     // locations
     GridLayout* gridLayout( new GridLayout() );
@@ -80,7 +80,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
     gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
     gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
     gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
-    connect( regexpCheckbox_, SIGNAL(toggled(bool)), SLOT(regExpChecked(bool)) );
+    connect( regexpCheckbox_, SIGNAL(toggled(bool)), SLOT(_regExpChecked(bool)) );
 
     // tooltips
     backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );
@@ -109,8 +109,8 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
 
     // insert Find button
     buttonLayout_->addWidget( findButton_ = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
-    connect( findButton_, SIGNAL(clicked()), this, SLOT(find()) );
-    connect( findButton_, SIGNAL(clicked()), this, SLOT(updateFindComboBox()) );
+    connect( findButton_, SIGNAL(clicked()), this, SLOT(_find()) );
+    connect( findButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
     addDisabledButton( findButton_ );
     static_cast<QPushButton*>(findButton_)->setAutoDefault( false );
 
@@ -136,7 +136,7 @@ TextSelection BaseFindWidget::selection( bool noIncrement ) const
 //________________________________________________________________________
 void BaseFindWidget::setText( const QString& text )
 {
-    addSearchedString( text );
+    _addSearchedString( text );
     editor_->setEditText( text );
     editor_->lineEdit()->selectAll();
 }
@@ -160,13 +160,21 @@ void BaseFindWidget::addDisabledButton( QAbstractButton* button )
 {
     Debug::Throw( "BaseFindWidget::addDisabledButton.\n" );
     buttons_ << button;
-    updateButtons();
+    _updateButtons();
 }
 
 //________________________________________________________________________
-void BaseFindWidget::addSearchedString( const QString& text  )
+void BaseFindWidget::matchFound( void )
+{ label_->setText( "" ); }
+
+//________________________________________________________________________
+void BaseFindWidget::noMatchFound( void )
+{ if( !editor_->currentText().isEmpty() ) label_->setText( tr( "Not found" ) ); }
+
+//________________________________________________________________________
+void BaseFindWidget::_addSearchedString( const QString& text  )
 {
-    Debug::Throw( "BaseFindWidget::addSearchedString.\n" );
+    Debug::Throw( "BaseFindWidget::_addSearchedString.\n" );
     if( text.isEmpty() ) return;
     if( _searchedStrings().find( text ) == _searchedStrings().end() )
     {
@@ -186,17 +194,9 @@ void BaseFindWidget::synchronize( void )
 }
 
 //________________________________________________________________________
-void BaseFindWidget::matchFound( void )
-{ label_->setText( "" ); }
-
-//________________________________________________________________________
-void BaseFindWidget::noMatchFound( void )
-{ if( !editor_->currentText().isEmpty() ) label_->setText( tr( "Not found" ) ); }
-
-//________________________________________________________________________
-void BaseFindWidget::regExpChecked( bool value )
+void BaseFindWidget::_regExpChecked( bool value )
 {
-    Debug::Throw( "BaseFindWidget::regExpChecked.\n" );
+    Debug::Throw( "BaseFindWidget::_regExpChecked.\n" );
     caseSensitiveCheckbox_->setChecked( value );
     if( value )
     {
@@ -207,9 +207,9 @@ void BaseFindWidget::regExpChecked( bool value )
 }
 
 //________________________________________________________________________
-void BaseFindWidget::updateButtons( const QString& text )
+void BaseFindWidget::_updateButtons( const QString& text )
 {
-    Debug::Throw( "BaseFindWidget::updateButtons.\n" );
+    Debug::Throw( "BaseFindWidget::_updateButtons.\n" );
 
     const bool enabled( !( text.isNull() || text.isEmpty() ) );
     foreach( const auto& button, buttons_ )

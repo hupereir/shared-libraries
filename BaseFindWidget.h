@@ -98,9 +98,6 @@ class BaseFindWidget: public QWidget, public Counter
     //* string to find
     virtual void setText( const QString& );
 
-    //* synchronize searched strings and ComboBox
-    virtual void synchronize( void );
-
     //* enable/disable entire word
     virtual void enableEntireWord( bool );
 
@@ -110,8 +107,8 @@ class BaseFindWidget: public QWidget, public Counter
     //* add button to disabled button list
     virtual void addDisabledButton( QAbstractButton* );
 
-    //* add string to both combo box and static set
-    virtual void addSearchedString( const QString& );
+    //* synchronize searched strings and ComboBox
+    virtual void synchronize( void );
 
     //@}
 
@@ -122,29 +119,36 @@ class BaseFindWidget: public QWidget, public Counter
 
     public Q_SLOTS:
 
-    //* update combo box with current text
-    virtual void updateFindComboBox( void )
-    { addSearchedString( editor_->currentText() ); }
-
-    //* create Selection object when find button is pressed
-    virtual void find( void )
-    { emit find( selection( false ) ); }
-
     //* take action when at least one match is found
     virtual void matchFound( void );
 
     //* take action when no match is found
     virtual void noMatchFound( void );
 
+    protected Q_SLOTS:
+
+    //* update combo box with current text
+    virtual void _updateFindComboBox( void )
+    { _addSearchedString( editor_->currentText() ); }
+
     //* create Selection object when find button is pressed
-    virtual void findNoIncrement( void )
+    virtual void _find( void )
+    { emit find( selection( false ) ); }
+
+    //* create Selection object when find button is pressed
+    virtual void _findNoIncrement( void )
     { if( !regexpCheckbox_->isChecked() ) emit find( selection( true ) ); }
 
     //* update button state when regexp checkbox is checked
-    virtual void regExpChecked( bool );
+    virtual void _regExpChecked( bool );
 
     //* update button state depending on the string to find
-    virtual void updateButtons( const QString& text = QString() );
+    virtual void _updateButtons( const QString& text = QString() );
+
+    protected:
+
+    //* add string to both combo box and static set
+    virtual void _addSearchedString( const QString& );
 
     private:
 

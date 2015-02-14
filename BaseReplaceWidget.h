@@ -42,8 +42,12 @@ class BaseReplaceWidget: public BaseFindWidget
     //*@name accessors
     //@{
 
+    //* string to replace
+    QString replaceText( void ) const
+    { return replaceEditor_->currentText(); }
+
     //* retrieve text selection from dialog
-    virtual TextSelection selection( const bool& no_increment ) const;
+    virtual TextSelection selection( const bool& ) const;
 
     //* replace editor
     virtual CustomComboBox& replaceEditor( void ) const
@@ -62,15 +66,8 @@ class BaseReplaceWidget: public BaseFindWidget
     void setReplaceText( const QString& text )
     { replaceEditor_->setEditText( text ); }
 
-    //* string to replace
-    QString replaceText( void ) const
-    { return replaceEditor_->currentText(); }
-
     //* synchronize searched strings and ComboBox
     virtual void synchronize( void );
-
-    //* add string to both combo box and static set
-    void addReplacedString( const QString& );
 
     //@}
 
@@ -89,21 +86,26 @@ class BaseReplaceWidget: public BaseFindWidget
     //* emmited when text replacement is changed
     void replaceTextChanged( QString text_replace );
 
-    public Q_SLOTS:
+    protected Q_SLOTS:
 
     //* update combo box with current text
-    void updateReplaceComboBox( void )
-    { addReplacedString( replaceEditor_->currentText() ); }
+    void _updateReplaceComboBox( void )
+    { _addReplacedString( replaceEditor_->currentText() ); }
 
     //* create Selection object when replace button is pressed
-    void replace( void )
+    void _replace( void )
     { emit replace( selection( false ) ); }
 
     //* create Selection object when replace button is pressed
-    void replaceInWindow( void );
+    void _replaceInWindow( void );
 
     //* create Selection object when replace button is pressed
-    void replaceInSelection( void );
+    void _replaceInSelection( void );
+
+    protected:
+
+    //* add string to both combo box and static set
+    virtual void _addReplacedString( const QString& );
 
     private:
 

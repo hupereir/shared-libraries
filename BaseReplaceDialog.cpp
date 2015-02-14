@@ -36,9 +36,9 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     _setBaseFindWidget( new BaseReplaceWidget( this ) );
 
     // connections
-    connect( &baseFindWidget(), SIGNAL(replace(TextSelection)), this, SLOT(replace(TextSelection)));
-    connect( &baseFindWidget(), SIGNAL(replaceInWindow(TextSelection)), this, SLOT(replaceInWindow(TextSelection)));
-    connect( &baseFindWidget(), SIGNAL(replaceInSelection(TextSelection)), this, SLOT(replaceInSelection(TextSelection)));
-    connect( &baseFindWidget(), SIGNAL(replaceTextChanged(QString)), this, SLOT(replaceTextChanged(QString)));
+    connect( &baseFindWidget(), SIGNAL(replace(TextSelection)), this, SIGNAL(replace(TextSelection)));
+    connect( &baseFindWidget(), SIGNAL(replaceInWindow(TextSelection)), this, SIGNAL(replaceInWindow(TextSelection)));
+    connect( &baseFindWidget(), SIGNAL(replaceInSelection(TextSelection)), this, SIGNAL(replaceInSelection(TextSelection)));
+    connect( &baseFindWidget(), SIGNAL(replaceTextChanged(QString)), this, SIGNAL(replaceTextChanged(QString)));
 
 }

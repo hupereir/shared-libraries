@@ -40,13 +40,27 @@ class BaseReplaceDialog: public BaseFindDialog
     //* destructor
     virtual ~BaseReplaceDialog( void ) = default;
 
-    //* string to replace
-    void setReplaceText( const QString& text )
-    { static_cast<BaseReplaceWidget*>(&baseFindWidget())->setReplaceText( text ); }
+    //*@name accessors
+    //@{
 
     //* string to replace
     QString replaceText( void ) const
     { return static_cast<BaseReplaceWidget*>(&baseFindWidget())->replaceText(); }
+
+    //* get selection
+    virtual TextSelection selection( bool value ) const
+    { return static_cast<BaseReplaceWidget*>(&baseFindWidget())->selection( value ); }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* string to replace
+    void setReplaceText( const QString& text )
+    { static_cast<BaseReplaceWidget*>(&baseFindWidget())->setReplaceText( text ); }
+
+    //@}
 
     Q_SIGNALS:
 
