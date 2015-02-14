@@ -22,17 +22,6 @@
 #include "BaseReplaceDialog.h"
 #include "Debug.h"
 
-#include <QLabel>
-#include <QPushButton>
-#include <QApplication>
-
-//________________________________________________________________________
-QOrderedSet<QString>& BaseReplaceDialog::_replacedStrings()
-{
-    static QOrderedSet<QString> strings;
-    return strings;
-}
-
 //________________________________________________________________________
 BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     BaseFindDialog( parent, flags )
@@ -43,114 +32,13 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     setWindowTitle( tr( "Replace" ) );
     setOptionName( "REPLACE_DIALOG" );
 
-    // create aditional widgets
-    // insert text editor
-    QLabel* label = new QLabel( tr( "Replace with:" ), &baseFindWidget() );
-    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
-    baseFindWidget().editorLayout().addWidget( label, 1, 0, 1, 1 );
+    // set base find widget
+    _setBaseFindWidget( new BaseReplaceWidget( this ) );
 
-    // replacement editor
-    baseFindWidget().editorLayout().addWidget( replaceEditor_ = new CustomComboBox( &baseFindWidget() ), 1, 1, 1, 1 );
-    label->setBuddy( &_replaceEditor() );
-
-    // disable callbacks on find editor
-    disconnect( editor().lineEdit(), SIGNAL(textChanged(QString)), &baseFindWidget(), SLOT(findNoIncrement()) );
-
-    replaceEditor_->setEditable( true );
-    replaceEditor_->setAutoCompletion( true, Qt::CaseSensitive );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_replace()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), &baseFindWidget(), SLOT(updateFindComboBox()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateReplaceComboBox()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_replaceTextChanged(QString)) );
-
-    // change tab order
-    setTabOrder( &editor(), &_replaceEditor() );
-
-    // location buttons
-    QPushButton *button( 0 );
-    QPushButton *previous( 0 );
-
-    // insert selection button
-    baseFindWidget().locationLayout().addWidget( new QLabel( tr( "Replace in:" ), &baseFindWidget() ) );
-    baseFindWidget().locationLayout().addWidget( button = new QPushButton( tr( "Selection" ), &baseFindWidget() ) );
-    button->setAutoDefault( false );
-    connect( button, SIGNAL(clicked()), SLOT(_replaceInSelection()) );
-    connect( button, SIGNAL(clicked()), &baseFindWidget(), SLOT(updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
-    button->setToolTip( tr( "Replace all occurence of the search string in selected text" ) );
-    baseFindWidget().addDisabledButton( button );
-    button->setAutoDefault( false );
-
-    // change tab order
-    setTabOrder( &baseFindWidget().entireWordCheckBox(), button );
-    previous = button;
-
-    // insert window button
-    baseFindWidget().locationLayout().addWidget( button = new QPushButton( tr( "Window" ), &baseFindWidget() ) );
-    button->setAutoDefault( false );
-    connect( button, SIGNAL(clicked()), SLOT(_replaceInWindow()) );
-    connect( button, SIGNAL(clicked()), &baseFindWidget(), SLOT(updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
-    button->setToolTip( tr( "Replace all occurence of the search string in the entire window" ) );
-    baseFindWidget().addDisabledButton( button );
-    button->setAutoDefault( false );
-    replaceWindowButton_ = button;
-
-    setTabOrder( previous, button );
-
-    // replace buttons
-    button = new QPushButton( tr( "Replace" ), this );
-    connect( button, SIGNAL(clicked()), SLOT(_replace()) );
-    connect( button, SIGNAL(clicked()), &baseFindWidget(), SLOT(updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
-    baseFindWidget().addDisabledButton( button );
-    _buttonLayout().insertWidget( 1, button );
-    button->setAutoDefault( false );
-    replaceButton_ = button;
-
-    setTabOrder( &_findButton(), button );
+    // connections
+    connect( &baseFindWidget(), SIGNAL(replace(TextSelection)), this, SLOT(replace(TextSelection)));
+    connect( &baseFindWidget(), SIGNAL(replaceInWindow(TextSelection)), this, SLOT(replaceInWindow(TextSelection)));
+    connect( &baseFindWidget(), SIGNAL(replaceInSelection(TextSelection)), this, SLOT(replaceInSelection(TextSelection)));
+    connect( &baseFindWidget(), SIGNAL(replaceTextChanged(QString)), this, SLOT(replaceTextChanged(QString)));
 
 }
-
-//_____________________________________________________
-BaseReplaceDialog::~BaseReplaceDialog( void )
-{ Debug::Throw( "BaseReplaceDialog::~BaseReplaceDialog.\n" ); }
-
-//_____________________________________________________
-TextSelection BaseReplaceDialog::selection( const bool& no_increment ) const
-{
-
-    TextSelection out( BaseFindDialog::selection( no_increment ) );
-    out.setReplaceText( replaceEditor_->currentText() );
-    return out;
-
-}
-
-//__________________________________________________
-void BaseReplaceDialog::synchronize( void )
-{
-    Debug::Throw( "BaseReplaceDialog::synchronize.\n" );
-
-    // base class method
-    BaseFindDialog::synchronize();
-
-    // replace editor
-    replaceEditor_->clear();
-    for( QOrderedSet<QString>::iterator iter = _replacedStrings().begin(); iter != _replacedStrings().end(); ++iter )
-    { replaceEditor_->addItem( *iter ); }
-
-    // clear replace combobox text
-    replaceEditor_->setEditText("");
-
-    // set focus to find editor
-    editor().setFocus();
-
-}
-
-//__________________________________________________
-void BaseReplaceDialog::_replaceInWindow( void )
-{ emit replaceInWindow( selection( false ) ); }
-
-//__________________________________________________
-void BaseReplaceDialog::_replaceInSelection( void )
-{ emit replaceInSelection( selection( false ) ); }

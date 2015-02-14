@@ -22,7 +22,6 @@
 *
 *******************************************************************************/
 
-#include "BaseDialog.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "TextSelection.h"
@@ -64,16 +63,28 @@ class BaseFindWidget: public QWidget, public Counter
     { return *editor_; }
 
     //* edtion layout
-    QGridLayout& editorLayout() const
+    QGridLayout& editorLayout( void ) const
     { return *editorLayout_; }
 
     //* locations layout
-    QBoxLayout& locationLayout() const
+    QBoxLayout& locationLayout( void ) const
     { return *locationLayout_; }
 
+    //* locations layout
+    QBoxLayout& buttonLayout( void ) const
+    { return *buttonLayout_; }
+
     //* "entire word" checkbox
-    QCheckBox& entireWordCheckBox() const
+    QCheckBox& entireWordCheckBox( void ) const
     { return *entireWordCheckbox_; }
+
+    //* find button
+    QAbstractButton& findButton( void ) const
+    { return *findButton_; }
+
+    //* close button
+    QAbstractButton& closeButton( void ) const
+    { return *closeButton_; }
 
     //* list of disabled buttons
     virtual QList<QAbstractButton*>& disabledButtons( void )
@@ -161,14 +172,20 @@ class BaseFindWidget: public QWidget, public Counter
     //* regular expression search if checked
     QCheckBox* regexpCheckbox_ = nullptr;
 
+    //* notification label
+    QLabel* label_ = nullptr;
+
+    //* find button
+    QAbstractButton* findButton_ = nullptr;
+
+    //* close button
+    QAbstractButton* closeButton_ = nullptr;
+
     //* list of buttons to enable/disable depending of the editor text
     QList<QAbstractButton*> buttons_;
 
     //* set of previously searched strings
     static QOrderedSet<QString>& _searchedStrings( void );
-
-    //* notification label
-    QLabel* label_ = nullptr;
 
 };
 #endif

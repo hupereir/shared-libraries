@@ -78,6 +78,7 @@ set(base_qt_SOURCES
   BasePrintHelper.cpp
   BaseProgressBar.cpp
   BaseReplaceDialog.cpp
+  BaseReplaceWidget.cpp
   BaseStatusBar.cpp
   BaseToolTipWidget.cpp
   BlockHighlight.cpp

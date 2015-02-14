@@ -45,34 +45,25 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     layout()->setMargin( 10 );
     layout()->setSpacing( 5 );
 
+    _setBaseFindWidget( new BaseFindWidget( this ) );
+}
+
+//________________________________________________________________________
+void BaseFindDialog::_setBaseFindWidget( BaseFindWidget* baseFindWidget )
+{
+    Debug::Throw( "BaseFindDialog::_setBaseFindWidget.\n" );
+    if( baseFindWidget_ )
+    {
+        baseFindWidget_->hide();
+        baseFindWidget_->deleteLater();
+    }
+
+    baseFindWidget_ = baseFindWidget;
+
     // base find widget
-    layout()->addWidget( baseFindWidget_ = new BaseFindWidget( this ) );
+    layout()->addWidget( baseFindWidget_ );
     connect( baseFindWidget_, SIGNAL(find(TextSelection)), this, SIGNAL(find(TextSelection)) );
 
-    // horizontal separator
-    QFrame* frame( new QFrame( this ) );
-    frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
-    layout()->addWidget( frame );
-
-    // buttons
-    layout()->addItem( buttonLayout_ = new QHBoxLayout() );
-    buttonLayout_->setMargin( 0 );
-    buttonLayout_->setSpacing( 5 );
-    buttonLayout_->addStretch(1);
-
-    // insert Find button
-    QPushButton *button;
-    buttonLayout_->addWidget( button = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
-    connect( button, SIGNAL(clicked()), baseFindWidget_, SLOT(find()) );
-    connect( button, SIGNAL(clicked()), baseFindWidget_, SLOT(updateFindComboBox()) );
-    baseFindWidget_->addDisabledButton( button );
-    button->setAutoDefault( false );
-    findButton_ = button;
-
     // insert Cancel button
-    buttonLayout_->addWidget( button = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
-    connect( button, SIGNAL(clicked()), SLOT(close()) );
-    button->setShortcut( Qt::Key_Escape );
-    button->setAutoDefault( false );
-
+    connect( &baseFindWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()) );
 }

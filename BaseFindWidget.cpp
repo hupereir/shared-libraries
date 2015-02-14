@@ -96,6 +96,29 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
     locationLayout_->setMargin(0);
     locationLayout_->setSpacing(5);
 
+    // horizontal separator
+    QFrame* frame( new QFrame( this ) );
+    frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
+    layout()->addWidget( frame );
+
+    // buttons
+    layout()->addItem( buttonLayout_ = new QHBoxLayout() );
+    buttonLayout_->setMargin( 0 );
+    buttonLayout_->setSpacing( 5 );
+    buttonLayout_->addStretch(1);
+
+    // insert Find button
+    buttonLayout_->addWidget( findButton_ = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
+    connect( findButton_, SIGNAL(clicked()), this, SLOT(find()) );
+    connect( findButton_, SIGNAL(clicked()), this, SLOT(updateFindComboBox()) );
+    addDisabledButton( findButton_ );
+    static_cast<QPushButton*>(findButton_)->setAutoDefault( false );
+
+    // insert Cancel button
+    buttonLayout_->addWidget( closeButton_ = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
+    closeButton_->setShortcut( Qt::Key_Escape );
+    static_cast<QPushButton*>(closeButton_)->setAutoDefault( false );
+
 }
 
 //________________________________________________________________________

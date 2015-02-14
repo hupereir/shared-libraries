@@ -22,9 +22,8 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "CustomComboBox.h"
 #include "BaseFindDialog.h"
+#include "BaseReplaceWidget.h"
 
 //* replace_text dialogs
 class BaseReplaceDialog: public BaseFindDialog
@@ -39,21 +38,15 @@ class BaseReplaceDialog: public BaseFindDialog
     BaseReplaceDialog( QWidget* parent = 0, Qt::WindowFlags flags = 0 );
 
     //* destructor
-    virtual ~BaseReplaceDialog( void );
+    virtual ~BaseReplaceDialog( void ) = default;
 
     //* string to replace
     void setReplaceText( const QString& text )
-    { replaceEditor_->setEditText( text ); }
+    { static_cast<BaseReplaceWidget*>(&baseFindWidget())->setReplaceText( text ); }
 
     //* string to replace
     QString replaceText( void ) const
-    { return replaceEditor_->currentText(); }
-
-    //* retrieve text selection from dialog
-    virtual TextSelection selection( const bool& no_increment ) const;
-
-    //* synchronize searched strings and ComboBox
-    virtual void synchronize( void );
+    { return static_cast<BaseReplaceWidget*>(&baseFindWidget())->replaceText(); }
 
     Q_SIGNALS:
 
@@ -67,66 +60,7 @@ class BaseReplaceDialog: public BaseFindDialog
     void replaceInSelection( TextSelection );
 
     //* emmited when text replacement is changed
-    void replaceTextChanged( QString text_replace );
-
-    protected Q_SLOTS:
-
-    //* update combo box with current text
-    void _updateReplaceComboBox( void )
-    { _addReplacedString( replaceEditor_->currentText() ); }
-
-    //* create Selection object when replace button is pressed
-    void _replace( void )
-    { emit replace( selection( false ) ); }
-
-    //* create Selection object when replace button is pressed
-    void _replaceInWindow( void );
-
-    //* create Selection object when replace button is pressed
-    void _replaceInSelection( void );
-
-    //* emmited when text replacement is changed
-    void _replaceTextChanged( const QString& text )
-    { emit replaceTextChanged( text ); }
-
-    protected:
-
-    //* replace editor
-    virtual CustomComboBox& _replaceEditor( void )
-    { return *replaceEditor_; }
-
-    //* replace editor
-    const virtual CustomComboBox& _replaceEditor( void ) const
-    { return *replaceEditor_; }
-
-    //* replace window button
-    QPushButton& _replaceWindowButton( void ) const
-    { return *replaceWindowButton_; }
-
-    private:
-
-    //* replaced strings
-    static QOrderedSet<QString>& _replacedStrings();
-
-    //* add string to both combo box and static set
-    void _addReplacedString( const QString& text  )
-    {
-        if( text.isEmpty() ) return;
-        if( _replacedStrings().find( text ) == _replacedStrings().end() )
-        {
-            _replacedStrings().insert( text );
-            replaceEditor_->addItem( text );
-        }
-    }
-
-    //* line editor for text to replace
-    CustomComboBox* replaceEditor_;
-
-    //* replace button
-    QPushButton* replaceButton_;
-
-    //* replace in window button
-    QPushButton* replaceWindowButton_;
+    void replaceTextChanged( QString );
 
 };
 #endif

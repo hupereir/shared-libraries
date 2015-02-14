@@ -109,24 +109,13 @@ class BaseFindDialog: public BaseDialog, public Counter
 
     protected:
 
-    //* button layout
-    QBoxLayout& _buttonLayout() const
-    { return *buttonLayout_; }
-
-    //* "find" button
-    QPushButton& _findButton( void ) const
-    { return *findButton_; }
+    //* set base find widget
+    void _setBaseFindWidget( BaseFindWidget* );
 
     private:
 
     //* find widget
     BaseFindWidget* baseFindWidget_ = nullptr;
-
-    //* button layout
-    QBoxLayout* buttonLayout_ = nullptr;
-
-    //* find button
-    QPushButton* findButton_ = nullptr;
 
 };
 #endif
