@@ -49,14 +49,6 @@ class BaseReplaceWidget: public BaseFindWidget
     //* retrieve text selection from dialog
     virtual TextSelection selection( const bool& ) const;
 
-    //* replace editor
-    virtual CustomComboBox& replaceEditor( void ) const
-    { return *replaceEditor_; }
-
-    //* replace window button
-    QAbstractButton& replaceWindowButton( void ) const
-    { return *replaceWindowButton_; }
-
     //@}
 
     //*@name modifiers
@@ -72,7 +64,6 @@ class BaseReplaceWidget: public BaseFindWidget
     //@}
 
     Q_SIGNALS:
-
 
     //* emmited when Replace is pressed
     void replace( TextSelection );
@@ -103,6 +94,14 @@ class BaseReplaceWidget: public BaseFindWidget
     void _replaceInSelection( void );
 
     protected:
+
+    //* replace editor
+    virtual CustomComboBox& _replaceEditor( void ) const
+    { return *replaceEditor_; }
+
+    //* replace window button
+    QAbstractButton& _replaceWindowButton( void ) const
+    { return *replaceWindowButton_; }
 
     //* add string to both combo box and static set
     virtual void _addReplacedString( const QString& );

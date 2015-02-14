@@ -111,7 +111,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
     buttonLayout_->addWidget( findButton_ = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
     connect( findButton_, SIGNAL(clicked()), this, SLOT(_find()) );
     connect( findButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
-    addDisabledButton( findButton_ );
+    _addDisabledButton( findButton_ );
     static_cast<QPushButton*>(findButton_)->setAutoDefault( false );
 
     // insert Cancel button
@@ -156,20 +156,20 @@ void BaseFindWidget::enableRegExp( bool value )
 }
 
 //________________________________________________________________________
-void BaseFindWidget::addDisabledButton( QAbstractButton* button )
-{
-    Debug::Throw( "BaseFindWidget::addDisabledButton.\n" );
-    buttons_ << button;
-    _updateButtons();
-}
-
-//________________________________________________________________________
 void BaseFindWidget::matchFound( void )
 { label_->setText( "" ); }
 
 //________________________________________________________________________
 void BaseFindWidget::noMatchFound( void )
 { if( !editor_->currentText().isEmpty() ) label_->setText( tr( "Not found" ) ); }
+
+//________________________________________________________________________
+void BaseFindWidget::_addDisabledButton( QAbstractButton* button )
+{
+    Debug::Throw( "BaseFindWidget::_addDisabledButton.\n" );
+    buttons_ << button;
+    _updateButtons();
+}
 
 //________________________________________________________________________
 void BaseFindWidget::_addSearchedString( const QString& text  )

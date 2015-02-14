@@ -62,22 +62,6 @@ class BaseFindWidget: public QWidget, public Counter
     virtual CustomComboBox& editor( void ) const
     { return *editor_; }
 
-    //* edtion layout
-    QGridLayout& editorLayout( void ) const
-    { return *editorLayout_; }
-
-    //* locations layout
-    QBoxLayout& locationLayout( void ) const
-    { return *locationLayout_; }
-
-    //* locations layout
-    QBoxLayout& buttonLayout( void ) const
-    { return *buttonLayout_; }
-
-    //* "entire word" checkbox
-    QCheckBox& entireWordCheckBox( void ) const
-    { return *entireWordCheckbox_; }
-
     //* find button
     QAbstractButton& findButton( void ) const
     { return *findButton_; }
@@ -103,9 +87,6 @@ class BaseFindWidget: public QWidget, public Counter
 
     //* enable/disable RegExp
     virtual void enableRegExp( bool );
-
-    //* add button to disabled button list
-    virtual void addDisabledButton( QAbstractButton* );
 
     //* synchronize searched strings and ComboBox
     virtual void synchronize( void );
@@ -146,6 +127,25 @@ class BaseFindWidget: public QWidget, public Counter
     virtual void _updateButtons( const QString& text = QString() );
 
     protected:
+
+    //* "entire word" checkbox
+    QCheckBox& _entireWordCheckBox( void ) const
+    { return *entireWordCheckbox_; }
+
+    //* edition layout
+    QGridLayout& _editorLayout( void ) const
+    { return *editorLayout_; }
+
+    //* locations layout
+    QBoxLayout& _locationLayout( void ) const
+    { return *locationLayout_; }
+
+    //* locations layout
+    QBoxLayout& _buttonLayout( void ) const
+    { return *buttonLayout_; }
+
+    //* add button to disabled button list
+    virtual void _addDisabledButton( QAbstractButton* );
 
     //* add string to both combo box and static set
     virtual void _addSearchedString( const QString& );
