@@ -45,13 +45,13 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     layout()->setMargin( 10 );
     layout()->setSpacing( 5 );
 
-    _setBaseFindWidget( new BaseFindWidget( this ) );
+    setBaseFindWidget( new BaseFindWidget( this ) );
 }
 
 //________________________________________________________________________
-void BaseFindDialog::_setBaseFindWidget( BaseFindWidget* baseFindWidget )
+void BaseFindDialog::setBaseFindWidget( BaseFindWidget* baseFindWidget )
 {
-    Debug::Throw( "BaseFindDialog::_setBaseFindWidget.\n" );
+    Debug::Throw( "BaseFindDialog::setBaseFindWidget.\n" );
     if( baseFindWidget_ )
     {
         baseFindWidget_->hide();

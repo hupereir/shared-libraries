@@ -23,11 +23,13 @@
 
 #include "BaseIconNames.h"
 #include "BaseContextMenu.h"
+#include "BaseFindDialog.h"
+#include "BaseFindWidget.h"
 #include "BaseReplaceDialog.h"
+#include "BaseReplaceWidget.h"
 #include "InformationDialog.h"
 #include "Color.h"
 #include "CustomTextDocument.h"
-#include "BaseFindDialog.h"
 #include "IconEngine.h"
 #include "KeyModifier.h"
 #include "LineNumberDisplay.h"
@@ -1756,13 +1758,27 @@ void TextEditor::_createBaseFindDialog( void )
     Debug::Throw( "TextEditor::_createBaseFindDialog.\n" );
     if( !findDialog_ )
     {
-
+        _createBaseFindWidget();
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in Text" ) );
-        connect( findDialog_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), findDialog_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), findDialog_, SLOT(noMatchFound()) );
+        findDialog_->setBaseFindWidget( &_findWidget() );
+    }
 
+    return;
+
+}
+
+//______________________________________________________________________
+void TextEditor::_createBaseFindWidget( void )
+{
+
+    Debug::Throw( "TextEditor::_createBaseFindWidget.\n" );
+    if( !findWidget_ )
+    {
+        findWidget_ = new BaseFindWidget( this );
+        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
     }
 
     return;
@@ -1985,22 +2001,37 @@ void TextEditor::_createBaseReplaceDialog( void )
     Debug::Throw( "TextEditor::_createBaseReplaceDialog.\n" );
     if( !replaceDialog_ )
     {
-
+        _createBaseReplaceWidget();
         replaceDialog_ = new BaseReplaceDialog( this );
         replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
-        connect( replaceDialog_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( replaceDialog_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
-        connect( replaceDialog_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
-        connect( replaceDialog_, SIGNAL(replaceInSelection(TextSelection)), SLOT(replaceInSelection(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), replaceDialog_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), replaceDialog_, SLOT(noMatchFound()) );
-
+        replaceDialog_->setBaseFindWidget( &_replaceWidget() );
     }
 
     return;
 
 }
 
+//______________________________________________________________________
+void TextEditor::_createBaseReplaceWidget( void )
+{
+
+    Debug::Throw( "TextEditor::_createBaseReplaceWidget.\n" );
+    if( !replaceWidget_ )
+    {
+
+        replaceWidget_ = new BaseReplaceWidget( this );
+        connect( replaceWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( replaceWidget_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
+        connect( replaceWidget_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
+        connect( replaceWidget_, SIGNAL(replaceInSelection(TextSelection)), SLOT(replaceInSelection(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), replaceWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), replaceWidget_, SLOT(noMatchFound()) );
+
+    }
+
+    return;
+
+}
 
 //__________________________________________________
 void TextEditor::_createProgressDialog( void )

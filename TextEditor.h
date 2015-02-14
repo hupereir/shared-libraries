@@ -47,7 +47,9 @@
 
 class BaseContextMenu;
 class BaseFindDialog;
+class BaseFindWidget;
 class BaseReplaceDialog;
+class BaseReplaceWidget;
 class SelectLineDialog;
 class TextEditorMarginWidget;
 class LineNumberDisplay;
@@ -495,7 +497,14 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     { return *findDialog_; }
 
     //* find dialog
+    virtual BaseFindWidget& _findWidget( void )
+    { return *findWidget_; }
+
+    //* find dialog
     virtual void _createBaseFindDialog( void );
+
+    //* find widget
+    virtual void _createBaseFindWidget( void );
 
     //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, const bool& rewind );
@@ -507,8 +516,15 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual BaseReplaceDialog& _replaceDialog( void )
     { return *replaceDialog_; }
 
-    //* find dialog
+    //* replace widget
+    virtual BaseReplaceWidget& _replaceWidget( void )
+    { return *replaceWidget_; }
+
+    //* replace dialog
     virtual void _createBaseReplaceDialog( void );
+
+    //* replace widget
+    virtual void _createBaseReplaceWidget( void );
 
     //* progress dialog
     virtual void _createProgressDialog( void );
@@ -710,6 +726,12 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* find dialog
     BaseReplaceDialog* replaceDialog_ = nullptr;
+
+    //* find widget
+    BaseFindWidget* findWidget_ = nullptr;
+
+    //* replace widget
+    BaseReplaceWidget* replaceWidget_ = nullptr;
 
     //* line number dialog
     SelectLineDialog* selectLineDialog_ = nullptr;

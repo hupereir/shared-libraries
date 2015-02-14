@@ -90,6 +90,9 @@ class BaseFindDialog: public BaseDialog, public Counter
     virtual void enableRegExp( bool value )
     { baseFindWidget_->enableRegExp( value ); }
 
+    //* set base find widget
+    void setBaseFindWidget( BaseFindWidget* );
+
     //@}
 
     Q_SIGNALS:
@@ -106,11 +109,6 @@ class BaseFindDialog: public BaseDialog, public Counter
     //* take action when no match is found
     virtual void noMatchFound( void )
     { baseFindWidget_->noMatchFound(); }
-
-    protected:
-
-    //* set base find widget
-    void _setBaseFindWidget( BaseFindWidget* );
 
     private:
 
