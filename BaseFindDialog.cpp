@@ -58,9 +58,15 @@ void BaseFindDialog::setBaseFindWidget( BaseFindWidget* baseFindWidget )
         baseFindWidget_->deleteLater();
     }
 
+    // assign new widget and change parent
     baseFindWidget_ = baseFindWidget;
+    if( baseFindWidget_->parent() != this )
+    {
+        baseFindWidget_->setParent( this );
+        baseFindWidget_->show();
+    }
 
-    // base find widget
+    // append to layout
     layout()->addWidget( baseFindWidget_ );
     connect( baseFindWidget_, SIGNAL(find(TextSelection)), this, SIGNAL(find(TextSelection)) );
 
