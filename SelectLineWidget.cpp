@@ -59,7 +59,6 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     layout->addWidget( label = new QLabel( tr( "Goto line number:" ), this ), 0 );
 
     layout->addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
-    if( compact ) label->setMargin(2);
     label->setBuddy( editor_ );
 
     //connect( editor(), SIGNAL(returnPressed()), SLOT(_selectLine()) );
