@@ -1451,3 +1451,27 @@ QModelIndex IconView::_indexAfter( const QModelIndex& current ) const
 //_________________________________________________________
 QModelIndex IconView::_indexBefore( const QModelIndex& current ) const
 { return (items_.empty() || current.row() == 0 || current.row() > items_.size() ) ? QModelIndex():model()->index( current.row()-1, 0 ); }
+
+//_________________________________________________________
+IconView::Container::Container( QWidget* parent ):
+    QWidget( parent ),
+    Counter( "IconView::Container" )
+{
+    Debug::Throw( "IconView::Container::Container.\n" );
+
+    // setup layout
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(0);
+    vLayout->setSpacing(2);
+    setLayout( vLayout );
+
+    // iconView
+    vLayout->addWidget( iconView_ = new IconView( this ) );
+    iconView_->findFromDialog_ = false;
+
+    // find widget
+    iconView_->_createFindWidget( true );
+    iconView_->findWidget_->setParent( this );
+    vLayout->addWidget( iconView_->findWidget_ );
+    iconView_->findWidget_->hide();
+}

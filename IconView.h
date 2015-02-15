@@ -143,6 +143,29 @@ class IconView: public QAbstractItemView, public Counter
     //! minimum size hind
     virtual QSize minimumSizeHint( void ) const;
 
+    //* container class for embedded Find dialog
+    class Container: public QWidget, public Counter
+    {
+
+        public:
+
+        //* constructor
+        Container( QWidget* = nullptr );
+
+        //* destructor
+        ~Container( void ) = default;
+
+        //*@name accessors
+        IconView& iconView( void ) const
+        { return *iconView_; }
+
+        private:
+
+        //* contained iconView
+        IconView* iconView_;
+
+    };
+
     Q_SIGNALS:
 
     //! emmited when item is hovered. Invalid index means no hovered index
@@ -413,6 +436,8 @@ class IconView: public QAbstractItemView, public Counter
 
     //! hovered index
     QModelIndex hoverIndex_;
+
+    friend class Container;
 
 };
 

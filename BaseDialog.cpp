@@ -72,7 +72,7 @@ QSize BaseDialog::sizeHint( void ) const
 BaseDialog& BaseDialog::centerOnPointer( void )
 {
 
-    Debug::Throw( "BaseDialog::centerOnPointer" );
+    Debug::Throw( "BaseDialog::centerOnPointer.\n" );
     move( QtUtil::centerOnPointer( sizeHint() ) );
     return *this;
 }
@@ -81,7 +81,7 @@ BaseDialog& BaseDialog::centerOnPointer( void )
 BaseDialog& BaseDialog::centerOnDesktop( void )
 {
 
-    Debug::Throw( "BaseDialog::centerOnDesktop" );
+    Debug::Throw( "BaseDialog::centerOnDesktop.\n" );
     move( QtUtil::centerOnDesktop( sizeHint() ) );
     return *this;
 
@@ -91,7 +91,7 @@ BaseDialog& BaseDialog::centerOnDesktop( void )
 BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 {
 
-    Debug::Throw( "BaseDialog::centerOnWidget" );
+    Debug::Throw( "BaseDialog::centerOnWidget.\n" );
     move( QtUtil::centerOnWidget( sizeHint(), parent ) );
     return *this;
 
@@ -101,7 +101,7 @@ BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 BaseDialog& BaseDialog::uniconify( void )
 {
 
-    Debug::Throw( "BaseDialog::uniconify" );
+    Debug::Throw( "BaseDialog::uniconify.\n" );
     if( isMinimized() )
     {
 

@@ -1063,13 +1063,18 @@ TreeView::Container::Container( QWidget* parent ):
     Counter( "TreeView::Container" )
 {
     Debug::Throw( "TreeView::Container::Container.\n" );
+
+    // setup layout
     QVBoxLayout* vLayout = new QVBoxLayout();
     vLayout->setMargin(0);
     vLayout->setSpacing(2);
     setLayout( vLayout );
 
+    // treeview
     vLayout->addWidget( treeView_ = new TreeView( this ) );
     treeView_->findFromDialog_ = false;
+
+    // find widget
     treeView_->_createFindWidget( true );
     treeView_->findWidget_->setParent( this );
     vLayout->addWidget( treeView_->findWidget_ );

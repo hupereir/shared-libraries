@@ -43,7 +43,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     if( compact )
     {
         setLayout( layout = new QHBoxLayout() );
-        layout->setMargin(0);
+        layout->setMargin(2);
         layout->setSpacing(2);
 
     } else {
@@ -61,9 +61,8 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     layout->addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
     label->setBuddy( editor_ );
 
-    //connect( editor(), SIGNAL(returnPressed()), SLOT(_selectLine()) );
-    connect( editor_, SIGNAL(returnPressed()), SLOT(_selectLine()) );
-    connect( editor_, SIGNAL(textChanged(QString)), SLOT(_selectLine()) );
+    connect( editor_, SIGNAL(returnPressed()), this, SLOT(_selectLine()) );
+    connect( editor_, SIGNAL(textChanged(QString)), this, SLOT(_selectLine()) );
 
     QIntValidator *validator = new QIntValidator( this );
     validator->setBottom(0);
@@ -82,7 +81,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
         closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
         static_cast<QToolButton*>( closeButton_ )->setAutoRaise( true );
 
-        connect( closeButton_, SIGNAL(clicked()), SLOT(hide()) );
+        connect( closeButton_, SIGNAL(clicked()), this, SLOT(hide()) );
 
     } else {
 
@@ -112,7 +111,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     }
 
     // connections
-    connect( okButton_, SIGNAL(clicked()), SLOT(_selectLine()) );
+    connect( okButton_, SIGNAL(clicked()), this, SLOT(_selectLine()) );
 
 }
 

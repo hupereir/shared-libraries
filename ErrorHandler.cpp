@@ -113,6 +113,7 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "QPainter::begin: Paint device returned engine == 0, type: 3" );
     disableMessage( "QPainter::setCompositionMode: Painter not active" );
     disableMessage( "QPainter::end: Painter not active, aborted" );
+    disableMessage( "QCoreApplication::postEvent: Unexpected null receiver" );
 
     // QT5 specific messages
     disableMessage( "QBackingStore::flush() called with non-exposed window" );

@@ -2758,6 +2758,7 @@ void TextEditor::Container::_initialize( void )
     vLayout->setSpacing(2);
     setLayout( vLayout );
 
+    // editor
     vLayout->addWidget( editor_ );
     editor_->useEmbeddedDialogs_ = true;
 
