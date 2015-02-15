@@ -35,6 +35,7 @@
 #include "LineNumberDisplay.h"
 #include "QtUtil.h"
 #include "SelectLineDialog.h"
+#include "SelectLineWidget.h"
 #include "Singleton.h"
 #include "StandardAction.h"
 #include "TextBlockData.h"
@@ -2033,6 +2034,30 @@ void TextEditor::_createReplaceWidget( bool compact )
 
 }
 
+//________________________________________________
+void TextEditor::_createSelectLineDialog( void )
+{
+    if( !selectLineDialog_ )
+    {
+        Debug::Throw( "TextEditor::_createSelectLineDialog.\n" );
+        selectLineDialog_ = new SelectLineDialog( this );
+        if( !selectLineWidget_ ) _createSelectLineWidget( false );
+        selectLineDialog_->setSelectLineWidget( selectLineWidget_ );
+    }
+
+    return;
+}
+//________________________________________________
+void TextEditor::_createSelectLineWidget( bool compact )
+{
+    if( !selectLineWidget_ )
+    {
+        Debug::Throw( "TextEditor::_createSelectLineWidget.\n" );
+        selectLineWidget_ = new SelectLineWidget( this, compact );
+        connect( selectLineWidget_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
+    }
+}
+
 //__________________________________________________
 void TextEditor::_createProgressDialog( void )
 {
@@ -2610,19 +2635,20 @@ void TextEditor::_findFromDialog( void )
     }
 
     // create
-    if( findFromDialog_ )
+    if( useEmbeddedDialogs_ )
     {
+
+        if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
+        if( selectLineWidget_ && selectLineWidget_->isVisible() ) selectLineWidget_->hide();
+        if( !findWidget_ ) _createFindWidget( true );
+        findWidget_->show();
+
+    } else {
 
         if( !findDialog_ ) _createFindDialog();
         findDialog_->centerOnParent();
         findDialog_->show();
         findDialog_->activateWindow();
-
-    } else {
-
-        if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
-        if( !findWidget_ ) _createFindWidget( true );
-        findWidget_->show();
 
     }
 
@@ -2645,19 +2671,20 @@ void TextEditor::_replaceFromDialog( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    if( findFromDialog_ )
+    if( useEmbeddedDialogs_ )
     {
+
+        if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
+        if( selectLineWidget_ && selectLineWidget_->isVisible() ) selectLineWidget_->hide();
+        if( !replaceWidget_ ) _createReplaceWidget( true );
+        replaceWidget_->show();
+
+    } else {
 
         if( !replaceDialog_ ) _createReplaceDialog();
         replaceDialog_->centerOnParent();
         replaceDialog_->show();
         replaceDialog_->activateWindow();
-
-    } else {
-
-        if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
-        if( !replaceWidget_ ) _createReplaceWidget( true );
-        replaceWidget_->show();
 
     }
 
@@ -2683,17 +2710,26 @@ void TextEditor::_selectLineFromDialog( void )
 {
 
     Debug::Throw( "TextEditor::_selectLineFromDialog.\n" );
-    if( !selectLineDialog_ )
+
+    if( useEmbeddedDialogs_ )
     {
-        selectLineDialog_ = new SelectLineDialog( this );
-        connect( selectLineDialog_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
+
+        if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
+        if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
+        if( !selectLineWidget_ ) _createSelectLineWidget( true );
+        selectLineWidget_->show();
+
+    } else {
+
+        if( !selectLineDialog_ ) _createSelectLineDialog();
+        selectLineDialog_->centerOnParent();
+        selectLineDialog_->show();
+        selectLineDialog_->activateWindow();
+
     }
 
-    selectLineDialog_->editor().clear();
-    selectLineDialog_->centerOnParent();
-    selectLineDialog_->show();
-    selectLineDialog_->activateWindow();
-    selectLineDialog_->editor().setFocus();
+    selectLineWidget_->editor().clear();
+    selectLineWidget_->editor().setFocus();
 
 }
 
@@ -2723,7 +2759,7 @@ void TextEditor::Container::_initialize( void )
     setLayout( vLayout );
 
     vLayout->addWidget( editor_ );
-    editor_->findFromDialog_ = false;
+    editor_->useEmbeddedDialogs_ = true;
 
     // find widget
     editor_->_createFindWidget( true );
@@ -2736,4 +2772,11 @@ void TextEditor::Container::_initialize( void )
     editor_->replaceWidget_->setParent( this );
     vLayout->addWidget( editor_->replaceWidget_ );
     editor_->replaceWidget_->hide();
+
+    // select line dialog
+    editor_->_createSelectLineWidget( true );
+    editor_->selectLineWidget_->setParent( this );
+    vLayout->addWidget( editor_->selectLineWidget_ );
+    editor_->selectLineWidget_->hide();
+
 }

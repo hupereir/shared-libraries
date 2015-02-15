@@ -51,6 +51,7 @@ class BaseFindWidget;
 class BaseReplaceDialog;
 class BaseReplaceWidget;
 class SelectLineDialog;
+class SelectLineWidget;
 class TextEditorMarginWidget;
 class LineNumberDisplay;
 
@@ -539,6 +540,12 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* replace widget
     virtual void _createReplaceWidget( bool compact );
 
+    //* select line dialog
+    virtual void _createSelectLineDialog( void );
+
+    //* select line widget
+    virtual void _createSelectLineWidget( bool compact );
+
     //* progress dialog
     virtual void _createProgressDialog( void );
 
@@ -740,14 +747,17 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* find dialog
     BaseReplaceDialog* replaceDialog_ = nullptr;
 
+    //* line number dialog
+    SelectLineDialog* selectLineDialog_ = nullptr;
+
     //* find widget
     BaseFindWidget* findWidget_ = nullptr;
 
     //* replace widget
     BaseReplaceWidget* replaceWidget_ = nullptr;
 
-    //* line number dialog
-    SelectLineDialog* selectLineDialog_ = nullptr;
+    //* select line widget
+    SelectLineWidget* selectLineWidget_ = nullptr;
 
     //@}
 
@@ -872,7 +882,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     bool synchronize_ = false;
 
     //* true if use dialog for finding
-    bool findFromDialog_ = true;
+    bool useEmbeddedDialogs_ = false;
 
     //* box selection
     BoxSelection boxSelection_;
