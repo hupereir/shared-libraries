@@ -68,8 +68,9 @@ void BaseFindDialog::setBaseFindWidget( BaseFindWidget* baseFindWidget )
 
     // append to layout
     layout()->addWidget( baseFindWidget_ );
-    connect( baseFindWidget_, SIGNAL(find(TextSelection)), this, SIGNAL(find(TextSelection)) );
 
-    // insert Cancel button
+    // setup connections
+    connect( baseFindWidget_, SIGNAL(find(TextSelection)), this, SIGNAL(find(TextSelection)) );
     connect( &baseFindWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()) );
+
 }

@@ -278,18 +278,10 @@ class IconView: public QAbstractItemView, public Counter
     QPixmap _pixmap( const QModelIndexList&, QRect& );
 
     //! find dialog
-    virtual BaseFindDialog& _findDialog( void )
-    { return *findDialog_; }
-
-    //! find dialog
-    virtual BaseFindWidget& _findWidget( void )
-    { return *findWidget_; }
-
-    //! find dialog
     virtual void _createFindDialog( void );
 
     //! find widget
-    virtual void _createFindWidget( void );
+    virtual void _createFindWidget( bool compact );
 
     //! find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, bool rewind );
@@ -394,6 +386,9 @@ class IconView: public QAbstractItemView, public Counter
 
     //! row count
     int rowCount_ = 1;
+
+    //* true if use dialog for finding
+    bool findFromDialog_ = true;
 
     //! total rect
     QRect boundingRect_;

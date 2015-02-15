@@ -1758,7 +1758,7 @@ void TextEditor::_createFindDialog( void )
     Debug::Throw( "TextEditor::_createFindDialog.\n" );
     if( !findDialog_ )
     {
-        if( !findWidget_ ) _createFindWidget();
+        if( !findWidget_ ) _createFindWidget( false );
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in Text" ) );
         findDialog_->setBaseFindWidget( findWidget_ );
@@ -1769,13 +1769,13 @@ void TextEditor::_createFindDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createFindWidget( void )
+void TextEditor::_createFindWidget( bool compact )
 {
 
     Debug::Throw( "TextEditor::_createFindWidget.\n" );
     if( !findWidget_ )
     {
-        findWidget_ = new BaseFindWidget( this, false );
+        findWidget_ = new BaseFindWidget( this, compact );
         connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
@@ -2001,7 +2001,7 @@ void TextEditor::_createReplaceDialog( void )
     Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
     if( !replaceDialog_ )
     {
-        if( !replaceWidget_ ) _createReplaceWidget();
+        if( !replaceWidget_ ) _createReplaceWidget( false );
         replaceDialog_ = new BaseReplaceDialog( this );
         replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
         replaceDialog_->setBaseFindWidget( replaceWidget_ );
@@ -2012,14 +2012,14 @@ void TextEditor::_createReplaceDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createReplaceWidget( void )
+void TextEditor::_createReplaceWidget( bool compact )
 {
 
     Debug::Throw( "TextEditor::_createReplaceWidget.\n" );
     if( !replaceWidget_ )
     {
 
-        replaceWidget_ = new BaseReplaceWidget( this, false );
+        replaceWidget_ = new BaseReplaceWidget( this, compact );
         connect( replaceWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( replaceWidget_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
         connect( replaceWidget_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
@@ -2610,17 +2610,28 @@ void TextEditor::_findFromDialog( void )
     }
 
     // create
-    if( !findDialog_ ) _createFindDialog();
-    _findDialog().enableRegExp( true );
-    _findDialog().centerOnParent();
-    _findDialog().show();
-    _findDialog().synchronize();
-    _findDialog().matchFound();
-    _findDialog().setText( text );
+    if( findFromDialog_ )
+    {
 
-    // changes focus
-    _findDialog().activateWindow();
-    _findDialog().editor().setFocus();
+        if( !findDialog_ ) _createFindDialog();
+        findDialog_->centerOnParent();
+        findDialog_->show();
+        findDialog_->activateWindow();
+
+    } else {
+
+        if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
+        if( !findWidget_ ) _createFindWidget( true );
+        findWidget_->show();
+
+    }
+
+    findWidget_->enableRegExp( true );
+    findWidget_->synchronize();
+    findWidget_->matchFound();
+    findWidget_->setText( text );
+    findWidget_->editor().setFocus();
+
 
     return;
 }
@@ -2634,35 +2645,35 @@ void TextEditor::_replaceFromDialog( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    // create
-    if( !replaceDialog_ ) _createReplaceDialog();
+    if( findFromDialog_ )
+    {
 
-    _replaceDialog().centerOnParent();
-    _replaceDialog().show();
+        if( !replaceDialog_ ) _createReplaceDialog();
+        replaceDialog_->centerOnParent();
+        replaceDialog_->show();
+        replaceDialog_->activateWindow();
 
-    /*
-    setting the default text values
-    must be done after the dialog is shown
-    otherwise it may be automatically resized
-    to very large sizes due to the input text
-    */
+    } else {
+
+        if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
+        if( !replaceWidget_ ) _createReplaceWidget( true );
+        replaceWidget_->show();
+
+    }
 
     // synchronize combo-boxes
-    _replaceDialog().synchronize();
-    _replaceDialog().matchFound();
+    replaceWidget_->synchronize();
+    replaceWidget_->matchFound();
 
     // update find text
     QString text;
-    if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) _replaceDialog().setText( text );
-    else if( textCursor().hasSelection() ) _replaceDialog().setText( textCursor().selectedText() );
-    else if( !( text = lastSelection().text() ).isEmpty() ) _replaceDialog().setText( text );
+    if( !( text = qApp->clipboard()->text( QClipboard::Selection) ).isEmpty() ) replaceWidget_->setText( text );
+    else if( textCursor().hasSelection() ) replaceWidget_->setText( textCursor().selectedText() );
+    else if( !( text = lastSelection().text() ).isEmpty() ) replaceWidget_->setText( text );
+    replaceWidget_->editor().setFocus();
 
     // update replace text
-    if( !lastSelection().replaceText().isEmpty() ) _replaceDialog().setReplaceText( lastSelection().replaceText() );
-
-    // changes focus
-    _replaceDialog().activateWindow();
-    _replaceDialog().editor().setFocus();
+    if( !lastSelection().replaceText().isEmpty() ) replaceWidget_->setReplaceText( lastSelection().replaceText() );
 
     return;
 }
@@ -2684,4 +2695,45 @@ void TextEditor::_selectLineFromDialog( void )
     selectLineDialog_->activateWindow();
     selectLineDialog_->editor().setFocus();
 
+}
+
+//_________________________________________________________
+TextEditor::Container::Container( QWidget* parent ):
+    QWidget( parent ),
+    Counter( "TextEditor::Container" ),
+    editor_( new TextEditor() )
+{ _initialize(); }
+
+//_________________________________________________________
+TextEditor::Container::Container( QWidget* parent, TextEditor* editor ):
+    QWidget( parent ),
+    Counter( "TextEditor::Container" ),
+    editor_( editor )
+{ _initialize(); }
+
+//_________________________________________________________
+void TextEditor::Container::_initialize( void )
+{
+    Debug::Throw( "TextEditor::Container::_initialize.\n" );
+    editor_->setParent( this );
+
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(0);
+    vLayout->setSpacing(2);
+    setLayout( vLayout );
+
+    vLayout->addWidget( editor_ );
+    editor_->findFromDialog_ = false;
+
+    // find widget
+    editor_->_createFindWidget( true );
+    editor_->findWidget_->setParent( this );
+    vLayout->addWidget( editor_->findWidget_ );
+    editor_->findWidget_->hide();
+
+    // replace widget
+    editor_->_createReplaceWidget( true );
+    editor_->replaceWidget_->setParent( this );
+    vLayout->addWidget( editor_->replaceWidget_ );
+    editor_->replaceWidget_->hide();
 }

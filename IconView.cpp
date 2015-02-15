@@ -1050,7 +1050,7 @@ void IconView::_createFindDialog( void )
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in List" ) );
 
-        if( !findWidget_ ) _createFindWidget();
+        if( !findWidget_ ) _createFindWidget( false );
         findDialog_->setBaseFindWidget( findWidget_ );
 
     }
@@ -1060,7 +1060,7 @@ void IconView::_createFindDialog( void )
 }
 
 //______________________________________________________________________
-void IconView::_createFindWidget( void )
+void IconView::_createFindWidget( bool compact )
 {
 
     Debug::Throw( "IconView::_createFindWidget.\n" );
@@ -1068,7 +1068,7 @@ void IconView::_createFindWidget( void )
     {
 
         // create Widget
-        findWidget_ = new BaseFindWidget( this, false );
+        findWidget_ = new BaseFindWidget( this, compact );
 
         // for now entire word is disabled, because it is unclear how to handle it
         findWidget_->enableEntireWord( false );
@@ -1350,18 +1350,26 @@ void IconView::_findFromDialog( void )
     }
 
     // create
-    if( !findDialog_ ) _createFindDialog();
-    _findDialog().enableRegExp( true );
-    _findDialog().centerOnParent();
-    _findDialog().show();
+    if( findFromDialog_ )
+    {
 
-    _findDialog().synchronize();
-    _findDialog().matchFound();
-    _findDialog().setText( text );
+        if( !findDialog_ ) _createFindDialog();
+        findDialog_->centerOnParent();
+        findDialog_->show();
+        findDialog_->activateWindow();
 
-    // changes focus
-    _findDialog().activateWindow();
-    _findDialog().editor().setFocus();
+    } else {
+
+        if( !findWidget_ ) _createFindWidget( true );
+        findWidget_->show();
+
+    }
+
+    findWidget_->enableRegExp( true );
+    findWidget_->synchronize();
+    findWidget_->matchFound();
+    findWidget_->setText( text );
+    findWidget_->editor().setFocus();
 
     return;
 }

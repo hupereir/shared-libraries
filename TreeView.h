@@ -184,6 +184,29 @@ class TreeView: public QTreeView, public Counter
 
     //@}
 
+    //* container class for embedded Find dialog
+    class Container: public QWidget, public Counter
+    {
+
+        public:
+
+        //* constructor
+        Container( QWidget* = nullptr );
+
+        //* destructor
+        ~Container( void ) = default;
+
+        //*@name accessors
+        TreeView& treeView( void ) const
+        { return *treeView_; }
+
+        private:
+
+        //* contained treeView
+        TreeView* treeView_;
+
+    };
+
     Q_SIGNALS:
 
     //* emmitted when index is hovered
@@ -273,18 +296,10 @@ class TreeView: public QTreeView, public Counter
     virtual void paintEvent( QPaintEvent* );
 
     //* find dialog
-    virtual BaseFindDialog& _findDialog( void )
-    { return *findDialog_; }
-
-    //* find widge
-    virtual BaseFindWidget& _findWidget( void )
-    { return *findWidget_; }
-
-    //* find dialog
     virtual void _createFindDialog( void );
 
     //* find widget
-    virtual void _createFindWidget( void );
+    virtual void _createFindWidget( bool compact );
 
     //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, bool rewind );
@@ -381,6 +396,9 @@ class TreeView: public QTreeView, public Counter
     //* header visibility
     QString showHeaderOptionName_;
 
+    //* true if use dialog for finding
+    bool findFromDialog_ = true;
+
     //* true if item margins are to be set from options
     bool itemMarginFromOptions_ = true;
 
@@ -404,6 +422,8 @@ class TreeView: public QTreeView, public Counter
 
     //* locked columns
     unsigned lockedColumns_ = 0;
+
+    friend class Container;
 
 };
 

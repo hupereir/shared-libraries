@@ -83,7 +83,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     Q_DECLARE_FLAGS( Modifiers, Modifier );
 
     //* constructor
-    TextEditor( QWidget* parent = 0 );
+    TextEditor( QWidget* = nullptr );
 
     //* destrutor
     virtual ~TextEditor( void );
@@ -354,6 +354,35 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual bool ignoreBlock( const QTextBlock& ) const
     { return false; }
 
+    //* container class for embedded Find dialog
+    class Container: public QWidget, public Counter
+    {
+
+        public:
+
+        //* constructor
+        explicit Container( QWidget* = nullptr );
+
+        //* constructor
+        Container( QWidget* parent, TextEditor* editor );
+
+        //* destructor
+        ~Container( void ) = default;
+
+        //*@name accessors
+        TextEditor& editor( void ) const
+        { return *editor_; }
+
+        private:
+
+        //* initialize
+        void _initialize( void );
+
+        //* contained editor
+        TextEditor* editor_;
+
+    };
+
     Q_SIGNALS:
 
     //* busy signal
@@ -493,18 +522,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //@{
 
     //* find dialog
-    virtual BaseFindDialog& _findDialog( void )
-    { return *findDialog_; }
-
-    //* find dialog
-    virtual BaseFindWidget& _findWidget( void )
-    { return *findWidget_; }
-
-    //* find dialog
     virtual void _createFindDialog( void );
 
     //* find widget
-    virtual void _createFindWidget( void );
+    virtual void _createFindWidget( bool compact );
 
     //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, const bool& rewind );
@@ -513,18 +534,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual bool _findBackward( const TextSelection& selection, const bool& rewind );
 
     //* replace dialog
-    virtual BaseReplaceDialog& _replaceDialog( void )
-    { return *replaceDialog_; }
-
-    //* replace widget
-    virtual BaseReplaceWidget& _replaceWidget( void )
-    { return *replaceWidget_; }
-
-    //* replace dialog
     virtual void _createReplaceDialog( void );
 
     //* replace widget
-    virtual void _createReplaceWidget( void );
+    virtual void _createReplaceWidget( bool compact );
 
     //* progress dialog
     virtual void _createProgressDialog( void );
@@ -788,67 +801,67 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //@{
 
     //* undo
-    QAction* undoAction_;
+    QAction* undoAction_ = nullptr;
 
     //* redo
-    QAction* redoAction_;
+    QAction* redoAction_ = nullptr;
 
     //* cut selection
-    QAction* cutAction_;
+    QAction* cutAction_ = nullptr;
 
     //* copy selection
-    QAction* copyAction_;
+    QAction* copyAction_ = nullptr;
 
     //* paste clipboard
-    QAction* pasteAction_;
+    QAction* pasteAction_ = nullptr;
 
     //* clear document
-    QAction* clearAction_;
+    QAction* clearAction_ = nullptr;
 
     //* select all document
-    QAction* selectAllAction_;
+    QAction* selectAllAction_ = nullptr;
 
     //* convert selection to upper case
-    QAction* upperCaseAction_;
+    QAction* upperCaseAction_ = nullptr;
 
     //* convert selection to lower case
-    QAction* lowerCaseAction_;
+    QAction* lowerCaseAction_ = nullptr;
 
     //* find from dialog
-    QAction* findAction_;
+    QAction* findAction_ = nullptr;
 
     //* find selection again
-    QAction* findSelectionAction_;
+    QAction* findSelectionAction_ = nullptr;
 
     //* find selection backward
-    QAction* findSelectionBackwardAction_;
+    QAction* findSelectionBackwardAction_ = nullptr;
 
     //* find again
-    QAction* findAgainAction_;
+    QAction* findAgainAction_ = nullptr;
 
     //* find again backward
-    QAction* findAgainBackwardAction_;
+    QAction* findAgainBackwardAction_ = nullptr;
 
     //* replace
-    QAction* replaceAction_;
+    QAction* replaceAction_ = nullptr;
 
     //* replace again
-    QAction* replaceAgainAction_;
+    QAction* replaceAgainAction_ = nullptr;
 
     //* replace again backward
-    QAction* replaceAgainBackwardAction_;
+    QAction* replaceAgainBackwardAction_ = nullptr;
 
     //* goto line number
-    QAction* gotoLineAction_;
+    QAction* gotoLineAction_ = nullptr;
 
     //* toggle highlight block
-    QAction* blockHighlightAction_;
+    QAction* blockHighlightAction_ = nullptr;
 
     //* toggle wrap mode
-    QAction* wrapModeAction_;
+    QAction* wrapModeAction_ = nullptr;
 
     //* toggle tab emulation
-    QAction* tabEmulationAction_;
+    QAction* tabEmulationAction_ = nullptr;
 
     //* line number
     QAction* showLineNumberAction_ = nullptr;
@@ -857,6 +870,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* synchronization flag
     bool synchronize_ = false;
+
+    //* true if use dialog for finding
+    bool findFromDialog_ = true;
 
     //* box selection
     BoxSelection boxSelection_;
@@ -885,6 +901,8 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* keyboard modifiers
     /*! this is a bitwise or of the Modifiers enumeration */
     Modifiers modifiers_ = ModifierNone;
+
+    friend class Container;
 
 };
 

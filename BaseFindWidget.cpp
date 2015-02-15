@@ -21,7 +21,6 @@
 
 #include "BaseFindWidget.h"
 #include "BaseIconNames.h"
-#include "CustomToolButton.h"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
@@ -29,6 +28,7 @@
 
 #include <QFrame>
 #include <QPushButton>
+#include <QToolButton>
 
 //________________________________________________________________________
 QOrderedSet<QString>& BaseFindWidget::_searchedStrings( void )
@@ -124,11 +124,12 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     if( compact )
     {
 
-        closeButton_ = new CustomToolButton( this );
-        static_cast<CustomToolButton*>(closeButton_)->setAutoRaise( true );
+        closeButton_ = new QToolButton( this );
+        static_cast<QToolButton*>(closeButton_)->setAutoRaise( true );
         closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
         closeButton_->setText( tr( "Close" ) );
         editorLayout_->addWidget( closeButton_, 0, 4, 1, 1 );
+        connect( closeButton_, SIGNAL(clicked()), SLOT(hide()) );
 
     } else {
 

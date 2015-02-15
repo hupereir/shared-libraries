@@ -561,7 +561,7 @@ void TreeView::_createFindDialog( void )
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in List" ) );
 
-        if( !findWidget_ ) _createFindWidget();
+        if( !findWidget_ ) _createFindWidget( false );
         findDialog_->setBaseFindWidget( findWidget_ );
 
     }
@@ -571,7 +571,7 @@ void TreeView::_createFindDialog( void )
 }
 
 //______________________________________________________________________
-void TreeView::_createFindWidget( void )
+void TreeView::_createFindWidget( bool compact )
 {
 
     Debug::Throw( "TreeView::_createFindWidget.\n" );
@@ -579,7 +579,7 @@ void TreeView::_createFindWidget( void )
     {
 
         // create dialog
-        findWidget_ = new BaseFindWidget( this, false );
+        findWidget_ = new BaseFindWidget( this, compact );
 
         // for now entire word is disabled, because it is unclear how to handle it
         findWidget_->enableEntireWord( false );
@@ -894,18 +894,26 @@ void TreeView::_findFromDialog( void )
     }
 
     // create
-    if( !findDialog_ ) _createFindDialog();
-    _findDialog().enableRegExp( true );
-    _findDialog().centerOnParent();
-    _findDialog().show();
+    if( findFromDialog_ )
+    {
 
-    _findDialog().synchronize();
-    _findDialog().matchFound();
-    _findDialog().setText( text );
+        if( !findDialog_ ) _createFindDialog();
+        findDialog_->centerOnParent();
+        findDialog_->show();
+        findDialog_->activateWindow();
 
-    // changes focus
-    _findDialog().activateWindow();
-    _findDialog().editor().setFocus();
+    } else {
+
+        if( !findWidget_ ) _createFindWidget( true );
+        findWidget_->show();
+
+    }
+
+    findWidget_->enableRegExp( true );
+    findWidget_->editor().setFocus();
+    findWidget_->synchronize();
+    findWidget_->matchFound();
+    findWidget_->setText( text );
 
     return;
 }
@@ -1010,7 +1018,6 @@ QModelIndex TreeView::_indexAfter( const QModelIndex& current ) const
 
 }
 
-
 //_________________________________________________________
 QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 {
@@ -1048,4 +1055,23 @@ QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 
     return out;
 
+}
+
+//_________________________________________________________
+TreeView::Container::Container( QWidget* parent ):
+    QWidget( parent ),
+    Counter( "TreeView::Container" )
+{
+    Debug::Throw( "TreeView::Container::Container.\n" );
+    QVBoxLayout* vLayout = new QVBoxLayout();
+    vLayout->setMargin(0);
+    vLayout->setSpacing(2);
+    setLayout( vLayout );
+
+    vLayout->addWidget( treeView_ = new TreeView( this ) );
+    treeView_->findFromDialog_ = false;
+    treeView_->_createFindWidget( true );
+    treeView_->findWidget_->setParent( this );
+    vLayout->addWidget( treeView_->findWidget_ );
+    treeView_->findWidget_->hide();
 }
