@@ -92,7 +92,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     QHBoxLayout* hLayout( new QHBoxLayout() );
     hLayout->setSpacing( 5 );
     hLayout->setMargin( 0 );
-    editorLayout_->addLayout( hLayout, 3, 1, 1, 1 );
+    editorLayout_->addLayout( hLayout, 3, 1, 1, 3 );
 
     hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
     hLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
