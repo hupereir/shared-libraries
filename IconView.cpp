@@ -1350,18 +1350,18 @@ void IconView::_findFromDialog( void )
     }
 
     // create
-    if( findFromDialog_ )
+    if( useEmbeddedDialogs_ )
     {
+
+        if( !findWidget_ ) _createFindWidget( true );
+        findWidget_->show();
+
+    } else {
 
         if( !findDialog_ ) _createFindDialog();
         findDialog_->centerOnParent();
         findDialog_->show();
         findDialog_->activateWindow();
-
-    } else {
-
-        if( !findWidget_ ) _createFindWidget( true );
-        findWidget_->show();
 
     }
 
@@ -1467,7 +1467,7 @@ IconView::Container::Container( QWidget* parent ):
 
     // iconView
     vLayout->addWidget( iconView_ = new IconView( this ) );
-    iconView_->findFromDialog_ = false;
+    iconView_->useEmbeddedDialogs_ = true;
 
     // find widget
     iconView_->_createFindWidget( true );

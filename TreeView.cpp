@@ -894,18 +894,18 @@ void TreeView::_findFromDialog( void )
     }
 
     // create
-    if( findFromDialog_ )
+    if( useEmbeddedDialogs_ )
     {
+
+        if( !findWidget_ ) _createFindWidget( true );
+        findWidget_->show();
+
+    } else {
 
         if( !findDialog_ ) _createFindDialog();
         findDialog_->centerOnParent();
         findDialog_->show();
         findDialog_->activateWindow();
-
-    } else {
-
-        if( !findWidget_ ) _createFindWidget( true );
-        findWidget_->show();
 
     }
 
@@ -1072,7 +1072,7 @@ TreeView::Container::Container( QWidget* parent ):
 
     // treeview
     vLayout->addWidget( treeView_ = new TreeView( this ) );
-    treeView_->findFromDialog_ = false;
+    treeView_->useEmbeddedDialogs_ = true;
 
     // find widget
     treeView_->_createFindWidget( true );
