@@ -62,10 +62,6 @@ class BaseFindWidget: public QWidget, public Counter
     virtual CustomComboBox& editor( void ) const
     { return *editor_; }
 
-    //* find button
-    QAbstractButton& findButton( void ) const
-    { return *findButton_; }
-
     //* close button
     QAbstractButton& closeButton( void ) const
     { return *closeButton_; }
@@ -117,6 +113,20 @@ class BaseFindWidget: public QWidget, public Counter
     { emit find( selection( false ) ); }
 
     //* create Selection object when find button is pressed
+    virtual void _findPrevious( void )
+    {
+        findBackward_ = true;
+        emit find( selection( false ) );
+    }
+
+    //* create Selection object when find button is pressed
+    virtual void _findNext( void )
+    {
+        findBackward_ = false;
+        emit find( selection( false ) );
+    }
+
+    //* create Selection object when find button is pressed
     virtual void _findNoIncrement( void )
     { if( !regexpCheckbox_->isChecked() ) emit find( selection( true ) ); }
 
@@ -151,7 +161,8 @@ class BaseFindWidget: public QWidget, public Counter
     CustomComboBox* editor_ = nullptr;
 
     //* backward search if checked
-    QCheckBox* backwardCheckbox_ = nullptr;
+    // QCheckBox* backwardCheckbox_ = nullptr;
+    bool findBackward_ = false;
 
     //* case sensitive search if checked
     QCheckBox* caseSensitiveCheckbox_ = nullptr;
@@ -164,9 +175,6 @@ class BaseFindWidget: public QWidget, public Counter
 
     //* notification label
     QLabel* label_ = nullptr;
-
-    //* find button
-    QAbstractButton* findButton_ = nullptr;
 
     //* close button
     QAbstractButton* closeButton_ = nullptr;

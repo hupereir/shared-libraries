@@ -68,49 +68,39 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_updateButtons(QString)) );
     connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_findNoIncrement()) );
 
-    // Find button
-    editorLayout_->addWidget( findButton_ = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ), 0, 2, 1, 1 );
-    connect( findButton_, SIGNAL(clicked()), this, SLOT(_find()) );
-    connect( findButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
-    _addDisabledButton( findButton_ );
-    static_cast<QPushButton*>(findButton_)->setAutoDefault( false );
+    // Find forward button
+    QPushButton* button;
+    editorLayout_->addWidget( button = new QPushButton( IconEngine::get( IconNames::FindNext ), tr( "Next" ), this ), 0, 2, 1, 1 );
+    connect( button, SIGNAL(clicked()), this, SLOT(_findNext()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    _addDisabledButton( button );
+    static_cast<QPushButton*>(button)->setAutoDefault( false );
 
-    // locations
-    if( compact )
-    {
-        QHBoxLayout* hLayout( new QHBoxLayout() );
-        hLayout->setSpacing( 5 );
-        hLayout->setMargin( 0 );
-        editorLayout_->addLayout( hLayout, 3, 1, 1, 1 );
+    // Find backward button
+    editorLayout_->addWidget( button = new QPushButton( IconEngine::get( IconNames::FindPrevious ), tr( "Previous" ), this ), 0, 3, 1, 1 );
+    connect( button, SIGNAL(clicked()), this, SLOT(_findPrevious()) );
+    connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    _addDisabledButton( button );
+    static_cast<QPushButton*>(button)->setAutoDefault( false );
 
-        // insert checkboxes
-        hLayout->addStretch(1);
-        hLayout->addWidget( backwardCheckbox_ = new QCheckBox( tr( "Search backward" ), this ) );
-        hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
-        hLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
-        hLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
+    // options
+    editorLayout_->addWidget( label = new QLabel( tr( "Options: " ), this ), 3, 0, 1, 1 );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-    } else {
+    QHBoxLayout* hLayout( new QHBoxLayout() );
+    hLayout->setSpacing( 5 );
+    hLayout->setMargin( 0 );
+    editorLayout_->addLayout( hLayout, 3, 1, 1, 1 );
 
-        GridLayout* gridLayout( new GridLayout() );
-        gridLayout->setSpacing( 5 );
-        gridLayout->setMargin( 0 );
-        gridLayout->setMaxCount( 2 );
-        editorLayout_->addLayout( gridLayout, 3, 1, 1, 1 );
-
-        // insert checkboxes
-        gridLayout->addWidget( backwardCheckbox_ = new QCheckBox( tr( "Search backward" ), this ) );
-        gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
-        gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
-        gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
-
-
-    }
+    hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
+    hLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
+    hLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
+    hLayout->addStretch(1);
 
     connect( regexpCheckbox_, SIGNAL(toggled(bool)), SLOT(_regExpChecked(bool)) );
 
     // tooltips
-    backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );
+    // backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );
     caseSensitiveCheckbox_->setToolTip( tr( "Case sensitive search" ) );
     regexpCheckbox_->setToolTip( tr( "Search text using regular expression" ) );
 
@@ -136,7 +126,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
         static_cast<CustomToolButton*>(closeButton_)->setAutoRaise( true );
         closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
         closeButton_->setText( tr( "Close" ) );
-        editorLayout_->addWidget( closeButton_, 0, 3, 1, 1 );
+        editorLayout_->addWidget( closeButton_, 0, 4, 1, 1 );
 
     } else {
 
@@ -157,7 +147,8 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
 TextSelection BaseFindWidget::selection( bool noIncrement ) const
 {
     TextSelection out( editor_->currentText() );
-    out.setFlag( TextSelection::Backward, backwardCheckbox_->isChecked() );
+    // out.setFlag( TextSelection::Backward, backwardCheckbox_->isChecked() );
+    out.setFlag( TextSelection::Backward, findBackward_ );
     out.setFlag( TextSelection::CaseSensitive, caseSensitiveCheckbox_->isChecked() );
     out.setFlag( TextSelection::EntireWord, entireWordCheckbox_->isChecked() );
     out.setFlag( TextSelection::RegExp, regexpCheckbox_->isChecked() );
@@ -177,7 +168,7 @@ void BaseFindWidget::setText( const QString& text )
 void BaseFindWidget::enableEntireWord( bool value )
 {
     if( !value ) entireWordCheckbox_->setChecked( false );
-    entireWordCheckbox_->setEnabled( value );
+    entireWordCheckbox_->setVisible( value );
 }
 
 //________________________________________________________________________

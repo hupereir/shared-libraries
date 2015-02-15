@@ -44,6 +44,8 @@ namespace IconNames
     static const QString EditClear = "edit-clear-locationbar-rtl.png";
     static const QString Exit = "application-exit.png";
     static const QString Find = "edit-find.png";
+    static const QString FindPrevious = "arrow-up-double.png";
+    static const QString FindNext = "arrow-down-double.png";
     static const QString SelectFont = "preferences-desktop-font.png";
     static const QString Help = "help-contents.png";
     static const QString Lock = "document-encrypt.png";

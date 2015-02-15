@@ -24,6 +24,8 @@
 
 #include "BaseFindWidget.h"
 
+#include <QMenu>
+
 //* find dialog for text editor widgets
 class BaseReplaceWidget: public BaseFindWidget
 {
@@ -95,17 +97,13 @@ class BaseReplaceWidget: public BaseFindWidget
 
     protected:
 
-    //* locations layout
-    QBoxLayout& _locationLayout( void ) const
-    { return *locationLayout_; }
-
     //* replace editor
     virtual CustomComboBox& _replaceEditor( void ) const
     { return *replaceEditor_; }
 
-    //* replace window button
-    QAbstractButton& _replaceWindowButton( void ) const
-    { return *replaceWindowButton_; }
+    //* replace all menu
+    virtual QMenu& _replaceAllMenu( void ) const
+    { return *replaceAllMenu_; }
 
     //* add string to both combo box and static set
     virtual void _addReplacedString( const QString& );
@@ -116,13 +114,10 @@ class BaseReplaceWidget: public BaseFindWidget
     QBoxLayout* locationLayout_ = nullptr;
 
     //* line editor for text to replace
-    CustomComboBox* replaceEditor_;
+    CustomComboBox* replaceEditor_ = nullptr;
 
-    //* replace button
-    QAbstractButton* replaceButton_;
-
-    //* replace in window button
-    QAbstractButton* replaceWindowButton_;
+    //* replace all menu
+    QMenu* replaceAllMenu_ = nullptr;
 
     //* replaced strings
     static QOrderedSet<QString>& _replacedStrings();

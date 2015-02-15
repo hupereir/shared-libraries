@@ -4,6 +4,8 @@
     <file alias="icons/32x32/application-exit.png">../base-pixmaps/application-exit.png</file>
     <file alias="icons/32x32/arrow-left.png">../base-pixmaps/arrow-left.png</file>
     <file alias="icons/32x32/arrow-right.png">../base-pixmaps/arrow-right.png</file>
+    <file alias="icons/32x32/arrow-down-double.png">../base-pixmaps/arrow-down-double.png</file>
+    <file alias="icons/32x32/arrow-up-double.png">../base-pixmaps/arrow-up-double.png</file>
     <file alias="icons/32x32/color-picker.png">../base-pixmaps/color-picker.png</file>
     <file alias="icons/32x32/configure.png">../base-pixmaps/configure.png</file>
     <file alias="icons/32x32/dialog-cancel.png">../base-pixmaps/dialog-cancel.png</file>
