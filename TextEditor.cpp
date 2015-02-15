@@ -2780,4 +2780,9 @@ void TextEditor::Container::_initialize( void )
     vLayout->addWidget( editor_->selectLineWidget_ );
     editor_->selectLineWidget_->hide();
 
+    // make connections so that focus is restored on close
+    connect( &editor_->findWidget_->closeButton(), SIGNAL(clicked()), editor_, SLOT(setFocus()) );
+    connect( &editor_->replaceWidget_->closeButton(), SIGNAL(clicked()), editor_, SLOT(setFocus()) );
+    connect( &editor_->selectLineWidget_->closeButton(), SIGNAL(clicked()), editor_, SLOT(setFocus()) );
+
 }

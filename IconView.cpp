@@ -1474,4 +1474,7 @@ IconView::Container::Container( QWidget* parent ):
     iconView_->findWidget_->setParent( this );
     vLayout->addWidget( iconView_->findWidget_ );
     iconView_->findWidget_->hide();
+
+    connect( &iconView_->findWidget_->closeButton(), SIGNAL(clicked()), iconView_, SLOT(setFocus()) );
+
 }

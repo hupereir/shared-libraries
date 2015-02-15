@@ -1079,4 +1079,6 @@ TreeView::Container::Container( QWidget* parent ):
     treeView_->findWidget_->setParent( this );
     vLayout->addWidget( treeView_->findWidget_ );
     treeView_->findWidget_->hide();
+
+    connect( &treeView_->findWidget_->closeButton(), SIGNAL(clicked()), treeView_, SLOT(setFocus()) );
 }
