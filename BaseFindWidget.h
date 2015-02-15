@@ -146,6 +146,14 @@ class BaseFindWidget: public QWidget, public Counter
     QGridLayout& _editorLayout( void ) const
     { return *editorLayout_; }
 
+    //* find next button
+    QAbstractButton& _findNextButton( void ) const
+    { return *findNextButton_; }
+
+    //* find previous button
+    QAbstractButton& _findPreviousButton( void ) const
+    { return *findPreviousButton_; }
+
     //* add button to disabled button list
     virtual void _addDisabledButton( QAbstractButton* );
 
@@ -175,6 +183,10 @@ class BaseFindWidget: public QWidget, public Counter
 
     //* notification label
     QLabel* label_ = nullptr;
+
+    //* find button
+    QAbstractButton* findNextButton_ = nullptr;
+    QAbstractButton* findPreviousButton_ = nullptr;
 
     //* close button
     QAbstractButton* closeButton_ = nullptr;

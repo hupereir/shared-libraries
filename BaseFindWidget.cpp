@@ -68,20 +68,22 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_updateButtons(QString)) );
     connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_findNoIncrement()) );
 
-    // Find forward button
+    // Find next button
     QPushButton* button;
     editorLayout_->addWidget( button = new QPushButton( IconEngine::get( IconNames::FindNext ), tr( "Next" ), this ), 0, 2, 1, 1 );
     connect( button, SIGNAL(clicked()), this, SLOT(_findNext()) );
     connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
     _addDisabledButton( button );
     static_cast<QPushButton*>(button)->setAutoDefault( false );
+    findNextButton_ = button;
 
-    // Find backward button
+    // Find previous button
     editorLayout_->addWidget( button = new QPushButton( IconEngine::get( IconNames::FindPrevious ), tr( "Previous" ), this ), 0, 3, 1, 1 );
     connect( button, SIGNAL(clicked()), this, SLOT(_findPrevious()) );
     connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
     _addDisabledButton( button );
     static_cast<QPushButton*>(button)->setAutoDefault( false );
+    findPreviousButton_ = button;
 
     // options
     editorLayout_->addWidget( label = new QLabel( tr( "Options: " ), this ), 3, 0, 1, 1 );

@@ -22,6 +22,7 @@
 #include "IconView.h"
 
 #include "BaseFindDialog.h"
+#include "BaseFindWidget.h"
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
@@ -41,17 +42,7 @@
 //____________________________________________________________________
 IconView::IconView( QWidget* parent ):
     QAbstractItemView( parent ),
-    Counter( "IconView" ),
-    findDialog_( 0x0 ),
-    model_( 0x0 ),
-    pixmapSize_( 48, 48 ),
-    margin_( 15 ),
-    spacing_( 15 ),
-    columnCount_( 1 ),
-    rowCount_( 1 ),
-    rubberBand_(0),
-    dragButton_( Qt::NoButton ),
-    dragInProgress_( false )
+    Counter( "IconView" )
 {
     Debug::Throw( "IconView::IconView.\n" );
 
@@ -1047,12 +1038,11 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 
 }
 
-
 //______________________________________________________________________
-void IconView::_createBaseFindDialog( void )
+void IconView::_createFindDialog( void )
 {
 
-    Debug::Throw( "IconView::_createBaseFindDialog.\n" );
+    Debug::Throw( "IconView::_createFindDialog.\n" );
     if( !findDialog_ )
     {
 
@@ -1060,13 +1050,33 @@ void IconView::_createBaseFindDialog( void )
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in List" ) );
 
+        if( !findWidget_ ) _createFindWidget();
+        findDialog_->setBaseFindWidget( findWidget_ );
+
+    }
+
+    return;
+
+}
+
+//______________________________________________________________________
+void IconView::_createFindWidget( void )
+{
+
+    Debug::Throw( "IconView::_createFindWidget.\n" );
+    if( !findWidget_ )
+    {
+
+        // create Widget
+        findWidget_ = new BaseFindWidget( this, false );
+
         // for now entire word is disabled, because it is unclear how to handle it
-        findDialog_->enableEntireWord( false );
+        findWidget_->enableEntireWord( false );
 
         // connections
-        connect( findDialog_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), findDialog_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), findDialog_, SLOT(noMatchFound()) );
+        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
 
     }
 
@@ -1340,7 +1350,7 @@ void IconView::_findFromDialog( void )
     }
 
     // create
-    if( !findDialog_ ) _createBaseFindDialog();
+    if( !findDialog_ ) _createFindDialog();
     _findDialog().enableRegExp( true );
     _findDialog().centerOnParent();
     _findDialog().show();

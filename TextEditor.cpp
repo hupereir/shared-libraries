@@ -1752,16 +1752,16 @@ TextSelection TextEditor::selection( void ) const
 }
 
 //______________________________________________________________________
-void TextEditor::_createBaseFindDialog( void )
+void TextEditor::_createFindDialog( void )
 {
 
-    Debug::Throw( "TextEditor::_createBaseFindDialog.\n" );
+    Debug::Throw( "TextEditor::_createFindDialog.\n" );
     if( !findDialog_ )
     {
-        _createBaseFindWidget();
+        if( !findWidget_ ) _createFindWidget();
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in Text" ) );
-        findDialog_->setBaseFindWidget( &_findWidget() );
+        findDialog_->setBaseFindWidget( findWidget_ );
     }
 
     return;
@@ -1769,13 +1769,13 @@ void TextEditor::_createBaseFindDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createBaseFindWidget( void )
+void TextEditor::_createFindWidget( void )
 {
 
-    Debug::Throw( "TextEditor::_createBaseFindWidget.\n" );
+    Debug::Throw( "TextEditor::_createFindWidget.\n" );
     if( !findWidget_ )
     {
-        findWidget_ = new BaseFindWidget( this );
+        findWidget_ = new BaseFindWidget( this, false );
         connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
@@ -1995,16 +1995,16 @@ bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewi
 }
 
 //______________________________________________________________________
-void TextEditor::_createBaseReplaceDialog( void )
+void TextEditor::_createReplaceDialog( void )
 {
 
-    Debug::Throw( "TextEditor::_createBaseReplaceDialog.\n" );
+    Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
     if( !replaceDialog_ )
     {
-        _createBaseReplaceWidget();
+        if( !replaceWidget_ ) _createReplaceWidget();
         replaceDialog_ = new BaseReplaceDialog( this );
         replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
-        replaceDialog_->setBaseFindWidget( &_replaceWidget() );
+        replaceDialog_->setBaseFindWidget( replaceWidget_ );
     }
 
     return;
@@ -2012,14 +2012,14 @@ void TextEditor::_createBaseReplaceDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createBaseReplaceWidget( void )
+void TextEditor::_createReplaceWidget( void )
 {
 
-    Debug::Throw( "TextEditor::_createBaseReplaceWidget.\n" );
+    Debug::Throw( "TextEditor::_createReplaceWidget.\n" );
     if( !replaceWidget_ )
     {
 
-        replaceWidget_ = new BaseReplaceWidget( this );
+        replaceWidget_ = new BaseReplaceWidget( this, false );
         connect( replaceWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( replaceWidget_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
         connect( replaceWidget_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
@@ -2610,7 +2610,7 @@ void TextEditor::_findFromDialog( void )
     }
 
     // create
-    if( !findDialog_ ) _createBaseFindDialog();
+    if( !findDialog_ ) _createFindDialog();
     _findDialog().enableRegExp( true );
     _findDialog().centerOnParent();
     _findDialog().show();
@@ -2635,7 +2635,7 @@ void TextEditor::_replaceFromDialog( void )
     if( isReadOnly() ) return;
 
     // create
-    if( !replaceDialog_ ) _createBaseReplaceDialog();
+    if( !replaceDialog_ ) _createReplaceDialog();
 
     _replaceDialog().centerOnParent();
     _replaceDialog().show();

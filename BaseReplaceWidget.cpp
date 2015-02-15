@@ -56,6 +56,8 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateReplaceComboBox()) );
     connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), this, SIGNAL(replaceTextChanged(QString)) );
 
+    setTabOrder( &editor(), replaceEditor_ );
+
     // replace buttons
     QPushButton* button = new QPushButton( tr( "Replace" ), this );
     connect( button, SIGNAL(clicked()), this, SLOT(_replace()) );
@@ -65,12 +67,16 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     _editorLayout().addWidget( button, 1, 2, 1, 1 );
     button->setAutoDefault( false );
 
+    setTabOrder( &_findPreviousButton(), button );
+    QPushButton* previous = button;
+
     // replace all button
-    button = new QPushButton( tr( "Replace in..." ), this );
+    button = new QPushButton( tr( "Replace in" ), this );
     _addDisabledButton( button );
     _editorLayout().addWidget( button, 1, 3, 1, 1 );
     button->setAutoDefault( false );
     button->setMenu( replaceAllMenu_ = new QMenu() );
+    setTabOrder( previous, button );
 
     // replace in selection action
     QAction* action;

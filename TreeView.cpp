@@ -43,17 +43,7 @@
 //______________________________________________________________________
 TreeView::TreeView( QWidget* parent ):
     QTreeView( parent ),
-    Counter( "TreeView" ),
-    findDialog_( 0x0 ),
-    model_( 0x0 ),
-    itemMarginFromOptions_( true ),
-    iconSizeFromOptions_( true ),
-    forceAlternatingRowColors_( false ),
-    itemMargin_( 2 ),
-    useSelectedColumnColor_( false ),
-    vertical_( 0 ),
-    horizontal_( 0 ),
-    lockedColumns_( 0 )
+    Counter( "TreeView" )
 {
     Debug::Throw( "TreeView::TreeView.\n" );
 
@@ -560,10 +550,10 @@ void TreeView::paintEvent( QPaintEvent* event )
 }
 
 //______________________________________________________________________
-void TreeView::_createBaseFindDialog( void )
+void TreeView::_createFindDialog( void )
 {
 
-    Debug::Throw( "TreeView::_createBaseFindDialog.\n" );
+    Debug::Throw( "TreeView::_createFindDialog.\n" );
     if( !findDialog_ )
     {
 
@@ -571,13 +561,33 @@ void TreeView::_createBaseFindDialog( void )
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in List" ) );
 
+        if( !findWidget_ ) _createFindWidget();
+        findDialog_->setBaseFindWidget( findWidget_ );
+
+    }
+
+    return;
+
+}
+
+//______________________________________________________________________
+void TreeView::_createFindWidget( void )
+{
+
+    Debug::Throw( "TreeView::_createFindWidget.\n" );
+    if( !findWidget_ )
+    {
+
+        // create dialog
+        findWidget_ = new BaseFindWidget( this, false );
+
         // for now entire word is disabled, because it is unclear how to handle it
-        findDialog_->enableEntireWord( false );
+        findWidget_->enableEntireWord( false );
 
         // connections
-        connect( findDialog_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), findDialog_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), findDialog_, SLOT(noMatchFound()) );
+        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
 
     }
 
@@ -884,7 +894,7 @@ void TreeView::_findFromDialog( void )
     }
 
     // create
-    if( !findDialog_ ) _createBaseFindDialog();
+    if( !findDialog_ ) _createFindDialog();
     _findDialog().enableRegExp( true );
     _findDialog().centerOnParent();
     _findDialog().show();

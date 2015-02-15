@@ -501,10 +501,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     { return *findWidget_; }
 
     //* find dialog
-    virtual void _createBaseFindDialog( void );
+    virtual void _createFindDialog( void );
 
     //* find widget
-    virtual void _createBaseFindWidget( void );
+    virtual void _createFindWidget( void );
 
     //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, const bool& rewind );
@@ -521,10 +521,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     { return *replaceWidget_; }
 
     //* replace dialog
-    virtual void _createBaseReplaceDialog( void );
+    virtual void _createReplaceDialog( void );
 
     //* replace widget
-    virtual void _createBaseReplaceWidget( void );
+    virtual void _createReplaceWidget( void );
 
     //* progress dialog
     virtual void _createProgressDialog( void );

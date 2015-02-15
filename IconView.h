@@ -41,6 +41,7 @@
 
 // forward declaration
 class BaseFindDialog;
+class BaseFindWidget;
 class ItemModel;
 
 //! icon view
@@ -281,7 +282,14 @@ class IconView: public QAbstractItemView, public Counter
     { return *findDialog_; }
 
     //! find dialog
-    virtual void _createBaseFindDialog( void );
+    virtual BaseFindWidget& _findWidget( void )
+    { return *findWidget_; }
+
+    //! find dialog
+    virtual void _createFindDialog( void );
+
+    //! find widget
+    virtual void _createFindWidget( void );
 
     //! find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, bool rewind );
@@ -329,37 +337,40 @@ class IconView: public QAbstractItemView, public Counter
     QModelIndex _indexBefore( const QModelIndex& ) const;
 
     //! headerView
-    QHeaderView* header_;
+    QHeaderView* header_ = nullptr;
 
     //! items
     IconViewItem::Map items_;
 
     //! find dialog
-    BaseFindDialog* findDialog_;
+    BaseFindDialog* findDialog_ = nullptr;
+
+    //! find widget
+    BaseFindWidget* findWidget_ = nullptr;
 
     //! model
-    ItemModel* model_;
+    ItemModel* model_ = nullptr;
 
     //!@name actions
     //@{
 
     //! select all items
-    QAction* selectAllAction_;
+    QAction* selectAllAction_ = nullptr;
 
     //! find from dialog
-    QAction* findAction_;
+    QAction* findAction_ = nullptr;
 
     //! find selection again
-    QAction* findSelectionAction_;
+    QAction* findSelectionAction_ = nullptr;
 
     //! find selection backward
-    QAction* findSelectionBackwardAction_;
+    QAction* findSelectionBackwardAction_ = nullptr;
 
     //! find again
-    QAction* findAgainAction_;
+    QAction* findAgainAction_ = nullptr;
 
     //! find again backward
-    QAction* findAgainBackwardAction_;
+    QAction* findAgainBackwardAction_ = nullptr;
 
     //@}
 
@@ -367,10 +378,10 @@ class IconView: public QAbstractItemView, public Counter
     QSize pixmapSize_;
 
     //! margin
-    int margin_;
+    int margin_ = 15;
 
     //! spacing
-    int spacing_;
+    int spacing_ = 15;
 
     //! sort column option name
     QString sortColumnOptionName_;
@@ -379,25 +390,25 @@ class IconView: public QAbstractItemView, public Counter
     QString sortOrderOptionName_;
 
     //! column count
-    int columnCount_;
+    int columnCount_ = 1;
 
     //! row count
-    int rowCount_;
+    int rowCount_ = 1;
 
     //! total rect
     QRect boundingRect_;
 
     //! rubber band
-    QRubberBand* rubberBand_;
+    QRubberBand* rubberBand_ = nullptr;
 
     //! drag button
-    Qt::MouseButton dragButton_;
+    Qt::MouseButton dragButton_ = Qt::NoButton;
 
     //! drag origin
     QPoint dragOrigin_;
 
     //! true if drag is in progress
-    bool dragInProgress_;
+    bool dragInProgress_ = false;
 
     //! autoscroll timer
     QBasicTimer autoScrollTimer_;

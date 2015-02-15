@@ -32,6 +32,7 @@
 
 // forward declaration
 class BaseFindDialog;
+class BaseFindWidget;
 class ItemModel;
 
 //* customized tree view
@@ -275,8 +276,15 @@ class TreeView: public QTreeView, public Counter
     virtual BaseFindDialog& _findDialog( void )
     { return *findDialog_; }
 
+    //* find widge
+    virtual BaseFindWidget& _findWidget( void )
+    { return *findWidget_; }
+
     //* find dialog
-    virtual void _createBaseFindDialog( void );
+    virtual void _createFindDialog( void );
+
+    //* find widget
+    virtual void _createFindWidget( void );
 
     //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, bool rewind );
@@ -324,10 +332,13 @@ class TreeView: public QTreeView, public Counter
     QModelIndex _indexBefore( const QModelIndex& ) const;
 
     //* find dialog
-    BaseFindDialog* findDialog_;
+    BaseFindDialog* findDialog_ = nullptr;
+
+    //* find widget
+    BaseFindWidget* findWidget_ = nullptr;
 
     //* model
-    ItemModel* model_;
+    ItemModel* model_ = nullptr;
 
     //* hover index
     QModelIndex hoverIndex_;
@@ -336,25 +347,25 @@ class TreeView: public QTreeView, public Counter
     //@{
 
     //* select all items
-    QAction* selectAllAction_;
+    QAction* selectAllAction_ = nullptr;
 
     //* find from dialog
-    QAction* findAction_;
+    QAction* findAction_ = nullptr;
 
     //* find selection again
-    QAction* findSelectionAction_;
+    QAction* findSelectionAction_ = nullptr;
 
     //* find selection backward
-    QAction* findSelectionBackwardAction_;
+    QAction* findSelectionBackwardAction_ = nullptr;
 
     //* find again
-    QAction* findAgainAction_;
+    QAction* findAgainAction_ = nullptr;
 
     //* find again backward
-    QAction* findAgainBackwardAction_;
+    QAction* findAgainBackwardAction_ = nullptr;
 
     //* show/hide header action
-    QAction* showHeaderAction_;
+    QAction* showHeaderAction_ = nullptr;
 
     //@}
 
@@ -371,28 +382,28 @@ class TreeView: public QTreeView, public Counter
     QString showHeaderOptionName_;
 
     //* true if item margins are to be set from options
-    bool itemMarginFromOptions_;
+    bool itemMarginFromOptions_ = true;
 
     //* true if icon size is to be set from options
-    bool iconSizeFromOptions_;
+    bool iconSizeFromOptions_ = true;
 
     //* force alternating row colors
-    bool forceAlternatingRowColors_;
+    bool forceAlternatingRowColors_ = false;
 
     //* item margin
-    int itemMargin_;
+    int itemMargin_ = 2;
 
     //* selected column background color
-    bool useSelectedColumnColor_;
+    bool useSelectedColumnColor_ = false;
 
     //* vertical scrollbar position
-    int vertical_;
+    int vertical_ = 0;
 
     //* horizontal scrollbar position
-    int horizontal_;
+    int horizontal_ = 0;
 
     //* locked columns
-    unsigned lockedColumns_;
+    unsigned lockedColumns_ = 0;
 
 };
 
