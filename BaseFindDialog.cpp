@@ -45,7 +45,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     layout()->setMargin( 10 );
     layout()->setSpacing( 5 );
 
-    setBaseFindWidget( new BaseFindWidget( this ) );
+    setBaseFindWidget( new BaseFindWidget( this, false ) );
 }
 
 //________________________________________________________________________

@@ -34,7 +34,7 @@ class BaseReplaceWidget: public BaseFindWidget
     public:
 
     //* constructor
-    BaseReplaceWidget( QWidget* = nullptr );
+    BaseReplaceWidget( QWidget* = nullptr, bool compact = true );
 
     //* destructor
     virtual ~BaseReplaceWidget( void ) = default;
@@ -95,6 +95,10 @@ class BaseReplaceWidget: public BaseFindWidget
 
     protected:
 
+    //* locations layout
+    QBoxLayout& _locationLayout( void ) const
+    { return *locationLayout_; }
+
     //* replace editor
     virtual CustomComboBox& _replaceEditor( void ) const
     { return *replaceEditor_; }
@@ -107,6 +111,9 @@ class BaseReplaceWidget: public BaseFindWidget
     virtual void _addReplacedString( const QString& );
 
     private:
+
+    //* location layout
+    QBoxLayout* locationLayout_ = nullptr;
 
     //* line editor for text to replace
     CustomComboBox* replaceEditor_;

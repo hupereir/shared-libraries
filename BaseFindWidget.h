@@ -43,7 +43,7 @@ class BaseFindWidget: public QWidget, public Counter
     public:
 
     //* constructor
-    BaseFindWidget( QWidget* = nullptr );
+    BaseFindWidget( QWidget* = nullptr, bool compact = true );
 
     //* destructor
     virtual ~BaseFindWidget( void ) = default;
@@ -136,14 +136,6 @@ class BaseFindWidget: public QWidget, public Counter
     QGridLayout& _editorLayout( void ) const
     { return *editorLayout_; }
 
-    //* locations layout
-    QBoxLayout& _locationLayout( void ) const
-    { return *locationLayout_; }
-
-    //* locations layout
-    QBoxLayout& _buttonLayout( void ) const
-    { return *buttonLayout_; }
-
     //* add button to disabled button list
     virtual void _addDisabledButton( QAbstractButton* );
 
@@ -154,12 +146,6 @@ class BaseFindWidget: public QWidget, public Counter
 
     //* editor layout
     QGridLayout* editorLayout_ = nullptr;
-
-    //* location layout
-    QBoxLayout* locationLayout_ = nullptr;
-
-    //* button layout
-    QBoxLayout* buttonLayout_ = nullptr;
 
     //* line editor for text to find
     CustomComboBox* editor_ = nullptr;

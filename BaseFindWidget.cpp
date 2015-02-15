@@ -19,12 +19,13 @@
 *
 *******************************************************************************/
 
+#include "BaseFindWidget.h"
 #include "BaseIconNames.h"
+#include "CustomToolButton.h"
+#include "Debug.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "LineEditor.h"
-#include "Debug.h"
-#include "BaseFindWidget.h"
 
 #include <QFrame>
 #include <QPushButton>
@@ -37,7 +38,7 @@ QOrderedSet<QString>& BaseFindWidget::_searchedStrings( void )
 }
 
 //________________________________________________________________________
-BaseFindWidget::BaseFindWidget( QWidget* parent ):
+BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     QWidget( parent ),
     Counter( "BaseFindWidget" )
 {
@@ -48,12 +49,12 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
     layout()->setMargin( 0 );
     layout()->setSpacing( 5 );
 
-    // edition
+    // edition layout
     layout()->addItem( editorLayout_ = new QGridLayout() );
     editorLayout_->setMargin( 0 );
     editorLayout_->setSpacing( 5 );
 
-    // add editor
+    // label and find editor
     QLabel *label = new QLabel( tr( "Text to find:" ), this );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     editorLayout_->addWidget( label, 0, 0, 1, 1 );
@@ -67,19 +68,45 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
     connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_updateButtons(QString)) );
     connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_findNoIncrement()) );
 
+    // Find button
+    editorLayout_->addWidget( findButton_ = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ), 0, 2, 1, 1 );
+    connect( findButton_, SIGNAL(clicked()), this, SLOT(_find()) );
+    connect( findButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    _addDisabledButton( findButton_ );
+    static_cast<QPushButton*>(findButton_)->setAutoDefault( false );
+
     // locations
-    GridLayout* gridLayout( new GridLayout() );
-    gridLayout->setSpacing( 5 );
-    gridLayout->setMargin( 0 );
-    gridLayout->setMaxCount( 2 );
+    if( compact )
+    {
+        QHBoxLayout* hLayout( new QHBoxLayout() );
+        hLayout->setSpacing( 5 );
+        hLayout->setMargin( 0 );
+        editorLayout_->addLayout( hLayout, 3, 1, 1, 1 );
 
-    layout()->addItem( gridLayout );
+        // insert checkboxes
+        hLayout->addStretch(1);
+        hLayout->addWidget( backwardCheckbox_ = new QCheckBox( tr( "Search backward" ), this ) );
+        hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
+        hLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
+        hLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
 
-    // insert checkboxes
-    gridLayout->addWidget( backwardCheckbox_ = new QCheckBox( tr( "Search backward" ), this ) );
-    gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
-    gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
-    gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
+    } else {
+
+        GridLayout* gridLayout( new GridLayout() );
+        gridLayout->setSpacing( 5 );
+        gridLayout->setMargin( 0 );
+        gridLayout->setMaxCount( 2 );
+        editorLayout_->addLayout( gridLayout, 3, 1, 1, 1 );
+
+        // insert checkboxes
+        gridLayout->addWidget( backwardCheckbox_ = new QCheckBox( tr( "Search backward" ), this ) );
+        gridLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
+        gridLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
+        gridLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
+
+
+    }
+
     connect( regexpCheckbox_, SIGNAL(toggled(bool)), SLOT(_regExpChecked(bool)) );
 
     // tooltips
@@ -91,34 +118,39 @@ BaseFindWidget::BaseFindWidget( QWidget* parent ):
     layout()->addWidget( label_ = new QLabel( this ) );
     label_->setMargin( 2 );
 
-    // location layout
-    layout()->addItem( locationLayout_ = new QHBoxLayout() );
-    locationLayout_->setMargin(0);
-    locationLayout_->setSpacing(5);
+    if( compact ) label_->hide();
 
-    // horizontal separator
-    QFrame* frame( new QFrame( this ) );
-    frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
-    layout()->addWidget( frame );
+    if( !compact )
+    {
+        // horizontal separator
+        QFrame* frame( new QFrame( this ) );
+        frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
+        layout()->addWidget( frame );
+    }
 
-    // buttons
-    layout()->addItem( buttonLayout_ = new QHBoxLayout() );
-    buttonLayout_->setMargin( 0 );
-    buttonLayout_->setSpacing( 5 );
-    buttonLayout_->addStretch(1);
+    // close button
+    if( compact )
+    {
 
-    // insert Find button
-    buttonLayout_->addWidget( findButton_ = new QPushButton( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
-    connect( findButton_, SIGNAL(clicked()), this, SLOT(_find()) );
-    connect( findButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
-    _addDisabledButton( findButton_ );
-    static_cast<QPushButton*>(findButton_)->setAutoDefault( false );
+        closeButton_ = new CustomToolButton( this );
+        static_cast<CustomToolButton*>(closeButton_)->setAutoRaise( true );
+        closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
+        closeButton_->setText( tr( "Close" ) );
+        editorLayout_->addWidget( closeButton_, 0, 3, 1, 1 );
 
-    // insert Cancel button
-    buttonLayout_->addWidget( closeButton_ = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
-    closeButton_->setShortcut( Qt::Key_Escape );
-    static_cast<QPushButton*>(closeButton_)->setAutoDefault( false );
+    } else {
 
+        QHBoxLayout* hLayout = new QHBoxLayout();
+        hLayout->setMargin( 0 );
+        hLayout->setSpacing( 5 );
+        layout()->addItem( hLayout );
+
+        hLayout->addStretch(1);
+        hLayout->addWidget( closeButton_ = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
+        closeButton_->setShortcut( Qt::Key_Escape );
+        static_cast<QPushButton*>(closeButton_)->setAutoDefault( false );
+
+    }
 }
 
 //________________________________________________________________________

@@ -33,7 +33,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     setOptionName( "REPLACE_DIALOG" );
 
     // set base find widget
-    setBaseFindWidget( new BaseReplaceWidget( this ) );
+    setBaseFindWidget( new BaseReplaceWidget( this, false ) );
 
     // connections
     connect( &baseFindWidget(), SIGNAL(replace(TextSelection)), this, SIGNAL(replace(TextSelection)));

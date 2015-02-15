@@ -32,13 +32,12 @@ QOrderedSet<QString>& BaseReplaceWidget::_replacedStrings()
 }
 
 //________________________________________________________________________
-BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
-    BaseFindWidget( parent )
+BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
+    BaseFindWidget( parent, compact )
 {
     Debug::Throw( "BaseReplaceWidget::BaseReplaceWidget.\n" );
 
-    // create aditional widgets
-    // insert text editor
+    // replace label and editor
     QLabel* label = new QLabel( tr( "Replace with:" ), this );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     _editorLayout().addWidget( label, 1, 0, 1, 1 );
@@ -57,15 +56,29 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
     connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateReplaceComboBox()) );
     connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), this, SIGNAL(replaceTextChanged(QString)) );
 
-    // change tab order
-    setTabOrder( &editor(), replaceEditor_ );
+    // replace buttons
+    replaceButton_ = new QPushButton( tr( "Replace" ), this );
+    connect( replaceButton_, SIGNAL(clicked()), this, SLOT(_replace()) );
+    connect( replaceButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    connect( replaceButton_, SIGNAL(clicked()), this, SLOT(_updateReplaceComboBox()) );
+    _addDisabledButton( replaceButton_ );
+    _editorLayout().addWidget( replaceButton_, 1, 2, 1, 1 );
+    static_cast<QPushButton*>(replaceButton_)->setAutoDefault( false );
+
+    // location label
+    _editorLayout().addWidget( label = new QLabel( tr( "Replace in:" ), this ), 2, 0, 1, 1 );
+    label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
+
+    // location layout
+    locationLayout_ = new QHBoxLayout();
+    locationLayout_->setMargin(0);
+    locationLayout_->setSpacing(5);
+    _editorLayout().addLayout( locationLayout_, 2, 1, 1, 1 );
 
     // location buttons
-    QPushButton *button( 0 );
-    QPushButton *previous( 0 );
+    QPushButton *button( nullptr );
 
     // insert selection button
-    _locationLayout().addWidget( new QLabel( tr( "Replace in:" ), this ) );
     _locationLayout().addWidget( button = new QPushButton( tr( "Selection" ), this ) );
     button->setAutoDefault( false );
     connect( button, SIGNAL(clicked()), this, SLOT(_replaceInSelection()) );
@@ -74,10 +87,6 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
     button->setToolTip( tr( "Replace all occurence of the search string in selected text" ) );
     _addDisabledButton( button );
     button->setAutoDefault( false );
-
-    // change tab order
-    setTabOrder( &_entireWordCheckBox(), button );
-    previous = button;
 
     // insert window button
     _locationLayout().addWidget( button = new QPushButton( tr( "Window" ), this ) );
@@ -89,20 +98,6 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent ):
     _addDisabledButton( button );
     button->setAutoDefault( false );
     replaceWindowButton_ = button;
-
-    setTabOrder( previous, button );
-
-    // replace buttons
-    button = new QPushButton( tr( "Replace" ), this );
-    connect( button, SIGNAL(clicked()), this, SLOT(_replace()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(_updateReplaceComboBox()) );
-    _addDisabledButton( button );
-    _buttonLayout().insertWidget( 1, button );
-    button->setAutoDefault( false );
-    replaceButton_ = button;
-
-    setTabOrder( &findButton(), button );
 
 }
 
