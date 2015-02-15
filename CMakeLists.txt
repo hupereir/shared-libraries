@@ -174,6 +174,7 @@ set(base_qt_SOURCES
   ScratchFileRemoveDialog.cpp
   ScrollObject.cpp
   SelectLineDialog.cpp
+  SelectLineWidget.cpp
   SimpleListView.cpp
   StandardAction.cpp
   SystemEnvironmentDialog.cpp

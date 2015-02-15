@@ -1,5 +1,5 @@
-#ifndef SelectLineDialog_h
-#define SelectLineDialog_h
+#ifndef SelectLineWidget_h
+#define SelectLineWidget_h
 
 // $Id$
 
@@ -22,12 +22,15 @@
 *
 *******************************************************************************/
 
-#include "BaseDialog.h"
 #include "Counter.h"
-#include "SelectLineWidget.h"
+
+#include <QAbstractButton>
+#include <QWidget>
+
+class LineEditor;
 
 //* find_text dialog for text editor widgets
-class SelectLineDialog: public BaseDialog, public Counter
+class SelectLineWidget: public QWidget, public Counter
 {
 
     //* Qt meta object declaration
@@ -36,37 +39,40 @@ class SelectLineDialog: public BaseDialog, public Counter
     public:
 
     //* constructor
-    SelectLineDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
-
-    //* destructor
-    virtual ~SelectLineDialog( void ) = default;
-
-    //*@name accessors
-    //@{
+    SelectLineWidget( QWidget* = nullptr, bool compact = true );
 
     //* retrieve editor
     LineEditor& editor( void ) const
-    { return selectLineWidget_->editor(); }
+    { return *editor_; }
 
-    //@}
+    //* ok button
+    QAbstractButton& okButton( void ) const
+    { return *okButton_; }
 
-    //*@name modifiers
-    //@{
-
-    //* set select line widget
-    void setSelectLineWidget( SelectLineWidget* );
-
-    //@}
+    //* close button
+    QAbstractButton& closeButton( void ) const
+    { return *closeButton_; }
 
     Q_SIGNALS:
 
     //* emmited when pressing the Ok button
     void lineSelected( int );
 
+    private Q_SLOTS:
+
+    //* retrieve line number and emit signal
+    void _selectLine( void );
+
     private:
 
-    //* select line widget
-    SelectLineWidget* selectLineWidget_ = nullptr;
+    //* line editor for text to find
+    LineEditor* editor_ = nullptr;
+
+    //* ok button
+    QAbstractButton* okButton_ = nullptr;
+
+    //* cancel button
+    QAbstractButton* closeButton_ = nullptr;
 
 };
 #endif

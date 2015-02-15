@@ -25,15 +25,6 @@
 #include "BaseDialog.h"
 #include "BaseFindWidget.h"
 #include "Counter.h"
-#include "CustomComboBox.h"
-#include "TextSelection.h"
-#include "QOrderedSet.h"
-
-#include <QAbstractButton>
-#include <QCheckBox>
-#include <QLabel>
-#include <QLayout>
-#include <QList>
 
 //* find dialog for text editor widgets
 class BaseFindDialog: public BaseDialog, public Counter

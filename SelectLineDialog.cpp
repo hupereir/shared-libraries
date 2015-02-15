@@ -20,15 +20,14 @@
 *******************************************************************************/
 
 #include "SelectLineDialog.h"
+#include "Debug.h"
 
-#include <QLabel>
 #include <QLayout>
-#include <QPushButton>
-#include <QValidator>
 
 //_______________________________________________________
 SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
-    CustomDialog( parent, OkButton|CancelButton, flags )
+    BaseDialog( parent, flags ),
+    Counter( "SelectLineDialog" )
 {
 
     Debug::Throw( "SelectLineDialog::SelectLineDialog.\n" );
@@ -36,29 +35,42 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
     // set dialog title
     setWindowTitle( tr( "Goto Line Number" ) );
 
-    // insert text editor
-    QLabel *label( new QLabel( tr( "Goto line number:" ), this ) );
-    mainLayout().addWidget( label, 0 );
+    // create vbox layout
+    setLayout( new QVBoxLayout() );
+    layout()->setMargin( 10 );
+    layout()->setSpacing( 5 );
 
-    mainLayout().addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
-    label->setBuddy( editor_ );
-
-    //connect( editor(), SIGNAL(returnPressed()), SLOT(_selectLine()) );
-    connect( editor_, SIGNAL(returnPressed()), SLOT(_selectLine()) );
-    connect( editor_, SIGNAL(textChanged(QString)), SLOT(_selectLine()) );
-
-    QIntValidator *validator = new QIntValidator( this );
-    validator->setBottom(0);
-    editor_->setValidator( validator );
-
-    // connections
-    connect( &okButton(), SIGNAL(clicked()), SLOT(_selectLine()) );
+    setSelectLineWidget( new SelectLineWidget( this, false ) );
 
     // minimum size
     setMinimumSize( QSize( 250, 100 ) );
+}
+
+//________________________________________________________________________
+void SelectLineDialog::setSelectLineWidget( SelectLineWidget* selectLineWidget )
+{
+    Debug::Throw( "BaseFindDialog::setBaseFindWidget.\n" );
+    if( selectLineWidget_ )
+    {
+        selectLineWidget_->hide();
+        selectLineWidget_->deleteLater();
+    }
+
+    // assign new widget and change parent
+    selectLineWidget_ = selectLineWidget;
+    if( selectLineWidget_->parent() != this )
+    {
+        selectLineWidget_->setParent( this );
+        selectLineWidget_->show();
+    }
+
+    // append to layout
+    layout()->addWidget( selectLineWidget_ );
+
+    // setup connections
+    connect( selectLineWidget_, SIGNAL(lineSelected(int)), this, SIGNAL(lineSelected(int)) );
+    connect( &selectLineWidget_->okButton(), SIGNAL(clicked()), SLOT(close()));
+    connect( &selectLineWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()));
 
 }
 
-//_______________________________________________________
-void SelectLineDialog::_selectLine( void )
-{ emit lineSelected( editor_->text().toInt()-1 ); }

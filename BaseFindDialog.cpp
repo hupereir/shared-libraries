@@ -19,15 +19,7 @@
 *
 *******************************************************************************/
 
-#include "BaseIconNames.h"
-#include "GridLayout.h"
-#include "IconEngine.h"
-#include "LineEditor.h"
-#include "Debug.h"
 #include "BaseFindDialog.h"
-
-#include <QFrame>
-#include <QPushButton>
 
 //________________________________________________________________________
 BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
