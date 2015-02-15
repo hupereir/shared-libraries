@@ -83,7 +83,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     static_cast<QPushButton*>(findPreviousButton_)->setAutoDefault( false );
 
     // options
-    editorLayout_->addWidget( label = new QLabel( tr( "Options: " ), this ), 3, 0, 1, 1 );
+    editorLayout_->addWidget( label = new QLabel( tr( "Options:" ), this ), 3, 0, 1, 1 );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
     QHBoxLayout* hLayout( new QHBoxLayout() );
