@@ -84,7 +84,7 @@ namespace Svg
 
         //! reload all icons set in cache from new path list
         /*! return true if changed */
-        bool reload( const bool& forced = false );
+        bool reload( bool forced = false );
 
         protected Q_SLOTS:
 
@@ -94,7 +94,7 @@ namespace Svg
         private:
 
         //! load svg
-        bool _loadSvg( const bool& forced );
+        bool _loadSvg( bool forced );
 
         //!@name non static methods are hidden
         //@{

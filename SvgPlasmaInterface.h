@@ -58,7 +58,7 @@ namespace Svg
     bool setImagePath( ImagePath );
 
     //! validity
-    const bool& isValid( void ) const
+    bool isValid( void ) const
     { return valid_; }
 
     //! filename
@@ -86,7 +86,7 @@ namespace Svg
     private:
 
     //! validity
-    bool _setValid( const bool& value )
+    bool _setValid( bool value )
     {
       if( valid_ == value ) return false;
       valid_ = value;

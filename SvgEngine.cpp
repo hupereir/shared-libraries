@@ -47,7 +47,7 @@ namespace Svg
     {}
 
     //__________________________________________________________
-    bool SvgEngine::reload( const bool& forced )
+    bool SvgEngine::reload( bool forced )
     {
 
         bool configurationChanged( svg_.updateConfiguration() );
@@ -121,7 +121,7 @@ namespace Svg
     }
 
     //________________________________________________
-    bool SvgEngine::_loadSvg( const bool& forced )
+    bool SvgEngine::_loadSvg( bool forced )
     {
 
         bool changed( false );
