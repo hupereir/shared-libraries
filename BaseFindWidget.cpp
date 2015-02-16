@@ -45,12 +45,13 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     Debug::Throw( "BaseFindWidget::BaseFindWidget.\n" );
 
     // create vbox layout
-    setLayout( new QVBoxLayout() );
-    layout()->setMargin( compact ? 2:0 );
-    layout()->setSpacing( 5 );
+    QVBoxLayout* vLayout;
+    setLayout( vLayout = new QVBoxLayout() );
+    vLayout->setMargin( compact ? 2:0 );
+    vLayout->setSpacing( 5 );
 
     // edition layout
-    layout()->addItem( editorLayout_ = new QGridLayout() );
+    vLayout->addItem( editorLayout_ = new QGridLayout() );
     editorLayout_->setMargin( 0 );
     editorLayout_->setSpacing( 5 );
 
@@ -104,17 +105,20 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     regexpCheckbox_->setToolTip( tr( "Search text using regular expression" ) );
 
     // notification label
-    layout()->addWidget( label_ = new QLabel( this ) );
+    vLayout->addWidget( label_ = new QLabel( this ) );
     label_->setMargin( 2 );
 
     if( compact ) label_->hide();
 
     if( !compact )
     {
+        // stretch
+        vLayout->addStretch(1);
+
         // horizontal separator
         QFrame* frame( new QFrame( this ) );
         frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
-        layout()->addWidget( frame );
+        vLayout->addWidget( frame );
     }
 
     // close button
@@ -133,7 +137,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
         QHBoxLayout* hLayout = new QHBoxLayout();
         hLayout->setMargin( 0 );
         hLayout->setSpacing( 5 );
-        layout()->addItem( hLayout );
+        vLayout->addItem( hLayout );
 
         hLayout->addStretch(1);
         hLayout->addWidget( closeButton_ = new QPushButton( IconEngine::get( IconNames::DialogClose ), tr( "Close" ), this ) );
