@@ -40,7 +40,7 @@ namespace SpellCheck {
         public:
 
         //! constructor
-        SuggestionMenu( QWidget *parent, const QString& word, const bool& = false );
+        SuggestionMenu( QWidget *parent, const QString& word, bool = false );
 
         //! spell interface
         SpellInterface& interface( void )

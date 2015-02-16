@@ -69,7 +69,7 @@ namespace SpellCheck
     { return fontFormat_; }
 
     //! enabled. Returns true if changed.
-    bool setEnabled( const bool& value )
+    bool setEnabled( bool value )
     {
       if( enabled_ == value ) return false;
       enabled_ = value;
@@ -77,7 +77,7 @@ namespace SpellCheck
     }
 
     //! enabled
-    const bool& isEnabled( void ) const
+    bool isEnabled( void ) const
     { return enabled_; }
 
     //! spell interface

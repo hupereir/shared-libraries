@@ -57,7 +57,7 @@ namespace SpellCheck
         //! set read-only (enable/disable modification buttons)
 
         //! toggle filter combo box visibility
-        virtual void showFilter( const bool& value );
+        virtual void showFilter( bool value );
 
         //! spell interface
         virtual SpellInterface& interface( void )

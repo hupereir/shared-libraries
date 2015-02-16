@@ -212,7 +212,7 @@ namespace SpellCheck
     { Debug::Throw( "SpellCheck::SpellDialog::~SpellDialog.\n" ); }
 
     //__________________________________________
-    void SpellDialog::showFilter( const bool& value )
+    void SpellDialog::showFilter( bool value )
     {
         Debug::Throw( "SpellCheck::SpellDialog::showFilter.\n" );
         if( value ){

@@ -29,7 +29,7 @@ namespace SpellCheck
 {
 
     //________________________________________________
-    SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, const bool& read_only ):
+    SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, bool read_only ):
         QMenu( parent ),
         Counter( "SuggestionMenu" ),
         word_( word )
