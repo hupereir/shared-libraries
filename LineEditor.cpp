@@ -372,6 +372,9 @@ void LineEditor::_modified( const QString& text )
         }
     }
 
+    // emit cleared signal
+    if( text.isEmpty() ) emit cleared();
+
 }
 
 //____________________________________________________________
