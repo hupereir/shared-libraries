@@ -83,7 +83,7 @@ namespace Transparency
         //@{
 
         //! background changed
-        void setBackgroundChanged( const bool& value )
+        void setBackgroundChanged( bool value )
         { backgroundChanged_ = value; }
 
         //@}
@@ -175,7 +175,7 @@ namespace Transparency
         //@}
 
         //! background changed
-        const bool& _backgroundChanged( void ) const
+        bool _backgroundChanged( void ) const
         { return backgroundChanged_; }
 
         //! paint background on devide
