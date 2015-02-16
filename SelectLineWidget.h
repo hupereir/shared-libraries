@@ -25,6 +25,7 @@
 #include "Counter.h"
 
 #include <QAbstractButton>
+#include <QPalette>
 #include <QWidget>
 
 class LineEditor;
@@ -58,12 +59,28 @@ class SelectLineWidget: public QWidget, public Counter
     //* emmited when pressing the Ok button
     void lineSelected( int );
 
+    public Q_SLOTS:
+
+    //* take action when at least one match is found
+    virtual void matchFound( void );
+
+    //* take action when no match is found
+    virtual void noMatchFound( void );
+
+    protected:
+
+    //* change event
+    virtual void changeEvent( QEvent* );
+
     private Q_SLOTS:
 
     //* retrieve line number and emit signal
     void _selectLine( void );
 
     private:
+
+    //* create not found palette
+    void _updateNotFoundPalette( void );
 
     //* line editor for text to find
     LineEditor* editor_ = nullptr;
@@ -73,6 +90,9 @@ class SelectLineWidget: public QWidget, public Counter
 
     //* cancel button
     QAbstractButton* closeButton_ = nullptr;
+
+    //* not found palette
+    QPalette notFoundPalette_;
 
 };
 #endif

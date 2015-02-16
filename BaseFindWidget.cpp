@@ -150,7 +150,6 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
 TextSelection BaseFindWidget::selection( bool noIncrement ) const
 {
     TextSelection out( editor_->currentText() );
-    // out.setFlag( TextSelection::Backward, backwardCheckbox_->isChecked() );
     out.setFlag( TextSelection::Backward, findBackward_ );
     out.setFlag( TextSelection::CaseSensitive, caseSensitiveCheckbox_->isChecked() );
     out.setFlag( TextSelection::EntireWord, entireWordCheckbox_->isChecked() );
@@ -190,6 +189,21 @@ void BaseFindWidget::noMatchFound( void )
 {
     if( !editor_->currentText().isEmpty() )
     { editor_->setPalette( notFoundPalette_ ); }
+}
+
+//________________________________________________________________________
+void BaseFindWidget::changeEvent( QEvent* event )
+{
+    switch( event->type() )
+    {
+        case QEvent::PaletteChange:
+        _updateNotFoundPalette();
+        break;
+
+        default: break;
+    }
+
+    return QWidget::changeEvent( event );
 }
 
 //________________________________________________________________________

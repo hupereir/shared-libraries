@@ -845,9 +845,9 @@ void TextEditor::selectLine( int index )
 {
 
     Debug::Throw() << "TextEditor::selectLine - index: " << index << endl;
-    int local_index( 0 );
+    int localIndex( 0 );
     QTextBlock block = document()->begin();
-    for( ;local_index < index && block.isValid(); block = block.next(), local_index++ )
+    for( ;localIndex < index && block.isValid(); block = block.next(), localIndex++ )
     {}
 
     if( block.isValid() )
@@ -859,7 +859,14 @@ void TextEditor::selectLine( int index )
         // assign to editor
         setTextCursor( cursor );
 
-    } else setTextCursor( QTextCursor( document()->end() ) );
+        emit lineFound();
+
+    } else {
+
+        setTextCursor( QTextCursor( document()->end() ) );
+        emit lineNotFound();
+
+    }
 
     return;
 
@@ -2055,7 +2062,9 @@ void TextEditor::_createSelectLineWidget( bool compact )
         Debug::Throw( "TextEditor::_createSelectLineWidget.\n" );
         selectLineWidget_ = new SelectLineWidget( this, compact );
         connect( selectLineWidget_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
-    }
+        connect( this, SIGNAL(lineFound()), selectLineWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(lineNotFound()), selectLineWidget_, SLOT(noMatchFound()) );
+   }
 }
 
 //__________________________________________________
@@ -2728,6 +2737,7 @@ void TextEditor::_selectLineFromDialog( void )
 
     }
 
+    selectLineWidget_->matchFound();
     selectLineWidget_->editor().clear();
     selectLineWidget_->editor().setFocus();
 

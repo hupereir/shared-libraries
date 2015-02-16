@@ -23,6 +23,7 @@
 
 #include "AnimatedLineEditor.h"
 #include "BaseIconNames.h"
+#include "Color.h"
 #include "IconEngine.h"
 
 #include <QLabel>
@@ -38,6 +39,9 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
 {
 
     Debug::Throw( "SelectLineWidget::SelectLineWidget.\n" );
+
+    // update palette
+    _updateNotFoundPalette();
 
     QBoxLayout* layout;
     if( compact )
@@ -61,6 +65,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     layout->addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
     label->setBuddy( editor_ );
 
+    connect( editor_, SIGNAL(cleared()), this, SLOT(matchFound()) );
     connect( editor_, SIGNAL(returnPressed()), this, SLOT(_selectLine()) );
     connect( editor_, SIGNAL(textChanged(QString)), this, SLOT(_selectLine()) );
 
@@ -115,6 +120,41 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
 
 }
 
+//________________________________________________________________________
+void SelectLineWidget::matchFound( void )
+{ editor_->setPalette( palette() ); }
+
+//________________________________________________________________________
+void SelectLineWidget::noMatchFound( void )
+{
+    if( !editor_->text().isEmpty() )
+    { editor_->setPalette( notFoundPalette_ ); }
+}
+
+//________________________________________________________________________
+void SelectLineWidget::changeEvent( QEvent* event )
+{
+    switch( event->type() )
+    {
+        case QEvent::PaletteChange:
+        _updateNotFoundPalette();
+        break;
+
+        default: break;
+    }
+
+    return QWidget::changeEvent( event );
+}
+
 //_______________________________________________________
 void SelectLineWidget::_selectLine( void )
 { emit lineSelected( editor_->text().toInt()-1 ); }
+
+//________________________________________________________________________
+void SelectLineWidget::_updateNotFoundPalette( void )
+{
+    notFoundPalette_ = palette();
+    notFoundPalette_.setColor( QPalette::Base,
+        Base::Color( palette().color( QPalette::Base ) ).merge(
+        Qt::red, 0.95 ) );
+}

@@ -139,6 +139,9 @@ class BaseFindWidget: public QWidget, public Counter
 
     protected:
 
+    //* change event
+    virtual void changeEvent( QEvent* );
+
     //* "entire word" checkbox
     QCheckBox& _entireWordCheckBox( void ) const
     { return *entireWordCheckbox_; }
