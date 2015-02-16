@@ -160,7 +160,7 @@ class Option:public Counter
     }
 
     //! flags
-    Option& setFlag( Flag flag, const bool& value = true )
+    Option& setFlag( Flag flag, bool value = true )
     {
         if( value ) { flags_ |= flag; }
         else { flags_ &= (~flag); }
@@ -168,7 +168,7 @@ class Option:public Counter
     }
 
     //! current
-    Option& setCurrent( const bool& value )
+    Option& setCurrent( bool value )
     { return setFlag( Current, value ); }
 
     //! default

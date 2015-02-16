@@ -98,7 +98,7 @@ class FileRecord: public Counter
     }
 
     //! flags
-    FileRecord& setFlag( unsigned int flag, const bool& value = true )
+    FileRecord& setFlag( unsigned int flag, bool value = true )
     {
         if( value ) { flags_ |= flag; }
         else { flags_ &= (~flag); }
@@ -138,11 +138,11 @@ class FileRecord: public Counter
     //@}
 
     //! validity
-    const bool& isValid( void ) const
+    bool isValid( void ) const
     { return valid_; }
 
     //! validity
-    FileRecord& setValid( const bool& valid )
+    FileRecord& setValid( bool valid )
     {
         valid_ = valid;
         return *this;
