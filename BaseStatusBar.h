@@ -46,7 +46,7 @@ class StatusBarLabel: public AnimatedLabel
     public Q_SLOTS:
 
     //! set text
-    virtual void setText( const QString& message, const bool& alsoUpdate = true )
+    virtual void setText( const QString& message, bool alsoUpdate = true )
     {
         if( alsoUpdate ) setTextAndUpdate( message );
         else AnimatedLabel::setText( message );

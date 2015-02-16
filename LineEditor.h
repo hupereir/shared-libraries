@@ -58,7 +58,7 @@ class LineEditor: public QLineEdit, public Counter
     int clearButtonWidth( void ) const;
 
     //* modification state
-    const bool& isModified( void ) const
+    bool isModified( void ) const
     { return modified_; }
 
     //@}
@@ -70,10 +70,10 @@ class LineEditor: public QLineEdit, public Counter
     void setReadOnly( bool );
 
     //* set editor as modified
-    void setModified( const bool& value );
+    void setModified( bool value );
 
     //* set clear button
-    void setHasClearButton( const bool& );
+    void setHasClearButton( bool );
 
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu* );

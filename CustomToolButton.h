@@ -44,7 +44,7 @@ class CustomToolButton: public QToolButton, public Counter
     { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
 
     //! update configuration from options
-    void setUpdateFromOptions( const bool& value )
+    void setUpdateFromOptions( bool value )
     { updateFromOptions_ = value; }
 
     //! rotation

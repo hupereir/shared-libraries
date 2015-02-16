@@ -128,7 +128,7 @@ class LineNumberDisplay: public QObject, public Counter
         { return position_; }
 
         //! validity
-        const bool& isValid( void ) const
+        bool isValid( void ) const
         { return valid_; }
 
         private:

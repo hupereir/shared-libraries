@@ -55,11 +55,11 @@ class BlockHighlight: public QObject, public Counter
   { Debug::Throw( "BlockHighlight::~BlockHighlight.\n" ); }
 
   //! enable/disable
-  void setEnabled( const bool& value )
+  void setEnabled( bool value )
   { enabled_ = value; }
 
   //! enable/disable
-  const bool& isEnabled( void ) const
+  bool isEnabled( void ) const
   { return enabled_; }
 
   //! clear highlighted block

@@ -66,7 +66,7 @@ class BoxSelection: public Counter
     bool checkEnabled( void );
 
     //* enability
-    const bool& isEnabled( void ) const
+    bool isEnabled( void ) const
     { return enabled_; }
 
     //* forgeround color

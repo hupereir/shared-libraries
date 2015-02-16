@@ -59,7 +59,7 @@ class TransitionWidget: public QWidget, public Counter
     }
 
     //! flags
-    TransitionWidget& setFlag( Flag flag, const bool& value = true )
+    TransitionWidget& setFlag( Flag flag, bool value = true )
     {
         if( value ) { flags_ |= flag; }
         else { flags_ &= (~flag); }
@@ -89,7 +89,7 @@ class TransitionWidget: public QWidget, public Counter
     { enabled_ = value; }
 
     //! enability
-    const bool& isEnabled( void ) const
+    bool isEnabled( void ) const
     { return enabled_; }
 
     protected:

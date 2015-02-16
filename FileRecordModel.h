@@ -54,11 +54,11 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     {}
 
     //* show icons
-    void setShowIcons( const bool& value )
+    void setShowIcons( bool value )
     { showIcons_ = value; }
 
     //* use local names
-    void setUseLocalNames( const bool& value )
+    void setUseLocalNames( bool value )
     { useLocalNames_ = value; }
 
     //*@name methods reimplemented from base class
@@ -96,11 +96,11 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     }
 
     //* enable drag
-    const bool& dragEnabled( void ) const
+    bool dragEnabled( void ) const
     { return dragEnabled_; }
 
     //* enable drag
-    void setDragEnabled( const bool& value )
+    void setDragEnabled( bool value )
     { dragEnabled_ = value; }
 
     protected:

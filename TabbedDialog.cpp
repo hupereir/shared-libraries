@@ -83,7 +83,7 @@ TabbedDialog::~TabbedDialog( void )
 }
 
 //_________________________________________________________
-QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const QString& tooltip, const bool& expand )
+QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const QString& tooltip, bool expand )
 {
 
     // base widget

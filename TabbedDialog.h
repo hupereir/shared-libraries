@@ -51,11 +51,11 @@ class TabbedDialog: public BaseDialog, public Counter
     virtual ~TabbedDialog();
 
     //! adds a new Item, returns associated Box
-    virtual QWidget& addPage( const QString& title, const QString& tooltip = QString(), const bool& expand = false )
+    virtual QWidget& addPage( const QString& title, const QString& tooltip = QString(), bool expand = false )
     { return addPage( QIcon(), title, tooltip, expand ); }
 
     //! adds a new Item, returns associated Box
-    virtual QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), const bool& expand = false );
+    virtual QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), bool expand = false );
 
     protected Q_SLOTS:
 

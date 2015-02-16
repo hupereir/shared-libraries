@@ -58,7 +58,7 @@ class TextBlockData: public QTextBlockUserData, public Counter
     { return flags_ & flag; }
 
     //! flags
-    void setFlag( const unsigned int& flag, const bool& value )
+    void setFlag( const unsigned int& flag, bool value )
     {
         if( value ) flags_ |= flag;
         else flags_ &= (~flag);

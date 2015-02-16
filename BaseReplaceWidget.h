@@ -49,7 +49,7 @@ class BaseReplaceWidget: public BaseFindWidget
     { return replaceEditor_->currentText(); }
 
     //* retrieve text selection from dialog
-    virtual TextSelection selection( const bool& ) const;
+    virtual TextSelection selection( bool ) const;
 
     //@}
 

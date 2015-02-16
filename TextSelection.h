@@ -84,7 +84,7 @@ class TextSelection
     { return flags_ & flag; }
 
     //! flags
-    void setFlag( const Flag& flag, const bool& value )
+    void setFlag( const Flag& flag, bool value )
     {
         if( value ) flags_ |= flag;
         else flags_ &= (~flag);

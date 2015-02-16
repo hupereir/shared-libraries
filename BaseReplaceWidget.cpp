@@ -94,7 +94,7 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
 }
 
 //_____________________________________________________
-TextSelection BaseReplaceWidget::selection( const bool& noIncrement ) const
+TextSelection BaseReplaceWidget::selection( bool noIncrement ) const
 {
 
     TextSelection out( BaseFindWidget::selection( noIncrement ) );

@@ -62,7 +62,7 @@ class OptionListBox: public QWidget, public OptionWidget
     void write( Options& options ) const;
 
     //! browsability
-    void setBrowsable( const bool& value )
+    void setBrowsable( bool value )
     { browsable_ = value; }
 
     //! set file dialog mode

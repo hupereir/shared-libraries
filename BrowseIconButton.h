@@ -56,7 +56,7 @@ class BrowseIconButton: public CustomToolButton
     { return file_; }
 
     //! iconFile
-    virtual bool setFile( const QString& file, const bool& check );
+    virtual bool setFile( const QString& file, bool check );
 
     protected:
 

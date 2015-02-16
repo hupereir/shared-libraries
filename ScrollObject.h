@@ -51,7 +51,7 @@ class ScrollObject: public QObject, public Counter
     { enabled_ = value; }
 
     //! enability
-    const bool& isEnabled( void ) const
+    bool isEnabled( void ) const
     { return enabled_; }
 
     protected:

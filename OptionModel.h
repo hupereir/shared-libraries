@@ -92,11 +92,11 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
     {}
 
     //* set model read only
-    void setReadOnly( const bool& value )
+    void setReadOnly( bool value )
     { readOnly_ = value; }
 
     //* is read only
-    const bool& isReadOnly( void ) const
+    bool isReadOnly( void ) const
     { return readOnly_; }
 
     //*@name methods reimplemented from base class

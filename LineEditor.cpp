@@ -175,7 +175,7 @@ void LineEditor::setReadOnly( bool value )
 }
 
 //_____________________________________________________________________
-void LineEditor::setModified( const bool& value )
+void LineEditor::setModified( bool value )
 {
     Debug::Throw( "LineEditor::setModified.\n" );
     if( value != modified_ )
@@ -187,7 +187,7 @@ void LineEditor::setModified( const bool& value )
 }
 
 //______________________________________________________________
-void LineEditor::setHasClearButton( const bool& value )
+void LineEditor::setHasClearButton( bool value )
 {
     if( value )
     {

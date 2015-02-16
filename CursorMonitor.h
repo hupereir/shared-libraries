@@ -47,7 +47,7 @@ class CursorMonitor: public QObject, public Counter
     { autoHideDelay_ = value; }
 
     //! enability
-    void setEnabled( const bool& value )
+    void setEnabled( bool value )
     {
         enabled_ = value;
         if( !enabled_ ) _setCursorState( CursorVisible );

@@ -49,7 +49,7 @@ class BaseFileInfoModel : public ListModel<T>
     {}
 
     //* show icons
-    void setShowIcons( const bool& value )
+    void setShowIcons( bool value )
     { showIcons_ = value; }
 
     //* show icons

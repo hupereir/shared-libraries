@@ -51,7 +51,7 @@ BrowseIconButton::BrowseIconButton( QWidget* parent, const QString& file):
 
 
 //_____________________________________________
-bool BrowseIconButton::setFile( const QString& file, const bool& check )
+bool BrowseIconButton::setFile( const QString& file, bool check )
 {
 
     Debug::Throw() << "BrowseIconButton::setFile - " << file << endl;

@@ -90,11 +90,11 @@ class FileList: public QObject, public Counter
     virtual void clear( void );
 
     //! check flag
-    virtual const bool& check( void ) const
+    virtual bool check( void ) const
     { return check_; }
 
     //! check_ flag
-    virtual void setCheck( const bool& value )
+    virtual void setCheck( bool value )
     { check_ = value; }
 
     Q_SIGNALS:
@@ -148,7 +148,7 @@ class FileList: public QObject, public Counter
     private:
 
     //! clean enabled
-    void _setCleanEnabled( const bool& value )
+    void _setCleanEnabled( bool value )
     { cleanEnabled_ = value; }
 
     //! maximum size (zero means no limit)
