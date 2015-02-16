@@ -166,16 +166,6 @@ int TextEditor::blockCount( void ) const
 }
 
 //________________________________________________
-bool TextEditor::isCursorVisible( void ) const
-{
-
-    QRect cursor_rect( cursorRect() );
-    QRect rect( viewport()->rect() );
-    return rect.intersects( cursor_rect );
-
-}
-
-//________________________________________________
 TextPosition TextEditor::textPosition( void )
 {
 
@@ -205,6 +195,51 @@ TextPosition TextEditor::textPosition( void )
     out.paragraph()--;
 
     #endif
+
+    return out;
+
+}
+
+//________________________________________________
+bool TextEditor::isCursorVisible( void ) const
+{
+
+    QRect cursor_rect( cursorRect() );
+    QRect rect( viewport()->rect() );
+    return rect.intersects( cursor_rect );
+
+}
+
+//______________________________________________________________________
+TextSelection TextEditor::selection( void ) const
+{
+    Debug::Throw( "TextEditor::selection.\n" );
+
+    // copy last selection
+    TextSelection out( "" );
+
+    // copy attributes from last selection
+    out.setFlag( TextSelection::CaseSensitive, lastSelection().flag( TextSelection::CaseSensitive ) );
+    out.setFlag( TextSelection::EntireWord, lastSelection().flag( TextSelection::EntireWord ) );
+
+    // try set from current selection
+    QString text;
+    if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) {
+
+        Debug::Throw( "TextEditor::selection - from clipboard.\n" );
+        out.setText( text );
+
+    } else if( textCursor().hasSelection() ) {
+
+        Debug::Throw() << "TextEditor::selection - from cursor: " << textCursor().selectedText() << endl;
+        out.setText( textCursor().selectedText() );
+
+    } else {
+
+        Debug::Throw( "TextEditor::selection - from last selection.\n" );
+        out.setText( lastSelection().text() );
+
+    }
 
     return out;
 
@@ -357,7 +392,6 @@ void TextEditor::selectLine( void )
 
 }
 
-
 //________________________________________________
 void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 {
@@ -447,7 +481,7 @@ void TextEditor::synchronize( TextEditor* editor )
 }
 
 //_____________________________________________________________________
-bool TextEditor::setActive( const bool& active )
+bool TextEditor::setActive( bool active )
 {
 
     Debug::Throw( "TextEditor::setActive.\n" );
@@ -460,7 +494,7 @@ bool TextEditor::setActive( const bool& active )
 }
 
 //__________________________________________________________________
-void TextEditor::showReplacements( const unsigned int& counts )
+void TextEditor::showReplacements( int counts )
 {
 
     Debug::Throw( "TextEditor::showReplacements.\n" );
@@ -474,7 +508,6 @@ void TextEditor::showReplacements( const unsigned int& counts )
     return;
 
 }
-
 
 //__________________________________________________________________
 void TextEditor::setReadOnly( bool readOnly )
@@ -497,7 +530,7 @@ void TextEditor::resetUndoRedoStack( void )
 }
 
 //______________________________________________________________________________
-void TextEditor::installContextMenuActions( BaseContextMenu* menu, const bool& allActions )
+void TextEditor::installContextMenuActions( BaseContextMenu* menu, bool allActions )
 {
 
     Debug::Throw( "TextEditor::installContextMenuActions.\n" );
@@ -781,7 +814,7 @@ void TextEditor::replaceAgainBackward( void )
 }
 
 //______________________________________________________________________
-unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool& show_dialog )
+unsigned int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 {
 
     Debug::Throw( "TextEditor::replaceInSelection.\n" );
@@ -791,7 +824,7 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool
     if( isReadOnly() ) return 0;
 
     // progress dialog
-    if( show_dialog ) _createProgressDialog();
+    if( showDialog ) _createProgressDialog();
 
     unsigned int counts(0);
 
@@ -812,19 +845,19 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, const bool
     }
 
     Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
-    if( show_dialog ) showReplacements( counts );
+    if( showDialog ) showReplacements( counts );
     return counts;
 
 }
 
 //______________________________________________________________________
-unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& show_dialog )
+unsigned int TextEditor::replaceInWindow( TextSelection selection, bool showDialog )
 {
 
     Debug::Throw( "TextEditor::replaceInWindow.\n" );
 
     // progress dialog
-    if( show_dialog ) _createProgressDialog();
+    if( showDialog ) _createProgressDialog();
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -835,7 +868,7 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, const bool& s
     cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
     unsigned int counts( _replaceInRange( selection, cursor, ExpandCursor ) );
 
-    if( show_dialog ) showReplacements( counts );
+    if( showDialog ) showReplacements( counts );
     return counts;
 
 }
@@ -1725,48 +1758,13 @@ void TextEditor::_installActions( void )
 }
 
 //______________________________________________________________________
-TextSelection TextEditor::selection( void ) const
-{
-    Debug::Throw( "TextEditor::selection.\n" );
-
-    // copy last selection
-    TextSelection out( "" );
-
-    // copy attributes from last selection
-    out.setFlag( TextSelection::CaseSensitive, lastSelection().flag( TextSelection::CaseSensitive ) );
-    out.setFlag( TextSelection::EntireWord, lastSelection().flag( TextSelection::EntireWord ) );
-
-    // try set from current selection
-    QString text;
-    if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) {
-
-        Debug::Throw( "TextEditor::selection - from clipboard.\n" );
-        out.setText( text );
-
-    } else if( textCursor().hasSelection() ) {
-
-        Debug::Throw() << "TextEditor::selection - from cursor: " << textCursor().selectedText() << endl;
-        out.setText( textCursor().selectedText() );
-
-    } else {
-
-        Debug::Throw( "TextEditor::selection - from last selection.\n" );
-        out.setText( lastSelection().text() );
-
-    }
-
-    return out;
-
-}
-
-//______________________________________________________________________
 void TextEditor::_createFindDialog( void )
 {
 
     Debug::Throw( "TextEditor::_createFindDialog.\n" );
     if( !findDialog_ )
     {
-        if( !findWidget_ ) _createFindWidget( false );
+        if( !findWidget_ ) createFindWidget( false );
         findDialog_ = new BaseFindDialog( this );
         findDialog_->setWindowTitle( tr( "Find in Text" ) );
         findDialog_->setBaseFindWidget( findWidget_ );
@@ -1777,10 +1775,10 @@ void TextEditor::_createFindDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createFindWidget( bool compact )
+void TextEditor::createFindWidget( bool compact )
 {
 
-    Debug::Throw( "TextEditor::_createFindWidget.\n" );
+    Debug::Throw( "TextEditor::createFindWidget.\n" );
     if( !findWidget_ )
     {
         findWidget_ = new BaseFindWidget( this, compact );
@@ -1794,7 +1792,7 @@ void TextEditor::_createFindWidget( bool compact )
 }
 
 //______________________________________________________________________
-bool TextEditor::_findForward( const TextSelection& selection, const bool& rewind )
+bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
 {
     Debug::Throw( "TextEditor::_findForward.\n" );
     if( selection.text().isEmpty() ) return false;
@@ -1903,7 +1901,7 @@ bool TextEditor::_findForward( const TextSelection& selection, const bool& rewin
 }
 
 //______________________________________________________________________
-bool TextEditor::_findBackward( const TextSelection& selection, const bool& rewind )
+bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
 {
 
     Debug::Throw( "TextEditor::_findBackward.\n" );
@@ -2009,7 +2007,7 @@ void TextEditor::_createReplaceDialog( void )
     Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
     if( !replaceDialog_ )
     {
-        if( !replaceWidget_ ) _createReplaceWidget( false );
+        if( !replaceWidget_ ) createReplaceWidget( false );
         replaceDialog_ = new BaseReplaceDialog( this );
         replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
         replaceDialog_->setBaseFindWidget( replaceWidget_ );
@@ -2020,10 +2018,10 @@ void TextEditor::_createReplaceDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createReplaceWidget( bool compact )
+void TextEditor::createReplaceWidget( bool compact )
 {
 
-    Debug::Throw( "TextEditor::_createReplaceWidget.\n" );
+    Debug::Throw( "TextEditor::createReplaceWidget.\n" );
     if( !replaceWidget_ )
     {
 
@@ -2048,18 +2046,18 @@ void TextEditor::_createSelectLineDialog( void )
     {
         Debug::Throw( "TextEditor::_createSelectLineDialog.\n" );
         selectLineDialog_ = new SelectLineDialog( this );
-        if( !selectLineWidget_ ) _createSelectLineWidget( false );
+        if( !selectLineWidget_ ) createSelectLineWidget( false );
         selectLineDialog_->setSelectLineWidget( selectLineWidget_ );
     }
 
     return;
 }
 //________________________________________________
-void TextEditor::_createSelectLineWidget( bool compact )
+void TextEditor::createSelectLineWidget( bool compact )
 {
     if( !selectLineWidget_ )
     {
-        Debug::Throw( "TextEditor::_createSelectLineWidget.\n" );
+        Debug::Throw( "TextEditor::createSelectLineWidget.\n" );
         selectLineWidget_ = new SelectLineWidget( this, compact );
         connect( selectLineWidget_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
         connect( this, SIGNAL(lineFound()), selectLineWidget_, SLOT(matchFound()) );
@@ -2649,7 +2647,7 @@ void TextEditor::_findFromDialog( void )
 
         if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
         if( selectLineWidget_ && selectLineWidget_->isVisible() ) selectLineWidget_->hide();
-        if( !findWidget_ ) _createFindWidget( true );
+        if( !findWidget_ ) createFindWidget( true );
         findWidget_->show();
 
     } else {
@@ -2685,7 +2683,7 @@ void TextEditor::_replaceFromDialog( void )
 
         if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
         if( selectLineWidget_ && selectLineWidget_->isVisible() ) selectLineWidget_->hide();
-        if( !replaceWidget_ ) _createReplaceWidget( true );
+        if( !replaceWidget_ ) createReplaceWidget( true );
         replaceWidget_->show();
 
     } else {
@@ -2725,7 +2723,7 @@ void TextEditor::_selectLineFromDialog( void )
 
         if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
         if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
-        if( !selectLineWidget_ ) _createSelectLineWidget( true );
+        if( !selectLineWidget_ ) createSelectLineWidget( true );
         selectLineWidget_->show();
 
     } else {
@@ -2773,19 +2771,19 @@ void TextEditor::Container::_initialize( void )
     editor_->useEmbeddedDialogs_ = true;
 
     // find widget
-    editor_->_createFindWidget( true );
+    editor_->createFindWidget( true );
     editor_->findWidget_->setParent( this );
     vLayout->addWidget( editor_->findWidget_ );
     editor_->findWidget_->hide();
 
     // replace widget
-    editor_->_createReplaceWidget( true );
+    editor_->createReplaceWidget( true );
     editor_->replaceWidget_->setParent( this );
     vLayout->addWidget( editor_->replaceWidget_ );
     editor_->replaceWidget_->hide();
 
     // select line dialog
-    editor_->_createSelectLineWidget( true );
+    editor_->createSelectLineWidget( true );
     editor_->selectLineWidget_->setParent( this );
     vLayout->addWidget( editor_->selectLineWidget_ );
     editor_->selectLineWidget_->hide();

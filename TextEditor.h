@@ -89,6 +89,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* destrutor
     virtual ~TextEditor( void );
 
+    //*@name accessors
+    //@{
+
     //* retrieve number of blocks in document
     virtual int blockCount( void ) const;
 
@@ -102,6 +105,49 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* return true if current textCursor is visible
     virtual bool isCursorVisible( void ) const;
+
+    //* synchronization
+    virtual bool isSynchronized( void ) const
+    { return synchronize_; }
+
+    //* active state (in case of synchronization with other editors)
+    virtual bool isActive( void ) const
+    { return active_; }
+
+    //* TextSelection object from this selection, or clipboard
+    TextSelection selection( void ) const;
+
+    //* last searched selection
+    static TextSelection& lastSelection( void );
+
+    //* enable/disable reading of text wrapping mode from options
+    bool wrapFromOptions( void ) const
+    { return wrapFromOptions_; }
+
+    //* enable/disable reading of line number display from options
+    bool lineNumbersFromOptions( void ) const
+    { return lineNumberFromOptions_; }
+
+    //* tab character
+    virtual const QString& tabCharacter( void ) const
+    { return tab_; }
+
+    //* tab character
+    virtual const QString& normalTabCharacter( void ) const
+    { return normalTab_; }
+
+    //* tab character
+    virtual const QString& emulatedTabCharacter( void ) const
+    { return emulatedTab_; }
+
+    //* block highlight object
+    BlockHighlight& blockHighlight() const
+    { return *blockHighlight_; }
+
+    //@}
+
+    //*@name modifiers
+    //@{
 
     #ifdef QT_USE_PLAIN_TEXT_EDIT
     //* set text always fall back to plain text
@@ -142,62 +188,30 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
         { boxSelection_.clear(); }
     }
 
-    //*@name synchronization
-    //@{
-
     //* synchronization
-    virtual void setSynchronized( const bool& value )
+    virtual void setSynchronized( bool value )
     { synchronize_ = value; }
-
-    //* synchronization
-    virtual const bool& isSynchronized( void ) const
-    { return synchronize_; }
 
     //* clone (and synchronize) text editor
     virtual void synchronize( TextEditor* );
 
-    //* activity
-    virtual bool setActive( const bool& );
-
-    //* activity
-    virtual const bool& isActive( void ) const
-    { return active_; }
-
-    //@}
+    //* active state (in case of synchronization with other editors)
+    virtual bool setActive( bool );
 
     //* popup dialog with the number of replacement performed
-    virtual void showReplacements( const unsigned int& counts );
-
-    //* TextSelection object from this selection, or clipboard
-    TextSelection selection( void ) const;
-
-    //* last searched selection
-    static TextSelection& lastSelection( void );
+    virtual void showReplacements( int );
 
     //* last searched selection
     static void setLastSelection( const TextSelection& selection )
     { lastSelection() = selection; }
 
-    //*@name text wrap
-    //@{
-
     //* enable/disable reading of text wrapping mode from options
-    const bool& wrapFromOptions( void ) const
-    { return wrapFromOptions_; }
-
-    //* enable/disable reading of text wrapping mode from options
-    void setWrapFromOptions( const bool& value )
+    void setWrapFromOptions( bool value )
     { wrapFromOptions_ = value; }
 
     //* enable/disable reading of line number display from options
-    const bool& lineNumbersFromOptions( void ) const
-    { return lineNumberFromOptions_; }
-
-    //* enable/disable reading of line number display from options
-    void setLineNumbersFromOptions( const bool& value )
+    void setLineNumbersFromOptions( bool value )
     { lineNumberFromOptions_ = value; }
-
-    //@}
 
     //* read-only
     virtual void setReadOnly( bool );
@@ -206,7 +220,63 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void resetUndoRedoStack( void );
 
     //* install actions in context menu
-    virtual void installContextMenuActions( BaseContextMenu*, const bool& = true );
+    virtual void installContextMenuActions( BaseContextMenu*, bool = true );
+
+    //* find widget
+    virtual void createFindWidget( bool compact );
+
+    //* replace widget
+    virtual void createReplaceWidget( bool compact );
+
+    //* select line widget
+    virtual void createSelectLineWidget( bool compact );
+
+    //* changes block background
+    virtual void setBackground( QTextBlock, const QColor& );
+
+    //* clear block background
+    virtual void clearBackground( QTextBlock );
+
+    //* clear all blocks background
+    virtual void clearAllBackgrounds( void );
+
+    //* scrollbar position
+    QPoint scrollbarPosition( void ) const
+    { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
+
+    //* widget to viewport translation
+    QRect toViewport( const QRect& rect ) const
+    { return rect.translated( -scrollbarPosition() ); }
+
+    //* widget to viewport translation
+    QPoint toViewport( const QPoint& point ) const
+    { return point - scrollbarPosition(); }
+
+    //* widget from viewport translation
+    QRect fromViewport( const QRect& rect ) const
+    { return rect.translated( scrollbarPosition() ); }
+
+    //* widget from viewport translation
+    QPoint fromViewport( const QPoint& point ) const
+    { return point + scrollbarPosition(); }
+
+    //* modifiers
+    Modifiers modifiers( void ) const
+    { return modifiers_; }
+
+    //* modifiers
+    bool modifier( const Modifier& key ) const
+    { return modifiers_&key; }
+
+    // return true if block is an empty line
+    virtual bool isEmptyBlock( const QTextBlock& ) const
+    { return false; }
+
+    //* return true is block is to be ignored from indentation scheme
+    virtual bool ignoreBlock( const QTextBlock& ) const
+    { return false; }
+
+    //@}
 
     //*@name actions
     //@{
@@ -283,77 +353,6 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     { return *showLineNumberAction_; }
 
     //@}
-
-    //*@name tab emulation
-    //@{
-
-    //* tab character
-    virtual const QString& tabCharacter( void ) const
-    { return tab_; }
-
-    //* tab character
-    virtual const QString& normalTabCharacter( void ) const
-    { return normalTab_; }
-
-    //* tab character
-    virtual const QString& emulatedTabCharacter( void ) const
-    { return emulatedTab_; }
-
-    //@}
-
-    //* block highlight object
-    BlockHighlight& blockHighlight() const
-    { return *blockHighlight_; }
-
-    //* changes block background
-    virtual void setBackground( QTextBlock, const QColor& );
-
-    //* clear block background
-    virtual void clearBackground( QTextBlock );
-
-    //* clear all blocks background
-    virtual void clearAllBackgrounds( void );
-
-    //*@name widget to viewport translations
-    //@{
-
-    //* scrollbar position
-    QPoint scrollbarPosition( void ) const
-    { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
-
-    //* widget to viewport translation
-    QRect toViewport( const QRect& rect ) const
-    { return rect.translated( -scrollbarPosition() ); }
-
-    //* widget to viewport translation
-    QPoint toViewport( const QPoint& point ) const
-    { return point - scrollbarPosition(); }
-
-    //* widget from viewport translation
-    QRect fromViewport( const QRect& rect ) const
-    { return rect.translated( scrollbarPosition() ); }
-
-    //* widget from viewport translation
-    QPoint fromViewport( const QPoint& point ) const
-    { return point + scrollbarPosition(); }
-
-    //@}
-
-    //* modifiers
-    Modifiers modifiers( void ) const
-    { return modifiers_; }
-
-    //* modifiers
-    bool modifier( const Modifier& key ) const
-    { return modifiers_&key; }
-
-    // return true if block is an empty line
-    virtual bool isEmptyBlock( const QTextBlock& ) const
-    { return false; }
-
-    //* return true is block is to be ignored from indentation scheme
-    virtual bool ignoreBlock( const QTextBlock& ) const
-    { return false; }
 
     //* container class for embedded Find dialog
     class Container: public QWidget, public Counter
@@ -449,10 +448,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void replace( TextSelection selection );
 
     //* replace selection in range
-    virtual unsigned int replaceInSelection( TextSelection selection, const bool& show_dialog = true );
+    virtual unsigned int replaceInSelection( TextSelection selection, bool showDialog = true );
 
     //* replace selection in window, returns number of replacements
-    virtual unsigned int replaceInWindow( TextSelection selection, const bool& show_dialog = true );
+    virtual unsigned int replaceInWindow( TextSelection selection, bool showDialog = true );
 
     //* replace again forward
     virtual void replaceAgainForward( void );
@@ -531,26 +530,17 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* find dialog
     virtual void _createFindDialog( void );
 
-    //* find widget
-    virtual void _createFindWidget( bool compact );
-
     //* find selection in forward direction
-    virtual bool _findForward( const TextSelection& selection, const bool& rewind );
+    virtual bool _findForward( const TextSelection& selection, bool rewind );
 
     //* find selection in backward direction
-    virtual bool _findBackward( const TextSelection& selection, const bool& rewind );
+    virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
     //* replace dialog
     virtual void _createReplaceDialog( void );
 
-    //* replace widget
-    virtual void _createReplaceWidget( bool compact );
-
     //* select line dialog
     virtual void _createSelectLineDialog( void );
-
-    //* select line widget
-    virtual void _createSelectLineWidget( bool compact );
 
     //* progress dialog
     virtual void _createProgressDialog( void );
@@ -606,7 +596,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual bool _setTabSize( const int& size );
 
     //* tab emulation
-    virtual const bool& _hasTabEmulation( void ) const
+    virtual bool _hasTabEmulation( void ) const
     { return hasTabEmulation_; }
 
     //* insert (normal or emulated) tab
