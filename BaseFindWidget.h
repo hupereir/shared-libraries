@@ -24,6 +24,7 @@
 
 #include "Counter.h"
 #include "CustomComboBox.h"
+#include "EmbeddedWidget.h"
 #include "TextSelection.h"
 #include "QOrderedSet.h"
 
@@ -35,7 +36,7 @@
 #include <QPalette>
 
 //* find dialog for text editor widgets
-class BaseFindWidget: public QWidget, public Counter
+class BaseFindWidget: public EmbeddedWidget, public Counter
 {
 
     //* Qt meta object declaration

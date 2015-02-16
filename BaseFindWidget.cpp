@@ -40,7 +40,7 @@ QOrderedSet<QString>& BaseFindWidget::_searchedStrings( void )
 
 //________________________________________________________________________
 BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
-    QWidget( parent ),
+    EmbeddedWidget( parent ),
     Counter( "BaseFindWidget" )
 {
     Debug::Throw( "BaseFindWidget::BaseFindWidget.\n" );

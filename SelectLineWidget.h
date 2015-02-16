@@ -23,6 +23,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "EmbeddedWidget.h"
 
 #include <QAbstractButton>
 #include <QPalette>
@@ -31,7 +32,7 @@
 class LineEditor;
 
 //* find_text dialog for text editor widgets
-class SelectLineWidget: public QWidget, public Counter
+class SelectLineWidget: public EmbeddedWidget, public Counter
 {
 
     //* Qt meta object declaration

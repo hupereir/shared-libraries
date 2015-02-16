@@ -34,7 +34,7 @@
 
 //_______________________________________________________
 SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
-    QWidget( parent ),
+    EmbeddedWidget( parent ),
     Counter( "SelectLineWidget" )
 {
 

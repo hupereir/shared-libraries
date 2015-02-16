@@ -115,6 +115,7 @@ set(base_qt_SOURCES
   DragMonitor.cpp
   ElidedLabel.cpp
   ErrorHandler.cpp
+  EmbeddedWidget.cpp
   FileDialog.cpp
   FileList.cpp
   FilePermissionsWidget.cpp

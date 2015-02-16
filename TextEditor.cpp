@@ -2645,8 +2645,6 @@ void TextEditor::_findFromDialog( void )
     if( useEmbeddedDialogs_ )
     {
 
-        if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
-        if( selectLineWidget_ && selectLineWidget_->isVisible() ) selectLineWidget_->hide();
         if( !findWidget_ ) createFindWidget( true );
         findWidget_->show();
 
@@ -2681,8 +2679,6 @@ void TextEditor::_replaceFromDialog( void )
     if( useEmbeddedDialogs_ )
     {
 
-        if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
-        if( selectLineWidget_ && selectLineWidget_->isVisible() ) selectLineWidget_->hide();
         if( !replaceWidget_ ) createReplaceWidget( true );
         replaceWidget_->show();
 
@@ -2721,8 +2717,6 @@ void TextEditor::_selectLineFromDialog( void )
     if( useEmbeddedDialogs_ )
     {
 
-        if( findWidget_ && findWidget_->isVisible() ) findWidget_->hide();
-        if( replaceWidget_ && replaceWidget_->isVisible() ) replaceWidget_->hide();
         if( !selectLineWidget_ ) createSelectLineWidget( true );
         selectLineWidget_->show();
 
