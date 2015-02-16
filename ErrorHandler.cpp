@@ -116,6 +116,7 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "QCoreApplication::postEvent: Unexpected null receiver" );
 
     // QT5 specific messages
+    disableMessage( "void QWindow::setTransientParent" );
     disableMessage( "QBackingStore::flush() called with non-exposed window" );
     disableMessage( "QXcbClipboard: SelectionRequest too old" );
 
