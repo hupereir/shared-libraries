@@ -417,7 +417,7 @@ class IconView: public QAbstractItemView, public Counter
     int rowCount_ = 1;
 
     //* true if use dialog for finding
-    bool useEmbeddedDialogs_ = false;
+    bool useEmbeddedWidgets_ = false;
 
     //! total rect
     QRect boundingRect_;

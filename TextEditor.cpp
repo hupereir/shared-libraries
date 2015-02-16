@@ -578,6 +578,63 @@ void TextEditor::installContextMenuActions( BaseContextMenu* menu, bool allActio
 
 }
 
+
+//______________________________________________________________________
+void TextEditor::createFindWidget( bool compact )
+{
+
+    Debug::Throw( "TextEditor::createFindWidget.\n" );
+    if( !findWidget_ )
+    {
+        findWidget_ = new BaseFindWidget( this, compact );
+        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
+        connect( this, SIGNAL(destroyed()), findWidget_, SLOT(deleteLater()) );
+    }
+
+    return;
+
+}
+
+
+//______________________________________________________________________
+void TextEditor::createReplaceWidget( bool compact )
+{
+
+    Debug::Throw( "TextEditor::createReplaceWidget.\n" );
+    if( !replaceWidget_ )
+    {
+
+        replaceWidget_ = new BaseReplaceWidget( this, compact );
+        connect( replaceWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( replaceWidget_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
+        connect( replaceWidget_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
+        connect( replaceWidget_, SIGNAL(replaceInSelection(TextSelection)), SLOT(replaceInSelection(TextSelection)) );
+        connect( this, SIGNAL(matchFound()), replaceWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(noMatchFound()), replaceWidget_, SLOT(noMatchFound()) );
+        connect( this, SIGNAL(destroyed()), replaceWidget_, SLOT(deleteLater()) );
+
+    }
+
+    return;
+
+}
+
+//________________________________________________
+void TextEditor::createSelectLineWidget( bool compact )
+{
+    if( !selectLineWidget_ )
+    {
+        Debug::Throw( "TextEditor::createSelectLineWidget.\n" );
+        selectLineWidget_ = new SelectLineWidget( this, compact );
+        connect( selectLineWidget_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
+        connect( this, SIGNAL(lineFound()), selectLineWidget_, SLOT(matchFound()) );
+        connect( this, SIGNAL(lineNotFound()), selectLineWidget_, SLOT(noMatchFound()) );
+        connect( this, SIGNAL(destroyed()), selectLineWidget_, SLOT(deleteLater()) );
+   }
+}
+
 //___________________________________________________________________________
 void TextEditor::setBackground( QTextBlock block, const QColor& color )
 {
@@ -1775,19 +1832,55 @@ void TextEditor::_createFindDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::createFindWidget( bool compact )
+void TextEditor::_createReplaceDialog( void )
 {
 
-    Debug::Throw( "TextEditor::createFindWidget.\n" );
-    if( !findWidget_ )
+    Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
+    if( !replaceDialog_ )
     {
-        findWidget_ = new BaseFindWidget( this, compact );
-        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
+        if( !replaceWidget_ ) createReplaceWidget( false );
+        replaceDialog_ = new BaseReplaceDialog( this );
+        replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
+        replaceDialog_->setBaseFindWidget( replaceWidget_ );
     }
 
     return;
+
+}
+
+//________________________________________________
+void TextEditor::_createSelectLineDialog( void )
+{
+    if( !selectLineDialog_ )
+    {
+        Debug::Throw( "TextEditor::_createSelectLineDialog.\n" );
+        selectLineDialog_ = new SelectLineDialog( this );
+        if( !selectLineWidget_ ) createSelectLineWidget( false );
+        selectLineDialog_->setSelectLineWidget( selectLineWidget_ );
+    }
+
+    return;
+}
+
+//__________________________________________________
+void TextEditor::_createProgressDialog( void )
+{
+
+    Debug::Throw( "TextEditor::_createProgressDialog.\n" );
+
+    // create dialog
+    QProgressDialog* dialog = new QProgressDialog(0);
+    dialog->setAttribute( Qt::WA_DeleteOnClose, true );
+    dialog->setLabelText( tr( "Replace text in selection" ) );
+    dialog->setWindowTitle( tr( "Replace in Text" ) );
+
+    // connections
+    connect( this, SIGNAL(busy(int)), dialog, SLOT(setMaximum(int)) );
+    connect( this, SIGNAL(progressAvailable(int)), dialog, SLOT(setValue(int)) );
+    connect( this, SIGNAL(idle()), dialog, SLOT(close()) );
+
+    QtUtil::centerOnWidget( dialog, this );
+    dialog->show();
 
 }
 
@@ -1999,94 +2092,6 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
     return false;
 
 }
-
-//______________________________________________________________________
-void TextEditor::_createReplaceDialog( void )
-{
-
-    Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
-    if( !replaceDialog_ )
-    {
-        if( !replaceWidget_ ) createReplaceWidget( false );
-        replaceDialog_ = new BaseReplaceDialog( this );
-        replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
-        replaceDialog_->setBaseFindWidget( replaceWidget_ );
-    }
-
-    return;
-
-}
-
-//______________________________________________________________________
-void TextEditor::createReplaceWidget( bool compact )
-{
-
-    Debug::Throw( "TextEditor::createReplaceWidget.\n" );
-    if( !replaceWidget_ )
-    {
-
-        replaceWidget_ = new BaseReplaceWidget( this, compact );
-        connect( replaceWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( replaceWidget_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
-        connect( replaceWidget_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
-        connect( replaceWidget_, SIGNAL(replaceInSelection(TextSelection)), SLOT(replaceInSelection(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), replaceWidget_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), replaceWidget_, SLOT(noMatchFound()) );
-
-    }
-
-    return;
-
-}
-
-//________________________________________________
-void TextEditor::_createSelectLineDialog( void )
-{
-    if( !selectLineDialog_ )
-    {
-        Debug::Throw( "TextEditor::_createSelectLineDialog.\n" );
-        selectLineDialog_ = new SelectLineDialog( this );
-        if( !selectLineWidget_ ) createSelectLineWidget( false );
-        selectLineDialog_->setSelectLineWidget( selectLineWidget_ );
-    }
-
-    return;
-}
-//________________________________________________
-void TextEditor::createSelectLineWidget( bool compact )
-{
-    if( !selectLineWidget_ )
-    {
-        Debug::Throw( "TextEditor::createSelectLineWidget.\n" );
-        selectLineWidget_ = new SelectLineWidget( this, compact );
-        connect( selectLineWidget_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
-        connect( this, SIGNAL(lineFound()), selectLineWidget_, SLOT(matchFound()) );
-        connect( this, SIGNAL(lineNotFound()), selectLineWidget_, SLOT(noMatchFound()) );
-   }
-}
-
-//__________________________________________________
-void TextEditor::_createProgressDialog( void )
-{
-
-    Debug::Throw( "TextEditor::_createProgressDialog.\n" );
-
-    // create dialog
-    QProgressDialog* dialog = new QProgressDialog(0);
-    dialog->setAttribute( Qt::WA_DeleteOnClose, true );
-    dialog->setLabelText( tr( "Replace text in selection" ) );
-    dialog->setWindowTitle( tr( "Replace in Text" ) );
-
-    // connections
-    connect( this, SIGNAL(busy(int)), dialog, SLOT(setMaximum(int)) );
-    connect( this, SIGNAL(progressAvailable(int)), dialog, SLOT(setValue(int)) );
-    connect( this, SIGNAL(idle()), dialog, SLOT(close()) );
-
-    QtUtil::centerOnWidget( dialog, this );
-    dialog->show();
-
-}
-
 
 //______________________________________________________________________
 unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
@@ -2642,7 +2647,7 @@ void TextEditor::_findFromDialog( void )
     }
 
     // create
-    if( useEmbeddedDialogs_ )
+    if( useEmbeddedWidgets_ )
     {
 
         if( !findWidget_ ) createFindWidget( true );
@@ -2676,7 +2681,7 @@ void TextEditor::_replaceFromDialog( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    if( useEmbeddedDialogs_ )
+    if( useEmbeddedWidgets_ )
     {
 
         if( !replaceWidget_ ) createReplaceWidget( true );
@@ -2714,7 +2719,7 @@ void TextEditor::_selectLineFromDialog( void )
 
     Debug::Throw( "TextEditor::_selectLineFromDialog.\n" );
 
-    if( useEmbeddedDialogs_ )
+    if( useEmbeddedWidgets_ )
     {
 
         if( !selectLineWidget_ ) createSelectLineWidget( true );
@@ -2762,7 +2767,7 @@ void TextEditor::Container::_initialize( void )
 
     // editor
     vLayout->addWidget( editor_ );
-    editor_->useEmbeddedDialogs_ = true;
+    editor_->useEmbeddedWidgets_ = true;
 
     // find widget
     editor_->createFindWidget( true );

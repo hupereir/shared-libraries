@@ -403,7 +403,7 @@ class TreeView: public QTreeView, public Counter
     QString showHeaderOptionName_;
 
     //* true if use dialog for finding
-    bool useEmbeddedDialogs_ = false;
+    bool useEmbeddedWidgets_ = false;
 
     //* true if item margins are to be set from options
     bool itemMarginFromOptions_ = true;

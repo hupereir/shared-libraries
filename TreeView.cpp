@@ -588,6 +588,7 @@ void TreeView::_createFindWidget( bool compact )
         connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
+        connect( this, SIGNAL(destroyed()), findWidget_, SLOT(deleteLater()) );
 
     }
 
@@ -894,7 +895,7 @@ void TreeView::_findFromDialog( void )
     }
 
     // create
-    if( useEmbeddedDialogs_ )
+    if( useEmbeddedWidgets_ )
     {
 
         if( !findWidget_ ) _createFindWidget( true );
@@ -1085,7 +1086,7 @@ void TreeView::Container::_initialize( void )
 
     // treeview
     vLayout->addWidget( treeView_ );
-    treeView_->useEmbeddedDialogs_ = true;
+    treeView_->useEmbeddedWidgets_ = true;
 
     // find widget
     treeView_->_createFindWidget( true );

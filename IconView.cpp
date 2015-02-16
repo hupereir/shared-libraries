@@ -1077,6 +1077,7 @@ void IconView::_createFindWidget( bool compact )
         connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
+        connect( this, SIGNAL(destroyed()), findWidget_, SLOT(deleteLater()) );
 
     }
 
@@ -1350,7 +1351,7 @@ void IconView::_findFromDialog( void )
     }
 
     // create
-    if( useEmbeddedDialogs_ )
+    if( useEmbeddedWidgets_ )
     {
 
         if( !findWidget_ ) _createFindWidget( true );
@@ -1480,7 +1481,7 @@ void IconView::Container::_initialize( void )
 
     // iconView
     vLayout->addWidget( iconView_ );
-    iconView_->useEmbeddedDialogs_ = true;
+    iconView_->useEmbeddedWidgets_ = true;
 
     // find widget
     iconView_->_createFindWidget( true );

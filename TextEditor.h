@@ -144,6 +144,54 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     BlockHighlight& blockHighlight() const
     { return *blockHighlight_; }
 
+    //* find widget
+    BaseFindWidget& findWidget( void ) const
+    { return *findWidget_; }
+
+    //* replace widget
+    BaseReplaceWidget& replaceWidget( void ) const
+    { return *replaceWidget_; }
+
+    //* select line widget
+    SelectLineWidget& selectLineWidget( void ) const
+    { return *selectLineWidget_; }
+
+    //* scrollbar position
+    QPoint scrollbarPosition( void ) const
+    { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
+
+    //* widget to viewport translation
+    QRect toViewport( const QRect& rect ) const
+    { return rect.translated( -scrollbarPosition() ); }
+
+    //* widget to viewport translation
+    QPoint toViewport( const QPoint& point ) const
+    { return point - scrollbarPosition(); }
+
+    //* widget from viewport translation
+    QRect fromViewport( const QRect& rect ) const
+    { return rect.translated( scrollbarPosition() ); }
+
+    //* widget from viewport translation
+    QPoint fromViewport( const QPoint& point ) const
+    { return point + scrollbarPosition(); }
+
+    //* modifiers
+    Modifiers modifiers( void ) const
+    { return modifiers_; }
+
+    //* modifiers
+    bool modifier( const Modifier& key ) const
+    { return modifiers_&key; }
+
+    // return true if block is an empty line
+    virtual bool isEmptyBlock( const QTextBlock& ) const
+    { return false; }
+
+    //* return true is block is to be ignored from indentation scheme
+    virtual bool ignoreBlock( const QTextBlock& ) const
+    { return false; }
+
     //@}
 
     //*@name modifiers
@@ -222,6 +270,14 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu*, bool = true );
 
+    //* use embedded widgets
+    //** TODO: should delete widgets in case value has changed */
+    void setUseEmbeddedWidgets( bool value )
+    {
+        if( useEmbeddedWidgets_ == value ) return;
+        useEmbeddedWidgets_ = value;
+    }
+
     //* find widget
     virtual void createFindWidget( bool compact );
 
@@ -239,42 +295,6 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* clear all blocks background
     virtual void clearAllBackgrounds( void );
-
-    //* scrollbar position
-    QPoint scrollbarPosition( void ) const
-    { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
-
-    //* widget to viewport translation
-    QRect toViewport( const QRect& rect ) const
-    { return rect.translated( -scrollbarPosition() ); }
-
-    //* widget to viewport translation
-    QPoint toViewport( const QPoint& point ) const
-    { return point - scrollbarPosition(); }
-
-    //* widget from viewport translation
-    QRect fromViewport( const QRect& rect ) const
-    { return rect.translated( scrollbarPosition() ); }
-
-    //* widget from viewport translation
-    QPoint fromViewport( const QPoint& point ) const
-    { return point + scrollbarPosition(); }
-
-    //* modifiers
-    Modifiers modifiers( void ) const
-    { return modifiers_; }
-
-    //* modifiers
-    bool modifier( const Modifier& key ) const
-    { return modifiers_&key; }
-
-    // return true if block is an empty line
-    virtual bool isEmptyBlock( const QTextBlock& ) const
-    { return false; }
-
-    //* return true is block is to be ignored from indentation scheme
-    virtual bool ignoreBlock( const QTextBlock& ) const
-    { return false; }
 
     //@}
 
@@ -530,12 +550,6 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* find dialog
     virtual void _createFindDialog( void );
 
-    //* find selection in forward direction
-    virtual bool _findForward( const TextSelection& selection, bool rewind );
-
-    //* find selection in backward direction
-    virtual bool _findBackward( const TextSelection& selection, bool rewind );
-
     //* replace dialog
     virtual void _createReplaceDialog( void );
 
@@ -544,6 +558,12 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* progress dialog
     virtual void _createProgressDialog( void );
+
+    //* find selection in forward direction
+    virtual bool _findForward( const TextSelection& selection, bool rewind );
+
+    //* find selection in backward direction
+    virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
     //* define how cursor should be updated while replacing
     enum CursorMode
@@ -878,7 +898,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     bool synchronize_ = false;
 
     //* true if use dialog for finding
-    bool useEmbeddedDialogs_ = false;
+    bool useEmbeddedWidgets_ = false;
 
     //* box selection
     BoxSelection boxSelection_;
