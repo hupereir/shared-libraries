@@ -152,6 +152,9 @@ class IconView: public QAbstractItemView, public Counter
         //* constructor
         Container( QWidget* = nullptr );
 
+        //* constructor
+        Container( QWidget*, IconView* );
+
         //* destructor
         ~Container( void ) = default;
 
@@ -160,6 +163,9 @@ class IconView: public QAbstractItemView, public Counter
         { return *iconView_; }
 
         private:
+
+        //* initialize
+        void _initialize( void );
 
         //* contained iconView
         IconView* iconView_;

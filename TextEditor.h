@@ -364,7 +364,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
         explicit Container( QWidget* = nullptr );
 
         //* constructor
-        Container( QWidget* parent, TextEditor* editor );
+        Container( QWidget*, TextEditor* );
 
         //* destructor
         ~Container( void ) = default;

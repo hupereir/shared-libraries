@@ -1060,9 +1060,22 @@ QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 //_________________________________________________________
 TreeView::Container::Container( QWidget* parent ):
     QWidget( parent ),
-    Counter( "TreeView::Container" )
+    Counter( "TreeView::Container" ),
+    treeView_( new TreeView() )
+{ _initialize(); }
+
+//_________________________________________________________
+TreeView::Container::Container( QWidget* parent, TreeView* treeView ):
+    QWidget( parent ),
+    Counter( "TreeView::Container" ),
+    treeView_( treeView )
+{ _initialize(); }
+
+//_________________________________________________________
+void TreeView::Container::_initialize( void )
 {
-    Debug::Throw( "TreeView::Container::Container.\n" );
+    Debug::Throw( "TreeView::Container::_initialize.\n" );
+    treeView_->setParent( this );
 
     // setup layout
     QVBoxLayout* vLayout = new QVBoxLayout();
@@ -1071,7 +1084,7 @@ TreeView::Container::Container( QWidget* parent ):
     setLayout( vLayout );
 
     // treeview
-    vLayout->addWidget( treeView_ = new TreeView( this ) );
+    vLayout->addWidget( treeView_ );
     treeView_->useEmbeddedDialogs_ = true;
 
     // find widget

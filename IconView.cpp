@@ -1455,9 +1455,22 @@ QModelIndex IconView::_indexBefore( const QModelIndex& current ) const
 //_________________________________________________________
 IconView::Container::Container( QWidget* parent ):
     QWidget( parent ),
-    Counter( "IconView::Container" )
+    Counter( "IconView::Container" ),
+    iconView_( new IconView() )
+{ _initialize(); }
+
+//_________________________________________________________
+IconView::Container::Container( QWidget* parent, IconView* iconView ):
+    QWidget( parent ),
+    Counter( "IconView::Container" ),
+    iconView_( iconView )
+{ _initialize(); }
+
+//_________________________________________________________
+void IconView::Container::_initialize( void )
 {
-    Debug::Throw( "IconView::Container::Container.\n" );
+    Debug::Throw( "IconView::Container::_initialize.\n" );
+    iconView_->setParent( this );
 
     // setup layout
     QVBoxLayout* vLayout = new QVBoxLayout();
@@ -1466,7 +1479,7 @@ IconView::Container::Container( QWidget* parent ):
     setLayout( vLayout );
 
     // iconView
-    vLayout->addWidget( iconView_ = new IconView( this ) );
+    vLayout->addWidget( iconView_ );
     iconView_->useEmbeddedDialogs_ = true;
 
     // find widget

@@ -193,6 +193,9 @@ class TreeView: public QTreeView, public Counter
         //* constructor
         Container( QWidget* = nullptr );
 
+        //* constructor
+        Container( QWidget*, TreeView* );
+
         //* destructor
         ~Container( void ) = default;
 
@@ -201,6 +204,9 @@ class TreeView: public QTreeView, public Counter
         { return *treeView_; }
 
         private:
+
+        //* initialize
+        void _initialize( void );
 
         //* contained treeView
         TreeView* treeView_;
