@@ -32,6 +32,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QList>
+#include <QPalette>
 
 //* find dialog for text editor widgets
 class BaseFindWidget: public QWidget, public Counter
@@ -162,6 +163,9 @@ class BaseFindWidget: public QWidget, public Counter
 
     private:
 
+    //* create not found palette
+    void _updateNotFoundPalette( void );
+
     //* editor layout
     QGridLayout* editorLayout_ = nullptr;
 
@@ -181,9 +185,6 @@ class BaseFindWidget: public QWidget, public Counter
     //* regular expression search if checked
     QCheckBox* regexpCheckbox_ = nullptr;
 
-    //* notification label
-    QLabel* label_ = nullptr;
-
     //* find button
     QAbstractButton* findNextButton_ = nullptr;
     QAbstractButton* findPreviousButton_ = nullptr;
@@ -193,6 +194,9 @@ class BaseFindWidget: public QWidget, public Counter
 
     //* list of buttons to enable/disable depending of the editor text
     QList<QAbstractButton*> buttons_;
+
+    //* not found palette
+    QPalette notFoundPalette_;
 
     //* set of previously searched strings
     static QOrderedSet<QString>& _searchedStrings( void );

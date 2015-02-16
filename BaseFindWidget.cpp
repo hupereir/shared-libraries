@@ -21,6 +21,7 @@
 
 #include "BaseFindWidget.h"
 #include "BaseIconNames.h"
+#include "Color.h"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "IconEngine.h"
@@ -43,6 +44,9 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     Counter( "BaseFindWidget" )
 {
     Debug::Throw( "BaseFindWidget::BaseFindWidget.\n" );
+
+    // update palette
+    _updateNotFoundPalette();
 
     // create vbox layout
     QVBoxLayout* vLayout;
@@ -103,12 +107,6 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     // backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );
     caseSensitiveCheckbox_->setToolTip( tr( "Case sensitive search" ) );
     regexpCheckbox_->setToolTip( tr( "Search text using regular expression" ) );
-
-    // notification label
-    vLayout->addWidget( label_ = new QLabel( this ) );
-    label_->setMargin( 2 );
-
-    if( compact ) label_->hide();
 
     if( !compact )
     {
@@ -184,11 +182,14 @@ void BaseFindWidget::enableRegExp( bool value )
 
 //________________________________________________________________________
 void BaseFindWidget::matchFound( void )
-{ label_->setText( "" ); }
+{ editor_->setPalette( palette() ); }
 
 //________________________________________________________________________
 void BaseFindWidget::noMatchFound( void )
-{ if( !editor_->currentText().isEmpty() ) label_->setText( tr( "Not found" ) ); }
+{
+    if( !editor_->currentText().isEmpty() )
+    { editor_->setPalette( notFoundPalette_ ); }
+}
 
 //________________________________________________________________________
 void BaseFindWidget::_addDisabledButton( QAbstractButton* button )
@@ -242,4 +243,13 @@ void BaseFindWidget::_updateButtons( const QString& text )
     foreach( const auto& button, buttons_ )
     { button->setEnabled( enabled ); }
 
+}
+
+//________________________________________________________________________
+void BaseFindWidget::_updateNotFoundPalette( void )
+{
+    notFoundPalette_ = palette();
+    notFoundPalette_.setColor( QPalette::Base,
+        Base::Color( palette().color( QPalette::Base ) ).merge(
+        Qt::red, 0.95 ) );
 }
