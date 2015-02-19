@@ -33,7 +33,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
 
     Debug::Throw( "QuestionDialog::QuestionDialog\n" );
 
-    //! try load Question icon
+    // try load Question icon
     QHBoxLayout *hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);

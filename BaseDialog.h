@@ -27,7 +27,7 @@
 
 #include <QDialog>
 
-//! base dialog
+//* base dialog
 class BaseDialog: public QDialog
 {
 
@@ -35,7 +35,7 @@ class BaseDialog: public QDialog
 
     public:
 
-    //! dialog centering enumeration
+    //* dialog centering enumeration
     enum Centering
     {
 
@@ -45,77 +45,77 @@ class BaseDialog: public QDialog
 
     };
 
-    //! constructor
-    BaseDialog( QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    //* constructor
+    BaseDialog( QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
 
-    //! destructor
+    //* destructor
     virtual ~BaseDialog( void );
 
-    //! window title
+    //* window title
     virtual BaseDialog& setWindowTitle( const QString& );
 
-    //! restore window size
+    //* restore window size
     virtual QSize minimumSizeHint( void ) const;
 
-    //! restore window size
+    //* restore window size
     virtual QSize sizeHint( void ) const;
 
-    //! center widget on pointer
+    //* center widget on pointer
     BaseDialog& centerOnPointer( void );
 
-    //! center widget on argument widget
+    //* center widget on argument widget
     BaseDialog& centerOnDesktop( void );
 
-    //! center on parent widget
+    //* center on parent widget
     BaseDialog& centerOnParent( void )
     { return centerOnWidget( parentWidget() ); }
 
-    //! center widget on argument widget
+    //* center widget on argument widget
     BaseDialog& centerOnWidget( QWidget* );
 
-    //! size option name
+    //* size option name
     virtual void setOptionName( const QString& name )
     { monitor_.setOptionName( name ); }
 
-    //! set icon size
+    //* set icon size
     virtual void setIconSize( const QSize& size )
     { iconSize_ = size; }
 
-    //! iconsize
+    //* iconsize
     virtual QSize iconSize( void ) const
     { return iconSize_; }
 
     public Q_SLOTS:
 
-    //! uniconify
+    //* uniconify
     BaseDialog& uniconify( void );
 
-    //! stickyness
+    //* stickyness
     void toggleSticky( bool );
 
     protected:
 
-    //! generic event
+    //* generic event
     virtual bool event( QEvent* );
 
-    //! maximize state prior to minimization
+    //* maximize state prior to minimization
     bool _wasMaximized( void ) const
     { return wasMaximized_; }
 
-    //! maximize state prior to minimization
+    //* maximize state prior to minimization
     void _setWasMaximized( bool value )
     { wasMaximized_ = value; }
 
     private:
 
-    //! size watch
+    //* size watch
     WidgetMonitor monitor_;
 
-    //! icon size
+    //* icon size
     QSize iconSize_;
 
-    //! window state prior to minimization
-    bool wasMaximized_;
+    //* window state prior to minimization
+    bool wasMaximized_ = false;
 
 };
 
