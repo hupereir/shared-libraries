@@ -97,7 +97,7 @@ namespace Server
         static const QString beginTag = (QStringList() << "<" << Xml::Transmission << ">" ).join("");
         static const QString endTag = (QStringList() << "</" << Xml::Transmission << ">" ).join("");
 
-        while(1)
+        forever
         {
 
             // get first tag
