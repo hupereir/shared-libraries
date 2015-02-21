@@ -108,7 +108,7 @@ namespace Server
         { return timestamp_; }
 
         //* client id
-        const unsigned int& clientId( void ) const
+        const int& clientId( void ) const
         { return clientId_; }
 
         //* application id
@@ -143,7 +143,7 @@ namespace Server
         //@{
 
         //* client id
-        ServerCommand& setClientId( unsigned int value )
+        ServerCommand& setClientId( int value )
         {
             clientId_ = value;
             return *this;
@@ -185,7 +185,7 @@ namespace Server
         TimeStamp timestamp_;
 
         //* client id
-        unsigned int clientId_;
+        int clientId_;
 
         //* application id
         ApplicationId id_;

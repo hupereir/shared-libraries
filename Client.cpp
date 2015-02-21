@@ -30,9 +30,9 @@
 namespace Server
 {
     //_______________________________________________________
-    unsigned int& Client::_counter( void )
+    int& Client::_counter( void )
     {
-        static unsigned int counter( 0 );
+        static int counter( 0 );
         return counter;
     }
 
@@ -94,8 +94,8 @@ namespace Server
         buffer_.append( message );
 
         // parse buffer
-        static const QString beginTag = (QStringList() << "<" << Xml::Transmission << ">" ).join("");
-        static const QString endTag = (QStringList() << "</" << Xml::Transmission << ">" ).join("");
+        static const QString beginTag = QString( "<%1>" ).arg(Xml::Transmission);
+        static const QString endTag = QString( "</%1>" ).arg(Xml::Transmission);
 
         forever
         {

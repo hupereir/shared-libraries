@@ -115,11 +115,11 @@ namespace Server
         if( parser.hasOption( "--server-port" ) )
         {
 
-            unsigned int port( parser.option( "--server-port" ).toUInt() );
-            XmlOptions::get().set<unsigned int>( "SERVER_PORT", port );
+            int port( parser.option( "--server-port" ).toUInt() );
+            XmlOptions::get().set<int>( "SERVER_PORT", port );
             port_ = port;
 
-        } else port_ = XmlOptions::get().get<unsigned int>( "SERVER_PORT" );
+        } else port_ = XmlOptions::get().get<int>( "SERVER_PORT" );
 
         Debug::Throw() << "ApplicationManager::initialize - port: " << port_ << endl;
         _initializeClient();

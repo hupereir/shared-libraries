@@ -31,129 +31,129 @@
 namespace Server
 {
 
-  //! interprocess communication client
+  //* interprocess communication client
   class Client : public QObject, public Counter
   {
 
-    //! Qt meta object macro
+    //* Qt meta object macro
     Q_OBJECT
 
     public:
 
-    //! client list
+    //* client list
     using List = QList< Client* >;
 
-    //! constructor
+    //* constructor
     Client( QObject* parent, QTcpSocket* socket );
 
-    //! destructor
+    //* destructor
     virtual ~Client( void );
 
-    //! id
-    unsigned int id( void ) const
+    //* id
+    int id( void ) const
     { return id_; }
 
-    //! associated socket
+    //* associated socket
     QTcpSocket& socket()
     { return *socket_; }
 
-    //! associated socket
+    //* associated socket
     virtual const QTcpSocket& socket() const
     { return *socket_; }
 
     /*! returns true if message could be sent */
     bool sendCommand( const ServerCommand& );
 
-    //! used to retrieve clients for a given state
+    //* used to retrieve clients for a given state
     class SameStateFTor
     {
       public:
 
-      //! constructor
+      //* constructor
       SameStateFTor( QAbstractSocket::SocketState state ):
         state_( state )
         {}
 
-      //! destructor
+      //* destructor
       virtual ~SameStateFTor( void )
       {}
 
-      //! predicate
+      //* predicate
       virtual bool operator() ( const Client* client ) const
       { return client->socket().state() == state_; }
 
       private:
 
-      //! prediction
+      //* prediction
       QAbstractSocket::SocketState state_;
 
     };
 
-    //! used to retrieve client matching id
+    //* used to retrieve client matching id
     class SameIdFTor
     {
 
       public:
 
-      //! constructor
-      SameIdFTor( unsigned int id ):
+      //* constructor
+      SameIdFTor( int id ):
         id_( id )
         {}
 
-      //! destructor
+      //* destructor
       virtual ~SameIdFTor( void )
       {}
 
-      //! predicate
+      //* predicate
       virtual bool operator() ( const Client* client ) const
       { return client->id() == id_; }
 
       protected:
 
-      //! prediction
-      unsigned int id_;
+      //* prediction
+      int id_;
 
     };
 
     Q_SIGNALS:
 
-    //! emitted when a message is available
+    //* emitted when a message is available
     void commandAvailable( Server::ServerCommand );
 
     protected:
 
-    //! buffer
+    //* buffer
     MessageBuffer& _messageBuffer( void )
     { return buffer_; }
 
     protected Q_SLOTS:
 
-    //! reads messages
+    //* reads messages
     virtual bool _readMessage( void );
 
     private Q_SLOTS:
 
-    //! send all commands
+    //* send all commands
     virtual void _sendCommands( void );
 
     private:
 
-    //! client counter
-    static unsigned int& _counter( void );
+    //* client counter
+    static int& _counter( void );
 
-    //! client id
-    unsigned int id_;
+    //* client id
+    int id_ = 0;
 
-    //! parent socket
-    QTcpSocket* socket_;
+    //* parent socket
+    QTcpSocket* socket_ = nullptr;
 
-    //! messages
+    //* messages
     using CommandList = QList< ServerCommand >;
 
-    //! commands
+    //* commands
     CommandList commands_;
 
-    //! buffer
+    //* buffer
     MessageBuffer buffer_;
 
   };

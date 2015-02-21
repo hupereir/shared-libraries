@@ -229,7 +229,7 @@ namespace Server
         QHostAddress host_;
 
         // port
-        unsigned int port_;
+        int port_;
 
         // arguments
         CommandLineArguments arguments_;
