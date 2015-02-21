@@ -322,7 +322,7 @@ bool XcbUtil::isSupported( AtomId atomId ) const
     xcb_atom_t searched( *d->atom( atomId ) );
 
     uint32_t offset(0);
-    while( true )
+    forever
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property( d->connection(), 0, d->appRootWindow(), netSupported, XCB_ATOM_ATOM, offset, 1 ) );
@@ -395,7 +395,7 @@ bool XcbUtil::hasState( WId window, AtomId atomId ) const
     xcb_atom_t searched( *d->atom( atomId ) );
 
     uint32_t offset(0);
-    while( true )
+    forever
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, window, netWMState, XCB_ATOM_ATOM, offset, 1 ) );
@@ -434,7 +434,7 @@ void XcbUtil::printState( WId window ) const
 
     uint32_t offset(0);
     QStringList atomNames;
-    while( true )
+    forever
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, window, netWMState, XCB_ATOM_ATOM, offset, 1 ) );
@@ -597,7 +597,7 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
 
     QVector<xcb_atom_t> atoms;
     uint32_t offset(0);
-    while( true )
+    forever
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, widget->winId(), netWMState, XCB_ATOM_ATOM, offset, 1 ) );

@@ -143,7 +143,7 @@ int SimpleListViewDelegate::_layoutText(QTextLayout *layout, int maxWidth) const
     qreal height = 0;
     int textWidth = 0;
     layout->beginLayout();
-    while( true )
+    forever
     {
         QTextLine line = layout->createLine();
         if( !line.isValid() ) break;
