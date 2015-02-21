@@ -98,7 +98,7 @@ namespace SpellCheck
         // retrieve misspelled words
         interface().setText( text );
         Word::Set words;
-        while(1)
+        forever
         {
             interface().nextWord();
             QString word( interface().word() );
