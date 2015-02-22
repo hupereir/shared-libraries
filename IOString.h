@@ -22,21 +22,8 @@
 *
 *******************************************************************************/
 
-/*!
-   \file IOString.h
-   \brief read bytes from an IODevice and store into a string
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
 #include <QIODevice>
 #include <QString>
-
-/*!
-   \class IOString
-   \brief read bytes from an IODevice and store into a string
-*/
 
 class IOString: public QString
 {

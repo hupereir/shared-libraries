@@ -19,31 +19,23 @@
 *
 *******************************************************************************/
 
-/*!
-   \file IOString.h
-   \brief read bytes from an IODevice and store into a string
-   \author Hugo Pereira
-   \version $Revision$
-   \date $Date$
-*/
-
 #include "IOString.h"
-
-
 
 //_________________________________________________________________
 IOString::IOString( QIODevice& device )
 {
 
-  while( device.bytesAvailable() > 0 )
-  {
-    int bytes( device.bytesAvailable() );
-    char* data = new char[bytes+1];
-    qint64 bytes_read = device.read( data, bytes );
-    if( bytes_read <= 0 ) return;
-    data[bytes_read] = '\0';
-    append( data );
-    delete[] data;
-  }
+    forever
+    {
+        int bytes( device.bytesAvailable() );
+        if( bytes <= 0 ) break;
+
+        char* data = new char[bytes+1];
+        qint64 bytesRead = device.read( data, bytes );
+        if( bytesRead <= 0 ) break;
+        data[bytesRead] = '\0';
+        append( data );
+        delete[] data;
+    }
 
 }
