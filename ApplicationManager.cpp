@@ -336,7 +336,7 @@ namespace Server
     void ApplicationManager::_serverConnectionClosed( void )
     {
         Debug::Throw( "ApplicationManager::_serverConnectionClosed - lost connection to server.\n" );
-        _setServerInitialized( false );
+        serverInitialized_ = false;
         initialize();
     }
 
@@ -390,7 +390,7 @@ namespace Server
             if( state_ == Dead ) return;
 
             // try initialize server
-            if( !_serverInitialized() )
+            if( !serverInitialized_ )
             {
 
                 _initializeServer();
@@ -494,7 +494,7 @@ namespace Server
 
         Debug::Throw( "ApplicationManager::_initializeServer.\n" );
 
-        _setServerInitialized( true );
+        serverInitialized_ = true;
 
         // connect server to port
         return server_->listen( host_, port_ );

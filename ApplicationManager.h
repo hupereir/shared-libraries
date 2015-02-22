@@ -211,37 +211,29 @@ namespace Server
 
         private:
 
-        // initialize client
+        //* initialize client
         bool _initializeClient( void );
 
         //* initialize server
         bool _initializeServer( void );
 
-        //* server initialization
-        bool _serverInitialized( void ) const
-        { return serverInitialized_; }
-
-        //* server initialization
-        void _setServerInitialized( bool value )
-        { serverInitialized_ = value; }
-
-        // host
+        //* host
         QHostAddress host_;
 
-        // port
-        int port_;
+        //* port
+        int port_ = 0;
 
-        // arguments
+        //* arguments
         CommandLineArguments arguments_;
 
         //* Server
-        QTcpServer* server_;
+        QTcpServer* server_ = nullptr;
 
         //* true if initializeServer was called
-        bool serverInitialized_;
+        bool serverInitialized_ = false;
 
         //* Client
-        Client* client_;
+        Client* client_ = nullptr;
 
         //* list of connected clients
         ClientList connectedClients_;
@@ -253,7 +245,7 @@ namespace Server
         ApplicationId id_;
 
         //* manager status
-        State state_;
+        State state_ = StateUnknown;
 
         //* reply timeout
         QBasicTimer timer_;
