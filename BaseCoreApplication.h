@@ -28,37 +28,37 @@
 
 #include <QObject>
 
-//! Main Window singleton object
+//* Main Window singleton object
 class BaseCoreApplication: public QObject
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
-    //! destructor
+    //* destructor
     virtual ~BaseCoreApplication( void );
 
-    //! initialize application manager
+    //* initialize application manager
     virtual bool initApplicationManager( void );
 
-    //! create all widgets
+    //* create all widgets
     virtual bool realizeWidget( void );
 
-    //!@name application information
+    //*@name application information
     //@{
 
-    //! usage
+    //* usage
     virtual void usage( void ) const = 0;
 
-    //! command line parser
+    //* command line parser
     virtual CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const;
 
-    //! application name
+    //* application name
     virtual QString applicationName( void ) const = 0;
 
     // application version
@@ -71,71 +71,72 @@ class BaseCoreApplication: public QObject
 
     public Q_SLOTS:
 
-    //! send server command
+    //* send server command
     virtual void sendServerCommand( Server::ServerCommand::CommandType );
 
-    //! send server command
+    //* send server command
     virtual void sendServerCommand( Server::ServerCommand );
 
     Q_SIGNALS:
 
-    //! emmited when configuration needs to be saved
+    //* emmited when configuration needs to be saved
     void saveConfiguration( void );
 
-    //! emmited when configuration is changed
+    //* emmited when configuration is changed
     void configurationChanged( void );
 
     protected Q_SLOTS:
 
-
-    //! process command from server
+    //* process command from server
     /*! returns true if command has been accepted */
     virtual bool _processCommand( Server::ServerCommand );
 
+    //*
+
     private Q_SLOTS:
 
-    //! configuration
+    //* configuration
     void _updateConfiguration( void );
 
     protected:
 
-    //! formated usage
+    //* formated usage
     void _usage( QString applicationName, QString options = tr("[options]") ) const;
 
-    //! argument list
+    //* argument list
     void _setArguments( CommandLineArguments arguments )
     { arguments_ = arguments; }
 
-    //! argument list
+    //* argument list
     CommandLineArguments& _arguments( void )
     { return arguments_; }
 
-    //! argument list
+    //* argument list
     const CommandLineArguments& _arguments( void ) const
     { return arguments_; }
 
-    //! realized
+    //* realized
     bool _realized( void ) const
     { return realized_; }
 
-    //! application manager
+    //* application manager
     bool _hasApplicationManager( void ) const
     { return (bool) applicationManager_; }
 
-    //! application manager
+    //* application manager
     Server::ApplicationManager& _applicationManager( void ) const
     { return *applicationManager_; }
 
     private:
 
-    //! pointer to application manager
-    Server::ApplicationManager* applicationManager_;
+    //* pointer to application manager
+    Server::ApplicationManager* applicationManager_ = nullptr;
 
-    //! command line arguments
+    //* command line arguments
     CommandLineArguments arguments_;
 
-    //! true when Realized Widget has been called.
-    bool realized_;
+    //* true when Realized Widget has been called.
+    bool realized_ = false;
 
 };
 

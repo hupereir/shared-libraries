@@ -21,19 +21,28 @@
 
 #include "BaseCoreApplication.h"
 
-#include "ErrorHandler.h"
 #include "Debug.h"
+#include "ErrorHandler.h"
+#include "InterruptionHandler.h"
 #include "XmlOptions.h"
+
+#include <signal.h>
 
 //____________________________________________
 BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments arguments ) :
     QObject( parent ),
-    applicationManager_( 0 ),
-    arguments_( arguments ),
-    realized_( false )
+    arguments_( arguments )
 {
 
     Debug::Throw( "BaseCoreApplication::BaseCoreApplication.\n" );
+
+    // install interuption handler
+    InterruptionHandler::initialize();
+
+    // install error handler
+    ErrorHandler::initialize();
+
+    // configuration
     connect( this, SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
 
 }
@@ -110,7 +119,7 @@ bool BaseCoreApplication::realizeWidget( void )
 {
     Debug::Throw( "BaseCoreApplication::realizeWidget.\n" );
 
-    //! check if the method has already been called.
+    //* check if the method has already been called.
     if( realized_ ) return false;
     realized_ = true;
     return true;
