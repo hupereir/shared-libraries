@@ -30,7 +30,7 @@
 
 namespace Base
 {
-    //! some XML definitions specific to Option management
+    //* some XML definitions specific to Option management
     namespace Xml
     {
 
@@ -43,35 +43,35 @@ namespace Base
 
 }
 
-//! Xml implementation of the Option object
+//* Xml implementation of the Option object
 class XmlOption:public Option
 {
 
     public:
 
-    //! constructor
+    //* constructor
     XmlOption( const QString& name, const Option& option ):
         Option( option ),
         name_( name )
     {}
 
-    //! constructor from DOM node
+    //* constructor from DOM node
     XmlOption( const QDomElement& );
 
-    //! create dom element
+    //* create dom element
     QDomElement domElement( QDomDocument& ) const;
 
-    //! name
+    //* name
     void setName( const QString& value )
     { name_ = value; }
 
-    //! name
+    //* name
     const QString& name( void ) const
     { return name_; }
 
     private:
 
-    //! option name
+    //* option name
     QString name_;
 
 };

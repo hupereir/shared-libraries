@@ -25,57 +25,57 @@
 #include "File.h"
 #include "Options.h"
 
-//! forward declaration
+//* forward declaration
 class XmlDocument;
 class XmlError;
 class XmlOptionsSingleton;
 
-//! Option file parser based on xml
+//* Option file parser based on xml
 class XmlOptions
 {
 
     public:
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! options
+    //* options
     static Options& get( void );
 
-    //! file
+    //* file
     static const File& file();
 
-    //! error
+    //* error
     static const XmlError& error();
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! file
+    //* file
     static void setFile( const QByteArray& array )
     { setFile( File( array ) ); }
 
-    //! file
+    //* file
     static void setFile( const File& );
 
-    //! read options
+    //* read options
     static bool read( void );
 
-    //! write options
+    //* write options
     static bool write( void );
 
     //@}
 
     protected:
 
-    //! read
+    //* read
     static bool _read( const XmlDocument&, Options& );
 
     private:
 
-    //! singleton
+    //* singleton
     static XmlOptionsSingleton singleton_;
 
 };

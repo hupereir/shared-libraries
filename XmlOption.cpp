@@ -25,7 +25,7 @@
 
 namespace Base
 {
-    //! some XML definitions specific to Option management
+    //* some XML definitions specific to Option management
     namespace Xml
     {
 

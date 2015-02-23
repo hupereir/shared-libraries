@@ -31,15 +31,15 @@ class XmlOptionsSingleton
 {
     public:
 
-    //! constructor
+    //* constructor
     XmlOptionsSingleton( void )
     { options_.installDefaultOptions(); }
 
-    //! file
+    //* file
     const File& file( void ) const
     { return file_; }
 
-    //! set file
+    //* set file
     bool setFile( const File& file )
     {
         if( file_ == file ) return false;
@@ -47,23 +47,23 @@ class XmlOptionsSingleton
         return true;
     }
 
-    //! true if options have changed with respect to current
+    //* true if options have changed with respect to current
     /*! read-only options are ignored, as well as default values and default flags */
     bool differs( const Options& other ) const
     { return _differs( options_, other ) || _differs( other, options_ ); }
 
-    //! options
+    //* options
     Options options_;
 
-    //! error
+    //* error
     XmlError error_;
 
     private:
 
-    //! return true if two sets of options differ
+    //* return true if two sets of options differ
     bool _differs( const Options&, const Options& ) const;
 
-    //! file
+    //* file
     File file_;
 
 };
