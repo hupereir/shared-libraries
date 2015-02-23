@@ -51,6 +51,8 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
 
     replaceEditor_->setEditable( true );
     replaceEditor_->setAutoCompletion( true, Qt::CaseSensitive );
+    replaceEditor_->setNavigationEnabled( false );
+
     connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_replace()) );
     connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateFindComboBox()) );
     connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateReplaceComboBox()) );

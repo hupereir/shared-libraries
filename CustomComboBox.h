@@ -29,49 +29,61 @@
 #include <QComboBox>
 #include <QKeyEvent>
 
-//! local line editor to handle autocompletion
+//* local line editor to handle autocompletion
 class ComboLineEdit: public AnimatedLineEditor
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     ComboLineEdit( QWidget* parent ):
     AnimatedLineEditor( parent )
     { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
 
     public Q_SLOTS:
 
-    //! start animation
+    //* start animation
     void startAnimation( void );
 
 };
 
-//! Customized QCombobox to handle case sensitive auto completion
+//* Customized QCombobox to handle case sensitive auto completion
 class CustomComboBox: public QComboBox, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
-    CustomComboBox( QWidget* = 0 );
+    //* constructor
+    CustomComboBox( QWidget* = nullptr );
 
-    //! editability
+    //* editability
     void setEditable( bool value );
 
-    //! auto completion
+    //* auto completion
     void setAutoCompletion( bool value, Qt::CaseSensitivity  = Qt::CaseInsensitive);
+
+    //* set navigation enabled
+    void setNavigationEnabled( bool value )
+    { navigationEnabled_ = value; }
+
+    protected:
+
+    //* key press event
+    virtual void keyPressEvent( QKeyEvent* );
 
     private:
 
-    //! local line editor
-    ComboLineEdit* editor_;
+    //* local line editor
+    ComboLineEdit* editor_ = nullptr;
+
+    //* navigation enabled
+    bool navigationEnabled_ = true;
 
 };
 

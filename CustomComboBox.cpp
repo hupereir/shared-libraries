@@ -86,6 +86,27 @@ void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSens
 
 }
 
+//___________________________________________________
+void CustomComboBox::keyPressEvent( QKeyEvent* event )
+{
+    if( navigationEnabled_ ) return QComboBox::keyPressEvent( event );
+    switch( event->key() )
+    {
+        case Qt::Key_Up:
+        case Qt::Key_PageUp:
+        case Qt::Key_Down:
+        case Qt::Key_PageDown:
+        if( event->modifiers() ) break;
+        else return;
+
+        default: break;
+
+    }
+
+    // parent class
+    return QComboBox::keyPressEvent( event );
+}
+
 //____________________________________________________
 void ComboLineEdit::startAnimation( void )
 {

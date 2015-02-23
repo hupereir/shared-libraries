@@ -67,7 +67,8 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     label->setBuddy( editor_ );
     editor_->setEditable( true );
     editor_->setAutoCompletion( true, Qt::CaseSensitive );
-
+    editor_->setNavigationEnabled( false );
+    
     connect( editor_->lineEdit(), SIGNAL(cleared()), this, SLOT(matchFound()) );
     connect( editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_find()) );
     connect( editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateFindComboBox()) );
