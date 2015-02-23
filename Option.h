@@ -28,7 +28,7 @@
 #include <QString>
 #include <QTextStream>
 
-//! stream boolean
+//* stream boolean
 QTextStream& operator >> ( QTextStream& in, bool& value );
 
 /*!
@@ -40,7 +40,7 @@ class Option:public Counter
 
     public:
 
-    //! flags
+    //* flags
     enum Flag
     {
         None = 0,
@@ -50,22 +50,22 @@ class Option:public Counter
 
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    //! constructor
+    //* constructor
     Option();
 
-    //! constructor
+    //* constructor
     Option( const char*, Flags = Recordable );
 
-    //! constructor
+    //* constructor
     Option( const QByteArray&, Flags = Recordable );
 
-    //! constructor
+    //* constructor
     Option( const QByteArray&, const QString&, Flags = Recordable );
 
-    //! constructor
+    //* constructor
     Option( const QString&, Flags = Recordable );
 
-    //! less than operator
+    //* less than operator
     bool operator < (const Option& other ) const
     {
         if( value_ != other.value_ ) return value_ < other.value_;
@@ -75,50 +75,50 @@ class Option:public Counter
         else return comments_ < other.comments_;
     }
 
-    //! equal operator
+    //* equal operator
     bool operator == (const Option& other ) const
     { return value_ == other.value_ && flags_ == other.flags_; }
 
-    //! different operator
+    //* different operator
     bool operator != (const Option& other ) const
     { return !( *this == other ); }
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! option comments
+    //* option comments
     const QString& comments( void ) const
     { return comments_; }
 
-    //! flags
+    //* flags
     Flags flags( void ) const
     { return flags_; }
 
-    //! flags
+    //* flags
     bool hasFlag( const Flag& flag ) const
     { return flags_ & flag; }
 
-    //! current
+    //* current
     bool isCurrent( void ) const
     { return hasFlag( Current ); }
 
-    //! default
+    //* default
     bool isDefault( void ) const
     { return defaultValue_ == value_ && defaultFlags_ == flags_; }
 
-    //! recordable
+    //* recordable
     bool isRecordable( void ) const
     { return hasFlag( Recordable ); }
 
-    //! raw accessor
+    //* raw accessor
     const QByteArray& raw( void ) const
     { return value_; }
 
-    //! default value
+    //* default value
     const QByteArray& defaultValue( void ) const
     { return defaultValue_; }
 
-    //! generic accessor
+    //* generic accessor
     template < typename T >
         T get( void ) const
     {
@@ -136,30 +136,30 @@ class Option:public Counter
         return out;
     }
 
-    //! check status
+    //* check status
     bool isSet( void ) const
     {return !value_.isEmpty();}
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! option comments
+    //* option comments
     Option& setComments( const QString& comments )
     {
         comments_ = comments;
         return *this;
     }
 
-    //! flags
+    //* flags
     Option& setFlags( Flags value )
     {
         flags_ = value;
         return *this;
     }
 
-    //! flags
+    //* flags
     Option& setFlag( Flag flag, bool value = true )
     {
         if( value ) { flags_ |= flag; }
@@ -167,11 +167,11 @@ class Option:public Counter
         return *this;
     }
 
-    //! current
+    //* current
     Option& setCurrent( bool value )
     { return setFlag( Current, value ); }
 
-    //! default
+    //* default
     Option& setDefault( void )
     {
         defaultValue_ = value_;
@@ -179,21 +179,21 @@ class Option:public Counter
         return *this;
     }
 
-    //! raw modifier
+    //* raw modifier
     Option& setRaw( const QByteArray& value )
     {
         value_ = value;
         return *this;
     }
 
-    //! raw modifier
+    //* raw modifier
     Option& setRaw( const QString& value )
     {
         value_ = value.toUtf8();
         return *this;
     }
 
-    //! generic modifier
+    //* generic modifier
     template < typename T >
         Option& set( const T& value )
     {
@@ -205,7 +205,7 @@ class Option:public Counter
 
     }
 
-    //! restore default value
+    //* restore default value
     Option& restoreDefault()
     {
         value_ = defaultValue_;
@@ -215,22 +215,22 @@ class Option:public Counter
 
     //@}
 
-    //! used to retrieve file records that match a given flag
+    //* used to retrieve file records that match a given flag
     class HasFlagFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         HasFlagFTor( Option::Flags flags ):
             flags_( flags )
         {}
 
-        //! predicate
+        //* predicate
         bool operator() ( const Option& option ) const
         { return option.flags() & flags_; }
 
-        //! sorting predicate
+        //* sorting predicate
         /*! it is used to ensure that options that have a given flag appear first in a list */
         bool operator() (const Option& first, const Option& second ) const
         { return ( (first.flags() & flags_) && !(second.flags()&flags_) ); }
@@ -242,52 +242,52 @@ class Option:public Counter
 
     };
 
-    //! used to get options with matching values
+    //* used to get options with matching values
     class SameValueFTor
     {
         public:
 
-        //! constructor
+        //* constructor
         SameValueFTor( const Option& option ):
             value_( option.value_ )
             {}
 
-        //! destructor
+        //* destructor
         virtual ~SameValueFTor( void )
         {}
 
-        //! predicate
+        //* predicate
         bool operator() (const Option& other ) const
         { return value_ == other.value_; }
 
         private:
 
-        //! prediction
+        //* prediction
         QByteArray value_;
 
     };
 
     private:
 
-    //! option value
+    //* option value
     QByteArray value_;
 
-    //! option default value
+    //* option default value
     QByteArray defaultValue_;
 
-    //! option comments
+    //* option comments
     QString comments_;
 
-    //! flags
-    Flags flags_;
+    //* flags
+    Flags flags_ = Recordable;
 
-    //! default flags
-    Flags defaultFlags_;
+    //* default flags
+    Flags defaultFlags_ = Recordable;
 
-    //! streamer
+    //* streamer
     friend QTextStream &operator << ( QTextStream &out, const Option& option );
 
-    //! streamer
+    //* streamer
     friend QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
 
 };

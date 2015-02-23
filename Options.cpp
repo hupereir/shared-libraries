@@ -29,8 +29,7 @@
 
 //________________________________________________
 Options::Options( void ):
-    Counter( "Options" ),
-    autoDefault_( false )
+    Counter( "Options" )
 {}
 
 //________________________________________________

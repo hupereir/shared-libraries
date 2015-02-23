@@ -32,32 +32,32 @@
 #include <QStringList>
 #include <QTextStream>
 
-//! Option file parser based on Xml
+//* Option file parser based on Xml
 class Options: public Counter
 {
 
     public:
 
-    //! pair
-    using Pair = QPair< QString, Option >;
+    //* pair
+    using Pair = QPair<QString,Option>;
 
-    //! shortCut for option map
-    using Map = QMap< QString, Option >;
+    //* shortCut for option map
+    using Map = QMap<QString,Option>;
 
-    //! shortCut for option list
-    using List = QList< Option >;
+    //* shortCut for option list
+    using List = QList<Option>;
 
-    //! shortCut for option map
-    using SpecialMap = QMap< QString, List >;
+    //* shortCut for option map
+    using SpecialMap = QMap<QString,List>;
 
-    //! constructor
+    //* constructor
     Options( void );
 
-    //! destructor
+    //* destructor
     virtual ~Options( void )
     {}
 
-    //! equality operator
+    //* equality operator
     bool operator == ( const Options& other ) const
     {
         Debug::Throw( "Options::operator ==.\n" );
@@ -67,28 +67,28 @@ class Options: public Counter
         return out;
     }
 
-    //! different operator
+    //* different operator
     bool operator != ( const Options& other ) const
     { return !( *this == other ); }
 
-    //! install defaults
+    //* install defaults
     virtual void installDefaultOptions( void );
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! retrieve Option map
+    //* retrieve Option map
     virtual const Map& options( void ) const
     { return options_; }
 
-    //! retrieve special Option map
+    //* retrieve special Option map
     virtual const SpecialMap& specialOptions( void ) const
     { return specialOptions_; }
 
-    //! returns true if option name is special
+    //* returns true if option name is special
     virtual bool isSpecialOption( const QString& name ) const;
 
-    //! retrieve list of special (i.e. kept) options matching a given name
+    //* retrieve list of special (i.e. kept) options matching a given name
     template <typename T> QList<T> specialOptions( const QString& name ) const
     {
 
@@ -101,7 +101,7 @@ class Options: public Counter
 
     }
 
-    //! retrieve list of special (i.e. kept) options matching a given name
+    //* retrieve list of special (i.e. kept) options matching a given name
     virtual const List& specialOptions( const QString& name ) const
     {
         SpecialMap::const_iterator iter( specialOptions_.find( name ) );
@@ -109,34 +109,34 @@ class Options: public Counter
         return iter.value();
     }
 
-    //! returns true if option with matching name is found
+    //* returns true if option with matching name is found
     virtual bool contains( const QString& name ) const
     { return options_.find( name ) != options_.end(); }
 
-    //! option matching given name
+    //* option matching given name
     virtual const Option& option( const QString& name ) const
     { return options_.find( name ).value(); }
 
-    //! option value accessor
+    //* option value accessor
     template <typename T> T get( const QString& name ) const
     { return _find( name ).value().get<T>(); }
 
-    //! option raw value accessor
+    //* option raw value accessor
     virtual QByteArray raw( const QString& name ) const
     { return _find( name ).value().raw(); }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! adds a new special option. Return true if option is added
+    //* adds a new special option. Return true if option is added
     virtual bool add( const QString&, const Option&, bool isDefault = false );
 
-    //! clear list of special (i.e. kept) options matching a given name
+    //* clear list of special (i.e. kept) options matching a given name
     virtual void clearSpecialOptions( const QString& name );
 
-    //! option value modifier
+    //* option value modifier
     template <typename T>
     void set( const QString& name, const T& value, bool isDefault = false )
     {
@@ -147,10 +147,10 @@ class Options: public Counter
 
     }
 
-    //! assign an option to given name
+    //* assign an option to given name
     void set( const QString&, const Option&, bool isDefault = false );
 
-    //! option raw value modifier
+    //* option raw value modifier
     virtual void setRaw( const QString& name, const QByteArray& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
@@ -159,7 +159,7 @@ class Options: public Counter
         if( isDefault || _autoDefault() ) option.setDefault();
     }
 
-    //! option raw value modifier
+    //* option raw value modifier
     virtual void setRaw( const QString& name, const QString& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
@@ -181,36 +181,36 @@ class Options: public Counter
         { specialOptions_.insert( name, List() ); }
     }
 
-    //! auto-default
+    //* auto-default
     void setAutoDefault( bool value )
     { autoDefault_ = value; }
 
-    //! restore defaults
+    //* restore defaults
     void restoreDefaults( void );
 
     //@}
 
     protected:
 
-    //! find name
+    //* find name
     Map::const_iterator _find( const QString& name ) const;
 
-    //! auto-default
+    //* auto-default
     bool _autoDefault( void ) const
     { return autoDefault_; }
 
     private:
 
-    //! option map
+    //* option map
     Map options_;
 
-    //! set of option names to be kept separately
+    //* set of option names to be kept separately
     SpecialMap specialOptions_;
 
-    //! if true all options inserted are also set as default
-    bool autoDefault_;
+    //* if true all options inserted are also set as default
+    bool autoDefault_ = false;
 
-    //! streamer
+    //* streamer
     friend QTextStream &operator << ( QTextStream &,const Options &);
 
 };

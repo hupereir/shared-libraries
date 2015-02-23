@@ -32,16 +32,13 @@ QTextStream& operator >> ( QTextStream& in, bool& value )
 
 //________________________________________________________
 Option::Option():
-    Counter( "Option" ),
-    flags_( Recordable ),
-    defaultFlags_( Recordable )
+    Counter( "Option" )
 {}
 
 //________________________________________________________
 Option::Option( const char* value, Flags flags ):
     Counter( "Option" ),
-    flags_( flags ),
-    defaultFlags_( Recordable )
+    flags_( flags )
 {
     Q_CHECK_PTR( value );
     value_ = value;
@@ -51,16 +48,14 @@ Option::Option( const char* value, Flags flags ):
 Option::Option( const QByteArray& value, Flags flags ):
     Counter( "Option" ),
     value_( value ),
-    flags_( flags ),
-    defaultFlags_( Recordable )
+    flags_( flags )
 {}
 
 //________________________________________________________
 Option::Option( const QString& value, Flags flags ):
     Counter( "Option" ),
     value_( value.toUtf8() ),
-    flags_( flags ),
-    defaultFlags_( Recordable )
+    flags_( flags )
 {}
 
 //________________________________________________________
@@ -68,8 +63,7 @@ Option::Option( const QByteArray& value, const QString& comments, Flags flags ):
     Counter( "Option" ),
     value_( value ),
     comments_( comments ),
-    flags_( flags ),
-    defaultFlags_( Recordable )
+    flags_( flags )
 {}
 
 //________________________________________________________
