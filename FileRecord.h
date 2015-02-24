@@ -32,72 +32,71 @@
 #include <QMap>
 #include <QStringList>
 
-//! handles previously opened file and tags
+//* handles previously opened file and tags
 class FileRecord: public Counter
 {
 
     public:
 
-    //! shortcut to list of records
+    //* shortcut to list of records
     using Set = QOrderedSet<FileRecord>;
     using List = QList<FileRecord>;
     using ListIterator = QListIterator<FileRecord>;
 
-    //! mimetype for drag and drop operations
+    //* mimetype for drag and drop operations
     static const QString MimeType;
 
-    //! constructor
+    //* constructor
     FileRecord( const File& file = File(""), const TimeStamp& time = TimeStamp::now() ):
         Counter( "FileRecord" ),
         file_( file ),
         time_( time ),
-        flags_( 0 ),
         valid_( true )
     {}
 
-    //! destructor
+    //* destructor
     virtual ~FileRecord( void )
     {}
 
-    //! less than operator
+    //* less than operator
     bool operator < (const FileRecord& record ) const;
 
-    //! less than operator
+    //* less than operator
     bool operator == (const FileRecord& record ) const;
 
-    //! file
+    //* file
     const File& file( void ) const
     { return file_; }
 
-    //! file
+    //* file
     FileRecord& setFile( const QString& file )
     {
         file_ = file;
         return *this;
     }
 
-    //! time stamp
+    //* time stamp
     const int& time( void ) const
     { return time_; }
 
-    //! time stamp
+    //* time stamp
     FileRecord& setTime( const TimeStamp& time )
     {
         time_ = time;
         return *this;
     }
 
-    //!@name flags
+    //*@name flags
     //@{
 
-    //! flags
+    //* flags
     FileRecord& setFlags( unsigned int value )
     {
         flags_ = value;
         return *this;
     }
 
-    //! flags
+    //* flags
     FileRecord& setFlag( unsigned int flag, bool value = true )
     {
         if( value ) { flags_ |= flag; }
@@ -105,26 +104,26 @@ class FileRecord: public Counter
         return *this;
     }
 
-    //! flags
+    //* flags
     const unsigned int& flags( void ) const
     { return flags_; }
 
-    //! flags
+    //* flags
     bool hasFlag( const unsigned int& flag ) const
     { return flags_ & flag; }
 
-    //! used to retrieve file records that match a given flag
+    //* used to retrieve file records that match a given flag
     class HasFlagFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         HasFlagFTor( const unsigned int& flag ):
             flag_( flag )
          {}
 
-        //! predicate
+        //* predicate
         bool operator() ( const FileRecord& record ) const
         { return record.hasFlag( flag_ ); }
 
@@ -137,11 +136,11 @@ class FileRecord: public Counter
 
     //@}
 
-    //! validity
+    //* validity
     bool isValid( void ) const
     { return valid_; }
 
-    //! validity
+    //* validity
     FileRecord& setValid( bool valid )
     {
         valid_ = valid;
@@ -149,10 +148,10 @@ class FileRecord: public Counter
     }
 
 
-    //!@name properties
+    //*@name properties
     //@{
 
-    //! map string to unsigned int property ID
+    //* map string to unsigned int property ID
     class PropertyId
     {
 
@@ -160,60 +159,60 @@ class FileRecord: public Counter
 
         using Id = quint32;
 
-        //! get id matching name
+        //* get id matching name
         /*! insert in map if name is new */
         static Id get( QString name );
 
-        //! get name matching id
+        //* get name matching id
         /*! throw exception if not found */
         static QString get( Id );
 
         private:
 
-        //! counter
+        //* counter
         static Id& _counter( void );
 
-        //! id map
+        //* id map
         using IdMap = QMap< QString, Id >;
 
-        //! id map
+        //* id map
         static IdMap& _idMap();
 
-        //! id map
+        //* id map
         using NameMap = QStringList;
 
-        //! name map
+        //* name map
         static NameMap& _nameMap();
 
     };
 
-    //! add property
+    //* add property
     FileRecord& addProperty( QString tag, QString value )
     { return addProperty( PropertyId::get( tag ), value ); }
 
-    //! add property
+    //* add property
     FileRecord& addProperty( PropertyId::Id, QString );
 
-    //! true if property is available
+    //* true if property is available
     bool hasProperty( QString tag ) const
     { return hasProperty( PropertyId::get( tag ) ); }
 
-    //! true if property is available
+    //* true if property is available
     bool hasProperty( PropertyId::Id id ) const
     { return properties_.find( id ) != properties_.end(); }
 
-    //! additional property map
+    //* additional property map
     using PropertyMap = QMap< PropertyId::Id, QString >;
 
-    //! property map
+    //* property map
     const PropertyMap& properties( void ) const
     { return properties_; }
 
-    //! retrieve property
+    //* retrieve property
     QString property( QString tag ) const
     { return property( PropertyId::get( tag ) ); }
 
-    //! retrieve property
+    //* retrieve property
     QString property( PropertyId::Id id ) const
     {
         PropertyMap::const_iterator iter(  properties_.find( id ) );
@@ -222,122 +221,122 @@ class FileRecord: public Counter
 
     //@}
 
-    //! used to sort records according to files
+    //* used to sort records according to files
     class FileFTor
     {
 
         public:
 
-        //! predicate
+        //* predicate
         bool operator() (const FileRecord& first, const FileRecord& second) const
         { return first.file() < second.file(); }
 
     };
 
-    //! used to retrieve FileRecord with identical filenames
+    //* used to retrieve FileRecord with identical filenames
     class SameFileFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SameFileFTor( const File& file = File("") ):
             file_( file )
         {}
 
-        //! constructor
+        //* constructor
         SameFileFTor( const FileRecord& record ):
             file_( record.file() )
         {}
 
-        //! predicate
+        //* predicate
         bool operator() (const FileRecord& record ) const
         { return record.file() == file_; }
 
-        //! predicate
+        //* predicate
         bool operator() (const FileRecord& first, const FileRecord& second) const
         { return first.file() == second.file(); }
 
         private:
 
-        //! filename
+        //* filename
         File file_;
 
     };
 
-    //! used to sort FileRecords using canonical filenames
+    //* used to sort FileRecords using canonical filenames
     class CanonicalFileFTor
     {
 
         public:
 
-        //! predicate
+        //* predicate
         bool operator() (const FileRecord& first, const FileRecord& second) const
         { return first.file().canonicalName() < second.file().canonicalName(); }
 
 
     };
 
-    //! used to remove FileRecord with identical canonical filenames
+    //* used to remove FileRecord with identical canonical filenames
     class SameCanonicalFileFTor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SameCanonicalFileFTor( const File& file = File("") ):
             file_( file.canonicalName() )
         {}
 
-        //! constructor
+        //* constructor
         SameCanonicalFileFTor( const FileRecord& record ):
             file_( record.file().canonicalName() )
         {}
 
-        //! predicate
+        //* predicate
         bool operator() (const FileRecord& first, const FileRecord& second) const
         { return first.file().canonicalName() == second.file().canonicalName(); }
 
-        //! predicate
+        //* predicate
         bool operator() (const FileRecord& record ) const
         { return record.file().canonicalName() == file_; }
 
         private:
 
-        //! filename
+        //* filename
         File file_;
 
     };
 
-    //! used to remove non-existing files
+    //* used to remove non-existing files
     class InvalidFTor
     {
         public:
 
-        //! predicate
+        //* predicate
         bool operator()( const FileRecord& record )
         { return !record.isValid(); }
 
     };
 
-    //! used to remove non-existing files
+    //* used to remove non-existing files
     class ValidFTor
     {
         public:
 
-        //! predicate
+        //* predicate
         bool operator()( const FileRecord& record )
         { return record.isValid(); }
 
     };
 
-    //! used to retrieve most recent file records
+    //* used to retrieve most recent file records
     class FirstOpenFTor
     {
 
         public:
 
-        //! predicate
+        //* predicate
         bool operator() (const FileRecord& first, const FileRecord& second) const
         { return first.time() < second.time(); }
 
@@ -345,22 +344,22 @@ class FileRecord: public Counter
 
     private:
 
-    //! file
+    //* file
     File file_;
 
-    //! additional properties
+    //* additional properties
     PropertyMap properties_;
 
-    //! time
-    int time_;
+    //* time
+    int time_ = 0;
 
-    //! flags
-    unsigned int flags_;
+    //* flags
+    unsigned int flags_ = 0;
 
-    //! file validity (true if file exists)
-    bool valid_;
+    //* file validity (true if file exists)
+    bool valid_ = false;
 
-    //! streamers
+    //* streamers
     friend QTextStream& operator << ( QTextStream& out, const FileRecord& record )
     {
         out << record.file() << endl;
