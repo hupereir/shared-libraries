@@ -1,4 +1,3 @@
-// $Id$
 
 /******************************************************************************
 *
@@ -32,4 +31,3 @@ void EmbeddedWidget::showEvent( QShowEvent* event )
 
     return QWidget::showEvent( event );
 }
-

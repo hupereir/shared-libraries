@@ -1,8 +1,6 @@
 #ifndef MessageBuffer_h
 #define MessageBuffer_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

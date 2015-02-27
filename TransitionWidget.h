@@ -1,7 +1,5 @@
 #ifndef TransitionWidget_h
 #define TransitionWidget_h
-
-// $Id$
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

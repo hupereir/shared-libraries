@@ -1,8 +1,6 @@
 #ifndef DetailsDialog_h
 #define DetailsDialog_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

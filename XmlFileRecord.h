@@ -1,8 +1,6 @@
 #ifndef XmlFileRecord_h
 #define XmlFileRecord_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

@@ -1,8 +1,6 @@
 #ifndef InformationDialog_h
 #define InformationDialog_h
 
-// $Id$
-
 
 /******************************************************************************
 *

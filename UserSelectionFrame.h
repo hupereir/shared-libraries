@@ -1,8 +1,6 @@
 #ifndef UserSelectionFrame_h
 #define UserSelectionFrame_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

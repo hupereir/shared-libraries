@@ -1,4 +1,3 @@
-// $Id$
 #ifndef ColorDisplay_h
 #define ColorDisplay_h
 

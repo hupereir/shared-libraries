@@ -1,8 +1,6 @@
 #ifndef OptionRadioButton_h
 #define OptionRadioButton_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

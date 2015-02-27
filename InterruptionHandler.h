@@ -1,8 +1,6 @@
 #ifndef InterruptionHandler_h
 #define InterruptionHandler_h
 
-// $Id$
-
 
 /******************************************************************************
 *

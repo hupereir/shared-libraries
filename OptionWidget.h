@@ -1,8 +1,6 @@
 #ifndef OptionWidget_h
 #define OptionWidget_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

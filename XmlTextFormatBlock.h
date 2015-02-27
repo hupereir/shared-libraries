@@ -1,4 +1,3 @@
-// $Id$
 #ifndef XmlTextFormatBlock_h
 #define XmlTextFormatBlock_h
 

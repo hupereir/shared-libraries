@@ -1,8 +1,6 @@
 #ifndef OptionFontInfo_h
 #define OptionFontInfo_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

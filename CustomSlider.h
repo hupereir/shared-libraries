@@ -1,4 +1,3 @@
-// $Id$
 #ifndef CustomSlider_h
 #define CustomSlider_h
 

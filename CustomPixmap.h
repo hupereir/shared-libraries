@@ -1,8 +1,6 @@
 #ifndef CustomPixmap_h
 #define CustomPixmap_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

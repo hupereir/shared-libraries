@@ -1,8 +1,6 @@
 #ifndef FontEditor_h
 #define FontEditor_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

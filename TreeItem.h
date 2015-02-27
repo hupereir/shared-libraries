@@ -1,8 +1,6 @@
 #ifndef TreeItem_h
 #define TreeItem_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

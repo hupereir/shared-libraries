@@ -1,7 +1,5 @@
 #ifndef PrinterOptionWidget_h
 #define PrinterOptionWidget_h
-
-// $Id$
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

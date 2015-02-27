@@ -1,8 +1,6 @@
 #ifndef IconViewItem_h
 #define IconViewItem_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

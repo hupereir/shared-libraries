@@ -1,8 +1,6 @@
 #ifndef PathHistoryConfiguration_h
 #define PathHistoryConfiguration_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

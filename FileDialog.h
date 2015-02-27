@@ -1,4 +1,3 @@
-// $Id$
 #ifndef FileDialog_h
 #define FileDialog_h
 

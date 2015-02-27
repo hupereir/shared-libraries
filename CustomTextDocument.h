@@ -1,4 +1,3 @@
-// $Id$
 #ifndef CustomTextDocument_h
 #define CustomTextDocument_h
 

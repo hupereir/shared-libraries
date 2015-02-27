@@ -1,7 +1,5 @@
 #ifndef BasePrintHelper_h
 #define BasePrintHelper_h
-
-// $Id$
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

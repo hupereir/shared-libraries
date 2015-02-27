@@ -1,4 +1,3 @@
-// $Id$
 #ifndef TextFormatBlock_h
 #define TextFormatBlock_h
 

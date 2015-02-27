@@ -1,8 +1,6 @@
 #ifndef LineEditor_h
 #define LineEditor_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

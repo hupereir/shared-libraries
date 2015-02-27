@@ -1,6 +1,5 @@
 #ifndef BaseFileInformationDialog_h
 #define BaseFileInformationDialog_h
-// $Id$
 
 /******************************************************************************
 *

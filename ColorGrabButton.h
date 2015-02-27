@@ -1,7 +1,5 @@
 #ifndef ColorGrabButton_h
 #define ColorGrabButton_h
-
-// $Id$
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

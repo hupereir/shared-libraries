@@ -1,8 +1,6 @@
 #ifndef ColorOptionListBox_h
 #define ColorOptionListBox_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

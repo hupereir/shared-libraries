@@ -1,8 +1,6 @@
 #ifndef AnimatedLabel_h
 #define AnimatedLabel_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

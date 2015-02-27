@@ -1,6 +1,5 @@
 #ifndef SimpleListView_p_h
 #define SimpleListView_p_h
-// $Id$
 
 /******************************************************************************
 *

@@ -1,4 +1,3 @@
-// $Id$
 
 /******************************************************************************
 *
@@ -73,4 +72,3 @@ void SelectLineDialog::setSelectLineWidget( SelectLineWidget* selectLineWidget )
     connect( &selectLineWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()));
 
 }
-

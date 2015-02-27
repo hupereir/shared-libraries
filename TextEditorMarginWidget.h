@@ -1,8 +1,6 @@
 #ifndef TextEditorMarginWidget_h
 #define TextEditorMarginWidget_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

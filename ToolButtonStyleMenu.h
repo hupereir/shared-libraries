@@ -1,8 +1,6 @@
 #ifndef ToolButtonStyleMenu_h
 #define ToolButtonStyleMenu_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

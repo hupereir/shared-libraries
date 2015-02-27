@@ -1,8 +1,6 @@
 #ifndef TextEncodingString_h
 #define TextEncodingString_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

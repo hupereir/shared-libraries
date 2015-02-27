@@ -1,8 +1,6 @@
 #ifndef OptionModel_h
 #define OptionModel_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

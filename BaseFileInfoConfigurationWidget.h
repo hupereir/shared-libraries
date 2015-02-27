@@ -1,8 +1,6 @@
 #ifndef BaseFileInfoConfigurationWidget_h
 #define BaseFileInfoConfigurationWidget_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

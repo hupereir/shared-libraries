@@ -1,8 +1,6 @@
 #ifndef OptionComboBox_h
 #define OptionComboBox_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

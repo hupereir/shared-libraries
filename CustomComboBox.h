@@ -1,8 +1,6 @@
 #ifndef CustomComboBox_h
 #define CustomComboBox_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

@@ -1,8 +1,6 @@
 #ifndef CustomToolBar_h
 #define CustomToolBar_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

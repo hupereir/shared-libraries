@@ -1,8 +1,6 @@
 #ifndef OptionBrowsedLineEditor_h
 #define OptionBrowsedLineEditor_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

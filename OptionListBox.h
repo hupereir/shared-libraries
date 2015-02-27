@@ -1,8 +1,6 @@
 #ifndef OptionListBox_h
 #define OptionListBox_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

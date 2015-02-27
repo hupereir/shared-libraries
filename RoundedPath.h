@@ -1,8 +1,6 @@
 #ifndef RoundedPath_h
 #define RoundedPath_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

@@ -1,4 +1,3 @@
-// $Id$
 
 #ifndef TextSeparator_h
 #define TextSeparator_h

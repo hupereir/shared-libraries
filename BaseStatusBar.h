@@ -1,8 +1,6 @@
 #ifndef BaseStatusBar_h
 #define BaseStatusBar_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -31,11 +29,11 @@
 
 #include <QList>
 
-//! local label for additional slots
+//* local label for additional slots
 class StatusBarLabel: public AnimatedLabel
 {
 
-    //! Qt meta object macro
+    //* Qt meta object macro
     Q_OBJECT
 
     public:
@@ -45,53 +43,53 @@ class StatusBarLabel: public AnimatedLabel
 
     public Q_SLOTS:
 
-    //! set text
+    //* set text
     virtual void setText( const QString& message, bool alsoUpdate = true )
     {
         if( alsoUpdate ) setTextAndUpdate( message );
         else AnimatedLabel::setText( message );
     }
 
-    //! set label text and process events
+    //* set label text and process events
     void setTextAndUpdate( const QString& );
 
 };
 
-//! custom status bar
+//* custom status bar
 class BaseStatusBar: public QStatusBar, public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     BaseStatusBar( QWidget* );
 
-    //! destructor
+    //* destructor
     ~BaseStatusBar( void )
     {}
 
-    //! add clock
+    //* add clock
     void addClock( void );
 
-    //! add label
+    //* add label
     void addLabel( const int& stretch = 0, bool animated = false );
 
-    //! add labels
+    //* add labels
     void addLabels( const unsigned int& n, const int& stretch = 0, bool animated = false )
     { for( unsigned int i=0; i<n; i++ ) addLabel( stretch, animated ); }
 
-    //! retrieves label with given index
+    //* retrieves label with given index
     virtual StatusBarLabel& label( int i = 0  ) const
     { return *labels_[i]; }
 
     protected:
 
-    //! context menu
+    //* context menu
     virtual void contextMenuEvent( QContextMenuEvent* );
 
     private:
 
-    //! vector of output labels.
+    //* vector of output labels.
     QList< StatusBarLabel* > labels_;
 
 };

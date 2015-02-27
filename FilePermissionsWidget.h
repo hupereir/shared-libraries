@@ -1,6 +1,5 @@
 #ifndef FilePermissionsWidget_h
 #define FilePermissionsWidget_h
-// $Id$
 
 /******************************************************************************
 *

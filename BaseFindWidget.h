@@ -1,8 +1,6 @@
 #ifndef BaseFindWidget_h
 #define BaseFindWidget_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
