@@ -31,6 +31,7 @@ set(ENABLE_SHARED 1)
 
 add_subdirectory(base)
 add_subdirectory(base-qt)
+add_subdirectory(base-ssh)
 add_subdirectory(base-server)
 add_subdirectory(base-help)
 
