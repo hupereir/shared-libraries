@@ -51,6 +51,14 @@ namespace Ssh
 
         //@}
 
+        //*@name modifiers
+        //@{
+
+        //* intialize
+        void initialize( void );
+
+        //@}
+
         Q_SIGNALS:
 
         //* error message

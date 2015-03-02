@@ -2,9 +2,9 @@
 
 #include "Debug.h"
 #include "File.h"
+#include "SshChannelThread.h"
+#include "SshListeningThread.h"
 #include "SshLoginDialog.h"
-#include "SshTunnel.h"
-#include "SshSocket.h"
 #include "Util.h"
 
 #include <QHostInfo>
@@ -55,17 +55,13 @@ namespace Ssh
         foreach( auto attributes, attributes_.tunnels() )
         {
 
-            QTcpServer* tcpServer = new QTcpServer( this );
-            connect( tcpServer, SIGNAL(newConnection()), this, SLOT(_newConnection()) );
-            if( !tcpServer->listen( QHostAddress::LocalHost, attributes.localPort() ) )
-            {
-
-                Debug::Throw(0) << "Ssh::Connection::createTunnel -"
-                    << " cannot listen to localHost:" << attributes.localPort()
-                    << " error: " << tcpServer->errorString()
-                    << endl;
-                return false;
-            }
+            ListeningThread* thread = new ListeningThread( this, attributes );
+            connect( thread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
+            connect( thread, SIGNAL(newConnection(int,int)), this, SLOT(_newConnection(int,int)) );
+            connect( thread, SIGNAL(finished()), thread, SLOT(close()) );
+            connect( thread, SIGNAL(finished()), thread, SLOT(deleteLater()) );
+            thread->initialize();
+            thread->start();
         }
 
         // update state and return
@@ -183,7 +179,7 @@ namespace Ssh
     void Connection::disconnect( void )
     {
 
-        Debug::Throw( "Ssh::Connection::disconnect.\n" );
+        Debug::Throw(0, "Ssh::Connection::disconnect.\n" );
         disconnectChannels();
         disconnectSession();
         disconnectTunnels();
@@ -194,13 +190,13 @@ namespace Ssh
     void Connection::disconnectChannels( void )
     {
 
-        Debug::Throw( "Ssh::Connection::disconnectChannels.\n" );
+        Debug::Throw(0, "Ssh::Connection::disconnectChannels.\n" );
 
         // close ssh tunnels
-        foreach( auto tunnel, findChildren<Tunnel*>() )
+        foreach( auto thread, findChildren<ChannelThread*>() )
         {
-            tunnel->close();
-            tunnel->deleteLater();
+            thread->terminate();
+            thread->wait();
         }
 
     }
@@ -209,7 +205,7 @@ namespace Ssh
     void Connection::disconnectSession( void )
     {
 
-        Debug::Throw( "Ssh::Connection::disconnectSession.\n" );
+        Debug::Throw(0, "Ssh::Connection::disconnectSession.\n" );
 
         #if HAVE_SSH
         if( state_ & (Connected|SessionCreated) )
@@ -251,13 +247,14 @@ namespace Ssh
     //_______________________________________________
     void Connection::disconnectTunnels( void )
     {
-        Debug::Throw( "Ssh::Connection::disconnectTunnel.\n" );
+        Debug::Throw(0, "Ssh::Connection::disconnectTunnel.\n" );
 
         // disconnect all tcp servers
-        foreach( auto tcpServer, findChildren<QTcpServer*>() )
+        foreach( auto thread, findChildren<ListeningThread*>() )
         {
-            if( tcpServer->isListening() )
-            { tcpServer->close(); }
+            thread->terminate();
+            thread->wait();
+            // thread->deleteLater();
         }
 
         // update state
@@ -543,38 +540,34 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_newConnection( void )
+    void Connection::_notifyError( QString error )
+    { Debug::Throw(0) << "Ssh::Connection::_notifyError: " << error << endl; }
+
+    //_______________________________________________
+    void Connection::_newConnection( int port, int socket )
     {
         Debug::Throw( "Ssh::Connection::_newConnection.\n" );
 
-        // loop over tcp servers
-        foreach( auto tcpServer, findChildren<QTcpServer*>() )
+        // loop over listening threads
+        bool found = false;
+        foreach( auto thread, findChildren<ListeningThread*>() )
         {
 
-            // check pending connection
-            if( !tcpServer->hasPendingConnections() ) continue;
-
-            // find tunnel attributes matching host
-            TunnelAttributes attributes;
-            attributes.setLocalPort( tcpServer->serverPort() );
-            auto iter( attributes_.tunnels().constFind( attributes ) );
-            if( iter == attributes_.tunnels().end() )
+            if( thread->isRunning() && thread->attributes().localPort() == port )
             {
-                Debug::Throw(0) << "Ssh::Connection::_newConnection - unable to find tunnel attributes matching port " << tcpServer->serverPort() << endl;
-                continue;
+                found = true;
+                const TunnelAttributes& attributes( thread->attributes() );
+                ChannelThread* channelThread= new ChannelThread( this, attributes, session_, socket );
+                connect( channelThread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
+                connect( channelThread, SIGNAL(finished()), channelThread, SLOT(close()) );
+                connect( channelThread, SIGNAL(finished()), channelThread, SLOT(deleteLater()) );
+                channelThread->initialize();
+                channelThread->start();
             }
-
-            while( QTcpSocket* tcpSocket = tcpServer->nextPendingConnection() )
-            {
-                Tunnel* tunnel = new Tunnel( this, tcpSocket );
-                tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
-                QObject::connect( tunnel->sshSocket(), SIGNAL(error(QAbstractSocket::SocketError)), tunnel, SLOT(deleteLater()) );
-                QObject::connect( tunnel->sshSocket(), SIGNAL(readChannelFinished()), tunnel, SLOT(deleteLater()) );
-            }
-
         }
 
-        Debug::Throw( "Ssh::Connection::_newConnection - done.\n" );
+        if( !found )
+        { Debug::Throw(0) << "Could not create ssh channel on port: " << port << endl; }
 
     }
 

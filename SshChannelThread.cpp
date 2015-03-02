@@ -44,11 +44,16 @@ namespace Ssh
     { Debug::Throw( "Ssh::ChannelThread::ChannelThread.\n" ); }
 
     //_______________________________________________________________
+    ChannelThread::~ChannelThread( void )
+    {
+        Debug::Throw(0, "SSh::ChannelThread:~ChannelThread.\n" );
+        close();
+    }
+
+    //_______________________________________________________________
     void ChannelThread::close( void )
     {
-        // close socket
-        if( socket_ >= 0 ) ::close( socket_ );
-        socket_ = -1;
+
 
         // close ssh channel
         if( channel_ )
@@ -57,14 +62,26 @@ namespace Ssh
             libssh2_channel_free( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
             #endif
         }
+
+        // close socket
+        if( socket_ >= 0 )
+        {
+            Debug::Throw(0, "SSh::ChannelThread::close.\n" );
+            ::close( socket_ );
+        }
+
+        socket_ = -1;
         channel_ = nullptr;
 
     }
 
     //_______________________________________________________________
-    void ChannelThread::run( void )
+    void ChannelThread::initialize( void )
     {
-        Debug::Throw( "Ssh::ChannelThread::run.\n" );
+
+        if( channel_ ) return;
+        Debug::Throw(0) << "Ssh::ChannelThread::initialize - host: " << attributes_.host() << ":" << attributes_.remotePort() << endl;
+
 
         #if HAVE_SSH
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
@@ -86,7 +103,23 @@ namespace Ssh
             }
 
         }
+        #endif
 
+    }
+
+    //_______________________________________________________________
+    void ChannelThread::run( void )
+    {
+        Debug::Throw(0) << "Ssh::ChannelThread::run - host: " << attributes_.host() << ":" << attributes_.remotePort() << endl;
+
+        // check channel
+        if( !channel_ )
+        {
+            emit error( tr( "Invalid channel" ) );
+            return;
+        }
+
+        #if HAVE_SSH
         // cast channel
         LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
 

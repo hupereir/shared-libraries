@@ -147,8 +147,11 @@ namespace Ssh
 
         protected Q_SLOTS:
 
+        //* error handling
+        void _notifyError( QString );
+
         //* new tcp connection
-        void _newConnection( void );
+        void _newConnection( int port, int socket );
 
         private:
 

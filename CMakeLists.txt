@@ -26,11 +26,10 @@ find_package( PkgConfig REQUIRED )
 pkg_check_modules(LIBSSH2 libssh2>=1.2.8)
 if(${LIBSSH2_FOUND})
    add_definitions(-DHAVE_SSH=1)
+  include_directories(${LIBSSH2_INCLUDE_DIRS})
 else()
    add_definitions(-DHAVE_SSH=0)
 endif()
-
-include_directories(${LIBSSH2_INCLUDE_DIRS})
 
 ########### includes #########
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -47,8 +46,6 @@ set(base_ssh_SOURCES
   SshConnection.cpp
   SshListeningThread.cpp
   SshLoginDialog.cpp
-  SshSocket.cpp
-  SshTunnel.cpp
 )
 
 if(ENABLE_SHARED)

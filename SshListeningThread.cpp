@@ -24,7 +24,6 @@
 #include <QHostAddress>
 
 #include <sys/socket.h>
-#include <netinet/in.h>
 #include <unistd.h>
 
 namespace Ssh
@@ -46,27 +45,33 @@ namespace Ssh
 
     //_____________________________________________________________
     ListeningThread::~ListeningThread(void )
-    { close(); }
+    {
+        Debug::Throw(0, "SSh::ListeningThread::~ListeningThread.\n" );
+        close();
+    }
 
     //_____________________________________________________________
     void ListeningThread::close( void )
     {
-        Debug::Throw( "SSh::ListeningThread::close.\n" );
-        if( socket_ >= 0 ) ::close( socket_ );
+        if( socket_ >= 0 )
+        {
+            Debug::Throw(0, "SSh::ListeningThread::close.\n" );
+            ::close( socket_ );
+        }
+
         socket_ = -1;
     }
 
     //_____________________________________________________________
-    void ListeningThread::run( void )
+    void ListeningThread::initialize( void )
     {
-        Debug::Throw( "SSh::ListeningThread::run.\n" );
+        Debug::Throw(0) << "SSh::ListeningThread::initialize - port: " << attributes_.localPort() << endl;
 
         // socket address
-        struct sockaddr_in address;
-        address.sin_family = AF_INET;
-        address.sin_port = htons( attributes_.localPort() );
-        address.sin_addr.s_addr = htonl( QHostAddress( QHostAddress::LocalHost ).toIPv4Address() );
-        if( address.sin_addr.s_addr == INADDR_NONE )
+        address_.sin_family = AF_INET;
+        address_.sin_port = htons( attributes_.localPort() );
+        address_.sin_addr.s_addr = htonl( QHostAddress( QHostAddress::LocalHost ).toIPv4Address() );
+        if( address_.sin_addr.s_addr == INADDR_NONE )
         {
             emit error( QString( "Invalid local host address" ) );
             return;
@@ -78,8 +83,8 @@ namespace Ssh
         setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &socketOption, sizeof(socketOption) );
 
         // bind
-        socklen_t addressLength = sizeof(address);
-        if( bind(socket_, (struct sockaddr *)&address, addressLength) == -1 )
+        socklen_t addressLength = sizeof(address_);
+        if( bind(socket_, (struct sockaddr *)&address_, addressLength) == -1 )
         {
             emit error( tr( "Could not bind socket to port %1 on localhost" ).arg( attributes_.localPort() ) );
             perror( "bind" );
@@ -94,11 +99,25 @@ namespace Ssh
             return;
         }
 
+    }
+
+    //_____________________________________________________________
+    void ListeningThread::run( void )
+    {
+        Debug::Throw(0) << "SSh::ListeningThread::run - port: " << attributes_.localPort() << endl;
+
+        if( socket_ < 0 )
+        {
+            emit error( tr( "Invalid socket" ) );
+            return;
+        }
+
         // infinite loop to accept connections
+        socklen_t addressLength = sizeof(address_);
         forever
         {
 
-            int forwardSocket = accept( socket_, (struct sockaddr *)&address, &addressLength);
+            int forwardSocket = accept( socket_, (struct sockaddr *)&address_, &addressLength);
             if( forwardSocket == -1 )
             {
 
