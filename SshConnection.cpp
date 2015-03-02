@@ -48,7 +48,7 @@ namespace Ssh
     bool Connection::createTunnels( void )
     {
 
-        Debug::Throw( "Ssh::Connection::createTunnels.\n" );
+        Debug::Throw( 0, "Ssh::Connection::createTunnels.\n" );
         if( !(state_ & Initialized) ) return false;
 
         // loop over tunnel attributes
@@ -75,7 +75,7 @@ namespace Ssh
     bool Connection::connect( void )
     {
 
-        Debug::Throw( "Ssh::Connection::connect.\n" );
+        Debug::Throw( 0, "Ssh::Connection::connect.\n" );
         if( !(state_ & Initialized) ) return false;
 
         #if HAVE_SSH
@@ -254,7 +254,6 @@ namespace Ssh
         {
             thread->terminate();
             thread->wait();
-            // thread->deleteLater();
         }
 
         // update state
@@ -557,6 +556,7 @@ namespace Ssh
             {
                 found = true;
                 const TunnelAttributes& attributes( thread->attributes() );
+                Debug::Throw(0) << "Ssh::Connection::_newConnection - new connection to " << attributes.host() << ":" << attributes.remotePort() << endl;
                 ChannelThread* channelThread= new ChannelThread( this, attributes, session_, socket );
                 connect( channelThread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(close()) );
