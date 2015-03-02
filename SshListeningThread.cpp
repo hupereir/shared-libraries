@@ -104,7 +104,6 @@ namespace Ssh
     //_____________________________________________________________
     void ListeningThread::run( void )
     {
-        Debug::Throw(0) << "SSh::ListeningThread::run - port: " << attributes_.localPort() << endl;
 
         if( socket_ < 0 )
         {
@@ -133,7 +132,6 @@ namespace Ssh
 
         }
 
-        Debug::Throw() << "Ssh::ListeningThread::run - finished." << endl;
         close();
 
     }

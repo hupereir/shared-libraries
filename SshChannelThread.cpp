@@ -110,7 +110,6 @@ namespace Ssh
     //_______________________________________________________________
     void ChannelThread::run( void )
     {
-        Debug::Throw(0) << "Ssh::ChannelThread::run - host: " << attributes_.host() << ":" << attributes_.remotePort() << endl;
 
         // check channel
         if( !channel_ )
@@ -214,7 +213,6 @@ namespace Ssh
         }
         #endif
 
-        Debug::Throw() << "Ssh::ChannelThread::run - finished." << endl;
         close();
 
     }
