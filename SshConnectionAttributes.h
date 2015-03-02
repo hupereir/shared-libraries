@@ -55,6 +55,10 @@ namespace Ssh
                 tunnels_ == other.tunnels_;
         }
 
+        //* different from operator
+        bool operator != (const ConnectionAttributes& other ) const
+        { return !(*this == other); }
+
         //* less than operator
         bool operator < ( const ConnectionAttributes& other ) const
         { return name_ < other.name_; }
