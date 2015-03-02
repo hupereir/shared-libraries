@@ -46,6 +46,7 @@ void InterruptionHandler::initialize( void )
     get().initialized_ = true;
 
     // setup interruptions
+    #if !defined(Q_OS_WIN)
     struct sigaction interruptAction;
     memset (&interruptAction, '\0', sizeof(interruptAction));
     interruptAction.sa_handler = &_handleInterruption;
@@ -53,12 +54,14 @@ void InterruptionHandler::initialize( void )
 
     sigaction( SIGINT, &interruptAction, nullptr );
     sigaction( SIGTERM, &interruptAction, nullptr );
-
+    #endif
 }
 
 //_____________________________________________________________
 void InterruptionHandler::_handleInterruption( int signal )
 {
+    #if !defined(Q_OS_WIN)
     Debug::Throw(0) << "InterruptionHandler::_handleInterruption - recieved " << strsignal( signal ) << " (" << signal << ")" << endl;
+    #endif
     qApp->quit();
 }
