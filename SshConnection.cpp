@@ -313,7 +313,7 @@ namespace Ssh
 
         #if HAVE_SSH
 
-        Debug::Throw() << "Ssh::Connection::timerEvent - processing command: " << commands_.front() << endl;
+        Debug::Throw() << "Ssh::Connection::timerEvent - processing command: " << _commandMessage(commands_.front()) << " (" << commands_.front() << ")" << endl;
 
         // cast session. It is used for almost all commands
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
