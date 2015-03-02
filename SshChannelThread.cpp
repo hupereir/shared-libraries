@@ -46,7 +46,7 @@ namespace Ssh
     //_______________________________________________________________
     ChannelThread::~ChannelThread( void )
     {
-        Debug::Throw(0, "SSh::ChannelThread:~ChannelThread.\n" );
+        Debug::Throw( "SSh::ChannelThread:~ChannelThread.\n" );
         close();
     }
 
@@ -66,7 +66,7 @@ namespace Ssh
         // close socket
         if( socket_ >= 0 )
         {
-            Debug::Throw(0, "SSh::ChannelThread::close.\n" );
+            Debug::Throw( "SSh::ChannelThread::close.\n" );
             ::close( socket_ );
         }
 
@@ -80,8 +80,7 @@ namespace Ssh
     {
 
         if( channel_ ) return;
-        Debug::Throw(0) << "Ssh::ChannelThread::initialize - host: " << attributes_.host() << ":" << attributes_.remotePort() << endl;
-
+        Debug::Throw() << "Ssh::ChannelThread::initialize - host: " << attributes_.host() << ":" << attributes_.remotePort() << endl;
 
         #if HAVE_SSH
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );

@@ -46,7 +46,7 @@ namespace Ssh
     //_____________________________________________________________
     ListeningThread::~ListeningThread(void )
     {
-        Debug::Throw(0, "SSh::ListeningThread::~ListeningThread.\n" );
+        Debug::Throw( "SSh::ListeningThread::~ListeningThread.\n" );
         close();
     }
 
@@ -55,7 +55,7 @@ namespace Ssh
     {
         if( socket_ >= 0 )
         {
-            Debug::Throw(0, "SSh::ListeningThread::close.\n" );
+            Debug::Throw( "SSh::ListeningThread::close.\n" );
             ::close( socket_ );
         }
 
@@ -65,7 +65,7 @@ namespace Ssh
     //_____________________________________________________________
     void ListeningThread::initialize( void )
     {
-        Debug::Throw(0) << "SSh::ListeningThread::initialize - port: " << attributes_.localPort() << endl;
+        Debug::Throw() << "SSh::ListeningThread::initialize - port: " << attributes_.localPort() << endl;
 
         // socket address
         address_.sin_family = AF_INET;
