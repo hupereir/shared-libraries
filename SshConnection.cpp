@@ -179,7 +179,7 @@ namespace Ssh
     void Connection::disconnect( void )
     {
 
-        Debug::Throw(0, "Ssh::Connection::disconnect.\n" );
+        Debug::Throw( "Ssh::Connection::disconnect.\n" );
         disconnectChannels();
         disconnectSession();
         disconnectTunnels();
@@ -190,7 +190,7 @@ namespace Ssh
     void Connection::disconnectChannels( void )
     {
 
-        Debug::Throw(0, "Ssh::Connection::disconnectChannels.\n" );
+        Debug::Throw( "Ssh::Connection::disconnectChannels.\n" );
 
         // close ssh tunnels
         foreach( auto thread, findChildren<ChannelThread*>() )
@@ -205,7 +205,7 @@ namespace Ssh
     void Connection::disconnectSession( void )
     {
 
-        Debug::Throw(0, "Ssh::Connection::disconnectSession.\n" );
+        Debug::Throw( "Ssh::Connection::disconnectSession.\n" );
 
         #if HAVE_SSH
         if( state_ & (Connected|SessionCreated) )
@@ -247,7 +247,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::disconnectTunnels( void )
     {
-        Debug::Throw(0, "Ssh::Connection::disconnectTunnel.\n" );
+        Debug::Throw( "Ssh::Connection::disconnectTunnel.\n" );
 
         // disconnect all tcp servers
         foreach( auto thread, findChildren<ListeningThread*>() )
