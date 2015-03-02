@@ -43,7 +43,9 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 ########### next target ###############
 set(base_ssh_SOURCES
+  SshChannelThread.cpp
   SshConnection.cpp
+  SshListeningThread.cpp
   SshLoginDialog.cpp
   SshSocket.cpp
   SshTunnel.cpp
