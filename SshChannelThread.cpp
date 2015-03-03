@@ -163,7 +163,7 @@ namespace Ssh
                 ssize_t i = 0;
                 do
                 {
-                    i = libssh2_channel_write( channel, buffer.data(), length );
+                    i = libssh2_channel_write( channel, buffer.data()+bytesWritten, length-bytesWritten );
 
                     if (i < 0)
                     {
