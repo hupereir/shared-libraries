@@ -216,25 +216,18 @@ namespace Ssh
 
         Debug::Throw( "Ssh::Connection::disconnectChannels.\n" );
 
-        if( useThreads_ )
+        // loop over threads and delete
+        foreach( auto thread, findChildren<ChannelThread*>() )
         {
+            thread->terminate();
+            thread->wait();
+        }
 
-            // loop over threads and delete
-            foreach( auto thread, findChildren<ChannelThread*>() )
-            {
-                thread->terminate();
-                thread->wait();
-            }
-
-        } else {
-
-            // loop over tunnels and delete
-            foreach( auto tunnel, findChildren<Tunnel*>() )
-            {
-                tunnel->close();
-                tunnel->deleteLater();
-            }
-
+        // loop over tunnels and delete
+        foreach( auto tunnel, findChildren<Tunnel*>() )
+        {
+            tunnel->close();
+            tunnel->deleteLater();
         }
 
     }
@@ -287,25 +280,18 @@ namespace Ssh
     {
         Debug::Throw( "Ssh::Connection::disconnectTunnel.\n" );
 
-        if( useThreads_ )
+        // disconnect all listening threads
+        foreach( auto thread, findChildren<ListeningThread*>() )
         {
+            thread->terminate();
+            thread->wait();
+        }
 
-            // disconnect all listening threads
-            foreach( auto thread, findChildren<ListeningThread*>() )
-            {
-                thread->terminate();
-                thread->wait();
-            }
-
-        } else {
-
-            // disconnect all tcp servers
-            foreach( auto tcpServer, findChildren<QTcpServer*>() )
-            {
-                if( tcpServer->isListening() )
-                { tcpServer->close(); }
-            }
-
+        // disconnect all tcp servers
+        foreach( auto tcpServer, findChildren<QTcpServer*>() )
+        {
+            if( tcpServer->isListening() )
+            { tcpServer->close(); }
         }
 
         // update state
