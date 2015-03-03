@@ -138,7 +138,6 @@ namespace Ssh
             if( result == -1 )
             {
                 emit error( tr( "Error selecting socket forwarded to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
-                perror("select");
                 return;
             }
 
@@ -149,7 +148,6 @@ namespace Ssh
                 if( length<0 )
                 {
                     emit error( tr( "Error reading from port %1" ).arg( attributes_.localPort() ) );
-                    perror("read");
                     return;
 
                 } else if( length == 0 ) {
@@ -183,7 +181,7 @@ namespace Ssh
                 if( length == LIBSSH2_ERROR_EAGAIN ) break;
                 else if( length < 0 )
                 {
-                    emit error( tr( "Error reading from %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
+                    emit error( tr( "Error reading from %1:%2 (%3)" ).arg( attributes_.host() ).arg( attributes_.remotePort() ).arg( length ) );
                     return;
                 }
 
@@ -196,7 +194,6 @@ namespace Ssh
                     {
 
                         emit error( tr( "Error writing to port %1" ).arg( attributes_.localPort() ) );
-                        perror("write");
                         return;
                     }
                     bytesWritten += i;
