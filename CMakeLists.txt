@@ -63,6 +63,10 @@ endif()
 
 target_link_libraries(base-ssh ${QT_LIBRARIES} base base-qt)
 
+if(${LIBSSH2_FOUND})
+target_link_libraries(base-ssh ${LIBSSH2_LIBRARIES})
+endif()
+
 if(USE_QT5)
 
   qt5_use_modules(base-ssh Widgets Network)

@@ -81,9 +81,9 @@ namespace Ssh
     }
 
     //______________________________________________________________________
-    ConnectionAttributes LoginDialog::connectionAttributes( void ) const
+    ConnectionAttributes LoginDialog::attributes( void ) const
     {
-        ConnectionAttributes attributes( connectionAttributes_ );
+        ConnectionAttributes attributes( attributes_ );
         attributes.setHost( hostEditor_->text() );
         attributes.setPort( portSpinBox_->value() );
         attributes.setUserName( userNameEditor_->text() );
@@ -93,9 +93,9 @@ namespace Ssh
     }
 
     //______________________________________________________________________
-    void LoginDialog::setConnectionAttributes( const ConnectionAttributes& attributes )
+    void LoginDialog::setAttributes( const ConnectionAttributes& attributes )
     {
-        connectionAttributes_ = attributes;
+        attributes_ = attributes;
         if( !attributes.host().isEmpty() ) setWindowTitle( QString( tr( "SSH login into %1" ) ).arg( attributes.host() ) );
         hostEditor_->setText( attributes.host() );
         portSpinBox_->setValue( attributes.port() );

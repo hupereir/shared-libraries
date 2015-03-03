@@ -51,8 +51,8 @@ namespace Ssh
         //@{
 
         //* connection attributes
-        const ConnectionAttributes& connectionAttributes( void ) const
-        { return connectionAttributes_; }
+        const ConnectionAttributes& attributes( void ) const
+        { return attributes_; }
 
         //* connection state
         enum State
@@ -77,14 +77,17 @@ namespace Ssh
         using QObject::connect;
 
         //* set connection attributes
-        void setConnectionAttributes( const ConnectionAttributes& attributes )
-        { connectionAttributes_ = attributes; }
+        void setAttributes( const ConnectionAttributes& attributes )
+        { attributes_ = attributes; }
 
         //* tunnels
         bool createTunnels( void );
 
         //* connect
         bool connect( void );
+
+        //* authenticate
+        bool authenticate( bool forceRequestIdentity = false );
 
         //* command list
         enum SshCommand
@@ -111,9 +114,6 @@ namespace Ssh
 
         //* disconnect channels
         void disconnectChannels( void );
-
-        //* disconnect channels matching a given port
-        void disconnectChannels( quint16 );
 
         //* disconnect session
         void disconnectSession( void );
@@ -171,7 +171,7 @@ namespace Ssh
         void* identity_ = nullptr;
 
         //* connection attributes
-        ConnectionAttributes connectionAttributes_;
+        ConnectionAttributes attributes_;
 
         //* authentication methods
         QString authenticationMethods_;

@@ -47,7 +47,7 @@ namespace Ssh
         //@{
 
         //* connection attributes
-        ConnectionAttributes connectionAttributes( void ) const;
+        ConnectionAttributes attributes( void ) const;
 
         //@}
 
@@ -55,14 +55,14 @@ namespace Ssh
         //@{
 
         //* connection attributes
-        void setConnectionAttributes( const ConnectionAttributes& );
+        void setAttributes( const ConnectionAttributes& );
 
         //@}
 
         private:
 
         // connection attributes
-        ConnectionAttributes connectionAttributes_;
+        ConnectionAttributes attributes_;
 
         LineEditor* hostEditor_= nullptr;
         QSpinBox* portSpinBox_ = nullptr;

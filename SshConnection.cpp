@@ -51,19 +51,8 @@ namespace Ssh
         Debug::Throw( "Ssh::Connection::createTunnels.\n" );
         if( !(state_ & Initialized) ) return false;
 
-        // remove all existing tcp servers
-        foreach( auto tcpServer, findChildren<QTcpServer*> () )
-        {
-            if( tcpServer->isListening() )
-            {
-                disconnectChannels( tcpServer->serverPort() );
-                tcpServer->close();
-            }
-            tcpServer->deleteLater();
-        }
-
         // loop over tunnel attributes
-        foreach( auto attributes, connectionAttributes_.tunnels() )
+        foreach( auto attributes, attributes_.tunnels() )
         {
 
             QTcpServer* tcpServer = new QTcpServer( this );
@@ -104,17 +93,17 @@ namespace Ssh
 
         // initialize socket address structure
         QHostAddress address;
-        const QHostInfo hostInfo( QHostInfo::fromName( connectionAttributes_.host() ) );
+        const QHostInfo hostInfo( QHostInfo::fromName( attributes_.host() ) );
         if( !hostInfo.addresses().isEmpty() ) address = hostInfo.addresses().front();
         if( address.isNull() )
         {
-            Debug::Throw(0) << "Ssh::Connection::connect - invalid host: " << connectionAttributes_.host() << endl;
+            Debug::Throw(0) << "Ssh::Connection::connect - invalid host: " << attributes_.host() << endl;
             return false;
         }
 
         struct sockaddr_in socketAddress;
         socketAddress.sin_family = AF_INET;
-        socketAddress.sin_port = htons(connectionAttributes_.port());
+        socketAddress.sin_port = htons(attributes_.port());
         socketAddress.sin_addr.s_addr = htonl(address.toIPv4Address());
 
         // connect
@@ -155,6 +144,27 @@ namespace Ssh
     }
 
     //_______________________________________________
+    bool Connection::authenticate( bool forceRequestIdentity )
+    {
+
+        Debug::Throw( "Ssh::Connection::authenticate.\n" );
+
+        // authentication
+        if( forceRequestIdentity ) addCommand(Connection::RequestIdentity);
+
+        addCommand(Connection::LoadAuthenticationMethods);
+        addCommand(Connection::ListIdentities);
+        addCommand(Connection::AuthenticateWithAgent);
+
+        if( !( forceRequestIdentity || attributes_.rememberPassword() ) )
+        { addCommand(Connection::RequestIdentity); }
+
+        addCommand(Connection::AuthenticateWithPassword);
+        return true;
+
+    }
+
+    //_______________________________________________
     void Connection::addCommand( SshCommand command )
     {
         Debug::Throw() << "Ssh::Connection::AddCommand: " << command << endl;
@@ -191,24 +201,6 @@ namespace Ssh
         {
             tunnel->close();
             tunnel->deleteLater();
-        }
-
-    }
-
-    //_______________________________________________
-    void Connection::disconnectChannels( quint16 port )
-    {
-
-        Debug::Throw() << "Ssh::Connection::disconnectChannels - port: " << port << endl;
-
-        // close ssh tunnels
-        foreach( auto tunnel, findChildren<Tunnel*>() )
-        {
-            if( tunnel->tcpSocket()->localPort() == port )
-            {
-                tunnel->close();
-                tunnel->deleteLater();
-            }
         }
 
     }
@@ -367,10 +359,10 @@ namespace Ssh
             {
                 // login dialog
                 LoginDialog dialog( nullptr );
-                dialog.setConnectionAttributes( connectionAttributes_ );
+                dialog.setAttributes( attributes_ );
                 if( dialog.exec() )
                 {
-                    connectionAttributes_ = dialog.connectionAttributes();
+                    attributes_ = dialog.attributes();
                     commands_.removeFirst();
                     return;
 
@@ -386,7 +378,7 @@ namespace Ssh
 
             case LoadAuthenticationMethods:
             {
-                if( !(authenticationMethods_ = libssh2_userauth_list( session, qPrintable( connectionAttributes_.userName() ), connectionAttributes_.userName().size() )).isNull() )
+                if( !(authenticationMethods_ = libssh2_userauth_list( session, qPrintable( attributes_.userName() ), attributes_.userName().size() )).isNull() )
                 {
 
                     // success
@@ -457,7 +449,7 @@ namespace Ssh
                 {
 
                     // cast
-                    const int result( libssh2_agent_userauth( agent, qPrintable( connectionAttributes_.userName() ), identity ) );
+                    const int result( libssh2_agent_userauth( agent, qPrintable( attributes_.userName() ), identity ) );
                     if( !result )
                     {
 
@@ -477,7 +469,7 @@ namespace Ssh
 
                         Debug::Throw()
                             << "Ssh::Connection::authenticateWithAgent -"
-                            << " login with user name: " << connectionAttributes_.userName()
+                            << " login with user name: " << attributes_.userName()
                             << " and key: " << identity->comment << " failed"
                             << endl;
 
@@ -508,7 +500,7 @@ namespace Ssh
 
             } else {
 
-                const int result( libssh2_userauth_password( session, qPrintable( connectionAttributes_.userName() ), qPrintable( connectionAttributes_.password() ) ) );
+                const int result( libssh2_userauth_password( session, qPrintable( attributes_.userName() ), qPrintable( attributes_.password() ) ) );
                 if( !result )
                 {
 
@@ -524,6 +516,11 @@ namespace Ssh
 
                     commands_.clear();
                     emit loginFailed();
+
+                    // start over
+                    disconnectSession();
+                    connect();
+                    authenticate( true );
                     return;
 
                 }
@@ -560,8 +557,8 @@ namespace Ssh
             // find tunnel attributes matching host
             TunnelAttributes attributes;
             attributes.setLocalPort( tcpServer->serverPort() );
-            auto iter( connectionAttributes_.tunnels().constFind( attributes ) );
-            if( iter == connectionAttributes_.tunnels().end() )
+            auto iter( attributes_.tunnels().constFind( attributes ) );
+            if( iter == attributes_.tunnels().end() )
             {
                 Debug::Throw(0) << "Ssh::Connection::_newConnection - unable to find tunnel attributes matching port " << tcpServer->serverPort() << endl;
                 continue;
