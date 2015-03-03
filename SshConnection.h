@@ -42,7 +42,7 @@ namespace Ssh
         public:
 
         //* constructor
-        Connection( QObject* = nullptr );
+        Connection( QObject*, bool useThreads );
 
         //* destructor
         virtual ~Connection( void );
@@ -150,7 +150,10 @@ namespace Ssh
         //* error handling
         void _notifyError( QString );
 
-        //* new tcp connection
+        //* new tcp connection (from QTcpServer)
+        void _newConnection( void );
+
+        //* new tcp connection (from threads)
         void _newConnection( int port, int socket );
 
         private:
@@ -160,6 +163,9 @@ namespace Ssh
 
         //* abort all commands
         void _abortCommands( const QString& );
+
+        //* use threads
+        bool useThreads_ = false;
 
         //* ssh socket
         int sshSocket_ = -1;

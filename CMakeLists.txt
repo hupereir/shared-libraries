@@ -46,6 +46,8 @@ set(base_ssh_SOURCES
   SshConnection.cpp
   SshListeningThread.cpp
   SshLoginDialog.cpp
+  SshSocket.cpp
+  SshTunnel.cpp
 )
 
 if(ENABLE_SHARED)
