@@ -245,7 +245,7 @@ XcbUtil& XcbUtil::get( void )
 //________________________________________________________________________
 XcbUtil::XcbUtil( void )
 {
-    Debug::Throw( "XcbUtil::XcbUtil" );
+    Debug::Throw( "XcbUtil::XcbUtil.\n" );
     d = new Private();
 }
 
