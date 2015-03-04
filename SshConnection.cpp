@@ -642,6 +642,7 @@ namespace Ssh
                 connect( channelThread, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(close()) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(deleteLater()) );
+                channelThread->setMutex( &mutex_ );
                 channelThread->initialize();
                 channelThread->start();
             }

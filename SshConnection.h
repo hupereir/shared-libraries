@@ -26,6 +26,7 @@
 #include "WeakPointer.h"
 
 #include <QBasicTimer>
+#include <QMutex>
 #include <QObject>
 #include <QString>
 #include <QTcpServer>
@@ -181,6 +182,10 @@ namespace Ssh
 
         //* identity
         void* identity_ = nullptr;
+
+        //* mutex
+        /* needed for concurent access to Ssh session, in thread mode */
+        QMutex mutex_;
 
         //* connection attributes
         ConnectionAttributes attributes_;

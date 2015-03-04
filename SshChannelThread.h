@@ -23,6 +23,7 @@
 #include "Counter.h"
 #include "SshTunnelAttributes.h"
 
+#include <QMutex>
 #include <QThread>
 
 namespace Ssh
@@ -53,6 +54,10 @@ namespace Ssh
 
         //*@name modifiers
         //@{
+
+        //* assign mutex
+        void setMutex( QMutex* mutex )
+        { mutex_ = mutex; }
 
         //* intialize
         void initialize( void );
@@ -92,6 +97,9 @@ namespace Ssh
 
         //* ssh channel
         void* channel_ = nullptr;
+
+        //* mutex
+        QMutex* mutex_ = nullptr;
 
         //* socket
         int socket_ = -1;

@@ -22,13 +22,15 @@
 
 #include "Debug.h"
 
-#if HAVE_SSH
-#include <libssh2.h>
-#endif
+#include <QMutexLocker>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+
+#if HAVE_SSH
+#include <libssh2.h>
+#endif
 
 namespace Ssh
 {
@@ -58,6 +60,7 @@ namespace Ssh
         if( channel_ )
         {
             #if HAVE_SSH
+            QMutexLocker lock( mutex_ );
             libssh2_channel_free( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
             #endif
         }
@@ -159,6 +162,7 @@ namespace Ssh
 
                 emit debug( tr( "Ssh::ChannelThread::run - fromTcpSocket - bytesRead=%1" ).arg( bytesRead ) );
 
+                QMutexLocker lock( mutex_ );
                 ssize_t bytesWritten = 0;
                 ssize_t i = 0;
                 do
@@ -179,6 +183,7 @@ namespace Ssh
             forever
             {
 
+                QMutexLocker lock( mutex_ );
                 ssize_t bytesRead = libssh2_channel_read( channel, buffer.data(), buffer.size() );
                 if( bytesRead == LIBSSH2_ERROR_EAGAIN ) break;
                 else if( bytesRead < 0 )
