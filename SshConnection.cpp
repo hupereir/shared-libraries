@@ -582,7 +582,7 @@ namespace Ssh
 
     //_______________________________________________
     void Connection::_notifyDebug( QString message )
-    { Debug::Throw(0) << message << endl; }
+    { Debug::Throw() << message << endl; }
 
     //_______________________________________________
     void Connection::_newConnection( void )
