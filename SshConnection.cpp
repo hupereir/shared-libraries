@@ -290,8 +290,8 @@ namespace Ssh
         // disconnect all tcp servers
         foreach( auto tcpServer, findChildren<QTcpServer*>() )
         {
-            if( tcpServer->isListening() )
-            { tcpServer->close(); }
+            if( tcpServer->isListening() ) tcpServer->close();
+            tcpServer->deleteLater();
         }
 
         // update state
