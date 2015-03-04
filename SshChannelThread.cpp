@@ -137,6 +137,7 @@ namespace Ssh
             timeValue.tv_sec = 0;
             timeValue.tv_usec = 100000;
 
+            // select method is blocking
             const int result = select( socket_ + 1, &fileDescriptor, nullptr, nullptr, &timeValue );
             if( result == -1 )
             {
@@ -155,7 +156,7 @@ namespace Ssh
 
                 } else if( bytesRead == 0 ) {
 
-                    emit error( tr( "Local socket on port %1 disconnected" ).arg( attributes_.localPort() ) );
+                    emit debug( QString( "Local socket on port %1 disconnected" ).arg( attributes_.localPort() ) );
                     return;
 
                 }
