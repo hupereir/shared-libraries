@@ -5,17 +5,17 @@
 #include "SshChannelThread.h"
 #include "SshListeningThread.h"
 #include "SshLoginDialog.h"
-#include "SshTunnel.h"
 #include "SshSocket.h"
-#include "Util.h"
+#include "SshTunnel.h"
 
 #include <QHostInfo>
 #include <QTextStream>
 
-#if HAVE_SSH
-#include <libssh2.h>
 #include <netinet/in.h>
 #include <unistd.h>
+
+#if HAVE_SSH
+#include <libssh2.h>
 #endif
 
 namespace Ssh
