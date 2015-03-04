@@ -24,29 +24,29 @@
 
 #include <QStringList>
 
-//! some utilities used everywhere
+//* some utilities used everywhere
 class Util
 {
     public:
 
-    //! square a number
+    //* square a number
     template< typename T >
         static T sqr( const T& t)
     { return t*t; }
 
-    //! returns environment variable or empty string
+    //* returns environment variable or empty string
     static QString env( const QString&, const QString& = QString() );
 
-    //!  user name
+    //*  user name
     static QString user( void );
 
-    //! returns the domain name
+    //* returns the domain name
     static QString domain( void );
 
-    //! user home directory
+    //* user home directory
     static QString home( void );
 
-    //! temporary directory ("/tmp")
+    //* temporary directory ("/tmp")
     static QString tmp( void );
 
     /*! returns the host name.
@@ -54,13 +54,13 @@ class Util
     */
     static QString host( bool shortName = false );
 
-    //! append host to input string to form window title
+    //* append host to input string to form window title
     static QString windowTitle( const QString& );
 
-    //! application pid
+    //* application pid
     static int pid( void );
 
-    //! returns the work directory
+    //* returns the work directory
     static QString workingDirectory( void );
 
 };
