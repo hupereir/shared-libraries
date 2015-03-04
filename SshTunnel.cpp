@@ -32,7 +32,7 @@ namespace Ssh
         tcpSocket_( socket ),
         sshSocket_( new Socket( this ) )
     {
-        Debug::Throw( 0, "Ssh::Tunnel::Tunnel.\n" );
+        Debug::Throw( "Ssh::Tunnel::Tunnel.\n" );
 
         buffer_.resize(maxSize_ );
         connect( tcpSocket_, SIGNAL(readyRead()), this, SLOT(_readFromTcpSocket()) );
