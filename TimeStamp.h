@@ -1,8 +1,6 @@
 #ifndef TimeStamp_h
 #define TimeStamp_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

@@ -1,8 +1,6 @@
 #ifndef Counter_h
 #define Counter_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -25,30 +23,30 @@
 #include <QString>
 #include <QPair>
 
-//! Object counter
+//* Object counter
 class Counter {
 
     public:
 
-    //! counter name and counts pair
+    //* counter name and counts pair
     using Pair = QPair<QString, int>;
 
-    //! constructor
+    //* constructor
     Counter( const QString& name );
 
-    //! constructor
+    //* constructor
     Counter( const Counter& counter );
 
-    //! destructor
+    //* destructor
     virtual ~Counter( void );
 
-    //! retrieves counter count
+    //* retrieves counter count
     int count( void ) const;
 
     private:
 
-    //! pointer to integer counter
-    int* count_;
+    //* pointer to integer counter
+    int* count_ = nullptr;
 
 };
 

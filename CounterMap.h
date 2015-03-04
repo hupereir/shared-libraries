@@ -1,8 +1,6 @@
 #ifndef CounterMap_h
 #define CounterMap_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -27,17 +25,17 @@
 #include <QMutexLocker>
 #include <QHash>
 
-//! thread-safe Object counter storage map
+//* thread-safe Object counter storage map
 class CounterMap: public QHash<QString, int>
 {
 
     public:
 
-    //! singleton
+    //* singleton
     static CounterMap& get( void );
 
-    //!  get counter for a given name
-    /*!
+    //*  get counter for a given name
+    /**
     if the name is found, returns adress of the existing counter
     creates new counter otherwise and returns adress
     */
@@ -48,31 +46,31 @@ class CounterMap: public QHash<QString, int>
         else return &(iter.value());
     }
 
-    //! increment
+    //* increment
     void increment( int& counter )
     {
         QMutexLocker locker( &mutex_ );
         counter++;
     }
 
-    //! increment
+    //* increment
     void decrement( int& counter )
     {
         QMutexLocker locker( &mutex_ );
         counter--;
     }
 
-    //! mutex
+    //* mutex
     QMutex& mutex( void )
     { return mutex_; }
 
     private:
 
-    //! constructor
+    //* constructor
     CounterMap( void )
     {}
 
-    //! mutex
+    //* mutex
     QMutex mutex_;
 
 };

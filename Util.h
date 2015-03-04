@@ -1,8 +1,6 @@
 #ifndef Util_h
 #define Util_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -49,7 +47,7 @@ class Util
     //* temporary directory ("/tmp")
     static QString tmp( void );
 
-    /*! returns the host name.
+    /** returns the host name.
     \par short_name if true returns only the string located before the first '.'
     */
     static QString host( bool shortName = false );

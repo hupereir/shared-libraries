@@ -1,8 +1,6 @@
 #ifndef CommandLineParser_h
 #define CommandLineParser_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
