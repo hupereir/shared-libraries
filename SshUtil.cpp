@@ -22,11 +22,41 @@
 #include <QList>
 
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+
 #include <unistd.h>
 #include <fcntl.h>
 
 namespace Ssh
 {
+
+    //____________________________________________________
+    uint32_t Util::tcpOptions( int socket )
+    {
+        QList<int> optionNames =
+        {
+            TCP_CORK, TCP_DEFER_ACCEPT, TCP_INFO, TCP_KEEPCNT, TCP_KEEPIDLE,
+            TCP_KEEPINTVL, TCP_LINGER2, TCP_MAXSEG, TCP_NODELAY, TCP_QUICKACK,
+            TCP_SYNCNT, TCP_WINDOW_CLAMP
+        };
+
+        int result = 0;
+        int bit = 0;
+        foreach( auto option, optionNames )
+        {
+            int value = 0;
+            socklen_t length = 0;
+            if( getsockopt( socket, IPPROTO_TCP, option, &value, &length ) == 0 && value )
+            { result |= (1<<bit); }
+
+            if( value ) result |= (1<<bit);
+            ++bit;
+        }
+
+        return result;
+
+    }
 
     //____________________________________________________
     uint32_t Util::socketOptions( int socket )
@@ -47,10 +77,8 @@ namespace Ssh
         {
             int value = 0;
             socklen_t length = 0;
-            if( getsockopt( socket, SOL_SOCKET, option, &value, &length ) )
-            { continue; }
-
-            if( value ) result |= (1<<bit);
+            if( getsockopt( socket, SOL_SOCKET, option, &value, &length ) == 0 && value )
+            { result |= (1<<bit); }
             ++bit;
         }
 

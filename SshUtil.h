@@ -29,6 +29,9 @@ namespace Ssh
     {
         public:
 
+        //* tcp options bitmask
+        static uint32_t tcpOptions( int );
+
         //* socket options bitmask
         static uint32_t socketOptions( int );
 

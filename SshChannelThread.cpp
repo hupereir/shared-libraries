@@ -160,7 +160,7 @@ namespace Ssh
 
                 }
 
-                emit debug( tr( "Ssh::ChannelThread::run - fromTcpSocket - bytesRead=%1" ).arg( bytesRead ) );
+                emit debug( QString( "Ssh::ChannelThread::run - fromTcpSocket - bytesRead=%1" ).arg( bytesRead ) );
 
                 QMutexLocker lock( mutex_ );
                 ssize_t bytesWritten = 0;
@@ -192,7 +192,7 @@ namespace Ssh
                     return;
                 }
 
-                emit debug( tr( "Ssh::ChannelThread::run - fromSshSocket - bytesRead=%1" ).arg( bytesRead ) );
+                emit debug( QString( "Ssh::ChannelThread::run - fromSshSocket - bytesRead=%1" ).arg( bytesRead ) );
 
                 ssize_t bytesWritten = 0;
                 ssize_t i = 0;
@@ -210,7 +210,7 @@ namespace Ssh
 
                 if (libssh2_channel_eof( channel ) )
                 {
-                    emit error( tr( "End of channel" ) );
+                    emit debug( "Ssh::ChannelThread::run - end of channel" );
                     return;
                 }
             }

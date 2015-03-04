@@ -64,7 +64,7 @@ namespace Ssh
         while( (bytesAvailable = tcpSocket_->bytesAvailable()) > 0 )
         {
             qint64 bytesRead = tcpSocket_->read( buffer_.data(), buffer_.size() );
-            emit debug( tr( "Ssh::Tunnel::_readFromTcpSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
+            emit debug( QString( "Ssh::Tunnel::_readFromTcpSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
 
             ssize_t bytesWritten = 0;
             ssize_t i = 0;
@@ -97,7 +97,7 @@ namespace Ssh
         while( (bytesAvailable = sshSocket_->bytesAvailable()) > 0 )
         {
             qint64 bytesRead = sshSocket_->read( buffer_.data(), buffer_.size() );
-            emit debug( tr( "Ssh::Tunnel::_readFromSshSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
+            emit debug( QString( "Ssh::Tunnel::_readFromSshSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
             ssize_t bytesWritten = 0;
             ssize_t i = 0;
             do
