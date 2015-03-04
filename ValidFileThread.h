@@ -55,15 +55,15 @@ class ValidFileThread: public QThread, public Counter
         records_ = records;
     }
 
-    protected:
-
-    //* Check files validity. Post a ValidFileEvent when finished
-    virtual void run( void );
-
     Q_SIGNALS:
 
     //* records are available
     void recordsAvailable( const FileRecord::List&, bool );
+
+    protected:
+
+    //* Check files validity. Post a ValidFileEvent when finished
+    virtual void run( void );
 
     private:
 
