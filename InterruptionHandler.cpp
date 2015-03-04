@@ -53,6 +53,9 @@ void InterruptionHandler::initialize( void )
 
     sigaction( SIGINT, &interruptAction, nullptr );
     sigaction( SIGTERM, &interruptAction, nullptr );
+    #else
+    signal(SIGINT,  InterruptionHandler::_handleInterruption);
+    signal(SIGTERM, InterruptionHandler::_handleInterruption);
     #endif
 }
 
