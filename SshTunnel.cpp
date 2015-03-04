@@ -23,8 +23,6 @@
 #include "Debug.h"
 #include "SshSocket.h"
 
-#include <sys/socket.h>
-
 namespace Ssh
 {
     //______________________________________________________
