@@ -23,6 +23,8 @@
 #include "Debug.h"
 #include "SshSocket.h"
 
+#include <sys/socket.h>
+
 namespace Ssh
 {
     //______________________________________________________
@@ -32,15 +34,16 @@ namespace Ssh
         tcpSocket_( socket ),
         sshSocket_( new Socket( this ) )
     {
-        Debug::Throw( "Ssh::Tunnel::Tunnel.\n" );
+        Debug::Throw( 0, "Ssh::Tunnel::Tunnel.\n" );
 
         buffer_.resize(maxSize_ );
         connect( tcpSocket_, SIGNAL(readyRead()), this, SLOT(_readFromTcpSocket()) );
-        // connect( tcpSocket_, SIGNAL(disconnected()), this, SLOT(close()) );
+        connect( tcpSocket_, SIGNAL(disconnected()), this, SLOT(close()) );
 
         connect( sshSocket_, SIGNAL(connected()), this, SLOT(_readFromTcpSocket()) );
         connect( sshSocket_, SIGNAL(readyRead()), this, SLOT(_readFromSshSocket()) );
-        // connect( sshSocket_, SIGNAL(readChannelFinished()), this, SLOT(close()) );
+        connect( sshSocket_, SIGNAL(readChannelFinished()), this, SLOT(close()) );
+
     }
 
     //______________________________________________________
@@ -63,7 +66,7 @@ namespace Ssh
         while( (bytesAvailable = tcpSocket_->bytesAvailable()) > 0 )
         {
             qint64 bytesRead = tcpSocket_->read( buffer_.data(), buffer_.size() );
-            Debug::Throw() << "Ssh::Tunnel::_readFromTcpSocket - bytesAvailable=" << bytesAvailable << " bytesRead=" << bytesRead << endl;
+            emit debug( tr( "Ssh::Tunnel::_readFromTcpSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
 
             ssize_t bytesWritten = 0;
             ssize_t i = 0;
@@ -73,10 +76,7 @@ namespace Ssh
                 Debug::Throw() << "Ssh::Tunnel::_readFromTcpSocket - written: " << i << endl;
                 if (i < 0)
                 {
-                    Debug::Throw(0) << "Ssh::Tunnel::_readFromTcpSocket -"
-                        << " invalid write: " << i
-                        << " error: " << sshSocket_->errorString()
-                        << endl;
+                    emit error( tr( "invalid write to tcp socket: %1, error: %2" ).arg( i ).arg( sshSocket_->errorString() ) );
                     return;
                 }
 
@@ -99,16 +99,15 @@ namespace Ssh
         while( (bytesAvailable = sshSocket_->bytesAvailable()) > 0 )
         {
             qint64 bytesRead = sshSocket_->read( buffer_.data(), buffer_.size() );
-            Debug::Throw() << "Ssh::Tunnel::_readFromSshSocket - bytesAvailable=" << bytesAvailable << " bytesRead=" << bytesRead << endl;
+            emit debug( tr( "Ssh::Tunnel::_readFromSshSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
             ssize_t bytesWritten = 0;
             ssize_t i = 0;
             do
             {
                 i = tcpSocket_->write( buffer_.data() + bytesWritten, bytesRead - bytesWritten );
-                Debug::Throw() << "Ssh::Tunnel::_readFromSshSocket - written: " << i << endl;
                 if (i < 0)
                 {
-                    Debug::Throw(0) << "Ssh::Tunnel::_readFromSshSocket - invalid write: " << i << endl;
+                    emit error( tr( "invalid write to ssh socket: %1" ).arg( i ) );
                     return;
                 }
 
@@ -124,7 +123,7 @@ namespace Ssh
     //______________________________________________________
     void Ssh::Tunnel::_sshChannelClosed( void )
     {
-        Debug::Throw(0, "Ssh::Tunnel::_sshChannelClosed.\n" );
+        emit debug( tr( "Ssh::Tunnel::_sshChannelClosed" ) );
         close();
     }
 

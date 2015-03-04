@@ -150,6 +150,9 @@ namespace Ssh
         //* error handling
         void _notifyError( QString );
 
+        //* error handling
+        void _notifyDebug( QString );
+
         //* new tcp connection (from QTcpServer)
         void _newConnection( void );
 

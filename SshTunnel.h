@@ -56,6 +56,14 @@ namespace Ssh
 
         //@}
 
+        Q_SIGNALS:
+
+        //* error message
+        void error( QString );
+
+        //* debug message
+        void debug( QString );
+
         public Q_SLOTS:
 
         //* close

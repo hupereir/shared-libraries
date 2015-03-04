@@ -64,6 +64,9 @@ namespace Ssh
         //* error message
         void error( QString );
 
+        //* debug message
+        void debug( QString );
+
         public Q_SLOTS:
 
         //*@name modifiers

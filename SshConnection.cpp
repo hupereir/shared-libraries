@@ -577,8 +577,12 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_notifyError( QString error )
-    { Debug::Throw(0) << "Ssh::Connection::_notifyError: " << error << endl; }
+    void Connection::_notifyError( QString message )
+    { Debug::Throw(0) << "Ssh::Connection::_notifyError: " << message << endl; }
+
+    //_______________________________________________
+    void Connection::_notifyDebug( QString message )
+    { Debug::Throw(0) << message << endl; }
 
     //_______________________________________________
     void Connection::_newConnection( void )
@@ -606,8 +610,10 @@ namespace Ssh
             {
                 Tunnel* tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
-                QObject::connect( tunnel->sshSocket(), SIGNAL(error(QAbstractSocket::SocketError)), tunnel, SLOT(deleteLater()) );
-                QObject::connect( tunnel->sshSocket(), SIGNAL(readChannelFinished()), tunnel, SLOT(deleteLater()) );
+                connect( tunnel, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
+                connect( tunnel, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
+                connect( tunnel->sshSocket(), SIGNAL(error(QAbstractSocket::SocketError)), tunnel, SLOT(deleteLater()) );
+                connect( tunnel->sshSocket(), SIGNAL(readChannelFinished()), tunnel, SLOT(deleteLater()) );
             }
 
         }
@@ -633,6 +639,7 @@ namespace Ssh
                 Debug::Throw() << "Ssh::Connection::_newConnection - new connection to " << attributes.host() << ":" << attributes.remotePort() << endl;
                 ChannelThread* channelThread= new ChannelThread( this, attributes, session_, socket );
                 connect( channelThread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
+                connect( channelThread, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(close()) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(deleteLater()) );
                 channelThread->initialize();

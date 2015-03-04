@@ -144,24 +144,26 @@ namespace Ssh
             // read from socket, write through ssh
             if( result && FD_ISSET(socket_, &fileDescriptor ) )
             {
-                ssize_t length = recv(socket_, buffer.data(), buffer.size(), 0);
-                if( length<0 )
+                ssize_t bytesRead = recv(socket_, buffer.data(), buffer.size(), 0);
+                if( bytesRead<0 )
                 {
                     emit error( tr( "Error reading from port %1" ).arg( attributes_.localPort() ) );
                     return;
 
-                } else if( length == 0 ) {
+                } else if( bytesRead == 0 ) {
 
                     emit error( tr( "Local socket on port %1 disconnected" ).arg( attributes_.localPort() ) );
                     return;
 
                 }
 
+                emit debug( tr( "Ssh::ChannelThread::run - fromTcpSocket - bytesRead=%1" ).arg( bytesRead ) );
+
                 ssize_t bytesWritten = 0;
                 ssize_t i = 0;
                 do
                 {
-                    i = libssh2_channel_write( channel, buffer.data()+bytesWritten, length-bytesWritten );
+                    i = libssh2_channel_write( channel, buffer.data()+bytesWritten, bytesRead-bytesWritten );
 
                     if (i < 0)
                     {
@@ -170,26 +172,28 @@ namespace Ssh
                     }
                     bytesWritten += i;
 
-                } while( i > 0 && bytesWritten < length );
+                } while( i > 0 && bytesWritten < bytesRead );
             }
 
             // read from ssh, write to socket
             forever
             {
 
-                ssize_t length = libssh2_channel_read( channel, buffer.data(), buffer.size() );
-                if( length == LIBSSH2_ERROR_EAGAIN ) break;
-                else if( length < 0 )
+                ssize_t bytesRead = libssh2_channel_read( channel, buffer.data(), buffer.size() );
+                if( bytesRead == LIBSSH2_ERROR_EAGAIN ) break;
+                else if( bytesRead < 0 )
                 {
-                    emit error( tr( "Error reading from %1:%2 (%3)" ).arg( attributes_.host() ).arg( attributes_.remotePort() ).arg( length ) );
+                    emit error( tr( "Error reading from %1:%2 (%3)" ).arg( attributes_.host() ).arg( attributes_.remotePort() ).arg( bytesRead ) );
                     return;
                 }
 
+                emit debug( tr( "Ssh::ChannelThread::run - fromSshSocket - bytesRead=%1" ).arg( bytesRead ) );
+
                 ssize_t bytesWritten = 0;
                 ssize_t i = 0;
-                while( bytesWritten < length )
+                while( bytesWritten < bytesRead )
                 {
-                    i = send(socket_, buffer.data() + bytesWritten, length - bytesWritten, 0);
+                    i = send(socket_, buffer.data() + bytesWritten, bytesRead - bytesWritten, 0);
                     if (i <= 0)
                     {
 
