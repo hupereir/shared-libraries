@@ -78,7 +78,7 @@ namespace Ssh
         }
 
         // socket
-        socket_ = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+        socket_ = ::socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
         int socketOption = 1;
         setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &socketOption, sizeof(socketOption) );
 

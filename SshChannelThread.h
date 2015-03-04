@@ -47,8 +47,12 @@ namespace Ssh
         //@{
 
         //* tunnel attributes
-        const TunnelAttributes& attributes( void )
+        const TunnelAttributes& attributes( void ) const
         { return attributes_; }
+
+        //* socket
+        int socket( void ) const
+        { return socket_; }
 
         //@}
 
