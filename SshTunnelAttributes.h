@@ -86,8 +86,8 @@ namespace Ssh
         private:
 
         QString host_;
-        int localPort_ = 2078;
-        int remotePort_ = 2078;
+        int localPort_ = 0;
+        int remotePort_ = 0;
 
     };
 
