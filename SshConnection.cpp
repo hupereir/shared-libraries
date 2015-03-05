@@ -589,6 +589,13 @@ namespace Ssh
     {
         Debug::Throw( "Ssh::Connection::_newConnection.\n" );
 
+        // check session
+        if( !session_ )
+        {
+            Debug::Throw(0, "Ssh::Connection::_newConnection - invalid session.\n" );
+            return;
+        }
+
         // loop over tcp servers
         foreach( auto tcpServer, findChildren<QTcpServer*>() )
         {
@@ -618,14 +625,19 @@ namespace Ssh
 
         }
 
-        Debug::Throw( "Ssh::Connection::_newConnection - done.\n" );
-
     }
 
     //_______________________________________________
     void Connection::_newConnection( int port, int socket )
     {
         Debug::Throw( "Ssh::Connection::_newConnection.\n" );
+
+        // check session
+        if( !session_ )
+        {
+            Debug::Throw(0, "Ssh::Connection::_newConnection - invalid session.\n" );
+            return;
+        }
 
         // loop over listening threads
         bool found = false;
