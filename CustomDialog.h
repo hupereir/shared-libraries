@@ -24,6 +24,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
+#include <QDialogButtonBox>
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QLayout>
@@ -72,48 +73,42 @@ class CustomDialog: public BaseDialog, public Counter
 
     //* retrieve button layout
     QBoxLayout& buttonLayout( void ) const
-    { return *buttonLayout_; }
+    { return *(qobject_cast<QBoxLayout*>(buttonBox_->layout())); }
 
     //* returns true if OK button is valid
     bool hasOkButton( void ) const
-    { return okButton_; }
+    { return buttonBox_->button(QDialogButtonBox::Ok); }
 
     //* retrieve OK button
     QPushButton& okButton( void ) const
-    { return *okButton_; }
+    { return *buttonBox_->button(QDialogButtonBox::Ok); }
 
     //* returns true if close button is valid
     bool hasCloseButton( void ) const
-    { return okButton_; }
+    { return buttonBox_->button(QDialogButtonBox::Ok); }
 
     //* retrieve close button
     QPushButton& closeButton( void ) const
-    { return *okButton_; }
+    { return *buttonBox_->button(QDialogButtonBox::Ok); }
 
     //* returns true if Cancel button is valid
     bool hasCancelButton( void ) const
-    { return cancelButton_; }
+    { return buttonBox_->button(QDialogButtonBox::Cancel); }
 
     //* retrieve CANCEL button
     QPushButton& cancelButton( void ) const
-    { return *cancelButton_; }
+    { return *buttonBox_->button(QDialogButtonBox::Cancel); }
 
     private:
 
     //* main layout
-    QBoxLayout *mainLayout_;
+    QBoxLayout *mainLayout_ = nullptr;
 
     //* separator if any
-    QWidget* separator_;
+    QWidget* separator_ = nullptr;
 
-    //* button hbox
-    QBoxLayout *buttonLayout_;
-
-    //* ok QPushButton, if any
-    QPushButton *okButton_;
-
-    //* cancel QPushButton, if any
-    QPushButton *cancelButton_;
+    //* dialog button box
+    QDialogButtonBox* buttonBox_ = nullptr;
 
 };
 

@@ -28,10 +28,7 @@
 //____________________________________________________________
 CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags):
     BaseDialog( parent, wflags ),
-    Counter( "CustomDialog" ),
-    separator_( 0 ),
-    okButton_( 0 ),
-    cancelButton_( 0 )
+    Counter( "CustomDialog" )
 {
 
     Debug::Throw( "CustomDialog::CustomDialog.\n" );
@@ -56,30 +53,23 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
         separator_ = frame;
     }
 
-    // insert hbox layout for buttons
-    buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
-    buttonLayout_->setSpacing(5);
-    buttonLayout_->setMargin(0);
-    layout->addLayout( buttonLayout_, 0 );
+    QDialogButtonBox::StandardButtons buttons;
+    if( flags& OkButton ) buttons |= QDialogButtonBox::Ok;
+    if( flags& CancelButton ) buttons |= QDialogButtonBox::Cancel;
 
-    buttonLayout_->addStretch( 1 );
+    buttonBox_ = new QDialogButtonBox( buttons, Qt::Horizontal, this );
+    layout->addWidget( buttonBox_ );
 
-    // insert OK and Cancel button
-    if( flags & OkButton )
+    connect( buttonBox_, SIGNAL(accepted()), this, SLOT(accept()) );
+    connect( buttonBox_, SIGNAL(rejected()), this, SLOT(reject()) );
+
+    // make ok button look like clos button if no cancel button is selected
+    if( flags&OkButton && !(flags&CancelButton) )
     {
-        QIcon icon( IconEngine::get( ( flags & CancelButton ) ? IconNames::DialogOk : IconNames::DialogClose ) );
-        QString text( ( flags & CancelButton ) ? tr( "Ok" ):tr( "Close" ) );
-        buttonLayout_->addWidget( okButton_ = new QPushButton( icon, text, this ) );
-        connect( okButton_, SIGNAL(clicked()), SLOT(accept()) );
-        okButton_->setDefault( true );
+        buttonBox_->button( QDialogButtonBox::Ok )->setText( tr( "Close" ) );
+        buttonBox_->button( QDialogButtonBox::Ok )->setIcon( IconEngine::get( IconNames::DialogClose ) );
     }
 
-    // insert Cancel button
-    if( flags & CancelButton )
-    {
-        buttonLayout_->addWidget( cancelButton_ = new QPushButton( IconEngine::get( IconNames::DialogCancel ), tr( "Cancel" ), this ) );
-        cancelButton_->setShortcut( Qt::Key_Escape );
-        connect( cancelButton_, SIGNAL(clicked()), SLOT(reject()) );
-    }
+
 
 }
