@@ -77,19 +77,22 @@ class CustomDialog: public BaseDialog, public Counter
 
     //* returns true if OK button is valid
     bool hasOkButton( void ) const
-    { return buttonBox_->button(QDialogButtonBox::Ok); }
+    { return buttonBox_->button(QDialogButtonBox::Ok)||buttonBox_->button(QDialogButtonBox::Close); }
 
     //* retrieve OK button
     QPushButton& okButton( void ) const
-    { return *buttonBox_->button(QDialogButtonBox::Ok); }
+    {
+        if( QPushButton* button = buttonBox_->button(QDialogButtonBox::Ok) ) return *button;
+        else return *buttonBox_->button(QDialogButtonBox::Close);
+    }
 
     //* returns true if close button is valid
     bool hasCloseButton( void ) const
-    { return buttonBox_->button(QDialogButtonBox::Ok); }
+    { return hasOkButton(); }
 
     //* retrieve close button
     QPushButton& closeButton( void ) const
-    { return *buttonBox_->button(QDialogButtonBox::Ok); }
+    { return okButton(); }
 
     //* returns true if Cancel button is valid
     bool hasCancelButton( void ) const

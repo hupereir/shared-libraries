@@ -1,5 +1,3 @@
-
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -54,7 +52,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     }
 
     QDialogButtonBox::StandardButtons buttons;
-    if( flags& OkButton ) buttons |= QDialogButtonBox::Ok;
+    if( flags& OkButton ) buttons |= (flags&CancelButton) ? QDialogButtonBox::Ok : QDialogButtonBox::Close;
     if( flags& CancelButton ) buttons |= QDialogButtonBox::Cancel;
 
     buttonBox_ = new QDialogButtonBox( buttons, Qt::Horizontal, this );
@@ -62,14 +60,5 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
 
     connect( buttonBox_, SIGNAL(accepted()), this, SLOT(accept()) );
     connect( buttonBox_, SIGNAL(rejected()), this, SLOT(reject()) );
-
-    // make ok button look like clos button if no cancel button is selected
-    if( flags&OkButton && !(flags&CancelButton) )
-    {
-        buttonBox_->button( QDialogButtonBox::Ok )->setText( tr( "Close" ) );
-        buttonBox_->button( QDialogButtonBox::Ok )->setIcon( IconEngine::get( IconNames::DialogClose ) );
-    }
-
-
 
 }
