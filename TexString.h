@@ -1,8 +1,6 @@
 #ifndef TexString_h
 #define TexString_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

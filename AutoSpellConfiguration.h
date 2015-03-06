@@ -1,8 +1,6 @@
 #ifndef AutoSpellConfiguration_h
 #define AutoSpellConfiguration_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

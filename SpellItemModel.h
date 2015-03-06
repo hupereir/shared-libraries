@@ -1,6 +1,5 @@
 #ifndef SpellItemModel_h
 #define SpellItemModel_h
-// $Id$
 
 /******************************************************************************
 *

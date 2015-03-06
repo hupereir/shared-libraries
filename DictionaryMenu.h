@@ -1,8 +1,6 @@
 #ifndef DictionaryMenu_h
 #define DictionaryMenu_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

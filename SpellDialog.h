@@ -1,8 +1,6 @@
 #ifndef SpellDialog_h
 #define SpellDialog_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

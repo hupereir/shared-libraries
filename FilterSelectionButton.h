@@ -1,8 +1,6 @@
 #ifndef FilterSelectionButton_h
 #define FilterSelectionButton_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
