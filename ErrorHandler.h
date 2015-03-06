@@ -49,8 +49,7 @@ class ErrorHandler
     { disabledMessages_.clear(); }
 
     //* exit
-    void exit( void ) const
-    {}
+    void exit( void );
 
     protected:
 

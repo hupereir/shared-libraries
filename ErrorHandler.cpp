@@ -43,6 +43,19 @@ ErrorHandler& ErrorHandler::get( void )
 }
 
 //_____________________________________________________________
+void ErrorHandler::exit( void )
+{
+
+    #if QT_VERSION >= 0x050000
+    qInstallMessageHandler( 0 );
+    #else
+    qInstallMsgHandler( 0 );
+    #endif
+
+    clearDisabledMessages();
+}
+
+//_____________________________________________________________
 #if QT_VERSION >= 0x050000
 void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, const QString& message )
 {
