@@ -508,6 +508,14 @@ void TextEditor::showReplacements( int counts )
 }
 
 //__________________________________________________________________
+void TextEditor::setTrackAnchors( bool value )
+{
+    Debug::Throw( "TextEditor::setTrackAnchors.\n" );
+    trackAnchors_ = value;
+    if( value ) setMouseTracking( true );
+}
+
+//__________________________________________________________________
 void TextEditor::setReadOnly( bool readOnly )
 {
     Debug::Throw( "TextEditor::setReadOnly.\n" );
@@ -1154,6 +1162,16 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
 
     Debug::Throw( 2, "TextEditor::mouseMoveEvent.\n" );
 
+    // do nothing if some buttons are pressed
+    if( trackAnchors_ )
+    {
+        if( !( event->buttons() || anchorAt( event->pos() ).isEmpty() ) )
+        {
+            viewport()->setCursor( Qt::PointingHandCursor );
+
+        } else viewport()->setCursor( Qt::IBeamCursor );
+    }
+
     // see if there is a box selection in progress
     if( event->buttons() == Qt::LeftButton && boxSelection_.isEnabled() && boxSelection_.state() == BoxSelection::SelectionStarted )
     {
@@ -1211,9 +1229,6 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 
     autoScrollTimer_.stop();
 
-    if( event->button() == Qt::MidButton )
-    { Debug::Throw( "TextEditor::mouseReleaseEvent - middle mouse button.\n" ); }
-
     // no need to check for enability because there is no way for the box to start if disabled
     if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::SelectionStarted )
     {
@@ -1239,6 +1254,16 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
         // when multiple-click is in progress
         // do nothing because it can reset the selection
         event->ignore();
+        return;
+    }
+
+    QString anchor;
+    if( trackAnchors_ && event->button() == Qt::LeftButton &&
+        !event->modifiers() &&
+        !textCursor().hasSelection() &&
+        !( anchor = anchorAt( event->pos() ) ).isEmpty() )
+    {
+        emit anchorClicked( anchor );
         return;
     }
 

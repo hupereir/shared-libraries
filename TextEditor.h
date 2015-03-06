@@ -94,7 +94,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual int blockCount( void ) const;
 
     //* retrieve number of blocks associated to argument
-    /*! the default implementation returns 1. In QEdit, it is reimplemented accounts for collapsed blocks */
+    /** the default implementation returns 1. In QEdit, it is reimplemented accounts for collapsed blocks */
     virtual int blockCount( const QTextBlock& ) const
     { return 1; }
 
@@ -221,7 +221,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void selectLine( void );
 
     //* set textChar format
-    /*!
+    /**
     this overloads the base class method (although the later is not virtual)
     in order to properly handle box selection, if any
     */
@@ -258,6 +258,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* enable/disable reading of line number display from options
     void setLineNumbersFromOptions( bool value )
     { lineNumberFromOptions_ = value; }
+
+    //* true if should track anchors (html links)
+    virtual void setTrackAnchors( bool );
 
     //* read-only
     virtual void setReadOnly( bool );
@@ -430,6 +433,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* overwrite mode changed
     void modifiersChanged( TextEditor::Modifiers );
 
+    //* anchor (html links) has been clicked
+    void anchorClicked( QString );
+
     public Q_SLOTS:
 
     //* cut
@@ -498,7 +504,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void mousePressEvent( QMouseEvent* );
 
     //* mouse double click event [overloaded]
-    /*!
+    /**
     for left button, double click events are handled
     essentially like single click events, because the number of clicks
     is handled independently by the MultipleClickCounter object
@@ -610,7 +616,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //@{
 
     //* set tab character size
-    /*! returns true if changed */
+    /** returns true if changed */
     virtual bool _setTabSize( const int& size );
 
     //* tab emulation
@@ -692,7 +698,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void _updateUndoRedoActions( void );
 
     //* update action status
-    /*! this works only if you have qt > 4.2 */
+    /** this works only if you have qt > 4.2 */
     virtual void _updateSelectionActions( bool );
 
     //* update action status
@@ -702,25 +708,25 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void _updateClipboard( void );
 
     //* update paste action
-    /*! depends on clipboard status and editability */
+    /** depends on clipboard status and editability */
     virtual void _updatePasteAction( void );
 
     //* toggle block highlight
     virtual void _toggleBlockHighlight( bool );
 
     //* wrap mode
-    /*! returns true if changed */
+    /** returns true if changed */
     virtual bool _toggleWrapMode( bool );
 
     //* tab emulation
-    /*! returns true if changed */
+    /** returns true if changed */
     virtual bool _toggleTabEmulation( bool );
 
     //* toggle line number display
     virtual void _toggleShowLineNumbers( bool state );
 
     //* block count changed
-    /*! needed to adjust width of line number display */
+    /** needed to adjust width of line number display */
     void _blockCountChanged( int );
 
     //* find text from dialog
@@ -746,7 +752,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     TextEditorMarginWidget* marginWidget_ = nullptr;
 
     //* current block rect
-    /*! needed for block highlighting in margin */
+    /** needed for block highlighting in margin */
     QRect currentBlockRect_;
 
     //* context menu event position
@@ -789,11 +795,14 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* true if this display is the active display
     bool active_ = false;
 
-    /*! set to false when the wrapping must not get loaded via the options */
+    /** set to false when the wrapping must not get loaded via the options */
     bool wrapFromOptions_ = true;
 
-    /*! set to false when the display of line numbers must not get loaded via the options. */
+    /** set to false when the display of line numbers must not get loaded via the options. */
     bool lineNumberFromOptions_ = true;
+
+    //* true if should track anchors (html links)
+    bool trackAnchors_ = false;
 
     //*@name tab emulation and empty lines
     //@{
@@ -923,7 +932,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     QBasicTimer autoScrollTimer_;
 
     //* keyboard modifiers
-    /*! this is a bitwise or of the Modifiers enumeration */
+    /** this is a bitwise or of the Modifiers enumeration */
     Modifiers modifiers_ = ModifierNone;
 
     friend class Container;
