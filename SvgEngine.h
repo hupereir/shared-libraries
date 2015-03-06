@@ -1,8 +1,6 @@
 #ifndef SvgEngine_h
 #define SvgEngine_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>

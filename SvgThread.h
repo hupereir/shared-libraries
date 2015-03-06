@@ -1,8 +1,6 @@
 #ifndef SvgThread_h
 #define SvgThread_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
