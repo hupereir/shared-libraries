@@ -226,7 +226,7 @@ macro(add_application_icon  sources icon)
 endmacro()
 
 ###################### add desktop file #########################
-macro(add_desktop_file  desktopFile)
+macro(add_desktop_file desktopFile)
 
   if(UNIX AND NOT APPLE)
 
@@ -252,6 +252,30 @@ macro(add_desktop_file  desktopFile)
       install(
         CODE "message(\"-- Installing: ${_desktopFile}\")"
         CODE "execute_process(COMMAND ${XDG_DESKTOP_MENU_EXECUTABLE} install --novendor ${_desktopFile})"
+     )
+
+    endif()
+
+  endif()
+
+endmacro()
+
+###################### register a protocol #########################
+macro(register_protocol protocol application)
+
+  if(UNIX AND NOT APPLE)
+
+    # check desktop-file-install program
+    find_program(XDG_MIME_EXECUTABLE xdg-mime)
+    if(NOT XDG_MIME_EXECUTABLE)
+
+        message("-- Could not find xdg-desktop-menu")
+
+    else()
+
+      install(
+        CODE "message(\"-- registering application ${application} for ${protocol}:// protocol \")"
+        CODE "execute_process(COMMAND ${XDG_MIME_EXECUTABLE} default ${application}.desktop x-scheme-handler/${protocol})"
      )
 
     endif()
