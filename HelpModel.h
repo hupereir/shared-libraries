@@ -1,8 +1,6 @@
 #ifndef HelpModel_h
 #define HelpModel_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
