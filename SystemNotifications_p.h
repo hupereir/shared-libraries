@@ -1,8 +1,6 @@
 #ifndef SystemNotifications_p_h
 #define SystemNotifications_p_h
 
-// $Id$
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
