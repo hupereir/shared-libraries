@@ -37,8 +37,8 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
 
     public:
 
-    //! constructor
-    IconThemeDialog( QWidget* parent = 0x0 ):
+    //* constructor
+    IconThemeDialog( QWidget* parent = nullptr ):
         CustomDialog( parent, OkButton ),
         OptionWidgetList( this )
     {
@@ -90,7 +90,7 @@ class IconThemeDialog: public CustomDialog, public OptionWidgetList
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
 };

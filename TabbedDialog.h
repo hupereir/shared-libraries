@@ -29,11 +29,12 @@
 #include <QDialog>
 #include <QIcon>
 #include <QLayout>
+#include <QDialogButtonBox>
 
 class AnimatedStackedWidget;
 class SimpleListView;
 
-//! tabbed dialog
+//* tabbed dialog
 /*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
 class TabbedDialog: public BaseDialog, public Counter
 {
@@ -42,124 +43,124 @@ class TabbedDialog: public BaseDialog, public Counter
 
     public:
 
-    //! creator
+    //* creator
     TabbedDialog( QWidget *parent );
 
-    //! destructor
+    //* destructor
     virtual ~TabbedDialog();
 
-    //! adds a new Item, returns associated Box
+    //* adds a new Item, returns associated Box
     virtual QWidget& addPage( const QString& title, const QString& tooltip = QString(), bool expand = false )
     { return addPage( QIcon(), title, tooltip, expand ); }
 
-    //! adds a new Item, returns associated Box
+    //* adds a new Item, returns associated Box
     virtual QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), bool expand = false );
 
     protected Q_SLOTS:
 
-    //! display item page
+    //* display item page
     virtual void _display( const QModelIndex& );
 
     protected:
 
-    //! retrieve list
+    //* retrieve list
     virtual SimpleListView& _list( void )
     { return *list_; }
 
-    //! retrieve stack
-    virtual AnimatedStackedWidget& _stack( void )
-    { return *stack_; }
+    //* retrieve stack
+    virtual AnimatedStackedWidget& _stackedWidget( void )
+    { return *stackedWidget_; }
 
-    //! button layout
-    QBoxLayout& _buttonLayout( void ) const
-    { return *buttonLayout_; }
+    //* button box
+    QDialogButtonBox& _buttonBox( void ) const
+    { return *buttonBox_; }
 
     private:
 
-    //! item model
+    //* item model
     class Item: public Counter
     {
 
         public:
 
-        //! constructor
+        //* constructor
         Item( void ):
             Counter( "TabbedDialog::Item" ),
             widget_( 0L )
         {}
 
-        //! constructor
+        //* constructor
         Item( const QString& name, QWidget* widget ):
             Counter( "TabbedDialog::Item" ),
             name_( name ),
             widget_( widget )
         {}
 
-        //! name
+        //* name
         void setName( const QString& name )
         { name_ = name; }
 
-        //! widget
+        //* widget
         void setWidget( QWidget* widget )
         { widget_ = widget; }
 
-        //! icon
+        //* icon
         void setIcon( const QIcon& icon )
         { icon_ = icon; }
 
-        //! name
+        //* name
         const QString& name( void ) const
         { return name_; }
 
-        //! widget
+        //* widget
         QWidget* widget( void ) const
         { return widget_; }
 
-        //! icon
+        //* icon
         const QIcon& icon( void ) const
         { return icon_; }
 
-        //! equal to operator
+        //* equal to operator
         bool operator == (const Item& other ) const
         { return widget_ == other.widget_;  }
 
-        //! less than operator
+        //* less than operator
         bool operator < (const Item& other ) const
         { return widget_ < other.widget_; }
 
         private:
 
-        //! name
+        //* name
         QString name_;
 
-        //! associated widget
+        //* associated widget
         QWidget* widget_;
 
-        //! icon
+        //* icon
         QIcon icon_;
 
     };
 
-    //! model
+    //* model
     class Model: public ListModel<Item>
     {
 
         public:
 
-        //! column type enumeration
+        //* column type enumeration
         enum { nColumns = 1 };
 
-        //!@name methods reimplemented from base class
+        //*@name methods reimplemented from base class
         //@{
 
-        //! flags
+        //* flags
         virtual Qt::ItemFlags flags(const QModelIndex& ) const
         { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
 
-        //! return data
+        //* return data
         virtual QVariant data(const QModelIndex &index, int role) const;
 
-        //! header data
+        //* header data
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
         {
             if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < nColumns )
@@ -170,7 +171,7 @@ class TabbedDialog: public BaseDialog, public Counter
 
         }
 
-        //! number of columns for a given index
+        //* number of columns for a given index
         virtual int columnCount(const QModelIndex& = QModelIndex()) const
         { return nColumns; }
 
@@ -178,30 +179,30 @@ class TabbedDialog: public BaseDialog, public Counter
 
         protected:
 
-        //! sort
+        //* sort
         virtual void _sort( int, Qt::SortOrder = Qt::AscendingOrder )
         {}
 
-        //! list column names
+        //* list column names
         static const QString columnTitles_[nColumns];
 
     };
 
-    //! model
+    //* model
     Model& _model( void )
     { return model_; }
 
-    //! model
+    //* model
     Model model_;
 
-    //! Configuration list
-    SimpleListView* list_;
+    //* Configuration list
+    SimpleListView* list_ = nullptr;
 
-    //! Widget stack
-    AnimatedStackedWidget* stack_;
+    //* Widget stack
+    AnimatedStackedWidget* stackedWidget_ = nullptr;
 
-    //! button layout (needed to add extra buttons)
-    QBoxLayout *buttonLayout_;
+    //* button layout (needed to add extra buttons)
+    QDialogButtonBox* buttonBox_ = nullptr;
 
 };
 

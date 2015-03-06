@@ -54,17 +54,15 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // add widgets
     hLayout->addWidget( list_ = new SimpleListView( this ) );
-    hLayout->addWidget( stack_ = new AnimatedStackedWidget(this) );
+    hLayout->addWidget( stackedWidget_ = new AnimatedStackedWidget(this) );
 
     // configure list
     list_->setProperty( "_kde_side_panel_view", true );
     list_->setModel( &model_ );
 
-    // button layout
-    buttonLayout_ = new QBoxLayout( QBoxLayout::LeftToRight );
-    buttonLayout_->setMargin(5);
-    buttonLayout_->setSpacing(5);
-    layout->addLayout( buttonLayout_, 0 );
+    // button box
+    layout->addWidget( buttonBox_ = new QDialogButtonBox( this ), 0 );
+    buttonBox_->layout()->setMargin(5);
 
     // connections
     connect( list_->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex)) );
@@ -106,21 +104,6 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     // add to layout
     hLayout->addWidget( label, 1 );
 
-//     if( !icon.isNull() )
-//     {
-//
-//         // change label alignment
-//         label->setAlignment( Qt::AlignLeft|Qt::AlignTop );
-//
-//         // add icon
-//         label = new QLabel( base );
-//         label->setMargin(5);
-//         label->setPixmap( icon.pixmap( IconSize( IconSize::Medium ) ) );
-//         label->setAlignment( Qt::AlignRight|Qt::AlignTop );
-//         hLayout->addWidget( label, 0 );
-//
-//     }
-
     // create scroll area
     QScrollArea* scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable ( true );
@@ -136,7 +119,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     scrollArea->setWidget( main );
 
     // add to stack
-    stack_->addWidget( base );
+    stackedWidget_->addWidget( base );
 
     // add to item
     Item item( title, base );
@@ -176,7 +159,7 @@ void TabbedDialog::_display( const QModelIndex& index )
 {
     Debug::Throw( "TabbedDialog::_display.\n" );
     if( !index.isValid() ) return;
-    stack_->setCurrentWidget( _model().get( index ).widget() );
+    stackedWidget_->setCurrentWidget( _model().get( index ).widget() );
 }
 
 //_______________________________________________

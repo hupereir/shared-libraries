@@ -29,7 +29,7 @@
 class CustomDialog;
 class IconThemeDialog;
 
-//! configuration dialog
+//* configuration dialog
 class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 {
 
@@ -37,7 +37,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     public:
 
-    //! flag bitset for the Base configuration
+    //* flag bitset for the Base configuration
     enum ConfigurationFlag
     {
 
@@ -57,12 +57,11 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     Q_DECLARE_FLAGS( ConfigurationFlags, ConfigurationFlag );
 
-    //! constructor
-    BaseConfigurationDialog( QWidget *parent = 0, ConfigurationFlags = None );
+    //* constructor
+    BaseConfigurationDialog( QWidget* = nullptr, ConfigurationFlags = None );
 
-    //! destructor
-    virtual ~BaseConfigurationDialog()
-    {}
+    //* destructor
+    virtual ~BaseConfigurationDialog() = default;
 
     // read
     using OptionWidgetList::read;
@@ -72,39 +71,39 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
         _checkModified();
     }
 
-    //! adds configuration box for base options used in all appications
-    QWidget* baseConfiguration( QWidget* parent = 0, ConfigurationFlags = Default );
+    //* adds configuration box for base options used in all appications
+    QWidget* baseConfiguration( QWidget* = nullptr, ConfigurationFlags = Default );
 
-    //! list configuration box
-    QWidget* listConfiguration( QWidget* parent = 0 );
+    //* list configuration box
+    QWidget* listConfiguration( QWidget* = nullptr );
 
-    //! TextEdit configuration box
-    QWidget* textEditConfiguration( QWidget* parent = 0, ConfigurationFlags = AllTextEdition );
+    //* TextEdit configuration box
+    QWidget* textEditConfiguration( QWidget* = nullptr, ConfigurationFlags = AllTextEdition );
 
-    //! animations
-    QWidget* animationConfiguration( QWidget* parent = 0 );
+    //* animations
+    QWidget* animationConfiguration( QWidget* = nullptr );
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
-    //! apply button pressed
+    //* apply button pressed
     void apply( void );
 
-    //! ok button pressed
+    //* ok button pressed
     void ok( void );
 
-    //! canceled button pressed
+    //* canceled button pressed
     void cancel( void );
 
-    //! reset button pressed
+    //* reset button pressed
     void reset( void );
 
-    //! restore defaults button pressed
+    //* restore defaults button pressed
     void restoreDefaults( void );
 
-    //! emmited when configuration is changed
+    //* emmited when configuration is changed
     void configurationChanged();
 
     public Q_SLOTS:
@@ -113,58 +112,50 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     protected Q_SLOTS:
 
-    //! show pixmap path dialog
+    //* show pixmap path dialog
     virtual void _editPixmapPathList( void );
 
-    //! show icon path dialog
+    //* show icon path dialog
     virtual void _editIconTheme( void );
 
-    //! check options changed
+    //* check options changed
     bool _checkModified( void );
 
-    //! update configuration
+    //* update configuration
     virtual void _apply();
 
-    //! save configuration from options
+    //* save configuration from options
     virtual void _save();
 
-    //! restore configuration
+    //* restore configuration
     virtual void _cancel();
 
-    //! reset
+    //* reset
     virtual void _reset( void );
 
-    //! restore default options
+    //* restore default options
     virtual void _restoreDefaults( void );
 
     protected:
 
-    //! find modification
+    //* find modification
     bool _findModification( const Options&, const Options& ) const;
 
     private:
 
-    //! pointer to original options set
+    //* pointer to original options set
     /*!
     it is needed to keep track of the changes
     so that initial set is restored when pressing the cancel button
     */
     const Options backupOptions_;
 
-    //! pixmap path dialog
-    CustomDialog* pixmapPathDialog_;
+    //* pixmap path dialog
+    CustomDialog* pixmapPathDialog_ = nullptr;
 
-    //! icon theme dialog
-    IconThemeDialog* iconThemeDialog_;
+    //* icon theme dialog
+    IconThemeDialog* iconThemeDialog_ = nullptr;
 
-    //!@name buttons
-    //@{
-    QPushButton* okButton_;
-    QPushButton* applyButton_;
-    QPushButton* cancelButton_;
-    QPushButton* resetButton_;
-    QPushButton* restoreDefaultsButton_;
-    //@}
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( BaseConfigurationDialog::ConfigurationFlags )
