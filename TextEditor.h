@@ -101,6 +101,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* retrieve current text position
     virtual TextPosition textPosition( void );
 
+    //* anchor at context menu
+    virtual QString anchor( void ) const final
+    { return anchorAt( _contextMenuPosition() ); }
+
     //* return true if current textCursor is visible
     virtual bool isCursorVisible( void ) const;
 
@@ -372,6 +376,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* show line numbers
     QAction& showLineNumberAction( void ) const
     { return *showLineNumberAction_; }
+
+    //* copy link
+    virtual QAction& copyLinkAction( void ) const final
+    { return *copyLinkAction_; }
 
     //@}
 
@@ -707,6 +715,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* update selection clipboard
     virtual void _updateClipboard( void );
 
+    //* copy anchor to clipboard
+    virtual void _copyLinkLocation( void );
+
     //* update paste action
     /** depends on clipboard status and editability */
     virtual void _updatePasteAction( void );
@@ -898,6 +909,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* line number
     QAction* showLineNumberAction_ = nullptr;
+
+    //* copy link
+    QAction* copyLinkAction_;
 
     //@}
 

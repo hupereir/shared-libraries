@@ -541,9 +541,16 @@ void TextEditor::installContextMenuActions( BaseContextMenu* menu, bool allActio
 
     Debug::Throw( "TextEditor::installContextMenuActions.\n" );
 
+    // anchors
+    if( trackAnchors_ && !anchor().isEmpty() )
+    {
+        menu->addAction( copyLinkAction_ );
+        menu->addSeparator();
+    }
+
     // wrapping
-    menu->addAction( &showLineNumberAction() );
-    menu->addAction( &wrapModeAction() );
+    menu->addAction( showLineNumberAction_ );
+    menu->addAction( wrapModeAction_ );
     menu->addSeparator();
 
     if( allActions )
@@ -1826,6 +1833,9 @@ void TextEditor::_installActions( void )
     showLineNumberAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( showLineNumberAction_, SIGNAL(toggled(bool)), SLOT(_toggleShowLineNumbers(bool)) );
 
+    // copy link
+    addAction( copyLinkAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy Link Location" ), this ) );
+    connect( copyLinkAction_, SIGNAL(triggered()), this, SLOT(_copyLinkLocation()) );
     // update actions that depend on the presence of a selection
     _updateSelectionActions( textCursor().hasSelection() );
 
@@ -2504,6 +2514,21 @@ void TextEditor::_updateClipboard( void )
     if( qApp->clipboard()->supportsSelection() && textCursor().hasSelection() )
     { qApp->clipboard()->setMimeData( createMimeDataFromSelection(), QClipboard::Selection ); }
 
+}
+
+//_____________________________________________
+void TextEditor::_copyLinkLocation( void )
+{
+    Debug::Throw( "TextEditor::_copyLinkLocation.\n" );
+    if( !trackAnchors_ ) return;
+
+    const QString anchor( this->anchor() );
+    if( anchor.isEmpty() ) return;
+
+    // copy selected text to clipboard
+    qApp->clipboard()->setText( anchor, QClipboard::Clipboard );
+    if( qApp->clipboard()->supportsSelection() ) qApp->clipboard()->setText( anchor, QClipboard::Selection );
+    if( qApp->clipboard()->supportsFindBuffer() ) qApp->clipboard()->setText( anchor, QClipboard::FindBuffer );
 }
 
 //________________________________________________
