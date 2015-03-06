@@ -442,7 +442,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     void modifiersChanged( TextEditor::Modifiers );
 
     //* anchor (html links) has been clicked
-    void anchorClicked( QString );
+    void linkActivated( QString );
+
+    //* anchor (html links) has been clicked
+    void linkHovered( QString );
 
     public Q_SLOTS:
 

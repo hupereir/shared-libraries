@@ -1172,11 +1172,18 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     // do nothing if some buttons are pressed
     if( trackAnchors_ )
     {
-        if( !( event->buttons() || anchorAt( event->pos() ).isEmpty() ) )
+        QString anchor;
+        if( !( event->buttons() || ( anchor = anchorAt( event->pos() ) ).isEmpty() ) )
         {
             viewport()->setCursor( Qt::PointingHandCursor );
+            emit
+        } else {
 
-        } else viewport()->setCursor( Qt::IBeamCursor );
+            viewport()->setCursor( Qt::IBeamCursor );
+            emit linkHovered(anchor);
+
+        }
+
     }
 
     // see if there is a box selection in progress
@@ -1270,7 +1277,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
         !textCursor().hasSelection() &&
         !( anchor = anchorAt( event->pos() ) ).isEmpty() )
     {
-        emit anchorClicked( anchor );
+        emit linkActivated( anchor );
         return;
     }
 
