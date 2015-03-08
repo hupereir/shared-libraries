@@ -11,7 +11,11 @@
 #include <QHostInfo>
 #include <QTextStream>
 
+#if defined(Q_OS_WIN)
+#include <ws2tcpip.h>
+#else
 #include <netinet/in.h>
+#endif
 #include <unistd.h>
 
 #if HAVE_SSH
@@ -28,6 +32,12 @@ namespace Ssh
         useThreads_( useThreads )
     {
         Debug::Throw( "Ssh::Connection::Connection.\n" );
+
+        #if defined(Q_OS_WIN)
+        // some windows specific initialization
+        WSADATA wsadata;
+        WSAStartup(MAKEWORD(2,0), &wsadata);
+        #endif
 
         #if HAVE_SSH
         if( !libssh2_init(0) ) state_ |= Initialized;

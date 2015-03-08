@@ -65,6 +65,11 @@ endif()
 
 target_link_libraries(base-ssh ${QT_LIBRARIES} base base-qt)
 
+if(WIN32)
+  # add needed libraries for sockets and inet on windows
+  target_link_libraries(base-ssh ws2_32)
+endif()
+
 if(${LIBSSH2_FOUND})
 target_link_libraries(base-ssh ${LIBSSH2_LIBRARIES})
 endif()

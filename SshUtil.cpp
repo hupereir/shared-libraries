@@ -21,9 +21,15 @@
 
 #include <QList>
 
+#if defined(Q_OS_WIN)
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
+#else
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#endif
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -36,16 +42,23 @@ namespace Ssh
     {
         int optionNames[] =
         {
+            #if  !defined(Q_OS_WIN)
             TCP_CORK, TCP_DEFER_ACCEPT, TCP_INFO, TCP_KEEPCNT, TCP_KEEPIDLE,
-            TCP_KEEPINTVL, TCP_LINGER2, TCP_MAXSEG, TCP_NODELAY, TCP_QUICKACK,
-            TCP_SYNCNT, TCP_WINDOW_CLAMP, 0
+            TCP_KEEPINTVL, TCP_LINGER2, TCP_MAXSEG, TCP_QUICKACK,  TCP_SYNCNT,
+            TCP_WINDOW_CLAMP,
+            #endif
+            TCP_NODELAY, 0
         };
 
-        int result = 0;
+        uint32_t result = 0;
         int bit = 0;
         for( int index = 0; optionNames[index]; ++index )
         {
+            #if defined( Q_OS_WIN )
+            char value = 0;
+            #else
             int value = 0;
+            #endif
             socklen_t length = 0;
             if( getsockopt( socket, IPPROTO_TCP, optionNames[index], &value, &length ) == 0 && value )
             { result |= (1<<bit); }
@@ -63,19 +76,28 @@ namespace Ssh
     {
         int optionNames[] =
         {
-            SO_ACCEPTCONN, SO_BINDTODEVICE, SO_BROADCAST, SO_BSDCOMPAT, SO_DEBUG,
-            SO_DOMAIN, SO_ERROR, SO_DONTROUTE, SO_KEEPALIVE, SO_LINGER,
-            SO_MARK, SO_OOBINLINE, SO_PASSCRED, SO_PEERCRED, SO_PRIORITY,
-            SO_PROTOCOL, SO_RCVBUF, SO_RCVBUFFORCE, SO_RCVLOWAT, SO_SNDLOWAT,
-            SO_RCVTIMEO, SO_SNDTIMEO, SO_REUSEADDR, SO_SNDBUF, SO_SNDBUFFORCE,
-            SO_TIMESTAMP, SO_TYPE, 0
+            SO_ACCEPTCONN, SO_BROADCAST, SO_DEBUG,SO_ERROR, SO_DONTROUTE,
+            SO_KEEPALIVE, SO_LINGER,
+            #if !defined( Q_OS_WIN )
+            SO_BINDTODEVICE,  SO_BSDCOMPAT, SO_DOMAIN, SO_MARK, SO_PASSCRED,
+            SO_PEERCRED,  SO_PRIORITY,  SO_PROTOCOL, SO_RCVBUFFORCE, SO_SNDBUFFORCE,
+            SO_TIMESTAMP,
+            #endif
+            SO_OOBINLINE, SO_RCVBUF, SO_RCVLOWAT, SO_SNDLOWAT, SO_RCVTIMEO,
+            SO_SNDTIMEO, SO_REUSEADDR, SO_SNDBUF, SO_TYPE,
+            0
         };
 
-        int result = 0;
+        uint32_t result = 0;
         int bit = 0;
         for( int index = 0; optionNames[index]; ++index )
         {
+            #if defined( Q_OS_WIN )
+            char value = 0;
+            #else
             int value = 0;
+            #endif
+
             socklen_t length = 0;
             if( getsockopt( socket, SOL_SOCKET, optionNames[index], &value, &length ) == 0 && value )
             { result |= (1<<bit); }
@@ -88,6 +110,12 @@ namespace Ssh
 
     //____________________________________________________
     uint32_t Util::fileDescriptorOptions( int fd )
-    { return fcntl( fd, F_GETFL ); }
+    {
+        #if defined(Q_OS_WIN)
+        return 0;
+        #else
+        return fcntl( fd, F_GETFL );
+        #endif
+    }
 
 }

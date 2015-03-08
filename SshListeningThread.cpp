@@ -22,8 +22,18 @@
 
 #include <QHostAddress>
 
+#if defined (Q_OS_WIN)
+#include <winsock2.h>
+#include <windows.h>
+#else
 #include <sys/socket.h>
+#endif
+
 #include <unistd.h>
+
+#ifndef INADDR_NONE
+#define INADDR_NONE (in_addr_t)-1
+#endif
 
 namespace Ssh
 {
@@ -78,7 +88,13 @@ namespace Ssh
 
         // socket
         socket_ = ::socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+        #if defined(Q_OS_WIN)
+        char socketOption = 1;
+        #else
         int socketOption = 1;
+        #endif
+
         setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &socketOption, sizeof(socketOption) );
 
         // bind
