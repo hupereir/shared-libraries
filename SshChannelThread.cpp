@@ -67,6 +67,7 @@ namespace Ssh
             #if HAVE_SSH
             QMutexLocker lock( mutex_ );
             libssh2_channel_free( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
+            channel_ = nullptr;
             #endif
         }
 
@@ -75,10 +76,8 @@ namespace Ssh
         {
             Debug::Throw( "SSh::ChannelThread::close.\n" );
             ::close( socket_ );
+            socket_ = -1;
         }
-
-        socket_ = -1;
-        channel_ = nullptr;
 
     }
 
