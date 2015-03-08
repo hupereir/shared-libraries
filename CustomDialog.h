@@ -71,6 +71,10 @@ class CustomDialog: public BaseDialog, public Counter
     QWidget& separator( void ) const
     { return *separator_; }
 
+    //* button box
+    QDialogButtonBox& buttonBox( void ) const
+    { return *buttonBox_; }
+
     //* retrieve button layout
     QBoxLayout& buttonLayout( void ) const
     { return *(qobject_cast<QBoxLayout*>(buttonBox_->layout())); }
