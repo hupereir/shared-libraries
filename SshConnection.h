@@ -125,15 +125,6 @@ namespace Ssh
         //* disconnect
         void disconnect( void );
 
-        //* disconnect channels
-        void disconnectChannels( void );
-
-        //* disconnect session
-        void disconnectSession( void );
-
-        //* disconnect tunnel
-        void disconnectTunnels( void );
-
         //@}
 
         //* true if ssh is supported
@@ -159,6 +150,15 @@ namespace Ssh
         virtual void timerEvent( QTimerEvent* );
 
         protected Q_SLOTS:
+
+        //* disconnect channels
+        void _disconnectChannels( void );
+
+        //* disconnect session
+        void _disconnectSession( void );
+
+        //* disconnect tunnel
+        void _disconnectTunnels( void );
 
         //* error handling
         void _notifyError( QString );

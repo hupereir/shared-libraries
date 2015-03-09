@@ -10,6 +10,7 @@
 
 #include <QHostInfo>
 #include <QTextStream>
+#include <QTimer>
 
 #if defined(Q_OS_WIN)
 #include <ws2tcpip.h>
@@ -246,17 +247,17 @@ namespace Ssh
     {
 
         Debug::Throw( "Ssh::Connection::disconnect.\n" );
-        disconnectChannels();
-        disconnectSession();
-        disconnectTunnels();
+        _disconnectChannels();
+        QTimer::singleShot(0, this, SLOT(_disconnectSession()) );
+        QTimer::singleShot(0, this, SLOT(_disconnectTunnels()) );
 
     }
 
     //_______________________________________________
-    void Connection::disconnectChannels( void )
+    void Connection::_disconnectChannels( void )
     {
 
-        Debug::Throw( "Ssh::Connection::disconnectChannels.\n" );
+        Debug::Throw( "Ssh::Connection::_disconnectChannels.\n" );
 
         // loop over threads and delete
         foreach( auto thread, findChildren<ChannelThread*>() )
@@ -275,10 +276,10 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::disconnectSession( void )
+    void Connection::_disconnectSession( void )
     {
 
-        Debug::Throw( "Ssh::Connection::disconnectSession.\n" );
+        Debug::Throw( "Ssh::Connection::_disconnectSession.\n" );
 
         #if HAVE_SSH
         if( state_ & (Connected|SessionCreated) )
@@ -318,9 +319,9 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::disconnectTunnels( void )
+    void Connection::_disconnectTunnels( void )
     {
-        Debug::Throw( "Ssh::Connection::disconnectTunnel.\n" );
+        Debug::Throw( "Ssh::Connection::_disconnectTunnel.\n" );
 
         // disconnect all listening threads
         foreach( auto thread, findChildren<ListeningThread*>() )
@@ -594,7 +595,7 @@ namespace Ssh
                     emit loginFailed();
 
                     // start over
-                    disconnectSession();
+                    _disconnectSession();
                     connect();
                     authenticate( true );
                     return;
