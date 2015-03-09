@@ -73,7 +73,9 @@ namespace Ssh
 
                 // create listening thread
                 ListeningThread* thread = new ListeningThread( this, attributes );
+                connect( thread, SIGNAL(error(QString)), this, SIGNAL(error(QString)) );
                 connect( thread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
+                connect( thread, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( thread, SIGNAL(newConnection(int,int)), this, SLOT(_newConnection(int,int)) );
                 connect( thread, SIGNAL(finished()), thread, SLOT(close()) );
                 connect( thread, SIGNAL(finished()), thread, SLOT(deleteLater()) );
@@ -88,10 +90,16 @@ namespace Ssh
                 if( !tcpServer->listen( QHostAddress::LocalHost, attributes.localPort() ) )
                 {
 
-                    Debug::Throw(0) << "Ssh::Connection::createTunnel -"
-                        << " cannot listen to localHost:" << attributes.localPort()
-                        << " error: " << tcpServer->errorString()
+                    Debug::Throw(0)
+                        << "Ssh::Connection::connectTunnels -"
+                        << " cannot listen to localhost:" << attributes.localPort()
+                        << " - error: " << tcpServer->errorString()
                         << endl;
+
+                    emit error( QString("Cannot listen to localhost:%1 - error:%2")
+                        .arg( attributes.localPort() )
+                        .arg( tcpServer->errorString() ) );
+
                     return false;
                 }
 
@@ -127,8 +135,16 @@ namespace Ssh
         if( !hostInfo.addresses().isEmpty() ) address = hostInfo.addresses().front();
         if( address.isNull() )
         {
-            Debug::Throw(0) << "Ssh::Connection::connect - invalid host: " << attributes_.host() << endl;
+
+            Debug::Throw(0)
+                << "Ssh::Connection::connect -"
+                << " invalid host: " << attributes_.host()
+                << endl;
+
+            emit error( QString("Invalid host: %1").arg( attributes_.host() ) );
+
             return false;
+
         }
 
         struct sockaddr_in socketAddress;
@@ -139,14 +155,25 @@ namespace Ssh
         // connect
         if( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) )
         {
-            Debug::Throw(0, "Ssh::Connection::connect - failed to connect.\n" );
+
+            Debug::Throw(0)
+                << "Ssh::Connection::connect -"
+                << " Cannot connect to host " << attributes_.host() << ":" << attributes_.port()
+                << endl;
+
+            emit error( QString("Cannot connect to host %1:%2")
+                .arg( attributes_.host() )
+                .arg( attributes_.port() ) );
+
             return false;
+
         }
 
         // session
         if(!( session_ = libssh2_session_init() ))
         {
-            Debug::Throw(0, "Ssh::Connection::connect - Could not initialize SSH session.\n" );
+            Debug::Throw(0) << "Ssh::Connection::connect - Cannot initialize session" << endl;
+            emit error( "Cannot initialize Ssh session" );
             return false;
         }
 
@@ -155,7 +182,14 @@ namespace Ssh
 
         // initialize agent
         agent_ = libssh2_agent_init(session);
-        if( !agent_ ) Debug::Throw(0, "Ssh::Connection::connect - failed initializing agent.\n" );
+        if( !agent_ )
+        {
+            // do not throw error because one can connect without the agent
+            Debug::Throw(0, "Ssh::Connection::connect - failed initializing agent.\n" );
+        }
+
+        // update state and return
+        state_ |= SessionCreated;
 
         // mark as non blocking
         libssh2_session_set_blocking(session, 0);
@@ -164,8 +198,6 @@ namespace Ssh
         addCommand( Handshake );
         addCommand( ConnectAgent );
 
-        // update state and return
-        state_ |= SessionCreated;
         return true;
         #else
         return false;
@@ -627,6 +659,8 @@ namespace Ssh
             {
                 Tunnel* tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
+
+                connect( tunnel, SIGNAL(error(QString)), this, SIGNAL(error(QString)) );
                 connect( tunnel, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
                 connect( tunnel, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( tunnel->sshSocket(), SIGNAL(error(QAbstractSocket::SocketError)), tunnel, SLOT(deleteLater()) );
@@ -660,6 +694,7 @@ namespace Ssh
                 const TunnelAttributes& attributes( thread->attributes() );
                 Debug::Throw() << "Ssh::Connection::_newConnection - new connection to " << attributes.host() << ":" << attributes.remotePort() << endl;
                 ChannelThread* channelThread= new ChannelThread( this, attributes, session_, socket );
+                connect( channelThread, SIGNAL(error(QString)), this, SIGNAL(error(QString)) );
                 connect( channelThread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
                 connect( channelThread, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(close()) );
