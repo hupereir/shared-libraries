@@ -160,7 +160,7 @@ namespace Ssh
 
                 } else if( bytesRead == 0 ) {
 
-                    emit debug( QString( "Local socket on port %1 disconnected" ).arg( attributes_.localPort() ) );
+                    emit debug( QString( "Ssh::ChannelThread::run - local socket on port %1 disconnected" ).arg( attributes_.localPort() ) );
                     return;
 
                 }
