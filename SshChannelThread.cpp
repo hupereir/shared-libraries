@@ -169,19 +169,19 @@ namespace Ssh
 
                 QMutexLocker lock( mutex_ );
                 ssize_t bytesWritten = 0;
-                ssize_t i = 0;
-                do
+                while( bytesWritten < bytesRead )
                 {
-                    i = libssh2_channel_write( channel, buffer.data()+bytesWritten, bytesRead-bytesWritten );
 
-                    if (i < 0)
+                    const ssize_t i = libssh2_channel_write( channel, buffer.data()+bytesWritten, bytesRead-bytesWritten );
+                    if( i >= 0 ) bytesWritten += i;
+                    else if( i != LIBSSH2_ERROR_EAGAIN )
                     {
                         emit error( tr( "Error writting to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
                         return;
                     }
-                    bytesWritten += i;
 
-                } while( i > 0 && bytesWritten < bytesRead );
+                }
+
             }
 
             // read from ssh, write to socket
@@ -190,6 +190,7 @@ namespace Ssh
 
                 QMutexLocker lock( mutex_ );
                 ssize_t bytesRead = libssh2_channel_read( channel, buffer.data(), buffer.size() );
+
                 if( bytesRead == LIBSSH2_ERROR_EAGAIN ) break;
                 else if( bytesRead < 0 )
                 {
@@ -200,10 +201,9 @@ namespace Ssh
                 emit debug( QString( "Ssh::ChannelThread::run - fromSshSocket - bytesRead=%1" ).arg( bytesRead ) );
 
                 ssize_t bytesWritten = 0;
-                ssize_t i = 0;
                 while( bytesWritten < bytesRead )
                 {
-                    i = send(socket_, buffer.data() + bytesWritten, bytesRead - bytesWritten, 0);
+                    const ssize_t i = send(socket_, buffer.data() + bytesWritten, bytesRead - bytesWritten, 0);
                     if (i <= 0)
                     {
 
