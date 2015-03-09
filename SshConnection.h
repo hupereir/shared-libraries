@@ -70,6 +70,18 @@ namespace Ssh
         StateMask state( void ) const
         { return state_; }
 
+        //* true if connected
+        bool isConnected( void ) const
+        { return state_ & Connected; }
+
+        //* true if disconnected
+        bool isDisconnected( void ) const
+        { return !(state_ & (TunnelCreated|SessionCreated|Connected)  ); }
+
+        //* true if connecting
+        bool isConnecting( void ) const
+        { return !(isDisconnected() || isConnected() ); }
+
         //@}
 
         //*@name modifiers
