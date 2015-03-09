@@ -73,6 +73,9 @@ namespace Ssh
         //* error message
         void error( QString );
 
+        //* debug message
+        void debug( QString );
+
         //* new connection is available
         void newConnection( int port, int socket );
 

@@ -41,7 +41,7 @@ namespace Ssh
     //_____________________________________________________________
     ListeningThread::ListeningThread( QObject* parent, const TunnelAttributes& attributes ):
         QThread( parent ),
-        Counter( "SSh::ListeningThread" ),
+        Counter( "Ssh::ListeningThread" ),
         attributes_( attributes )
     {
         Debug::Throw()
@@ -55,7 +55,7 @@ namespace Ssh
     //_____________________________________________________________
     ListeningThread::~ListeningThread(void )
     {
-        Debug::Throw( "SSh::ListeningThread::~ListeningThread.\n" );
+        Debug::Throw( "Ssh::ListeningThread::~ListeningThread.\n" );
         close();
     }
 
@@ -64,7 +64,7 @@ namespace Ssh
     {
         if( socket_ >= 0 )
         {
-            Debug::Throw( "SSh::ListeningThread::close.\n" );
+            emit debug( "Ssh::ListeningThread::close." );
             ::close( socket_ );
         }
 
@@ -74,7 +74,7 @@ namespace Ssh
     //_____________________________________________________________
     void ListeningThread::initialize( void )
     {
-        Debug::Throw() << "SSh::ListeningThread::initialize - port: " << attributes_.localPort() << endl;
+        Debug::Throw() << "Ssh::ListeningThread::initialize - port: " << attributes_.localPort() << endl;
 
         // socket address
         address_.sin_family = AF_INET;
@@ -102,7 +102,6 @@ namespace Ssh
         if( bind(socket_, (struct sockaddr *)&address_, addressLength) == -1 )
         {
             emit error( tr( "Could not bind socket to port %1 on localhost" ).arg( attributes_.localPort() ) );
-            perror( "bind" );
             return;
         }
 
@@ -110,7 +109,6 @@ namespace Ssh
         if( listen( socket_, 2 ) == -1 )
         {
             emit error( tr( "Could listen to port %1 on localhost" ).arg( attributes_.localPort() ) );
-            perror("listen");
             return;
         }
 
@@ -136,7 +134,6 @@ namespace Ssh
             {
 
                 emit error( tr( "Failed forwarding connection to port %1 on localhost" ).arg( attributes_.localPort() ) );
-                perror("accept");
                 return;
 
             } else {
