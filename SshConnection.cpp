@@ -80,7 +80,6 @@ namespace Ssh
                 connect( thread, SIGNAL(newConnection(int,int)), this, SLOT(_newConnection(int,int)) );
                 connect( thread, SIGNAL(finished()), thread, SLOT(close()) );
                 connect( thread, SIGNAL(finished()), thread, SLOT(deleteLater()) );
-                thread->initialize();
                 thread->start();
 
             } else {
@@ -703,7 +702,6 @@ namespace Ssh
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(close()) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(deleteLater()) );
                 channelThread->setMutex( &mutex_ );
-                channelThread->initialize();
                 channelThread->start();
             }
         }

@@ -63,9 +63,6 @@ namespace Ssh
         void setMutex( QMutex* mutex )
         { mutex_ = mutex; }
 
-        //* intialize
-        void initialize( void );
-
         //@}
 
         Q_SIGNALS:

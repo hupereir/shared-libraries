@@ -82,52 +82,40 @@ namespace Ssh
     }
 
     //_______________________________________________________________
-    void ChannelThread::initialize( void )
-    {
-
-        if( channel_ ) return;
-        Debug::Throw() << "Ssh::ChannelThread::initialize - host: " << attributes_.host() << ":" << attributes_.remotePort() << endl;
-
-        #if HAVE_SSH
-        LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
-        forever
-        {
-            channel_ = libssh2_channel_direct_tcpip(
-                session,
-                qPrintable( attributes_.host() ),
-                attributes_.remotePort() );
-
-            if( channel_ ) break;
-            else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN )
-            {
-                char *err_msg;
-                libssh2_session_last_error(session, &err_msg, NULL, 0);
-                Debug::Throw() << "ChannelThread::run - error getting direct tpc channel: " << err_msg << endl;
-                emit error( tr( "Failed to create channel to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
-                return;
-            }
-
-        }
-        #endif
-
-    }
-
-    //_______________________________________________________________
     void ChannelThread::run( void )
     {
 
-        // check channel
-        if( !channel_ )
+        #if HAVE_SSH
+
+        // initialize channel
         {
-            emit error( tr( "Invalid channel" ) );
-            return;
+            QMutexLocker lock( mutex_ );
+            LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+
+            forever
+            {
+                channel_ = libssh2_channel_direct_tcpip(
+                    session,
+                    qPrintable( attributes_.host() ),
+                    attributes_.remotePort() );
+
+                if( channel_ ) break;
+                else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN )
+                {
+                    char *err_msg;
+                    libssh2_session_last_error(session, &err_msg, NULL, 0);
+                    Debug::Throw() << "ChannelThread::run - error getting direct tpc channel: " << err_msg << endl;
+                    emit error( tr( "Failed to create channel to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
+                    return;
+                }
+
+            }
+
         }
 
-        #if HAVE_SSH
         // cast channel
         LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
 
-        // starting from here, this should go to a separate thread
         QByteArray buffer;
         buffer.resize(16384);
         forever

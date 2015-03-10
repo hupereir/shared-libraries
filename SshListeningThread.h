@@ -24,11 +24,6 @@
 #include "SshTunnelAttributes.h"
 
 #include <QThread>
-#if defined( Q_OS_WIN)
-#include <ws2tcpip.h>
-#else
-#include <netinet/in.h>
-#endif
 
 namespace Ssh
 {
@@ -57,14 +52,6 @@ namespace Ssh
         //* sockets
         int socket( void ) const
         { return socket_; }
-
-        //@}
-
-        //*@name modifiers
-        //@{
-
-        //* intialize
-        void initialize( void );
 
         //@}
 
@@ -98,9 +85,6 @@ namespace Ssh
 
         //* tunnel attributes
         TunnelAttributes attributes_;
-
-        //* address
-        struct sockaddr_in address_;
 
         //* socket
         int socket_ = -1;

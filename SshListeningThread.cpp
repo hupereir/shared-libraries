@@ -25,8 +25,10 @@
 #if defined (Q_OS_WIN)
 #include <winsock2.h>
 #include <windows.h>
+#include <ws2tcpip.h>
 #else
 #include <sys/socket.h>
+#include <netinet/in.h>
 #endif
 
 #include <unistd.h>
@@ -72,15 +74,15 @@ namespace Ssh
     }
 
     //_____________________________________________________________
-    void ListeningThread::initialize( void )
+    void ListeningThread::run( void )
     {
-        Debug::Throw() << "Ssh::ListeningThread::initialize - port: " << attributes_.localPort() << endl;
 
         // socket address
-        address_.sin_family = AF_INET;
-        address_.sin_port = htons( attributes_.localPort() );
-        address_.sin_addr.s_addr = htonl( QHostAddress( QHostAddress::LocalHost ).toIPv4Address() );
-        if( address_.sin_addr.s_addr == INADDR_NONE )
+        struct sockaddr_in address;
+        address.sin_family = AF_INET;
+        address.sin_port = htons( attributes_.localPort() );
+        address.sin_addr.s_addr = htonl( QHostAddress( QHostAddress::LocalHost ).toIPv4Address() );
+        if( address.sin_addr.s_addr == INADDR_NONE )
         {
             emit error( QString( "Invalid local host address" ) );
             return;
@@ -88,6 +90,12 @@ namespace Ssh
 
         // socket
         socket_ = ::socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+        if( socket_ < 0 )
+        {
+            emit error( tr( "Invalid socket" ) );
+            return;
+        }
 
         #if defined(Q_OS_WIN)
         char socketOption = 1;
@@ -98,8 +106,8 @@ namespace Ssh
         setsockopt( socket_, SOL_SOCKET, SO_REUSEADDR, &socketOption, sizeof(socketOption) );
 
         // bind
-        socklen_t addressLength = sizeof(address_);
-        if( bind(socket_, (struct sockaddr *)&address_, addressLength) == -1 )
+        socklen_t addressLength = sizeof(address);
+        if( bind(socket_, (struct sockaddr *)&address, addressLength) == -1 )
         {
             emit error( tr( "Could not bind socket to port %1 on localhost" ).arg( attributes_.localPort() ) );
             return;
@@ -112,24 +120,11 @@ namespace Ssh
             return;
         }
 
-    }
-
-    //_____________________________________________________________
-    void ListeningThread::run( void )
-    {
-
-        if( socket_ < 0 )
-        {
-            emit error( tr( "Invalid socket" ) );
-            return;
-        }
-
         // infinite loop to accept connections
-        socklen_t addressLength = sizeof(address_);
         forever
         {
 
-            int forwardSocket = accept( socket_, (struct sockaddr *)&address_, &addressLength);
+            int forwardSocket = accept( socket_, (struct sockaddr *)&address, &addressLength);
             if( forwardSocket == -1 )
             {
 
