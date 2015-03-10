@@ -248,8 +248,8 @@ namespace Ssh
 
         Debug::Throw( "Ssh::Connection::disconnect.\n" );
         _disconnectChannels();
-        QTimer::singleShot(0, this, SLOT(_disconnectSession()) );
-        QTimer::singleShot(0, this, SLOT(_disconnectTunnels()) );
+        _disconnectTunnels();
+        _disconnectSession();
 
     }
 
