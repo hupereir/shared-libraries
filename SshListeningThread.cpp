@@ -144,8 +144,6 @@ namespace Ssh
 
         }
 
-        close();
-
     }
 
 }

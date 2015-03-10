@@ -222,8 +222,6 @@ namespace Ssh
         }
         #endif
 
-        close();
-
     }
 
 }

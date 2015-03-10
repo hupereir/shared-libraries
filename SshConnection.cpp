@@ -264,6 +264,7 @@ namespace Ssh
         {
             thread->terminate();
             thread->wait();
+            thread->close();
         }
 
         // loop over tunnels and delete
@@ -328,6 +329,7 @@ namespace Ssh
         {
             thread->terminate();
             thread->wait();
+            thread->close();
         }
 
         // disconnect all tcp servers
