@@ -90,15 +90,12 @@ namespace Ssh
                 if( !tcpServer->listen( QHostAddress::LocalHost, attributes.localPort() ) )
                 {
 
-                    Debug::Throw(0)
-                        << "Ssh::Connection::connectTunnels -"
-                        << " cannot listen to localhost:" << attributes.localPort()
-                        << " - error: " << tcpServer->errorString()
-                        << endl;
-
-                    emit error( QString("Cannot listen to localhost:%1 - error:%2")
+                    const QString message = QString( "Cannot listen to localhost:%1 - error:%2")
                         .arg( attributes.localPort() )
-                        .arg( tcpServer->errorString() ) );
+                        .arg( tcpServer->errorString() );
+
+                    Debug::Throw() << "Ssh::Connection::connectTunnels - " << message << endl;
+                    emit error( message );
 
                     return false;
                 }
@@ -136,12 +133,9 @@ namespace Ssh
         if( address.isNull() )
         {
 
-            Debug::Throw(0)
-                << "Ssh::Connection::connect -"
-                << " invalid host: " << attributes_.host()
-                << endl;
-
-            emit error( QString("Invalid host: %1").arg( attributes_.host() ) );
+            const QString message = QString( "Invalid host: %1" ).arg( attributes_.host() );
+            Debug::Throw() << "Connection::connect - " << message << endl;
+            emit error( message );
 
             return false;
 
@@ -156,15 +150,12 @@ namespace Ssh
         if( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) )
         {
 
-            Debug::Throw(0)
-                << "Ssh::Connection::connect -"
-                << " Cannot connect to host " << attributes_.host() << ":" << attributes_.port()
-                << endl;
+            const QString message = QString( "Cannot connect to host %1:%2" )
+                .arg(attributes_.host())
+                .arg(attributes_.port());
 
-            emit error( QString("Cannot connect to host %1:%2")
-                .arg( attributes_.host() )
-                .arg( attributes_.port() ) );
-
+            Debug::Throw() << "Connection::connect - " << message << endl;
+            emit error( message );
             return false;
 
         }
@@ -172,7 +163,7 @@ namespace Ssh
         // session
         if(!( session_ = libssh2_session_init() ))
         {
-            Debug::Throw(0) << "Ssh::Connection::connect - Cannot initialize session" << endl;
+            Debug::Throw() << "Ssh::Connection::connect - Cannot initialize session" << endl;
             emit error( "Cannot initialize Ssh session" );
             return false;
         }
