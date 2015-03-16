@@ -21,6 +21,7 @@
 #include "Util.h"
 
 #include <QFileInfo>
+#include <QIcon>
 #include <QSettings>
 
 #if defined( Q_OS_WIN )
@@ -80,9 +81,16 @@ DefaultFolders::DefaultFolders( void )
     iconNames_.insert( Home, "user-home.png" );
     iconNames_.insert( Desktop, "user-desktop" );
     iconNames_.insert( Documents, "folder-documents" );
-    iconNames_.insert( Downloads, "folder-downloads" );
     iconNames_.insert( Music, "folder-sound" );
-    iconNames_.insert( Pictures, "folder-image" );
+
+    // there are discrepencies for folder icon names between icon themes
+    // try to deal with major ones
+    if( QIcon::hasThemeIcon( "folder-download" ) ) iconNames_.insert( Downloads, "folder-download" );
+    else iconNames_.insert( Downloads, "folder-downloads" );
+
+    if( QIcon::hasThemeIcon( "folder-pictures" ) ) iconNames_.insert( Pictures, "folder-pictures" );
+    else iconNames_.insert( Pictures, "folder-image" );
+
     iconNames_.insert( Videos, "folder-video" );
 
 }
