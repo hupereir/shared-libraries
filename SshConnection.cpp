@@ -1,3 +1,22 @@
+/******************************************************************************
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* Any WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*******************************************************************************/
+
 #include "SshConnection.h"
 
 #include "Debug.h"
@@ -5,6 +24,7 @@
 #include "SshChannelThread.h"
 #include "SshListeningThread.h"
 #include "SshLoginDialog.h"
+#include "SshSingleton.h"
 #include "SshSocket.h"
 #include "SshTunnel.h"
 
@@ -31,31 +51,13 @@ namespace Ssh
         QObject( parent ),
         Counter( "Ssh::Connection" ),
         useThreads_( useThreads )
-    {
-        Debug::Throw( "Ssh::Connection::Connection.\n" );
-
-        #if defined(Q_OS_WIN)
-        // some windows specific initialization
-        WSADATA wsadata;
-        WSAStartup(MAKEWORD(2,0), &wsadata);
-        #endif
-
-        #if HAVE_SSH
-        if( !libssh2_init(0) ) state_ |= Initialized;
-        #endif
-    }
+    { Debug::Throw( "Ssh::Connection::Connection.\n" ); }
 
     //_______________________________________________
     Connection::~Connection( void )
     {
         Debug::Throw( "Ssh::Connection::~Connection.\n" );
-        if( state_ & Initialized )
-        {
-            disconnect();
-            #if HAVE_SSH
-            libssh2_exit();
-            #endif
-        }
+        disconnect();
     }
 
     //_______________________________________________
@@ -63,7 +65,7 @@ namespace Ssh
     {
 
         Debug::Throw( "Ssh::Connection::createTunnels.\n" );
-        if( !(state_ & Initialized) ) return false;
+        if( !Singleton::get().initialized() ) return false;
 
         // loop over tunnel attributes
         foreach( auto attributes, attributes_.tunnels() )
@@ -115,7 +117,7 @@ namespace Ssh
     {
 
         Debug::Throw( "Ssh::Connection::connect.\n" );
-        if( !(state_ & Initialized) ) return false;
+        if( !Singleton::get().initialized() ) return false;
 
         #if HAVE_SSH
         // initialize socket

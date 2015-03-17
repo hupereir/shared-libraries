@@ -59,10 +59,9 @@ namespace Ssh
         enum State
         {
             Uninitialized = 0,
-            Initialized = 1<<0,
-            TunnelCreated = 1<<1,
-            SessionCreated = 1<<2,
-            Connected = 1<<3
+            TunnelCreated = 1<<0,
+            SessionCreated = 1<<1,
+            Connected = 1<<2
         };
 
         Q_DECLARE_FLAGS( StateMask, State );
