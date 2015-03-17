@@ -30,12 +30,7 @@
 #include <QObject>
 #include <QString>
 #include <QTimerEvent>
-
-#if defined(Q_OS_WIN)
-#include <ws2tcpip.h>
-#else
-#include <netinet/in.h>
-#endif
+#include <QHostInfo>
 
 namespace Ssh
 {
@@ -156,6 +151,9 @@ namespace Ssh
 
         protected Q_SLOTS:
 
+        //* save host info lookup
+        void _saveHost( QHostInfo );
+
         //* disconnect channels
         void _disconnectChannels( void );
 
@@ -200,8 +198,8 @@ namespace Ssh
         //* identity
         void* identity_ = nullptr;
 
-        //* socket address
-        struct sockaddr_in socketAddress_;
+        //* ssh host
+        QHostInfo sshHost_;
 
         //* mutex
         /* needed for concurent access to Ssh session, in thread mode */

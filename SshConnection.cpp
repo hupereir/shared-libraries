@@ -28,7 +28,6 @@
 #include "SshSocket.h"
 #include "SshTunnel.h"
 
-#include <QHostInfo>
 #include <QTcpServer>
 #include <QTextStream>
 #include <QTimer>
@@ -145,25 +144,8 @@ namespace Ssh
             return false;
         }
 
-        // initialize socket address structure
-        QHostAddress address;
-        const QHostInfo hostInfo( QHostInfo::fromName( attributes_.host() ) );
-        if( !hostInfo.addresses().isEmpty() ) address = hostInfo.addresses().front();
-        if( address.isNull() )
-        {
-
-            const QString message = QString( "Invalid host: %1" ).arg( attributes_.host() );
-            Debug::Throw() << "Connection::connect - " << message << endl;
-            emit error( message );
-
-            return false;
-
-        }
-
-        // initialize socket address
-        socketAddress_.sin_family = AF_INET;
-        socketAddress_.sin_port = htons(attributes_.port());
-        socketAddress_.sin_addr.s_addr = htonl(address.toIPv4Address());
+        // lookup host
+        QHostInfo::lookupHost( attributes_.host(), this, SLOT(_saveHost(QHostInfo)) );
 
         // session
         if(!( session_ = libssh2_session_init() ))
@@ -248,6 +230,10 @@ namespace Ssh
         _disconnectSession();
 
     }
+
+    //_______________________________________________
+    void Connection::_saveHost( QHostInfo host )
+    { sshHost_ = host; }
 
     //_______________________________________________
     void Connection::_disconnectChannels( void )
@@ -389,7 +375,29 @@ namespace Ssh
 
             case Connect:
             {
-                const int result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress_), sizeof(struct sockaddr_in) ) );
+
+                // check host
+                if( sshHost_.lookupId() < 0 ) break;
+
+                // initialize socket address structure
+                QHostAddress address;
+                if( !sshHost_.addresses().isEmpty() ) address = sshHost_.addresses().front();
+                if( address.isNull() )
+                {
+
+                    _abortCommands( tr( "Invalid host: %1" ).arg( attributes_.host() ) );
+                    return;
+
+                }
+
+                // initialize socket address
+                struct sockaddr_in socketAddress;
+                socketAddress.sin_family = AF_INET;
+                socketAddress.sin_port = htons(attributes_.port());
+                socketAddress.sin_addr.s_addr = htonl(address.toIPv4Address());
+
+                // try connect
+                const int result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) );
                 if( !result )
                 {
 
