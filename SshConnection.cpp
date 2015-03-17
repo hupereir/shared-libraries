@@ -37,7 +37,9 @@
 #else
 #include <netinet/in.h>
 #endif
+
 #include <unistd.h>
+#include <fcntl.h>
 
 #if HAVE_SSH
 #include <libssh2.h>
@@ -124,7 +126,21 @@ namespace Ssh
         sshSocket_ = socket( PF_INET, SOCK_STREAM, IPPROTO_TCP);
         if( sshSocket_ == -1 )
         {
-            perror( "socket" );
+            emit error( "Unable to create ssh socket" );
+            return false;
+        }
+
+        // make socket non blocking
+        const int flags( fcntl(sshSocket_, F_GETFL ) );
+        if( flags < 0 )
+        {
+            emit error( "Unable to get socket flags" );
+            return false;
+        }
+
+        if( fcntl( sshSocket_, F_SETFL, flags|O_NONBLOCK ) < 0 )
+        {
+            emit error( "Unable to set socket flags" );
             return false;
         }
 
@@ -149,16 +165,22 @@ namespace Ssh
         socketAddress.sin_addr.s_addr = htonl(address.toIPv4Address());
 
         // connect
-        if( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) )
+        forever
         {
+            const int result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) );
+            if( !result ) break;
+            else if( errno != EALREADY && errno != EINPROGRESS ) {
 
-            const QString message = QString( "Cannot connect to host %1:%2" )
-                .arg(attributes_.host())
-                .arg(attributes_.port());
+                const QString message = QString( "Cannot connect to host %1:%2 - %3" )
+                    .arg(attributes_.host())
+                    .arg(attributes_.port())
+                    .arg(errno);
 
-            Debug::Throw() << "Connection::connect - " << message << endl;
-            emit error( message );
-            return false;
+                Debug::Throw(0) << "Connection::connect - " << message << endl;
+                emit error( message );
+                return false;
+
+            }
 
         }
 
@@ -188,6 +210,7 @@ namespace Ssh
         libssh2_session_set_blocking(session, 0);
 
         // request handshake and agent connection
+        addCommand( Connect );
         addCommand( Handshake );
         addCommand( ConnectAgent );
 

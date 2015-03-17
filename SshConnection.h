@@ -105,6 +105,7 @@ namespace Ssh
         enum SshCommand
         {
             None,
+            Connect,
             Handshake,
             ConnectAgent,
             RequestIdentity,
