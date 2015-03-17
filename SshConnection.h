@@ -29,8 +29,13 @@
 #include <QMutex>
 #include <QObject>
 #include <QString>
-#include <QTcpServer>
 #include <QTimerEvent>
+
+#if defined(Q_OS_WIN)
+#include <ws2tcpip.h>
+#else
+#include <netinet/in.h>
+#endif
 
 namespace Ssh
 {
@@ -194,6 +199,9 @@ namespace Ssh
 
         //* identity
         void* identity_ = nullptr;
+
+        //* socket address
+        struct sockaddr_in socketAddress_;
 
         //* mutex
         /* needed for concurent access to Ssh session, in thread mode */

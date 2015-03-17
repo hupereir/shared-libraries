@@ -29,6 +29,7 @@
 #include "SshTunnel.h"
 
 #include <QHostInfo>
+#include <QTcpServer>
 #include <QTextStream>
 #include <QTimer>
 
@@ -159,30 +160,10 @@ namespace Ssh
 
         }
 
-        struct sockaddr_in socketAddress;
-        socketAddress.sin_family = AF_INET;
-        socketAddress.sin_port = htons(attributes_.port());
-        socketAddress.sin_addr.s_addr = htonl(address.toIPv4Address());
-
-        // connect
-        forever
-        {
-            const int result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) );
-            if( !result ) break;
-            else if( errno != EALREADY && errno != EINPROGRESS ) {
-
-                const QString message = QString( "Cannot connect to host %1:%2 - %3" )
-                    .arg(attributes_.host())
-                    .arg(attributes_.port())
-                    .arg(errno);
-
-                Debug::Throw(0) << "Connection::connect - " << message << endl;
-                emit error( message );
-                return false;
-
-            }
-
-        }
+        // initialize socket address
+        socketAddress_.sin_family = AF_INET;
+        socketAddress_.sin_port = htons(attributes_.port());
+        socketAddress_.sin_addr.s_addr = htonl(address.toIPv4Address());
 
         // session
         if(!( session_ = libssh2_session_init() ))
@@ -405,6 +386,30 @@ namespace Ssh
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
         switch( commands_.front() )
         {
+
+            case Connect:
+            {
+                const int result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress_), sizeof(struct sockaddr_in) ) );
+                if( !result )
+                {
+
+                    // success
+                    commands_.removeFirst();
+                    return;
+
+                } else if( errno != EALREADY && errno != EINPROGRESS ) {
+
+                    _abortCommands( tr( "Cannot connect to host %1:%2 - %3" )
+                        .arg(attributes_.host())
+                        .arg(attributes_.port())
+                        .arg(errno) );
+                    return;
+
+                }
+
+            }
+            break;
+
 
             case Handshake:
             {
