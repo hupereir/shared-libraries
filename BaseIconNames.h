@@ -22,7 +22,7 @@
 
 #include <QString>
 
-//! namespace for base icons static name wrapper
+//* namespace for base icons static name wrapper
 namespace IconNames
 {
 
