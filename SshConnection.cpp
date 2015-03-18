@@ -745,6 +745,7 @@ namespace Ssh
     {
         switch( command )
         {
+            case Connect: return tr( "Connecting to host" );
             case Handshake: return tr( "Performing SSH handshake" );
             case ConnectAgent: return tr( "Connecting to SSH agent" );
             case RequestIdentity: return tr( "Waiting for user authentication" );
