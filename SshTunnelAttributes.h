@@ -64,6 +64,10 @@ namespace Ssh
         int remotePort( void ) const
         { return remotePort_; }
 
+        //* validity
+        bool isValid( void ) const
+        { return !(host_.isEmpty() || localPort_ <= 0 || remotePort_ <= 0 ); }
+
         //@}
 
         //*@name modifiers

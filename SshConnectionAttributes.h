@@ -46,14 +46,7 @@ namespace Ssh
         virtual ~ConnectionAttributes() = default;
 
         //* equal to operator
-        bool operator == (const ConnectionAttributes& other) const
-        {
-            return
-                name_ == other.name_ &&
-                host_ == other.host_ &&
-                userName_ == other.userName_ &&
-                tunnels_ == other.tunnels_;
-        }
+        bool operator == (const ConnectionAttributes& other) const;
 
         //* different from operator
         bool operator != (const ConnectionAttributes& other ) const
@@ -98,6 +91,9 @@ namespace Ssh
         TunnelAttributes::Set tunnels( void ) const
         { return tunnels_; }
 
+        //* validity
+        bool isValid( void ) const;
+
         //@}
 
         //*@name modifiers
@@ -132,20 +128,10 @@ namespace Ssh
         { port_ = port; }
 
         //* set tunnels
-        void setTunnels( const TunnelAttributes::List attributesList )
-        {
-            tunnels_.clear();
-            foreach( const auto& attributes, attributesList )
-            { addTunnel( attributes ); }
-        }
+        void setTunnels( const TunnelAttributes::List );
 
         //* add tunnel
-        void addTunnel( const TunnelAttributes& attributes )
-        {
-            auto iter = tunnels_.find( attributes );
-            if( iter != tunnels_.end() ) tunnels_.erase( iter );
-            tunnels_.insert( attributes );
-        }
+        void addTunnel( const TunnelAttributes& );
 
         //@}
 
