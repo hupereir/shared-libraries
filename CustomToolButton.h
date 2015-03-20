@@ -64,10 +64,10 @@ class CustomToolButton: public QToolButton, public Counter
     private:
 
     //! update configuration from options
-    bool updateFromOptions_;
+    bool updateFromOptions_ = true;
 
     //! rotation
-    CustomPixmap::Rotation rotation_;
+    CustomPixmap::Rotation rotation_ = CustomPixmap::None;
 
 };
 

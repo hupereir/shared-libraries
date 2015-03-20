@@ -32,9 +32,7 @@
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
-    Counter( "CustomToolButton" ),
-    updateFromOptions_( true ),
-    rotation_( CustomPixmap::None )
+    Counter( "CustomToolButton" )
 {
 
     Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
