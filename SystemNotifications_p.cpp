@@ -35,7 +35,7 @@ SystemNotificationsP::SystemNotificationsP( const QString& applicationName, cons
   icon_( nullptr )
 {
     #if WITH_LIBNOTIFY
-    notify_init( applicationName.toLatin1());
+    notify_init( qPrintable( applicationName ) );
 
     // try get pixmap from options and convert to icon
     if( !icon.isNull() )
@@ -86,13 +86,13 @@ void SystemNotificationsP::send( const QString& summary, const QString& message,
 
     #if WITH_LIBNOTIFY
 
-    const QByteArray summaryArray( summary.toLatin1() );
-    const QByteArray messageArray( message.toLatin1() );
+    const QByteArray summaryArray( qPrintable( summary ) );
+    const QByteArray messageArray( qPrintable( message ) );
     if( !( g_utf8_validate( summaryArray, -1, nullptr ) && g_utf8_validate( messageArray, -1, nullptr ) ) )
     { return; }
 
     NotifyNotification* notification( nullptr );
-    if( !icon.isEmpty() ) notification = notify_notification_new( summaryArray, messageArray, icon.toLatin1() );
+    if( !icon.isEmpty() ) notification = notify_notification_new( summaryArray, messageArray, qPrintable( icon ) );
     else if( icon_ )
     {
 
