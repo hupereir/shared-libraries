@@ -54,7 +54,6 @@ namespace Ssh
     //_______________________________________________
     Singleton::~Singleton( void )
     {
-        QTextStream( stdout ) << "Ssh::Singleton::~Singleton" << endl;
         #if HAVE_SSH
         if( initialized_ ) libssh2_exit();
         #endif
