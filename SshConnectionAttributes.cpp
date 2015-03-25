@@ -22,6 +22,10 @@
 
 namespace Ssh
 {
+
+    //_________________________________________________________________
+    const QString ConnectionAttributes::MimeType( "ssh/connection-attributes" );
+
     //_____________________________________________________________
     bool ConnectionAttributes::operator == (const ConnectionAttributes& other) const
     {
