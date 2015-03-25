@@ -32,14 +32,14 @@ class DefaultFolders: public QObject
 
     public:
 
-    //! return singleton
+    //* return singleton
     static DefaultFolders& get( void );
 
-    //! destructor
+    //* destructor
     virtual ~DefaultFolders( void )
     {}
 
-    //! folder type
+    //* folder type
     enum Type
     {
         Unknown,
@@ -53,43 +53,45 @@ class DefaultFolders: public QObject
         Videos
     };
 
-    //! folders
+    //* folders
     using FolderMap = QMap<File, Type>;
     using FolderMapIterator = QMapIterator<File, Type>;
     const FolderMap& folders( void ) const
     { return folders_; }
 
-    //! return type for a given folder
+    //* return type for a given folder
     Type type( const File& ) const;
 
-    //! name for a given type
+    //* name for a given type
     QString name( Type ) const;
 
-    //! return icon name for a given type
+    //* return icon name for a given type
     QString iconName( Type ) const;
 
     protected:
 
-    //! insert folder in map
-    void _insert( const QString& key, Type value )
-    { if( !key.isEmpty() ) folders_.insert( key, value ); }
+    //* insert folder in map
+    void _insert( const QStringList&, Type );
 
-    //! return default folder name under windows (vista and above)
+    //* insert folder in map
+    void _insert( const QString&, Type );
+
+    //* return default folder name under windows (vista and above)
     QString _defaultFolderName( qint64 );
 
     private:
 
-    //! constructor
+    //* constructor
     DefaultFolders( void );
 
-    //! map folder and type
+    //* map folder and type
     FolderMap folders_;
 
-    //! icon names
+    //* icon names
     using NameMap = QMap<Type, QString>;
     NameMap names_;
 
-    //! map folder type and icon name
+    //* map folder type and icon name
     using IconMap = QMap<Type, QString>;
     IconMap iconNames_;
 

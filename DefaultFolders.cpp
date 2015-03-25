@@ -22,7 +22,12 @@
 #include "Debug.h"
 #include "Util.h"
 
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#else
 #include <QDesktopServices>
+#endif
+
 #include <QFileInfo>
 #include <QIcon>
 #include <QSettings>
@@ -46,12 +51,21 @@ DefaultFolders::DefaultFolders( void )
     // fill folder map
     folders_.insert( Util::home(), Home );
 
+    #if QT_VERSION >= 0x050000
+    _insert( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), Desktop );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation ), Documents );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::MusicLocation ), Music );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::PicturesLocation ), Pictures );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::TempLocation ), Templates );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::MoviesLocation ), Videos );
+    #else
     _insert( QDesktopServices::storageLocation( QDesktopServices::DesktopLocation ), Desktop );
     _insert( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ), Documents );
     _insert( QDesktopServices::storageLocation( QDesktopServices::MusicLocation ), Music );
     _insert( QDesktopServices::storageLocation( QDesktopServices::PicturesLocation ), Pictures );
     _insert( QDesktopServices::storageLocation( QDesktopServices::TempLocation ), Templates );
     _insert( QDesktopServices::storageLocation( QDesktopServices::MoviesLocation ), Videos );
+    #endif
 
     #if defined( Q_OS_LINUX )
     // use QSettings to get standard directories from XDG
@@ -109,6 +123,14 @@ QString DefaultFolders::iconName( Type type ) const
     IconMap::const_iterator iter = iconNames_.find( type );
     return iter == iconNames_.end() ? QString():iter.value();
 }
+
+//__________________________________________________________________________
+void DefaultFolders::_insert( const QStringList& keys, Type value )
+{ if( !keys.isEmpty() ) _insert( keys.front(), value ); }
+
+//__________________________________________________________________________
+void DefaultFolders::_insert( const QString& key, Type value )
+{ if( !key.isEmpty() ) folders_.insert( key, value ); }
 
 //__________________________________________________________________________
 QString DefaultFolders::_defaultFolderName( qint64 key )
