@@ -60,9 +60,13 @@ void ErrorHandler::exit( void )
 void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, const QString& message )
 {
 
-    QString fullMessage;
-    QTextStream( &fullMessage ) << message << " file: " << context.file << " line: " << context.line << " function: " << context.function;
-    _throw( type, fullMessage.toLatin1() );
+    const QString fullMessage = QString( "%1 file: %2 line: %3 function: %4" )
+        .arg( message )
+        .arg( context.file )
+        .arg( context.line )
+        .arg( context.function );
+    _throw( type, qPrintable( fullMessage ) );
+
 }
 #endif
 

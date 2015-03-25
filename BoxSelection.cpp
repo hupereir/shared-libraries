@@ -289,7 +289,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
     // store text into MimeData
     QMimeData *data( new QMimeData() );
     data->setText( selection );
-    data->setData( mimeType, selection.toLatin1() );
+    data->setData( mimeType, qPrintable( selection ) );
 
     // copy selected text to clipboard
     qApp->clipboard()->setMimeData( data, mode );

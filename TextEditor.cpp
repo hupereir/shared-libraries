@@ -1224,7 +1224,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
 
         QMimeData *data = new QMimeData();
         data->setText( text );
-        data->setData( BoxSelection::mimeType, text.toLatin1() );
+        data->setData( BoxSelection::mimeType, qPrintable( text ) );
         drag->setMimeData( data );
         drag->start();
 
