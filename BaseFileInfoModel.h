@@ -214,30 +214,42 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
 template<typename T>
 QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientation, int role ) const
 {
-    if( role == Qt::DisplayRole )
+
+    switch( role )
     {
-        switch( column )
+        case Qt::DisplayRole:
         {
-            case Filename: return ItemModel::tr( "File" );
-            case Path: return ItemModel::tr( "Path" );
-            case Size: return ItemModel::tr( "Size " );
-            case User: return ItemModel::tr( "Owner" );
-            case Group: return ItemModel::tr( "Group" );
-            case Permissions: return ItemModel::tr( "Permissions" );
-            case Modified: return ItemModel::tr( "Modified" );
-            default: return QVariant();
-        }
-    } else if( role == Qt::TextAlignmentRole ) {
+            switch( column )
+            {
+                case Filename: return ItemModel::tr( "File" );
+                case Path: return ItemModel::tr( "Path" );
+                case Size: return ItemModel::tr( "Size " );
+                case User: return ItemModel::tr( "Owner" );
+                case Group: return ItemModel::tr( "Group" );
+                case Permissions: return ItemModel::tr( "Permissions" );
+                case Modified: return ItemModel::tr( "Modified" );
+                default: return QVariant();
+            }
+            break;
 
-        switch( column )
-        {
-            case Size: return (int)(Qt::AlignRight|Qt::AlignVCenter);
-            case Modified: return (int)(Qt::AlignCenter);
-
-            default:
-            return QVariant();
         }
 
+        case Qt::TextAlignmentRole:
+        {
+
+            switch( column )
+            {
+                case Size: return (int)(Qt::AlignRight|Qt::AlignVCenter);
+                case Modified: return (int)(Qt::AlignCenter);
+
+                default:
+                return QVariant();
+            }
+            break;
+
+        }
+
+        default: break;
     }
 
     return QVariant();
