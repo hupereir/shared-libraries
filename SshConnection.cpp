@@ -390,6 +390,11 @@ namespace Ssh
 
                 }
 
+                Debug::Throw() << "Ssh::Connection::timerEvent - connection."
+                    << " Host: " << attributes_.host()
+                    << " Port: " << attributes_.port()
+                    << endl;
+
                 // initialize socket address
                 struct sockaddr_in socketAddress;
                 socketAddress.sin_family = AF_INET;
@@ -576,8 +581,8 @@ namespace Ssh
 
                         Debug::Throw()
                             << "Ssh::Connection::authenticateWithAgent -"
-                            << " login with user name: " << attributes_.userName()
-                            << " and key: " << identity->comment << " failed"
+                            << " User: " << attributes_.userName()
+                            << " Key: " << identity->comment << " failed"
                             << endl;
 
                     }
@@ -606,6 +611,12 @@ namespace Ssh
                 return;
 
             } else {
+
+                Debug::Throw() << "Ssh::Connection::timerEvent - password authentication."
+                    << " Host: " << attributes_.host()
+                    << " User: " << attributes_.userName()
+                    << " Password: " << attributes_.password()
+                    << endl;
 
                 const int result( libssh2_userauth_password( session, qPrintable( attributes_.userName() ), qPrintable( attributes_.password() ) ) );
                 if( !result )
