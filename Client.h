@@ -118,12 +118,6 @@ namespace Server
     //* emitted when a message is available
     void commandAvailable( Server::ServerCommand );
 
-    protected:
-
-    //* buffer
-    MessageBuffer& _messageBuffer( void )
-    { return buffer_; }
-
     protected Q_SLOTS:
 
     //* reads messages

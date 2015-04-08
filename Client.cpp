@@ -76,7 +76,7 @@ namespace Server
         }
 
         QTextStream os( socket_ );
-        os << document.toString() << endl;
+        os << document.toByteArray() << endl;
 
     }
 
@@ -99,15 +99,15 @@ namespace Server
         {
 
             // get first tag
-            int begin_position( _messageBuffer().text().indexOf( beginTag, _messageBuffer().position() ) );
-            if( begin_position < 0 ) break;
+            int beginPosition( buffer_.text().indexOf( beginTag, buffer_.position() ) );
+            if( beginPosition < 0 ) break;
 
             // get end tag
-            int end_position( _messageBuffer().text().indexOf( endTag, begin_position+beginTag.size() ) );
-            if( end_position < 0 ) break;
+            int endPosition( buffer_.text().indexOf( endTag, beginPosition+beginTag.size() ) );
+            if( endPosition < 0 ) break;
 
             // create QDomDocument
-            QString local( _messageBuffer().text().mid( begin_position, end_position+endTag.size()-begin_position ) );
+            QString local( buffer_.text().mid( beginPosition, endPosition+endTag.size()-beginPosition ) );
 
             // create document
             XmlDocument document;
@@ -138,7 +138,7 @@ namespace Server
             }
 
             // flush buffer
-            _messageBuffer().flush( end_position+endTag.size() );
+            buffer_.flush( endPosition+endTag.size() );
 
         }
 
