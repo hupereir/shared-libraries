@@ -19,68 +19,59 @@
 * this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 *******************************************************************************/
-/*!
-  \file MessageBuffer.h
-  \brief customized QVBox to recieve close event
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 
 #include <QString>
 
-//! buffer class and current position
+//* buffer class and current position
 class MessageBuffer
 {
-  public:
+    public:
 
-  //! constructor
-  MessageBuffer( void ):
-    position_( 0 )
+    //* constructor
+    MessageBuffer( void )
     {}
 
-  //! clear
-  void clear( void )
-  {
-    text_ = QString();
-    position_ = 0;
-  }
+    //* clear
+    void clear( void )
+    {
+        text_ = QString();
+        position_ = 0;
+    }
 
-  //! append
-  void append( const QString& buffer )
-  { text_ += buffer; }
+    //* append
+    void append( const QString& buffer )
+    { text_ += buffer; }
 
-  //! move to position
-  void flush( void )
-  { flush( position() ); }
+    //* move to position
+    void flush( void )
+    { flush( position() ); }
 
-  //! move to new position
-  void flush( const int& position )
-  {
-    text_ = text_.mid( position );
-    position_ = 0;
-  }
+    //* move to new position
+    void flush( const int& position )
+    {
+        text_ = text_.mid( position );
+        position_ = 0;
+    }
 
-  //! text
-  const QString& text( void ) const
-  { return text_; }
+    //* text
+    const QString& text( void ) const
+    { return text_; }
 
-  //! text
-  QString& text( void )
-  { return text_; }
+    //* text
+    QString& text( void )
+    { return text_; }
 
-  //! position
-  const int& position( void ) const
-  { return position_; }
+    //* position
+    const int& position( void ) const
+    { return position_; }
 
-  private:
+    private:
 
-  //! text
-  QString text_;
+    //* text
+    QString text_;
 
-  //! last parsed position
-  int position_;
+    //* last parsed position
+    int position_ = 0;
 
 };
 #endif
