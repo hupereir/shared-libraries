@@ -34,20 +34,22 @@ void XmlString::_initConversions() const
     _conversions() << Conversion( ">", "XML_GT" );
     _conversions() << Conversion( "&", "XML_AND" );
     _conversions() << Conversion( "\"", "XML_QUOTE" );
-    _conversions() << Conversion( QString::fromLatin1( "à" ), "XML_AGRAVE" );
-    _conversions() << Conversion( QString::fromLatin1( "â" ), "XML_AHAT" );
-    _conversions() << Conversion( QString::fromLatin1( "ä" ), "XML_ATREM" );
-    _conversions() << Conversion( QString::fromLatin1( "é" ), "XML_ECUTE" );
-    _conversions() << Conversion( QString::fromLatin1( "è" ), "XML_EGRAVE" );
-    _conversions() << Conversion( QString::fromLatin1( "ê" ), "XML_EHAT" );
-    _conversions() << Conversion( QString::fromLatin1( "ë" ), "XML_EYTRM" );
-    _conversions() << Conversion( QString::fromLatin1( "î" ), "XML_IHAT" );
-    _conversions() << Conversion( QString::fromLatin1( "ï" ), "XML_ITREM" );
-    _conversions() << Conversion( QString::fromLatin1( "ô" ), "XML_OHAT" );
-    _conversions() << Conversion( QString::fromLatin1( "ö" ), "XML_OTREM" );
-    _conversions() << Conversion( QString::fromLatin1( "ù" ), "XML_UGRAVE" );
-    _conversions() << Conversion( QString::fromLatin1( "û" ), "XML_UHAT" );
-    _conversions() << Conversion( QString::fromLatin1( "ç" ), "XML_CCED" );
+
+    _conversions() << Conversion( QString::fromUtf8( "Ã " ), "XML_AGRAVE" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã¢" ), "XML_AHAT" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã¤" ), "XML_ATREM" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã©" ), "XML_ECUTE" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã¨" ), "XML_EGRAVE" );
+    _conversions() << Conversion( QString::fromUtf8( "Ãª" ), "XML_EHAT" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã«" ), "XML_EYTRM" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã®" ), "XML_IHAT" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã¯" ), "XML_ITREM" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã´" ), "XML_OHAT" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã¶" ), "XML_OTREM" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã¹" ), "XML_UGRAVE" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã»" ), "XML_UHAT" );
+    _conversions() << Conversion( QString::fromUtf8( "Ã§" ), "XML_CCED" );
+
     _conversions() << Conversion( "\t", "XML_TAB" );
     _conversions() << Conversion( "\n", "XML_ENDL" );
 
