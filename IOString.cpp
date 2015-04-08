@@ -23,17 +23,10 @@
 IOString::IOString( QIODevice& device )
 {
 
-    forever
-    {
-        int bytes( device.bytesAvailable() );
-        if( bytes <= 0 ) break;
+    QByteArray data( device.readAll() );
+    if( data.isEmpty() ) return;
 
-        char* data = new char[bytes+1];
-        qint64 bytesRead = device.read( data, bytes );
-        if( bytesRead <= 0 ) break;
-        data[bytesRead] = '\0';
-        append( data );
-        delete[] data;
-    }
+    if( !data.endsWith( '\0' ) ) data.append( '\0' );
+    append( data );
 
 }
