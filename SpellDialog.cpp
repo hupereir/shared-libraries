@@ -24,7 +24,9 @@
 #include "FilterSelectionButton.h"
 #include "GridLayout.h"
 #include "InformationDialog.h"
+#include "LineEditor.h"
 #include "SpellInterface.h"
+#include "TextEditor.h"
 #include "TreeView.h"
 #include "Util.h"
 #include "XmlOptions.h"
@@ -76,7 +78,7 @@ namespace SpellCheck
 
         // replacement line editor
         gridLayout->addWidget( new QLabel( tr( "Replace with:" ), this ) );
-        gridLayout->addWidget( replaceEditor_ = new AnimatedLineEditor( this ) );
+        gridLayout->addWidget( replaceEditor_ = new LineEditor( this ) );
         if( readOnly ) replaceEditor_->setEnabled( false );
 
         gridLayout->setColumnStretch( 1, 1 );
