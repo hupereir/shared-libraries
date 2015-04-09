@@ -91,28 +91,8 @@ void Options::installDefaultOptions( void )
     set<Base::Color>( "MARGIN_FOREGROUND", QColor("#136872") );
     set<Base::Color>( "MARGIN_BACKGROUND", QColor("#ecffec") );
 
-    set( "ANIMATION_FRAMES", "1000" );
-
     // dock widgets
     set<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED", false );
-
-    // smooth transitions (disabled under X11 as they usually are handled by the widget style)
-    #if defined(Q_OS_UNIX)
-    set<bool>( "SMOOTH_TRANSITION_ENABLED", false );
-    #else
-    set<bool>( "SMOOTH_TRANSITION_ENABLED", true );
-    #endif
-
-    set<int>( "SMOOTH_TRANSITION_DURATION", 300 );
-
-    // smooth scrolling
-    #if defined( Q_OS_MAC )
-    set<bool>( "SMOOTH_SCROLLING_ENABLED", false );
-    #else
-    set<bool>( "SMOOTH_SCROLLING_ENABLED", true );
-    #endif
-
-    set<int>( "SMOOTH_SCROLLING_DURATION", 100 );
 
     // box selection
     set<int>( "BOX_SELECTION_ALPHA", 20 );
