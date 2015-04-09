@@ -17,15 +17,15 @@
 *
 *******************************************************************************/
 
-#include "AnimatedTextEditor.h"
-#include "AnimatedTreeView.h"
 #include "HelpDialog.h"
 #include "HelpManager.h"
 #include "HelpManager.h"
 #include "HelpModel.h"
 #include "QuestionDialog.h"
 #include "Singleton.h"
+#include "TextEditor.h"
 #include "TextEditionDelegate.h"
+#include "TreeView.h"
 #include "XmlOptions.h"
 
 #include <QAction>
@@ -64,7 +64,7 @@ namespace Base
         mainLayout().addLayout( layout );
 
         // add help list
-        list_ = new AnimatedTreeView( this );
+        list_ = new TreeView( this );
         list_->setMaximumWidth(150);
         layout->addWidget( list_ );
         list_->setModel( &model_ );
@@ -80,7 +80,7 @@ namespace Base
         vLayout->setMargin(0);
         htmlFrame_->setLayout( vLayout );
 
-        vLayout->addWidget( htmlEditor_ = new AnimatedTextEditor( htmlFrame_ ) );
+        vLayout->addWidget( htmlEditor_ = new TextEditor( htmlFrame_ ) );
         htmlEditor_->setReadOnly( true );
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );
@@ -107,11 +107,11 @@ namespace Base
         htmlEditor_->clear();
 
         // set items
-        _model().set( items );
+        model_.set( items );
 
         // select first index
-        if( (!list_->selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) )
-        { list_->selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
+        if( (!list_->selectionModel()->currentIndex().isValid()) && model_.hasIndex(0,0) )
+        { list_->selectionModel()->setCurrentIndex( model_.index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
 
 
         return;
@@ -129,7 +129,7 @@ namespace Base
         else {
 
             // retrieve item
-            const HelpItem& item( _model().get( current ) );
+            const HelpItem& item( model_.get( current ) );
             htmlEditor_->setHtml( item.text() );
 
         }

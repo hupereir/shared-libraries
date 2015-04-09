@@ -20,14 +20,14 @@
 *
 *******************************************************************************/
 
-#include "AnimatedStackedWidget.h"
 #include "Counter.h"
 #include "CustomDialog.h"
 #include "HelpModel.h"
 
 #include <QPushButton>
+#include <QStackedWidget>
 
-class AnimatedTextEditor;
+class TextEditor;
 class TreeView;
 
 namespace Base
@@ -35,7 +35,7 @@ namespace Base
 
     class HelpManager;
 
-    //! reference manual display dialog
+    //* reference manual display dialog
     class HelpDialog:public CustomDialog
     {
 
@@ -43,52 +43,44 @@ namespace Base
 
         public:
 
-        //! constructor
+        //* constructor
         HelpDialog( HelpManager& manager, QWidget *parent = 0 );
 
-        //! destructor
+        //* destructor
         virtual ~HelpDialog( void )
         {}
 
-        //! clear items
+        //* clear items
         void clear( void )
         { model_.clear(); }
 
-        //! set items
+        //* set items
         void setItems( const HelpItem::List& items );
 
         private Q_SLOTS:
 
-        //! display selected help text
+        //* display selected help text
         void _display( const QModelIndex&, const QModelIndex& );
-        
-        //! update configuration
+
+        //* update configuration
         void _updateConfiguration( void );
-        
+
         private:
 
-        //! help manager
-        HelpManager& _manager( void ) const
-        { return *manager_; }
+        //* help manager
+        HelpManager* manager_ = nullptr;
 
-        //! model
-        HelpModel& _model( void )
-        { return model_; }
-
-        //! help manager
-        HelpManager* manager_;
-
-        //! model
+        //* model
         HelpModel model_;
 
-        //! list of help items
-        TreeView *list_;
+        //* list of help items
+        TreeView *list_ = nullptr;
 
-        //! html edition frame
-        QWidget* htmlFrame_;
+        //* html edition frame
+        QWidget* htmlFrame_ = nullptr;
 
-        //! read-only text editor
-        AnimatedTextEditor *htmlEditor_;
+        //* read-only text editor
+        TextEditor *htmlEditor_ = nullptr;
 
     };
 
