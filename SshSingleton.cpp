@@ -21,6 +21,10 @@
 
 #include <QTextStream>
 
+#if defined (Q_OS_WIN)
+#include <windows.h>
+#endif
+
 #if HAVE_SSH
 #include <libssh2.h>
 #endif
