@@ -20,26 +20,30 @@
 *
 *******************************************************************************/
 
-#include "AnimatedLabel.h"
 #include "Counter.h"
 
 #include <QApplication>
 #include <QContextMenuEvent>
+#include <QLabel>
+#include <QList>
 #include <QStatusBar>
 
-#include <QList>
-
 //* local label for additional slots
-class StatusBarLabel: public AnimatedLabel
+class StatusBarLabel: public QLabel
 {
 
     //* Qt meta object macro
     Q_OBJECT
 
     public:
-    StatusBarLabel( QWidget* parent = 0 ):
-    AnimatedLabel( parent )
+
+    //* constructor
+    StatusBarLabel( QWidget* parent = nullptr ):
+        QLabel( parent )
     {}
+
+    //* destructor
+    virtual ~StatusBarLabel( void ) = default;
 
     public Q_SLOTS:
 
@@ -47,7 +51,7 @@ class StatusBarLabel: public AnimatedLabel
     virtual void setText( const QString& message, bool alsoUpdate = true )
     {
         if( alsoUpdate ) setTextAndUpdate( message );
-        else AnimatedLabel::setText( message );
+        else QLabel::setText( message );
     }
 
     //* set label text and process events
@@ -65,18 +69,17 @@ class BaseStatusBar: public QStatusBar, public Counter
     BaseStatusBar( QWidget* );
 
     //* destructor
-    ~BaseStatusBar( void )
-    {}
+    ~BaseStatusBar( void ) = default;
 
     //* add clock
     void addClock( void );
 
     //* add label
-    void addLabel( const int& stretch = 0, bool animated = false );
+    void addLabel( int stretch = 0 );
 
     //* add labels
-    void addLabels( const unsigned int& n, const int& stretch = 0, bool animated = false )
-    { for( unsigned int i=0; i<n; i++ ) addLabel( stretch, animated ); }
+    void addLabels( int n, int stretch = 0 )
+    { for( int i=0; i<n; ++i ) addLabel( stretch ); }
 
     //* retrieves label with given index
     virtual StatusBarLabel& label( int i = 0  ) const
@@ -90,7 +93,7 @@ class BaseStatusBar: public QStatusBar, public Counter
     private:
 
     //* vector of output labels.
-    QList< StatusBarLabel* > labels_;
+    QList<StatusBarLabel*> labels_;
 
 };
 

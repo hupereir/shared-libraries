@@ -25,69 +25,65 @@
 #include <QFileDialog>
 #include <QWidget>
 
-class AnimatedLineEditor;
+class LineEditor;
 
-/*!
-\class BrowsedLineEditor
-\brief combined QLineEdit + associated browse button
-line edit is also customized to have faster popup menu
-result of the file dialog associated to the button is stored into the
-LineEditor object
-*/
 class BrowsedLineEditor: public QWidget, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    using Editor = AnimatedLineEditor;
+    using Editor = LineEditor;
 
-    //! constructor;
+    //* constructor;
     BrowsedLineEditor( QWidget* parent );
 
-    //! retrieve line editor
+    //* destructor
+    virtual ~BrowsedLineEditor( void ) = default;
+
+    //* retrieve line editor
     virtual Editor& editor( void ) const
     { return *lineEditor_; }
 
-    //! open mode
+    //* open mode
     virtual void setAcceptMode( const QFileDialog::AcceptMode mode )
     { acceptMode_ = mode; }
 
-    //! file mode
+    //* file mode
     virtual void setFileMode( const QFileDialog::FileMode& mode )
     { fileMode_ = mode; }
 
     public Q_SLOTS:
 
-    //! set lineEditor_file
+    //* set lineEditor_file
     virtual void setFile( const QString& file );
 
     protected:
 
-    //! accept mode
+    //* accept mode
     virtual QFileDialog::AcceptMode _acceptMode( void ) const
     { return acceptMode_; }
 
-    //! file mode
+    //* file mode
     virtual QFileDialog::FileMode _fileMode( void ) const
     { return fileMode_; }
 
     protected Q_SLOTS:
 
-    //! opens a file dialog, stores result in line edit
+    //* opens a file dialog, stores result in line edit
     virtual void _browse( void );
 
     private:
 
-    //! line editor widget
-    Editor *lineEditor_;
+    //* line editor widget
+    Editor *lineEditor_ = nullptr;
 
-    //! accept mode
+    //* accept mode
     QFileDialog::AcceptMode acceptMode_;
 
-    //! File dialog mode
+    //* File dialog mode
     QFileDialog::FileMode fileMode_;
 
 };

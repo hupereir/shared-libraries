@@ -19,7 +19,6 @@
 
 #include "BaseFileInformationDialog.h"
 
-#include "AnimatedTabWidget.h"
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "ElidedLabel.h"
@@ -45,7 +44,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     layout()->setSpacing(0);
     buttonLayout().setMargin(5);
 
-    tabWidget_ = new AnimatedTabWidget( this );
+    tabWidget_ = new QTabWidget( this );
     mainLayout().addWidget( tabWidget_ );
 
     // general information

@@ -231,9 +231,6 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
     // edition
     if( flags&TextEdition ) { out = textEditConfiguration( parent ); }
 
-    // animation (go to a new page)
-    if( flags&Animations ) { out = animationConfiguration(); }
-
     return out;
 
 }
@@ -474,95 +471,6 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
 
     Debug::Throw( "BaseConfigurationDialog::textEditConfiguration - done.\n" );
     return out;
-
-}
-
-//__________________________________________________
-QWidget* BaseConfigurationDialog::animationConfiguration( QWidget* parent )
-{
-
-    Debug::Throw( "BaseConfigurationDialog::animationConfiguration.\n" );
-
-    // make sure parent is valid
-    QWidget* box(0);
-
-    if( !parent )
-    {
-
-        parent = &addPage(
-            IconEngine::get( IconNames::PreferencesAnimations ),
-            tr( "Animations" ),
-            tr( "Animations configuration" ) );
-        box = new QWidget( parent );
-        box->setLayout( new QVBoxLayout() );
-        box->layout()->setMargin(0);
-
-    } else {
-
-        box = new QGroupBox( tr( "Animations" ), parent );
-        box->setLayout( new QVBoxLayout() );
-        box->layout()->setMargin(5);
-
-    }
-
-    parent->layout()->addWidget( box );
-
-    GridLayout* gridLayout = new GridLayout();
-    gridLayout->setSpacing(6);
-    gridLayout->setMaxCount(2);
-    gridLayout->setMargin(0);
-    box->layout()->addItem( gridLayout );
-
-    gridLayout->addWidget( new QLabel( tr( "Type" ), box ), 0, 0, Qt::AlignCenter );
-    gridLayout->addWidget( new QLabel( tr( "Duration" ), box ), 0, 1, Qt::AlignLeft|Qt::AlignVCenter );
-
-    OptionCheckBox* checkbox;
-    OptionSpinBox* spinbox;
-    gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Smooth transitions" ), box, "SMOOTH_TRANSITION_ENABLED" ) );
-    checkbox->setToolTip( tr( "Enables fading transition when changing display contents." ) );
-    addOptionWidget( checkbox );
-
-    gridLayout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_TRANSITION_DURATION" ) );
-    spinbox->setSuffix( tr( "ms" ) );
-    spinbox->setMinimum( 10 );
-    spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( tr( "Smooth transitions duration" ) );
-    addOptionWidget( spinbox );
-
-    checkbox->setChecked( false );
-    spinbox->setEnabled( false );
-    connect( checkbox, SIGNAL(toggled(bool)), spinbox, SLOT(setEnabled(bool)) );
-
-    gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Smooth scrolling" ), box, "SMOOTH_SCROLLING_ENABLED" ) );
-    checkbox->setToolTip( tr( "Enables smooth scrolling when using page-up/page-down buttons, or mouse wheel." ) );
-    addOptionWidget( checkbox );
-
-    gridLayout->addWidget( spinbox = new OptionSpinBox( box, "SMOOTH_SCROLLING_DURATION" ) );
-    spinbox->setSuffix( tr( "ms" ) );
-    spinbox->setMinimum( 10 );
-    spinbox->setMaximum( 5000 );
-    spinbox->setToolTip( tr( "Smooth scrolling duration" ) );
-    addOptionWidget( spinbox );
-
-    checkbox->setChecked( false );
-    spinbox->setEnabled( false );
-    connect( checkbox, SIGNAL(toggled(bool)), spinbox, SLOT(setEnabled(bool)) );
-
-    QLabel* label;
-    gridLayout->addWidget( label = new QLabel( tr( "Frames:" ), box ) );
-    label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
-    spinbox = new OptionSpinBox( box, "ANIMATION_FRAMES" );
-    spinbox->setMinimum( 0 );
-    spinbox->setMaximum( 1000 );
-    spinbox->setToolTip(
-        tr( "Maximum number of frames shown for one animation.\n"
-        "A large number is recomanded, since frames are \n"
-        "dropped whenever the system is too slow anyway." ) );
-    gridLayout->addWidget( spinbox );
-    addOptionWidget( spinbox );
-    label->setBuddy( spinbox );
-
-    return box;
 
 }
 

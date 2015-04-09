@@ -20,33 +20,12 @@
 *
 *******************************************************************************/
 
-#include "AnimatedLineEditor.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "LineEditor.h"
 
 #include <QComboBox>
 #include <QKeyEvent>
-
-//* local line editor to handle autocompletion
-class ComboLineEdit: public AnimatedLineEditor
-{
-
-    //* Qt meta object declaration
-    Q_OBJECT
-
-    public:
-
-    //* constructor
-    ComboLineEdit( QWidget* parent ):
-    AnimatedLineEditor( parent )
-    { Debug::Throw( "ComboLineEdit::ComboLineEdit.\n" ); }
-
-    public Q_SLOTS:
-
-    //* start animation
-    void startAnimation( void );
-
-};
 
 //* Customized QCombobox to handle case sensitive auto completion
 class CustomComboBox: public QComboBox, public Counter
@@ -78,7 +57,7 @@ class CustomComboBox: public QComboBox, public Counter
     private:
 
     //* local line editor
-    ComboLineEdit* editor_ = nullptr;
+    LineEditor* editor_ = nullptr;
 
     //* navigation enabled
     bool navigationEnabled_ = true;

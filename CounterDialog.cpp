@@ -22,7 +22,7 @@
 #include "CounterDialog.h"
 #include "IconEngine.h"
 #include "Singleton.h"
-#include "AnimatedTreeView.h"
+#include "TreeView.h"
 
 #include <QApplication>
 #include <QLayout>
@@ -39,7 +39,7 @@ CustomDialog( parent, OkButton, Qt::Window )
 
     layout()->setMargin(0);
     buttonLayout().setMargin(10);
-    mainLayout().addWidget( list_ = new AnimatedTreeView( this ) );
+    mainLayout().addWidget( list_ = new TreeView( this ) );
     list_->setModel( &model_ );
 
     QPushButton *button;

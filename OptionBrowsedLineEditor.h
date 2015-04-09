@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "AnimatedLineEditor.h"
+#include "LineEditor.h"
 #include "BrowsedLineEditor.h"
 #include "OptionWidget.h"
 
-//! QLineEdit associated to an option for configuration dialogs
+//* QLineEdit associated to an option for configuration dialogs
 class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
 {
 
@@ -32,13 +32,13 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
 
     public:
 
-    //! constructor
+    //* constructor
     OptionBrowsedLineEditor( QWidget* parent, const QString& optionName ):
         BrowsedLineEditor( parent ),
         OptionWidget( optionName, this )
     {}
 
-    //! read value from option
+    //* read value from option
     void read( const Options& options )
     {
         setFile( options.raw( optionName() ) );
@@ -49,13 +49,13 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
         }
     }
 
-    //! write value to option
+    //* write value to option
     void write( Options& options ) const
     { options.setRaw( optionName(), editor().text() ); }
 
     Q_SIGNALS:
 
-    //! modified signal
+    //* modified signal
     void modified( void );
 };
 #endif

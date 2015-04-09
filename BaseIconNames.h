@@ -78,7 +78,6 @@ namespace IconNames
     static const QString PreferencesMultipleViews = "view-split-left-right.png";
     static const QString PreferencesRecentFiles = "document-open-recent.png";
     static const QString PreferencesFileAssociations = "preferences-desktop-filetype-association.png";
-    static const QString PreferencesAnimations = "tool-animator.png";
     static const QString PreferencesEdition = "edit-rename.png";
     static const QString PreferencesAppearance = "preferences-desktop-theme.png";
     static const QString PreferencesTransparency = "preferences-desktop-theme.png";

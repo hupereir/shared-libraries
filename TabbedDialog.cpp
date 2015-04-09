@@ -19,10 +19,8 @@
 
 #include "TabbedDialog.h"
 
-#include "AnimatedStackedWidget.h"
 #include "IconSize.h"
 #include "QtUtil.h"
-#include "ScrollObject.h"
 #include "SimpleListView.h"
 
 #include <QApplication>
@@ -53,7 +51,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // add widgets
     hLayout->addWidget( list_ = new SimpleListView( this ) );
-    hLayout->addWidget( stackedWidget_ = new AnimatedStackedWidget(this) );
+    hLayout->addWidget( stackedWidget_ = new QStackedWidget(this) );
 
     // configure list
     list_->setProperty( "_kde_side_panel_view", true );
@@ -109,9 +107,6 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     scrollArea->setFrameStyle( QFrame::NoFrame );
 
     base->layout()->addWidget( scrollArea );
-
-    // add smooth scrolling object
-    new ScrollObject( scrollArea );
 
     // create main widget
     QWidget* main( new QWidget() );

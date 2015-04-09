@@ -91,7 +91,7 @@ void ColorDisplay::_selectColorFromText( void )
 QColor ColorDisplay::Editor::color( void ) const
 {
     Debug::Throw( "ColorDisplay::Editor::color.\n" );
-    QString text( AnimatedLineEditor::text() );
+    QString text( LineEditor::text() );
     return text.isEmpty() ? QColor():QColor( text );
 }
 

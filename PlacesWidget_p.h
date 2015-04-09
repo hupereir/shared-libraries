@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "AnimatedLineEditor.h"
 #include "BaseFileInfo.h"
 #include "BaseToolTipWidget.h"
 #include "BrowsedLineEditor.h"
 #include "Counter.h"
 #include "CustomDialog.h"
+#include "LineEditor.h"
 
 #include <QAbstractButton>
 #include <QCheckBox>
@@ -36,7 +36,7 @@
 
 class DragMonitor;
 
-//! local file info, needed to store flags
+//* local file info, needed to store flags
 class LocalFileInfo: public BaseFileInfo
 {
 
@@ -51,25 +51,25 @@ class LocalFileInfo: public BaseFileInfo
 
     Q_DECLARE_FLAGS( Flags, Flag );
 
-    //! default constructor
+    //* default constructor
     LocalFileInfo( void ):
         flags_( 0 )
         {}
 
-    //! copy constructor
+    //* copy constructor
     LocalFileInfo( const BaseFileInfo& other ):
         BaseFileInfo( other ),
         flags_( 0 )
     {}
 
-    //! constructor from DOM element
+    //* constructor from DOM element
     LocalFileInfo( const QDomElement& );
 
-    //! destructor
+    //* destructor
     virtual ~LocalFileInfo( void )
     {}
 
-    //! equal to operator
+    //* equal to operator
     bool operator == (const LocalFileInfo& other ) const
     {
         return
@@ -78,30 +78,30 @@ class LocalFileInfo: public BaseFileInfo
             flags_ == other.flags_;
     }
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! dump to dom element
+    //* dump to dom element
     virtual QDomElement domElement( QDomDocument& ) const;
 
-    //! flags
+    //* flags
     Flags flags( void ) const
     { return flags_; }
 
-    //! has flag
+    //* has flag
     bool hasFlag( Flag flag ) const
     { return flags_&flag; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set flags
+    //* set flags
     void setFlags( Flags flags )
     { flags_ = flags; }
 
-    //! set flag
+    //* set flag
     void setFlag( Flag flag, bool value )
     {
         if( value ) flags_ |= flag;
@@ -114,31 +114,31 @@ class LocalFileInfo: public BaseFileInfo
     {
         public:
 
-        //! constructor
+        //* constructor
         List( void )
         {}
 
-        //! constructor from DOM element
+        //* constructor from DOM element
         List( const QDomElement& );
 
-        //! destructor
+        //* destructor
         virtual ~List( void )
         {}
 
-        //! dump to dom element
+        //* dump to dom element
         virtual QDomElement domElement( QDomDocument& ) const;
 
     };
 
     private:
 
-    //! flags
+    //* flags
     Flags flags_;
 
 
 };
 
-//! places widget item
+//* places widget item
 class PlacesWidgetItem: public QAbstractButton
 {
 
@@ -146,77 +146,77 @@ class PlacesWidgetItem: public QAbstractButton
 
     public:
 
-    //! dragging
+    //* dragging
     static const QString MimeType;
 
-    //! constructor
+    //* constructor
     PlacesWidgetItem( QWidget* = 0x0 );
 
-    //! destructor
+    //* destructor
     virtual ~PlacesWidgetItem( void )
     {}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! file info
+    //* file info
     const BaseFileInfo& fileInfo( void ) const
     { return fileInfo_; }
 
-    //! true if is separator
+    //* true if is separator
     bool isSeparator( void ) const
     { return hasFlag( LocalFileInfo::Separator ); }
 
-    //! true if valid
+    //* true if valid
     bool isValid( void ) const
     { return valid_; }
 
-    //! focus
+    //* focus
     bool hasFocus( void ) const
     { return hasFocus_; }
 
-    //! size hint
+    //* size hint
     virtual QSize sizeHint( void ) const
     { return minimumSize(); }
 
-    //! flags
+    //* flags
     LocalFileInfo::Flags flags( void ) const
     { return flags_; }
 
-    //! has flag
+    //* has flag
     bool hasFlag( LocalFileInfo::Flag flag ) const
     { return flags_&flag; }
 
-    //! drag monitor
+    //* drag monitor
     DragMonitor& dragMonitor( void ) const
     { return *dragMonitor_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set is separator
+    //* set is separator
     void setIsSeparator( bool value )
     { setFlag( LocalFileInfo::Separator, true ); updateMinimumSize(); update(); }
 
-    //! icon
+    //* icon
     void setIcon( const QIcon& icon )
     { QAbstractButton::setIcon( icon ); updateMinimumSize(); update(); }
 
-    //! name
+    //* name
     void setText( const QString& text )
     { QAbstractButton::setText( text ); updateMinimumSize(); update(); }
 
-    //! file info
+    //* file info
     void setFileInfo( const BaseFileInfo& fileInfo )
     { fileInfo_ = fileInfo; }
 
-    //! some styles require an item view passed to painting method to have proper selection rendered in items
+    //* some styles require an item view passed to painting method to have proper selection rendered in items
     void setItemView( QWidget* widget )
     { itemView_ = widget; }
 
-    //! set validity
+    //* set validity
     bool setIsValid( bool value )
     {
         if( valid_ == value ) return false;
@@ -224,14 +224,14 @@ class PlacesWidgetItem: public QAbstractButton
         return true;
     }
 
-    //! set mouse over manualy
+    //* set mouse over manualy
     void setMouseOver( bool value )
     { mouseOver_ = value; }
 
-    //! update minimum width
+    //* update minimum width
     void updateMinimumSize( void );
 
-    //! focus
+    //* focus
     void setFocus( bool value )
     {
         if( hasFocus_ == value ) return;
@@ -239,11 +239,11 @@ class PlacesWidgetItem: public QAbstractButton
         update();
     }
 
-    //! set flags
+    //* set flags
     void setFlags( LocalFileInfo::Flags flags )
     { flags_ = flags; }
 
-    //! set flag
+    //* set flag
     void setFlag( LocalFileInfo::Flag flag, bool value )
     {
         if( value ) flags_ |= flag;
@@ -254,51 +254,51 @@ class PlacesWidgetItem: public QAbstractButton
 
     protected:
 
-    //! event
+    //* event
     virtual bool event( QEvent* );
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
-    //! paint
+    //* paint
     virtual void _paint( QPainter* );
 
     protected Q_SLOTS:
 
-    //! start drag
+    //* start drag
     void _startDrag( QPoint );
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! some styles require an item view passed to painting method to have proper selection rendered in items
+    //* some styles require an item view passed to painting method to have proper selection rendered in items
     QWidget* itemView_;
 
-    //! drag monitor
+    //* drag monitor
     DragMonitor* dragMonitor_;
 
-    //! file info
+    //* file info
     BaseFileInfo fileInfo_;
 
-    //! flags
+    //* flags
     LocalFileInfo::Flags flags_;
 
-    //! true if valid (true by default)
+    //* true if valid (true by default)
     bool valid_;
 
-    //! mouse over
+    //* mouse over
     bool mouseOver_;
 
-    //! focus
+    //* focus
     bool hasFocus_;
 
 };
 
-//! edit item dialog
+//* edit item dialog
 class PlacesWidgetItemDialog: public CustomDialog
 {
 
@@ -306,38 +306,38 @@ class PlacesWidgetItemDialog: public CustomDialog
 
     public:
 
-    //! constructor
+    //* constructor
     PlacesWidgetItemDialog( QWidget* = 0x0 );
 
-    //! destructor
+    //* destructor
     virtual ~PlacesWidgetItemDialog( void )
     {}
 
-    //! accessors
+    //* accessors
     //@{
 
-    //! name
+    //* name
     QString name( void ) const
     { return nameEditor_->text(); }
 
-    //! file
+    //* file
     QString file( void ) const
     { return fileEditor_->editor().text(); }
 
-    //! remote
+    //* remote
     bool isRemote( void ) const
     { return remoteCheckBox_->isChecked(); }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! name
+    //* name
     void setName( const QString& value )
     { nameEditor_->setText( value ); }
 
-    //! file
+    //* file
     void setFile( const BaseFileInfo& value )
     {
         fileEditor_->setFile( value.file() );
@@ -348,18 +348,18 @@ class PlacesWidgetItemDialog: public CustomDialog
 
     private:
 
-    //! name
-    AnimatedLineEditor* nameEditor_;
+    //* name
+    LineEditor* nameEditor_;
 
-    //! file
+    //* file
     BrowsedLineEditor* fileEditor_;
 
-    //! remote checkbox
+    //* remote checkbox
     QCheckBox* remoteCheckBox_;
 
 };
 
-//! tooltip widget
+//* tooltip widget
 class PlacesToolTipWidget: public BaseToolTipWidget
 {
 
@@ -367,17 +367,17 @@ class PlacesToolTipWidget: public BaseToolTipWidget
 
     public:
 
-    //! constructor
+    //* constructor
     PlacesToolTipWidget( QWidget* );
 
-    //! destructo
+    //* destructo
     virtual ~PlacesToolTipWidget( void )
     {}
 
-    //! set data
+    //* set data
     void setFileInfo( const QString&, const BaseFileInfo&, const QIcon& = QIcon() );
 
-    //! mask
+    //* mask
     void setPixmapSize( int value )
     {
         if( pixmapSize_ == value ) return;
@@ -385,7 +385,7 @@ class PlacesToolTipWidget: public BaseToolTipWidget
         _reload();
     }
 
-    //! information mask
+    //* information mask
     enum Type
     {
         None = 0,
@@ -399,7 +399,7 @@ class PlacesToolTipWidget: public BaseToolTipWidget
 
     Q_DECLARE_FLAGS(Types, Type)
 
-    //! mask
+    //* mask
     void setMask( Types value )
     {
         if( mask_ == value ) return;
@@ -409,48 +409,48 @@ class PlacesToolTipWidget: public BaseToolTipWidget
 
     protected:
 
-    //! reload
+    //* reload
     virtual void _reload( void )
     { setFileInfo( name_, fileInfo_, icon_ ); }
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! pixmap size
-    int pixmapSize_;
+    //* pixmap size
+    int pixmapSize_ = 0;
 
-    //! information mask
-    Types mask_;
+    //* information mask
+    Types mask_ = 0;
 
-    //! name
+    //* name
     QString name_;
 
-    //! local icon copy
+    //* local icon copy
     QIcon icon_;
 
-    //! local fileInfo copy
+    //* local fileInfo copy
     BaseFileInfo fileInfo_;
 
-    //! icon label
-    QLabel* iconLabel_;
+    //* icon label
+    QLabel* iconLabel_ = nullptr;
 
-    //! file name label
-    QLabel* nameLabel_;
+    //* file name label
+    QLabel* nameLabel_ = nullptr;
 
-    //! separator
-    QFrame* separator_;
+    //* separator
+    QFrame* separator_ = nullptr;
 
-    //!@name items
+    //*@name items
     //@{
-    GridLayoutItem* pathItem_;
-    GridLayoutItem* lastModifiedItem_;
-    GridLayoutItem* userItem_;
-    GridLayoutItem* groupItem_;
-    GridLayoutItem* permissionsItem_;
+    GridLayoutItem* pathItem_ = nullptr;
+    GridLayoutItem* lastModifiedItem_ = nullptr;
+    GridLayoutItem* userItem_ = nullptr;
+    GridLayoutItem* groupItem_ = nullptr;
+    GridLayoutItem* permissionsItem_ = nullptr;
     //@}
 
 };

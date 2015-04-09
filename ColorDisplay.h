@@ -21,66 +21,66 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "AnimatedLineEditor.h"
+#include "LineEditor.h"
 
-//! used to display colors and a choose button
+//* used to display colors and a choose button
 class ColorDisplay: public QWidget, public Counter
 {
 
-    //! Qt metaobject macro
+    //* Qt metaobject macro
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     ColorDisplay( QWidget* parent );
 
-    //! color
+    //* color
     QColor color( void ) const
     { return editor_->color(); }
 
     public Q_SLOTS:
 
-    //! set color
+    //* set color
     void setColor( QColor color )
     { editor_->setColor( color ); }
 
     private Q_SLOTS:
 
-    //! change color (from button)
+    //* change color (from button)
     void _selectColorFromDialog( void );
 
-    //! change color (from line editor)
+    //* change color (from line editor)
     void _selectColorFromText( void );
 
     protected:
 
-    //! internal customized label to have correct background color
-    class Editor : public AnimatedLineEditor
+    //* internal customized label to have correct background color
+    class Editor : public LineEditor
     {
 
         public:
 
-        //! constructor
+        //* constructor
         Editor( QWidget *parent ):
-            AnimatedLineEditor( parent )
+            LineEditor( parent )
         {}
 
-        //! retrieve color
+        //* retrieve color
         QColor color( void ) const;
 
-        //! set color
+        //* set color
         void setColor( QColor );
 
     };
 
-    //! editor
+    //* editor
     Editor& _editor( void ) const
     { return *editor_; }
 
     private:
 
-    //! label used to display the color
+    //* label used to display the color
     Editor* editor_;
 
 };

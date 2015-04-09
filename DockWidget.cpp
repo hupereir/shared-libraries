@@ -20,7 +20,6 @@
 #include "DockWidget.h"
 #include "DockWidget_p.h"
 #include "BaseMainWindow.h"
-#include "ScrollObject.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
@@ -98,7 +97,6 @@ void DockWidget::setUseScrollArea( bool value )
     {
 
         ContainerScrollArea* container = new ContainerScrollArea( widget() );
-        new ScrollObject( container );
 
         if( mainWidget_ ) container->setWidget( mainWidget_ );
         if( container_ )

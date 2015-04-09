@@ -22,7 +22,7 @@
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "AnimatedTreeView.h"
+#include "TreeView.h"
 
 #include <QPushButton>
 #include <QLayout>
@@ -40,7 +40,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     buttonLayout().setMargin(5);
 
     // insert main vertical box
-    list_ = new AnimatedTreeView( this );
+    list_ = new TreeView( this );
     mainLayout().addWidget( list_ );
     list_->setModel( &model_ );
     list_->setIconSize( IconSize( IconSize::Large ) );

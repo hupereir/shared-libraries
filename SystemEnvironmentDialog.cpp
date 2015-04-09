@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "SystemEnvironmentDialog.h"
-#include "AnimatedTreeView.h"
+#include "TreeView.h"
 
 #include <QProcess>
 #include <QPushButton>
@@ -40,7 +40,7 @@ CustomDialog( parent, CloseButton )
     setAttribute( Qt::WA_DeleteOnClose );
 
     // insert list
-    AnimatedTreeView* list = new AnimatedTreeView( this );
+    TreeView* list = new TreeView( this );
     mainLayout().addWidget( list );
     list->setModel( &model_ );
     list->setRootIsDecorated( false );

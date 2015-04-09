@@ -28,12 +28,12 @@
 #include <QList>
 #include <QLabel>
 #include <QLayout>
+#include <QTabWidget>
 
-class AnimatedTabWidget;
 class FilePermissionsWidget;
 class GridLayout;
 
-//! file informations
+//* file informations
 class BaseFileInformationDialog: public CustomDialog
 {
 
@@ -41,109 +41,109 @@ class BaseFileInformationDialog: public CustomDialog
 
     public:
 
-    //! constructor
+    //* constructor
     BaseFileInformationDialog( QWidget* );
 
-    //! destructor
+    //* destructor
     virtual ~BaseFileInformationDialog( void )
     {}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! tab widget
-    AnimatedTabWidget& tabWidget( void ) const
+    //* tab widget
+    QTabWidget& tabWidget( void ) const
     { return *tabWidget_; }
 
-    //! main widget
+    //* main widget
     QWidget& mainPage( void ) const
     { return *mainPage_; }
 
-    //! main layout
+    //* main layout
     QVBoxLayout& pageLayout( void ) const
     { return *pageLayout_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! icon
+    //* icon
     void setIcon( const QIcon& );
 
-    //! file
+    //* file
     void setFile( const QString& );
 
-    //! path
+    //* path
     void setPath( const QString& );
 
-    //! type
+    //* type
     void setType( const QString& );
 
-    //! size
+    //* size
     void setSize( qint64 );
 
-    //! created
+    //* created
     void setCreated( TimeStamp );
 
-    //! accessed
+    //* accessed
     void setAccessed( TimeStamp );
 
-    //! modified
+    //* modified
     void setModified( TimeStamp );
 
-    //! permissions
+    //* permissions
     void setPermissions( QFile::Permissions );
 
-    //! user
+    //* user
     void setUser( const QString& );
 
-    //! group
+    //* group
     void setGroup( const QString& );
 
-    //! add a row
+    //* add a row
     int addRow( const QString&, const QString& = QString(), GridLayoutItem::ItemFlags = GridLayoutItem::None );
 
-    //! set custom value
+    //* set custom value
     void setCustomKey( int, const QString& );
 
-    //! set custom value
+    //* set custom value
     void setCustomValue( int, const QString& );
 
     //@}
 
     private:
 
-    //! tab widget
-    AnimatedTabWidget* tabWidget_;
+    //* tab widget
+    QTabWidget* tabWidget_ = nullptr;
 
-    //! main tab widget
-    QWidget* mainPage_;
+    //* main tab widget
+    QWidget* mainPage_ = nullptr;
 
-    //! main tab layout
-    QVBoxLayout* pageLayout_;
+    //* main tab layout
+    QVBoxLayout* pageLayout_ = nullptr;
 
-    //! grid layout
-    GridLayout* gridLayout_;
+    //* grid layout
+    GridLayout* gridLayout_ = nullptr;
 
-    //! icon
-    QLabel* iconLabel_;
+    //* icon
+    QLabel* iconLabel_ = nullptr;
 
-    //! items
-    GridLayoutItem* fileItem_;
-    GridLayoutItem* pathItem_;
-    GridLayoutItem* typeItem_;
-    GridLayoutItem* sizeItem_;
-    GridLayoutItem* createdItem_;
-    GridLayoutItem* accessedItem_;
-    GridLayoutItem* modifiedItem_;
-    GridLayoutItem* userItem_;
-    GridLayoutItem* groupItem_;
+    //* items
+    GridLayoutItem* fileItem_ = nullptr;
+    GridLayoutItem* pathItem_ = nullptr;
+    GridLayoutItem* typeItem_ = nullptr;
+    GridLayoutItem* sizeItem_ = nullptr;
+    GridLayoutItem* createdItem_ = nullptr;
+    GridLayoutItem* accessedItem_ = nullptr;
+    GridLayoutItem* modifiedItem_ = nullptr;
+    GridLayoutItem* userItem_ = nullptr;
+    GridLayoutItem* groupItem_ = nullptr;
 
-    //! permissions
-    FilePermissionsWidget* permissionsWidget_;
+    //* permissions
+    FilePermissionsWidget* permissionsWidget_ = nullptr;
 
-    //! extra rows
+    //* extra rows
     QList<GridLayoutItem*> extraItems_;
 
 };

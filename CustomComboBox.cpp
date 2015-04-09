@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "CustomComboBox.h"
-#include "TransitionWidget.h"
 
 #include <QAbstractItemView>
 #include <QCompleter>
@@ -52,11 +51,9 @@ void CustomComboBox::setEditable( bool value )
 
     if( !editor_ )
     {
-        editor_ = new ComboLineEdit( this );
+        editor_ = new LineEditor( this );
         editor_->setFrame( false );
         setLineEdit( editor_ );
-        connect( view(), SIGNAL(pressed(QModelIndex)), editor_, SLOT(startAnimation()) );
-        connect( view(), SIGNAL(activated(QModelIndex)), editor_, SLOT(startAnimation()) );
     }
 
 }
@@ -103,13 +100,4 @@ void CustomComboBox::keyPressEvent( QKeyEvent* event )
 
     // parent class
     return QComboBox::keyPressEvent( event );
-}
-
-//____________________________________________________
-void ComboLineEdit::startAnimation( void )
-{
-    Debug::Throw( "ComboLineEdit::startAnimation.\n" );
-    if( !( _transitionWidget().isEnabled() && isVisible() ) ) return;
-    _transitionWidget().initialize();
-    _transitionWidget().start();
 }

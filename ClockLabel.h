@@ -22,65 +22,65 @@
 
 #include <QDateTime>
 #include <QBasicTimer>
+#include <QLabel>
 
-#include "AnimatedLabel.h"
 #include "Counter.h"
 #include "TimeStamp.h"
 
-//! clock timer. Emit signal when current time is changed
+//* clock timer. Emit signal when current time is changed
 class ClockTimer: public QObject, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     ClockTimer( QWidget *parent );
 
     Q_SIGNALS:
 
-    //! emmited every time current time is changed
+    //* emmited every time current time is changed
     void timeChanged( const QString& );
 
     protected:
 
     virtual void timerEvent( QTimerEvent* );
 
-    //! check current time, generate time string if new; emit TimeChanged
+    //* check current time, generate time string if new; emit TimeChanged
     //void _checkCurrentTime( void );
 
     private:
 
-    //! get interval (seconds) prior to next update
+    //* get interval (seconds) prior to next update
     int interval( void ) const
     { return 60 - (TimeStamp::now() % 60); }
 
-    //! timer
+    //* timer
     QBasicTimer timer_;
 
-    //! current time
+    //* current time
     TimeStamp time_;
 
 };
 
-//! self-updated label displaying current date and time
-class ClockLabel:public AnimatedLabel
+//* self-updated label displaying current date and time
+class ClockLabel:public QLabel
 {
 
     public:
 
-    //! constructor
+    //* constructor
     ClockLabel( QWidget* parent );
 
-    //! retrieve timer
+    //* retrieve timer
     ClockTimer& timer( void )
     { return timer_; }
 
     private:
 
-    //! static timer
+    //* static timer
     ClockTimer timer_;
 
 };

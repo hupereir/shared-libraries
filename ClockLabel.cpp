@@ -19,10 +19,10 @@
 
 #include "ClockLabel.h"
 #include "Debug.h"
-#include "TransitionWidget.h"
+
+#include <QTimerEvent>
 
 //__________________________________________________________
-//! timestamp string format
 static const TimeStamp::Format format( TimeStamp::JobTag );
 
 //__________________________________________________________
@@ -54,14 +54,11 @@ void ClockTimer::timerEvent( QTimerEvent* event )
 
 //________________________________________________________________
 ClockLabel::ClockLabel( QWidget* parent ):
-    AnimatedLabel( parent ),
+    QLabel( parent ),
     timer_( this )
 {
 
     Debug::Throw( "ClockLabel::ClockLabel.\n" );
-
-    // needed for proper background to be set
-    transitionWidget().setFlag( TransitionWidget::FromParent, true );
 
     // create static clock timer, updated every 10 seconds
     connect( &timer_, SIGNAL(timeChanged(QString)), SLOT(setText(QString)) );

@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "BaseStatusBar.h"
-#include "TransitionWidget.h"
 #include "ClockLabel.h"
 #include "Debug.h"
 #include "XmlOptions.h"
@@ -55,18 +54,13 @@ void BaseStatusBar::addClock( void )
 }
 
 //____________________________________________
-void BaseStatusBar::addLabel( const int& stretch, bool animated )
+void BaseStatusBar::addLabel( int stretch )
 {
     Debug::Throw( "BaseStatusBar::addLabel.\n" );
 
     StatusBarLabel* label(new StatusBarLabel( this ) );
-    if( !animated )
-    {
-        label->transitionWidget().setEnableOnOptions( false );
-        label->transitionWidget().setEnabled( false );
-    }
-
     label->setMargin(2);
+
     addPermanentWidget( label, stretch );
     labels_ << label;
 }
@@ -84,6 +78,6 @@ void BaseStatusBar::contextMenuEvent( QContextMenuEvent *event )
 //__________________________________________________________________
 void StatusBarLabel::setTextAndUpdate( const QString& message )
 {
-    AnimatedLabel::setText( message );
+    QLabel::setText( message );
     qApp->processEvents();
 }

@@ -19,11 +19,11 @@
 
 #include "TextEncodingWidget.h"
 
-#include "AnimatedLineEditor.h"
-#include "AnimatedTreeView.h"
+#include "LineEditor.h"
 #include "ListModel.h"
 #include "TextEncodingString.h"
 #include "TextSelection.h"
+#include "TreeView.h"
 
 #include <QHeaderView>
 #include <QLayout>
@@ -122,12 +122,12 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
     layout->setMargin( 0 );
     setLayout( layout );
 
-    layout->addWidget( list_ = new AnimatedTreeView( this ) );
+    layout->addWidget( list_ = new TreeView( this ) );
     list_->setSelectionMode( QAbstractItemView::SingleSelection );
     list_->setModel( model_ );
     list_->header()->hide();
 
-    layout->addWidget( editor_ = new AnimatedLineEditor( this ) );
+    layout->addWidget( editor_ = new LineEditor( this ) );
 
     // connections
     connect( editor_, SIGNAL(textChanged(QString)), SLOT(_find(QString)) );

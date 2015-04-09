@@ -17,13 +17,13 @@
 *
 *******************************************************************************/
 
-#include "AnimatedLineEditor.h"
 #include "BaseIconNames.h"
 #include "BrowsedLineEditor.h"
 #include "File.h"
 #include "FileDialog.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
+#include "LineEditor.h"
 #include "Util.h"
 #include "Debug.h"
 

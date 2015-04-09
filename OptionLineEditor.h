@@ -20,24 +20,24 @@
 *
 *******************************************************************************/
 
-#include "AnimatedLineEditor.h"
+#include "LineEditor.h"
 #include "OptionWidget.h"
 
-//! QLineEdit associated to an option for configuration dialogs
-class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
+//* QLineEdit associated to an option for configuration dialogs
+class OptionLineEditor: public LineEditor, public OptionWidget
 {
 
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     OptionLineEditor( QWidget* parent, const QString& optionName ):
-        AnimatedLineEditor( parent ),
+        LineEditor( parent ),
         OptionWidget( optionName, this )
     {}
 
-    //! read value from option
+    //* read value from option
     void read( const Options& options )
     {
         setText( options.raw( optionName() ) );
@@ -48,13 +48,13 @@ class OptionLineEditor: public AnimatedLineEditor, public OptionWidget
         }
     }
 
-    //! write value to option
+    //* write value to option
     void write( Options& options ) const
     { options.setRaw( optionName(), text() ); }
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
 };

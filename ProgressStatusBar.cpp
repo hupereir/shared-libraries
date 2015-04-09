@@ -19,7 +19,6 @@
 
 #include "ProgressStatusBar.h"
 
-#include "AnimatedStackedWidget.h"
 #include "Debug.h"
 
 //______________________________________________________
@@ -28,7 +27,7 @@ ProgressStatusBar::ProgressStatusBar( QWidget* parent ):
 {
     Debug::Throw( "ProgressStatusBar::ProgressStatusBar.\n" );
 
-    addPermanentWidget( stack_ = new AnimatedStackedWidget( this ), 1 );
+    addPermanentWidget( stack_ = new QStackedWidget( this ), 1 );
     stack_->addWidget( label_ = new StatusBarLabel() );
     stack_->addWidget( progress_ = new QProgressBar() );
 

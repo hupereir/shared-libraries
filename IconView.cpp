@@ -27,7 +27,6 @@
 #include "InformationDialog.h"
 #include "ItemModel.h"
 #include "Singleton.h"
-#include "ScrollObject.h"
 #include "TextEditor.h"
 #include "XmlOptions.h"
 
@@ -64,8 +63,6 @@ IconView::IconView( QWidget* parent ):
     connect( verticalScrollBar(), SIGNAL(valueChanged(int)), SLOT(_updateHoverIndex()) );
     connect( horizontalScrollBar(), SIGNAL(valueChanged(int)), SLOT(_updateHoverIndex()) );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-
-    new ScrollObject( this );
 
     // configuration
     connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );

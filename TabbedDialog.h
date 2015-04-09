@@ -27,11 +27,11 @@
 
 #include <QCloseEvent>
 #include <QDialog>
+#include <QDialogButtonBox>
 #include <QIcon>
 #include <QLayout>
-#include <QDialogButtonBox>
+#include <QStackedWidget>
 
-class AnimatedStackedWidget;
 class SimpleListView;
 
 //* tabbed dialog
@@ -68,7 +68,7 @@ class TabbedDialog: public BaseDialog, public Counter
     { return *list_; }
 
     //* retrieve stack
-    virtual AnimatedStackedWidget& _stackedWidget( void )
+    virtual QStackedWidget& _stackedWidget( void )
     { return *stackedWidget_; }
 
     //* button box
@@ -199,7 +199,7 @@ class TabbedDialog: public BaseDialog, public Counter
     SimpleListView* list_ = nullptr;
 
     //* Widget stack
-    AnimatedStackedWidget* stackedWidget_ = nullptr;
+    QStackedWidget* stackedWidget_ = nullptr;
 
     //* button layout (needed to add extra buttons)
     QDialogButtonBox* buttonBox_ = nullptr;

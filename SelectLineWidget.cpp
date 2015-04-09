@@ -19,10 +19,10 @@
 
 #include "SelectLineWidget.h"
 
-#include "AnimatedLineEditor.h"
 #include "BaseIconNames.h"
 #include "Color.h"
 #include "IconEngine.h"
+#include "LineEditor.h"
 
 #include <QLabel>
 #include <QLayout>
@@ -60,7 +60,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     QLabel *label;
     layout->addWidget( label = new QLabel( tr( "Goto line number:" ), this ), 0 );
 
-    layout->addWidget( editor_ = new AnimatedLineEditor( this ), 1 );
+    layout->addWidget( editor_ = new LineEditor( this ), 1 );
     label->setBuddy( editor_ );
 
     connect( editor_, SIGNAL(cleared()), this, SLOT(matchFound()) );

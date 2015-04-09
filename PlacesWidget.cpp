@@ -343,7 +343,7 @@ PlacesWidgetItemDialog::PlacesWidgetItemDialog( QWidget* parent ):
 
     QLabel* label;
     layout->addWidget( label = new QLabel( tr("Label:"), this ) );
-    layout->addWidget( nameEditor_ = new AnimatedLineEditor( this ) );
+    layout->addWidget( nameEditor_ = new LineEditor( this ) );
     label->setBuddy( nameEditor_ );
 
     nameEditor_->setPlaceholderText( tr("Enter descriptive label here") );

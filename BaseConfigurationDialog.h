@@ -45,12 +45,11 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
         Base = 1<<0,
         List = 1<<2,
         TextEdition = 1<<3,
-        Animations = 1<<4,
-        TabEmulation = 1<<5,
-        ParagraphHighlight = 1<<6,
-        Margins = 1<<7,
-        TextEditionFlags = 1<<8,
-        Default = Base|List|Animations,
+        TabEmulation = 1<<4,
+        ParagraphHighlight = 1<<5,
+        Margins = 1<<6,
+        TextEditionFlags = 1<<7,
+        Default = Base|List,
         AllTextEdition = TabEmulation|ParagraphHighlight|Margins|TextEditionFlags
 
     };
@@ -79,9 +78,6 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     //* TextEdit configuration box
     QWidget* textEditConfiguration( QWidget* = nullptr, ConfigurationFlags = AllTextEdition );
-
-    //* animations
-    QWidget* animationConfiguration( QWidget* = nullptr );
 
     Q_SIGNALS:
 

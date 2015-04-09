@@ -58,12 +58,6 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 ########### next target ###############
 set(base_qt_SOURCES
-  AnimatedLabel.cpp
-  AnimatedLineEditor.cpp
-  AnimatedStackedWidget.cpp
-  AnimatedTabWidget.cpp
-  AnimatedTextEditor.cpp
-  AnimatedTreeView.cpp
   BaseContextMenu.cpp
   BaseFileIconProvider.cpp
   BaseFileInfo.cpp
@@ -174,7 +168,6 @@ set(base_qt_SOURCES
   RoundedRegion.cpp
   ScratchFileMonitor.cpp
   ScratchFileRemoveDialog.cpp
-  ScrollObject.cpp
   SelectLineDialog.cpp
   SelectLineWidget.cpp
   SimpleListView.cpp
@@ -192,7 +185,6 @@ set(base_qt_SOURCES
   TextSeparator.cpp
   ToolBarMenu.cpp
   ToolButtonStyleMenu.cpp
-  TransitionWidget.cpp
   TreeItemBase.cpp
   TreeView.cpp
   TreeViewConfiguration.cpp

@@ -19,13 +19,13 @@
 
 #include "OptionListBox.h"
 
-#include "AnimatedLineEditor.h"
 #include "ContextMenu.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "LineEditor.h"
 #include "OptionModel.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
