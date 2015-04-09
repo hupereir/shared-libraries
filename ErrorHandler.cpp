@@ -130,6 +130,9 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "QPainter::end: Painter not active, aborted" );
     disableMessage( "QCoreApplication::postEvent: Unexpected null receiver" );
 
+    disableMessage( "Could not resolve property" );
+
+
     // QT5 specific messages
     disableMessage( "void QWindow::setTransientParent" );
     disableMessage( "QBackingStore::flush() called with non-exposed window" );
