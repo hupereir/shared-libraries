@@ -20,17 +20,8 @@
 *
 *******************************************************************************/
 
-/*!
-  \file AnimatedLabel.h
-  \brief animated QLabel object
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
-#include <QLabel>
-
 #include "Counter.h"
+#include <QLabel>
 
 class TransitionWidget;
 
@@ -41,28 +32,28 @@ class AnimatedLabel: public QLabel, public Counter
 
   public:
 
-  //! constructor
-  AnimatedLabel( QWidget* parent = 0 );
+  //* constructor
+  AnimatedLabel( QWidget* = nullptr );
 
-  //! destrutor
-  virtual ~AnimatedLabel( void );
+  //* destrutor
+  virtual ~AnimatedLabel( void ) = default;
 
-  //! transition widget
+  //* transition widget
   TransitionWidget& transitionWidget( void ) const
-  { return *transition_widget_; }
+  { return *transitionWidget_; }
 
   public Q_SLOTS:
 
-  //! set text
+  //* set text
   virtual void setText( const QString & );
 
-  //! clear
+  //* clear
   virtual void clear( void );
 
   private:
 
-  //! transition widget
-  TransitionWidget* transition_widget_;
+  //* transition widget
+  TransitionWidget* transitionWidget_ = nullptr;
 
 
 };

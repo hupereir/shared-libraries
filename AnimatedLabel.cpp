@@ -27,17 +27,13 @@
 AnimatedLabel::AnimatedLabel( QWidget* parent ):
   QLabel( parent ),
   Counter( "AnimatedLabel" ),
-  transition_widget_( new TransitionWidget(this) )
+  transitionWidget_( new TransitionWidget(this) )
 {
   Debug::Throw( "AnimatedLabel::AnimatedLabel.\n" );
   transitionWidget().setFlag( TransitionWidget::FromParent, false );
   transitionWidget().hide();
   connect( &transitionWidget().timeLine(), SIGNAL(finished()),  &transitionWidget(), SLOT(hide()) );
 }
-
-//________________________________________________________
-AnimatedLabel::~AnimatedLabel( void )
-{ Debug::Throw( "AnimatedLabel::~AnimatedLabel.\n" ); }
 
 //________________________________________________________
 void AnimatedLabel::setText( const QString& text )
