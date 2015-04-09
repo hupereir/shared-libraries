@@ -19,7 +19,6 @@
 
 #include "SvgConfiguration.h"
 
-#include "AnimatedStackedWidget.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "GridLayout.h"
@@ -32,6 +31,7 @@
 #include <QGroupBox>
 #include <QButtonGroup>
 #include <QLabel>
+#include <QStackedWidget>
 
 namespace Svg
 {
@@ -139,8 +139,8 @@ namespace Svg
         hLayout->addStretch(1);
 
         // stacked widget
-        AnimatedStackedWidget* stackedWidget;
-        vLayout->addWidget( stackedWidget = new AnimatedStackedWidget( this ) );
+        QStackedWidget* stackedWidget;
+        vLayout->addWidget( stackedWidget = new QStackedWidget( this ) );
 
         // flat background configuration
         QWidget* box;
