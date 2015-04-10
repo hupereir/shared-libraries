@@ -450,10 +450,11 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
         checkbox->setToolTip( tr( "Turn on/off display of line numbers" ) );
         addOptionWidget( checkbox );
 
+        QLabel* label;
         QHBoxLayout* hLayout = new QHBoxLayout();
         layout->addLayout( hLayout );
         hLayout->setMargin(0);
-        hLayout->addWidget( checkbox = new OptionCheckBox( tr( "Auto hide mouse cursor after " ), box, "AUTOHIDE_CURSOR" ) );
+        hLayout->addWidget( label = new QLabel( tr( "Hide mouse cursor after " ), box ) );
         addOptionWidget( checkbox );
 
         OptionSpinBox* spinbox;
@@ -461,11 +462,9 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
         spinbox->setSuffix( tr( "s" ) );
         addOptionWidget( spinbox );
 
+        spinbox->setSpecialValueText( tr( " Never" ) );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 10 );
-
-        spinbox->setEnabled( false );
-        connect( checkbox, SIGNAL(toggled(bool)), spinbox, SLOT(setEnabled(bool)) );
         out = box;
     }
 

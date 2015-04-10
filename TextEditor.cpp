@@ -2398,7 +2398,8 @@ void TextEditor::_updateConfiguration( void )
         emit copyAvailable( false );
     }
 
-    cursorMonitor_.setEnabled( XmlOptions::get().get<bool>( "AUTOHIDE_CURSOR" ) );
+    // cursor monitor
+    cursorMonitor_.setEnabled( XmlOptions::get().get<int>( "AUTOHIDE_CURSOR_DELAY" ) > 0 );
     cursorMonitor_.setAutoHideDelay( XmlOptions::get().get<int>( "AUTOHIDE_CURSOR_DELAY" ) * 1000 );
 
     return;
