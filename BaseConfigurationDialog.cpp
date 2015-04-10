@@ -451,13 +451,11 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
         addOptionWidget( checkbox );
 
         QLabel* label;
+        OptionSpinBox* spinbox;
         QHBoxLayout* hLayout = new QHBoxLayout();
         layout->addLayout( hLayout );
         hLayout->setMargin(0);
-        hLayout->addWidget( label = new QLabel( tr( "Hide mouse cursor after " ), box ) );
-        addOptionWidget( checkbox );
-
-        OptionSpinBox* spinbox;
+        hLayout->addWidget( label = new QLabel( tr( "Automatically hide mouse cursor after: " ), box ) );
         hLayout->addWidget( spinbox = new OptionSpinBox( box, "AUTOHIDE_CURSOR_DELAY" ) );
         spinbox->setSuffix( tr( "s" ) );
         addOptionWidget( spinbox );
