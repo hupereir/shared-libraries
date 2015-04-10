@@ -70,7 +70,6 @@ void Options::installDefaultOptions( void )
     set<int>( "TAB_SIZE", 2 );
     set<bool>( "WRAP_TEXT", false );
     set<bool>( "SHOW_LINE_NUMBERS", false );
-    set<bool>( "AUTOHIDE_CURSOR", true );
     set<int>( "AUTOHIDE_CURSOR_DELAY", 5 );
 
     set<bool>( "HIGHLIGHT_PARAGRAPH", true );
