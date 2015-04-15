@@ -75,8 +75,7 @@ namespace Server
             commands_.removeFirst();
         }
 
-        QTextStream os( socket_ );
-        os << document.toByteArray() << endl;
+        socket_->write( document.toByteArray() );
 
     }
 
