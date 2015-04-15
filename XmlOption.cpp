@@ -87,7 +87,7 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
         appendChild( document.createTextNode( name() ) );
 
     out.appendChild( document.createElement( Base::Xml::Value ) ).
-        appendChild( document.createTextNode( XmlString( QString::fromUtf8( raw(), raw().size() ) ).toXml() ) );
+        appendChild( document.createTextNode( QString::fromUtf8( raw() ) ) );
 
     out.appendChild( document.createElement( Base::Xml::Flags ) ).
         appendChild( document.createTextNode( QString::number( flags() ) ) );
@@ -95,7 +95,7 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
     if( comments().size() )
     {
         out.appendChild( document.createElement( Base::Xml::Comments ) ).
-            appendChild( document.createTextNode( XmlString( comments() ).toXml() ) );
+            appendChild( document.createTextNode( comments() ) );
     }
 
     return out;

@@ -35,9 +35,6 @@ class XmlString: public QString
         QString( value )
     {}
 
-    //! convert input string from text to xml
-    QString toXml( void ) const;
-
     //! convert input string from xml to text
     QString toText( void ) const;
 

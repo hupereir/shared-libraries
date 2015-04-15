@@ -66,13 +66,13 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 
     Debug::Throw( "BaseFileInfo::DomElement.\n" );
     QDomElement out( document.createElement( Xml::FileInfo ) );
-    out.setAttribute( Xml::File, XmlString( file() ).toXml() );
+    out.setAttribute( Xml::File, file() );
     out.setAttribute( Xml::Type, QString::number( type() ) );
     out.setAttribute( Xml::Size, QString::number( size() ) );
     out.setAttribute( Xml::Permissions, QString::number( permissions() ) );
     out.setAttribute( Xml::LastModified, QString::number( lastModified() ) );
 
-    if( !alias_.isEmpty() ) out.setAttribute( Xml::Alias, XmlString( alias() ).toXml() );
+    if( !alias_.isEmpty() ) out.setAttribute( Xml::Alias, alias() );
     if( !user_.isEmpty() ) out.setAttribute( Xml::User, user_ );
     if( !group_.isEmpty() ) out.setAttribute( Xml::Group, group_ );
 

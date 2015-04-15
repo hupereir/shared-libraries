@@ -62,10 +62,6 @@ void XmlString::_initConversions() const
 }
 
 //__________________________________
-QString XmlString::toXml( void ) const
-{ return *this; }
-
-//__________________________________
 QString XmlString::toText( void ) const
 {
 

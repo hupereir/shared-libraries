@@ -52,7 +52,7 @@ QDomElement XmlCommandLineArguments::domElement( const QString& name, QDomDocume
     {
         out.
             appendChild( parent.createElement( Xml::Argument ) ).
-            appendChild( parent.createTextNode( XmlString( argument ).toXml() ) );
+            appendChild( parent.createTextNode( argument ) );
     }
     return out;
 }

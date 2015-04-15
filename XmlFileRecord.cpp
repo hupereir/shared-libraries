@@ -93,7 +93,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 {
     Debug::Throw( "XmlFileRecord::domElement.\n" );
     QDomElement out( parent.createElement( Base::Xml::Record ) );
-    out.setAttribute( Base::Xml::File, XmlString( file() ).toXml() );
+    out.setAttribute( Base::Xml::File, file() );
     out.setAttribute( Base::Xml::Time, QString::number( XmlFileRecord::time() ) );
     out.setAttribute( Base::Xml::Valid, QString::number( isValid() ) );
 
@@ -102,7 +102,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
     for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); ++iter )
     {
         QDomElement property( parent.createElement( Base::Xml::Property ) );
-        property.setAttribute( Base::Xml::Name, XmlString( PropertyId::get(iter.key()) ).toXml() );
+        property.setAttribute( Base::Xml::Name, PropertyId::get(iter.key()) );
         property.setAttribute( Base::Xml::Value, XmlString( iter.value() ) );
         out.appendChild( property );
     }
