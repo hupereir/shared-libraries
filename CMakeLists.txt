@@ -41,7 +41,6 @@ set(base_SOURCES
   File.cpp
   FileThread.cpp
   FileRecord.cpp
-  IOString.cpp
   Key.cpp
   Option.cpp
   Options.cpp
