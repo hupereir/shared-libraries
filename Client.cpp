@@ -19,7 +19,6 @@
 
 #include "Client.h"
 #include "Debug.h"
-#include "IOString.h"
 #include "ServerXmlDef.h"
 #include "XmlDocument.h"
 
@@ -83,12 +82,9 @@ namespace Server
     bool Client::_readMessage( void )
     {
 
-        // read everything from socket and store as message
-        IOString message( socket() );
-        if( message.isEmpty() ) return false;
-
         // add to buffer
-        buffer_.append( message );
+        if( socket_->bytesAvailable() ) buffer_.append( QString::fromUtf8( socket_->readAll() ) );
+        else return false;
 
         // parse buffer
         static const QString beginTag = QString( "<%1>" ).arg(Xml::Transmission);
