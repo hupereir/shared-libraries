@@ -66,13 +66,13 @@ namespace Base
     {
         Debug::Throw( "HelpItem::DomElement.\n" );
         QDomElement out = parent.createElement( XML_ITEM );
-        out.setAttribute( XML_LABEL, XmlString( label_ ).toXml() );
+        out.setAttribute( XML_LABEL, label_ );
 
         // text child
         if( text_.size() )
             out.
             appendChild( parent.createElement( XML_TEXT ) ).
-            appendChild( parent.createTextNode( XmlString( text_ ).toXml() ) );
+            appendChild( parent.createTextNode( text_ ) );
 
         return out;
 
