@@ -51,8 +51,8 @@ XmlOption::XmlOption( const QDomElement& element )
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
         if( attribute.name() == Base::Xml::Name ) setName( attribute.value() );
-        else if( attribute.name() == Base::Xml::Value ) setRaw( XmlString( attribute.value() ).toText() );
-        else if( attribute.name() == Base::Xml::Comments ) setComments( XmlString( attribute.value() ).toText() );
+        else if( attribute.name() == Base::Xml::Value ) setRaw( XmlString( attribute.value() ) );
+        else if( attribute.name() == Base::Xml::Comments ) setComments( XmlString( attribute.value() ) );
         else if( attribute.name() == Base::Xml::Flags ) {
 
             setFlags( (Option::Flags) attribute.value().toInt() );
@@ -66,8 +66,8 @@ XmlOption::XmlOption( const QDomElement& element )
     {
         QDomElement childElement = childNode.toElement();
         if( childElement.tagName() == Base::Xml::Name ) setName( childElement.text() );
-        else if( childElement.tagName() == Base::Xml::Value ) setRaw( XmlString( childElement.text() ).toText() );
-        else if( childElement.tagName() == Base::Xml::Comments ) setComments( XmlString( childElement.text() ).toText() );
+        else if( childElement.tagName() == Base::Xml::Value ) setRaw( XmlString( childElement.text() ) );
+        else if( childElement.tagName() == Base::Xml::Comments ) setComments( XmlString( childElement.text() ) );
         else if( childElement.tagName() == Base::Xml::Flags ) setFlags( (Option::Flags) childElement.text().toInt() );
         else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized child " << childElement.tagName() << ".\n";
 

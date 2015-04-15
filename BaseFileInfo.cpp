@@ -47,8 +47,8 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
 
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == Xml::File ) setFile( File( XmlString( attribute.value() ).toText() ) );
-        else if( attribute.name() == Xml::Alias || attribute.name() == Xml::Name ) setAlias( XmlString( attribute.value() ).toText() );
+        if( attribute.name() == Xml::File ) setFile( File( XmlString( attribute.value() ) ) );
+        else if( attribute.name() == Xml::Alias || attribute.name() == Xml::Name ) setAlias( XmlString( attribute.value() ) );
         else if( attribute.name() == Xml::Type ) setType( TypeFlags( attribute.value().toInt() ) );
         else if( attribute.name() == Xml::Size ) setSize( attribute.value().toInt() );
         else if( attribute.name() == Xml::LastModified ) setLastModified( attribute.value().toInt() );

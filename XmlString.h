@@ -31,12 +31,7 @@ class XmlString: public QString
     public:
 
     //! constructor
-    XmlString( const QString& value ):
-        QString( value )
-    {}
-
-    //! convert input string from xml to text
-    QString toText( void ) const;
+    XmlString( const QString& );
 
     private:
 

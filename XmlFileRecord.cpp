@@ -47,7 +47,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() || attribute.name().isEmpty() ) continue;
-        if( attribute.name() == Base::Xml::File ) setFile( XmlString( attribute.value() ).toText() );
+        if( attribute.name() == Base::Xml::File ) setFile( XmlString( attribute.value() ) );
         else if( attribute.name() == Base::Xml::Time ) setTime( attribute.value().toInt() );
         else if( attribute.name() == Base::Xml::Flags ) setFlags( attribute.value().toUInt() );
         else if( attribute.name() == Base::Xml::Valid ) setValid( attribute.value().toInt() );
@@ -74,8 +74,8 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
                 QDomAttr attribute( attributes.item( i ).toAttr() );
                 if( attribute.isNull() || attribute.name().isEmpty() ) continue;
 
-                if( attribute.name() == Base::Xml::Name ) property.first = XmlString( attribute.value() ).toText();
-                else if( attribute.name() == Base::Xml::Value ) property.second = XmlString( attribute.value() ).toText();
+                if( attribute.name() == Base::Xml::Name ) property.first = XmlString( attribute.value() );
+                else if( attribute.name() == Base::Xml::Value ) property.second = XmlString( attribute.value() );
                 else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized attribute " << attribute.name() << endl;
 
             }
@@ -103,7 +103,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
     {
         QDomElement property( parent.createElement( Base::Xml::Property ) );
         property.setAttribute( Base::Xml::Name, PropertyId::get(iter.key()) );
-        property.setAttribute( Base::Xml::Value, XmlString( iter.value() ) );
+        property.setAttribute( Base::Xml::Value, iter.value() );
         out.appendChild( property );
     }
 

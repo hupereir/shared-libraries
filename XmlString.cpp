@@ -62,10 +62,10 @@ void XmlString::_initConversions() const
 }
 
 //__________________________________
-QString XmlString::toText( void ) const
+XmlString::XmlString( const QString& other ):
+    QString( other )
 {
-
-    QString out(*this);
+    QString& copy( *this );
     if( !( _conversions().size() ) ) _initConversions();
 
     // HTML style conversions (escape characters)
@@ -74,7 +74,7 @@ QString XmlString::toText( void ) const
     while( iter.hasPrevious() )
     {
         const Conversion& current( iter.previous() );
-        if( !current.second.isEmpty() ) out = out.replace( current.second, current.first ); }
+        if( !current.second.isEmpty() ) copy = copy.replace( current.second, current.first );
+    }
 
-    return out;
 }
