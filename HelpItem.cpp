@@ -17,15 +17,6 @@
 *
 *******************************************************************************/
 
-/*!
-   \file    HelpItem.cpp
-   \brief   reference manual item.
-            it contains a title and a text
-   \author  Hugo Pereira
-   \version $Revision$
-   \date    $Date$
-*/
-
 #include "HelpItem.h"
 #include "XmlString.h"
 
@@ -45,7 +36,7 @@ namespace Base
             QDomAttr attribute( attributes.item( i ).toAttr() );
             if( attribute.isNull() ) continue;
 
-            if( attribute.name() == XML_LABEL ) label_ = XmlString( attribute.value() ).toText();
+            if( attribute.name() == XML_LABEL ) label_ = XmlString( attribute.value() );
             else Debug::Throw() << "HelpItem::HelpItem - unrecognized attribute: " << attribute.name() << endl;
 
         }
@@ -55,7 +46,7 @@ namespace Base
         for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
         {
             QDomElement child_element = child_node.toElement();
-            if( child_element.tagName() == XML_TEXT ) text_ = XmlString( child_element.text() ).toText();
+            if( child_element.tagName() == XML_TEXT ) text_ = XmlString( child_element.text() );
             else Debug::Throw(0) << "HelpItem::HelpItem - unrecognized child " << child_element.tagName() << endl;
         }
 
