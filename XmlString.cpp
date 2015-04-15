@@ -63,15 +63,7 @@ void XmlString::_initConversions() const
 
 //__________________________________
 QString XmlString::toXml( void ) const
-{
-
-    QString out(*this);
-    if( !( _conversions().size() ) ) _initConversions();
-    for( ConversionList::iterator iter = _conversions().begin(); iter != _conversions().end(); ++iter )
-    { if( !iter->first.isEmpty() ) out = out.replace( iter->first, iter->second ); }
-
-    return out;
-}
+{ return *this; }
 
 //__________________________________
 QString XmlString::toText( void ) const
