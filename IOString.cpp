@@ -22,11 +22,8 @@
 //_________________________________________________________________
 IOString::IOString( QIODevice& device )
 {
-
     QByteArray data( device.readAll() );
     if( data.isEmpty() ) return;
-
     if( !data.endsWith( '\0' ) ) data.append( '\0' );
-    append( data );
-
+    append( QString::fromUtf8(data) );
 }
