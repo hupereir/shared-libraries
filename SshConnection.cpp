@@ -474,7 +474,19 @@ namespace Ssh
                 dialog.setAttributes( attributes_ );
                 if( dialog.exec() )
                 {
-                    attributes_ = dialog.attributes();
+
+                    // get updated attributes
+                    const ConnectionAttributes attributes( dialog.attributes() );
+
+                    // detect changes, save, and emit signal if needed
+                    if( ( attributes_.userName() != attributes.userName() ) ||
+                        ( attributes_.password() != attributes.password() ) ||
+                        ( attributes_.rememberPassword() != attributes.rememberPassword() ) )
+                    {
+                        attributes_ = attributes;
+                        emit attributesChanged();
+                    }
+
                     commands_.removeFirst();
                     return;
 

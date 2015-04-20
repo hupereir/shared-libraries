@@ -132,17 +132,20 @@ namespace Ssh
 
         Q_SIGNALS:
 
-        //* login failed
-        void loginFailed( void );
-
         //* message
         void message( const QString& );
 
         //* error message
         void error( const QString& );
 
+        //* attributes updated
+        void attributesChanged( void );
+
         //* connected
         void connected( void );
+
+        //* login failed
+        void loginFailed( void );
 
         protected:
 
