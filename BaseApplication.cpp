@@ -242,14 +242,10 @@ void BaseApplication::_about( void )
     if( version.indexOf( "qt4_" ) >= 0 )
     { version = version.replace( "qt4_", "" ) + " (qt4)"; }
 
-    // timestamp
-    const QString stamp( buildTimeStamp() );
-
     QString buffer;
     QTextStream in( &buffer, QIODevice::WriteOnly );
     if( !name.isEmpty() ) { in << "<h3>" << name << "</h3>"; }
     if( !version.isEmpty() ) { in << QString( tr( "Version %1 " ) ).arg( version ); }
-    if( !stamp.isEmpty() ) { in << " (" << stamp << ")"; }
 
     in <<
         tr( "<p>This application was written for personal use only. "

@@ -62,9 +62,6 @@ class BaseCoreApplication: public QObject
     // application version
     virtual QString applicationVersion( void ) const = 0;
 
-    // build time stamp
-    virtual QString buildTimeStamp( void ) const = 0;
-
     //@}
 
     public Q_SLOTS:
