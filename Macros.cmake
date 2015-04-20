@@ -19,24 +19,6 @@ macro(setup_compiler_flags)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wundef")
 endmacro()
 
-###################### get build timestamp #########################
-macro(get_build_timestamp RESULT)
-
-  if(WIN32)
-
-    execute_process(COMMAND "cmd" " /C date /T" OUTPUT_VARIABLE DATE)
-    string(REGEX REPLACE ".*(..)[/.](..)[/.](....).*" "\\3/\\2/\\1" DATE ${DATE})
-    set(${RESULT} "${DATE}")
-
-  elseif(UNIX)
-
-    execute_process(COMMAND "date" "+%Y/%m/%d" OUTPUT_VARIABLE DATE)
-    string(REGEX REPLACE "\n+$" "" ${RESULT} ${DATE})
-
-  endif()
-
-endmacro()
-
 ###################### Install Win32 application #########################
 macro(add_win32_executable target version)
 
