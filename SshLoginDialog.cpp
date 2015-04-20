@@ -42,22 +42,6 @@ namespace Ssh
 
         QLabel* label;
 
-        // host name
-        gridLayout->addWidget( label = new QLabel( tr( "Host name:" ), this ) );
-        gridLayout->addWidget( hostEditor_ = new LineEditor( this ) );
-        label->setBuddy( hostEditor_ );
-
-        hiddenWidgets_.append( label );
-        hiddenWidgets_.append( hostEditor_ );
-
-        // port
-        gridLayout->addWidget( label = new QLabel( tr( "Port:" ), this ) );
-        gridLayout->addWidget( portSpinBox_ = new QSpinBox( this ) );
-        label->setBuddy( portSpinBox_ );
-
-        hiddenWidgets_.append( label );
-        hiddenWidgets_.append( portSpinBox_ );
-
         // user name
         gridLayout->addWidget( label = new QLabel( tr( "User name:" ), this ) );
         gridLayout->addWidget( userNameEditor_ = new LineEditor( this ) );
@@ -69,25 +53,20 @@ namespace Ssh
         passwordEditor_->setEchoMode( QLineEdit::Password );
         label->setBuddy( passwordEditor_ );
         gridLayout->setColumnStretch( 1, 1 );
-        passwordEditor_->setFocus();
 
         // remember password
-        gridLayout->addWidget( checkBox_ = new QCheckBox( tr( "Remember password" ) ), 4, 1, 1, 1 );
-
-        foreach( auto widget, hiddenWidgets_ )
-        { widget->hide(); }
-
+        gridLayout->addWidget( rememberPaswordCheckBox_ = new QCheckBox( tr( "Remember password" ) ), gridLayout->currentRow(), 1, 1, 1 );
+        gridLayout->addWidget( showPasswordCheckBox_ = new QCheckBox( tr( "Show password" ) ), gridLayout->currentRow(), 1, 1, 1 );
+        connect( showPasswordCheckBox_, SIGNAL(toggled(bool)), SLOT(_toggleShowPassword(bool)) );
     }
 
     //______________________________________________________________________
     ConnectionAttributes LoginDialog::attributes( void ) const
     {
         ConnectionAttributes attributes( attributes_ );
-        attributes.setHost( hostEditor_->text() );
-        attributes.setPort( portSpinBox_->value() );
         attributes.setUserName( userNameEditor_->text() );
         attributes.setPassword( passwordEditor_->text() );
-        attributes.setRememberPassword( checkBox_->isChecked() );
+        attributes.setRememberPassword( rememberPaswordCheckBox_->isChecked() );
         return attributes;
     }
 
@@ -96,10 +75,17 @@ namespace Ssh
     {
         attributes_ = attributes;
         if( !attributes.host().isEmpty() ) setWindowTitle( QString( tr( "SSH login into %1" ) ).arg( attributes.host() ) );
-        hostEditor_->setText( attributes.host() );
-        portSpinBox_->setValue( attributes.port() );
         userNameEditor_->setText( attributes.userName() );
         passwordEditor_->setText( attributes.password() );
-        checkBox_->setChecked( attributes.rememberPassword() );
+        rememberPaswordCheckBox_->setChecked( attributes.rememberPassword() );
+
+        if( attributes.userName().isEmpty() ) userNameEditor_->setFocus();
+        else passwordEditor_->setFocus();
+
     }
+
+    //______________________________________________________________________
+    void LoginDialog::_toggleShowPassword( bool value )
+    { passwordEditor_->setEchoMode( value ? QLineEdit::Normal:QLineEdit::Password); }
+
 }

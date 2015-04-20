@@ -59,19 +59,20 @@ namespace Ssh
 
         //@}
 
+        protected Q_SLOTS:
+
+        //* show/hide password
+        void _toggleShowPassword( bool );
+
         private:
 
-        // connection attributes
+        //* connection attributes
         ConnectionAttributes attributes_;
-
-        LineEditor* hostEditor_= nullptr;
-        QSpinBox* portSpinBox_ = nullptr;
 
         LineEditor* userNameEditor_ = nullptr;
         LineEditor* passwordEditor_ = nullptr;
-        QCheckBox* checkBox_ = nullptr;
-
-        QList< QWidget* > hiddenWidgets_;
+        QCheckBox* rememberPaswordCheckBox_ = nullptr;
+        QCheckBox* showPasswordCheckBox_ = nullptr;
 
     };
 
