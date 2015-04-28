@@ -28,56 +28,52 @@
 #include <QPainter>
 #include <QStyleOption>
 
-//! graphics item
+//* graphics item
 class IconViewItem: public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     IconViewItem( void ):
-        Counter( "IconView::Item" ),
-        dirty_( true ),
-        row_( -1 ),
-        column_( -1 )
+        Counter( "IconView::Item" )
     {}
 
-    //! destructor
-    virtual ~IconViewItem( void )
-    {}
+    //* destructor
+    virtual ~IconViewItem( void ) = default;
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! icon
+    //* icon
     const CustomPixmap& pixmap( void ) const
     { return pixmap_; }
 
-    //! text
+    //* text
     const QString& text( void ) const
     { return text_; }
 
-    //! position
+    //* position
     QPoint position( void ) const
     { return position_; }
 
-    //! row
+    //* row
     int row( void ) const
     { return row_; }
 
-    //! column
+    //* column
     int column( void ) const
     { return column_; }
 
-    //! bounding rect
+    //* bounding rect
     virtual QRect boundingRect( void ) const;
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set icon
+    //* set icon
     void setPixmap( const CustomPixmap& pixmap )
     {
         const bool changed( pixmap_.size() != pixmap.size() );
@@ -85,7 +81,7 @@ class IconViewItem: public Counter
         if( changed ) dirty_ = true;
     }
 
-    //! set text
+    //* set text
     void setText( const QString& text )
     {
         if( text_ == text ) return;
@@ -93,11 +89,11 @@ class IconViewItem: public Counter
         dirty_ = true;
     }
 
-    //! set position
+    //* set position
     void setPosition( const QPoint& position )
     { position_ = position; }
 
-    //! set location
+    //* set location
     void setLocation( int row, int column )
     {
         row_ = row;
@@ -106,52 +102,51 @@ class IconViewItem: public Counter
 
     //@}
 
-    //! item map
+    //* item map
     using Map = QMap<int, IconViewItem>;
 
-    //! item list
+    //* item list
     using List = QList<IconViewItem>;
 
-    //! paint
+    //* paint
     virtual void paint( QPainter*, const QStyleOption*, QWidget* ) const;
 
-    //! margin
+    //* margin
     static int margin;
 
-    //! spacing
+    //* spacing
     static int spacing;
 
-    //! max text width
+    //* max text width
     static int maxTextWidth;
-
 
     protected:
 
-    //! update bounding rect
+    //* update bounding rect
     void _updateBoundingRect( void );
 
     private:
 
-    //! dirty
-    bool dirty_;
+    //* dirty
+    bool dirty_ = true;
 
-    //! pixmap
+    //* pixmap
     CustomPixmap pixmap_;
 
-    //! text
+    //* text
     QString text_;
 
-    //! bounding rect
+    //* bounding rect
     QRect boundingRect_;
 
-    //! position
+    //* position
     QPoint position_;
 
-    //! row and column index
-    int row_;
+    //* row and column index
+    int row_ = -1;
 
-    //! column
-    int column_;
+    //* column
+    int column_ = -1;
 
 };
 

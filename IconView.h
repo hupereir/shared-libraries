@@ -42,7 +42,7 @@ class BaseFindDialog;
 class BaseFindWidget;
 class ItemModel;
 
-//! icon view
+//* icon view
 class IconView: public QAbstractItemView, public Counter
 {
 
@@ -50,95 +50,95 @@ class IconView: public QAbstractItemView, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     IconView( QWidget* = 0 );
 
-    //! destructor
+    //* destructor
     virtual ~IconView( void )
     {}
 
-    //! set model
+    //* set model
     virtual void 	setModel( QAbstractItemModel* );
 
-    //! enable list finding
+    //* enable list finding
     void setFindEnabled( bool value );
 
-    //! TextSelection object from this selection, or clipboard
+    //* TextSelection object from this selection, or clipboard
     TextSelection selection( void ) const;
 
-    //! header
+    //* header
     QHeaderView* header( void ) const
     { return header_; }
 
-    //! sorting
+    //* sorting
     void setSortingEnabled( bool value )
     { header_->setSortIndicatorShown( value ); }
 
-    //! set spacing
+    //* set spacing
     void setMargin( int value )
     {
         if( margin_ == value ) return;
         margin_ = value;
     }
 
-    //! set spacing
+    //* set spacing
     void setSpacing( int value )
     {
         if( spacing_ == value ) return;
         spacing_ = value;
     }
 
-    //!@name stored options
+    //*@name stored options
     //@{
 
-    //! option name
+    //* option name
     virtual bool setOptionName( const QString& );
 
-    //! option name
+    //* option name
     virtual bool hasOptionName( void ) const
     { return !sortColumnOptionName().isEmpty(); }
 
-    //! sort column option name
+    //* sort column option name
     virtual const QString& sortColumnOptionName( void ) const
     { return sortColumnOptionName_; }
 
-    //! sort order option name
+    //* sort order option name
     virtual const QString& sortOrderOptionName( void ) const
     { return sortOrderOptionName_; }
 
     //@}
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! select all
+    //* select all
     QAction& selectAllAction( void ) const
     { return *selectAllAction_; }
 
-    //! find from dialog
+    //* find from dialog
     QAction& findAction( void ) const
     { return *findAction_; }
 
-    //! find selection again
+    //* find selection again
     QAction& findSelectionAction( void ) const
     { return *findSelectionAction_; }
 
-    //! find again
+    //* find again
     QAction& findAgainAction( void ) const
     { return *findAgainAction_; }
 
     //@}
 
-    //! return index at a given position
+    //* return index at a given position
     virtual QModelIndex indexAt( const QPoint& ) const;
 
-    //! scroll to given index
+    //* scroll to given index
     virtual void scrollTo( const QModelIndex&, ScrollHint );
 
-    //! visual rect for given index
+    //* visual rect for given index
     virtual QRect visualRect( const QModelIndex& ) const;
 
-    //! minimum size hind
+    //* minimum size hind
     virtual QSize minimumSizeHint( void ) const;
 
     //* container class for embedded Find dialog
@@ -172,47 +172,47 @@ class IconView: public QAbstractItemView, public Counter
 
     Q_SIGNALS:
 
-    //! emmited when item is hovered. Invalid index means no hovered index
+    //* emmited when item is hovered. Invalid index means no hovered index
     void hovered( const QModelIndex& );
 
-    //! emmitted when selection could not be found
+    //* emmitted when selection could not be found
     void noMatchFound( void );
 
-    //! emmitted when selection could be found
+    //* emmitted when selection could be found
     void matchFound( void );
 
     public Q_SLOTS:
 
-    //! sort order
+    //* sort order
     virtual void updateSortOrder( void );
 
-    //! sort order
+    //* sort order
     virtual void saveSortOrder( void );
 
     // items layout
     virtual void doItemsLayout();
 
-    //! find next occurence of TextSelection
+    //* find next occurence of TextSelection
     virtual void find( TextSelection selection );
 
-    //! find current selection forward
+    //* find current selection forward
     virtual void findSelectionForward( void )
     { _findForward( selection(), true ); }
 
-    //! find current selection backward
+    //* find current selection backward
     virtual void findSelectionBackward( void )
     { _findBackward( selection(), true ); }
 
-    //! find last search forward
+    //* find last search forward
     virtual void findAgainForward( void );
 
-    //! find last search forward
+    //* find last search forward
     virtual void findAgainBackward( void );
 
-    //! store selected indexes in model
+    //* store selected indexes in model
     void storeSelectedIndexes( void );
 
-    //! restore selected indexes from model
+    //* restore selected indexes from model
     void restoreSelectedIndexes( void );
 
     protected:
@@ -220,80 +220,80 @@ class IconView: public QAbstractItemView, public Counter
     // true if index is hidden
     virtual bool isIndexHidden( const QModelIndex& ) const;
 
-    //! move curesor
+    //* move curesor
     virtual QModelIndex moveCursor( CursorAction, Qt::KeyboardModifiers );
 
-    //! selection
+    //* selection
     virtual void setSelection( const QRect&, QItemSelectionModel::SelectionFlags );
 
-    //! start drag
+    //* start drag
     virtual void startDrag( Qt::DropActions );
 
-    //! contents scroll
+    //* contents scroll
     virtual void scrollContentsBy( int, int );
 
-    //! horizontal offset
+    //* horizontal offset
     virtual int horizontalOffset( void ) const;
 
-    //! vertical offset
+    //* vertical offset
     virtual int verticalOffset( void ) const;
 
-    //! region for given selection
+    //* region for given selection
     virtual QRegion visualRegionForSelection( const QItemSelection& ) const;
 
-    //! event
+    //* event
     virtual bool event( QEvent* );
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
-    //! resize event
+    //* resize event
     virtual void resizeEvent( QResizeEvent* );
 
-    //! keypress event
+    //* keypress event
     virtual void keyPressEvent( QKeyEvent* );
 
-    //! mouse press
+    //* mouse press
     virtual void mousePressEvent( QMouseEvent* );
 
-    //! mouse move
+    //* mouse move
     virtual void mouseMoveEvent( QMouseEvent* );
 
-    //! mouse release
+    //* mouse release
     virtual void mouseReleaseEvent( QMouseEvent* );
 
-    //! drag enter
+    //* drag enter
     virtual void dragEnterEvent( QDragEnterEvent* );
 
-    //! drag move
+    //* drag move
     virtual void dragMoveEvent( QDragMoveEvent* );
 
-    //! drag leave
+    //* drag leave
     virtual void dragLeaveEvent( QDragLeaveEvent* );
 
-    //! drag enter
+    //* drag enter
     virtual void dropEvent( QDropEvent* );
 
-    //! timer event
+    //* timer event
     virtual void timerEvent( QTimerEvent* );
 
-    //! selection
+    //* selection
     QModelIndexList _selectedIndexes( const QRect& ) const;
 
-    //! hover index
+    //* hover index
     virtual const QModelIndex& _hoverIndex( void ) const
     { return hoverIndex_; }
 
-    //! hover index
+    //* hover index
     virtual void _setHoverIndex( const QModelIndex& );
 
-    //! update item from index
+    //* update item from index
     void _updateItem( IconViewItem& item, const QModelIndex& index ) const;
 
-    //! layout existing items
+    //* layout existing items
     void _layoutItems( void );
 
-    //! scrollbar position
+    //* scrollbar position
     QPoint _scrollBarPosition( void ) const
     {
         return QPoint(
@@ -301,144 +301,144 @@ class IconView: public QAbstractItemView, public Counter
             verticalScrollBar()->isVisible() ? verticalScrollBar()->value():0 );
     }
 
-    //! get pixmap for a given index selection
+    //* get pixmap for a given index selection
     QPixmap _pixmap( const QModelIndexList&, QRect& );
 
-    //! find dialog
+    //* find dialog
     virtual void _createFindDialog( void );
 
-    //! find widget
+    //* find widget
     virtual void _createFindWidget( bool compact );
 
-    //! find selection in forward direction
+    //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, bool rewind );
 
-    //! find selection in backward direction
+    //* find selection in backward direction
     virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
-    //! get view options matching a given index
+    //* get view options matching a given index
     virtual QStyleOptionViewItemV4 _viewOptions( const QModelIndex& ) const;
 
     protected Q_SLOTS:
 
-    //! update geometries
+    //* update geometries
     virtual void updateGeometries( void );
 
-    //! sort order
+    //* sort order
     void sortByColumn( int, Qt::SortOrder );
 
-    //! find text from dialog
+    //* find text from dialog
     virtual void _findFromDialog( void );
 
-    //! update hover index
+    //* update hover index
     virtual void _updateHoverIndex( void );
 
     private Q_SLOTS:
 
-    //! update alternate item color
+    //* update alternate item color
     void _updateConfiguration( void );
 
     private:
 
-    //! install actions
+    //* install actions
     virtual void _installActions( void );
 
-    //! return first index
+    //* return first index
     QModelIndex _firstIndex() const;
 
-    //! return last index
+    //* return last index
     QModelIndex _lastIndex() const;
 
-    //! return next index of current
+    //* return next index of current
     QModelIndex _indexAfter( const QModelIndex& ) const;
 
-    //! return previous index
+    //* return previous index
     QModelIndex _indexBefore( const QModelIndex& ) const;
 
-    //! headerView
+    //* headerView
     QHeaderView* header_ = nullptr;
 
-    //! items
+    //* items
     IconViewItem::Map items_;
 
-    //! find dialog
+    //* find dialog
     BaseFindDialog* findDialog_ = nullptr;
 
-    //! find widget
+    //* find widget
     BaseFindWidget* findWidget_ = nullptr;
 
-    //! model
+    //* model
     ItemModel* model_ = nullptr;
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! select all items
+    //* select all items
     QAction* selectAllAction_ = nullptr;
 
-    //! find from dialog
+    //* find from dialog
     QAction* findAction_ = nullptr;
 
-    //! find selection again
+    //* find selection again
     QAction* findSelectionAction_ = nullptr;
 
-    //! find selection backward
+    //* find selection backward
     QAction* findSelectionBackwardAction_ = nullptr;
 
-    //! find again
+    //* find again
     QAction* findAgainAction_ = nullptr;
 
-    //! find again backward
+    //* find again backward
     QAction* findAgainBackwardAction_ = nullptr;
 
     //@}
 
-    //! icon size
+    //* icon size
     QSize pixmapSize_;
 
-    //! margin
+    //* margin
     int margin_ = 15;
 
-    //! spacing
+    //* spacing
     int spacing_ = 15;
 
-    //! sort column option name
+    //* sort column option name
     QString sortColumnOptionName_;
 
-    //! sort order option name
+    //* sort order option name
     QString sortOrderOptionName_;
 
-    //! column count
+    //* column count
     int columnCount_ = 1;
 
-    //! row count
+    //* row count
     int rowCount_ = 1;
 
     //* true if use dialog for finding
     bool useEmbeddedWidgets_ = false;
 
-    //! total rect
+    //* total rect
     QRect boundingRect_;
 
-    //! rubber band
+    //* rubber band
     QRubberBand* rubberBand_ = nullptr;
 
-    //! drag button
+    //* drag button
     Qt::MouseButton dragButton_ = Qt::NoButton;
 
-    //! drag origin
+    //* drag origin
     QPoint dragOrigin_;
 
-    //! true if drag is in progress
+    //* true if drag is in progress
     bool dragInProgress_ = false;
 
-    //! autoscroll timer
+    //* autoscroll timer
     QBasicTimer autoScrollTimer_;
 
-    //! anchor index (for mouse selection)
+    //* anchor index (for mouse selection)
     QModelIndex anchorIndex_;
 
-    //! hovered index
+    //* hovered index
     QModelIndex hoverIndex_;
 
     friend class Container;
