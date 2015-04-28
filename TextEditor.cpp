@@ -109,7 +109,7 @@ TextEditor::TextEditor( QWidget *parent ):
     _updateConfiguration();
     _blockCountChanged(0);
 
-    _marginWidget().show();
+    marginWidget_->show();
 
 }
 
@@ -248,12 +248,12 @@ void TextEditor::setPlainText( const QString& text )
 {
     Debug::Throw( "TextEditor::setPlainText.\n" );
 
-    _lineNumberDisplay().clear();
+    lineNumberDisplay_->clear();
 
-    bool enabled( blockHighlight().isEnabled() );
-    blockHighlight().setEnabled( false );
+    bool enabled( blockHighlight_->isEnabled() );
+    blockHighlight_->setEnabled( false );
     BaseEditor::setPlainText( text );
-    blockHighlight().setEnabled( enabled );
+    blockHighlight_->setEnabled( enabled );
 
 }
 
@@ -262,8 +262,8 @@ void TextEditor::setHtml( const QString& text )
 {
     Debug::Throw( "TextEditor::setHtml.\n" );
 
-    bool enabled( blockHighlight().isEnabled() );
-    blockHighlight().setEnabled( false );
+    bool enabled( blockHighlight_->isEnabled() );
+    blockHighlight_->setEnabled( false );
 
     #ifdef QT_USE_PLAIN_TEXT_EDIT
     BaseEditor::setPlainText( text );
@@ -271,7 +271,7 @@ void TextEditor::setHtml( const QString& text )
     BaseEditor::setHtml( text );
     #endif
 
-    blockHighlight().setEnabled( enabled );
+    blockHighlight_->setEnabled( enabled );
 
 }
 
@@ -289,7 +289,7 @@ void TextEditor::paintMargin( QPainter& painter )
     painter.translate( 0, -verticalScrollBar()->value() );
 
     // draw current block rect
-    if( blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() && _currentBlockRect().isValid() )
+    if( blockHighlightAction_->isEnabled() && blockHighlightAction_->isChecked() && _currentBlockRect().isValid() )
     {
 
         painter.setBrush( palette().color( QPalette::AlternateBase ) );
@@ -297,14 +297,14 @@ void TextEditor::paintMargin( QPainter& painter )
 
     }
 
-    if( _marginWidget().drawVerticalLine() ) {
-        painter.setBrush( QBrush( _marginWidget().palette().color( QPalette::WindowText ), Qt::Dense4Pattern ) );
+    if( marginWidget_->drawVerticalLine() ) {
+        painter.setBrush( QBrush( marginWidget_->palette().color( QPalette::WindowText ), Qt::Dense4Pattern ) );
         painter.drawRect( _leftMargin()-1, verticalScrollBar()->value(), 1, height+verticalScrollBar()->value() );
     }
 
     // set brush and pen suitable to further painting
     painter.setBrush( Qt::NoBrush );
-    painter.setPen(_marginWidget().palette().color( QPalette::WindowText )  );
+    painter.setPen(marginWidget_->palette().color( QPalette::WindowText )  );
 
     // draw lines
     if(
@@ -312,7 +312,7 @@ void TextEditor::paintMargin( QPainter& painter )
         hasLineNumberAction() &&
         showLineNumberAction().isVisible() &&
         showLineNumberAction().isChecked() )
-    { _lineNumberDisplay().paint( painter ); }
+    { lineNumberDisplay_->paint( painter ); }
 
 }
 
@@ -467,7 +467,7 @@ void TextEditor::synchronize( TextEditor* editor )
     wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
 
     // track changes of block counts
-    _lineNumberDisplay().synchronize( &editor->_lineNumberDisplay() );
+    lineNumberDisplay_->synchronize( &editor->_lineNumberDisplay() );
     connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
     connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
 
@@ -1604,14 +1604,14 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 
     // update margin widget geometry
     QRect rect( contentsRect() );
-    _marginWidget().setGeometry( QRect( rect.topLeft(), QSize( _marginWidget().width(), rect.height() ) ) );
+    marginWidget_->setGeometry( QRect( rect.topLeft(), QSize( marginWidget_->width(), rect.height() ) ) );
 
     if( lineWrapMode() == BaseEditor::NoWrap ) return;
     if( event->oldSize().width() == event->size().width() ) return;
     if( !_hasLineNumberDisplay() ) return;
 
     // tell line number display to update at next draw
-    _lineNumberDisplay().needUpdate();
+    lineNumberDisplay_->needUpdate();
 
 }
 
@@ -1645,14 +1645,14 @@ void TextEditor::paintEvent( QPaintEvent* event )
         blockRect.setWidth( viewport()->width() + scrollbarPosition().x() );
 
         QColor color;
-        if( data->hasFlag( TextBlock::CurrentBlock ) && blockHighlightAction().isEnabled() && blockHighlightAction().isChecked() )
+        if( data->hasFlag( TextBlock::CurrentBlock ) && blockHighlightAction_->isEnabled() && blockHighlightAction_->isChecked() )
         {
             color = palette().color( QPalette::AlternateBase );
 
             // update current block rect
             // and redraw margin if changed
-            if( _setCurrentBlockRect( QRect( QPoint(0, int(blockRect.topLeft().y()) ), QSize( _marginWidget().width(), int(blockRect.height()) ) ) ) )
-            { _marginWidget().setDirty(); }
+            if( _setCurrentBlockRect( QRect( QPoint(0, int(blockRect.topLeft().y()) ), QSize( marginWidget_->width(), int(blockRect.height()) ) ) ) )
+            { marginWidget_->setDirty(); }
 
         }
 
@@ -1704,7 +1704,7 @@ void TextEditor::scrollContentsBy( int dx, int dy )
 {
 
     // mark margins dirty if vertical scroll is non empty
-    if( dy != 0 ) _marginWidget().setDirty();
+    if( dy != 0 ) marginWidget_->setDirty();
 
     // base class call
     BaseEditor::scrollContentsBy( dx, dy );
@@ -1812,7 +1812,7 @@ void TextEditor::_installActions( void )
     // current block highlight
     addAction( blockHighlightAction_ = new QAction( tr( "Highlight Current Paragraph" ), this ) );
     blockHighlightAction_->setCheckable( true );
-    blockHighlightAction_->setChecked( blockHighlight().isEnabled() );
+    blockHighlightAction_->setChecked( blockHighlight_->isEnabled() );
     blockHighlightAction_->setShortcut( Qt::Key_F12 );
     blockHighlightAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( blockHighlightAction_, SIGNAL(toggled(bool)), SLOT(_toggleBlockHighlight(bool)) );
@@ -2281,7 +2281,7 @@ bool TextEditor::_setLeftMargin( const int& margin )
 
     leftMargin_ = margin;
     setViewportMargins( _leftMargin(), 0, 0, 0 );
-    _marginWidget().resize( _leftMargin(), _marginWidget().height() );
+    marginWidget_->resize( _leftMargin(), marginWidget_->height() );
     return true;
 
 }
@@ -2353,7 +2353,7 @@ bool TextEditor::_updateMargin( void )
     int left_margin( 0 );
 
     if( showLineNumberAction().isChecked() && showLineNumberAction().isVisible() )
-    { left_margin += _lineNumberDisplay().width(); }
+    { left_margin += lineNumberDisplay_->width(); }
 
     return _setLeftMargin( left_margin );
     if( leftMargin_ == left_margin ) return false;
@@ -2379,14 +2379,17 @@ void TextEditor::_updateConfiguration( void )
     tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
 
     // paragraph highlighting
-    blockHighlight().setEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
-    blockHighlightAction().setEnabled( true );
-    blockHighlightAction().setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+    if( highlightBlockFromOptions_ )
+    {
+        blockHighlight_->setEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+        blockHighlightAction_->setEnabled( true );
+        blockHighlightAction_->setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+    }
 
     // update margins
-    _lineNumberDisplay().updateWidth( document()->blockCount() );
+    lineNumberDisplay_->updateWidth( document()->blockCount() );
     _updateMargin();
-    _marginWidget().setDirty();
+    marginWidget_->setDirty();
 
     // update box configuration
     // clear
@@ -2556,14 +2559,14 @@ void TextEditor::_toggleBlockHighlight( bool state )
     Debug::Throw( "TextEditor::_toggleBlockHighlight.\n" );
 
     // enable
-    blockHighlight().setEnabled( state );
+    blockHighlight_->setEnabled( state );
 
     // update options
     XmlOptions::get().set<bool>( "HIGHLIGHT_PARAGRAPH", state );
 
     // update current paragraph
-    if( blockHighlight().isEnabled() ) blockHighlight().highlight();
-    else blockHighlight().clear();
+    if( blockHighlight_->isEnabled() ) blockHighlight_->highlight();
+    else blockHighlight_->clear();
 
     // redraw
     update();
@@ -2578,7 +2581,7 @@ void TextEditor::_toggleBlockHighlight( bool state )
         Base::KeySet<TextEditor> displays( this );
         for( Base::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
 
-        { if( (*iter)->isSynchronized() ) (*iter)->blockHighlightAction().setChecked( state ); }
+        { if( (*iter)->isSynchronized() ) (*iter)->blockHighlightAction_->setChecked( state ); }
         setSynchronized( true );
 
     }
@@ -2681,7 +2684,7 @@ void TextEditor::_blockCountChanged( int count )
     clearAction_->setEnabled( count > 0 && !isReadOnly() );
 
     // margins
-    if( !( _hasLineNumberDisplay() && _lineNumberDisplay().updateWidth( count ) ) ) return;
+    if( !( _hasLineNumberDisplay() && lineNumberDisplay_->updateWidth( count ) ) ) return;
     if( !( hasLineNumberAction() && showLineNumberAction().isChecked() && showLineNumberAction().isVisible() ) ) return;
     _updateMargin();
     update();

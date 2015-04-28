@@ -130,6 +130,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     bool lineNumbersFromOptions( void ) const
     { return lineNumberFromOptions_; }
 
+    //* block highlight from options
+    bool highlightBlockFromOptions( void ) const
+    { return highlightBlockFromOptions_; }
+
     //* tab character
     virtual const QString& tabCharacter( void ) const
     { return tab_; }
@@ -262,6 +266,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* enable/disable reading of line number display from options
     void setLineNumbersFromOptions( bool value )
     { lineNumberFromOptions_ = value; }
+
+    //* block highlight from options
+    void setHighlightBlockFromOptions( bool value )
+    { highlightBlockFromOptions_ = value; }
 
     //* true if should track anchors (html links)
     virtual void setTrackAnchors( bool );
@@ -809,11 +817,14 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* true if this display is the active display
     bool active_ = false;
 
-    /** set to false when the wrapping must not get loaded via the options */
+    //* set to false when the wrapping must not get loaded via the options
     bool wrapFromOptions_ = true;
 
-    /** set to false when the display of line numbers must not get loaded via the options. */
+    //* set to false when the display of line numbers must not get loaded via the options.
     bool lineNumberFromOptions_ = true;
+
+    //* set to false when block highlighting should not be set from options
+    bool highlightBlockFromOptions_ = true;
 
     //* true if should track anchors (html links)
     bool trackAnchors_ = false;
