@@ -333,6 +333,14 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     QAction& pasteAction( void ) const
     { return *pasteAction_;  }
 
+    //* select all
+    QAction& selectAllAction( void ) const
+    { return *selectAllAction_; }
+
+    //* clear
+    QAction& clearAction( void ) const
+    { return *clearAction_; }
+
     //* convert selection to upper case
     QAction& lowerCaseAction( void ) const
     { return *upperCaseAction_; }
