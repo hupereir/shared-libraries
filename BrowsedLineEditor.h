@@ -81,10 +81,10 @@ class BrowsedLineEditor: public QWidget, public Counter
     Editor *lineEditor_ = nullptr;
 
     //* accept mode
-    QFileDialog::AcceptMode acceptMode_;
+    QFileDialog::AcceptMode acceptMode_ = QFileDialog::AcceptOpen;
 
     //* File dialog mode
-    QFileDialog::FileMode fileMode_;
+    QFileDialog::FileMode fileMode_ = QFileDialog::ExistingFile;
 
 };
 

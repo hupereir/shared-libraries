@@ -33,9 +33,7 @@
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     QWidget( parent ),
-    Counter( "BrowsedLineEditor" ),
-    acceptMode_( QFileDialog::AcceptOpen ),
-    fileMode_( QFileDialog::ExistingFile )
+    Counter( "BrowsedLineEditor" )
 {
 
     Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
