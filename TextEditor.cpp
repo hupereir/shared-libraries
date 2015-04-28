@@ -103,11 +103,13 @@ TextEditor::TextEditor( QWidget *parent ):
 
     // track changes of block counts
     connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
+    connect( TextEditor::document(), SIGNAL(contentsChanged()), SLOT(_updateContentActions()) );
     connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
 
     // update configuration
     _updateConfiguration();
     _blockCountChanged(0);
+    _updateContentActions();
 
     marginWidget_->show();
 
@@ -469,7 +471,9 @@ void TextEditor::synchronize( TextEditor* editor )
     // track changes of block counts
     lineNumberDisplay_->synchronize( &editor->_lineNumberDisplay() );
     connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
+    connect( TextEditor::document(), SIGNAL(contentsChanged()), SLOT(_updateContentActions()) );
     connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
+
 
     // margin
     _setLeftMargin( editor->_leftMargin() );
@@ -1593,7 +1597,8 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
     BaseContextMenu menu( this );
     menu.setHideDisabledActions( true );
     installContextMenuActions( &menu );
-    menu.exec( event->globalPos() );
+    if( !menu.isEmpty() )
+    { menu.exec( event->globalPos() ); }
 
 }
 
@@ -2443,6 +2448,18 @@ void TextEditor::_synchronizeSelection( void )
     }
 }
 
+//________________________________________________________
+void TextEditor::_updateContentActions( void )
+{
+
+    Debug::Throw( "TextEditor::_updateContentActions.\n" );
+
+    // actions
+    clearAction_->setEnabled( !(document()->isEmpty() || isReadOnly() ) );
+    selectAllAction_->setEnabled( !document()->isEmpty() );
+
+}
+
 //________________________________________________
 void TextEditor::_updateReadOnlyActions( bool readOnly )
 {
@@ -2679,9 +2696,6 @@ void TextEditor::_blockCountChanged( int count )
 {
 
     Debug::Throw( "TextEditor::_blockCountChanged.\n" );
-
-    // actions
-    clearAction_->setEnabled( count > 0 && !isReadOnly() );
 
     // margins
     if( !( _hasLineNumberDisplay() && lineNumberDisplay_->updateWidth( count ) ) ) return;

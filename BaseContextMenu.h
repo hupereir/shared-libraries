@@ -31,37 +31,46 @@ class BaseContextMenu: public QMenu, public Counter
 
     public:
 
-    //! contructor
+    //* contructor
     BaseContextMenu( QWidget* );
 
-    //!destructor
+    //*destructor
     virtual ~BaseContextMenu( void )
     {}
 
-    //!@name modifiers
+    //*@name accessors
     //@{
 
-    //! ignore disabled action
+    //* return true if the menu has no visible action
+    bool isEmpty( void ) const
+    { return isEmpty_; }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* ignore disabled action
     void setHideDisabledActions( bool value )
     { hideDisabledActions_ = value; }
 
-    //! clear
+    //* clear
     void clear( void )
     {
         QMenu::clear();
         needSeparator_ = false;
     }
 
-    //! add separator
+    //* add separator
     QAction* addSeparator( void );
 
-    //! add menu
+    //* add menu
     QAction* addMenu( QMenu* );
 
-    //! add action
+    //* add action
     void addAction( QAction* );
 
-    //! add action
+    //* add action
     void insertAction( QAction*, QAction* );
 
     //@}
@@ -73,14 +82,17 @@ class BaseContextMenu: public QMenu, public Counter
 
     private:
 
-    //! separator
+    //* separator
     Base::WeakPointer<QAction> separator_;
 
-    //! ignore disabled actions
-    bool hideDisabledActions_;
+    //* ignore disabled actions
+    bool hideDisabledActions_ = false;
 
-    //! need separator
-    bool needSeparator_;
+    //* need separator
+    bool needSeparator_ = false;
+
+    //* true if empty
+    bool isEmpty_ = true;
 
 };
 

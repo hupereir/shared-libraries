@@ -311,7 +311,9 @@ void LineEditor::contextMenuEvent(QContextMenuEvent *event)
     BaseContextMenu menu( this );
     menu.setHideDisabledActions( true );
     installContextMenuActions( &menu );
-    menu.exec( event->globalPos() );
+    if( !menu.isEmpty() )
+    { menu.exec( event->globalPos() ); }
+
 }
 
 //_____________________________________________

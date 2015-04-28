@@ -719,6 +719,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void _synchronizeSelection( void );
 
     //* update action status
+    virtual void _updateContentActions( void );
+
+    //* update action status
     virtual void _updateReadOnlyActions( bool );
 
     //* update undo/redo actions

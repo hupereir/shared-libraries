@@ -25,9 +25,7 @@
 //___________________________________________________
 BaseContextMenu::BaseContextMenu( QWidget* parent ):
     QMenu( parent ),
-    Counter( "BaseContextMenu" ),
-    hideDisabledActions_( false ),
-    needSeparator_( false )
+    Counter( "BaseContextMenu" )
 { ensurePolished(); }
 
 //___________________________________________________
@@ -52,6 +50,7 @@ QAction* BaseContextMenu::addMenu( QMenu* menu )
         needSeparator_ = false;
     }
 
+    isEmpty_ = false;
     return QMenu::addMenu( menu );
 
 }
@@ -71,6 +70,7 @@ void BaseContextMenu::addAction( QAction* action )
 
     }
 
+    isEmpty_ = false;
     QMenu::addAction( action );
 
 }
@@ -81,6 +81,9 @@ void BaseContextMenu::insertAction( QAction* before, QAction* action )
 
     // TODO: see if one needs to check pending separators
     if( action->isEnabled() || !hideDisabledActions_ )
-    { QMenu::insertAction( before, action ); }
+    {
+        isEmpty_ = false;
+        QMenu::insertAction( before, action );
+    }
 
 }
