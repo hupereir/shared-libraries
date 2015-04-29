@@ -36,7 +36,7 @@ namespace SpellCheck
 {
 
     //___________________________________________
-    SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent ):
+    SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent, Flags flags ):
         QGroupBox( "Spell Check", parent ),
         OptionWidgetList( this ),
         Counter( "SpellCheckConfiguration" )
@@ -51,39 +51,49 @@ namespace SpellCheck
         setLayout( gridLayout );
 
         // aspell command
-        gridLayout->addWidget( new QLabel( tr( "Aspell command:" ), this ), 0, 0, 1, 1 );
-        OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
-        gridLayout->addWidget( editor, 0, 1, 1, 2 );
-        editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
-        addOptionWidget( editor );
+        if( flags & ASpell )
+        {
+            gridLayout->addWidget( new QLabel( tr( "Aspell command:" ), this ), 0, 0, 1, 1 );
+            OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
+            gridLayout->addWidget( editor, 0, 1, 1, 2 );
+            editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
+            addOptionWidget( editor );
+        }
 
         // dictionaries
-        gridLayout->addWidget( new QLabel( tr( "Default dictionary:" ), this ), 1, 0, 1, 1 );
-        dictionariesComboBox_ =  new OptionComboBox( this, "DICTIONARY" );
-        gridLayout->addWidget( dictionariesComboBox_, 1, 1, 1, 1 );
-        dictionariesComboBox_->setToolTip(
-            tr( "Default dictionary used with files for which\n"
-            "a dictionary has not been manually selected" ) );
-        addOptionWidget( dictionariesComboBox_ );
+        if( flags & Dictionary )
+        {
+            gridLayout->addWidget( new QLabel( tr( "Default dictionary:" ), this ), 1, 0, 1, 1 );
+            dictionariesComboBox_ =  new OptionComboBox( this, "DICTIONARY" );
+            gridLayout->addWidget( dictionariesComboBox_, 1, 1, 1, 1 );
+            dictionariesComboBox_->setToolTip(
+                tr( "Default dictionary used with files for which\n"
+                "a dictionary has not been manually selected" ) );
+            addOptionWidget( dictionariesComboBox_ );
 
-        DictionarySelectionButton* dictionaryButton;
-        gridLayout->addWidget( dictionaryButton = new DictionarySelectionButton( this ), 1, 2, 1, 1 );
-        connect( dictionaryButton, SIGNAL(modified()), SLOT(_updateDictionaries()) );
-        addOptionWidget( dictionaryButton );
+            DictionarySelectionButton* dictionaryButton;
+            gridLayout->addWidget( dictionaryButton = new DictionarySelectionButton( this ), 1, 2, 1, 1 );
+            connect( dictionaryButton, SIGNAL(modified()), SLOT(_updateDictionaries()) );
+            addOptionWidget( dictionaryButton );
+
+        }
 
         // filters
-        gridLayout->addWidget( new QLabel( tr( "Default filter:" ), this ), 2, 0, 1, 1 );
-        filtersComboBox_ = new OptionComboBox( this, "DICTIONARY_FILTER" );
-        gridLayout->addWidget( filtersComboBox_, 2, 1, 1, 1 );
-        filtersComboBox_->setToolTip(
-            tr( "Default filtering mode used with files for which\n"
-            "a filtering mode has not been manually selected" ) );
-        addOptionWidget( filtersComboBox_ );
+        if( flags & Filter )
+        {
+            gridLayout->addWidget( new QLabel( tr( "Default filter:" ), this ), 2, 0, 1, 1 );
+            filtersComboBox_ = new OptionComboBox( this, "DICTIONARY_FILTER" );
+            gridLayout->addWidget( filtersComboBox_, 2, 1, 1, 1 );
+            filtersComboBox_->setToolTip(
+                tr( "Default filtering mode used with files for which\n"
+                "a filtering mode has not been manually selected" ) );
+            addOptionWidget( filtersComboBox_ );
 
-        FilterSelectionButton* filterButton;
-        gridLayout->addWidget( filterButton = new FilterSelectionButton( this ), 2, 2, 1, 1 );
-        connect( filterButton, SIGNAL(modified()), SLOT(_updateFilters()) );
-        addOptionWidget( filterButton );
+            FilterSelectionButton* filterButton;
+            gridLayout->addWidget( filterButton = new FilterSelectionButton( this ), 2, 2, 1, 1 );
+            connect( filterButton, SIGNAL(modified()), SLOT(_updateFilters()) );
+            addOptionWidget( filterButton );
+        }
 
         read( XmlOptions::get() );
 
@@ -96,6 +106,8 @@ namespace SpellCheck
     void SpellCheckConfiguration::_updateDictionaries( void )
     {
         Debug::Throw( "SpellCheckConfiguration::_updateDictionaries.\n" );
+
+        if( !dictionariesComboBox_ ) return;
 
         // read list of disabled dictionaries
         const QStringList disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
@@ -117,6 +129,8 @@ namespace SpellCheck
     void SpellCheckConfiguration::_updateFilters( void )
     {
         Debug::Throw( "SpellCheckConfiguration::_updateFilters.\n" );
+
+        if( !filtersComboBox_ ) return;
 
         // read list of disabled filters
         const QStringList disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );

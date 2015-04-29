@@ -29,7 +29,7 @@ class OptionComboBox;
 
 namespace SpellCheck
 {
-    //! Spell common configuration
+    //* Spell common configuration
     class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter
     {
 
@@ -37,33 +37,45 @@ namespace SpellCheck
 
         public:
 
-        //! constructor
-        SpellCheckConfiguration( QWidget* );
+        enum Flag
+        {
+            None = 0,
+            ASpell = 1<<0,
+            Dictionary = 1<<1,
+            Filter = 1<<2,
+            All = ASpell | Dictionary | Filter
+        };
 
-        //! destructor
-        virtual ~SpellCheckConfiguration( void )
-        {}
+        Q_DECLARE_FLAGS( Flags, Flag );
+
+        //* constructor
+        SpellCheckConfiguration( QWidget*, Flags = All );
+
+        //* destructor
+        virtual ~SpellCheckConfiguration( void ) = default;
 
         Q_SIGNALS:
 
-        //! modified
+        //* modified
         void modified( void );
 
         protected Q_SLOTS:
 
-        //! update dictionaries
+        //* update dictionaries
         void _updateDictionaries( void );
 
-        //! update filters
+        //* update filters
         void _updateFilters( void );
 
         private:
 
-        OptionComboBox* dictionariesComboBox_;
-        OptionComboBox* filtersComboBox_;
+        OptionComboBox* dictionariesComboBox_ = nullptr;
+        OptionComboBox* filtersComboBox_ = nullptr;
 
     };
 
 }
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( SpellCheck::SpellCheckConfiguration::Flags );
 
 #endif
