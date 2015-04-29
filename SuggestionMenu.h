@@ -28,42 +28,50 @@
 
 namespace SpellCheck {
 
-    //! customized popup menu to display spell checker suggestions
+    //* customized popup menu to display spell checker suggestions
     class SuggestionMenu: public QMenu, public Counter
     {
 
-        //! Qt meta object declaration
+        //* Qt meta object declaration
         Q_OBJECT
 
         public:
 
-        //! constructor
-        SuggestionMenu( QWidget *parent, const QString& word, bool = false );
+        //* constructor
+        SuggestionMenu( QWidget *parent, const QString&, bool = false );
 
-        //! spell interface
+        //* destructor
+        virtual ~SuggestionMenu() = default;
+
+        //*@name accessors
+        //@{
+
+        //* spell interface
         SpellInterface& interface( void )
         { return interface_; }
 
+        //@}
+
         Q_SIGNALS:
 
-        //! signal emited when a file is selected
+        //* signal emited when a file is selected
         void suggestionSelected( QString );
 
-        //! ignore word
+        //* ignore word
         void ignoreWord( QString );
 
         private Q_SLOTS:
 
-        //! load suggestions before showing the menu
+        //* load suggestions before showing the menu
         void _aboutToShow( void );
 
-        //! select word from action
+        //* select word from action
         void _select( QAction* );
 
-        //! add word to dictionary
+        //* add word to dictionary
         void _addWord( void );
 
-        //! ignore word
+        //* ignore word
         void _ignoreWord( void )
         {
             if( word_.isEmpty() ) return;
@@ -72,13 +80,13 @@ namespace SpellCheck {
 
         private:
 
-        //! spell interface
+        //* spell interface
         SpellInterface interface_;
 
-        //! misspelled word
+        //* misspelled word
         QString word_;
 
-        //! map actions to suggested words
+        //* map actions to suggested words
         using SuggestionMap = QHash<QAction*, QString>;
         SuggestionMap suggestions_;
 

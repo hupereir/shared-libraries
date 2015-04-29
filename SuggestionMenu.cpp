@@ -27,7 +27,7 @@ namespace SpellCheck
 {
 
     //________________________________________________
-    SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, bool read_only ):
+    SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, bool readOnly ):
         QMenu( parent ),
         Counter( "SuggestionMenu" ),
         word_( word )
@@ -39,7 +39,7 @@ namespace SpellCheck
         interface_.reset();
 
         // connections
-        if( !read_only ) connect( this, SIGNAL(triggered(QAction*)), SLOT(_select(QAction*)) );
+        if( !readOnly ) connect( this, SIGNAL(triggered(QAction*)), SLOT(_select(QAction*)) );
         connect( this, SIGNAL(aboutToShow()), SLOT(_aboutToShow()) );
 
     }
@@ -71,7 +71,10 @@ namespace SpellCheck
             Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestion << endl;
             suggestions_.insert( addAction( suggestions[i] ), suggestion );
         }
-        addSeparator();
+
+        // separator
+        if( !suggestions.isEmpty() )
+        { addSeparator(); }
 
         // add word action
         addAction( tr( "Add Word to Dictionary" ), this, SLOT(_addWord()) );
