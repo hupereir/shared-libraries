@@ -399,7 +399,8 @@ class BaseFileInfo
         {
             None = 0,
             Designate = 1<<0,
-            LowerCase = 1<<1
+            LowerCase = 1<<1,
+            Detail = 1<<2
         };
 
         QString description( unsigned int = 0 ) const;
@@ -475,10 +476,24 @@ QString BaseFileInfo::BaseList<T>::description( unsigned int flags ) const
 
     } else {
 
-        if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsLinkFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Symbolic Links" ) ).arg( this->size() );
-        else if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsFolderFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Folders" ) ).arg( this->size() );
-        else if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsDocumentFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Files" ) ).arg( this->size() );
-        else buffer = QString( QObject::tr( "%1 Items" ) ).arg( this->size() );
+        if( flags & Detail )
+        {
+            const int nFolders( std::count_if( this->begin(), this->end(), BaseFileInfo::IsFolderFTor() ) );
+            if( nFolders == 1 ) buffer = QObject::tr( "one Folder" );
+            else if( nFolders > 1 ) buffer = QObject::tr( "%1 Folders" ).arg( nFolders );
+
+            const int nDocuments( std::count_if( this->begin(), this->end(), BaseFileInfo::IsDocumentFTor() ) );
+            if( nDocuments > 0 && nFolders > 0 ) buffer += ", ";
+            if( nDocuments == 1 ) buffer += QObject::tr( "one File" );
+            else if( nDocuments > 1 ) buffer += QObject::tr( "%1 Files" ).arg( nDocuments );
+
+        } else {
+
+            if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsLinkFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Symbolic Links" ) ).arg( this->size() );
+            else if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsFolderFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Folders" ) ).arg( this->size() );
+            else if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsDocumentFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Files" ) ).arg( this->size() );
+            else buffer = QString( QObject::tr( "%1 Items" ) ).arg( this->size() );
+        }
 
     }
 
