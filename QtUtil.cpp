@@ -201,21 +201,36 @@ QAction* QtUtil::addMenuSection( QMenu* menu, const QIcon& icon, const QString& 
 {
     menu->setSeparatorsCollapsible( false );
 
+    #if QT_VERSION >= 0x050000
+    QAction* action = menu->addSection( icon, text );
+    #else
     QAction* action = menu->addSeparator();
     if( !text.isEmpty() ) action->setText( text );
     if( !icon.isNull() ) action->setIcon( icon );
+    #endif
 
     // calculate minimum size, needed to properly account for header
-    QStyleOption opt;
-    opt.init( menu );
-    const int iconSize = menu->style()->pixelMetric(QStyle::PM_SmallIconSize, &opt, menu);
+    int width = 0;
+    if( !icon.isNull() )
+    {
+        QStyleOption opt;
+        opt.init( menu );
+        const int iconSize = menu->style()->pixelMetric(QStyle::PM_SmallIconSize, &opt, menu);
+        width += iconSize;
+    }
 
-    QFont font( menu->font() );
-    font.setWeight( QFont::Bold );
-    int width = iconSize + QFontMetrics( font ).width( text ) + 24;
-    QSize minSizeHint( menu->minimumSizeHint() );
+    if( !text.isNull() )
+    {
+        QFont font( menu->font() );
+        font.setWeight( QFont::Bold );
+        width += QFontMetrics( font ).width( text ) + 24;
+    }
 
-    menu->setMinimumSize( QSize( qMax( width, minSizeHint.width() ), qMax( 0, minSizeHint.height() ) ) );
+    if( width > 0 )
+    {
+        QSize minSizeHint( menu->minimumSizeHint() );
+        menu->setMinimumSize( QSize( qMax( width, minSizeHint.width() ), qMax( 0, minSizeHint.height() ) ) );
+    }
 
     return action;
 }
