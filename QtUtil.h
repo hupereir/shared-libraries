@@ -20,7 +20,11 @@
 *
 *******************************************************************************/
 
+#include <QAction>
 #include <QDialog>
+#include <QIcon>
+#include <QMenu>
+#include <QString>
 
 //* some convernience methods
 class QtUtil
@@ -57,6 +61,13 @@ class QtUtil
 
     //* get 'title' font matching argument
     static QFont titleFont( QFont );
+
+    //* menu section
+    static QAction* addMenuSection( QMenu* menu, const QString& text )
+    { return addMenuSection( menu, QIcon(), text ); }
+
+    //* menu section
+    static QAction* addMenuSection( QMenu*, const QIcon&, const QString& );
 
 };
 

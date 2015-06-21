@@ -29,6 +29,7 @@
 #include <QLayout>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QStyleOption>
 
 //____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )
@@ -193,4 +194,28 @@ QFont QtUtil::titleFont( QFont font )
 {
     font.setPointSize( qRound(font.pointSize() * 1.4) );
     return font;
+}
+
+//____________________________________________________________
+QAction* QtUtil::addMenuSection( QMenu* menu, const QIcon& icon, const QString& text )
+{
+    menu->setSeparatorsCollapsible( false );
+
+    QAction* action = menu->addSeparator();
+    if( !text.isEmpty() ) action->setText( text );
+    if( !icon.isNull() ) action->setIcon( icon );
+
+    // calculate minimum size, needed to properly account for header
+    QStyleOption opt;
+    opt.init( menu );
+    const int iconSize = menu->style()->pixelMetric(QStyle::PM_SmallIconSize, &opt, menu);
+
+    QFont font( menu->font() );
+    font.setWeight( QFont::Bold );
+    int width = iconSize + QFontMetrics( font ).width( text ) + 24;
+    QSize minSizeHint( menu->minimumSizeHint() );
+
+    menu->setMinimumSize( QSize( qMax( width, minSizeHint.width() ), qMax( 0, minSizeHint.height() ) ) );
+
+    return action;
 }
