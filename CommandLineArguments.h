@@ -25,28 +25,22 @@
 
 #include <QStringList>
 
-/*! \brief
-parse command line argument.
-first argument is ignored (application name)
-the raw argument list can be accessed as well as
-tagged [using - or --] arguments and associated options
-*/
 class CommandLineArguments: public QStringList, public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     CommandLineArguments( int argc = 0, char* argv[] = 0 );
 
-    //! constructor
+    //* constructor
     CommandLineArguments( const QStringList& );
 
-    //! return arg counts
+    //* return arg counts
     int argc( void ) const
     { return size(); }
 
-    //! return argv
+    //* return argv
     char** argv( void ) const;
 
 };
