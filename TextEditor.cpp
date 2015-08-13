@@ -52,6 +52,7 @@
 #include <QRegExp>
 #include <QTextBlock>
 #include <QTextStream>
+#include <QToolTip>
 
 //______________________________________________
 TextSelection& TextEditor::lastSelection( void )
@@ -1035,6 +1036,50 @@ void TextEditor::clear( void )
 }
 
 //________________________________________________
+bool TextEditor::event( QEvent* event )
+{
+    switch( event->type() )
+    {
+        case QEvent::ToolTip:
+        {
+            QHelpEvent* helpEvent( static_cast<QHelpEvent*>(event) );
+            const QPoint position( helpEvent->pos() );
+            const QPoint globalPosition( helpEvent->globalPos() );
+            QString anchor;
+            if( trackAnchors_ && !( anchor = anchorAt( position ) ).isEmpty() )
+            {
+                QRect rect;
+                QTextCursor cursor( cursorForPosition( position ) );
+                QTextBlock block( cursor.block() );
+
+                for( QTextBlock::iterator it = block.begin(); !(it.atEnd()); ++it)
+                {
+                    QTextFragment fragment = it.fragment();
+                    if( !fragment.isValid() ) continue;
+                    if( fragment.position() > cursor.position() || fragment.position() + fragment.length() <= cursor.position() )
+                    { continue; }
+
+                    cursor.setPosition( fragment.position() );
+                    cursor.setPosition( fragment.position() + fragment.length(), QTextCursor::KeepAnchor );
+                    rect = cursorRect( cursor );
+                    break;
+                }
+
+
+                QToolTip::showText( globalPosition, anchor, viewport(), rect );
+            }
+
+        }
+        break;
+
+        default: break;
+    }
+
+    return BaseEditor::event( event );
+
+}
+
+//________________________________________________
 void TextEditor::enterEvent( QEvent* event )
 {
 
@@ -1180,7 +1225,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
         if( !( event->buttons() || ( anchor = anchorAt( event->pos() ) ).isEmpty() ) )
         {
             viewport()->setCursor( Qt::PointingHandCursor );
-            emit
+
         } else {
 
             viewport()->setCursor( Qt::IBeamCursor );
@@ -1350,14 +1395,14 @@ void TextEditor::dropEvent( QDropEvent* event )
         int rowCount( boxSelection_.cursorList().size() - 1 );
 
         // store cursor at new insertion position
-        QTextCursor new_cursor( cursorForPosition( event->pos() ) );
+        QTextCursor newCursor( cursorForPosition( event->pos() ) );
 
         // remove current selection
         boxSelection_.removeSelectedText();
         boxSelection_.clear();
 
         // prepare new selection
-        QRect rect( cursorRect( new_cursor ) );
+        QRect rect( cursorRect( newCursor ) );
         QPoint start( rect.center().x(), rect.top() );
         QPoint end( rect.center().x(), rect.top() + rowCount*QFontMetrics( font() ).height() );
 
@@ -1365,12 +1410,12 @@ void TextEditor::dropEvent( QDropEvent* event )
         boxSelection_.finish( end );
 
         // join modifications with previous so that they appear as one entry in undo/redo list
-        new_cursor.joinPreviousEditBlock();
+        newCursor.joinPreviousEditBlock();
 
         // insert text in new box
         boxSelection_.fromString( event->mimeData()->text() );
         boxSelection_.clear();
-        new_cursor.endEditBlock();
+        newCursor.endEditBlock();
 
         event->acceptProposedAction();
         BaseEditor::dropEvent( &empty_event );
@@ -1414,11 +1459,11 @@ void TextEditor::dropEvent( QDropEvent* event )
     if( event->mimeData()->hasText() && textCursor().hasSelection() )
     {
         QTextCursor cursor( textCursor() );
-        QTextCursor new_cursor( cursorForPosition( event->pos() ) );
+        QTextCursor newCursor( cursorForPosition( event->pos() ) );
 
         bool contained(
-            new_cursor.position() >= qMin( cursor.position(), cursor.anchor() ) &&
-            new_cursor.position() <= qMax( cursor.position(), cursor.anchor() ) );
+            newCursor.position() >= qMin( cursor.position(), cursor.anchor() ) &&
+            newCursor.position() <= qMax( cursor.position(), cursor.anchor() ) );
 
         if( contained && event->source() != this )
         {
@@ -1440,7 +1485,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             Debug::Throw( "TextEditor::dropEvent - moving selection.\n" );
             cursor.beginEditBlock();
             cursor.removeSelectedText();
-            cursor.setPosition( new_cursor.position() );
+            cursor.setPosition( newCursor.position() );
             cursor.insertText( event->mimeData()->text() );
             cursor.endEditBlock();
             setTextCursor( cursor );

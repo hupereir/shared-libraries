@@ -524,8 +524,11 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //*@name event handlers
     //@{
 
+    //* generic event
+    virtual bool event( QEvent* );
+
     //* enter event handler
-    void enterEvent( QEvent *event );
+    virtual void enterEvent( QEvent *event );
 
     //* mouse release event [overloaded]
     virtual void mousePressEvent( QMouseEvent* );
