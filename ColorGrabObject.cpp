@@ -119,7 +119,15 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
     // grab desktop window under cursor
     // convert to image.
     #if QT_VERSION >= 0x050000
-    QImage image( QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
+    QPoint globalPosition( event->globalPos() );
+
+    #if QT_VERSION >= 0x050300
+    const qreal dpiRatio( qApp->devicePixelRatio() );
+    globalPosition.rx()*=dpiRatio;
+    globalPosition.ry()*=dpiRatio;
+    #endif
+
+    QImage image( QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(), globalPosition.x(), globalPosition.y(), 2, 2 ).toImage() );
     #else
     QImage image( QPixmap::grabWindow(QApplication::desktop()->winId(),event->globalX(), event->globalY(), 2, 2 ).toImage() );
     #endif
