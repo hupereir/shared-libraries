@@ -27,6 +27,7 @@
 
 #if QT_VERSION >= 0x050000
 #include <QScreen>
+#include <QWindow>
 #endif
 
 //______________________________________________
@@ -122,7 +123,7 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
     QPoint globalPosition( event->globalPos() );
 
     #if QT_VERSION >= 0x050300
-    const qreal dpiRatio( qApp->devicePixelRatio() );
+    const qreal dpiRatio( QGuiApplication::primaryScreen()->devicePixelRatio() );
     globalPosition.rx()*=dpiRatio;
     globalPosition.ry()*=dpiRatio;
     #endif
