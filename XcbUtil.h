@@ -117,12 +117,12 @@ class XcbUtil: private XcbDefines
 
     //! move widget using X11 window manager
     /*! returns true on success */
-    bool moveWidget( QWidget* widget, const QPoint& position )
+    bool moveWidget( QWidget* widget, QPoint position )
     { return moveResizeWidget( widget, position, XcbUtil::_NET_WM_MOVERESIZE_MOVE ); }
 
     //! move/resize widget using X11 window manager
     /*! returns true on success */
-    bool moveResizeWidget( QWidget*, const QPoint&, const Direction&, Qt::MouseButton button = Qt::LeftButton );
+    bool moveResizeWidget( QWidget*, QPoint, Direction, Qt::MouseButton button = Qt::LeftButton );
 
     //@}
 

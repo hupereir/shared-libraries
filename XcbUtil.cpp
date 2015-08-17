@@ -24,6 +24,7 @@
 #include <QList>
 
 #if QT_VERSION >= 0x050000
+#include <QWindow>
 #include <QGuiApplication>
 #include <qpa/qplatformnativeinterface.h>
 #else
@@ -509,8 +510,8 @@ bool XcbUtil::changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) con
 //________________________________________________________________________
 bool XcbUtil::moveResizeWidget(
     QWidget* widget,
-    const QPoint& position,
-    const XcbUtil::Direction& direction,
+    QPoint position,
+    XcbUtil::Direction direction,
     Qt::MouseButton button )
 {
 
@@ -524,6 +525,20 @@ bool XcbUtil::moveResizeWidget(
     if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
 
     QPoint localPosition( widget->mapFromGlobal( position ) );
+
+    #if QT_VERSION >= 0x050300
+    qreal dpiRatio = 1;
+    QWindow* windowHandle = widget->window()->windowHandle();
+    if( windowHandle ) dpiRatio = windowHandle->devicePixelRatio();
+    else dpiRatio = qApp->devicePixelRatio();
+
+    position.rx()*=dpiRatio;
+    position.ry()*=dpiRatio;
+
+    localPosition.rx()*=dpiRatio;
+    localPosition.ry()*=dpiRatio;
+
+    #endif
 
     // button release event
     xcb_button_release_event_t releaseEvent;
