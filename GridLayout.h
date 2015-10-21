@@ -31,36 +31,32 @@ class GridLayout: public QGridLayout, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     GridLayout( void ):
         QGridLayout(),
-        Counter( "GridLayout" ),
-        orientation_( Qt::Vertical ),
-        maxCount_(0),
-        column_(0),
-        row_(0)
+        Counter( "GridLayout" )
     {}
 
-    //! column alignments
+    //* column alignments
     using AlignmentList = QList<Qt::Alignment>;
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! current row
+    //* current row
     int currentRow( void ) const
     { return row_; }
 
-    //! current column
+    //* current column
     int currentColumn( void ) const
     { return column_; }
 
     //@}
 
-    //!@names modifiers
+    //*@names modifiers
     //@{
 
-    //! set columns
+    //* set columns
     void setMaxCount( const int& maxCount )
     {
         maxCount_ = maxCount;
@@ -72,19 +68,19 @@ class GridLayout: public QGridLayout, public Counter
 
     }
 
-    //! set column alignment
+    //* set column alignment
     void setColumnAlignment( const int& column, const Qt::Alignment alignment )
     { columnAlignments_[column] = alignment; }
 
-    //! set orientation
+    //* set orientation
     void setOrientation( const Qt::Orientation& orientation )
     { orientation_ = orientation; }
 
-    //! add widget
+    //* add widget
     void addWidget( QWidget* widget, int row, int column, Qt::Alignment alignment = 0 )
     { GridLayout::addWidget( widget, row, column, 1, 1, alignment ); }
 
-    //! add widget
+    //* add widget
     void addWidget ( QWidget * widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
     {
         Q_ASSERT( rowSpan > 0 );
@@ -95,7 +91,7 @@ class GridLayout: public QGridLayout, public Counter
         increment();
     }
 
-    //! add widget
+    //* add widget
     void addWidget( QWidget* widget, Qt::Alignment alignment = 0 )
     {
         Q_ASSERT( maxCount_ > 0 );
@@ -104,11 +100,11 @@ class GridLayout: public QGridLayout, public Counter
         increment();
     }
 
-    //! add layout
+    //* add layout
     void addLayout( QLayout* layout, int row, int column, Qt::Alignment alignment = 0 )
     { GridLayout::addLayout( layout, row, column, 1, 1, alignment ); }
 
-    //! add layout
+    //* add layout
     void addLayout( QLayout* layout, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
     {
         Q_ASSERT( rowSpan > 0 );
@@ -119,7 +115,7 @@ class GridLayout: public QGridLayout, public Counter
         increment();
     }
 
-    //! add widget
+    //* add widget
     void addLayout( QLayout* layout, Qt::Alignment alignment = 0 )
     {
         Q_ASSERT( maxCount_ > 0 );
@@ -128,7 +124,7 @@ class GridLayout: public QGridLayout, public Counter
         increment();
     }
 
-    //! increment from last position
+    //* increment from last position
     void increment()
     {
 
@@ -150,7 +146,7 @@ class GridLayout: public QGridLayout, public Counter
         }
     }
 
-    //! set current position in grid
+    //* set current position in grid
     void setLocation( const int& row, const int& column )
     { row_ = row; column_ = column; }
 
@@ -158,24 +154,24 @@ class GridLayout: public QGridLayout, public Counter
 
     private:
 
-    //! bound check
+    //* bound check
     bool _boundCheck( const int& column ) const
     { return column >= 0 && column < int( columnAlignments_.size() ); }
 
-    //! orientation
-    Qt::Orientation orientation_;
+    //* orientation
+    Qt::Orientation orientation_ = Qt::Vertical;
 
-    //! number of columns
-    int maxCount_;
+    //* number of columns
+    int maxCount_ = 0;
 
-    //! column alignments
+    //* column alignments
     AlignmentList columnAlignments_;
 
-    //! current column
-    int column_;
+    //* current column
+    int column_ = 0;
 
-    //! current row
-    int row_;
+    //* current row
+    int row_ = 0;
 
 };
 
