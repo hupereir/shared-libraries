@@ -102,16 +102,16 @@ class DockPanel: public QWidget, public Counter
     private:
 
     //* vertical layout for main widget
-    QVBoxLayout* mainLayout_;
+    QVBoxLayout* mainLayout_ = nullptr;
 
     //* dock title
-    QLabel* dockTitleLabel_;
+    QLabel* dockTitleLabel_ = nullptr;
 
     //* dock
-    QWidget* dock_;
+    QWidget* dock_ = nullptr;
 
     //* contents panel
-    QWidget* panel_;
+    QWidget* panel_ = nullptr;
 
 };
 
