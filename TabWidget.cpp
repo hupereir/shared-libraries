@@ -21,6 +21,7 @@
 
 #include "BaseContextMenu.h"
 #include "File.h"
+#include "QtUtil.h"
 #include "XmlOptions.h"
 #include "XcbUtil.h"
 
@@ -60,12 +61,20 @@ TabWidget::TabWidget( QTabWidget* parent ):
     gridLayout->addLayout( mainLayout_ = new QVBoxLayout(), 0, 0, 1, 1 );
     mainLayout_->setMargin(5);
     mainLayout_->setSpacing(2);
+    mainLayout_->addWidget( titleLabel_ = new QLabel( this ) );
+
+    {
+        titleLabel_->setAlignment( Qt::AlignHCenter );
+        titleLabel_->setFont( QtUtil::titleFont( titleLabel_->font() ) );
+    }
+
+    titleLabel_->hide();
 
     // vertical box
     box_ = new QWidget( this );
-    box().setLayout( new QVBoxLayout() );
-    box().layout()->setSpacing( 2 );
-    box().layout()->setMargin( 0 );
+    box_->setLayout( new QVBoxLayout() );
+    box_->layout()->setSpacing( 2 );
+    box_->layout()->setMargin( 0 );
 
     mainLayout_->addWidget( box_ );
 
@@ -114,7 +123,10 @@ void TabWidget::_toggleDock( void )
         parent_->QTabWidget::insertTab( index_, this, title_ );
         parent_->QTabWidget::setCurrentWidget( this );
 
-        // modify button text
+        // hide title label
+        titleLabel_->hide();
+
+        // size grip
         _hideSizeGrip();
 
         emit attached();
@@ -138,7 +150,11 @@ void TabWidget::_toggleDock( void )
         move( parent->mapToGlobal( QPoint(0,0) ) );
         widgetDragMonitor_.setEnabled( true );
 
-        if( !title_.isEmpty() ) { setWindowTitle( title_ ); }
+        if( !title_.isEmpty() )
+        {
+            setWindowTitle( title_ );
+            titleLabel_->show();
+        }
 
         // change action text
         updateActions( true );

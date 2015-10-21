@@ -49,7 +49,10 @@ class TabWidget: public QWidget, public Counter
 
     //* set tab title
     void setTitle( const QString& title )
-    { title_ = title; }
+    {
+        title_ = title;
+        titleLabel_->setText( title );
+    }
 
     //* title
     const QString& title( void ) const
@@ -138,14 +141,17 @@ class TabWidget: public QWidget, public Counter
     //* title
     QString title_;
 
+    //* dock title
+    QLabel* titleLabel_ = nullptr;
+
     //* parent TabWidget
-    QTabWidget* parent_;
+    QTabWidget* parent_ = nullptr;
 
     //* vertical layout
-    QVBoxLayout* mainLayout_;
+    QVBoxLayout* mainLayout_ = nullptr;
 
     //* contents vbox
-    QWidget* box_;
+    QWidget* box_ = nullptr;
 
     class SizeGrip: public QSizeGrip
     {
@@ -163,22 +169,22 @@ class TabWidget: public QWidget, public Counter
     };
 
     //* size grip
-    SizeGrip* sizeGrip_;
+    SizeGrip* sizeGrip_ = nullptr;
 
     //* index in parent tab
-    int index_;
+    int index_ = 0;
 
     //*@name actions
     //@{
 
     //* attach/detach action
-    QAction* detachAction_;
+    QAction* detachAction_ = nullptr;
 
     //* stay on top
-    QAction* staysOnTopAction_;
+    QAction* staysOnTopAction_ = nullptr;
 
     //* make window sticky
-    QAction* stickyAction_;
+    QAction* stickyAction_ = nullptr;
 
     //@}
 
