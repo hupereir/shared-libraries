@@ -660,31 +660,12 @@ void IconView::mousePressEvent( QMouseEvent* event )
 
     const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
     const QModelIndex index = indexAt( event->pos() );
-    if( !index.isValid() )
+    if( index.isValid() )
     {
-
-        Debug::Throw( "IconView::mousePressEvent - single selection - rubberband mode.\n" );
-
-        if( !shiftPressed )
-        {
-            selectionModel()->clear();
-            anchorIndex_ = QModelIndex();
-        }
-
-        if( !rubberBand_ ) rubberBand_ = new QRubberBand(QRubberBand::Rectangle, viewport());
-        rubberBand_->setGeometry( QRect( dragOrigin_, QSize() ) );
-        rubberBand_->show();
-
-        QAbstractItemView::mousePressEvent( event );
-        setState( DragSelectingState );
-
-
-    } else {
 
         // drag
         if( selectionModel()->isSelected( index ) && dragEnabled() && !shiftPressed )
         {
-            Debug::Throw( "IconView::mousePressEvent - single selection - drag mode.\n" );
             anchorIndex_ = index;
             return QAbstractItemView::mousePressEvent( event );
         }
@@ -700,19 +681,10 @@ void IconView::mousePressEvent( QMouseEvent* event )
 
         } else {
 
-            Debug::Throw( "IconView::mousePressEvent - single selection.\n" );
-
             anchorIndex_ = index;
             selectionModel()->clear();
             selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
             selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows );
-
-            if( !dragEnabled() )
-            {
-                if( !rubberBand_ ) rubberBand_ = new QRubberBand(QRubberBand::Rectangle, viewport());
-                rubberBand_->setGeometry( QRect( dragOrigin_, QSize() ) );
-                rubberBand_->show();
-            }
 
             // ensure proper state is set
             QAbstractItemView::mousePressEvent( event );
@@ -720,6 +692,19 @@ void IconView::mousePressEvent( QMouseEvent* event )
             return;
 
         }
+
+    } else {
+
+        // clear selection
+        if( !shiftPressed )
+        {
+            selectionModel()->clear();
+            anchorIndex_ = QModelIndex();
+        }
+
+        // default processing
+        QAbstractItemView::mousePressEvent( event );
+        setState( DragSelectingState );
 
     }
 
@@ -730,8 +715,11 @@ void IconView::mousePressEvent( QMouseEvent* event )
 void IconView::mouseMoveEvent( QMouseEvent *event )
 {
 
-    if( dragButton_ == Qt::LeftButton && rubberBand_ && rubberBand_->isVisible() )
+    if( dragButton_ == Qt::LeftButton && ( event->buttons() & Qt::LeftButton ) && !( dragEnabled() && indexAt( dragOrigin_ ).isValid() ) )
     {
+
+        if( !rubberBand_ ) rubberBand_ = new QRubberBand(QRubberBand::Rectangle, viewport());
+        if( !rubberBand_->isVisible() ) rubberBand_->show();
 
         // disable hover index
         _setHoverIndex( QModelIndex() );
