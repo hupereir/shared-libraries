@@ -27,13 +27,13 @@
 #include <QScrollArea>
 #include <QSize>
 
-//! container widget
+//* container widget
 class MainWidget: public QWidget
 {
     public:
 
-    //! constructor
-    MainWidget( QWidget* parent = 0x0 ):
+    //* constructor
+    MainWidget( QWidget* parent = nullptr ):
         QWidget( parent ),
         monitor_( this )
     {}
@@ -42,7 +42,7 @@ class MainWidget: public QWidget
     WidgetMonitor& windowMonitor( void )
     { return monitor_; }
 
-    //! size hint
+    //* size hint
     virtual QSize sizeHint( void ) const
     {
         const QSize size( monitor_.sizeHint() );
@@ -51,18 +51,18 @@ class MainWidget: public QWidget
 
     private:
 
-    //! window monitor
+    //* window monitor
     WidgetMonitor monitor_;
 
 };
 
-//! container widget
+//* container widget
 class ContainerWidget: public QWidget
 {
 
     public:
 
-    ContainerWidget( QWidget* parent = 0x0 ):
+    ContainerWidget( QWidget* parent = nullptr ):
         QWidget( parent )
     {
         setLayout( new QVBoxLayout() );
@@ -72,7 +72,7 @@ class ContainerWidget: public QWidget
 
 };
 
-//! container scroll area
+//* container scroll area
 class ContainerScrollArea: public QScrollArea
 {
 

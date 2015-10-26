@@ -45,7 +45,7 @@ class PlacesWidgetItem;
 class BaseFileIconProvider;
 class IconSizeMenu;
 
-//! places widget
+//* places widget
 class PlacesWidget: public QWidget, public Counter
 {
 
@@ -53,228 +53,227 @@ class PlacesWidget: public QWidget, public Counter
 
     public:
 
-    //! constructor
-    PlacesWidget( QWidget* = 0 );
+    //* constructor
+    PlacesWidget( QWidget* = nullptr );
 
-    //! destructor
-    virtual ~PlacesWidget( void )
-    {}
+    //* destructor
+    virtual ~PlacesWidget( void ) = default;
 
-    //! set icon provider
+    //* set icon provider
     void setIconProvider( BaseFileIconProvider* );
 
-    //! true if empty
+    //* true if empty
     bool isEmpty( void ) const
     { return group_->buttons().isEmpty(); }
 
-    //! list of items
+    //* list of items
     QList<BaseFileInfo> items( void ) const;
 
-    //! set item enabled
+    //* set item enabled
     bool setItemIsValid( const BaseFileInfo&, bool );
 
-    //! event filter
+    //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
     Q_SIGNALS:
 
-    //! item added
+    //* item added
     void remoteItemAdded( const BaseFileInfo& );
 
-    //! item selected
+    //* item selected
     void itemSelected( const BaseFileInfo& );
 
     public Q_SLOTS:
 
-    //! clear all items
+    //* clear all items
     void clear( void );
 
-    //! add item
+    //* add item
     void add( const BaseFileInfo& );
 
-    //! add item
+    //* add item
     void add( const QString&, const BaseFileInfo& );
 
-    //! add item
+    //* add item
     void add( const QIcon&, const QString&, const BaseFileInfo& );
 
-    //! insert item
+    //* insert item
     void insert( int, const BaseFileInfo& );
 
-    //! insert item
+    //* insert item
     void insert( int, const QString&, const BaseFileInfo& );
 
-    //! insert item
+    //* insert item
     void insert( int, const QIcon&, const QString&, const BaseFileInfo& );
 
     protected Q_SLOTS:
 
-    //! button clicked
+    //* button clicked
     void _buttonClicked( QAbstractButton* );
 
-    //! update focus
+    //* update focus
     void _updateFocus( QAbstractButton* );
 
-    //! update context menu
+    //* update context menu
     void _updateContextMenu( const QPoint& );
 
-    //! icon size
+    //* icon size
     void _updateIconSize( IconSize::Size );
 
-    //! add item
+    //* add item
     void _addItem( void );
 
-    //! add separator
+    //* add separator
     void _addSeparator( void );
 
-    //! add separator
+    //* add separator
     void _insertSeparator( void );
 
-    //! edit item
+    //* edit item
     void _editItem( void );
 
-    //! remove item
+    //* remove item
     void _removeItem( void );
 
-    //! update item state
+    //* update item state
     void _updateItems( void );
 
-    //! hide item
+    //* hide item
     void _toggleHideItem( bool );
 
-    //! show all entries
+    //* show all entries
     void _toggleShowAllEntries( bool );
 
     protected:
 
-    //!@name event handlers
+    //*@name event handlers
     //@{
 
-    //! drag enter event
+    //* drag enter event
     virtual void dragEnterEvent( QDragEnterEvent* );
 
-    //! drag move
+    //* drag move
     virtual void dragMoveEvent( QDragMoveEvent* );
 
-    //! drag leave
+    //* drag leave
     virtual void dragLeaveEvent( QDragLeaveEvent* );
 
-    //! drop
+    //* drop
     virtual void dropEvent( QDropEvent* );
 
-    //! mouse press
+    //* mouse press
     virtual void mousePressEvent( QMouseEvent* );
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
     //@}
 
-    //! Read fileList from file
+    //* Read fileList from file
     bool _read( void );
 
-    //! write fileList to file
+    //* write fileList to file
     bool _write( void );
 
-    //! install default folders
+    //* install default folders
     void _addDefaultPlaces( void );
 
-    //! set db file
+    //* set db file
     bool _setDBFile( const File& );
 
-    //! update drag state
+    //* update drag state
     void _updateDragState( void ) const;
 
-    //! drag target
+    //* drag target
     QPoint _updateDragTarget( const QPoint& ) const;
 
-    //! return item index based on position
+    //* return item index based on position
     int _index( const QPoint& ) const;
 
-    //! true if mime data can be decoded
+    //* true if mime data can be decoded
     bool _canDecode( const QMimeData* ) const;
 
-    //! decode mime data
+    //* decode mime data
     QList<BaseFileInfo> _decode( const QMimeData* ) const;
 
-    //! return item that have focus or none
+    //* return item that have focus or none
     PlacesWidgetItem* _focusItem( void ) const;
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
-    //! save configuration
+    //* save configuration
     void _saveConfiguration( void );
 
     private:
 
-    //! install actions
+    //* install actions
     void _installActions( void );
 
-    //! dummy treeview, needed for rendering items
-    QAbstractItemView* itemView_;
+    //* dummy treeview, needed for rendering items
+    QAbstractItemView* itemView_ = nullptr;
 
-    //! button layout
-    QBoxLayout* buttonLayout_;
+    //* button layout
+    QBoxLayout* buttonLayout_ = nullptr;
 
-    //! button group
-    QButtonGroup* group_;
+    //* button group
+    QButtonGroup* group_ = nullptr;
 
-    //! icon size menu
-    IconSizeMenu* iconSizeMenu_;
+    //* icon size menu
+    IconSizeMenu* iconSizeMenu_ = nullptr;
 
-    //! tooltip widget
-    PlacesToolTipWidget* toolTipWidget_;
+    //* tooltip widget
+    PlacesToolTipWidget* toolTipWidget_ = nullptr;
 
-    //! list of items
+    //* list of items
     QList<PlacesWidgetItem*> items_;
 
-    //! focus item (for context menu actions)
-    PlacesWidgetItem* focusItem_;
+    //* focus item (for context menu actions)
+    PlacesWidgetItem* focusItem_ = nullptr;
 
-    //! drag item
-    PlacesWidgetItem* dragItem_;
+    //* drag item
+    PlacesWidgetItem* dragItem_ = nullptr;
 
-    //! icon provider
-    BaseFileIconProvider* iconProvider_;
+    //* icon provider
+    BaseFileIconProvider* iconProvider_ = nullptr;
 
-    //! file system watcher, for local selection frame
+    //* file system watcher, for local selection frame
     FileSystemWatcher fileSystemWatcher_;
 
-    //! file from/to wich the files are saved
+    //* file from/to wich the files are saved
     File dbFile_;
 
-    //! true if drag is in progress
-    bool dragInProgress_;
+    //* true if drag is in progress
+    bool dragInProgress_ = false;
 
-    //! drag point (for internal dragging)
+    //* drag point (for internal dragging)
     QPoint dragPoint_;
 
-    //! drag point
+    //* drag point
     QPoint dragTarget_;
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! add item
-    QAction* addItemAction_;
+    //* add item
+    QAction* addItemAction_ = nullptr;
 
-    //! add separator
-    QAction* addSeparatorAction_;
+    //* add separator
+    QAction* addSeparatorAction_ = nullptr;
 
-    //! edit item
-    QAction* editItemAction_;
+    //* edit item
+    QAction* editItemAction_ = nullptr;
 
-    //! delete item
-    QAction* removeItemAction_;
+    //* delete item
+    QAction* removeItemAction_ = nullptr;
 
-    //! hide item
-    QAction* hideItemAction_;
+    //* hide item
+    QAction* hideItemAction_ = nullptr;
 
-    //! show all entries action
-    QAction* showAllEntriesAction_;
+    //* show all entries action
+    QAction* showAllEntriesAction_ = nullptr;
 
     //@}
 

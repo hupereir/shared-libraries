@@ -30,43 +30,42 @@
 #include <QObject>
 #include <QPixmap>
 
-//! returns icon for a given FileInfo
+//* returns icon for a given FileInfo
 class BaseFileIconProvider: public QObject, public Counter
 {
 
     public:
 
-    //! constructor
-    BaseFileIconProvider( QObject* = 0x0 );
+    //* constructor
+    BaseFileIconProvider( QObject* = nullptr );
 
-    //! destructor
-    virtual ~BaseFileIconProvider( void )
-    {}
+    //* destructor
+    virtual ~BaseFileIconProvider( void ) = default;
 
-    //! icon matching given file info
+    //* icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo& fileInfo )
     { return icon( fileInfo, fileInfo.type() ); }
 
-    //! icon matching given file info
+    //* icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo&, int );
 
-    //! key, used for hash
+    //* key, used for hash
     class Key
     {
         public:
 
-        //! constructor
+        //* constructor
         Key( void ):
             type_(0)
         {}
 
-        //! constructor
+        //* constructor
         Key( const QString& file, int type ):
             file_( file ),
             type_( type )
         {}
 
-        //! equal-to operator
+        //* equal-to operator
         bool operator == (const Key& other ) const
         { return file_ == other.file_ && type_ == other.type_; }
 
@@ -77,36 +76,36 @@ class BaseFileIconProvider: public QObject, public Counter
 
     protected:
 
-    //! add link overlay icon
+    //* add link overlay icon
     QPixmap _linked( const CustomPixmap& ) const;
 
-    //! add hidden effect
+    //* add hidden effect
     QPixmap _hidden( const CustomPixmap& ) const;
 
-    //! add clipped effect
+    //* add clipped effect
     QPixmap _clipped( const CustomPixmap& ) const;
 
-    //! add link overlay icon
+    //* add link overlay icon
     QIcon _linked( const QIcon& ) const;
 
-    //! add hidden effect
+    //* add hidden effect
     QIcon _hidden( const QIcon& ) const;
 
-    //! add clipped effect
+    //* add clipped effect
     QIcon _clipped( const QIcon& ) const;
 
     private:
 
-    //! icon map
+    //* icon map
     using IconMap = QHash<Key, QIcon>;
     IconMap icons_;
 
-    //! invalid icon
+    //* invalid icon
     QIcon invalid_;
 
 };
 
-//! hash
+//* hash
 inline unsigned int qHash( const BaseFileIconProvider::Key& key )
 { return qHash( key.file_ )|key.type_; }
 

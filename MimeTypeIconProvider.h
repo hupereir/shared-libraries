@@ -26,35 +26,34 @@
 #include <QHash>
 #include <QIcon>
 
-//! FileInfo model. Stores file information for display in lists
+//* FileInfo model. Stores file information for display in lists
 class MimeTypeIconProvider : public QObject, public Counter
 {
 
     public:
 
-    //! constructor
-    MimeTypeIconProvider( QObject* = 0x0 );
+    //* constructor
+    MimeTypeIconProvider( QObject* = nullptr );
 
-    //! destructor
-    virtual ~MimeTypeIconProvider()
-    {}
+    //* destructor
+    virtual ~MimeTypeIconProvider() = default;
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! icon matching given model index
+    //* icon matching given model index
     virtual const QIcon& icon( const QString& );
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! insert item in map
+    //* insert item in map
     virtual void insert( const QString& key, const QString& value )
     { iconNames_.insert( key, value ); }
 
-    //! clear
+    //* clear
     virtual void clear( void )
     { icons_.clear(); }
 
@@ -62,15 +61,15 @@ class MimeTypeIconProvider : public QObject, public Counter
 
     private:
 
-    //! icon names
+    //* icon names
     using IconNameCache = QHash<QString, QString>;
     IconNameCache iconNames_;
 
-    //! icon cache
+    //* icon cache
     using IconCache = QHash<QString, QIcon>;
     IconCache icons_;
 
-    //! empty icon
+    //* empty icon
     QIcon empty_;
 
 };

@@ -33,11 +33,11 @@ namespace Private
     {
         public:
 
-        //! minimum size hint
+        //* minimum size hint
         virtual QSize minimumSizeHint( void ) const
         { return QSize( 1, 2 ); }
 
-        //! minimum size hint
+        //* minimum size hint
         virtual QSize sizeHint( void ) const
         { return minimumSizeHint(); }
 
@@ -48,13 +48,7 @@ namespace Private
 //_________________________________________________________
 DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& optionName ):
     QDockWidget(title, parent ),
-    optionName_( optionName ),
-    useScrollArea_( false ),
-    locked_( false ),
-    autoHideTitleBar_( false ),
-    container_( 0x0 ),
-    mainWidget_( 0x0 ),
-    titleBarWidget_( 0x0 )
+    optionName_( optionName )
 {
 
     Debug::Throw( "DockWidget::DockWidget.\n" );
@@ -210,7 +204,7 @@ void DockWidget::_updateTitleBarWidget( void )
             titleBarWidget_ = 0;
         }
 
-        setTitleBarWidget( 0x0 );
+        setTitleBarWidget( nullptr );
 
     }
 

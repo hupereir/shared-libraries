@@ -76,7 +76,7 @@ KeyModifier::State KeyModifier::state( void ) const
     int keyMask( 0 );
     {
         xcb_get_modifier_mapping_cookie_t cookie( xcb_get_modifier_mapping( connection ) );
-        XcbUtil::ScopedPointer<xcb_get_modifier_mapping_reply_t> reply( xcb_get_modifier_mapping_reply( connection, cookie, 0x0 ) );
+        XcbUtil::ScopedPointer<xcb_get_modifier_mapping_reply_t> reply( xcb_get_modifier_mapping_reply( connection, cookie, nullptr ) );
         if( !reply ) return Unknown;
 
         // get modifiers
@@ -96,7 +96,7 @@ KeyModifier::State KeyModifier::state( void ) const
     // get key bits
     {
         xcb_query_pointer_cookie_t cookie( xcb_query_pointer( connection, XcbUtil::get().appRootWindow() ) );
-        XcbUtil::ScopedPointer<xcb_query_pointer_reply_t> reply( xcb_query_pointer_reply( connection, cookie, 0x0 ) );
+        XcbUtil::ScopedPointer<xcb_query_pointer_reply_t> reply( xcb_query_pointer_reply( connection, cookie, nullptr ) );
         if( reply ) return ( reply.data()->mask & keyMask ) ? On:Off;
     }
 

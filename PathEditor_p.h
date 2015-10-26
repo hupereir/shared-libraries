@@ -33,7 +33,7 @@
 
 class DragMonitor;
 
-//! path editor button
+//* path editor button
 class PathEditorButton: public QAbstractButton
 {
 
@@ -41,11 +41,9 @@ class PathEditorButton: public QAbstractButton
 
     public:
 
-    //! constructor
+    //* constructor
     PathEditorButton( QWidget* parent ):
-        QAbstractButton( parent ),
-        itemView_( 0x0 ),
-        mouseOver_( false )
+        QAbstractButton( parent )
     {
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
         setAttribute( Qt::WA_Hover );
@@ -53,45 +51,44 @@ class PathEditorButton: public QAbstractButton
         setMinimumHeight(parent->minimumHeight());
     }
 
-    //! destructor
-    virtual ~PathEditorButton( void )
-    {}
+    //* destructor
+    virtual ~PathEditorButton( void ) = default;
 
-    //! some styles require an item view passed to painting method to have proper selection rendered in items
+    //* some styles require an item view passed to painting method to have proper selection rendered in items
     void setItemView( QWidget* widget )
     { itemView_ = widget; }
 
-    //! set mouse over manualy
+    //* set mouse over manualy
     void setMouseOver( bool value )
     { mouseOver_ = value; }
 
-    //! border width
+    //* border width
     static const qreal BorderWidth;
 
     protected:
 
-    //! event
+    //* event
     virtual bool event( QEvent* );
 
-    //! item view
+    //* item view
     QWidget* _itemView( void ) const
     { return itemView_; }
 
-    //! true if mouse over
+    //* true if mouse over
     bool _mouseOver( void ) const
     { return mouseOver_; }
 
     private:
 
-    //! some styles require an item view passed to painting method to have proper selection rendered in items
-    QWidget* itemView_;
+    //* some styles require an item view passed to painting method to have proper selection rendered in items
+    QWidget* itemView_ = nullptr;
 
-    //! mouse over
-    bool mouseOver_;
+    //* mouse over
+    bool mouseOver_ = false;
 
 };
 
-//! path item
+//* path item
 class PathEditorItem: public PathEditorButton, public Counter
 {
 
@@ -99,50 +96,49 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     PathEditorItem( QWidget* );
 
-    //! destructor
-    virtual ~PathEditorItem( void )
-    {}
+    //* destructor
+    virtual ~PathEditorItem( void ) = default;
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! is selectable
+    //* is selectable
     bool isSelectable( void ) const
     { return isSelectable_; }
 
-    //! is last
+    //* is last
     bool isLast( void ) const
     { return isLast_; }
 
-    //! path
+    //* path
     const File& path( void ) const
     { return path_; }
 
-    //! size hint
+    //* size hint
     virtual QSize sizeHint( void ) const
     { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
 
-    //! drag monitor
+    //* drag monitor
     DragMonitor& dragMonitor( void ) const
     { return *dragMonitor_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set prefix
+    //* set prefix
     void setPrefix( const QString& value )
     { prefix_ = value; }
 
-    //! set local flag
+    //* set local flag
     void setIsLocal( bool value )
     { isLocal_ = value; }
 
-    //! set selectable flag
+    //* set selectable flag
     void setIsSelectable( bool value )
     {
         if( isSelectable_ == value ) return;
@@ -150,7 +146,7 @@ class PathEditorItem: public PathEditorButton, public Counter
         update();
     }
 
-    //! set is last
+    //* set is last
     void setIsLast( bool value )
     {
         if( isLast_ == value ) return;
@@ -159,58 +155,58 @@ class PathEditorItem: public PathEditorButton, public Counter
         update();
     }
 
-    //! set path
+    //* set path
     void setPath( const File&, const QString& = QString() );
 
     //@}
 
-    //! update minimum width
+    //* update minimum width
     void updateMinimumSize( void );
 
-    //! shortcuts
+    //* shortcuts
     using List = QList<PathEditorItem*>;
     using ListIterator = QListIterator<PathEditorItem*>;
 
     protected:
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
-    //! paint
+    //* paint
     void _paint( QPainter* );
 
-    //! arrow width
+    //* arrow width
     int _arrowWidth( void ) const
     { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
 
     protected Q_SLOTS:
 
-    //! start drag
+    //* start drag
     void _startDrag( QPoint );
 
     private:
 
-    //! path
+    //* path
     File path_;
 
-    //! prefix
+    //* prefix
     QString prefix_;
 
-    //! true if path is in local file system
-    bool isLocal_;
+    //* true if path is in local file system
+    bool isLocal_ = true;
 
-    //! true if selectable
-    bool isSelectable_;
+    //* true if selectable
+    bool isSelectable_ = true;
 
-    //! true if last
-    bool isLast_;
+    //* true if last
+    bool isLast_ = false;
 
-    //! drag monitor
-    DragMonitor* dragMonitor_;
+    //* drag monitor
+    DragMonitor* dragMonitor_ = nullptr;
 
 };
 
-//! path editor menu button
+//* path editor menu button
 class PathEditorMenuButton: public PathEditorButton, public Counter
 {
 
@@ -218,7 +214,7 @@ class PathEditorMenuButton: public PathEditorButton, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     PathEditorMenuButton( QWidget* parent ):
         PathEditorButton( parent ),
         Counter( "PathEditorMenuButton" )
@@ -228,7 +224,7 @@ class PathEditorMenuButton: public PathEditorButton, public Counter
         updateMinimumSize();
     }
 
-    //! destructor
+    //* destructor
     virtual ~PathEditorMenuButton( void )
     {}
 
@@ -237,12 +233,12 @@ class PathEditorMenuButton: public PathEditorButton, public Counter
 
     protected:
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
 };
 
-//! path editor switch. Toggle path editor to combobox
+//* path editor switch. Toggle path editor to combobox
 class PathEditorSwitch: public PathEditorButton, public Counter
 {
 
@@ -250,7 +246,7 @@ class PathEditorSwitch: public PathEditorButton, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     PathEditorSwitch( QWidget* parent ):
         PathEditorButton( parent ),
         Counter( "PathEditorSwitch" )
@@ -260,13 +256,13 @@ class PathEditorSwitch: public PathEditorButton, public Counter
         setCursor( Qt::IBeamCursor );
     }
 
-    //! destructor
+    //* destructor
     virtual ~PathEditorSwitch( void )
     {}
 
     protected:
 
-    //! paint event
+    //* paint event
     virtual void paintEvent( QPaintEvent* );
 
 };

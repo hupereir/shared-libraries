@@ -113,12 +113,7 @@ const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
 
 //___________________________________________________________________
 PlacesWidgetItem::PlacesWidgetItem( QWidget* parent ):
-    QAbstractButton( parent ),
-    itemView_( 0x0 ),
-    flags_( 0 ),
-    valid_( true ),
-    mouseOver_( false ),
-    hasFocus_( false )
+    QAbstractButton( parent )
 {
     Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
     setAttribute( Qt::WA_Hover );
@@ -199,7 +194,7 @@ void PlacesWidgetItem::_startDrag( QPoint dragOrigin )
     QDrag *drag = new QDrag(this);
     QMimeData *mimeData = new QMimeData;
 
-    mimeData->setData( PlacesWidgetItem::MimeType, 0x0 );
+    mimeData->setData( PlacesWidgetItem::MimeType, nullptr );
     drag->setMimeData( mimeData );
 
     // create drag pixmap
@@ -492,11 +487,7 @@ void PlacesToolTipWidget::_updateConfiguration( void )
 //___________________________________________________________________
 PlacesWidget::PlacesWidget( QWidget* parent ):
     QWidget( parent ),
-    Counter( "PlacesWidget::PlacesWidget" ),
-    focusItem_( 0x0 ),
-    dragItem_( 0x0 ),
-    iconProvider_( 0x0 ),
-    dragInProgress_( false )
+    Counter( "PlacesWidget::PlacesWidget" )
 {
 
     Debug::Throw( "PlacesWidget::PlacesWidget.\n" );
@@ -1083,7 +1074,7 @@ void PlacesWidget::_removeItem( void )
     items_.removeOne( focusItem_ );
     focusItem_->hide();
     focusItem_->deleteLater();
-    focusItem_ = 0x0;
+    focusItem_ = nullptr;
 
     // emit signal
     _updateDragState();
@@ -1193,7 +1184,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
     {
 
         // internal dragging. Try re-order items
-        PlacesWidgetItem* dragItem( 0x0 );
+        PlacesWidgetItem* dragItem( nullptr );
         foreach( PlacesWidgetItem* item, items_ )
         {
             if( item->dragMonitor().isDragInProgress() )
@@ -1375,7 +1366,7 @@ PlacesWidgetItem* PlacesWidget::_focusItem( void ) const
     foreach( PlacesWidgetItem* item, items_ )
     { if( item->hasFocus() ) return item; }
 
-    return 0x0;
+    return nullptr;
 }
 
 //_________________________________________________________________________________

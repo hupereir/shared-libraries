@@ -52,14 +52,12 @@ class LocalFileInfo: public BaseFileInfo
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* default constructor
-    LocalFileInfo( void ):
-        flags_( 0 )
-        {}
+    LocalFileInfo( void )
+    {}
 
     //* copy constructor
     LocalFileInfo( const BaseFileInfo& other ):
-        BaseFileInfo( other ),
-        flags_( 0 )
+        BaseFileInfo( other )
     {}
 
     //* constructor from DOM element
@@ -133,7 +131,7 @@ class LocalFileInfo: public BaseFileInfo
     private:
 
     //* flags
-    Flags flags_;
+    Flags flags_ = 0;
 
 
 };
@@ -150,11 +148,10 @@ class PlacesWidgetItem: public QAbstractButton
     static const QString MimeType;
 
     //* constructor
-    PlacesWidgetItem( QWidget* = 0x0 );
+    PlacesWidgetItem( QWidget* = nullptr );
 
     //* destructor
-    virtual ~PlacesWidgetItem( void )
-    {}
+    virtual ~PlacesWidgetItem( void ) = default;
 
     //*@name accessors
     //@{
@@ -276,25 +273,25 @@ class PlacesWidgetItem: public QAbstractButton
     private:
 
     //* some styles require an item view passed to painting method to have proper selection rendered in items
-    QWidget* itemView_;
+    QWidget* itemView_ = nullptr;
 
     //* drag monitor
-    DragMonitor* dragMonitor_;
+    DragMonitor* dragMonitor_ = nullptr;
 
     //* file info
     BaseFileInfo fileInfo_;
 
     //* flags
-    LocalFileInfo::Flags flags_;
+    LocalFileInfo::Flags flags_ = 0;
 
     //* true if valid (true by default)
-    bool valid_;
+    bool valid_ = false;
 
     //* mouse over
-    bool mouseOver_;
+    bool mouseOver_ = false;
 
     //* focus
-    bool hasFocus_;
+    bool hasFocus_ = false;
 
 };
 
@@ -307,11 +304,10 @@ class PlacesWidgetItemDialog: public CustomDialog
     public:
 
     //* constructor
-    PlacesWidgetItemDialog( QWidget* = 0x0 );
+    PlacesWidgetItemDialog( QWidget* = nullptr );
 
     //* destructor
-    virtual ~PlacesWidgetItemDialog( void )
-    {}
+    virtual ~PlacesWidgetItemDialog( void ) = default;
 
     //* accessors
     //@{
@@ -349,13 +345,13 @@ class PlacesWidgetItemDialog: public CustomDialog
     private:
 
     //* name
-    LineEditor* nameEditor_;
+    LineEditor* nameEditor_ = nullptr;
 
     //* file
-    BrowsedLineEditor* fileEditor_;
+    BrowsedLineEditor* fileEditor_ = nullptr;
 
     //* remote checkbox
-    QCheckBox* remoteCheckBox_;
+    QCheckBox* remoteCheckBox_ = nullptr;
 
 };
 
@@ -371,8 +367,7 @@ class PlacesToolTipWidget: public BaseToolTipWidget
     PlacesToolTipWidget( QWidget* );
 
     //* destructo
-    virtual ~PlacesToolTipWidget( void )
-    {}
+    virtual ~PlacesToolTipWidget( void ) = default;
 
     //* set data
     void setFileInfo( const QString&, const BaseFileInfo&, const QIcon& = QIcon() );
@@ -424,7 +419,7 @@ class PlacesToolTipWidget: public BaseToolTipWidget
     int pixmapSize_ = 0;
 
     //* information mask
-    Types mask_ = 0;
+    Types mask_ = None;
 
     //* name
     QString name_;

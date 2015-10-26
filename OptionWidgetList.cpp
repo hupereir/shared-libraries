@@ -34,7 +34,7 @@ void OptionWidgetList::addOptionWidget( OptionWidget* widget )
 
     optionWidgets_ << widget;
 
-    //! connect signals
+    //* connect signals
     if( _connected() && hasBuddy() && widget->hasBuddy() )
     {
         QObject::connect( &widget->buddy(), SIGNAL(modified()), &buddy(), SIGNAL(modified()));
@@ -79,6 +79,6 @@ int OptionWidgetList::_checkBoxSpacing( void ) const
 {
     QStyleOption option;
     option.rect = QRect( 0, 0, 50, 50 );
-    QRect adjusted( qApp->style()->subElementRect( QStyle::SE_CheckBoxContents, &option, 0x0 ) );
+    QRect adjusted( qApp->style()->subElementRect( QStyle::SE_CheckBoxContents, &option, nullptr ) );
     return adjusted.left()-option.rect.left();
 }

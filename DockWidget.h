@@ -32,84 +32,83 @@ class DockWidget: public QDockWidget
 
     public:
 
-    //! constructor
-    DockWidget( const QString&, QWidget* = 0x0, const QString& = QString() );
+    //* constructor
+    DockWidget( const QString&, QWidget* = nullptr, const QString& = QString() );
 
-    //! destructor
-    virtual ~DockWidget( void )
-    {}
+    //* destructor
+    virtual ~DockWidget( void ) = default;
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! lock
+    //* lock
     virtual bool isLocked( void ) const
     { return locked_; }
 
-    //! visibility action
+    //* visibility action
     QAction& visibilityAction( void ) const
     { return *visibilityAction_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! use scroll area
+    //* use scroll area
     void setUseScrollArea( bool );
 
-    //! lock
+    //* lock
     virtual void setLocked( bool );
 
-    //! set main widget
+    //* set main widget
     void setMainWidget( QWidget* );
 
-    //! title bar
+    //* title bar
     void setAutoHideTitleBar( bool );
 
     //@}
 
     protected Q_SLOTS:
 
-    //! toggle visibility
+    //* toggle visibility
     virtual void _toggleVisibility( bool );
 
-    //! update title bar
+    //* update title bar
     virtual void _updateTitleBarWidget( void );
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! install actions
+    //* install actions
     void _installActions( void );
 
-    //! assocated option name
+    //* assocated option name
     QString optionName_;
 
-    //! visibility action
-    QAction* visibilityAction_;
+    //* visibility action
+    QAction* visibilityAction_ = nullptr;
 
-    //! use scroll area
-    bool useScrollArea_;
+    //* use scroll area
+    bool useScrollArea_ = false;
 
-    //! lock
-    bool locked_;
+    //* lock
+    bool locked_ = false;
 
-    //! auto hide title bar
-    bool autoHideTitleBar_;
+    //* auto hide title bar
+    bool autoHideTitleBar_ = false;
 
-    //! container
-    QWidget* container_;
+    //* container
+    QWidget* container_ = nullptr;
 
-    //! main widget
-    QWidget* mainWidget_;
+    //* main widget
+    QWidget* mainWidget_ = nullptr;
 
-    //! title bar widget
-    QWidget* titleBarWidget_;
+    //* title bar widget
+    QWidget* titleBarWidget_ = nullptr;
 
 };
 

@@ -25,7 +25,7 @@
 //__________________________________________________________
 IconEngine& IconEngine::get( void )
 {
-    //! singleton
+    //* singleton
     static IconEngine singleton_;
     return singleton_;
 }

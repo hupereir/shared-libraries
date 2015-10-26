@@ -45,7 +45,7 @@ class WinUtilPrivate
 
     public:
 
-    //! constructor
+    //* constructor
     WinUtilPrivate( void )
     {
         #if defined(Q_OS_WIN)
@@ -56,7 +56,7 @@ class WinUtilPrivate
         #endif
     }
 
-    //! destructor
+    //* destructor
     virtual ~WinUtilPrivate( void )
     {
 
@@ -69,7 +69,7 @@ class WinUtilPrivate
 
     #if defined(Q_OS_WIN)
 
-    //! blur flags
+    //* blur flags
     enum
     {
         DWM_BB_ENABLE = 1<<0,
@@ -77,7 +77,7 @@ class WinUtilPrivate
         DWM_BB_TRANSITIONONMAXIMIZED = 1<<2
     };
 
-    //! blur behind structure
+    //* blur behind structure
     struct DWM_BLURBEHIND
     {
         DWORD dwFlags;
@@ -86,13 +86,13 @@ class WinUtilPrivate
         BOOL  fTransitionOnMaximized;
     };
 
-    //! blur behind function
+    //* blur behind function
     typedef HRESULT (WINAPI *PtrDwmEnableBlurBehindWindow)(HWND, const DWM_BLURBEHIND* );
     PtrDwmEnableBlurBehindWindow blurBehindFunction_;
 
     private:
 
-    //! library
+    //* library
     QLibrary dwmapi_;
     #endif
 

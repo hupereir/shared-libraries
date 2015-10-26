@@ -45,60 +45,60 @@ class XcbUtil::Private
 
     public:
 
-    //! constructor
+    //* constructor
     Private( void );
 
     #if HAVE_XCB
 
-    //! xcb connection
+    //* xcb connection
     xcb_connection_t* connection( void );
 
-    //! get screen matching a given number
+    //* get screen matching a given number
     xcb_screen_t* defaultScreen( void );
 
-    //! get screen matching a given number
+    //* get screen matching a given number
     xcb_screen_t* screen( int );
 
-    //! root window
+    //* root window
     xcb_window_t appRootWindow( void );
 
-    //! find atom
+    //* find atom
     xcb_atom_t* atom( const QString& );
 
-    //! find atom
+    //* find atom
     xcb_atom_t* atom( AtomId );
 
     #endif
 
-    //! atom names
+    //* atom names
     typedef QHash<AtomId, QString> AtomNameMap;
     AtomNameMap atomNames_;
 
-    //! supported atoms
+    //* supported atoms
     typedef QHash<AtomId, bool > SupportedAtomHash;
     SupportedAtomHash supportedAtomId_;
 
-    //! default screen number
+    //* default screen number
     int defaultScreenNumber_;
 
     private:
 
     #if HAVE_XCB
 
-    //! xcb connection
+    //* xcb connection
     xcb_connection_t* connection_;
 
-    //! default screen
+    //* default screen
     xcb_screen_t* defaultScreen_;
 
-    //! root window
+    //* root window
     xcb_window_t appRootWindow_;
 
-    //! atom names map
+    //* atom names map
     typedef QHash<QString, xcb_atom_t> NamedAtomHash;
     NamedAtomHash namedAtomId_;
 
-    //! atom map
+    //* atom map
     typedef QHash<AtomId, xcb_atom_t> AtomHash;
     AtomHash atoms_;
 

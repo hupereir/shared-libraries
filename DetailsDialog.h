@@ -37,14 +37,11 @@ class DetailsDialog: public CustomDialog
     DetailsDialog( QWidget* parent,
         CustomDialog::Flags flags = CustomDialog::Flags( OkButton | CancelButton ),
         Qt::WindowFlags WindowFlags = 0 ):
-        CustomDialog( parent, flags, WindowFlags ),
-        detailsLabel_( 0x0 ),
-        detailsWidget_( 0x0 )
+        CustomDialog( parent, flags, WindowFlags )
     {}
 
     //* destructor
-    virtual ~DetailsDialog( void )
-    {}
+    virtual ~DetailsDialog( void ) = default;
 
     //* set text details
     virtual void setDetails( const QString& );
