@@ -76,7 +76,7 @@ namespace Transparency
 
         // selection owner
         xcb_get_selection_owner_cookie_t cookie( xcb_get_selection_owner( connection, atom ) );
-        XcbUtil::ScopedPointer<xcb_get_selection_owner_reply_t> reply( xcb_get_selection_owner_reply( connection, cookie, 0x0 ) );
+        XcbUtil::ScopedPointer<xcb_get_selection_owner_reply_t> reply( xcb_get_selection_owner_reply( connection, cookie, nullptr ) );
         return reply && reply->owner;
         #endif
 
