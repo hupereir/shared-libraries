@@ -37,11 +37,7 @@
 //_______________________________________________________
 BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
     QWidget( parent, Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint ),
-    Counter( "BaseToolTipWidget" ),
-    enabled_( false ),
-    followMouse_( false ),
-    defaultDelay_( 1000 ),
-    preferredPosition_( Bottom )
+    Counter( "BaseToolTipWidget" )
 {
 
     Debug::Throw( "BaseToolTipWidget::BaseToolTipWidget.\n" );

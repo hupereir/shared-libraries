@@ -42,11 +42,7 @@ class PrintPreviewDialog: public CustomDialog
     public:
 
     //* constructor
-    PrintPreviewDialog( QWidget* = 0, CustomDialog::Flags = 0 );
-
-    //* destructor
-    virtual ~PrintPreviewDialog( void )
-    {}
+    PrintPreviewDialog( QWidget* = nullptr, CustomDialog::Flags = 0 );
 
     //* set print helper
     void setHelper( QObject* );
@@ -71,13 +67,13 @@ class PrintPreviewDialog: public CustomDialog
     private:
 
     //* option widget
-    Print::OptionMenu* optionMenu_;
+    Print::OptionMenu* optionMenu_ = nullptr;
 
     //* navigation widget
-    Print::NavigationWidget* navigationWidget_;
+    Print::NavigationWidget* navigationWidget_ = nullptr;
 
     //* preview widget
-    QPrintPreviewWidget* previewWidget_;
+    QPrintPreviewWidget* previewWidget_ = nullptr;
 
 };
 

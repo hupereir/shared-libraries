@@ -59,9 +59,6 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //* constructor
     BaseConfigurationDialog( QWidget* = nullptr, ConfigurationFlags = None );
 
-    //* destructor
-    virtual ~BaseConfigurationDialog() = default;
-
     // read
     using OptionWidgetList::read;
     virtual void read( void )
@@ -140,7 +137,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     private:
 
     //* pointer to original options set
-    /*!
+    /**
     it is needed to keep track of the changes
     so that initial set is restored when pressing the cancel button
     */

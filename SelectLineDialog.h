@@ -36,9 +36,6 @@ class SelectLineDialog: public BaseDialog, public Counter
     //* constructor
     SelectLineDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
 
-    //* destructor
-    virtual ~SelectLineDialog( void ) = default;
-
     //*@name accessors
     //@{
 

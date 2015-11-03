@@ -31,7 +31,7 @@
 #include <QMap>
 
 
-//! customized tool bar to handle position and visibility from Options
+//* customized tool bar to handle position and visibility from Options
 class CustomToolBar: public QToolBar, public Counter
 {
 
@@ -39,25 +39,22 @@ class CustomToolBar: public QToolBar, public Counter
 
     public:
 
-    //! constructor
-    CustomToolBar( const QString& = QString(), QWidget* = 0, const QString& = QString() );
-
-    //! destructor
-    virtual ~CustomToolBar( void );
+    //* constructor
+    CustomToolBar( const QString& = QString(), QWidget* = nullptr, const QString& = QString() );
 
     // map toolbar area and name
     using AreaMap = QMap< QString, Qt::ToolBarArea>;
 
-    //!@name convenience
+    //*@name convenience
     //@{
-    //! get area from name
+    //* get area from name
     static Qt::ToolBarArea nameToArea( const QString& name )
     {
         AreaMap::iterator iter = _toolbarAreas().find( name );
         return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter.value();
     }
 
-    //! get name from toobar area
+    //* get name from toobar area
     static QString areaToName( const Qt::ToolBarArea& value )
     {
 
@@ -69,36 +66,36 @@ class CustomToolBar: public QToolBar, public Counter
     }
     //@}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! lock from options
+    //* lock from options
     bool lockFromOptions( void ) const
     { return lockFromOptions_; }
 
-    //! lock from options
+    //* lock from options
     bool sizeFromOptions( void ) const
     { return sizeFromOptions_; }
 
-    //! true if visible in menu
-    /*! the flag is ignored if parent is MainWindow */
+    //* true if visible in menu
+    /** the flag is ignored if parent is MainWindow */
     bool appearsInMenu( void ) const
     { return appearsInMenu_; }
 
-    //! visibility action
+    //* visibility action
     QAction& visibilityAction( void ) const
     { return *visibilityAction_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set transparent
+    //* set transparent
     void setTransparent( bool value )
     { transparent_ = value; }
 
-    //! set movable
+    //* set movable
     /* when called directly from the application, the lockFromOptions_ flag is set to false */
     void setMovable( bool value )
     {
@@ -106,7 +103,7 @@ class CustomToolBar: public QToolBar, public Counter
         return QToolBar::setMovable( value );
     }
 
-    //! icon size
+    //* icon size
     /* when called directly from the application, the sizeFromOptions_ flag is set to false */
     void setIconSize( QSize size )
     {
@@ -114,21 +111,21 @@ class CustomToolBar: public QToolBar, public Counter
         return QToolBar::setIconSize( size );
     }
 
-    //! true if visible in menu
-    /*! the flag is ignored if parent is MainWindow */
+    //* true if visible in menu
+    /** the flag is ignored if parent is MainWindow */
     void setAppearsInMenu( bool value )
     { appearsInMenu_ = value; }
 
     //@}
 
 
-    //! location option combo box
+    //* location option combo box
     class LocationComboBox: public OptionComboBox
     {
 
         public:
 
-        //! constructor
+        //* constructor
         LocationComboBox( QWidget* parent, const QString& option ):
             OptionComboBox( parent, option )
         {
@@ -142,57 +139,57 @@ class CustomToolBar: public QToolBar, public Counter
 
     protected:
 
-    //! paint events
+    //* paint events
     virtual void paintEvent( QPaintEvent* );
 
-    //! show event
+    //* show event
     virtual void showEvent( QShowEvent* );
 
-    //! hide event
+    //* hide event
     virtual void hideEvent( QHideEvent* );
 
-    //! move event
+    //* move event
     virtual void moveEvent( QMoveEvent* );
-    
+
     protected Q_SLOTS:
 
-    //! toggle visibility
+    //* toggle visibility
     virtual void _toggleVisibility( bool );
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! install actions
+    //* install actions
     void _installActions( void );
 
-    //! assocated option name
+    //* assocated option name
     QString optionName_;
     QString locationOptionName_;
-    
-    //! visibility action
+
+    //* visibility action
     QAction* visibilityAction_;
 
-    //! true if toolbar should be transparent (no frame; no extra background)
-    bool transparent_;
+    //* true if toolbar should be transparent (no frame; no extra background)
+    bool transparent_ = false;
 
-    //! use icon size from options
-    bool sizeFromOptions_;
+    //* use icon size from options
+    bool sizeFromOptions_ = true;
 
-    //! use lock from options
-    bool lockFromOptions_;
+    //* use lock from options
+    bool lockFromOptions_ = true;
 
-    //! true if toolbar must appear in menu
-    /*! the flag is ignored if parent is MainWindow */
-    bool appearsInMenu_;
+    //* true if toolbar must appear in menu
+    /** the flag is ignored if parent is MainWindow */
+    bool appearsInMenu_ = false;
 
-    //! initialize area map
+    //* initialize area map
     static AreaMap _initializeAreas( void );
 
-    //! map name and toolbar are
+    //* map name and toolbar are
     static AreaMap& _toolbarAreas( void );
 
 };

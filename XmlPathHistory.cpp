@@ -30,8 +30,7 @@
 
 //_______________________________________________
 XmlPathHistory::XmlPathHistory( QObject* parent ):
-    PathHistory( parent ),
-    saveHistory_( false )
+    PathHistory( parent )
 {
 
     Debug::Throw( "XmlPathHistory::XmlPathHistory.\n" );

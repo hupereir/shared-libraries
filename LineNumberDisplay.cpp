@@ -33,9 +33,7 @@
 LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
     QObject( editor ),
     Counter( "LineNumberDisplay" ),
-    editor_( editor ),
-    needsUpdate_( true ),
-    width_( 0 )
+    editor_( editor )
 {
 
     Debug::Throw( "LineNumberDisplay::LineNumberDisplay.\n" );
@@ -47,10 +45,6 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
     connect( editor_->document(), SIGNAL(contentsChanged()), SLOT(_contentsChanged()) );
 
 }
-
-//__________________________________________
-LineNumberDisplay::~LineNumberDisplay()
-{ Debug::Throw( "LineNumberDisplay::~LineNumberDisplay.\n" );}
 
 //__________________________________________
 void LineNumberDisplay::synchronize( LineNumberDisplay* display )

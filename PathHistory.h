@@ -28,53 +28,49 @@
 class PathHistory:  public QObject, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     PathHistory( QObject* );
 
-    //! destructor
-    virtual ~PathHistory( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! path list
+    //* path list
     const FileRecord::List& pathList( void ) const
     { return pathList_; }
 
-    //! get previous path list
+    //* get previous path list
     FileRecord::List previousPathList( void ) const;
 
-    //! next path list
+    //* next path list
     FileRecord::List nextPathList( void ) const;
 
-    //! true if previous path in history is valid
+    //* true if previous path in history is valid
     bool previousAvailable( void ) const
     { return index_ > 0; }
 
-    //! true if next path in history is valid
+    //* true if next path in history is valid
     bool nextAvailable( void ) const
     { return index_ + 1 < pathList_.size(); }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set path list
-    /*!
+    //* set path list
+    /**
     All existing files are removed.
     Index is set at the end of the list
     */
     void setPathList( const FileRecord::List& );
 
-    //! add path to history
-    /*!
+    //* add path to history
+    /**
     Everything that is originally after the current index_ is removed;
     New path is then added after the current index.
     And the current index is moved to it.
@@ -83,53 +79,53 @@ class PathHistory:  public QObject, public Counter
     void add( const File& file )
     { add( FileRecord( file ) ); }
 
-    //! clear
+    //* clear
     void clear( void );
 
-    //! retrieve next path in history
+    //* retrieve next path in history
     File next( void )
     { return pathList_[++index_].file(); }
 
-    //! retrieve previous path in history
+    //* retrieve previous path in history
     File previous( void )
     { return pathList_[--index_].file(); }
 
-    //! select path matching index in previous history
+    //* select path matching index in previous history
     File selectPath( int );
 
     //@}
 
     Q_SIGNALS:
 
-    //! emmited when contents is changed
+    //* emmited when contents is changed
     void contentsChanged( void );
 
     protected:
 
-    //! maximum Size
+    //* maximum Size
     virtual void _setMaxSize( int );
 
-    //! maximum size
+    //* maximum size
     virtual const int& _maxSize( void ) const
     { return maxSize_; }
 
-    //! truncate list if larger than maxSize_
+    //* truncate list if larger than maxSize_
     virtual FileRecord::List _truncatedList( void ) const
     { return _truncatedList( pathList_ ); }
 
-    //! truncate list if larger than maxSize_
+    //* truncate list if larger than maxSize_
     virtual FileRecord::List _truncatedList( FileRecord::List ) const;
 
     private:
 
-    //! path list
+    //* path list
     FileRecord::List pathList_;
 
-    //! maximum size (zero means no limit)
-    int maxSize_;
+    //* maximum size (zero means no limit)
+    int maxSize_ = 0;
 
-    //! current index in list
-    int index_;
+    //* current index in list
+    int index_ = 0;
 
 };
 

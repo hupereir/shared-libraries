@@ -39,9 +39,6 @@ class BaseFileIconProvider: public QObject, public Counter
     //* constructor
     BaseFileIconProvider( QObject* = nullptr );
 
-    //* destructor
-    virtual ~BaseFileIconProvider( void ) = default;
-
     //* icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo& fileInfo )
     { return icon( fileInfo, fileInfo.type() ); }

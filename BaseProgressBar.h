@@ -24,7 +24,7 @@
 #include <QPaintEvent>
 #include <QProgressBar>
 
-//! display command progress and remaining time
+//* display command progress and remaining time
 class BaseProgressBar:public QProgressBar
 {
 
@@ -32,16 +32,12 @@ class BaseProgressBar:public QProgressBar
 
     public:
 
-    //! constructor
-    BaseProgressBar( QWidget* parent = 0 ):
+    //* constructor
+    BaseProgressBar( QWidget* parent = nullptr ):
         QProgressBar( parent )
     { setTextVisible( true ); }
 
-    //! destructor
-    virtual ~BaseProgressBar( void )
-    {}
-
-    //! reset
+    //* reset
     virtual void reset( void )
     {
         text_ = QString();
@@ -50,21 +46,21 @@ class BaseProgressBar:public QProgressBar
 
     public Q_SLOTS:
 
-    //! set maximum
+    //* set maximum
     virtual void setMaximum( int value )
     { QProgressBar::setMaximum( value ); }
 
-    //! change displayed text
+    //* change displayed text
     virtual void setText( const QString& );
 
     protected:
 
-    //! paint
+    //* paint
     void paintEvent( QPaintEvent* );
 
     private:
 
-    //! text
+    //* text
     QString text_;
 
 };

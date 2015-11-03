@@ -20,7 +20,7 @@
 *
 *******************************************************************************/
 
-/*!
+/**
   \file BlockHighlight.h
   \brief handles current block highlighting
   \author Hugo Pereira
@@ -37,7 +37,7 @@
 
 class TextEditor;
 
-//! handles current block highlighting
+//* handles current block highlighting
 class BlockHighlight: public QObject, public Counter
 {
 
@@ -45,53 +45,49 @@ class BlockHighlight: public QObject, public Counter
 
   public:
 
-  //! constructor
+  //* constructor
   BlockHighlight( TextEditor* parent );
 
-  //! destructor
-  virtual ~BlockHighlight( void )
-  { Debug::Throw( "BlockHighlight::~BlockHighlight.\n" ); }
-
-  //! enable/disable
+  //* enable/disable
   void setEnabled( bool value )
   { enabled_ = value; }
 
-  //! enable/disable
+  //* enable/disable
   bool isEnabled( void ) const
   { return enabled_; }
 
-  //! clear highlighted block
+  //* clear highlighted block
   void clear( void );
 
   public Q_SLOTS:
 
-  //! highlight
+  //* highlight
   void highlight( void );
 
   protected:
 
-  //! delayed highlighting
+  //* delayed highlighting
   virtual void timerEvent( QTimerEvent* event );
 
-  //! highlight
+  //* highlight
   void _highlight( void );
 
   private:
 
-  //! trigger update associated editors
+  //* trigger update associated editors
   void _updateEditors( void );
 
-  //! parent editor
-  TextEditor* parent_;
+  //* parent editor
+  TextEditor* parent_ = nullptr;
 
-  //! associated timer
+  //* associated timer
   QBasicTimer timer_;
 
-  //! true if enabled
-  bool enabled_;
+  //* true if enabled
+  bool enabled_ = false;
 
-  //! true when cleared
-  bool cleared_;
+  //* true when cleared
+  bool cleared_ = true;
 
 };
 

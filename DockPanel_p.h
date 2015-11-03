@@ -37,11 +37,7 @@ namespace Private
         public:
 
         //* constructor
-        LocalDockWidget( QWidget* parent );
-
-        //* destructor
-        virtual ~LocalDockWidget( void )
-        {}
+        LocalDockWidget( QWidget* );
 
         protected:
 
@@ -60,11 +56,7 @@ namespace Private
         public:
 
         //* constructor
-        LocalWidget( QWidget* parent );
-
-        //* destructor
-        virtual ~LocalWidget( void )
-        {}
+        LocalWidget( QWidget* );
 
         //*@name accessors
         //@{
@@ -164,18 +156,18 @@ namespace Private
         //@{
 
         //* attach/detach action
-        QAction* detachAction_;
+        QAction* detachAction_ = nullptr;
 
         //* stay on top
-        QAction* staysOnTopAction_;
+        QAction* staysOnTopAction_ = nullptr;
 
         //* make window sticky
-        QAction* stickyAction_;
+        QAction* stickyAction_ = nullptr;
 
         //@}
 
         //* option name
-        /*! needed to store sticky and stays on top state */
+        /** needed to store sticky and stays on top state */
         QString stickyOptionName_;
 
         //* option name

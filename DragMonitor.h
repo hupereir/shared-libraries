@@ -25,7 +25,7 @@
 #include <QObject>
 #include <QWidget>
 
-//! used to install
+//* used to install
 class DragMonitor: public QObject, public Counter
 {
 
@@ -33,59 +33,55 @@ class DragMonitor: public QObject, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     DragMonitor( QWidget* );
 
-    //! destructor
-    virtual ~DragMonitor( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! enabled
+    //* enabled
     bool isDragEnabled( void ) const
     { return dragEnabled_; }
 
-    //! in progress
+    //* in progress
     bool isDragInProgress( void ) const
     { return dragInProgress_; }
 
-    //! position
+    //* position
     QPoint dragOrigin( void ) const
     { return dragOrigin_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! enabled
+    //* enabled
     void setDragEnabled( bool value )
     { dragEnabled_ = value; }
 
-    //! enable/disable window grabbing
+    //* enable/disable window grabbing
     void setWindowGraggingEnabled( bool );
 
     //@}
 
-    //! event filter
+    //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
     Q_SIGNALS:
 
-    //! emitted when drag started from given position
+    //* emitted when drag started from given position
     void dragStarted( QPoint );
 
     private:
 
-    //! true if drag is enabled (false by default)
-    bool dragEnabled_;
+    //* true if drag is enabled (false by default)
+    bool dragEnabled_ = true;
 
-    //! drag
-    bool dragInProgress_;
+    //* drag
+    bool dragInProgress_ = false;
 
-    //! drag position
+    //* drag position
     QPoint dragOrigin_;
 
 };

@@ -38,10 +38,6 @@ BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):
 }
 
 //__________________________________________________
-BaseDialog::~BaseDialog( void )
-{ Debug::Throw( "BaseDialog::~BaseDialog.\n" ); }
-
-//__________________________________________________
 BaseDialog& BaseDialog::setWindowTitle( const QString& title )
 {
 

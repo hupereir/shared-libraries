@@ -33,10 +33,6 @@ class ColorOptionListBox: public OptionListBox
     //* constructor
     ColorOptionListBox( QWidget*, const QString& );
 
-    //* destructor
-    virtual ~ColorOptionListBox( void )
-    {}
-
     protected Q_SLOTS:
 
     //* add

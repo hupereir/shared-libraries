@@ -63,10 +63,6 @@ class LocalFileInfo: public BaseFileInfo
     //* constructor from DOM element
     LocalFileInfo( const QDomElement& );
 
-    //* destructor
-    virtual ~LocalFileInfo( void )
-    {}
-
     //* equal to operator
     bool operator == (const LocalFileInfo& other ) const
     {
@@ -119,10 +115,6 @@ class LocalFileInfo: public BaseFileInfo
         //* constructor from DOM element
         List( const QDomElement& );
 
-        //* destructor
-        virtual ~List( void )
-        {}
-
         //* dump to dom element
         virtual QDomElement domElement( QDomDocument& ) const;
 
@@ -149,9 +141,6 @@ class PlacesWidgetItem: public QAbstractButton
 
     //* constructor
     PlacesWidgetItem( QWidget* = nullptr );
-
-    //* destructor
-    virtual ~PlacesWidgetItem( void ) = default;
 
     //*@name accessors
     //@{
@@ -306,9 +295,6 @@ class PlacesWidgetItemDialog: public CustomDialog
     //* constructor
     PlacesWidgetItemDialog( QWidget* = nullptr );
 
-    //* destructor
-    virtual ~PlacesWidgetItemDialog( void ) = default;
-
     //* accessors
     //@{
 
@@ -365,9 +351,6 @@ class PlacesToolTipWidget: public BaseToolTipWidget
 
     //* constructor
     PlacesToolTipWidget( QWidget* );
-
-    //* destructo
-    virtual ~PlacesToolTipWidget( void ) = default;
 
     //* set data
     void setFileInfo( const QString&, const BaseFileInfo&, const QIcon& = QIcon() );

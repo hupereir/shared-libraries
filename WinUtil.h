@@ -32,25 +32,25 @@ class WinUtil
 
     public:
 
-    //! constructor
+    //* constructor
     WinUtil( QWidget* );
 
-    //! destructor
+    //* destructor
     virtual ~WinUtil( void );
 
-    //! update layered widget using pixmap
+    //* update layered widget using pixmap
     void update( const QPixmap&, double = 1.0 ) const;
 
-    //! enable blur behind
+    //* enable blur behind
     void enableBlurBehind( const Base::Margins& = Base::Margins() );
 
-    //! toggle hide from taskbar for Windows
+    //* toggle hide from taskbar for Windows
     bool toggleHideFromTaskBar( bool ) const;
 
-    //! set flag
+    //* set flag
     void setFlag( long int, bool value = true ) const;
 
-    //! has flag
+    //* has flag
     bool hasFlag( long int ) const;
 
     protected:
@@ -58,15 +58,15 @@ class WinUtil
     // returns true if widget is of type layered window
     bool _isLayered() const;
 
-    //! set widget a layered window
+    //* set widget a layered window
     void _setLayered() const;
 
     private:
 
-    //! private
+    //* private
     WinUtilPrivate* private_;
 
-    //! target widget
+    //* target widget
     QWidget *target_;
 
 };

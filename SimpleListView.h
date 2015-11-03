@@ -32,17 +32,13 @@ class SimpleListView: public QListView
     //* constructor
     SimpleListView( QWidget* = nullptr );
 
-    //* destructor
-    virtual ~SimpleListView( void )
-    {}
-
     //* model
     virtual void setModel( QAbstractItemModel* );
 
     Q_SIGNALS:
 
     //* emmitted when index is hovered
-    /*!
+    /**
     this is similar to the 'entered' signal,
     except that it is also sent when no index is selected,
     for instance, to hide tooltips

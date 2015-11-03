@@ -30,9 +30,7 @@
 
 //_______________________________________________________
 BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
-    BaseToolTipWidget( parent ),
-    pixmapSize_( 96 ),
-    mask_( Default )
+    BaseToolTipWidget( parent )
 {
 
     Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );

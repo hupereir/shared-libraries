@@ -28,26 +28,22 @@
 
 namespace Base
 {
-    //! cache item
+    //* cache item
     class IconCacheItem: public QIcon
     {
 
         public:
 
-        //! constructor
+        //* constructor
         IconCacheItem( void )
         {}
 
-        //! copy constructor
+        //* copy constructor
         IconCacheItem( const QIcon& other ):
             QIcon( other )
         {}
 
-        //! destructor
-        virtual ~IconCacheItem( void )
-        {}
-
-        //! flags
+        //* flags
         enum Flag
         {
             None = 0,
@@ -59,31 +55,31 @@ namespace Base
 
         Q_DECLARE_FLAGS( Flags, Flag );
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! flags
+        //* flags
         Flags flags( void ) const
         { return flags_; }
 
-        //! files
+        //* files
         const QStringList& files( void ) const
         { return files_; }
 
         //@}
 
-        //!@name modifiers
+        //*@name modifiers
         //@{
 
-        //! flags
+        //* flags
         void setFlags( Flags value )
         { flags_ = value; }
 
-        //! clear files
+        //* clear files
         void clearFiles( void )
         { files_.clear(); }
 
-        //! add file
+        //* add file
         void addFile( const QString& file )
         { files_ << file; }
 
@@ -91,56 +87,56 @@ namespace Base
 
         private:
 
-        //! flags
+        //* flags
         Flags flags_;
 
-        //! associated files
+        //* associated files
         QStringList files_;
 
     };
 
-    //! cache
+    //* cache
     class IconCache: public QHash<QString, IconCacheItem>
     {
 
         public:
 
-        //! constructor
+        //* constructor
         IconCache( void )
         {}
 
-        //! destructor
+        //* destructor
         virtual ~IconCache( void )
         {}
 
-        //! pair
+        //* pair
         class Pair: public QPair<QString, IconCacheItem >
         {
             public:
 
-            //! constructor
+            //* constructor
             Pair( void )
             {}
 
-            //! constructor
+            //* constructor
             Pair( const QString& name, const IconCacheItem& icon ):
                 QPair<QString, IconCacheItem >( name, icon )
             {}
 
-            //! constructor
+            //* constructor
             Pair( const QPair<QString, IconCacheItem >& other ):
                 QPair<QString, IconCacheItem >( other )
             {}
 
-            //! destructor
+            //* destructor
             virtual ~Pair( void )
             {}
 
-            //! equal to operator
+            //* equal to operator
             bool operator == ( const Pair& other ) const
             { return first == other.first; }
 
-            //! less than operator
+            //* less than operator
             bool operator < ( const Pair& other ) const
             { return first < other.first; }
 

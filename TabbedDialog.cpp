@@ -68,13 +68,6 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
 }
 
-//______________________________________________________________
-TabbedDialog::~TabbedDialog( void )
-{
-    Debug::Throw( "TabbedDialog::~TabbedDialog.\n" );
-    return;
-}
-
 //_________________________________________________________
 QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const QString& tooltip, bool expand )
 {

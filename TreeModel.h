@@ -54,13 +54,9 @@ template<class T> class TreeModel : public ItemModel
     using Item = TreeItem<T>;
 
     //* constructor
-    TreeModel(QObject *parent = 0):
+    TreeModel(QObject *parent = nullptr):
         ItemModel( parent ),
         root_( map_ )
-    {}
-
-    //* destructor
-    virtual ~TreeModel()
     {}
 
     //*@name methods reimplemented from base class
@@ -331,7 +327,7 @@ template<class T> class TreeModel : public ItemModel
     };
 
     //* update values
-    /*!
+    /**
     items that are not found in list are removed
     items that are found are updated
     */
@@ -359,7 +355,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* update values
-    /*!
+    /**
     items that are not found in list are removed
     items that are found are updated
     */
@@ -485,7 +481,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* reset tree
-    /*! private version, with no signal emitted */
+    /** private version, with no signal emitted */
     void _resetTree( void )
     {
         List children( TreeModel::children() );
@@ -498,7 +494,7 @@ template<class T> class TreeModel : public ItemModel
     private:
 
     //* item map
-    /*! used to allow fast mapping between index and value */
+    /** used to allow fast mapping between index and value */
     typename Item::Map map_;
 
     //* root item

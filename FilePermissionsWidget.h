@@ -34,22 +34,18 @@ class FilePermissionsWidget: public QWidget, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     FilePermissionsWidget( QWidget*, QFile::Permissions = QFile::Permissions() );
 
-    //! destructor
-    virtual ~FilePermissionsWidget( void )
-    {}
-
-    //! set permissions
+    //* set permissions
     virtual void setPermissions( QFile::Permissions );
 
     private:
 
-    //! checkbox map
+    //* checkbox map
     using CheckBoxMap = QHash< QFile::Permission, QCheckBox* >;
 
-    //! checkbox map
+    //* checkbox map
     CheckBoxMap checkboxes_;
 
 

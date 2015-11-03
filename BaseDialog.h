@@ -44,10 +44,7 @@ class BaseDialog: public QDialog
     };
 
     //* constructor
-    BaseDialog( QWidget *parent = nullptr, Qt::WindowFlags flags = 0);
-
-    //* destructor
-    virtual ~BaseDialog( void );
+    BaseDialog( QWidget* = nullptr, Qt::WindowFlags = 0);
 
     //* window title
     virtual BaseDialog& setWindowTitle( const QString& );

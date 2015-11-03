@@ -40,9 +40,6 @@ class WidgetDragMonitor: public QObject, public Counter
     //* constructor
     WidgetDragMonitor( QWidget* );
 
-    //* destructor
-    virtual ~WidgetDragMonitor() = default;
-
     //* mode
     enum ModeFlag
     {
@@ -101,7 +98,7 @@ class WidgetDragMonitor: public QObject, public Counter
     //* timer event
     virtual void timerEvent( QTimerEvent* );
 
-    //! get corner from (relative) position
+    //* get corner from (relative) position
     XcbDefines::Direction _direction( QWidget* widget, const QPoint& ) const;
 
     protected Q_SLOTS:
@@ -132,10 +129,10 @@ class WidgetDragMonitor: public QObject, public Counter
     //* dragged widget
     QWidget* target_;
 
-    //! window resize direction
+    //* window resize direction
     XcbDefines::Direction direction_;
 
-    //! size at click time
+    //* size at click time
     QSize dragSize_;
 
     //* click position

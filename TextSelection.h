@@ -24,12 +24,12 @@
 
 #include <QString>
 
-//! string to be found and options
+//* string to be found and options
 class TextSelection
 {
     public:
 
-    //! text selection flags
+    //* text selection flags
     enum Flag
     {
         None = 0,
@@ -43,7 +43,7 @@ class TextSelection
 
     Q_DECLARE_FLAGS( Flags, Flag );
 
-    //! default constructor
+    //* default constructor
     TextSelection(
         const QString& text = "",
         const QString& replaceText = "",
@@ -53,35 +53,35 @@ class TextSelection
         flags_( flags )
     {}
 
-    //! text
+    //* text
     const QString& text( void ) const
     { return text_; }
 
-    //! test
+    //* test
     void setText( const QString& text )
     { text_ = text; }
 
-    //! replace text
+    //* replace text
     const QString& replaceText( void ) const
     { return replaceText_; }
 
-    //! replace text
+    //* replace text
     void setReplaceText( const QString& text )
     { replaceText_ = text; }
 
-    //! flags
+    //* flags
     Flags flags( void ) const
     { return flags_; }
 
-    //! flags
+    //* flags
     void setFlags( Flags flags )
     { flags_ = flags; }
 
-    //! flags
+    //* flags
     bool flag( const Flag& flag ) const
     { return flags_ & flag; }
 
-    //! flags
+    //* flags
     void setFlag( const Flag& flag, bool value )
     {
         if( value ) flags_ |= flag;
@@ -90,16 +90,16 @@ class TextSelection
 
     private:
 
-    //! string to be found
+    //* string to be found
     QString text_;
 
-    //! string to replace
+    //* string to replace
     QString replaceText_;
 
-    //! flags
-    Flags flags_;
+    //* flags
+    Flags flags_ = None;
 
-    //! streamer
+    //* streamer
     friend QTextStream &operator << (QTextStream &out,const TextSelection &selection)
     {
         out

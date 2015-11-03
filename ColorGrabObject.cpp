@@ -33,9 +33,7 @@
 //______________________________________________
 ColorGrabObject::ColorGrabObject( QWidget* parent ):
     QObject( parent ),
-    Counter( "ColorGrabObject" ),
-    captureWidget_( 0x0 ),
-    mouseDown_( false )
+    Counter( "ColorGrabObject" )
 {
     Debug::Throw( "ColorGrabObject::ColorGrabObject.\n" );
     Q_CHECK_PTR( parent );

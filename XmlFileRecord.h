@@ -37,40 +37,36 @@ namespace Base
     }
 }
 
-//! xml interface to FileRecord
+//* xml interface to FileRecord
 class XmlFileRecord: public FileRecord
 {
 
     public:
 
-    //! constructor
+    //* constructor
     XmlFileRecord( const FileRecord& file ):
         FileRecord( file )
     {}
 
-    //! constructor
+    //* constructor
     XmlFileRecord( const QDomElement& );
 
-    //! write to dom
+    //* write to dom
     QDomElement domElement( QDomDocument& ) const;
 
     class List: public QList<XmlFileRecord>
     {
         public:
 
-        //! constructor
+        //* constructor
         List( void ):
             QList<XmlFileRecord>()
         {}
 
-        //! constructor
+        //* constructor
         List( const QDomElement& );
 
-        //!destructor
-        virtual ~List( void )
-        {}
-
-        //! write to dom
+        //* write to dom
         QDomElement domElement( QDomDocument& ) const;
 
     };

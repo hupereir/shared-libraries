@@ -39,8 +39,7 @@
 //____________________________________________________________
 BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     QMainWindow( parent, WindowFlags ),
-    monitor_( this ),
-    wasMaximized_( false )
+    monitor_( this )
 {
     Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
 

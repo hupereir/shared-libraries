@@ -35,10 +35,6 @@ class DefaultFolders: public QObject
     //* return singleton
     static DefaultFolders& get( void );
 
-    //* destructor
-    virtual ~DefaultFolders( void )
-    {}
-
     //* folder type
     enum Type
     {

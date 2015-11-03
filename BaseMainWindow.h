@@ -35,7 +35,7 @@
 
 class ToolBarMenu;
 
-/*!
+/**
 \class BaseMainWindow
 \brief customized QDialog
 */
@@ -46,181 +46,177 @@ class BaseMainWindow: public QMainWindow
 
     public:
 
-    //! constructor
-    BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags = 0);
+    //* constructor
+    BaseMainWindow( QWidget*, Qt::WindowFlags = 0);
 
-    //! destructor
-    virtual ~BaseMainWindow( void )
-    { Debug::Throw( "BaseMainWindow::~BaseMainWindow.\n" ); }
-
-    //! restore window size
+    //* restore window size
     virtual QSize minimumSizeHint( void ) const;
 
-    //! restore window size
+    //* restore window size
     virtual QSize sizeHint( void ) const;
 
-    //! center widget on argument widget
+    //* center widget on argument widget
     void centerOnDesktop( void );
 
-    //! center on parent widget
+    //* center on parent widget
     void centerOnParent( void )
     { centerOnWidget( parentWidget() ); }
 
-    //! center widget on argument widget
+    //* center widget on argument widget
     void centerOnWidget( QWidget* );
 
-    //! window title
+    //* window title
     virtual void setWindowTitle( const QString& );
 
-    //! set menu bar (overloaded)
+    //* set menu bar (overloaded)
     void setMenuBar( QMenuBar* );
 
-    //! set menu bar (overloaded)
+    //* set menu bar (overloaded)
     void setStatusBar( QStatusBar* );
 
-    //! lock toolbars
+    //* lock toolbars
     QAction& lockToolBarsAction( void ) const
     { return *lockToolBarsAction_; }
 
-    //! lock panels
+    //* lock panels
     QAction& lockPanelsAction( void ) const
     { return *lockPanelsAction_; }
 
-    //! show menubar
+    //* show menubar
     QAction& showMenuBarAction( void ) const
     { return *showMenuBarAction_; }
 
-    //! show status bar
+    //* show status bar
     QAction& showStatusBarAction( void ) const
     { return *showStatusBarAction_; }
 
-    //! create context menu (overloaded)
+    //* create context menu (overloaded)
     virtual QMenu* createPopupMenu( void );
 
-    //! toolbar menu
-    virtual ToolBarMenu& toolBarMenu( QWidget* parent = 0 );
+    //* toolbar menu
+    virtual ToolBarMenu& toolBarMenu( QWidget* = nullptr );
 
-    //! option name
+    //* option name
     virtual void setOptionName( const QString& name );
 
-    //! menu option name
+    //* menu option name
     bool hasOptionName( void ) const
     { return !lockToolBarsOptionName().isEmpty(); }
 
-    //! lock toolbar option name
+    //* lock toolbar option name
     const QString& lockToolBarsOptionName( void ) const
     { return lockToolBarsOptionName_; }
 
-    //! lock panels option name
+    //* lock panels option name
     const QString& lockPanelsOptionName( void ) const
     { return lockPanelsOptionName_; }
 
-    //! menu option name
+    //* menu option name
     const QString& showMenuBarOptionName( void ) const
     { return showMenuBarOptionName_; }
 
-    //! status bar option name
+    //* status bar option name
     const QString& showStatusBarOptionName( void ) const
     { return showStatusBarOptionName_; }
 
     Q_SIGNALS:
 
-    //! toolbar configuration changed
+    //* toolbar configuration changed
     void toolbarConfigurationChanged( void );
 
     public Q_SLOTS:
 
-    //! uniconify
+    //* uniconify
     void uniconify( void );
 
     protected:
 
-    //! generic event
+    //* generic event
     virtual bool event( QEvent* );
 
-    //! true if main window has menu
+    //* true if main window has menu
     virtual bool _hasMenuBar( void ) const;
 
-    //! true if main window has menu
+    //* true if main window has menu
     virtual bool _hasStatusBar( void ) const;
 
-    //! true if main window has toolbars
+    //* true if main window has toolbars
     virtual bool _hasToolBars( void ) const;
 
-    //! returns true if lockable toolbars are found
+    //* returns true if lockable toolbars are found
     virtual bool _hasLockableToolBars( void ) const;
 
-    //! true if main window has dock widgets
+    //* true if main window has dock widgets
     virtual bool _hasPanels( void ) const;
 
-    //! action list
+    //* action list
     using ActionList = QVector<QAction*>;
 
-    //! toolbar actions list
+    //* toolbar actions list
     ActionList _toolBarsActions( QMenu* );
 
-    //! maximize state prior to minimization
+    //* maximize state prior to minimization
     bool _wasMaximized( void ) const
     { return wasMaximized_; }
 
-    //! maximize state prior to minimization
+    //* maximize state prior to minimization
     void _setWasMaximized( bool value )
     { wasMaximized_ = value; }
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
-    //! toolbar text position
+    //* toolbar text position
     void _updateToolButtonStyle( int );
 
-    //! toolbar text position
+    //* toolbar text position
     void _updateToolButtonIconSize( IconSize::Size );
 
-    //! lock toolbars
+    //* lock toolbars
     void _lockToolBars( bool );
 
-    //! lock panels
+    //* lock panels
     void _lockPanels( bool );
 
-    //! toggle menu
+    //* toggle menu
     void _toggleMenuBar( bool );
 
-    //! toggle status bar
+    //* toggle status bar
     void _toggleStatusBar( bool );
 
     private:
 
-    //! option name
+    //* option name
     QString lockToolBarsOptionName_;
 
-    //! option name
+    //* option name
     QString lockPanelsOptionName_;
 
-    //! option name
+    //* option name
     QString showMenuBarOptionName_;
 
-    //! option name
+    //* option name
     QString showStatusBarOptionName_;
 
-    //! size watcher
+    //* size watcher
     WidgetMonitor monitor_;
 
-    //! lock toolbars
-    QAction* lockToolBarsAction_;
+    //* lock toolbars
+    QAction* lockToolBarsAction_ = nullptr;
 
-    //! lock docks
-    QAction* lockPanelsAction_;
+    //* lock docks
+    QAction* lockPanelsAction_ = nullptr;
 
-    //! toggle menu
-    QAction* showMenuBarAction_;
+    //* toggle menu
+    QAction* showMenuBarAction_ = nullptr;
 
-    //! toggle statusBar
-    QAction* showStatusBarAction_;
+    //* toggle statusBar
+    QAction* showStatusBarAction_ = nullptr;
 
-    //! window state prior to minimization
-    bool wasMaximized_;
+    //* window state prior to minimization
+    bool wasMaximized_ = false;
 
 };
 

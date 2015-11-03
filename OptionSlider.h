@@ -25,7 +25,7 @@
 
 #include <cmath>
 
-//! QSlider associated to an option for configuration dialogs
+//* QSlider associated to an option for configuration dialogs
 class OptionSlider: public CustomSlider, public OptionWidget
 {
 
@@ -33,18 +33,17 @@ class OptionSlider: public CustomSlider, public OptionWidget
 
     public:
 
-    //! constructor
+    //* constructor
     OptionSlider( QWidget* parent, const QString& optionName ):
         CustomSlider( parent ),
-        OptionWidget( optionName, this ),
-        scale_( 1 )
+        OptionWidget( optionName, this )
     {}
 
-    //! scale (i.e. option = value()/scale)
+    //* scale (i.e. option = value()/scale)
     void setScale( const double& scale )
     { scale_ = scale; }
 
-    //! read value from option
+    //* read value from option
     void read( const Options& options )
     {
         setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
@@ -55,19 +54,19 @@ class OptionSlider: public CustomSlider, public OptionWidget
         }
     }
 
-    //! write value to option
+    //* write value to option
     void write( Options& options ) const
     { options.set<double>( optionName(), static_cast<double>(slider().value())/scale_ ); }
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
     private:
 
-    //! scale factor (default is 1)
-    double scale_;
+    //* scale factor (default is 1)
+    double scale_ = 1;
 
 };
 #endif

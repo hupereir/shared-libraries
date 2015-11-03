@@ -80,13 +80,9 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
     };
 
     //* constructor
-    OptionModel( QObject* parent = 0 ):
+    OptionModel( QObject* parent = nullptr ):
         TreeModel<OptionPair>( parent ),
         Counter( "OptionModel" )
-    {}
-
-    //* destructor
-    virtual ~OptionModel( void )
     {}
 
     //* set model read only

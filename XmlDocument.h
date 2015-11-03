@@ -36,10 +36,6 @@ class XmlDocument: public QDomDocument, public Counter
     //* constructor
     XmlDocument( void );
 
-    //* destructor
-    virtual ~XmlDocument( void )
-    {}
-
     //*@name accessors
     //@{
 

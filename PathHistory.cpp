@@ -24,9 +24,8 @@
 //__________________________________________________________________
 PathHistory::PathHistory( QObject* parent ):
     QObject( parent ),
-    Counter( "PathHistory" ),
-    index_(0)
-{ Debug::Throw( "PathHistory::PathHistory.\n" ); }
+    Counter( "PathHistory" )
+{}
 
 //__________________________________________________________________
 FileRecord::List PathHistory::previousPathList( void ) const

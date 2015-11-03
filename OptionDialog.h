@@ -27,7 +27,7 @@
 // forward declaration
 class TreeView;
 
-//! displays Counter names and counts
+//* displays Counter names and counts
 class OptionDialog: public CustomDialog
 {
 
@@ -35,39 +35,35 @@ class OptionDialog: public CustomDialog
 
     public:
 
-    //! constructor
+    //* constructor
     OptionDialog( QWidget* );
-
-    //! destructor
-    virtual ~OptionDialog( void )
-    {}
 
     Q_SIGNALS:
 
-    //! emmited when options are modified
+    //* emmited when options are modified
     void configurationChanged( void );
 
     protected Q_SLOTS:
 
-    //! reload options from backup
+    //* reload options from backup
     void _reload( void );
 
-    //! option modified
+    //* option modified
     void _optionModified( OptionPair );
 
-    //! option modified
+    //* option modified
     void _specialOptionModified( OptionPair );
 
     private:
 
-    //! option model
+    //* option model
     OptionModel model_;
 
-    //! list
-    TreeView* list_;
+    //* list
+    TreeView* list_ = nullptr;
 
-    //! pointer to original options set
-    /*!
+    //* pointer to original options set
+    /**
     it is needed to keep track of the changes
     so that initial set is restored when pressing the cancel button
     */

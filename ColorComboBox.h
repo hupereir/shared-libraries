@@ -35,15 +35,11 @@ class ColorComboBox: public QComboBox, public Counter
     Q_OBJECT
 
     public:
-    
-  
+
+
     //* constructor
     ColorComboBox( QWidget* );
 
-    //* destructor
-    virtual ~ColorComboBox( void )
-    {}
-    
     //*@name accessors
     //@{
 
@@ -52,33 +48,33 @@ class ColorComboBox: public QComboBox, public Counter
 
     //* current color
     QColor color( void ) const;
-    
+
     //@}
 
     //*@name modifiers
     //@{
-  
+
     //* colors
     void setColors( const Base::Color::Set& );
-    
+
     //* add color
     void addColor( const QColor& );
-    
+
     //* select color
     void selectColor( const QColor& );
-    
+
     //@}
 
     protected Q_SLOTS:
-    
+
     //* update selected color
     void _updateActiveIndex( int );
-    
+
     private:
-    
+
     //* last selected color
     QColor lastColor_;
-    
+
 };
 
 #endif

@@ -25,11 +25,11 @@
 
 class TreeView;
 
-//! displays Counter names and counts
+//* displays Counter names and counts
 class CounterDialog: public CustomDialog
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
@@ -37,22 +37,18 @@ class CounterDialog: public CustomDialog
     // constructor
     CounterDialog( QWidget* );
 
-    //! destructor
-    virtual ~CounterDialog( void )
-    {}
-
     public Q_SLOTS:
 
-    //! update Counter list
+    //* update Counter list
     void update();
 
     private:
 
-    //! model
+    //* model
     CounterModel model_;
 
-    //! list
-    TreeView* list_;
+    //* list
+    TreeView* list_ = nullptr;
 
 };
 

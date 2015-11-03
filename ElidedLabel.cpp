@@ -28,8 +28,7 @@
 ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
     QLabel( parent ),
     Counter( "ElidedLabel" ),
-    hRefRegExp_( "(<a href=.+>)|(</a>)" ),
-    elideMode_( Qt::ElideLeft )
+    hRefRegExp_( "(<a href=.+>)|(</a>)" )
 {
 
     Debug::Throw( "ElidedLabel::ElidedLabel.\n" );

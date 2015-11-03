@@ -49,11 +49,7 @@ class BusyWidget: public QWidget, public Counter
     };
 
     //* constructor
-    BusyWidget( QWidget* = 0, Location = Center );
-
-    //* destructor
-    virtual ~BusyWidget( void )
-    {}
+    BusyWidget( QWidget* = nullptr, Location = Center );
 
     //*@name accessors
     //@{
@@ -121,7 +117,7 @@ class BusyWidget: public QWidget, public Counter
     private:
 
     //* animation
-    QPropertyAnimation* animation_;
+    QPropertyAnimation* animation_ = nullptr;
 
     //* basic time
     QBasicTimer timer_;
@@ -130,28 +126,28 @@ class BusyWidget: public QWidget, public Counter
     QPainterPath path_;
 
     //* location
-    Location location_;
+    Location location_ = Center;
 
     //* delay
-    int delay_;
+    int delay_ = 200;
 
     //* radius
-    int radius_;
+    int radius_ = 18;
 
     //* thickness
-    int thickness_;
+    int thickness_ = 5;
 
     //* border
-    int border_;
+    int border_ = 2;
 
     //* margin
-    int margin_;
+    int margin_ = 10;
 
     //* angle
-    qreal angle_;
+    qreal angle_ = 0;
 
     //* opacity
-    int opacity_;
+    int opacity_ = 0;
 
 };
 

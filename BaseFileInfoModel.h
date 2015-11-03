@@ -38,12 +38,8 @@ class BaseFileInfoModel : public ListModel<T>
     public:
 
     //* constructor
-    BaseFileInfoModel( QObject* parent = 0 ):
+    BaseFileInfoModel( QObject* parent = nullptr ):
         ListModel<T>( parent )
-    {}
-
-    //* destructor
-    virtual ~BaseFileInfoModel()
     {}
 
     //* show icons
@@ -92,10 +88,6 @@ class BaseFileInfoModel : public ListModel<T>
         SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
             ItemModel::SortFTor( type, order )
             {}
-
-        //* destructor
-        virtual ~SortFTor( void )
-        {}
 
         //* prediction
         virtual bool operator() ( const T&, const T& ) const;

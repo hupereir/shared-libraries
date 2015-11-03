@@ -33,9 +33,6 @@ class EmbeddedWidget: public QWidget
         QWidget( parent )
     {}
 
-    //* destructor
-    virtual ~EmbeddedWidget( void ) = default;
-
     protected:
 
     //* show event

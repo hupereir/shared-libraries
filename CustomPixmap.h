@@ -61,10 +61,6 @@ class CustomPixmap: public QPixmap, public Counter
     //* constructor
     CustomPixmap( const QString& );
 
-    //* destructor
-    virtual ~CustomPixmap()
-    {}
-
     //* find first file matching name in list of path
     virtual CustomPixmap find( const QString& );
 

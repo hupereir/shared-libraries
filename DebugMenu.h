@@ -28,16 +28,16 @@
 class CounterDialog;
 class IconCacheDialog;
 
-//! some basic runtime debuging
+//* some basic runtime debuging
 class DebugMenu: public QMenu, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! flags
+    //* flags
     enum Flag
     {
         Counters = 1<<0,
@@ -49,37 +49,33 @@ class DebugMenu: public QMenu, public Counter
 
     Q_DECLARE_FLAGS( Flags, Flag );
 
-    //! constructor
-    DebugMenu( QWidget* parent, Flags flags = Default );
+    //* constructor
+    DebugMenu( QWidget*, Flags = Default );
 
-    //! destructor
-    ~DebugMenu( void )
-    {}
-
-    //! needed to toggle visibility
+    //* needed to toggle visibility
     virtual bool eventFilter( QObject*, QEvent* );
 
     private Q_SLOTS:
 
-    //! print object counters
+    //* print object counters
     void _showCounterDialog( void );
 
-    //! icon cache dialog
+    //* icon cache dialog
     void _showIconCacheDialog( void );
 
-    //! show system environment
+    //* show system environment
     void _showSystemEnvironment( void );
 
-    //! show options
+    //* show options
     void _showOptions( void );
 
     private:
 
-    //! non modal Counter dialog
-    CounterDialog* counterDialog_;
+    //* non modal Counter dialog
+    CounterDialog* counterDialog_ = nullptr;
 
-    //! non modal icon cache dialog
-    IconCacheDialog* iconCacheDialog_;
+    //* non modal icon cache dialog
+    IconCacheDialog* iconCacheDialog_ = nullptr;
 
 };
 

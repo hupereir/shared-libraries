@@ -30,7 +30,7 @@ class XmlMigration: public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     XmlMigration( File oldFileName = File(), QString optionName = QString(), QString xmlName = QString() ):
         Counter( "XmlMigration" ),
         oldFile_( oldFileName ),
@@ -38,39 +38,35 @@ class XmlMigration: public Counter
         xmlName_( xmlName )
     {}
 
-    //! destructor
-    virtual ~XmlMigration( void )
-    {}
-
-    //! old file name
+    //* old file name
     void setOldFileName( const File& value )
     { oldFile_ = value; }
 
-    //! set old option name
+    //* set old option name
     void setOldOptionName ( const QString& value )
     { oldOptionName_ = value; }
 
-    //! set new Xml name
+    //* set new Xml name
     void setNewXmlName( const QString& value )
     { xmlName_ = value; }
 
-    //! do the migration
+    //* do the migration
     bool run( void );
 
     protected:
 
-    //! find XmlName in rcFile
+    //* find XmlName in rcFile
     bool _findXmlName( void ) const;
 
     private:
 
-    //! old filename
+    //* old filename
     File oldFile_;
 
-    //! old option name
+    //* old option name
     QString oldOptionName_;
 
-    //! new Xml name
+    //* new Xml name
     QString xmlName_;
 
 };

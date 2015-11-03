@@ -32,14 +32,10 @@ class TextEncodingDialog: public CustomDialog
     public:
 
 
-    //! constructor
-    TextEncodingDialog( QWidget* = 0 );
+    //* constructor
+    TextEncodingDialog( QWidget* = nullptr );
 
-    //! destructor
-    virtual ~TextEncodingDialog( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
     TextEncodingWidget& encodingWidget( void ) const
@@ -49,7 +45,7 @@ class TextEncodingDialog: public CustomDialog
 
     private:
 
-    //! encoding widget
+    //* encoding widget
     TextEncodingWidget* textEncodingWidget_;
 
 };

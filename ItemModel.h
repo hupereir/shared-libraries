@@ -32,11 +32,7 @@ class ItemModel : public QAbstractItemModel
     public:
 
     //* constructor
-    ItemModel(QObject *parent = 0);
-
-    //* destructor
-    virtual ~ItemModel()
-    {}
+    ItemModel(QObject *parent = nullptr);
 
     //* return all indexes in model starting from parent [recursive]
     QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;

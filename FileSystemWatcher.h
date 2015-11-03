@@ -34,48 +34,43 @@ class FileSystemWatcher: public QFileSystemWatcher, public Counter
 
     public:
 
-    //! constructor
-    FileSystemWatcher( QObject* parent = 0 ):
+    //* constructor
+    FileSystemWatcher( QObject* parent = nullptr ):
         QFileSystemWatcher( parent ),
-        Counter( "FileSystemWatcher" ),
-        delay_( 500 )
+        Counter( "FileSystemWatcher" )
     {
         Debug::Throw( "FileSystemWatcher::FileSystemWatcher.\n" );
         connect( this, SIGNAL( directoryChanged( const QString& ) ), SLOT( _addModifiedDirectory( const QString& ) ) );
     }
 
-    //! destructor
-    virtual ~FileSystemWatcher( void )
-    {}
-
-    //! delay
+    //* delay
     void setDelay( int value )
     { delay_ = value; }
 
     Q_SIGNALS:
 
-    //! delayed directory changed signal
+    //* delayed directory changed signal
     void directoryChangedDelayed( const QString& );
 
     protected:
 
-    //! timer event
+    //* timer event
     virtual void timerEvent( QTimerEvent* );
 
     protected Q_SLOTS:
 
-    //! add modified directory
+    //* add modified directory
     void _addModifiedDirectory( const QString& );
 
     private:
 
-    //! delay
-    int delay_;
+    //* delay
+    int delay_ = 500;
 
-    //! modified directories
+    //* modified directories
     QStringList directories_;
 
-    //! timer
+    //* timer
     QBasicTimer timer_;
 
 };

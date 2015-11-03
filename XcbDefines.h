@@ -27,10 +27,10 @@ class XcbDefines
 
     public:
 
-    //! used for stickyness
+    //* used for stickyness
     static const uint32_t ALL_DESKTOPS = ~0;
 
-    //! Atoms enumeration
+    //* Atoms enumeration
     enum AtomId {
         WM_STATE,
 

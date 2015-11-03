@@ -35,17 +35,13 @@ class BasePrintHelper: public QObject
 
     public:
     //* constructor
-    BasePrintHelper( QObject* parent = 0 ):
+    BasePrintHelper( QObject* parent = nullptr ):
         QObject( parent ),
         orientation_( QPrinter::Portrait ),
         pageMode_( SinglePage ),
         pageNumber_(0),
         sheetNumber_(0),
         now_( TimeStamp::now() )
-    { Debug::Throw( "BasePrintHelper::BasePrintHelper.\n" ); };
-
-    //* destructor
-    virtual ~BasePrintHelper( void )
     {}
 
     //* multipage mode
@@ -127,10 +123,10 @@ class BasePrintHelper: public QObject
     private:
 
     //* orientation
-    QPrinter::Orientation orientation_;
+    QPrinter::Orientation orientation_ = QPrinter::Portrait;
 
     //* page mode
-    PageMode pageMode_;
+    PageMode pageMode_ = SinglePage;
 
     //* rects
     QRect pageRect_;
@@ -141,10 +137,10 @@ class BasePrintHelper: public QObject
     QList<QRect> pages_;
 
     //* page
-    int pageNumber_;
+    int pageNumber_ = 0;
 
     //* sheet
-    int sheetNumber_;
+    int sheetNumber_ = 0;
 
     //* time stamp
     TimeStamp now_;

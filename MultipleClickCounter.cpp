@@ -22,17 +22,11 @@
 //______________________________________________________________________________
 MultipleClickCounter::MultipleClickCounter( QObject* parent, int maxCount ):
     QObject( parent ),
-    Counter( "MultipleClickCounter" ),
-    toReset_( true ),
-    position_( 0 ),
-    maxCount_( maxCount ),
-    count_( 0 )
-{
-    Debug::Throw( "MultipleClickCounter::MultipleClickCounter.\n" );
-}
+    Counter( "MultipleClickCounter" )
+{}
 
 //______________________________________________________________________________
-void MultipleClickCounter::increment( const int& position )
+void MultipleClickCounter::increment( int position )
 {
     Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
 

@@ -47,12 +47,8 @@ class ListModel : public ItemModel
     using MutableListIterator = QMutableListIterator<ValueType>;
 
     //* constructor
-    ListModel(QObject *parent = 0):
+    ListModel(QObject* parent = nullptr ):
         ItemModel( parent )
-    {}
-
-    //* destructor
-    virtual ~ListModel()
     {}
 
     //*@name methods reimplemented from base class
@@ -262,7 +258,7 @@ class ListModel : public ItemModel
     { set( List() ); }
 
     //* update values from list
-    /*!
+    /**
     values that are not found in current are removed
     new values are set to the end.
     This is slower than the "set" method, but the selection is not cleared in the process

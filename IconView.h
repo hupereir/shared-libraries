@@ -51,11 +51,7 @@ class IconView: public QAbstractItemView, public Counter
     public:
 
     //* constructor
-    IconView( QWidget* = 0 );
-
-    //* destructor
-    virtual ~IconView( void )
-    {}
+    IconView( QWidget* = nullptr );
 
     //* set model
     virtual void 	setModel( QAbstractItemModel* );
@@ -152,9 +148,6 @@ class IconView: public QAbstractItemView, public Counter
 
         //* constructor
         Container( QWidget*, IconView* );
-
-        //* destructor
-        ~Container( void ) = default;
 
         //*@name accessors
         IconView& iconView( void ) const

@@ -28,56 +28,52 @@
 // forward declaration
 class XmlDocument;
 
-//! Xml interface to FileList
+//* Xml interface to FileList
 class XmlFileList: public FileList
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constuctor
-    XmlFileList( QObject* parent = 0 );
-
-    //! destructor
-    virtual ~XmlFileList( void )
-    {}
+    //* constuctor
+    XmlFileList( QObject* parent = nullptr );
 
     // set tag name
     void setTagName( const QString& );
 
-    //! Read fileList from file
+    //* Read fileList from file
     virtual bool read( File = File() );
 
-    //! write fileList to file
+    //* write fileList to file
     virtual bool write( File = File() );
 
     protected:
 
-    //! set db file
+    //* set db file
     virtual bool _setDBFile( const File& );
 
-    //! read
+    //* read
     virtual bool _read( const XmlDocument& );
 
     private Q_SLOTS:
 
-    //! update configuration
+    //* update configuration
     void _updateConfiguration( void );
 
-    //! save configuration
+    //* save configuration
     void _saveConfiguration( void );
 
-    //! compare two record lists
+    //* compare two record lists
     bool _differs( const FileRecord::List&, const FileRecord::List& ) const;
 
     private:
 
-    //! tag name
+    //* tag name
     QString tagName_;
 
-    //! file from/to wich the files are saved
+    //* file from/to wich the files are saved
     File dbFile_;
 
 };

@@ -27,33 +27,30 @@
 class ToolButtonStyleMenu;
 class IconSizeMenu;
 
-//! provides toolbar manipulation menu
+//* provides toolbar manipulation menu
 class ToolBarMenu: public QMenu, public Counter
 {
 
     public:
 
-    //! constructor
-    ToolBarMenu( QWidget* parent = 0 );
+    //* constructor
+    ToolBarMenu( QWidget* = nullptr );
 
-    //! destructor
-    virtual ~ToolBarMenu( void );
-
-    //! tool button style menu
+    //* tool button style menu
     ToolButtonStyleMenu &toolButtonStyleMenu( void ) const
     { return *toolButtonStyleMenu_; }
 
-    //! icon size menu
+    //* icon size menu
     IconSizeMenu &iconSizeMenu( void ) const
     { return *iconSizeMenu_; }
 
     private:
 
-    //! tool button style
-    ToolButtonStyleMenu* toolButtonStyleMenu_;
+    //* tool button style
+    ToolButtonStyleMenu* toolButtonStyleMenu_ = nullptr;
 
-    //! icon size
-    IconSizeMenu* iconSizeMenu_;
+    //* icon size
+    IconSizeMenu* iconSizeMenu_ = nullptr;
 
 };
 

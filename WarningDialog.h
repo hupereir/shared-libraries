@@ -27,31 +27,27 @@
 #include <QLabel>
 #include <QWidget>
 
-//! simple information dialog
+//* simple information dialog
 class WarningDialog: public DetailsDialog
 {
 
     public:
 
-    //! constructor
+    //* constructor
     WarningDialog( QWidget* parent, const QString& = QString() );
 
-    //! destructor
-    virtual ~WarningDialog( void )
-    {}
-
-    //! set text
+    //* set text
     virtual void setText( const QString& );
 
     protected:
 
-    //! label
+    //* label
     QLabel& _label( void ) const
     { return *label_; }
 
     private:
 
-    //! label
+    //* label
     QLabel* label_;
 
 };

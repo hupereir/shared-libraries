@@ -30,7 +30,7 @@
 #include <QList>
 #include <QTabWidget>
 
-//! new attachment popup dialog
+//* new attachment popup dialog
 class HtmlDialog: public CustomDialog
 {
 
@@ -38,30 +38,26 @@ class HtmlDialog: public CustomDialog
 
     public:
 
-    //! constructor
+    //* constructor
     HtmlDialog( QWidget* parent );
 
-    //! destructor
-    virtual ~HtmlDialog( void )
-    {}
-
-    //! set command manually
+    //* set command manually
     void setCommand( QString command )
     { commandEditor_->setEditText( command ); }
 
-    //! add commands to the combo-box list
+    //* add commands to the combo-box list
     void addCommand( QString command )
     { commandEditor_->addItem( command ); }
 
-    //! command
+    //* command
     QString command( void ) const
     { return commandEditor_->currentText(); }
 
-    //! file
+    //* file
     void setFile( const File& file )
     { destinationEditor_->setFile( file ); }
 
-    //! file
+    //* file
     File file( void ) const
     { return destinationEditor_->editor().text(); }
 
@@ -70,22 +66,22 @@ class HtmlDialog: public CustomDialog
 
     protected Q_SLOTS:
 
-    //! browse print command
+    //* browse print command
     void _browseCommand( void );
 
-    //! save print command
+    //* save print command
     void _saveCommands( void );
 
     private:
 
-    //! print command
-    CustomComboBox* commandEditor_;
+    //* print command
+    CustomComboBox* commandEditor_ = nullptr;
 
-    //! file
-    BrowsedLineEditor *destinationEditor_;
+    //* file
+    BrowsedLineEditor *destinationEditor_ = nullptr;
 
-    //! tab widget
-    QTabWidget* tabWidget_;
+    //* tab widget
+    QTabWidget* tabWidget_ = nullptr;
 
 };
 

@@ -55,10 +55,6 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
 }
 
 //______________________________________
-RecentFilesMenu::~RecentFilesMenu( void )
-{ Debug::Throw( "RecentFilesMenu::~RecentFilesMenu.\n" ); }
-
-//______________________________________
 bool RecentFilesMenu::openLastValidFile( void )
 {
     Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );

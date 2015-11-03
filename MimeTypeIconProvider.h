@@ -35,9 +35,6 @@ class MimeTypeIconProvider : public QObject, public Counter
     //* constructor
     MimeTypeIconProvider( QObject* = nullptr );
 
-    //* destructor
-    virtual ~MimeTypeIconProvider() = default;
-
     //*@name accessors
     //@{
 

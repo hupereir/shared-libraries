@@ -35,11 +35,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     QToolBar( title, parent ),
     Counter( "CustomToolBar" ),
     optionName_( optionName ),
-    locationOptionName_( optionName + "_LOCATION" ),
-    transparent_( false ),
-    sizeFromOptions_( true ),
-    lockFromOptions_( true ),
-    appearsInMenu_( false )
+    locationOptionName_( optionName + "_LOCATION" )
 {
     Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
 
@@ -52,10 +48,6 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 }
-
-//_______________________________________________________________
-CustomToolBar::~CustomToolBar( void )
-{ Debug::Throw( "~CustomToolBar::CustomToolBar.\n" ); }
 
 //_______________________________________________________________
 void CustomToolBar::paintEvent( QPaintEvent* event )

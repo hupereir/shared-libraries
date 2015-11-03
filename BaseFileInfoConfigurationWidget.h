@@ -34,32 +34,28 @@ class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
 
     public:
 
-    //! constructor
+    //* constructor
     BaseFileInfoConfigurationWidget( QWidget* );
 
-    //! destructo
-    virtual ~BaseFileInfoConfigurationWidget( void )
-    {}
-
-    //! set widget value from option value
+    //* set widget value from option value
     virtual void read( const Options& );
 
-    //! set option value from widget value
+    //* set option value from widget value
     virtual void write( Options& ) const;
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
     protected:
 
-    //! add checkbox
+    //* add checkbox
     void _addCheckBox( BaseFileInfoToolTipWidget::Type, const QString& );
 
     private:
 
-    //! map mask to checkboxes
+    //* map mask to checkboxes
     using CheckBoxMap = QMap<BaseFileInfoToolTipWidget::Type, QCheckBox* >;
     CheckBoxMap checkboxes_;
 

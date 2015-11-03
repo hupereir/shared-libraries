@@ -40,10 +40,6 @@ class BaseToolTipWidget: public QWidget, public Counter
     //* constructor
     BaseToolTipWidget( QWidget* );
 
-    //* destructo
-    virtual ~BaseToolTipWidget( void )
-    {}
-
     //*@name accessors
     //@{
 
@@ -148,16 +144,16 @@ class BaseToolTipWidget: public QWidget, public Counter
     private:
 
     //* enable state
-    bool enabled_;
+    bool enabled_ = false;
 
     //* follow mouse
-    bool followMouse_;
+    bool followMouse_ = false;
 
     //* default tooltip delay
-    int defaultDelay_;
+    int defaultDelay_ = 1000;
 
     //* prefered tooltip position with respect to index rect
-    Position preferredPosition_;
+    Position preferredPosition_ = Bottom;
 
     //* index rect
     QRect rect_;
@@ -166,7 +162,7 @@ class BaseToolTipWidget: public QWidget, public Counter
     QBasicTimer timer_;
 
     //* hidden timer
-    /*! if running, showing again the tooltip is immediate, even when calling showDelayed */
+    /** if running, showing again the tooltip is immediate, even when calling showDelayed */
     QBasicTimer hiddenTimer_;
 
 };

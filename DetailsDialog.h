@@ -40,9 +40,6 @@ class DetailsDialog: public CustomDialog
         CustomDialog( parent, flags, WindowFlags )
     {}
 
-    //* destructor
-    virtual ~DetailsDialog( void ) = default;
-
     //* set text details
     virtual void setDetails( const QString& );
 

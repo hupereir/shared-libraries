@@ -46,7 +46,7 @@ class XmlOptionsSingleton
     }
 
     //* true if options have changed with respect to current
-    /*! read-only options are ignored, as well as default values and default flags */
+    /** read-only options are ignored, as well as default values and default flags */
     bool differs( const Options& other ) const
     { return _differs( options_, other ) || _differs( other, options_ ); }
 

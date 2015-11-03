@@ -26,7 +26,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
-//! handles multiple clicks and timeout
+//* handles multiple clicks and timeout
 class MultipleClickCounter: public QObject, public Counter
 {
 
@@ -34,41 +34,37 @@ class MultipleClickCounter: public QObject, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     MultipleClickCounter( QObject*, int maxCount );
 
-    //! destructor
-    virtual ~MultipleClickCounter( void )
-    { Debug::Throw( "MultipleClickCounter::~MultipleClickCounter.\n" ); }
+    //* increment counter and return current value
+    void increment( int = 0 );
 
-    //! increment counter and return current value
-    void increment( const int& position  = 0 );
-
-    //! returns current counts
-    const unsigned int& counts( void ) const
+    //* returns current counts
+    int counts( void ) const
     { return count_; }
 
     protected:
 
-    //! timerEvent
+    //* timerEvent
     virtual void timerEvent( QTimerEvent* );
 
     private:
 
-    //! timer
+    //* timer
     QBasicTimer timer_;
 
-    //! true if need to reset at next increment
-    bool toReset_;
+    //* true if need to reset at next increment
+    bool toReset_ = true;
 
-    //! last click position in text
-    int position_;
+    //* last click position in text
+    int position_ = 0;
 
-    //! max count
-    unsigned int maxCount_;
+    //* max count
+    int maxCount_ = 1;
 
-    //! current number of clicks
-    unsigned int count_;
+    //* current number of clicks
+    int count_ = 0;
 
 };
 

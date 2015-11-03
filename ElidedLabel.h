@@ -25,7 +25,7 @@
 #include <QLabel>
 #include <QResizeEvent>
 
-//! label with automatically elided text
+//* label with automatically elided text
 class ElidedLabel: public QLabel, public Counter
 {
 
@@ -33,33 +33,29 @@ class ElidedLabel: public QLabel, public Counter
 
     public:
 
-    //! constructor
-    ElidedLabel( QWidget* = 0 );
+    //* constructor
+    ElidedLabel( QWidget* = nullptr );
 
-    //! constructor
-    ElidedLabel( const QString&, QWidget* = 0);
+    //* constructor
+    ElidedLabel( const QString&, QWidget* = nullptr);
 
-    //! destructor
-    virtual ~ElidedLabel( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! elision mode
+    //* elision mode
     Qt::TextElideMode elideMode( void ) const
     { return elideMode_; }
 
-    //! text
+    //* text
     QString text( void )
     { return fullText_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! elision mode
+    //* elision mode
     void setElideMode( Qt::TextElideMode mode )
     {
         if( mode == elideMode_ ) return;
@@ -69,36 +65,36 @@ class ElidedLabel: public QLabel, public Counter
         }
     }
 
-    //! set text
+    //* set text
     void setText( const QString& );
 
     //@}
 
-    //! minimum size hint
+    //* minimum size hint
     virtual QSize minimumSizeHint( void ) const;
 
-    //! size hint
+    //* size hint
     virtual QSize sizeHint( void ) const;
 
     protected:
 
-    //! mouse release
+    //* mouse release
     void mouseReleaseEvent(QMouseEvent *);
 
-    //! resize event
+    //* resize event
     virtual void resizeEvent( QResizeEvent* );
 
-    //! update text based on object size
+    //* update text based on object size
     void updateElidedText( void );
 
     private:
 
     QRegExp hRefRegExp_;
 
-    //! elision mode
-    Qt::TextElideMode elideMode_;
+    //* elision mode
+    Qt::TextElideMode elideMode_ = Qt::ElideLeft;
 
-    //! full text
+    //* full text
     QString fullText_;
 
 };

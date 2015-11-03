@@ -39,9 +39,6 @@ class IconViewItem: public Counter
         Counter( "IconView::Item" )
     {}
 
-    //* destructor
-    virtual ~IconViewItem( void ) = default;
-
     //*@name accessors
     //@{
 

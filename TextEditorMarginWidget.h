@@ -40,10 +40,6 @@ class TextEditorMarginWidget: public QWidget, public Counter
     //* constructor
     TextEditorMarginWidget( TextEditor* );
 
-    //* destructor
-    virtual ~TextEditorMarginWidget( void )
-    {}
-
     //* vertical line
     bool drawVerticalLine( void ) const
     { return true; }

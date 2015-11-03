@@ -42,9 +42,6 @@ class StatusBarLabel: public QLabel
         QLabel( parent )
     {}
 
-    //* destructor
-    virtual ~StatusBarLabel( void ) = default;
-
     public Q_SLOTS:
 
     //* set text
@@ -68,14 +65,11 @@ class BaseStatusBar: public QStatusBar, public Counter
     //* constructor
     BaseStatusBar( QWidget* );
 
-    //* destructor
-    ~BaseStatusBar( void ) = default;
-
     //* add clock
     void addClock( void );
 
     //* add label
-    void addLabel( int stretch = 0 );
+    void addLabel( int = 0 );
 
     //* add labels
     void addLabels( int n, int stretch = 0 )

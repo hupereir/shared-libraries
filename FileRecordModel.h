@@ -45,11 +45,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     };
 
     //* constructor
-    FileRecordModel( QObject* = 0 );
-
-    //* destructor
-    virtual ~FileRecordModel( void )
-    {}
+    FileRecordModel( QObject* = nullptr );
 
     //* show icons
     void setShowIcons( bool value )

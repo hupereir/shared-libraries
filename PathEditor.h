@@ -40,7 +40,7 @@ class PathEditorItem;
 class PathEditorMenuButton;
 class PathHistory;
 
-//! path editor
+//* path editor
 class PathEditor: public QStackedWidget, public Counter
 {
 
@@ -48,99 +48,95 @@ class PathEditor: public QStackedWidget, public Counter
 
     public:
 
-    //! dragging
+    //* dragging
     static const QString MimeType;
 
-    //! constructor
+    //* constructor
     PathEditor( QWidget* );
 
-    //! destructor
-    virtual ~PathEditor( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! path
+    //* path
     File path( void ) const;
 
-    //! true if parent directory is available
+    //* true if parent directory is available
     bool hasParent( void ) const;
 
-    //! true if previous path is available in history
+    //* true if previous path is available in history
     bool hasPrevious( void ) const;
 
-    //! true if next path available in history
+    //* true if next path available in history
     bool hasNext( void ) const;
 
-    //! minimum size hint
+    //* minimum size hint
     virtual QSize minimumSizeHint( void ) const;
 
-    //! size hint
+    //* size hint
     virtual QSize sizeHint( void ) const
     { return minimumSizeHint(); }
 
-    //! previous path menu
+    //* previous path menu
     QMenu& previousPathMenu( void ) const
     { return *previousPathMenu_; }
 
-    //! next path menu
+    //* next path menu
     QMenu& nextPathMenu( void ) const
     { return *nextPathMenu_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! prefix
+    //* prefix
     void setPrefix( const QString& );
 
-    //! history tag name
+    //* history tag name
     void setHistoryTagName( const QString& );
 
-    //! home
+    //* home
     void setHomePath( const File& );
 
-    //! root
+    //* root
     void setRootPathList( const File::List& );
 
-    //! true if filesystem is local
+    //* true if filesystem is local
     void setIsLocal( bool );
 
-    //! set dragEnabled
+    //* set dragEnabled
     void setDragEnabled( bool );
 
-    //! set path
+    //* set path
     void setPath( const File&, const File& = File() );
 
     //@}
 
     Q_SIGNALS:
 
-    //! path changed
+    //* path changed
     void pathChanged( const File& );
 
     public Q_SLOTS:
 
-    //! select parent path
+    //* select parent path
     void selectParent( void );
 
-    //! select previous path in history
+    //* select previous path in history
     void selectPrevious( void );
 
-    //! select next path in history
+    //* select next path in history
     void selectNext( void );
 
-    //! select from action
+    //* select from action
     void selectFromMenu( QAction* );
 
     protected:
 
-    //! resize events
+    //* resize events
     virtual void resizeEvent( QResizeEvent* );
 
-    //! prefix
+    //* prefix
     void _setUsePrefix( bool value )
     {
         if( usePrefix_ == value ) return;
@@ -148,112 +144,112 @@ class PathEditor: public QStackedWidget, public Counter
         _updatePrefix();
     }
 
-    //! update prefix
+    //* update prefix
     void _updatePrefix( void );
 
-    //! truncation
+    //* truncation
     void _setUseTruncation( bool );
 
-    //! reload
+    //* reload
     void _reload( void )
     { setPath( path() ); }
 
     protected Q_SLOTS:
 
-    //! show browser
+    //* show browser
     void _showBrowser( void )
     { setCurrentWidget( browserContainer_ ); }
 
-    //! show editor
+    //* show editor
     void _showEditor( void )
     { setCurrentWidget( editorContainer_ ); }
 
-    //! return pressed in editor
+    //* return pressed in editor
     void _returnPressed( void );
 
-    //! menu button clicked
+    //* menu button clicked
     void _menuButtonClicked( void );
 
-    //! update path from menu action
+    //* update path from menu action
     void _updatePath( QAction* );
 
-    //! button clicked
+    //* button clicked
     void _buttonClicked( QAbstractButton* );
 
-    //! update button visibility
+    //* update button visibility
     void _updateButtonVisibility( void );
 
-    //! update previous and next path menus
+    //* update previous and next path menus
     void _updatePathMenus( void );
 
     private Q_SLOTS:
 
-    //! configuration
+    //* configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! dummy treeview, needed for rendering items
-    QAbstractItemView* itemView_;
+    //* dummy treeview, needed for rendering items
+    QAbstractItemView* itemView_ = nullptr;
 
-    //! path browser container
-    QWidget* browserContainer_;
+    //* path browser container
+    QWidget* browserContainer_ = nullptr;
 
-    //! editor container
-    QWidget* editorContainer_;
+    //* editor container
+    QWidget* editorContainer_ = nullptr;
 
-    //! editor
-    CustomComboBox* editor_;
+    //* editor
+    CustomComboBox* editor_ = nullptr;
 
-    //! button layout
-    QBoxLayout* buttonLayout_;
+    //* button layout
+    QBoxLayout* buttonLayout_ = nullptr;
 
-    //! button group
-    QButtonGroup* group_;
+    //* button group
+    QButtonGroup* group_ = nullptr;
 
-    //!@name prefix
+    //*@name prefix
     //@{
 
-    //! use prefix
-    bool usePrefix_;
+    //* use prefix
+    bool usePrefix_ = true;
 
-    //! prefix
+    //* prefix
     QString prefix_;
 
-    //! prefix
-    QLabel* prefixLabel_;
+    //* prefix
+    QLabel* prefixLabel_ = nullptr;
 
     //@}
 
-    //! true if editor corresponds to local file system
-    bool isLocal_;
+    //* true if editor corresponds to local file system
+    bool isLocal_ = true;
 
-    //! truncation
-    bool truncate_;
+    //* truncation
+    bool truncate_ = true;
 
-    //! true if drag and drop is enabled (false by default)
-    bool dragEnabled_;
+    //* true if drag and drop is enabled (false by default)
+    bool dragEnabled_ = false;
 
-    //! home directory
+    //* home directory
     File home_;
 
-    //! root directories
+    //* root directories
     File::List rootPathList_;
 
-    //! menu button
-    PathEditorMenuButton* menuButton_;
+    //* menu button
+    PathEditorMenuButton* menuButton_ = nullptr;
 
-    //! previous path menu
-    QMenu* previousPathMenu_;
+    //* previous path menu
+    QMenu* previousPathMenu_ = nullptr;
 
-    //! nex path menu
-    QMenu* nextPathMenu_;
+    //* nex path menu
+    QMenu* nextPathMenu_ = nullptr;
 
-    //! item buttons
+    //* item buttons
     QList<PathEditorItem*> items_;
 
-    //! path history
-    PathHistory* history_;
+    //* path history
+    PathHistory* history_ = nullptr;
 
 };
 

@@ -26,11 +26,11 @@
 
 class TreeView;
 
-//! displays IconCache names and counts
+//* displays IconCache names and counts
 class IconCacheDialog: public CustomDialog
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
@@ -38,22 +38,18 @@ class IconCacheDialog: public CustomDialog
     // constructor
     IconCacheDialog( QWidget* );
 
-    //! destructor
-    virtual ~IconCacheDialog( void )
-    {}
-
     public Q_SLOTS:
 
-    //! update IconCache list
+    //* update IconCache list
     void update();
 
     private:
 
-    //! model
+    //* model
     IconCacheModel model_;
 
-    //! list
-    TreeView* list_;
+    //* list
+    TreeView* list_ = nullptr;
 
 };
 

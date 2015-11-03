@@ -27,9 +27,6 @@
 FileList::FileList( QObject* parent ):
     QObject( parent ),
     Counter( "FileList" ),
-    maxSize_( 0 ),
-    check_( true ),
-    cleanEnabled_( false ),
     thread_( this )
 {
     // thread connection

@@ -32,7 +32,7 @@
 
 #include <algorithm>
 
-//! Some Xml definitions
+//* Some Xml definitions
 namespace Xml
 {
 
@@ -49,13 +49,13 @@ namespace Xml
 
 }
 
-//! store a file and needed informations for Ftp transfer
+//* store a file and needed informations for Ftp transfer
 class BaseFileInfo
 {
 
     public:
 
-    //! file properties
+    //* file properties
     enum Type
     {
         None = 0,
@@ -74,10 +74,10 @@ class BaseFileInfo
 
     Q_DECLARE_FLAGS( TypeFlags, Type )
 
-    //! drag string
+    //* drag string
     static const QString MimeType;
 
-    //! constructor
+    //* constructor
     BaseFileInfo( const QString& file = QString(), TypeFlags type = None ):
         file_( file ),
         type_( type ),
@@ -85,142 +85,138 @@ class BaseFileInfo
         lastModified_( -1 )
     {}
 
-    //! constructor from DOM element
+    //* constructor from DOM element
     BaseFileInfo( const QDomElement& );
 
-    //! destructor
-    virtual ~BaseFileInfo( void )
-    {}
-
-    //! dump to dom element
+    //* dump to dom element
     virtual QDomElement domElement( QDomDocument& ) const;
 
-    //! equal to operator
+    //* equal to operator
     virtual bool operator == (const BaseFileInfo& other) const
     { return file() == other.file() && type() == other.type(); }
 
-    //! equal to operator
+    //* equal to operator
     virtual bool operator != (const BaseFileInfo& other) const
     { return !( *this == other ); }
 
-    //! less than operator
+    //* less than operator
     virtual bool operator < (const BaseFileInfo& other) const
     {
         if( file() != other.file() ) return file() < other.file();
         return type() < other.type();
     }
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! file
+    //* file
     virtual const File& file( void ) const
     { return file_; }
 
-    //! alias
+    //* alias
     virtual bool hasAlias( void ) const
     { return !alias_.isEmpty(); }
 
-    //! alias
+    //* alias
     virtual const QString& alias( void ) const
     { return alias_; }
 
-    //! file type
+    //* file type
     virtual int type( void ) const
     { return type_; }
 
-    //! location
+    //* location
     virtual TypeFlags location( void ) const
     { return type_ & Remote; }
 
-    //! file is local
+    //* file is local
     virtual bool isLocal( void ) const
     { return !(type_&Remote); }
 
-    //! file is remote
+    //* file is remote
     virtual bool isRemote( void ) const
     { return type_&Remote; }
 
-    //! file is document
+    //* file is document
     virtual bool isDocument( void ) const
     { return type_&Document; }
 
-    //! file is directory
+    //* file is directory
     virtual bool isFolder( void ) const
     { return type_&Folder; }
 
-    //! file is navigator (.|..)
+    //* file is navigator (.|..)
     virtual bool isNavigator( void ) const
     { return type_&Navigator; }
 
-    //! file is link
+    //* file is link
     virtual bool isLink( void ) const
     { return type_&Link; }
 
-    //! file is broken link
+    //* file is broken link
     virtual bool isBrokenLink( void ) const
     { return (type_&Broken); }
 
-    //! file is hidden
+    //* file is hidden
     virtual bool isHidden( void ) const
     { return type_&Hidden; }
 
-    //! file size
+    //* file size
     virtual qint64 size( void ) const
     { return size_; }
 
-    //! return true if lastModified_ is valid and smaller than argument
+    //* return true if lastModified_ is valid and smaller than argument
     virtual bool isOlder( const time_t& time ) const
     { return ( lastModified_ >= 0 && lastModified_ < time ); }
 
-    //! file last modification
+    //* file last modification
     virtual time_t lastModified( void ) const
     { return lastModified_; }
 
-    //! user
+    //* user
     virtual const QString& user( void ) const
     { return user_; }
 
-    //! group
+    //* group
     virtual const QString& group( void ) const
     { return group_; }
 
-    //! permissions
+    //* permissions
     virtual QFile::Permissions permissions( void ) const
     { return permissions_; }
 
-    //! type string
+    //* type string
     virtual QString typeString( void ) const;
 
-    //! permission string
+    //* permission string
     virtual QString permissionsString( void ) const;
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! file
+    //* file
     virtual void setFile( const File& file )
     { file_ = file; }
 
-    //! alias
+    //* alias
     virtual void setAlias( const QString& value )
     { alias_ = value; }
 
-    //! file type
+    //* file type
     virtual void setType( TypeFlags type )
     { type_ = type; }
 
-    //! set file as local
+    //* set file as local
     virtual void setLocal( void )
     { type_ &= (~Remote); }
 
-    //! set file as remote
+    //* set file as remote
     virtual void setRemote( void )
     { type_ |= Remote; }
 
-    //! set file as file
+    //* set file as file
     virtual void setIsDocument( void )
     {
         type_ &= (~Folder);
@@ -228,173 +224,173 @@ class BaseFileInfo
         type_ |= Document;
     }
 
-    //! set file as directory
+    //* set file as directory
     virtual void setIsFolder( void )
     {
         type_ &= (~Document);
         type_ |= Folder;
     }
 
-    //! set file as file
+    //* set file as file
     virtual void setIsNavigator( void )
     {
         type_ &= (~Document);
         type_ |= TypeFlags( Folder|Navigator );
     }
 
-    //! set file as link
+    //* set file as link
     virtual void setIsLink( bool value = true )
     {
         if( value ) type_ |= Link;
         else type_ &= ~Link;
     }
 
-    //! set file as broken link
+    //* set file as broken link
     virtual void setIsBrokenLink( bool value = true )
     {
         if( value ) type_ |= TypeFlags( Link | Broken );
         else type_ &= ~Broken;
     }
 
-    //! set file as hidden
+    //* set file as hidden
     virtual void setIsHidden( bool value = true )
     {
         if( value ) type_ |= Hidden;
         else type_ &= ~Hidden;
     }
 
-    //! file size
+    //* file size
     virtual void setSize( qint64 size )
     { size_ = size; }
 
-    //! file last modification
+    //* file last modification
     virtual void setLastModified( const time_t& time )
     { lastModified_ = time; }
 
-    //! user
+    //* user
     virtual void setUser( const QString& user )
     { user_ = user; }
 
-    //! group
+    //* group
     virtual void setGroup( const QString& group )
     { group_ = group; }
 
-    //! permissions
+    //* permissions
     virtual void setPermissions( const QFile::Permissions& permissions )
     { permissions_ = permissions; }
 
-    //! permissions (from string)
+    //* permissions (from string)
     virtual void setPermissions( const QString& );
 
-    //! update internal storage from file
+    //* update internal storage from file
     virtual void update( void );
 
-    //! update internal storage from existing file info
+    //* update internal storage from existing file info
     virtual void updateFrom( const BaseFileInfo& );
 
     //@}
 
-    //! used to count files of a given type
+    //* used to count files of a given type
     class SameTypeFTor
     {
         public:
 
-        //! constructor
+        //* constructor
         SameTypeFTor( TypeFlags type ):
             type_( type )
         {}
 
-        //! predicate
+        //* predicate
         bool operator() (const BaseFileInfo& info ) const
         { return (info.type()&type_) == type_; }
 
         private:
 
-        //! predicted type
+        //* predicted type
         TypeFlags type_;
 
     };
 
-    //! used to retrieve documents
+    //* used to retrieve documents
     class IsDocumentFTor
     {
         public:
 
-        //! predicate
+        //* predicate
         bool operator() (const BaseFileInfo& info ) const
         { return info.isDocument() && !info.isNavigator(); }
 
     };
 
-    //! used to retrieve folders
+    //* used to retrieve folders
     class IsFolderFTor
     {
         public:
 
-        //! predicate
+        //* predicate
         bool operator() (const BaseFileInfo& info ) const
         { return info.isFolder() && !info.isNavigator(); }
 
     };
 
-    //! used to retrieve folder
+    //* used to retrieve folder
     class IsLinkFTor
     {
         public:
 
-        //! predicate
+        //* predicate
         bool operator() (const BaseFileInfo& info ) const
         { return info.isLink(); }
 
     };
 
-    //! used to retrieve FileInfo with matching file
+    //* used to retrieve FileInfo with matching file
     class SameFileFTor
     {
         public:
 
-        //! constructor
+        //* constructor
         SameFileFTor( const BaseFileInfo& info ):
             file_( info.file() )
         {}
 
-        //! constructor
+        //* constructor
         SameFileFTor( const File& file ):
             file_( file )
         {}
 
-        //! predicate
+        //* predicate
         bool operator() (const BaseFileInfo& info ) const
         { return info.file() == file_; }
 
         private:
 
-        //! predicted file
+        //* predicted file
         File file_;
 
     };
 
-    //! file info list
+    //* file info list
     template < typename T >
     class BaseList: public QList<T>
     {
 
         public:
 
-        //! constructor
+        //* constructor
         BaseList( void )
         {}
 
-        //! constructor
+        //* constructor
         BaseList( const QList<T>& other ):
             QList<T>( other )
         {}
 
-        //! destructor
+        //* destructor
         virtual ~BaseList( void )
         {}
 
-        //! description
+        //* description
         enum Flag
         {
             None = 0,
@@ -409,31 +405,31 @@ class BaseFileInfo
 
     private:
 
-    //! file
+    //* file
     File file_;
 
-    //! alias
+    //* alias
     QString alias_;
 
-    //! file type
+    //* file type
     TypeFlags type_;
 
-    //! file size
+    //* file size
     qint64 size_;
 
-    //! last modification
+    //* last modification
     time_t lastModified_;
 
-    //! user name
+    //* user name
     QString user_;
 
-    //! group name
+    //* group name
     QString group_;
 
-    //! permissions
+    //* permissions
     QFile::Permissions permissions_;
 
-    //! streamer
+    //* streamer
     friend QTextStream& operator << ( QTextStream& out, const BaseFileInfo& file )
     {
         out << file.file() << " (";

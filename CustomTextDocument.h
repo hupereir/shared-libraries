@@ -27,8 +27,8 @@
 #include <QPlainTextDocumentLayout>
 #include <QTextDocument>
 
-//! customized TextDocument to derive from Base::Key
-/*! this is needed to easily handled multiple text editors that share the same document */
+//* customized TextDocument to derive from Base::Key
+/** this is needed to easily handled multiple text editors that share the same document */
 class CustomTextDocument: public QTextDocument, public Base::Key, public Counter
 {
 
@@ -36,15 +36,11 @@ class CustomTextDocument: public QTextDocument, public Base::Key, public Counter
 
     public:
 
-    //! constructor
-    CustomTextDocument( QObject* parent = 0 ):
+    //* constructor
+    CustomTextDocument( QObject* parent = nullptr ):
         QTextDocument( parent ),
         Counter( "CustomTextDocument" )
-    { Debug::Throw( "CustomTextDocument::CustomTextDocument.\n" ); }
-
-    //! destructor
-    virtual ~CustomTextDocument( void )
-    { Debug::Throw( "CustomTextDocument::~CustomTextDocument.\n" ); }
+    {}
 
 };
 

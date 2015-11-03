@@ -35,10 +35,6 @@ class SimpleListViewDelegate : public QAbstractItemDelegate, public Counter
     //* constructor
     SimpleListViewDelegate( QObject* = nullptr );
 
-    //* destructor
-    virtual ~SimpleListViewDelegate( void )
-    {}
-
     //* paint
     virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
 

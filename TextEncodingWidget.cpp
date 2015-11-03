@@ -114,8 +114,7 @@ class TextEncodingModel: public ListModel<TextEncodingString>
 TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
     QWidget( parent ),
     Counter( "TextEncodingWidget" ),
-    model_( new TextEncodingModel( this ) ),
-    locked_( false )
+    model_( new TextEncodingModel( this ) )
 {
     // layout
     QVBoxLayout* layout( new QVBoxLayout() );

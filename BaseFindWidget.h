@@ -45,9 +45,6 @@ class BaseFindWidget: public EmbeddedWidget, public Counter
     //* constructor
     BaseFindWidget( QWidget* = nullptr, bool compact = true );
 
-    //* destructor
-    virtual ~BaseFindWidget( void ) = default;
-
     //*@name accessors
     //@{
 

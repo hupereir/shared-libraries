@@ -29,60 +29,55 @@ class OptionWidget
 {
     public:
 
-    //! constructor
+    //* constructor
     OptionWidget( const QString& name, QObject* budy = 0 ):
         optionName_( name ),
-        buddy_( budy ),
-        connected_( false )
+        buddy_( budy )
     {}
 
-    //! destructor
-    virtual ~OptionWidget()
-    {}
-
-    //! set widget value from option value
+    //* set widget value from option value
     virtual void read( const Options& ) = 0;
 
-    //! set option value from widget value
+    //* set option value from widget value
     virtual void write( Options& ) const = 0;
 
-    //! true if has buddy
+    //* true if has buddy
     bool hasBuddy( void ) const
     { return buddy_; }
 
-    //! buddy
+    //* buddy
     QObject& buddy( void ) const
     { return *buddy_; }
 
-    //! option name
+    //* option name
     const QString& optionName( void ) const
     { return optionName_; }
 
     protected:
 
-    //! set buddy
+    //* set buddy
     virtual void _setBuddy( QObject* buddy )
     { buddy_ = buddy; }
 
-    //! true when connected
+    //* true when connected
     bool _connected( void ) const
     { return connected_; }
 
-    //! set connected
+    //* set connected
     void _setConnected( bool value = true )
     { connected_ = value; }
 
     private:
 
-    //! name of the option linked to the widget
+    //* name of the option linked to the widget
     QString optionName_;
 
-    //! buddy
-    /*! it is used for signal/slots connections in derived class implementations */
-    QObject* buddy_;
+    //* buddy
+    /** it is used for signal/slots connections in derived class implementations */
+    QObject* buddy_ = nullptr;
 
-    //! true when connected
-    bool connected_;
+    //* true when connected
+    bool connected_ = false;
 
 };
 

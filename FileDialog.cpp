@@ -33,10 +33,7 @@ QString& FileDialog::_workingDirectory( void )
 FileDialog::FileDialog( QWidget* parent ):
     QObject( parent ),
     Counter( "FileDialog" ),
-    acceptMode_( QFileDialog::AcceptOpen ),
-    fileMode_( QFileDialog::ExistingFile ),
-    selectedFile_( _workingDirectory() ),
-    options_(0)
+    selectedFile_( _workingDirectory() )
 { Debug::Throw( "FileDialog::FileDialog.\n" ); }
 
 //_______________________________________________________

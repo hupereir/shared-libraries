@@ -36,9 +36,6 @@ class BaseReplaceWidget: public BaseFindWidget
     //* constructor
     BaseReplaceWidget( QWidget* = nullptr, bool compact = true );
 
-    //* destructor
-    virtual ~BaseReplaceWidget( void ) = default;
-
     //*@name accessors
     //@{
 

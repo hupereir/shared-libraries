@@ -25,83 +25,83 @@
 #include <QTextStream>
 #include <QTextDocument>
 
-//! stores paragraph and index (in paragraph) into unique structure
+//* stores paragraph and index (in paragraph) into unique structure
 class TextPosition: public Counter
 {
     public:
 
-    //! default constructor
+    //* default constructor
     TextPosition( int paragraph = 0, int index = 0 ):
         Counter( "TextPosition" ),
         paragraph_( paragraph ),
         index_( index )
     {}
 
-    //! construct from document and absolute index
+    //* construct from document and absolute index
     TextPosition( QTextDocument*, int index );
 
-    //! paragraph
+    //* paragraph
     const int& paragraph( void ) const
     { return paragraph_; }
 
-    //! paragraph
+    //* paragraph
     int& paragraph( void )
     { return paragraph_; }
 
-    //! index
+    //* index
     const int& index( void ) const
     { return index_; }
 
-    //! index
+    //* index
     int& index( void )
     { return index_; }
 
-    //! get absolute index for given document
+    //* get absolute index for given document
     int index( QTextDocument* ) const;
 
-    //! lower than operater
+    //* lower than operater
     bool operator < (const TextPosition& position ) const
     {
         if( paragraph() != position.paragraph() ) return paragraph() < position.paragraph();
         else return index() < position.index();
     }
 
-    //! greater than operator
+    //* greater than operator
     bool operator > (const TextPosition& position ) const
     {
         if( paragraph() != position.paragraph() ) return paragraph() > position.paragraph();
         else return index() > position.index();
     }
 
-    //! lower than operater
+    //* lower than operater
     bool operator <= (const TextPosition& position ) const
     { return !(*this > position ); }
 
-    //! larger than operater
+    //* larger than operater
     bool operator >= (const TextPosition& position ) const
     { return !(*this < position ); }
 
-    //! equal operator
+    //* equal operator
     bool operator == (const TextPosition& position ) const
     { return (paragraph() == position.paragraph() && index() == position.index()); }
 
-    //! equal operator
+    //* equal operator
     bool operator != (const TextPosition& position ) const
     { return !( *this == position ); }
 
-    //! validity
+    //* validity
     bool isValid( void ) const
     { return (paragraph() >= 0 && index() >= 0 ); }
 
     private:
 
-    //! paragraph index
-    int paragraph_;
+    //* paragraph index
+    int paragraph_ = 0;
 
-    //! character index
-    int index_;
+    //* character index
+    int index_ = 0;
 
-    //! dump to stream
+    //* dump to stream
     friend QTextStream& operator << ( QTextStream& out, const TextPosition& position )
     {
         out << "(" << position.paragraph() << "," << position.index() << ")";

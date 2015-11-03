@@ -29,139 +29,135 @@
 
 #include <QObject>
 
-//! handles list of files saved into resource file for later reopening
+//* handles list of files saved into resource file for later reopening
 class FileList: public QObject, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     FileList( QObject* );
 
-    //! destructor
-    virtual ~FileList( void )
-    {}
-
-    //! returns true if file is found in list
+    //* returns true if file is found in list
     virtual bool contains( const File& ) const;
 
-    //! remove file from database
+    //* remove file from database
     virtual void remove( const File& );
 
-    //! get filerecord associated to a name
-    /*! creates new fileRecord if not found */
+    //* get filerecord associated to a name
+    /** creates new fileRecord if not found */
     virtual FileRecord& get( const File& file )
     { return _add( FileRecord( file ), false ); }
 
-    //! empty
+    //* empty
     virtual bool isEmpty( void ) const
     { return _records().isEmpty(); }
 
-    //! gets file list size
+    //* gets file list size
     virtual int size( void ) const
     { return _records().size(); }
 
-    //! all records
+    //* all records
     FileRecord::List records( void ) const
     { return _truncatedList( _records() ); }
 
-    //! set record
+    //* set record
     virtual void set( const FileRecord::List& );
 
-    //! all files
+    //* all files
     File::List files( void ) const;
 
-    //! get last valid file
+    //* get last valid file
     virtual FileRecord lastValidFile( void );
 
-    //! returns true if file list can be cleaned
+    //* returns true if file list can be cleaned
     virtual bool cleanEnabled( void ) const
     { return (check()) ? cleanEnabled_ : !isEmpty(); }
 
-    //! clean files. Remove either invalid or all files, depending on check_
+    //* clean files. Remove either invalid or all files, depending on check_
     virtual void clean( void );
 
-    //! clear files. Remove all
+    //* clear files. Remove all
     virtual void clear( void );
 
-    //! check flag
+    //* check flag
     virtual bool check( void ) const
     { return check_; }
 
-    //! check_ flag
+    //* check_ flag
     virtual void setCheck( bool value )
     { check_ = value; }
 
     Q_SIGNALS:
 
-    //! emmited when thread has completed validity check
+    //* emmited when thread has completed validity check
     void validFilesChecked( void );
 
-    //! emmited when contents is changed
+    //* emmited when contents is changed
     void contentsChanged( void );
 
     public Q_SLOTS:
 
-    //! add file.
+    //* add file.
     virtual FileRecord& add( const File& file )
     { return _add( FileRecord( file ) ); }
 
-    //! run thread to check file validity
+    //* run thread to check file validity
     void checkValidFiles( void );
 
     protected:
 
-    //! maximum Size
+    //* maximum Size
     virtual void _setMaxSize( int );
 
-    //! maximum size
+    //* maximum size
     virtual const int& _maxSize( void ) const
     { return maxSize_; }
 
-    //! add record to current list
+    //* add record to current list
     virtual FileRecord& _add(
         const FileRecord&,
         bool = true,
         bool = true );
 
-    //! truncate list if larger than maxSize_
+    //* truncate list if larger than maxSize_
     virtual FileRecord::List _truncatedList( FileRecord::List ) const;
 
-    //! list of files records
+    //* list of files records
     virtual const FileRecord::List& _records( void ) const
     { return records_; }
 
-    //! list of files records
+    //* list of files records
     virtual FileRecord::List& _records( void )
     { return records_; }
 
     protected Q_SLOTS:
 
-    //! process records from threads
+    //* process records from threads
     void _processRecords( const FileRecord::List&, bool );
 
     private:
 
-    //! clean enabled
+    //* clean enabled
     void _setCleanEnabled( bool value )
     { cleanEnabled_ = value; }
 
-    //! maximum size (zero means no limit)
-    int maxSize_;
+    //* maximum size (zero means no limit)
+    int maxSize_ = 0;
 
-    //! if true, check file validity
-    bool check_;
+    //* if true, check file validity
+    bool check_ = true;
 
-    //! true if clean action is enabled
-    bool cleanEnabled_;
+    //* true if clean action is enabled
+    bool cleanEnabled_ = false;
 
-    //! thread to check file validity
+    //* thread to check file validity
     ValidFileThread thread_;
 
-    //! current list of files
+    //* current list of files
     FileRecord::List records_;
 
 };

@@ -43,11 +43,7 @@ class TreeView: public QTreeView, public Counter
     public:
 
     //* constructor
-    TreeView( QWidget* = 0 );
-
-    //* destructor
-    virtual ~TreeView( void )
-    {}
+    TreeView( QWidget* = nullptr );
 
     //*@name accessors
     //@{
@@ -194,9 +190,6 @@ class TreeView: public QTreeView, public Counter
         //* constructor
         Container( QWidget*, TreeView* );
 
-        //* destructor
-        ~Container( void ) = default;
-
         //*@name accessors
         TreeView& treeView( void ) const
         { return *treeView_; }
@@ -214,7 +207,7 @@ class TreeView: public QTreeView, public Counter
     Q_SIGNALS:
 
     //* emmitted when index is hovered
-    /*!
+    /**
     this is similar to the 'entered' signal,
     except that it is also sent when no index is selected,
     for instance, to hide tooltips

@@ -36,7 +36,7 @@ class GridLayoutItem: public QObject, public Counter
 
     public:
 
-    //! flags
+    //* flags
     enum ItemFlag
     {
         None = 0,
@@ -49,55 +49,51 @@ class GridLayoutItem: public QObject, public Counter
 
     Q_DECLARE_FLAGS( ItemFlags, ItemFlag );
 
-    //! constructor
+    //* constructor
     GridLayoutItem( QWidget*, GridLayout*, ItemFlags = None );
 
-    //! destructor
-    virtual ~GridLayoutItem( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! visibility
+    //* visibility
     bool isVisible( void ) const
     { return visible_; }
 
-    //! key
+    //* key
     QString key( void ) const
     { return key_->text(); }
 
-    //! value
+    //* value
     QString text( void ) const
     { return value_->text(); }
 
-    //! value label
+    //* value label
     QLabel& label( void ) const
     { return *value_; }
 
-    //!@}
+    //*@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set key
+    //* set key
     void setKey( const QString& );
 
-    //! set text
+    //* set text
     void setText( const QString& );
 
     //@}
 
-    //!@name visibility
+    //*@name visibility
     //@{
 
-    //! set visible
+    //* set visible
     void setVisible( bool value );
 
-    //! show
+    //* show
     void show( void );
 
-    //! hide
+    //* hide
     void hide( void );
 
     //@}
@@ -106,16 +102,16 @@ class GridLayoutItem: public QObject, public Counter
 
     Q_SIGNALS:
 
-    //! visibility changed
+    //* visibility changed
     void visibilityChanged( bool );
 
     private:
 
-    ItemFlags flags_;
+    ItemFlags flags_ = None;
     QLabel* key_;
     QLabel* value_;
 
-    bool visible_;
+    bool visible_ = true;
 
 };
 

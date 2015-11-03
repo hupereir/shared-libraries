@@ -55,10 +55,6 @@ class CustomDialog: public BaseDialog, public Counter
         Flags = Flags( OkButton | CancelButton ),
         Qt::WindowFlags = 0);
 
-    //* destructor
-    virtual ~CustomDialog( void )
-    {}
-
     //* retrieve main vbox
     QBoxLayout& mainLayout( void ) const
     { return *mainLayout_; }

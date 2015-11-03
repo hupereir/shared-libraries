@@ -33,110 +33,106 @@
 class OptionModel;
 class TreeView;
 
-//! ListBox for Special options, and buttons to add/remove values
+//* ListBox for Special options, and buttons to add/remove values
 class OptionListBox: public QWidget, public OptionWidget
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     OptionListBox( QWidget*, const QString& );
 
-    //! destructor
-    virtual ~OptionListBox( void )
-    {}
-
-    //! list
+    //* list
     TreeView& list( void ) const
     { return *list_; }
 
-    //! read value from option
+    //* read value from option
     void read( const Options& options );
 
-    //! write value to option
+    //* write value to option
     void write( Options& options ) const;
 
-    //! browsability
+    //* browsability
     void setBrowsable( bool value )
     { browsable_ = value; }
 
-    //! set file dialog mode
+    //* set file dialog mode
     void setFileMode( const QFileDialog::FileMode& mode )
     { fileMode_ = mode; }
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
     protected Q_SLOTS:
 
-    //! update buttons
+    //* update buttons
     virtual void _updateButtons( void );
 
-    //! add a value
+    //* add a value
     virtual void _add( void );
 
-    //! add a value
+    //* add a value
     virtual void _edit( void );
 
-    //! remove a value
+    //* remove a value
     virtual void _remove();
 
-    //! set value as default
+    //* set value as default
     virtual void _setDefault();
 
     protected:
 
-    //! model
+    //* model
     OptionModel& _model( void ) const
     { return *model_; }
 
-    //! set model
+    //* set model
     void _setModel( OptionModel* );
 
     private:
 
-    //! if true, use browsable line editor for Add
-    bool browsable_;
+    //* if true, use browsable line editor for Add
+    bool browsable_ = false;
 
-    //! browsable dialog mode
-    QFileDialog::FileMode fileMode_;
+    //* browsable dialog mode
+    QFileDialog::FileMode fileMode_ = QFileDialog::AnyFile;
 
-    //! model
-    OptionModel* model_;
+    //* model
+    OptionModel* model_ = nullptr;
 
-    //! value list
-    TreeView* list_;
+    //* value list
+    TreeView* list_ = nullptr;
 
-    //!@name buttons
+    //*@name buttons
     //@{
 
-    //! edit button
-    QPushButton* edit_;
+    //* edit button
+    QPushButton* edit_ = nullptr;
 
-    //! remove button
-    QPushButton* remove_;
+    //* remove button
+    QPushButton* remove_ = nullptr;
 
-    //! default button
-    QPushButton* default_;
+    //* default button
+    QPushButton* default_ = nullptr;
 
     //@}
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! remove action
-    QAction* editAction_;
+    //* remove action
+    QAction* editAction_ = nullptr;
 
-    //! remove action
-    QAction* removeAction_;
+    //* remove action
+    QAction* removeAction_ = nullptr;
 
-    //! remove action
-    QAction* defaultAction_;
+    //* remove action
+    QAction* defaultAction_ = nullptr;
 
     //@}
 

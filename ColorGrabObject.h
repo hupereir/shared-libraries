@@ -32,14 +32,10 @@ class ColorGrabObject: public QObject, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     ColorGrabObject( QWidget* );
 
-    //! destructor
-    virtual ~ColorGrabObject( void )
-    {}
-
-    //! event filter
+    //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
     Q_SIGNALS:
@@ -52,17 +48,17 @@ class ColorGrabObject: public QObject, public Counter
 
     private:
 
-    //! select color
+    //* select color
     void _selectColorFromMouseEvent( QMouseEvent* );
 
-    //! clear capture
+    //* clear capture
     void _clearCapture( void );
 
-    //! window grabber
-    QDialog* captureWidget_;
+    //* window grabber
+    QDialog* captureWidget_ = nullptr;
 
-    //! is true when the mouse is down
-    bool mouseDown_;
+    //* is true when the mouse is down
+    bool mouseDown_ = false;
 
 };
 

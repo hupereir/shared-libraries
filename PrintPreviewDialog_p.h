@@ -44,10 +44,6 @@ namespace Print
         //* constructor
         OptionMenu( QWidget* );
 
-        //* destructor
-        virtual ~OptionMenu( void )
-        {}
-
         //* set orientation
         void setOrientation( QPrinter::Orientation ) const;
 
@@ -55,7 +51,9 @@ namespace Print
         void setPageMode( BasePrintHelper::PageMode ) const;
 
         Q_SIGNALS:
+
         void orientationChanged( QPrinter::Orientation );
+
         void pageModeChanged( BasePrintHelper::PageMode );
 
         protected Q_SLOTS:
@@ -88,10 +86,6 @@ namespace Print
 
         //* constructor
         NavigationWidget( QWidget* );
-
-        //* destructor
-        virtual ~NavigationWidget( void )
-        {}
 
         int pages( void )
         { return pages_; }
@@ -129,19 +123,19 @@ namespace Print
         private:
 
         //* number of pages
-        int pages_;
+        int pages_ = 0;
 
         //* editor
-        QLineEdit* editor_;
+        QLineEdit* editor_ = nullptr;
 
         //* previous page button
-        QToolButton* previousPageButton_;
+        QToolButton* previousPageButton_ = nullptr;
 
         //* next page button
-        QToolButton* nextPageButton_;
+        QToolButton* nextPageButton_ = nullptr;
 
         //* label
-        QLabel* label_;
+        QLabel* label_ = nullptr;
 
         //* valudator
         QIntValidator validator_;

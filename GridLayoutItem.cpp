@@ -26,8 +26,7 @@
 GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags flags ):
     QObject( parent ),
     Counter( "GridLayoutItem" ),
-    flags_( flags ),
-    visible_( true )
+    flags_( flags )
 {
     layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
 

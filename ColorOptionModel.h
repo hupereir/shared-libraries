@@ -33,12 +33,8 @@ class ColorOptionModel: public OptionModel
     public:
 
     //* constructor
-    ColorOptionModel( QObject* parent = 0 ):
+    ColorOptionModel( QObject* parent = nullptr ):
         OptionModel( parent )
-    {}
-
-    //* destructor
-    virtual ~ColorOptionModel( void )
     {}
 
     // return job for a given index

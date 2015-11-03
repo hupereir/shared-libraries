@@ -26,41 +26,41 @@
 #include <QMap>
 #include <algorithm>
 
-//! used to wrap object T into tree structure
+//* used to wrap object T into tree structure
 template<class T> class TreeItem: public TreeItemBase
 {
 
     public:
 
-    //! value type
+    //* value type
     using ValueType = T;
 
-    //! reference
+    //* reference
     using Reference = T&;
 
-    //! reference
+    //* reference
     using ConstReference = const T&;
 
-    //! list of references
+    //* list of references
     using ValueList = QList<T>;
 
-    //! pointer
+    //* pointer
     using Pointer = T*;
 
-    //! list of vector
+    //* list of vector
     using List = QList<TreeItem>;
 
-    //! map items to internal id
+    //* map items to internal id
     using Map = QMap<int, TreeItem*>;
 
-    //! root constructor
+    //* root constructor
     TreeItem( Map& itemMap ):
         TreeItemBase(0),
         map_( itemMap ),
         parent_(0)
     { map_[id()] = this; }
 
-    //! copy constructor
+    //* copy constructor
     TreeItem( const TreeItem& item ):
         TreeItemBase( item.id() ),
         map_( item.map_ ),
@@ -78,7 +78,7 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
-    //! assignment
+    //* assignment
     TreeItem& operator = ( const TreeItem& item )
     {
 
@@ -99,51 +99,51 @@ template<class T> class TreeItem: public TreeItemBase
         return *this;
     }
 
-    //! destructor
+    //* destructor
     virtual ~TreeItem( void )
     { _eraseFromMap(); }
 
-    //! less than operator
+    //* less than operator
     bool operator < (const TreeItem& item ) const
     { return get() < item.get(); }
 
-    //! equal to operator
+    //* equal to operator
     bool operator == (const TreeItem& item ) const
     { return get() == item.get(); }
 
-    //! clear children
+    //* clear children
     void clear( void )
     { children_.clear(); }
 
-    //! value
+    //* value
     const ValueType& get( void ) const
     { return value_; }
 
-    //! value
+    //* value
     void set( ConstReference value )
     { value_ = value; }
 
-    //! parent
+    //* parent
     bool hasParent( void ) const
     { return parent_; }
 
-    //! parent
+    //* parent
     const TreeItem& parent( void ) const
     { return *parent_; }
 
-    //! child count
+    //* child count
     int childCount( void ) const
     { return children_.size(); }
 
-    //! get child at given row
+    //* get child at given row
     TreeItem& child( int row )
     { return children_[row]; }
 
-    //! get child at given row
+    //* get child at given row
     const TreeItem& child( int row ) const
     { return children_[row]; }
 
-    //! find item matching value
+    //* find item matching value
     TreeItem* find( const ValueType& value )
     {
 
@@ -162,7 +162,7 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
-    //! retrieve all children in list [recursive]
+    //* retrieve all children in list [recursive]
     ValueList childValues( void ) const
     {
 
@@ -177,7 +177,7 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
-    //! remove child at given row
+    //* remove child at given row
     bool remove( int row )
     {
         if( row >= childCount() ) return false;
@@ -188,8 +188,8 @@ template<class T> class TreeItem: public TreeItemBase
         return true;
     }
 
-    //! add child [recursive]
-    /*! note: this code assumes that the value is not already in the tree */
+    //* add child [recursive]
+    /** note: this code assumes that the value is not already in the tree */
     bool add( ConstReference value )
     {
 
@@ -216,8 +216,8 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
-    //! update children from existing values [recursive]
-    /*!
+    //* update children from existing values [recursive]
+    /**
     updated items are removed from the set.
     children that are not found in the set are removed from the tree
     */
@@ -265,8 +265,8 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
-    //! update children from existing values [recursive]
-    /*!
+    //* update children from existing values [recursive]
+    /**
     updated items are removed from the set.
     children that are not found in the set are left unchanged
     */
@@ -312,7 +312,7 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
-    //! sorting (recursive)
+    //* sorting (recursive)
     void sort( void )
     {
         if( children_.empty() ) return;
@@ -324,7 +324,7 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
-    //! templatized sorting
+    //* templatized sorting
     template<class SortMethod>
         void sort( SortMethod method )
     {
@@ -340,8 +340,8 @@ template<class T> class TreeItem: public TreeItemBase
 
     protected:
 
-    //! constructor
-    /*! used to insert T in the tree structure */
+    //* constructor
+    /** used to insert T in the tree structure */
     TreeItem( Map& itemMap, const TreeItem* parent, ConstReference value ):
         TreeItemBase( ++_runningId() ),
         map_( itemMap ),
@@ -349,11 +349,11 @@ template<class T> class TreeItem: public TreeItemBase
         value_( value )
     { map_[id()] = this; }
 
-    //! value
+    //* value
     Reference _get( void )
     { return value_; }
 
-    //! erase from map
+    //* erase from map
     void _eraseFromMap( void )
     {
         typename Map::iterator iter( map_.find( id() ) );
@@ -363,19 +363,19 @@ template<class T> class TreeItem: public TreeItemBase
 
     private:
 
-    //! item map
+    //* item map
     Map& map_;
 
-    //! parent
+    //* parent
     const TreeItem* parent_;
 
-    //! associated value
+    //* associated value
     ValueType value_;
 
-    //! list of children
+    //* list of children
     List children_;
 
-    //! streamer
+    //* streamer
     friend QTextStream& operator << (QTextStream& out , const TreeItem& item )
     {
 

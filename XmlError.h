@@ -28,44 +28,42 @@
 #include <QStringList>
 #include <QTextStream>
 
-//! Xml parsing error container
+//* Xml parsing error container
 class XmlError: public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     XmlError( const File& file = File() ):
         Counter( "XmlError" ),
-        file_ ( file ),
-        line_(0),
-        column_(0)
+        file_ ( file )
     {}
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! cast to boolean
+    //* cast to boolean
     operator bool(void) const
     { return error_.length() != 0; }
 
-    //! File
+    //* File
     const QString& file( void ) const
     { return file_; }
 
-    //! error
+    //* error
     const QString& error( void ) const
     { return error_; }
 
-    //! line
+    //* line
     const int& line( void ) const
     { return line_; }
 
-    //! column
+    //* column
     const int& column( void ) const
     { return column_; }
 
-    //! error
+    //* error
     QString toString( void ) const
     {
 
@@ -78,10 +76,10 @@ class XmlError: public Counter
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! clear
+    //* clear
     void clear( void )
     {
         file_.clear();
@@ -90,19 +88,19 @@ class XmlError: public Counter
         column_ = -1;
     }
 
-    //! set file
+    //* set file
     void setFile( const File& file )
     { file_ = file; }
 
-        //! error
+        //* error
     QString& error( void )
     { return error_; }
 
-    //! line
+    //* line
     int& line( void )
     { return line_; }
 
-    //! column
+    //* column
     int& column( void )
     { return column_; }
 
@@ -114,20 +112,16 @@ class XmlError: public Counter
 
         public:
 
-        //! constructor
+        //* constructor
         List( void )
         {}
 
-        //! constructor
+        //* constructor
         List( const QList<XmlError>& other ):
             QList<XmlError>( other )
         {}
 
-        //! destructor
-        virtual ~List( void )
-        {}
-
-        //! convert to string
+        //* convert to string
         QString toString( void ) const
         {
             QStringList out;
@@ -140,26 +134,26 @@ class XmlError: public Counter
 
     private:
 
-    //! file
+    //* file
     File file_;
 
-    //! error
+    //* error
     QString error_;
 
-    //! line
-    int line_;
+    //* line
+    int line_ = 0;
 
-    //! column
-    int column_;
+    //* column
+    int column_ = 0;
 
-    //! dumper
+    //* dumper
     friend QTextStream& operator << ( QTextStream &out, const XmlError& error )
     {
         out << error.toString();
         return out;
     }
 
-    //! dumper
+    //* dumper
     friend QTextStream& operator << ( QTextStream &out, const List& errors )
     {
         out << errors.toString() << endl;

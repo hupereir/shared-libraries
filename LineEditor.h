@@ -92,12 +92,12 @@ class LineEditor: public QLineEdit, public Counter
     public Q_SLOTS:
 
     //* set text
-    /*! copy base class method to make it virtual */
+    /** copy base class method to make it virtual */
     virtual void setText( const QString& value )
     { QLineEdit::setText( value ); }
 
     //* clear
-    /*! copy base class method to make it virtual */
+    /** copy base class method to make it virtual */
     virtual void clear( void )
     { QLineEdit::clear(); }
 
@@ -135,7 +135,7 @@ class LineEditor: public QLineEdit, public Counter
     virtual void _updateSelectionActions( void );
 
     //* update paste action
-    /*! depends on clipboard status and editability */
+    /** depends on clipboard status and editability */
     virtual void _updatePasteAction( void );
 
     //* update undo/redo actions
@@ -161,31 +161,31 @@ class LineEditor: public QLineEdit, public Counter
     //@{
 
     //* undo
-    QAction* undoAction_;
+    QAction* undoAction_ = nullptr;
 
     //* redo
-    QAction* redoAction_;
+    QAction* redoAction_ = nullptr;
 
     //* cut selection
-    QAction* cutAction_;
+    QAction* cutAction_ = nullptr;
 
     //* copy selection
-    QAction* copyAction_;
+    QAction* copyAction_ = nullptr;
 
     //* paste clipboard
-    QAction* pasteAction_;
+    QAction* pasteAction_ = nullptr;
 
     //* clear document
-    QAction* clearAction_;
+    QAction* clearAction_ = nullptr;
 
     //* select all document
-    QAction* selectAllAction_;
+    QAction* selectAllAction_ = nullptr;
 
     //* convert selection to upper case
-    QAction* upperCaseAction_;
+    QAction* upperCaseAction_ = nullptr;
 
     //* convert selection to lower case
-    QAction* lowerCaseAction_;
+    QAction* lowerCaseAction_ = nullptr;
 
     //@}
 

@@ -27,56 +27,52 @@
 #include <QSlider>
 #include <QSpinBox>
 
-//! customized QSlider associated to a QSpinBox
+//* customized QSlider associated to a QSpinBox
 class CustomSlider: public QWidget, public Counter
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! creator
-        CustomSlider( QWidget* parent );
+    //* creator
+    CustomSlider( QWidget* parent );
 
-    //! destructor
-    ~CustomSlider( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! retrieves value
+    //* retrieves value
     int value( void ) const
     { return slider_->value(); }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! suffix
+    //* suffix
     void setSuffix( const QString& value )
     { spinBox_->setSuffix( value ); }
 
-    //! changes value
+    //* changes value
     void setValue( int value );
 
-    //! range
+    //* range
     void setRange( int minimum, int maximum )
     {
         setMinimum( minimum );
         setMaximum( maximum );
     }
 
-    //! minumum
+    //* minumum
     void setMinimum( int value )
     {
         slider().setMinimum( value );
         spinBox().setMinimum( value );
     }
 
-    //! minumum
+    //* minumum
     void setMaximum( int value )
     {
         slider().setMaximum( value );
@@ -87,42 +83,42 @@ class CustomSlider: public QWidget, public Counter
 
     Q_SIGNALS:
 
-    //! value changed
+    //* value changed
     void valueChanged( int );
 
     protected:
 
-    //! retrieve QSlider
+    //* retrieve QSlider
     QSlider& slider( void )
     { return *slider_; }
 
-    //! retrieve QSlider
+    //* retrieve QSlider
     const QSlider& slider( void ) const
     { return *slider_; }
 
-    //! retrieve QSpinBox
+    //* retrieve QSpinBox
     QSpinBox& spinBox( void )
     { return *spinBox_; }
 
     private Q_SLOTS:
 
-    //! changes QSlider value according to QSpinBox
+    //* changes QSlider value according to QSpinBox
     void _updateSlider( int );
 
-    //! changes QSpinBox value according to QSlider
+    //* changes QSpinBox value according to QSlider
     void _updateSpinBox( int );
 
     private:
 
-    //! associated slider
-    QSlider *slider_;
+    //* associated slider
+    QSlider *slider_ = nullptr;
 
-    //! associated LineEdit
-    QSpinBox *spinBox_;
+    //* associated LineEdit
+    QSpinBox *spinBox_ = nullptr;
 
-    //! locks
-    bool spinBoxLocked_;
-    bool sliderLocked_;
+    //* locks
+    bool spinBoxLocked_ = false;
+    bool sliderLocked_ = false;
 
 };
 

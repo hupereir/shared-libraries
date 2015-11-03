@@ -35,14 +35,10 @@ class TextEncodingWidget: public QWidget, public Counter
 
     public:
 
-    //! constructor
-    TextEncodingWidget( QWidget* = 0 );
+    //* constructor
+    TextEncodingWidget( QWidget* = nullptr );
 
-    //! destructor
-    virtual ~TextEncodingWidget( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
     QByteArray encoding( void ) const
@@ -50,40 +46,40 @@ class TextEncodingWidget: public QWidget, public Counter
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set text encoding
+    //* set text encoding
     void setEncoding( const QByteArray& );
 
     //@}
 
     protected:
 
-    //! load text codecs
+    //* load text codecs
     virtual void _loadTextCodecs( void );
 
     protected Q_SLOTS:
 
-    //! update selection
+    //* update selection
     void _updateSelection( void );
 
-    //! find
+    //* find
     void _find(QString);
 
     private:
 
-    //! list
-    TreeView* list_;
+    //* list
+    TreeView* list_ = nullptr;
 
-    //! editor
-    LineEditor* editor_;
+    //* editor
+    LineEditor* editor_ = nullptr;
 
-    //! model
-    TextEncodingModel* model_;
+    //* model
+    TextEncodingModel* model_ = nullptr;
 
-    //! lock
-    bool locked_;
+    //* lock
+    bool locked_ = false;
 
 };
 

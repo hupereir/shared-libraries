@@ -36,11 +36,7 @@ class PrinterOptionWidget: public QWidget, public Counter
     public:
 
     //* constructor
-    PrinterOptionWidget( QWidget* = 0 );
-
-    //* destructor
-    virtual ~PrinterOptionWidget( void )
-    {}
+    PrinterOptionWidget( QWidget* = nullptr );
 
     //* orientation
     QPrinter::Orientation orientation( void ) const

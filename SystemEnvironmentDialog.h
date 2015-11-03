@@ -23,7 +23,7 @@
 #include "CustomDialog.h"
 #include "OptionModel.h"
 
-//! displays Counter names and counts
+//* displays Counter names and counts
 class SystemEnvironmentDialog: public CustomDialog
 {
 
@@ -31,16 +31,12 @@ class SystemEnvironmentDialog: public CustomDialog
 
     public:
 
-    //! constructor
+    //* constructor
     SystemEnvironmentDialog( QWidget* parent );
-
-    //! destructor
-    virtual ~SystemEnvironmentDialog( void )
-    {}
 
     private:
 
-    //! model
+    //* model
     OptionModel model_;
 
 };

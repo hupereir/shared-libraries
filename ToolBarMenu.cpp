@@ -41,7 +41,3 @@ Counter( "ToolBarMenu" )
     ensurePolished();
 
 }
-
-//____________________________________________________
-ToolBarMenu::~ToolBarMenu( void )
-{ Debug::Throw( "ToolBarMenu::~ToolBarMenu.\n" ); }

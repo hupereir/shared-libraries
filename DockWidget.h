@@ -35,9 +35,6 @@ class DockWidget: public QDockWidget
     //* constructor
     DockWidget( const QString&, QWidget* = nullptr, const QString& = QString() );
 
-    //* destructor
-    virtual ~DockWidget( void ) = default;
-
     //*@name accessors
     //@{
 

@@ -34,39 +34,35 @@ class CustomToolButton: public QToolButton, public Counter
 
     public:
 
-    //! default creator
-    CustomToolButton( QWidget* parent = 0 );
+    //* default constructor
+    CustomToolButton( QWidget* = nullptr );
 
-    //! destructor
-    virtual ~CustomToolButton( void )
-    { Debug::Throw( "CustomToolButton::~CustomToolButton.\n" ); }
-
-    //! update configuration from options
+    //* update configuration from options
     void setUpdateFromOptions( bool value )
     { updateFromOptions_ = value; }
 
-    //! rotation
+    //* rotation
     bool rotate( const CustomPixmap::Rotation& );
 
-    //! size hint
+    //* size hint
     virtual QSize sizeHint( void ) const;
 
     protected:
 
-    //! painting
+    //* painting
     virtual void paintEvent( QPaintEvent* );
 
     private Q_SLOTS:
 
-    //! tool button configuration
+    //* tool button configuration
     void _updateConfiguration( void );
 
     private:
 
-    //! update configuration from options
+    //* update configuration from options
     bool updateFromOptions_ = true;
 
-    //! rotation
+    //* rotation
     CustomPixmap::Rotation rotation_ = CustomPixmap::None;
 
 };

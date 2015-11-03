@@ -24,14 +24,14 @@
 #include <QSize>
 #include <QMap>
 
-//! default icon sizes
+//* default icon sizes
 class IconSize: public QSize
 {
 
     public:
 
 
-    //! icon sizes
+    //* icon sizes
     enum Size
     {
         Default = 0,
@@ -43,13 +43,13 @@ class IconSize: public QSize
         Maximum = 256
     };
 
-    //! constructor
+    //* constructor
     IconSize( Size size );
 
-    //! map text to icon size
+    //* map text to icon size
     using Map = QMap<Size, QString>;
 
-    //! text to icon size
+    //* text to icon size
     static Map& map( void );
 
 };

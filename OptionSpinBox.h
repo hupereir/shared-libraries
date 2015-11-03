@@ -27,7 +27,7 @@
 #include <QLayout>
 #include <cmath>
 
-//! QSpinBox associated to an option for configuration dialogs
+//* QSpinBox associated to an option for configuration dialogs
 class OptionSpinBox: public QWidget, public OptionWidget
 {
 
@@ -35,12 +35,10 @@ class OptionSpinBox: public QWidget, public OptionWidget
 
     public:
 
-    //! constructor
+    //* constructor
     OptionSpinBox( QWidget* parent, const QString& optionName, bool addStretch = true ):
         QWidget( parent ),
-        OptionWidget( optionName, this ),
-        spinBox_( 0 ),
-        scale_( 1 )
+        OptionWidget( optionName, this )
     {
         QHBoxLayout *layout = new QHBoxLayout();
         layout->setMargin(0);
@@ -49,11 +47,11 @@ class OptionSpinBox: public QWidget, public OptionWidget
         if( addStretch ) layout->addStretch( 1 );
     }
 
-    //! scale (i.e. option = value()/scale)
+    //* scale (i.e. option = value()/scale)
     void setScale( const double& scale )
     { scale_ = scale; }
 
-    //! read value from option
+    //* read value from option
     void read( const Options& options )
     {
         setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
@@ -64,19 +62,19 @@ class OptionSpinBox: public QWidget, public OptionWidget
         }
     }
 
-    //! write value to option
+    //* write value to option
     void write( Options& options ) const
     { options.set<double>( optionName(), static_cast<double>(value())/scale_ ); }
 
-    //! special value text
+    //* special value text
     void setSpecialValueText( const QString& value )
     { spinBox_->setSpecialValueText( value ); }
 
-    //! unit
+    //* unit
     void setSuffix( const QString& value )
     { spinBox_->setSuffix( value ); }
 
-    //!@name wrappers
+    //*@name wrappers
     //@{
 
     void setValue( int value )
@@ -98,16 +96,16 @@ class OptionSpinBox: public QWidget, public OptionWidget
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
     private:
 
-    //! spinbox
-    QSpinBox* spinBox_;
+    //* spinbox
+    QSpinBox* spinBox_ = nullptr;
 
-    //! scale factor (default is 1)
-    double scale_;
+    //* scale factor (default is 1)
+    double scale_ = 1;
 
 };
 #endif

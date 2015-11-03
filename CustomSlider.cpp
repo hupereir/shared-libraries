@@ -26,9 +26,7 @@
 //_________________________________________________________
 CustomSlider::CustomSlider( QWidget* parent ):
     QWidget( parent ),
-    Counter( "CustomSlider" ),
-    spinBoxLocked_( false ),
-    sliderLocked_( false )
+    Counter( "CustomSlider" )
 {
     Debug::Throw( "CustomSlider::CustomSlider.\n" );
 

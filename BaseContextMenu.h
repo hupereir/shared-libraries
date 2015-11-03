@@ -34,10 +34,6 @@ class BaseContextMenu: public QMenu, public Counter
     //* contructor
     BaseContextMenu( QWidget* );
 
-    //*destructor
-    virtual ~BaseContextMenu( void )
-    {}
-
     //*@name accessors
     //@{
 

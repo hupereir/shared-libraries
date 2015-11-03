@@ -34,22 +34,18 @@ class ContextMenu: public BaseContextMenu
 
     public:
 
-    //! contructor
+    //* contructor
     ContextMenu( QWidget* );
-
-    //!destructor
-    virtual ~ContextMenu( void )
-    {}
 
     protected Q_SLOTS:
 
-    //! add actions
+    //* add actions
     void _hideActions( void );
 
-    //! show actions
+    //* show actions
     void _showActions( void );
 
-    //! raise request
+    //* raise request
     void _raise( const QPoint& );
 
     private:

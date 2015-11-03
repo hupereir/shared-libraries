@@ -27,54 +27,50 @@
 
 #include <QString>
 
-//! customized tool button to display tooltip in a dedicated label
+//* customized tool button to display tooltip in a dedicated label
 class BrowseIconButton: public CustomToolButton
 {
 
-    //! Qt meta object macros
+    //* Qt meta object macros
     Q_OBJECT
 
     public:
 
-    //! no icon filename
+    //* no icon filename
     static const QString NO_ICON;
 
-    //! creator
+    //* creator
     BrowseIconButton(
         QWidget* parent,
         const QString& file = NO_ICON
         );
 
-    //! destructor
-    ~BrowseIconButton( void )
-    {}
-
-    //! iconFile
+    //* iconFile
     virtual const QString& file( void ) const
     { return file_; }
 
-    //! iconFile
+    //* iconFile
     virtual bool setFile( const QString& file, bool check );
 
     protected:
 
-    //! drag enter event
+    //* drag enter event
     virtual void dragEnterEvent( QDragEnterEvent* );
 
-    //! drop event
+    //* drop event
     virtual void dropEvent( QDropEvent* );
 
     protected Q_SLOTS:
 
-    //! opens file dialog to browse icon file
+    //* opens file dialog to browse icon file
     virtual void _browse( void );
 
     private:
 
-    //! empty pixmap
+    //* empty pixmap
     QPixmap noIconPixmap_;
 
-    //! icon file
+    //* icon file
     QString file_;
 
 };

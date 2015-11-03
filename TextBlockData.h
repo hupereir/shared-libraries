@@ -26,44 +26,40 @@
 
 #include <QTextBlockUserData>
 
-//! TextBlock data
+//* TextBlock data
 class TextBlockData: public QTextBlockUserData, public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     TextBlockData():
         QTextBlockUserData(),
         Counter( "TextBlockData" ),
         flags_( TextBlock::None )
-    { Debug::Throw( 2, "TextBlockData::TextBlockData.\n" ); }
+    {}
 
-    //! destructor
-    virtual ~TextBlockData( void )
-    { Debug::Throw( 2, "TextBlockData::~TextBlockData.\n" ); }
-
-    //! flags
-    const unsigned int& flags( void ) const
+    //* flags
+    const int& flags( void ) const
     { return flags_; }
 
-    //! flags
-    void setFlags( const unsigned int& flags )
+    //* flags
+    void setFlags( const int& flags )
     { flags_ = flags; }
 
-    //! flags
-    bool hasFlag( const unsigned int& flag ) const
+    //* flags
+    bool hasFlag( const int& flag ) const
     { return flags_ & flag; }
 
-    //! flags
-    void setFlag( const unsigned int& flag, bool value )
+    //* flags
+    void setFlag( const int& flag, bool value )
     {
         if( value ) flags_ |= flag;
         else flags_ &= (~flag);
     }
 
-    //! block background
-    /*! returns true if changed */
+    //* block background
+    /** returns true if changed */
     bool setBackground( const QColor& color )
     {
         if( (background_.isValid() || color.isValid() ) && color != background_ )
@@ -74,17 +70,17 @@ class TextBlockData: public QTextBlockUserData, public Counter
         } else return false;
     }
 
-    //! block background
+    //* block background
     const QColor& background( void ) const
     { return background_; }
 
     private:
 
-    //! flags
+    //* flags
     /* is a bit pattern */
-    unsigned int flags_;
+    int flags_ = TextBlock::None;
 
-    //! block background color (overridden by active)
+    //* block background color (overridden by active)
     QColor background_;
 
 };

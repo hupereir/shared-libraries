@@ -51,9 +51,6 @@ class PathEditorButton: public QAbstractButton
         setMinimumHeight(parent->minimumHeight());
     }
 
-    //* destructor
-    virtual ~PathEditorButton( void ) = default;
-
     //* some styles require an item view passed to painting method to have proper selection rendered in items
     void setItemView( QWidget* widget )
     { itemView_ = widget; }
@@ -98,9 +95,6 @@ class PathEditorItem: public PathEditorButton, public Counter
 
     //* constructor
     PathEditorItem( QWidget* );
-
-    //* destructor
-    virtual ~PathEditorItem( void ) = default;
 
     //*@name accessors
     //@{
@@ -224,10 +218,6 @@ class PathEditorMenuButton: public PathEditorButton, public Counter
         updateMinimumSize();
     }
 
-    //* destructor
-    virtual ~PathEditorMenuButton( void )
-    {}
-
     // minimum size
     void updateMinimumSize( void );
 
@@ -255,10 +245,6 @@ class PathEditorSwitch: public PathEditorButton, public Counter
         setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
         setCursor( Qt::IBeamCursor );
     }
-
-    //* destructor
-    virtual ~PathEditorSwitch( void )
-    {}
 
     protected:
 

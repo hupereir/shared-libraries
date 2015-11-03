@@ -26,7 +26,7 @@
 #include <QMenu>
 #include <QMap>
 
-//! provides tool button style selection menu
+//* provides tool button style selection menu
 class ToolButtonStyleMenu: public QMenu, public Counter
 {
 
@@ -34,31 +34,31 @@ class ToolButtonStyleMenu: public QMenu, public Counter
 
     public:
 
-    //! constructor
-    ToolButtonStyleMenu( QWidget* parent = 0 );
+    //* constructor
+    ToolButtonStyleMenu( QWidget* = nullptr );
 
-    //! select size
+    //* select size
     void select( int );
 
     Q_SIGNALS:
 
-    //! emmitted when default size is selected
+    //* emmitted when default size is selected
     void defaultStyleSelected( void );
 
-    //! emmitted when a new size is selected
+    //* emmitted when a new size is selected
     void styleSelected( int );
 
     private Q_SLOTS:
 
-    //! size selected from action
+    //* size selected from action
     void _selected( QAction* );
 
     private:
 
-    //! action map
+    //* action map
     using ActionMap = QMap< QAction*, int >;
 
-    //! toolbar text action map
+    //* toolbar text action map
     ActionMap actions_;
 
 };

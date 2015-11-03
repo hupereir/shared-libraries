@@ -23,7 +23,7 @@
 
 #include <QToolButton>
 
-//! used to pick color from screen
+//* used to pick color from screen
 class ColorGrabButton : public QToolButton, public Counter
 {
 
@@ -31,12 +31,8 @@ class ColorGrabButton : public QToolButton, public Counter
 
     public:
 
-    //! constructor
+    //* constructor
     ColorGrabButton( QWidget* );
-
-    //! destructor
-    virtual ~ColorGrabButton( void )
-    {}
 
     Q_SIGNALS:
 

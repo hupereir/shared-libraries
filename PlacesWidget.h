@@ -56,9 +56,6 @@ class PlacesWidget: public QWidget, public Counter
     //* constructor
     PlacesWidget( QWidget* = nullptr );
 
-    //* destructor
-    virtual ~PlacesWidget( void ) = default;
-
     //* set icon provider
     void setIconProvider( BaseFileIconProvider* );
 

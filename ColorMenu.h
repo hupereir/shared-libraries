@@ -42,10 +42,6 @@ class ColorMenu: public QMenu, public Counter
     //* constructor
     ColorMenu( QWidget* );
 
-    //* destructor
-    virtual ~ColorMenu( void )
-    {}
-
     //*@name accessors
     //@{
 
@@ -89,7 +85,7 @@ class ColorMenu: public QMenu, public Counter
     void _new( void );
 
     //* select the no color choice
-    /*! emits colorSelected with an invalid color */
+    /** emits colorSelected with an invalid color */
     void _default( void );
 
     //* get color associated to action, emit ColorSelected

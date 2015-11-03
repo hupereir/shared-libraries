@@ -26,7 +26,7 @@
 
 #include <QObject>
 
-//! used to automatically
+//* used to automatically
 class ScratchFileMonitor: public QObject, public Counter
 {
 
@@ -34,22 +34,18 @@ class ScratchFileMonitor: public QObject, public Counter
 
     public:
 
-    //! constructor
-    ScratchFileMonitor( QObject* parent = 0 ):
+    //* constructor
+    ScratchFileMonitor( QObject* parent = nullptr ):
         QObject( parent ),
         Counter( "ScratchFileMonitor" )
     {}
 
-    //! destructor
-    virtual ~ScratchFileMonitor( void )
-    {}
-
     public Q_SLOTS:
 
-    //! add
+    //* add
     void add( const File& file );
 
-    //! delete all scratch files
+    //* delete all scratch files
     void deleteScratchFiles( void );
 
     private:

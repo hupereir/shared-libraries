@@ -33,10 +33,7 @@ class BaseReplaceDialog: public BaseFindDialog
     public:
 
     //* constructor
-    BaseReplaceDialog( QWidget* parent = 0, Qt::WindowFlags flags = 0 );
-
-    //* destructor
-    virtual ~BaseReplaceDialog( void ) = default;
+    BaseReplaceDialog( QWidget* = nullptr, Qt::WindowFlags = 0 );
 
     //*@name accessors
     //@{

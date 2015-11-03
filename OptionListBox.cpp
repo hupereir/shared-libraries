@@ -97,9 +97,7 @@ EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode m
 //_______________________________________________________
 OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     QWidget( parent ),
-    OptionWidget( name, this ),
-    browsable_( false ),
-    fileMode_( QFileDialog::AnyFile )
+    OptionWidget( name, this )
 {
 
     Debug::Throw( "OptionListBox::OptionListBox.\n" );
@@ -191,8 +189,6 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 
     // update buttons
     _updateButtons();
-
-
 
 }
 

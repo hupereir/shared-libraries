@@ -17,14 +17,6 @@
 *
 *******************************************************************************/
 
-/*!
-  \file BlockHighlight.cpp
-  \brief handles block highlighting.
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include <QAbstractTextDocumentLayout>
 #include <QTextDocument>
 #include <QTextBlock>
@@ -33,15 +25,11 @@
 #include "TextEditor.h"
 #include "TextBlockData.h"
 
-
-
 //_______________________________________________________________________
 BlockHighlight::BlockHighlight( TextEditor* parent ):
   QObject( parent ),
   Counter( "BlockHighlight" ),
-  parent_( parent ),
-  enabled_( false ),
-  cleared_( true )
+  parent_( parent )
 { Debug::Throw( "BlockHighlight::BlockHighlight.\n" ); }
 
 //______________________________________________________________________

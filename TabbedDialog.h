@@ -35,7 +35,7 @@
 class SimpleListView;
 
 //* tabbed dialog
-/*! a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
+/** a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
 class TabbedDialog: public BaseDialog, public Counter
 {
 
@@ -44,10 +44,7 @@ class TabbedDialog: public BaseDialog, public Counter
     public:
 
     //* creator
-    TabbedDialog( QWidget *parent );
-
-    //* destructor
-    virtual ~TabbedDialog();
+    TabbedDialog( QWidget* );
 
     //* adds a new Item, returns associated Box
     virtual QWidget& addPage( const QString& title, const QString& tooltip = QString(), bool expand = false )
