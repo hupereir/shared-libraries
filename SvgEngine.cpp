@@ -41,10 +41,6 @@ namespace Svg
     { connect( &thread_, SIGNAL(imageCacheAvailable(const Svg::ImageCache&)), this, SLOT(_processImageCache(const Svg::ImageCache&)) ); }
 
     //__________________________________________________________
-    SvgEngine::~SvgEngine( void )
-    {}
-
-    //__________________________________________________________
     bool SvgEngine::reload( bool forced )
     {
 

@@ -29,7 +29,7 @@
 namespace Svg
 {
 
-  //! kde specific interface to plasma to load matching Svg background
+  //* kde specific interface to plasma to load matching Svg background
   class SvgPlasmaInterface: public QObject
   {
 
@@ -37,14 +37,10 @@ namespace Svg
 
     public:
 
-    //! constructor
-    SvgPlasmaInterface( QObject* parent = 0 );
+    //* constructor
+    SvgPlasmaInterface( QObject* = nullptr );
 
-    //! destructor
-    virtual ~SvgPlasmaInterface( void )
-    {}
-
-    //! image path
+    //* image path
     enum ImagePath
     {
         DialogBackground,
@@ -52,38 +48,38 @@ namespace Svg
         WidgetTranslucentBackground
     };
 
-    //! image path
+    //* image path
     bool setImagePath( ImagePath );
 
-    //! validity
+    //* validity
     bool isValid( void ) const
     { return valid_; }
 
-    //! filename
+    //* filename
     const QString& fileName( void ) const
     { return filename_; }
 
-    //! get default theme from configuration file
-    /*! returns true if changed */
+    //* get default theme from configuration file
+    /** returns true if changed */
     bool loadTheme( void );
 
-    //! load svg filename
-    /*! returns true if changed */
+    //* load svg filename
+    /** returns true if changed */
     bool loadFile( void );
 
     Q_SIGNALS:
 
-    //! emmited when svg file changed
+    //* emmited when svg file changed
     void themeChanged();
 
     private Q_SLOTS:
 
-    //! connected to kde configuration file changed
+    //* connected to kde configuration file changed
     void _configurationFileChanged( const QString& );
 
     private:
 
-    //! validity
+    //* validity
     bool _setValid( bool value )
     {
       if( valid_ == value ) return false;
@@ -91,10 +87,10 @@ namespace Svg
       return true;
     }
 
-    //! set theme
+    //* set theme
     bool _setTheme( const QString& );
 
-    //! set path matching theme
+    //* set path matching theme
     bool _setPath( const File& path )
     {
       if( path_ == path ) return false;
@@ -102,8 +98,8 @@ namespace Svg
       return true;
     }
 
-    //! set filename
-    /*! returns true when changed */
+    //* set filename
+    /** returns true when changed */
     bool _setFileName( const File& file )
     {
       if( filename_ == file ) return false;
@@ -111,28 +107,28 @@ namespace Svg
       return true;
     }
 
-    //! return image path matching id
+    //* return image path matching id
     File _imagePath( ImagePath ) const;
 
-    //! return image path matching id
+    //* return image path matching id
     File _findImage( const File&, ImagePath ) const;
 
-    //! validity
-    bool valid_;
+    //* validity
+    bool valid_ = false;
 
-    //! path to file name
-    /*! loaded from plasma configuration */
+    //* path to file name
+    /** loaded from plasma configuration */
     File path_;
 
-    //! path to image (relative to path_)
+    //* path to image (relative to path_)
     ImagePath imagePath_;
 
-    //! filename
+    //* filename
     File filename_;
 
-    //! file system watcher
-    /*! needed to track modifications of kde configuration file */
-    QFileSystemWatcher* fileSystemWatcher_;
+    //* file system watcher
+    /** needed to track modifications of kde configuration file */
+    QFileSystemWatcher* fileSystemWatcher_ = nullptr;
 
   };
 };

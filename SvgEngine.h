@@ -27,13 +27,13 @@
 #include <QSize>
 #include <QObject>
 
-//! svg namespace
+//* svg namespace
 namespace Svg
 {
 
     class SvgPlasmaInterface;
 
-    //! customized Icon factory to provide better looking disabled icons
+    //* customized Icon factory to provide better looking disabled icons
     class SvgEngine: public QObject
     {
 
@@ -41,95 +41,92 @@ namespace Svg
 
         public:
 
-        //! retrieve singleton
+        //* retrieve singleton
         static SvgEngine& get( void );
 
-        //! create pixmap
-        /*! the size is stored into a cache to avoid duplicate pixmaps manipulations */
+        //* create pixmap
+        /** the size is stored into a cache to avoid duplicate pixmaps manipulations */
         static const QPixmap& get( SvgId id )
         { return get()._get( id ); }
 
-        //! destructor
-        virtual ~SvgEngine( void );
-
-        //! is valid
+        //* is valid
         bool isValid( void ) const
         { return svg_.isValid(); }
 
-        //! preload sizes
-        /*! uses a separate thread, in order not to slow down application */
+        //* preload sizes
+        /** uses a separate thread, in order not to slow down application */
         void preload( const SvgId::List& );
 
-        //! margins
+        //* margins
         Base::Margins margins( void ) const
         { return margins_; }
 
-        //! outer padding
+        //* outer padding
         Base::Margins outerPadding( void ) const
         { return outerPadding_; }
 
         Q_SIGNALS:
 
-        //! emmitted when svg files are changed
+        //* emmitted when svg files are changed
         void changed( void );
 
         public Q_SLOTS:
 
-       //! reload all icons set in cache from new path list
-        /*! return true if changed */
+       //* reload all icons set in cache from new path list
+        /** return true if changed */
         bool forceReload( void )
         { return reload( true ); }
 
-        //! reload all icons set in cache from new path list
-        /*! return true if changed */
+        //* reload all icons set in cache from new path list
+        /** return true if changed */
         bool reload( bool forced = false );
 
         protected Q_SLOTS:
 
-        //! process image cache generated from thread
+        //* process image cache generated from thread
         void _processImageCache( const Svg::ImageCache& );
 
         private:
 
-        //! load svg
+        //* load svg
         bool _loadSvg( bool forced );
 
-        //!@name non static methods are hidden
+        //*@name non static methods are hidden
         //@{
 
-        //! constructor
+        //* constructor
         SvgEngine( void );
 
-        //! create icon
-        /*! the file is stored into a cache to avoid all pixmaps manipulations */
+        //* create icon
+        /** the file is stored into a cache to avoid all pixmaps manipulations */
         const QPixmap& _get( const SvgId&, bool from_cache = true );
 
         //@}
 
-        //! initialise plasma interface
+        //* initialise plasma interface
         void _initializePlasmaInterface( void );
 
-        //! plasma interface
+        //* plasma interface
         bool _hasPlasmaInterface( void ) const
         { return plasmaInterface_; }
 
-        //! plasma interface
+        //* plasma interface
         SvgPlasmaInterface& _plasmaInterface( void ) const
         { return *plasmaInterface_; }
 
-        //! plasma interface
-        SvgPlasmaInterface *plasmaInterface_;
+        //* plasma interface
+        SvgPlasmaInterface *plasmaInterface_ = nullptr;
 
-        //! svg file
+        //* svg file
         QString svgFile_;
 
-        //! svg renderer
+        //* svg renderer
         SvgRenderer svg_;
 
-        //! map size and pixmap
+        //* map size and pixmap
         PixmapCache cache_;
 
-        //! thread preload sizes
+        //* thread preload sizes
         SvgThread thread_;
 
         Base::Margins margins_;

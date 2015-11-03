@@ -34,9 +34,7 @@ namespace Svg
     //_________________________________________________
     SvgPlasmaInterface::SvgPlasmaInterface( QObject* parent ):
         QObject( parent ),
-        valid_( false ),
-        imagePath_( WidgetBackground ),
-        fileSystemWatcher_(0)
+        imagePath_( WidgetBackground )
     { installSvgSystemOptions(); }
 
     //_________________________________________________

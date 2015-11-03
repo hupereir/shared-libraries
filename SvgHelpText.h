@@ -22,7 +22,7 @@
 
 #include <QObject>
 
-//! SVG help text
+//* SVG help text
 namespace Svg
 {
     static const QString helpText[] =

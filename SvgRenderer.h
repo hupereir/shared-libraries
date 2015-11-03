@@ -26,7 +26,7 @@
 #include <QSvgRenderer>
 #include <QPaintDevice>
 
-//! construct pixmap of given size using Svg renderer
+//* construct pixmap of given size using Svg renderer
 namespace Svg
 {
     class SvgRenderer: public QSvgRenderer, public Counter
@@ -34,30 +34,26 @@ namespace Svg
 
         public:
 
-        //! constructor
+        //* constructor
         SvgRenderer( void );
 
-        //! destructor
-        virtual ~SvgRenderer( void )
-        {}
-
-        //! render
+        //* render
         void render( QPaintDevice&, const QString& id = QString() );
 
-        //! validity
+        //* validity
         virtual bool isValid( void ) const
         { return isValid_; }
 
-        //! configuration
+        //* configuration
         bool updateConfiguration( void );
 
-        //! load file
+        //* load file
         virtual bool load( const QString& );
 
-        //! margins
+        //* margins
         Base::Margins margins( void ) const;
 
-        //! outer padding
+        //* outer padding
         Base::Margins outerPadding( void ) const;
 
         // svg element enumeration
@@ -80,40 +76,40 @@ namespace Svg
 
         protected:
 
-        //! true if svg has all elements matching prefix
+        //* true if svg has all elements matching prefix
         bool _hasPrefix( QString prefix = QString(), SvgElements = All ) const;
 
-        //! true if svg has all margin elements matching prefix
+        //* true if svg has all margin elements matching prefix
         bool _hasMargins( QString prefix = QString(), SvgElements = (SvgElements)Top|Left|Right|Bottom ) const;
 
-        //! render
+        //* render
         void _renderPanel( QPaintDevice& );
 
-        //! render prefix to image
-        /*! need to use images in order to be able to run in separate thread */
+        //* render prefix to image
+        /** need to use images in order to be able to run in separate thread */
         void _render( QImage&, QString prefix = QString(), SvgElements = All, bool padding = true );
 
         private:
 
-        //! true if overlay (when present) must be drawn
-        bool drawOverlay_;
+        //* true if overlay (when present) must be drawn
+        bool drawOverlay_ = true;
 
-        //! validity
-        bool isValid_;
+        //* validity
+        bool isValid_ = false;
 
-        //! true if shadow margins are present
-        bool hasShadowMargins_;
+        //* true if shadow margins are present
+        bool hasShadowMargins_ = false;
 
-        //! true if shadow prefix are present
-        bool hasShadowPrefix_;
+        //* true if shadow prefix are present
+        bool hasShadowPrefix_ = false;
 
-        //! true if shadows are present
-        bool hasShadow_;
+        //* true if shadows are present
+        bool hasShadow_ = false;
 
-        //! true if overlay is present
-        bool hasOverlay_;
+        //* true if overlay is present
+        bool hasOverlay_ = false;
 
-        //! overlay hints
+        //* overlay hints
         enum OverlayHint
         {
             OverlayNone = 0,
@@ -126,19 +122,19 @@ namespace Svg
 
         Q_DECLARE_FLAGS( OverlayHints, OverlayHint )
 
-        //! overlay hints
-        OverlayHints overlayHints_;
+        //* overlay hints
+        OverlayHints overlayHints_ = OverlayNone;
 
-        //! painting hints
+        //* painting hints
         enum Hint {
             HintNone,
             HintComposeOverBorder,
         };
 
-        //! painting hints
-        int hints_;
+        //* painting hints
+        Hint hints_ = HintNone;
 
-        //! prefix for loading mask
+        //* prefix for loading mask
         QString maskPrefix_;
 
     };

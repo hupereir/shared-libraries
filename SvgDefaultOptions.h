@@ -24,7 +24,7 @@
 #include "SvgPlasmaInterface.h"
 
 //_____________________________________________________
-//! default options installer
+//* default options installer
 void installSvgOptions( void )
 {
     XmlOptions::get().setAutoDefault( true );

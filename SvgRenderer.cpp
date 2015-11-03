@@ -29,15 +29,7 @@ namespace Svg
     //________________________________________________
     SvgRenderer::SvgRenderer( void ):
         QSvgRenderer(),
-        Counter( "Svg::SvgRendered" ),
-        drawOverlay_( true ),
-        isValid_( false ),
-        hasShadowMargins_( false ),
-        hasShadowPrefix_( false ),
-        hasShadow_( false ),
-        hasOverlay_( false ),
-        overlayHints_( OverlayNone ),
-        hints_( HintNone )
+        Counter( "Svg::SvgRendered" )
     {}
 
     //________________________________________________
@@ -66,7 +58,7 @@ namespace Svg
         else if( elementExists( "hint-overlay-tile-vertical") ) overlayHints_ |= OverlayTileVertical;
 
         hints_ = HintNone;
-        if( elementExists( "hint-compose-over-border" ) ) hints_ |= HintComposeOverBorder;
+        if( elementExists( "hint-compose-over-border" ) ) hints_ = HintComposeOverBorder;
 
         if( _hasPrefix( "mask-overlay" ) ) maskPrefix_ = "mask-overlay";
         else if( _hasPrefix( "mask" ) ) maskPrefix_ = "mask";
