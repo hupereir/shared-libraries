@@ -32,7 +32,7 @@ class SystemNotificationsP
     // constructor
     SystemNotificationsP( const QString&, const QIcon& );
 
-    //! destructor
+    //* destructor
     virtual ~SystemNotificationsP( void );
 
     // initialize
@@ -40,7 +40,7 @@ class SystemNotificationsP
 
     private:
 
-    //! icon image
+    //* icon image
     void* icon_;
 
 };

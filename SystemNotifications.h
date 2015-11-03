@@ -66,7 +66,7 @@ class SystemNotifications: public QObject, public Counter
     QStringList messageQueue_;
 
     //* notifications
-    SystemNotificationsP* notify_;
+    SystemNotificationsP* notify_ = nullptr;
 
 };
 
