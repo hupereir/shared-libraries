@@ -47,10 +47,6 @@ namespace Server
     }
 
     //_______________________________________________________
-    Client::~Client( void )
-    { Debug::Throw( "Client::~Client.\n" ); }
-
-    //_______________________________________________________
     bool Client::sendCommand( const ServerCommand& command )
     {
 

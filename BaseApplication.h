@@ -27,28 +27,25 @@
 #include <QAction>
 #include <QObject>
 
-//! Main Window singleton object
+//* Main Window singleton object
 class BaseApplication: public BaseCoreApplication
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
-    //! destructor
-    virtual ~BaseApplication( void );
-
-    //! initialize application manager
+    //* initialize application manager
     virtual bool initApplicationManager( void );
 
-    //! create all widgets
+    //* create all widgets
     virtual bool realizeWidget( void );
 
-    //! true if fixed fonts are used
+    //* true if fixed fonts are used
     virtual void setUseFixedFonts( bool value )
     {
         if( useFixedFonts_ == value ) return;
@@ -56,35 +53,35 @@ class BaseApplication: public BaseCoreApplication
         _updateFonts();
     }
 
-    //! true if fixed fonts are used
+    //* true if fixed fonts are used
     virtual bool useFixedFonts( void ) const
     { return useFixedFonts_; }
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! about
+    //* about
     QAction& aboutAction( void ) const
     { return *aboutAction_; }
 
-    //! about
+    //* about
     QAction& aboutQtAction( void ) const
     { return *aboutQtAction_; }
 
-    //! configuration
+    //* configuration
     QAction& configurationAction( void ) const
     { return *configurationAction_; }
 
-    //! exit safely
+    //* exit safely
     QAction& closeAction( void ) const
     { return *closeAction_; }
 
     //@}
 
-    //!@name application information
+    //*@name application information
     //@{
 
-    //! command line parser
+    //* command line parser
     virtual CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const;
 
     // application icon
@@ -94,58 +91,58 @@ class BaseApplication: public BaseCoreApplication
 
     public Q_SLOTS:
 
-    //! set application busy
+    //* set application busy
     virtual void busy( void );
 
-    //! set application idle
+    //* set application idle
     virtual void idle( void );
 
     protected Q_SLOTS:
 
-    //! process request from application manager
+    //* process request from application manager
     virtual void _aboutQt( void );
 
-    //! configuration
+    //* configuration
     virtual void _configuration( void ) = 0;
 
-    //! about to quit
+    //* about to quit
     virtual void _aboutToQuit( void );
 
     private Q_SLOTS:
 
-    //! configuration
+    //* configuration
     void _updateConfiguration( void );
 
-    //! fonts
+    //* fonts
     void _updateFonts( void );
 
-    //! update icon path
+    //* update icon path
     void _updateIconTheme( void );
 
     private Q_SLOTS:
 
-    //! application 'about' dialog
+    //* application 'about' dialog
     virtual void _about( void );
 
     private:
 
-    //! true if fixed fonts are used
-    bool useFixedFonts_;
+    //* true if fixed fonts are used
+    bool useFixedFonts_ = false;
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! about action
-    QAction* aboutAction_;
+    //* about action
+    QAction* aboutAction_ = nullptr;
 
-    //! about qt
-    QAction* aboutQtAction_;
+    //* about qt
+    QAction* aboutQtAction_ = nullptr;
 
-    //! configure
-    QAction* configurationAction_;
+    //* configure
+    QAction* configurationAction_ = nullptr;
 
-    //! close
-    QAction* closeAction_;
+    //* close
+    QAction* closeAction_ = nullptr;
 
     //@}
 

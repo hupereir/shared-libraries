@@ -83,7 +83,7 @@ class BaseCoreApplication: public QObject
     protected Q_SLOTS:
 
     //* process command from server
-    /*! returns true if command has been accepted */
+    /** returns true if command has been accepted */
     virtual bool _processCommand( Server::ServerCommand );
 
     //*

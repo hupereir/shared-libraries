@@ -123,10 +123,6 @@ namespace Server
                 Client::SameStateFTor( state )
             {}
 
-            //* destructor
-            virtual ~SameStateFTor( void )
-            {}
-
             //* predicate
             bool operator() ( const ClientPair& pair ) const
             { return Client::SameStateFTor::operator() (pair.second); }
@@ -146,10 +142,6 @@ namespace Server
             SameClientFTor( Client* client ):
                 client_( client )
                 {}
-
-            //* destructor
-            virtual ~SameClientFTor( void )
-            {}
 
             //* predicate
             bool operator() ( const ClientPair& pair ) const
@@ -173,7 +165,7 @@ namespace Server
         ClientList& _connectedClients( void )
         { return connectedClients_; }
 
-        /*! \brief register a client, returns true if application is new.
+        /** \brief register a client, returns true if application is new.
         if forced is set to true, the old cliend, if any, is replaced
         */
         virtual ClientMap::iterator _register( const ApplicationId& id, Client* client, bool forced = false );

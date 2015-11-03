@@ -94,8 +94,7 @@ bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 
 //____________________________________________
 BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
-    BaseCoreApplication( parent, arguments ),
-    useFixedFonts_( false )
+    BaseCoreApplication( parent, arguments )
 {
 
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
@@ -111,10 +110,6 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
     #endif
 
 }
-
-//____________________________________________
-BaseApplication::~BaseApplication( void )
-{ Debug::Throw( "BaseApplication::~BaseApplication.\n" ); }
 
 //____________________________________________
 bool BaseApplication::initApplicationManager( void )

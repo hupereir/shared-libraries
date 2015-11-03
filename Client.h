@@ -44,9 +44,6 @@ namespace Server
     //* constructor
     Client( QObject* parent, QTcpSocket* socket );
 
-    //* destructor
-    virtual ~Client( void );
-
     //* id
     int id( void ) const
     { return id_; }
@@ -59,7 +56,7 @@ namespace Server
     virtual const QTcpSocket& socket() const
     { return *socket_; }
 
-    /*! returns true if message could be sent */
+    /** returns true if message could be sent */
     bool sendCommand( const ServerCommand& );
 
     //* used to retrieve clients for a given state
