@@ -57,10 +57,6 @@ class CommandLineParser: public Counter
             shortName_( shortName )
         {}
 
-        //* destructor
-        virtual ~Tag( void )
-        {}
-
         //* equal to operator
         bool operator == (const Tag& other ) const
         {
@@ -134,7 +130,7 @@ class CommandLineParser: public Counter
     QString option( const QString& ) const;
 
     //* orphans
-    /*! list of command line arguments located at the end of the list and that do not match any option */
+    /** list of command line arguments located at the end of the list and that do not match any option */
     const QStringList& orphans( void ) const
     { return orphans_; }
 
@@ -172,7 +168,7 @@ class CommandLineParser: public Counter
     void clear( void );
 
     //* orphans
-    /*! list of command line arguments located at the end of the list and that do not match any option */
+    /** list of command line arguments located at the end of the list and that do not match any option */
     QStringList& orphans( void )
     { return orphans_; }
 

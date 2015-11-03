@@ -29,7 +29,7 @@
 //* stream boolean
 QTextStream& operator >> ( QTextStream& in, bool& value );
 
-/*!
+/**
 \class   Option
 \brief   Option objects for string, int, bool and double options
 */
@@ -229,7 +229,7 @@ class Option:public Counter
         { return option.flags() & flags_; }
 
         //* sorting predicate
-        /*! it is used to ensure that options that have a given flag appear first in a list */
+        /** it is used to ensure that options that have a given flag appear first in a list */
         bool operator() (const Option& first, const Option& second ) const
         { return ( (first.flags() & flags_) && !(second.flags()&flags_) ); }
 

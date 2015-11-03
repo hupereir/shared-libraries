@@ -166,7 +166,7 @@ class Options: public Counter
         if( isDefault || _autoDefault() ) option.setDefault();
     }
 
-    /*! \brief
+    /** \brief
     tags a given option to be kept in separate list as a "special" option.
     These options are not stored unique.
     They are stored in a list, with no unicity check. Accessing these therefore

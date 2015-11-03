@@ -24,7 +24,7 @@
 #include <QSet>
 #include <algorithm>
 
-//! base namespace
+//* base namespace
 namespace Base
 {
 
@@ -33,13 +33,13 @@ namespace Base
 
         public:
 
-        //! constructor
+        //* constructor
         Key( void ):
             key_( _counter()++ )
         {}
 
-        //! \brief copy constructor
-        /*!
+        //* \brief copy constructor
+        /**
         copy constructor.
         The set of associated keys is copied as is.
         The new key gets a new unique id. It gets associated to all objects
@@ -53,43 +53,43 @@ namespace Base
             { associate->_associate( this ); }
         }
 
-        //! destructor
+        //* destructor
         virtual ~Key( void )
         { clearAssociations(); }
 
-        //! equal to operator
+        //* equal to operator
         bool operator == (const Key& key ) const
         { return this->key() == key.key(); }
 
-        //! lower than operator
+        //* lower than operator
         bool operator < (const Key& key ) const
         { return this->key() < key.key(); }
 
-        //! shortcut for key unique id
+        //* shortcut for key unique id
         using Type = quint32;
 
-        //! retrieve key
+        //* retrieve key
         virtual const Type& key( void ) const
         { return key_; }
 
-        //! shortcut for set of Key
+        //* shortcut for set of Key
         using Set = QSet< Key* >;
 
-        //! retrieve all associated keys
+        //* retrieve all associated keys
         const Set& getAssociated( void ) const
         { return associatedKeys_; }
 
-        //! clear associations for this key
+        //* clear associations for this key
         void clearAssociations( void )
         {
             foreach( Key* key, associatedKeys_ ) key->_disassociate( this );
             associatedKeys_.clear();
         }
 
-        //! clear associations of a given type for this key
+        //* clear associations of a given type for this key
         template<typename T> inline void clearAssociations( void );
 
-        //! associated two Keys
+        //* associated two Keys
         static void associate( Key* first, Key* second )
         {
             Q_ASSERT( first->key() != second->key() );
@@ -97,7 +97,7 @@ namespace Base
             second->_associate( first );
         }
 
-        //! associated two Keys
+        //* associated two Keys
         static void associate( Key& first, Key& second )
         {
             Q_ASSERT( first.key() != second.key() );
@@ -105,52 +105,52 @@ namespace Base
             second._associate( &first );
         }
 
-        //! used to find keys of matching id
+        //* used to find keys of matching id
         class SameKeyFTor
         {
 
             public:
 
-            //! constructor
+            //* constructor
             SameKeyFTor( const Type& key ):
                 key_( key )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() (const Key* key ) const
             { return key->key() == key_; }
 
             private:
 
-            //! predicted key
+            //* predicted key
             Type key_;
 
         };
 
-        //! used to find keys of matching id
+        //* used to find keys of matching id
         class IsAssociatedFTor
         {
 
             public:
 
-            //! constructor
+            //* constructor
             IsAssociatedFTor( const Key* key ):
                 key_( key )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() (const Key* key ) const
             { return key_->isAssociated( key ); }
 
             private:
 
-            //! predicted key
+            //* predicted key
             const Key* key_;
 
         };
 
 
-        //! return true if keys are associated
+        //* return true if keys are associated
         bool isAssociated( const Key* key ) const
         {
             return std::find_if(
@@ -159,14 +159,14 @@ namespace Base
                 SameKeyFTor( key->key() ) ) != associatedKeys_.end();
         }
 
-        //! disassociate two Keys
+        //* disassociate two Keys
         static void disassociate( Key* first, Key* second )
         {
             first->_disassociate( second );
             second->_disassociate( first );
         }
 
-        //! disassociated two Keys
+        //* disassociated two Keys
         static void disassociate( Key& first, Key& second )
         {
             first._disassociate( &second );
@@ -175,28 +175,28 @@ namespace Base
 
         private:
 
-        //! add a key to associates
+        //* add a key to associates
         void _associate( Key* key )
         { associatedKeys_.insert( key ); }
 
-        //! remove a key from associates
+        //* remove a key from associates
         void _disassociate( Key* key )
         { associatedKeys_.remove( key ); }
 
-        //! unique id
+        //* unique id
         Type key_;
 
-        //! associated keys
+        //* associated keys
         Set associatedKeys_;
 
-        //! unique id counter
+        //* unique id counter
         static Type& _counter( void );
 
-        //! to dump Key and associations
+        //* to dump Key and associations
         friend QTextStream &operator << (QTextStream &out,const Key &key)
         {
 
-            //! dump this key uid
+            //* dump this key uid
             out << "key=" << key.key();
 
             // dump associated key uid
@@ -215,7 +215,7 @@ namespace Base
 
     };
 
-    /*! \brief
+    /** \brief
     templatized sorted set of casted keys.
     Is constructed from a pointer to a Key;
     Contains all objects of type T associated to the Key.
@@ -226,11 +226,11 @@ namespace Base
 
         public:
 
-        //! default constructor
+        //* default constructor
         KeySet( void )
         {}
 
-        /*!
+        /**
         \brief constructor
         fill the set with all objects of type T associated with the key
         */
@@ -245,7 +245,7 @@ namespace Base
 
         }
 
-        /*!
+        /**
         \brief constructor
         fill the set with all objects of type T associated with the key
         */
@@ -260,7 +260,7 @@ namespace Base
 
         }
 
-        //! Merge argument KeySet with this one
+        //* Merge argument KeySet with this one
         void merge( const KeySet<T>& keySet )
         {
             foreach( T* key, keySet )
@@ -269,7 +269,7 @@ namespace Base
 
     };
 
-    /*! \brief
+    /** \brief
     templatized sorted set of casted keys.
     Is constructed from a pointer to a Key;
     Contains all objects of type T associated to the Key.
@@ -279,7 +279,7 @@ namespace Base
     {
         public:
 
-        //! constructor
+        //* constructor
         KeySetIterator( KeySet<T> keySet ):
             QSetIterator<T*>( keySet )
         {}

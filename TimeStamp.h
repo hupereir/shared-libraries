@@ -36,9 +36,7 @@ class TimeStamp:public Counter
 
     //* empty creator
     TimeStamp( void ):
-        Counter( "TimeStamp" ),
-        valid_( false ),
-        time_( -1 )
+        Counter( "TimeStamp" )
     {}
 
     //* time_t creator
@@ -239,10 +237,10 @@ class TimeStamp:public Counter
     private:
 
     //* true if timeStamp is properly set
-    bool valid_;
+    bool valid_ = false;
 
     //* unix time in second
-    time_t time_;
+    time_t time_ = -1;
 
     //* time structure from localtime()
     struct tm tm_;
