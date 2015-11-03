@@ -42,9 +42,6 @@ namespace Ssh
             Counter( "Ssh::TunnelAttributes" )
         {}
 
-        //* destructor
-        virtual ~TunnelAttributes() = default;
-
         //* equal to operator
         bool operator == (const TunnelAttributes& other ) const
         { return localPort_ == other.localPort_; }

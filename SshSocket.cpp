@@ -31,17 +31,11 @@ namespace Ssh
     Socket::Socket( QObject* parent ):
         QIODevice( parent ),
         Counter( "Ssh::Socket" )
-    {
-        Debug::Throw( "SshSocket::Socket.\n" );
-        buffer_.resize( maxSize_ );
-    }
+    { buffer_.resize( maxSize_ ); }
 
     //_______________________________________________________________________
     Socket::~Socket( void )
-    {
-        Debug::Throw( "Ssh::Socket::~Socket.\n" );
-        close();
-    }
+    { close(); }
 
     //_______________________________________________________________________
     void Socket::connectToHost( void* session, const QString& host, quint16 port )

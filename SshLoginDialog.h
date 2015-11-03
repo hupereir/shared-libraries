@@ -40,9 +40,6 @@ namespace Ssh
         //* constructor
         LoginDialog( QWidget* );
 
-        //* destructor
-        virtual ~LoginDialog( void ) = default;
-
         //*@name accessors
         //@{
 

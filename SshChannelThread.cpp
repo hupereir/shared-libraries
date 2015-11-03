@@ -47,12 +47,11 @@ namespace Ssh
         attributes_( attributes ),
         session_( session ),
         socket_( socket )
-    { Debug::Throw( "Ssh::ChannelThread::ChannelThread.\n" ); }
+    {}
 
     //_______________________________________________________________
     ChannelThread::~ChannelThread( void )
     {
-        Debug::Throw( "SSh::ChannelThread:~ChannelThread.\n" );
         close();
     }
 

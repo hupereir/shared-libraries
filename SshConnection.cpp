@@ -53,14 +53,11 @@ namespace Ssh
         QObject( parent ),
         Counter( "Ssh::Connection" ),
         useThreads_( useThreads )
-    { Debug::Throw( "Ssh::Connection::Connection.\n" ); }
+    {}
 
     //_______________________________________________
     Connection::~Connection( void )
-    {
-        Debug::Throw( "Ssh::Connection::~Connection.\n" );
-        disconnect();
-    }
+    { disconnect(); }
 
     //_______________________________________________
     bool Connection::createTunnels( void )

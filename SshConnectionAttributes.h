@@ -45,9 +45,6 @@ namespace Ssh
             Counter( "Ssh::ConnectionAttributes" )
         {}
 
-        //* destructor
-        virtual ~ConnectionAttributes() = default;
-
         //* equal to operator
         bool operator == (const ConnectionAttributes& other) const;
 

@@ -42,9 +42,6 @@ namespace Ssh
         //* constructor
         Tunnel( QObject*, QTcpSocket* );
 
-        //* destructor
-        virtual ~Tunnel( void ) = default;
-
         //*@name accessors
         //@{
 
