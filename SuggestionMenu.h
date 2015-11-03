@@ -38,10 +38,7 @@ namespace SpellCheck {
         public:
 
         //* constructor
-        SuggestionMenu( QWidget *parent, const QString&, bool = false );
-
-        //* destructor
-        virtual ~SuggestionMenu() = default;
+        SuggestionMenu( QWidget*, const QString&, bool = false );
 
         //*@name accessors
         //@{

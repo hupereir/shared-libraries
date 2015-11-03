@@ -51,9 +51,6 @@ namespace SpellCheck
         //* constructor
         SpellCheckConfiguration( QWidget*, Flags = All );
 
-        //* destructor
-        virtual ~SpellCheckConfiguration( void ) = default;
-
         Q_SIGNALS:
 
         //* modified

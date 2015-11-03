@@ -53,9 +53,7 @@ namespace SpellCheck
 
     //____________________________________________________________________________
     SpellParser::SpellParser( void ):
-        Counter( "SpellParser" ),
-        enabled_( false ),
-        fontFormat_( Format::Default )
+        Counter( "SpellParser" )
     {  Debug::Throw( "SpellParser::SpellParser.\n" ); }
 
     //____________________________________________________________________________

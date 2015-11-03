@@ -47,10 +47,7 @@ namespace SpellCheck
         public:
 
         //* constructor
-        SpellDialog( TextEditor*, bool readOnly = false );
-
-        //* destructor
-        virtual ~SpellDialog();
+        SpellDialog( TextEditor*, bool = false );
 
         //* set read-only (enable/disable modification buttons)
 
@@ -120,7 +117,7 @@ namespace SpellCheck
         virtual void _selectFilter( const QString& filter );
 
         //* recheck text from start
-        /*! initial begin/end are reset to the full text */
+        /** initial begin/end are reset to the full text */
         virtual void _restart( void );
 
         //* ignore

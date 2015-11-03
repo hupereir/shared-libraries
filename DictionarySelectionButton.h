@@ -34,41 +34,37 @@ namespace SpellCheck
 
         public:
 
-        //! constructor
+        //* constructor
         DictionarySelectionButton( QWidget* );
 
-        //! destructor
-        virtual ~DictionarySelectionButton( void )
-        {}
-
-        //! retrieve value
+        //* retrieve value
         QString value( void ) const
         { return value_; }
 
-        //! read value from option
+        //* read value from option
         virtual void read( const Options& options )
         {
             value_ = options.raw( optionName() );
             _setConnected();
         }
 
-        //! write value to option
+        //* write value to option
         virtual void write( Options& options ) const
         { options.set( optionName(), value_ ); }
 
         Q_SIGNALS:
 
-        //! emmitted when selection is modified
+        //* emmitted when selection is modified
         void modified( void );
 
         protected Q_SLOTS:
 
-        //! edit dictionaries
+        //* edit dictionaries
         void _edit( void );
 
         private:
 
-        //! disabled dictionaries
+        //* disabled dictionaries
         QString value_;
 
     };

@@ -30,140 +30,140 @@
 
 namespace SpellCheck
 {
-    //! spell checker interface
+    //* spell checker interface
     class SpellInterface: public Counter
     {
 
         public:
 
-        //! constructor
+        //* constructor
         SpellInterface( void );
 
-        //! destructor
+        //* destructor
         ~SpellInterface( void );
 
-        //! no filter
+        //* no filter
         static const QString FilterNone;
 
-        //! latex
+        //* latex
         static const QString FilterTex;
 
-        //! latex no accents
+        //* latex no accents
         static const QString FilterTexWithNoAccents;
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! get list of available dictionaries
+        //* get list of available dictionaries
         using DictionarySet = QOrderedSet<QString>;
         const DictionarySet& dictionaries( void ) const
         { return dictionaries_; }
 
-        //! list dictionaries
+        //* list dictionaries
         void listDictionaries( void ) const;
 
-        //! current dictionary
+        //* current dictionary
         const QString dictionary( void ) const
         { return dictionary_; }
 
-        //! true if dictionary is available
+        //* true if dictionary is available
         bool hasDictionary( const QString& dictionary ) const
         { return dictionaries_.find( dictionary ) != dictionaries_.end(); }
 
-        //! get list of available filters
+        //* get list of available filters
         using FilterSet = QOrderedSet<QString>;
         const FilterSet& filters( void ) const
         { return filters_; }
 
-        //! list dictionaries
+        //* list dictionaries
         void listFilters( void ) const;
 
-        //! current filter
+        //* current filter
         const QString filter( void ) const
         { return filter_; }
 
-        //! true if filter is available
+        //* true if filter is available
         bool hasFilter( const QString& filter ) const
         { return filters_.find( filter ) != filters_.end(); }
 
-        //! returns true if word is ignored
+        //* returns true if word is ignored
         bool isWordIgnored( const QString& word )
         { return ignoredWords_.find( word ) != ignoredWords_.end(); }
 
-        //! get list of ignored words
+        //* get list of ignored words
         const QSet< QString > ignoredWords( void )
         { return ignoredWords_; }
 
-        //! retrieve original text
+        //* retrieve original text
         const QString& text( void ) const
         { return text_; }
 
-        //! retrieve checked text
+        //* retrieve checked text
         const QString& checkedText( void ) const
         { return checkedText_; }
 
-        //! retrieve error
+        //* retrieve error
         const QString& error( void ) const
         { return error_; }
 
 
-        //! retrieve current word being checked
+        //* retrieve current word being checked
         const QString& word( void ) const
         { return word_; }
 
-        //! retrieve position of current word in original text
+        //* retrieve position of current word in original text
         int position( void ) const
         { return position_+begin_; }
 
-        //! retrieve position offset between original text and checked text
+        //* retrieve position offset between original text and checked text
         int offset( void ) const
         { return offset_; }
 
-        //! retrieve list of suggestions for current word
+        //* retrieve list of suggestions for current word
         QStringList suggestions( const QString& word ) const;
 
         //@}
 
-        //!@name modifiers
+        //*@name modifiers
         //@{
 
-        //! select dictionary
-        /*! returns false in case of error */
+        //* select dictionary
+        /** returns false in case of error */
         bool setDictionary( const QString& dictionary );
 
-        //! select filter
-        /*! returns false in case of error */
+        //* select filter
+        /** returns false in case of error */
         bool setFilter( const QString& filter );
 
-        //! clear filters
+        //* clear filters
         void clearFilters( void )
         {
             filters_.clear();
             filterMap_.clear();
         }
 
-        //! add word to static list
+        //* add word to static list
         void ignoreWord( const QString& word )
         { ignoredWords_.insert( word ); }
 
-        //! set list of ignored words
+        //* set list of ignored words
         void setIgnoredWords( const QSet<QString> words )
         { ignoredWords_ = words; }
 
-        //! merge list of ignored words
+        //* merge list of ignored words
         void mergeIgnoredWords( const QSet<QString> words )
         { ignoredWords_.unite( words ); }
 
-        //! clear ignored words
+        //* clear ignored words
         void clearIgnoredWords( void )
         { ignoredWords_.clear(); }
 
-        //! set text to be checked
+        //* set text to be checked
         bool setText( const QString& text )
         { return setText( text, 0, text.size() ); }
 
-        //! set text to be checked
-        /*!
+        //* set text to be checked
+        /**
         returns false on error
         \param text the text in which selection is to be checked
         \param begin selection begin position
@@ -171,27 +171,27 @@ namespace SpellCheck
         */
         bool setText( const QString& text, int begin, int end );
 
-        //! add word to dictionary
-        /*! return false on error */
+        //* add word to dictionary
+        /** return false on error */
         bool addWord( const QString& word );
 
-        //! add current word to dictionary
-        /*! return false on error */
+        //* add current word to dictionary
+        /** return false on error */
         bool addWord( void )
         { return addWord( word() ); }
 
-        //! replace current word with argument in checked text
+        //* replace current word with argument in checked text
         bool replace( const QString& new_word );
 
-        //! retrieve next word to be checked
-        /*! return false when there is an error */
+        //* retrieve next word to be checked
+        /** return false when there is an error */
         bool nextWord( void );
 
-        //! save word list in personal dictionary
+        //* save word list in personal dictionary
         void saveWordList( void );
 
-        //! restart checking
-        /*!
+        //* restart checking
+        /**
         initial begin/end are reset to the full text
         return false on error
         */
@@ -201,75 +201,75 @@ namespace SpellCheck
 
         protected:
 
-        //! load available dictionaries
+        //* load available dictionaries
         void _loadDictionaries( void );
 
-        //! load available filters
+        //* load available filters
         void _loadFilters( void );
 
-        //! reset Aspell spell/document checker
-        /*! returns false on error */
+        //* reset Aspell spell/document checker
+        /** returns false on error */
         virtual bool _reset( void );
 
-        //! reset Aspell spell checker
-        /*! returns false on error */
+        //* reset Aspell spell checker
+        /** returns false on error */
         virtual bool _resetSpellChecker( void );
 
         private:
 
-        //! set of available dictionaries
-        /*! loaded in constructor */
+        //* set of available dictionaries
+        /** loaded in constructor */
         DictionarySet dictionaries_;
 
-        //! set of available filters
+        //* set of available filters
         using FilterMap = QMap<QString, QString>;
         static FilterMap filterMap_;
 
-        //! set of available filters
-        /*! loaded in constructor */
+        //* set of available filters
+        /** loaded in constructor */
         static FilterSet filters_;
 
-        //! ignored words
+        //* ignored words
         QSet<QString> ignoredWords_;
 
-        //! original text to be checked
+        //* original text to be checked
         QString text_;
 
-        //! text being checked
+        //* text being checked
         QString checkedText_;
 
-        //! current word being checked
+        //* current word being checked
         QString word_;
 
-        //! begin position to be checked in text
-        int begin_;
+        //* begin position to be checked in text
+        int begin_ = 0;
 
-        //! end position to be checked in text
-        int end_;
+        //* end position to be checked in text
+        int end_ = 0;
 
-        //! position in started text (counted from begin_)
+        //* position in started text (counted from begin_)
         int position_;
 
-        //! offset between checkedText_ and text_
+        //* offset between checkedText_ and text_
         int offset_;
 
-        //! configuration error
+        //* configuration error
         QString error_;
 
-        //! dictionary
+        //* dictionary
         QString dictionary_;
 
-        //! filter
+        //* filter
         QString filter_;
 
-        //! aspell configuration singleton
-        AspellConfig* spellConfig_;
+        //* aspell configuration singleton
+        AspellConfig* spellConfig_ = nullptr;
 
-        //! aspell checker
-        AspellSpeller* spellChecker_;
+        //* aspell checker
+        AspellSpeller* spellChecker_ = nullptr;
 
-        //! aspell checker
-        AspellDocumentChecker* documentChecker_;
+        //* aspell checker
+        AspellDocumentChecker* documentChecker_ = nullptr;
     };
 
 }

@@ -30,47 +30,43 @@ class TreeView;
 
 namespace SpellCheck
 {
-    //! spell checker popup dialog
+    //* spell checker popup dialog
     class SpellItemDialog: public CustomDialog
     {
 
-        //! Qt meta object declaration
+        //* Qt meta object declaration
         Q_OBJECT
 
         public:
 
-        //! constructor
+        //* constructor
         SpellItemDialog( QWidget* );
 
-        //! destructor
-        virtual ~SpellItemDialog()
-        {}
-
-        //! set items
+        //* set items
         void setItems( const QOrderedSet<QString>& );
 
-        //! set disabled items
+        //* set disabled items
         void setDisabledItems( const QString& );
 
-        //! disabled items
+        //* disabled items
         QString disabledItems( void ) const;
 
         protected Q_SLOTS:
 
-        //! select item
+        //* select item
         virtual void _selectItem( const QModelIndex& );
 
         private:
 
-        //! list
+        //* list
         TreeView& _list( void ) const
         { return *list_; }
 
-        //! model
+        //* model
         SpellItemModel model_;
 
-        //! list
-        TreeView* list_;
+        //* list
+        TreeView* list_ = nullptr;
 
     };
 

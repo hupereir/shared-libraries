@@ -34,39 +34,35 @@
 namespace SpellCheck
 {
 
-  //! highlight text based on misspelled words
+  //* highlight text based on misspelled words
   class SpellParser: public Counter
   {
 
     public:
 
-    //! constructor
+    //* constructor
     SpellParser();
 
-    //! destructor
-    virtual ~SpellParser( void )
-    { Debug::Throw( "SpellParser::~SpellParser.\n" ); }
-
-    //! highlight paragraph
+    //* highlight paragraph
     virtual Word::Set parse( const QString& text );
 
-    //! highlight color
+    //* highlight color
     /* returns true if changed */
     virtual bool setColor( const QColor& color );
 
-    //! color
+    //* color
     virtual const QColor& color( void ) const
     { return color_; }
 
-    //! font format
+    //* font format
     /* returns true if changed */
     virtual bool setFontFormat( Format::TextFormatFlags );
 
-    //! font format
+    //* font format
     virtual Format::TextFormatFlags fontFormat( void ) const
     { return fontFormat_; }
 
-    //! enabled. Returns true if changed.
+    //* enabled. Returns true if changed.
     bool setEnabled( bool value )
     {
       if( enabled_ == value ) return false;
@@ -74,31 +70,31 @@ namespace SpellCheck
       return true;
     }
 
-    //! enabled
+    //* enabled
     bool isEnabled( void ) const
     { return enabled_; }
 
-    //! spell interface
+    //* spell interface
     virtual const SpellInterface& interface( void ) const
     { return interface_; }
 
-    //! spell interface
+    //* spell interface
     virtual SpellInterface& interface( void )
     { return interface_; }
 
     private:
 
-    //! enabled
-    bool enabled_;
+    //* enabled
+    bool enabled_ = false;
 
-    //! spell interface
+    //* spell interface
     SpellInterface interface_;
 
-    //! highlight color
+    //* highlight color
     QColor color_;
 
-    //! font format (is a bitwise or of TextFormatInfo bits)
-    Format::TextFormatFlags fontFormat_;
+    //* font format (is a bitwise or of TextFormatInfo bits)
+    Format::TextFormatFlags fontFormat_ = Format::Default;
 
   };
 

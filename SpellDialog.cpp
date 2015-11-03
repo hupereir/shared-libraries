@@ -208,10 +208,6 @@ namespace SpellCheck
     }
 
     //__________________________________________
-    SpellDialog::~SpellDialog( void )
-    { Debug::Throw( "SpellCheck::SpellDialog::~SpellDialog.\n" ); }
-
-    //__________________________________________
     void SpellDialog::showFilter( bool value )
     {
         Debug::Throw( "SpellCheck::SpellDialog::showFilter.\n" );
