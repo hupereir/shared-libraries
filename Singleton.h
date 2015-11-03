@@ -22,34 +22,30 @@
 
 #include <QObject>
 
-//! a class singleton used to centralize all objects that need static creation
+//* a class singleton used to centralize all objects that need static creation
 class Singleton
 {
 
     public:
 
-    //! return singleton
+    //* return singleton
     static Singleton& get( void );
 
-    //! destructor
-    virtual ~Singleton( void )
-    {}
-
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! true if has application
+    //* true if has application
     bool hasApplication( void ) const
     { return (bool) application_; }
 
-    //! application
+    //* application
     QObject* application()
     {
         Q_CHECK_PTR( application_ );
         return application_;
     }
 
-    //! cast
+    //* cast
     template< typename T >
         T* application( void )
     {
@@ -59,10 +55,10 @@ class Singleton
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! set application
+    //* set application
     void setApplication( QObject* application )
     {
         Q_ASSERT( !application_ );
@@ -73,12 +69,11 @@ class Singleton
 
     private:
 
-    //! constructor
-    Singleton( void ):
-        application_(0)
+    //* constructor
+    Singleton( void )
     {}
 
-    QObject* application_;
+    QObject* application_ = nullptr;
 
 };
 

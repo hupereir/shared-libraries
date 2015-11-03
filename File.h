@@ -55,10 +55,6 @@ class File: public QString
         QString( value )
     {}
 
-    //* destructor
-    virtual ~File( void )
-    {}
-
     //* returns true if file has absolute pathname
     bool isAbsolute( void ) const;
 
@@ -138,7 +134,7 @@ class File: public QString
     virtual void setHidden( void ) const;
 
     //* returns a versioned filename
-    /*! (add _i at the end with i the first integer for which file is not found) */
+    /** (add _i at the end with i the first integer for which file is not found) */
     virtual File version( void ) const;
 
     //* make a backup copy (terminated by ~) of a file, returns backup file
@@ -158,7 +154,7 @@ class File: public QString
     virtual File readLink( void ) const;
 
     //* removes file from disk
-    /*!
+    /**
     returns true if the file does not exists
     or was successfully removed
     */
@@ -168,14 +164,14 @@ class File: public QString
     virtual bool removeRecursive( void ) const;
 
     //* rename file
-    /*! returns true if the file exists and was renamed */
+    /** returns true if the file exists and was renamed */
     virtual bool rename( const File& ) const;
 
     //* copy
     virtual bool copy( const File&, bool = false ) const;
 
     //* adds path to a file
-    /*! note: the file is taken raw. No truncation/expension performed.*/
+    /** note: the file is taken raw. No truncation/expension performed.*/
     virtual File addPath( const File&, bool absolute = false ) const;
 
     //* expand a file name replacing .. or ~ to full path

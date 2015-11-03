@@ -52,10 +52,6 @@ class FileRecord: public Counter
         valid_( true )
     {}
 
-    //* destructor
-    virtual ~FileRecord( void )
-    {}
-
     //* less than operator
     bool operator < (const FileRecord& record ) const;
 
@@ -158,11 +154,11 @@ class FileRecord: public Counter
         using Id = quint32;
 
         //* get id matching name
-        /*! insert in map if name is new */
+        /** insert in map if name is new */
         static Id get( QString name );
 
         //* get name matching id
-        /*! throw exception if not found */
+        /** throw exception if not found */
         static QString get( Id );
 
         private:

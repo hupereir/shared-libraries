@@ -51,10 +51,6 @@ class Options: public Counter
     //* constructor
     Options( void );
 
-    //* destructor
-    virtual ~Options( void )
-    {}
-
     //* equality operator
     bool operator == ( const Options& other ) const
     {

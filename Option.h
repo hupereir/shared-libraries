@@ -250,10 +250,6 @@ class Option:public Counter
             value_( option.value_ )
             {}
 
-        //* destructor
-        virtual ~SameValueFTor( void )
-        {}
-
         //* predicate
         bool operator() (const Option& other ) const
         { return value_ == other.value_; }

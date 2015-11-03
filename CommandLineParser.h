@@ -194,10 +194,6 @@ class CommandLineParser: public Counter
             helpText_( helpText )
         {}
 
-        //* destructor
-        virtual ~Flag( void )
-        {}
-
         //* help text
         QString helpText_;
 
