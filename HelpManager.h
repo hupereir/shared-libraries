@@ -28,7 +28,7 @@
 #include <QObject>
 #include <QAction>
 
-//! help manager class
+//* help manager class
 namespace Base
 {
 
@@ -39,54 +39,54 @@ namespace Base
 
         public:
 
-        //! constructor
+        //* constructor
         HelpManager( QObject* parent );
 
-        //! destructor
+        //* destructor
         virtual ~HelpManager( void )
         { Debug::Throw( "HelpManager::~HelpManager.\n" ); }
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! install help. Put items in the menu, create associated objects
+        //* install help. Put items in the menu, create associated objects
         void install( const HelpItem::List& items )
         { items_ = items; }
 
-        //! install help. Put items in the menu, create associated objects
+        //* install help. Put items in the menu, create associated objects
         void install( const QString text[], bool clear = true );
 
-        //! list of items
+        //* list of items
         const HelpItem::List& items( void )
         { return items_; }
 
-        //! clear help
+        //* clear help
         void clear( void )
         { items_.clear(); }
 
-        //! set dialog caption
+        //* set dialog caption
         void setWindowTitle( const QString& value );
 
         //@}
 
-        //! display action
+        //* display action
         QAction& displayAction( void )
         { return *displayAction_; }
 
         protected Q_SLOTS:
 
-        //! opens help dialog
+        //* opens help dialog
         void _display( void );
 
         private:
 
-        //! dialog display action
-        QAction* displayAction_;
+        //* dialog display action
+        QAction* displayAction_ = nullptr;
 
-        //! window title
+        //* window title
         QString windowTitle_;
 
-        //! complete set of help items
+        //* complete set of help items
         HelpItem::List items_;
 
     };

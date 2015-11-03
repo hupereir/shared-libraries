@@ -44,11 +44,7 @@ namespace Base
         public:
 
         //* constructor
-        HelpDialog( HelpManager& manager, QWidget *parent = 0 );
-
-        //* destructor
-        virtual ~HelpDialog( void )
-        {}
+        HelpDialog( HelpManager& manager, QWidget *parent = nullptr );
 
         //* clear items
         void clear( void )

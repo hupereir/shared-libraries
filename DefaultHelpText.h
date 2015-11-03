@@ -24,7 +24,7 @@
 
 namespace Base
 {
-    //! default help text
+    //* default help text
     static const QString helpText[] =
     {
 
