@@ -24,7 +24,7 @@
 #include "XmlOptions.h"
 
 //_____________________________________________________
-//! default options installer
+//* default options installer
 void installTransparencyOptions( void )
 {
 
