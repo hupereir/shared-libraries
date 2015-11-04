@@ -26,7 +26,8 @@
 //__________________________________________________________________________
 BusyWidget::BusyWidget( QWidget* parent, Location location ):
     QWidget( parent ),
-    Counter( "BusyWidget" )
+    Counter( "BusyWidget" ),
+    location_( location )
 {
     Debug::Throw( "BusyWidget::BusyWidget.\n" );
 
