@@ -31,7 +31,7 @@ class CommandLineArguments: public QStringList, public Counter
     public:
 
     //* constructor
-    CommandLineArguments( int argc = 0, char* argv[] = 0 );
+    CommandLineArguments( int argc = 0, char* argv[] = nullptr );
 
     //* constructor
     CommandLineArguments( const QStringList& );

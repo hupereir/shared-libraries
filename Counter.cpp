@@ -21,8 +21,7 @@
 #include "CounterMap.h"
 
 //____________________________________________________________
-Counter::Counter( const QString& name ):
-count_( 0 )
+Counter::Counter( const QString& name )
 {
     count_ = CounterMap::get().counter( name );
     CounterMap::get().increment( *count_ );
