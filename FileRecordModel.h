@@ -25,8 +25,9 @@
 #include "FileRecord.h"
 #include "ListModel.h"
 
-#include <QStringList>
 #include <QHash>
+#include <QMimeData>
+#include <QStringList>
 
 //* qlistview for object counters
 class FileRecordModel: public ListModel<FileRecord>, public Counter
@@ -47,15 +48,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     //* constructor
     FileRecordModel( QObject* = nullptr );
 
-    //* show icons
-    void setShowIcons( bool value )
-    { showIcons_ = value; }
-
-    //* use local names
-    void setUseLocalNames( bool value )
-    { useLocalNames_ = value; }
-
-    //*@name methods reimplemented from base class
+    //*@name accessors
     //@{
 
     //* flags
@@ -73,7 +66,21 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     //* column matching given name, if any
     virtual int findColumn( const QString& ) const;
 
+    //* mime data
+    virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+
     //@}
+
+    //*@name modifiers
+    //@{
+
+    //* show icons
+    void setShowIcons( bool value )
+    { showIcons_ = value; }
+
+    //* use local names
+    void setUseLocalNames( bool value )
+    { useLocalNames_ = value; }
 
     //* set values (overloaded)
     void set( const List& values )
@@ -89,13 +96,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
         ListModel<FileRecord>::update( values );
     }
 
-    //* enable drag
-    bool dragEnabled( void ) const
-    { return dragEnabled_; }
-
-    //* enable drag
-    void setDragEnabled( bool value )
-    { dragEnabled_ = value; }
+    //@}
 
     protected:
 
@@ -155,9 +156,6 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
 
     //* type icon cache
     static IconCache& _icons( void );
-
-    //* drag flag
-    bool dragEnabled_ = false;
 
     //* local names
     bool useLocalNames_ = true;
