@@ -52,8 +52,7 @@ class BaseFileIconProvider: public QObject, public Counter
         public:
 
         //* constructor
-        Key( void ):
-            type_(0)
+        Key( void )
         {}
 
         //* constructor
@@ -67,7 +66,7 @@ class BaseFileIconProvider: public QObject, public Counter
         { return file_ == other.file_ && type_ == other.type_; }
 
         QString file_;
-        int type_;
+        int type_ = 0;
 
     };
 

@@ -67,7 +67,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     virtual int findColumn( const QString& ) const;
 
     //* mime data
-    virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+    virtual QMimeData* mimeData(const QModelIndexList& ) const;
 
     //@}
 
