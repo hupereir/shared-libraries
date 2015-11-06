@@ -140,8 +140,19 @@ class TreeView: public QTreeView, public Counter
     //* set icon size manually and disable option
     void setIconSize( const QSize& size )
     {
-        QTreeView::setIconSize( size );
+
+        if( size != iconSize() )
+        {
+            QTreeView::setIconSize( size );
+
+            #if QT_VERSION < 0x050000
+            emit iconSizeChanged( size );
+            #endif
+
+        }
+
         iconSizeFromOptions_ = false;
+
     }
 
     //* store scrollbar position
@@ -219,6 +230,11 @@ class TreeView: public QTreeView, public Counter
 
     //* emmitted when selection could be found
     void matchFound( void );
+
+    #if QT_VERSION < 0x050000
+    //* icon size changed signal
+    void iconSizeChanged( const QSize& );
+    #endif
 
     public Q_SLOTS:
 
