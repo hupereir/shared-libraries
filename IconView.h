@@ -53,11 +53,8 @@ class IconView: public QAbstractItemView, public Counter
     //* constructor
     IconView( QWidget* = nullptr );
 
-    //* set model
-    virtual void 	setModel( QAbstractItemModel* );
-
-    //* enable list finding
-    void setFindEnabled( bool value );
+    //*@name accessors
+    //@{
 
     //* TextSelection object from this selection, or clipboard
     TextSelection selection( void ) const;
@@ -65,6 +62,38 @@ class IconView: public QAbstractItemView, public Counter
     //* header
     QHeaderView* header( void ) const
     { return header_; }
+
+    //* option name
+    virtual bool hasOptionName( void ) const
+    { return !sortColumnOptionName().isEmpty(); }
+
+    //* sort column option name
+    virtual const QString& sortColumnOptionName( void ) const
+    { return sortColumnOptionName_; }
+
+    //* sort order option name
+    virtual const QString& sortOrderOptionName( void ) const
+    { return sortOrderOptionName_; }
+
+    //* return index at a given position
+    virtual QModelIndex indexAt( const QPoint& ) const;
+
+    //* visual rect for given index
+    virtual QRect visualRect( const QModelIndex& ) const;
+
+    //* minimum size hind
+    virtual QSize minimumSizeHint( void ) const;
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* set model
+    virtual void setModel( QAbstractItemModel* );
+
+    //* enable list finding
+    void setFindEnabled( bool value );
 
     //* sorting
     void setSortingEnabled( bool value )
@@ -84,23 +113,29 @@ class IconView: public QAbstractItemView, public Counter
         spacing_ = value;
     }
 
-    //*@name stored options
-    //@{
+    //* set icon size manually and disable option
+    void setIconSize( const QSize& size )
+    {
+
+        if( size != iconSize() )
+        {
+            QAbstractItemView::setIconSize( size );
+
+            #if QT_VERSION < 0x050000
+            emit iconSizeChanged( size );
+            #endif
+
+        }
+
+        iconSizeFromOptions_ = false;
+
+    }
 
     //* option name
     virtual bool setOptionName( const QString& );
 
-    //* option name
-    virtual bool hasOptionName( void ) const
-    { return !sortColumnOptionName().isEmpty(); }
-
-    //* sort column option name
-    virtual const QString& sortColumnOptionName( void ) const
-    { return sortColumnOptionName_; }
-
-    //* sort order option name
-    virtual const QString& sortOrderOptionName( void ) const
-    { return sortOrderOptionName_; }
+    //* scroll to given index
+    virtual void scrollTo( const QModelIndex&, ScrollHint );
 
     //@}
 
@@ -124,18 +159,6 @@ class IconView: public QAbstractItemView, public Counter
     { return *findAgainAction_; }
 
     //@}
-
-    //* return index at a given position
-    virtual QModelIndex indexAt( const QPoint& ) const;
-
-    //* scroll to given index
-    virtual void scrollTo( const QModelIndex&, ScrollHint );
-
-    //* visual rect for given index
-    virtual QRect visualRect( const QModelIndex& ) const;
-
-    //* minimum size hind
-    virtual QSize minimumSizeHint( void ) const;
 
     //* container class for embedded Find dialog
     class Container: public QWidget, public Counter
@@ -173,6 +196,11 @@ class IconView: public QAbstractItemView, public Counter
 
     //* emmitted when selection could be found
     void matchFound( void );
+
+    #if QT_VERSION < 0x050000
+    //* icon size changed signal
+    void iconSizeChanged( const QSize& );
+    #endif
 
     public Q_SLOTS:
 
@@ -386,8 +414,8 @@ class IconView: public QAbstractItemView, public Counter
 
     //@}
 
-    //* icon size
-    QSize pixmapSize_;
+    //* true if icon size is to be set from options
+    bool iconSizeFromOptions_ = true;
 
     //* margin
     int margin_ = 15;

@@ -221,7 +221,7 @@ QRect IconView::visualRect( const QModelIndex&  index ) const
 QSize IconView::minimumSizeHint( void ) const
 {
     return QSize(
-        2*margin_ + 2*IconViewItem::margin + qMax( IconViewItem::maxTextWidth, pixmapSize_.width() ) + verticalScrollBar()->width(),
+        2*margin_ + 2*IconViewItem::margin + qMax( IconViewItem::maxTextWidth, iconSize().width() ) + verticalScrollBar()->width(),
         QAbstractItemView::minimumSize().height() );
 }
 
@@ -868,8 +868,9 @@ void IconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const
     if( textVariant.canConvert( QVariant::String ) ) item.setText( textVariant.value<QString>() );
 
     // update pixmap
-    QVariant iconVariant( model()->data( index, Qt::DecorationRole ) );
-    if( iconVariant.canConvert( QVariant::Icon ) ) item.setPixmap( iconVariant.value<QIcon>().pixmap( pixmapSize_ ) );
+    QVariant decorationVariant( model()->data( index, Qt::DecorationRole ) );
+    if( decorationVariant.canConvert( QVariant::Icon ) ) item.setPixmap( decorationVariant.value<QIcon>().pixmap( iconSize() ) );
+    else if( decorationVariant.canConvert( QVariant::Pixmap ) ) item.setPixmap( decorationVariant.value<QPixmap>() );
 
 }
 
@@ -1374,10 +1375,15 @@ void IconView::_updateConfiguration( void )
     updateSortOrder();
 
     // update pixmap size
-    int pixmapSize( 0 );
-    if( XmlOptions::get().contains( "ICON_VIEW_PIXMAP_SIZE" ) && (pixmapSize = XmlOptions::get().get<int>( "ICON_VIEW_PIXMAP_SIZE" )) != pixmapSize_.width() )
+    int iconSize( 0 );
+    if( iconSizeFromOptions_ && XmlOptions::get().contains( "ICON_VIEW_ICON_SIZE" ) && (iconSize = XmlOptions::get().get<int>( "ICON_VIEW_ICON_SIZE" )) != this->iconSize().width() )
     {
-        pixmapSize_ = QSize( pixmapSize, pixmapSize );
+        QAbstractItemView::setIconSize( QSize( iconSize, iconSize ) );
+
+        #if QT_VERSION < 0x050000
+        emit iconSizeChanged( this->iconSize() );
+        #endif
+
         if( model() ) doItemsLayout();
     }
 }
