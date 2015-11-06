@@ -70,17 +70,19 @@ class BaseFileIconProvider: public QObject, public Counter
         {}
 
         //* constructor
-        Key( const QString& file, int type ):
+        Key( const QString& file, int type, const QSize& size = QSize() ):
             file_( file ),
-            type_( type )
+            type_( type ),
+            width_( size.width() )
         {}
 
         //* equal-to operator
         bool operator == (const Key& other ) const
-        { return file_ == other.file_ && type_ == other.type_; }
+        { return file_ == other.file_ && type_ == other.type_ && width_ == other.width_; }
 
         QString file_;
         int type_ = 0;
+        int width_ = 0;
 
     };
 
@@ -124,6 +126,6 @@ class BaseFileIconProvider: public QObject, public Counter
 
 //* hash
 inline uint qHash( const BaseFileIconProvider::Key& key )
-{ return qHash( key.file_ )|key.type_; }
+{ return qHash( key.file_ )|qHash( QPair<int,int>(key.type_, key.width_) ); }
 
 #endif
