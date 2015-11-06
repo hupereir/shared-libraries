@@ -46,19 +46,9 @@ class BaseFileIconProvider: public QObject, public Counter
     //* icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo&, int );
 
-    //* pixmap matching given file info
-    virtual const QPixmap& pixmap( const QSize& size, const BaseFileInfo& fileInfo )
-    { return pixmap( size, fileInfo, fileInfo.type() ); }
-
-    //* pixmap matching given file info
-    virtual const QPixmap& pixmap( const QSize&, const BaseFileInfo&, int );
-
     //* clear
     virtual void clear( void )
-    {
-        icons_.clear();
-        pixmaps_.clear();
-    }
+    { icons_.clear(); }
 
     //* key, used for hash
     class Key
@@ -70,19 +60,17 @@ class BaseFileIconProvider: public QObject, public Counter
         {}
 
         //* constructor
-        Key( const QString& file, int type, const QSize& size = QSize() ):
+        Key( const QString& file, int type ):
             file_( file ),
-            type_( type ),
-            width_( size.width() )
+            type_( type )
         {}
 
         //* equal-to operator
         bool operator == (const Key& other ) const
-        { return file_ == other.file_ && type_ == other.type_ && width_ == other.width_; }
+        { return file_ == other.file_ && type_ == other.type_; }
 
         QString file_;
         int type_ = 0;
-        int width_ = 0;
 
     };
 
@@ -111,11 +99,6 @@ class BaseFileIconProvider: public QObject, public Counter
     IconCache& _icons( void )
     { return icons_; }
 
-    //* pixmap cache
-    using PixmapCache = QHash<Key, QPixmap>;
-    PixmapCache& _pixmaps( void )
-    { return pixmaps_; }
-
     private:
 
     //* icon map
@@ -124,16 +107,10 @@ class BaseFileIconProvider: public QObject, public Counter
     //* invalid icon
     QIcon invalid_;
 
-    //* icon map
-    PixmapCache pixmaps_;
-
-    //* invalid pixmap
-    QPixmap invalidPixmap_;
-
 };
 
 //* hash
 inline uint qHash( const BaseFileIconProvider::Key& key )
-{ return qHash( key.file_ )|qHash( QPair<int,int>(key.type_, key.width_) ); }
+{ return qHash( key.file_ )|key.type_; }
 
 #endif
