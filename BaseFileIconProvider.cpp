@@ -31,6 +31,42 @@ BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
 {}
 
 //__________________________________________________________________________
+const QPixmap& BaseFileIconProvider::pixmap( const QSize& size, const BaseFileInfo& fileInfo, int type )
+{
+
+    // get type
+    if( !( type&BaseFileInfo::Folder ) ) return invalidPixmap_;
+
+    // check whether current map contains key
+    PixmapMap::const_iterator iter( pixmaps_.find( Key( fileInfo.file(), type ) ) );
+    if( iter != pixmaps_.end() ) return iter.value();
+
+    // insert new entry in map
+    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
+    DefaultFolders::FolderMap::const_iterator nameIter( folders.find( fileInfo.file() ) );
+    if( nameIter == folders.end() ) return invalidPixmap_;
+
+    // get icon name
+    const QString iconName( DefaultFolders::get().iconName( nameIter.value() ) );
+    if( iconName.isEmpty() ) return invalidPixmap_;
+
+    // get corresponding icon from icon engine
+    const QIcon& base( IconEngine::get( iconName ) );
+    if( base.isNull() ) return invalidPixmap_;
+
+    // create pixmap
+    CustomPixmap pixmap = type&BaseFileInfo::Link ? _linked( CustomPixmap( base.pixmap( size ) ) ):base.pixmap( size );
+
+    // add clipped effect
+    if( type & BaseFileInfo::Clipped ) pixmap = _clipped( pixmap );
+
+    // insert in map and return
+    return pixmaps_.insert( Key( fileInfo.file(), type ), pixmap ).value();
+
+}
+
+
+//__________________________________________________________________________
 const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type )
 {
 

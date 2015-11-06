@@ -46,6 +46,20 @@ class BaseFileIconProvider: public QObject, public Counter
     //* icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo&, int );
 
+    //* pixmap matching given file info
+    virtual const QPixmap& pixmap( const QSize& size, const BaseFileInfo& fileInfo )
+    { return pixmap( size, fileInfo, fileInfo.type() ); }
+
+    //* pixmap matching given file info
+    virtual const QPixmap& pixmap( const QSize&, const BaseFileInfo&, int );
+
+    //* clear
+    virtual void clear( void )
+    {
+        icons_.clear();
+        pixmaps_.clear();
+    }
+
     //* key, used for hash
     class Key
     {
@@ -98,6 +112,13 @@ class BaseFileIconProvider: public QObject, public Counter
 
     //* invalid icon
     QIcon invalid_;
+
+    //* icon map
+    using PixmapMap = QHash<Key, QPixmap>;
+    PixmapMap pixmaps_;
+
+    //* invalid pixmap
+    QPixmap invalidPixmap_;
 
 };
 
