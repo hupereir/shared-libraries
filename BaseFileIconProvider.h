@@ -102,7 +102,7 @@ class BaseFileIconProvider: public QObject, public Counter
 };
 
 //* hash
-inline unsigned int qHash( const BaseFileIconProvider::Key& key )
+inline uint qHash( const BaseFileIconProvider::Key& key )
 { return qHash( key.file_ )|key.type_; }
 
 #endif
