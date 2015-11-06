@@ -106,18 +106,26 @@ class BaseFileIconProvider: public QObject, public Counter
     //* add clipped effect
     QIcon _clipped( const QIcon& ) const;
 
+    //* icon cache
+    using IconCache = QHash<Key, QIcon>;
+    IconCache& _icons( void )
+    { return icons_; }
+
+    //* pixmap cache
+    using PixmapCache = QHash<Key, QPixmap>;
+    PixmapCache& _pixmaps( void )
+    { return pixmaps_; }
+
     private:
 
     //* icon map
-    using IconMap = QHash<Key, QIcon>;
-    IconMap icons_;
+    IconCache icons_;
 
     //* invalid icon
     QIcon invalid_;
 
     //* icon map
-    using PixmapMap = QHash<Key, QPixmap>;
-    PixmapMap pixmaps_;
+    PixmapCache pixmaps_;
 
     //* invalid pixmap
     QPixmap invalidPixmap_;

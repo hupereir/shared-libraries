@@ -39,7 +39,7 @@ const QPixmap& BaseFileIconProvider::pixmap( const QSize& size, const BaseFileIn
 
     // check whether current map contains key
     const Key key( fileInfo.file(), type, size );
-    PixmapMap::const_iterator iter( pixmaps_.find( key ) );
+    PixmapCache::const_iterator iter( pixmaps_.find( key ) );
     if( iter != pixmaps_.end() ) return iter.value();
 
     // insert new entry in map
@@ -75,7 +75,7 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     if( !( type&BaseFileInfo::Folder ) ) return invalid_;
 
     // check whether current map contains key
-    IconMap::const_iterator iter( icons_.find( Key( fileInfo.file(), type ) ) );
+    IconCache::const_iterator iter( icons_.find( Key( fileInfo.file(), type ) ) );
     if( iter != icons_.end() ) return iter.value();
 
     // insert new entry in map
