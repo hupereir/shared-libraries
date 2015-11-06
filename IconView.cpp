@@ -742,7 +742,9 @@ void IconView::mouseMoveEvent( QMouseEvent *event )
 
         // default implementation
         _setHoverIndex( indexAt( event->pos() ) );
-        QAbstractItemView::mouseMoveEvent(event);
+
+        if( event->buttons() & Qt::LeftButton )
+        { QAbstractItemView::mouseMoveEvent(event); }
 
     }
 
