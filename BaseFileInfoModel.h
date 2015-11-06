@@ -163,7 +163,7 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
         case Qt::DecorationRole:
         {
 
-            if( showIcons() && index.column() == 0 )
+            if( showIcons_ && index.column() == 0 )
             { return _icon( index ); }
 
             break;
