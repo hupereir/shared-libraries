@@ -22,7 +22,8 @@
 //______________________________________________________________________________
 MultipleClickCounter::MultipleClickCounter( QObject* parent, int maxCount ):
     QObject( parent ),
-    Counter( "MultipleClickCounter" )
+    Counter( "MultipleClickCounter" ),
+    maxCount_( maxCount )
 {}
 
 //______________________________________________________________________________
