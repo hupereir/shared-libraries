@@ -74,6 +74,20 @@ class BaseFileIconProvider: public QObject, public Counter
 
     };
 
+    //*@name pixmap manipulation icons
+    //@{
+
+    //* add link overlay icon
+    static QPixmap linked( const CustomPixmap& );
+
+    //* add hidden effect
+    static QPixmap hidden( const CustomPixmap& );
+
+    //* add clipped effect
+    static QPixmap clipped( const CustomPixmap& );
+
+    //@}
+
     protected:
 
     //* icon cache

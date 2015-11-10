@@ -58,3 +58,38 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     return icons_.insert( Key( fileInfo.file(), type ), base ).value();
 
 }
+
+
+//____________________________________________________
+QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
+{
+
+    if( source.isNull() ) return source;
+    QIcon linkOverlay( IconEngine::get( IconNames::SymbolicLink ) );
+    if( linkOverlay.isNull() ) return source;
+
+    // get source size
+    const QSize size( source.size()/source.devicePixelRatio() );
+
+    // decide overlay size
+    QSize overlaySize;
+    if( size.width() <= 16 ) overlaySize = QSize( 10, 10 );
+    else if( size.width() <= 22 ) overlaySize = QSize( 12, 12 );
+    else if( size.width() <= 32 ) overlaySize = QSize( 16, 16 );
+    else if( size.width() <= 48 ) overlaySize = QSize( 16, 16 );
+    else if( size.width() <= 64 ) overlaySize = QSize( 22, 22 );
+    else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
+    else overlaySize = QSize( 64, 64 );
+
+    return source.merge( linkOverlay.pixmap( overlaySize )
+        .scaled( overlaySize, Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
+
+}
+
+//____________________________________________________
+QPixmap BaseFileIconProvider::hidden( const CustomPixmap& source )
+{ return source.transparent( 0.6 ); }
+
+//____________________________________________________
+QPixmap BaseFileIconProvider::clipped( const CustomPixmap& source )
+{ return source.desaturate().transparent( 0.6 ); }
