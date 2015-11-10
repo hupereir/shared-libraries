@@ -17,7 +17,7 @@
 *
 *******************************************************************************/
 
-#include "BaseFileInfoTreeViewItemDelegate.h"
+#include "BaseFileInfoItemDelegate.h"
 
 #include "BaseFileIconProvider.h"
 #include "BaseFileInfoModel.h"
@@ -26,24 +26,25 @@
 #include <QStyleOptionViewItemV4>
 
 //______________________________________________________
-BaseFileInfoTreeViewItemDelegate::BaseFileInfoTreeViewItemDelegate( QObject* parent ):
+BaseFileInfoItemDelegate::BaseFileInfoItemDelegate( QObject* parent ):
     TreeViewItemDelegate( parent )
 {}
 
 //______________________________________________________
-void BaseFileInfoTreeViewItemDelegate::paint(
-    QPainter* painter,
-    const QStyleOptionViewItem& option, const QModelIndex& index ) const
+void BaseFileInfoItemDelegate::initStyleOption( QStyleOptionViewItem* option, const QModelIndex& index) const
 {
+    TreeViewItemDelegate::initStyleOption( option, index );
 
-    const QStyleOptionViewItemV4 *optionV4 = qstyleoption_cast<const QStyleOptionViewItemV4*>( &option );
-    if( !optionV4 || optionV4->icon.isNull() ) return TreeViewItemDelegate::paint( painter, option, index );
+    // cast option and check icon
+    QStyleOptionViewItemV4 *optionV4 = qstyleoption_cast<QStyleOptionViewItemV4*>( option );
+    if( !optionV4 || optionV4->icon.isNull() ) return;
 
-    // get model from parent
+    // item view
     QAbstractItemView* itemView( qobject_cast<QAbstractItemView*>(parent()) );
-    if( !( itemView && itemView->model() ) ) return TreeViewItemDelegate::paint( painter, option, index );
+    if( !itemView ) return;
 
-    QVariant fileTypeVariant( itemView->model()->data( index, Base::FileTypeRole ) );
+    // check type
+    QVariant fileTypeVariant( index.data( Base::FileTypeRole ) );
     if( fileTypeVariant.canConvert( QVariant::Int ) )
     {
         const int type( fileTypeVariant.toInt() );
@@ -53,15 +54,9 @@ void BaseFileInfoTreeViewItemDelegate::paint(
         if( type & BaseFileInfo::Link ) pixmap = BaseFileIconProvider::linked( pixmap );
         if( type & BaseFileInfo::Hidden ) pixmap = BaseFileIconProvider::hidden( pixmap );
         if( type & BaseFileInfo::Clipped ) pixmap = BaseFileIconProvider::clipped( pixmap );
-
-        QStyleOptionViewItemV4 copy( *optionV4 );
-        copy.icon = pixmap;
-
-        return TreeViewItemDelegate::paint( painter, copy, index );
-
-    } else {
-
-        return TreeViewItemDelegate::paint( painter, option, index );
+        optionV4->icon = pixmap;
 
     }
+    return;
+
 }

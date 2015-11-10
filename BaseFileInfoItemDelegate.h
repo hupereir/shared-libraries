@@ -1,5 +1,5 @@
-#ifndef BaseFileInfoTreeViewItemDelegate_h
-#define BaseFileInfoTreeViewItemDelegate_h
+#ifndef BaseFileInfoItemDelegate_h
+#define BaseFileInfoItemDelegate_h
 
 /******************************************************************************
 *
@@ -22,7 +22,7 @@
 
 #include "TreeViewItemDelegate.h"
 
-class BaseFileInfoTreeViewItemDelegate: public TreeViewItemDelegate
+class BaseFileInfoItemDelegate: public TreeViewItemDelegate
 {
 
     Q_OBJECT
@@ -30,10 +30,11 @@ class BaseFileInfoTreeViewItemDelegate: public TreeViewItemDelegate
     public:
 
      //* constructor
-    BaseFileInfoTreeViewItemDelegate( QObject* = nullptr );
+    BaseFileInfoItemDelegate( QObject* = nullptr );
 
-    //* paint
-    virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
+    protected:
+    virtual void initStyleOption( QStyleOptionViewItem*, const QModelIndex& ) const;
+
 
 };
 
