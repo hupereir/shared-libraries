@@ -98,6 +98,9 @@ class TreeView: public QTreeView, public Counter
     //* delegate
     virtual void setItemDelegate( QAbstractItemDelegate* );
 
+    //* delegate
+    virtual void setItemDelegateForColumn( int, QAbstractItemDelegate* );
+
     //* enable list finding
     void setFindEnabled( bool value );
 

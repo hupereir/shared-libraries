@@ -124,6 +124,18 @@ void TreeView::setItemDelegate( QAbstractItemDelegate* delegate )
 }
 
 //______________________________________________________________________
+void TreeView::setItemDelegateForColumn( int column, QAbstractItemDelegate* delegate )
+{
+
+    // assign new
+    QTreeView::setItemDelegateForColumn( column, delegate );
+
+    // update margin to store value
+    _setItemMargin( itemMargin_ );
+
+}
+
+//______________________________________________________________________
 void TreeView::setFindEnabled( bool value )
 {
     Debug::Throw( "IconView::setFindEnabled.\n" );
@@ -414,6 +426,15 @@ void TreeView::_setItemMargin( int value )
 
     if( TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegate() ) )
     { delegate->setItemMargin( itemMargin_ ); }
+
+    if( model() )
+    {
+        for( int iColumn = 0; iColumn < model()->columnCount(); ++iColumn )
+        {
+            if( TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegateForColumn(iColumn) ) )
+            { delegate->setItemMargin( itemMargin_ ); }
+        }
+    }
 
 }
 
