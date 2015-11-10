@@ -76,24 +76,6 @@ class BaseFileIconProvider: public QObject, public Counter
 
     protected:
 
-    //* add link overlay icon
-    QPixmap _linked( const CustomPixmap& ) const;
-
-    //* add hidden effect
-    QPixmap _hidden( const CustomPixmap& ) const;
-
-    //* add clipped effect
-    QPixmap _clipped( const CustomPixmap& ) const;
-
-    //* add link overlay icon
-    QIcon _linked( const QIcon& ) const;
-
-    //* add hidden effect
-    QIcon _hidden( const QIcon& ) const;
-
-    //* add clipped effect
-    QIcon _clipped( const QIcon& ) const;
-
     //* icon cache
     using IconCache = QHash<Key, QIcon>;
     IconCache& _icons( void )
