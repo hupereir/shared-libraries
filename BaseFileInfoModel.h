@@ -63,6 +63,12 @@ class BaseFileInfoModel : public ListModel<T>
         nColumns
     };
 
+    //* custom role
+    enum ItemDataRole
+    {
+        FileTypeRole = Qt::UserRole+1
+    };
+
     //*@name methods reimplemented from base class
     //@{
 
@@ -192,6 +198,15 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
                 font.setItalic( true );
                 return font;
             }
+
+            break;
+
+        }
+
+        case FileTypeRole:
+        {
+            const T& fileInfo( ListModel<T>::get()[index.row()] );
+            return fileInfo.type();
         }
 
         default: break;
