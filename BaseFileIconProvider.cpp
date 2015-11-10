@@ -56,7 +56,6 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
 
     // link overlay
     QIcon copy;
-    QIcon linkOverlay( IconEngine::get( IconNames::SymbolicLink ) );
 
     // add relevant sizes
     foreach( const QSize& size, base.availableSizes() )
