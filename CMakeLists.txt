@@ -60,6 +60,7 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 set(base_qt_SOURCES
   BaseContextMenu.cpp
   BaseFileIconProvider.cpp
+  BaseFileIconView.cpp
   BaseFileInfo.cpp
   BaseFileInfoConfigurationWidget.cpp
   BaseFileInfoToolTipWidget.cpp
