@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "BaseFileInfoToolTipWidget.h"
+#include "BaseFileIconProvider.h"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "GridLayoutItem.h"
@@ -99,7 +100,15 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
     if( !icon.isNull() )
     {
 
-        iconLabel_->setPixmap( icon.pixmap( QSize( pixmapSize_, pixmapSize_ ) ) );
+        // get pixmap
+        QPixmap pixmap( icon.pixmap( QSize( pixmapSize_, pixmapSize_ ) ) );
+
+        // add effects
+        const int type( fileInfo.type() );
+        if( type & BaseFileInfo::Link ) pixmap = BaseFileIconProvider::linked( pixmap );
+        if( type & BaseFileInfo::Hidden ) pixmap = BaseFileIconProvider::hidden( pixmap );
+
+        iconLabel_->setPixmap( pixmap );
         iconLabel_->show();
 
     } else iconLabel_->hide();
