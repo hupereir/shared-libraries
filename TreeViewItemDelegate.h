@@ -30,23 +30,13 @@ class TreeViewItemDelegate: public QStyledItemDelegate
     public:
 
     //* constructor
-    TreeViewItemDelegate( QObject* parent = nullptr ):
-        QStyledItemDelegate( parent )
-    {}
+    TreeViewItemDelegate( QObject* = nullptr );
 
     //* set item margin
-    virtual void setItemMargin( int value )
-    { itemMargin_ = value; }
+    virtual void setItemMargin( int );
 
     //* size hint for index
-    virtual QSize sizeHint( const QStyleOptionViewItem& option, const QModelIndex& index ) const
-    {
-        QSize size( QStyledItemDelegate::sizeHint( option, index ) );
-        if( size.isValid() && itemMargin_ > 0 )
-        { size.rheight() += itemMargin_*2; }
-
-        return size;
-    }
+    virtual QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
 
     private:
 
