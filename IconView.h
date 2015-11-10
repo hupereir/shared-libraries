@@ -309,7 +309,7 @@ class IconView: public QAbstractItemView, public Counter
     virtual void _setHoverIndex( const QModelIndex& );
 
     //* update item from index
-    void _updateItem( IconViewItem& item, const QModelIndex& index ) const;
+    virtual void _updateItem( IconViewItem&, const QModelIndex& ) const;
 
     //* layout existing items
     void _layoutItems( void );
