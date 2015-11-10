@@ -1,5 +1,5 @@
-#ifndef BaseFileIconView_h
-#define BaseFileIconView_h
+#ifndef BaseFileInfoIconView_h
+#define BaseFileInfoIconView_h
 
 /******************************************************************************
 *
@@ -22,7 +22,7 @@
 
 #include "IconView.h"
 
-class BaseFileIconView: public IconView
+class BaseFileInfoIconView: public IconView
 {
 
     Q_OBJECT
@@ -30,7 +30,7 @@ class BaseFileIconView: public IconView
     public:
 
     //* constructor
-    BaseFileIconView( QWidget* = nullptr );
+    BaseFileInfoIconView( QWidget* = nullptr );
 
     protected:
 

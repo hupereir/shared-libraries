@@ -17,18 +17,18 @@
 *
 *******************************************************************************/
 
-#include "BaseFileIconView.h"
+#include "BaseFileInfoIconView.h"
 
 #include "BaseFileInfoModel.h"
 #include "BaseFileIconProvider.h"
 
 //______________________________________________________________
-BaseFileIconView::BaseFileIconView( QWidget* parent ):
+BaseFileInfoIconView::BaseFileInfoIconView( QWidget* parent ):
     IconView( parent )
-{ Debug::Throw( "BaseFileIconView::BaseFileIconView.\n" ); }
+{ Debug::Throw( "BaseFileInfoIconView::BaseFileInfoIconView.\n" ); }
 
 //______________________________________________________________
-void BaseFileIconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const
+void BaseFileInfoIconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const
 {
 
     // base class
