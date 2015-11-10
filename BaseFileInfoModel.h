@@ -30,6 +30,15 @@
 #include <QFont>
 #include <QPalette>
 
+namespace Base
+{
+    //* custom role
+    enum ItemDataRole
+    {
+        FileTypeRole = Qt::UserRole+1
+    };
+}
+
 //* FileInfo model. Stores file information for display in lists
 template<typename T>
 class BaseFileInfoModel : public ListModel<T>
@@ -61,12 +70,6 @@ class BaseFileInfoModel : public ListModel<T>
         Permissions,
         Modified,
         nColumns
-    };
-
-    //* custom role
-    enum ItemDataRole
-    {
-        FileTypeRole = Qt::UserRole+1
     };
 
     //*@name methods reimplemented from base class
@@ -203,7 +206,7 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
 
         }
 
-        case FileTypeRole:
+        case Base::FileTypeRole:
         {
             const T& fileInfo( ListModel<T>::get()[index.row()] );
             return fileInfo.type();
