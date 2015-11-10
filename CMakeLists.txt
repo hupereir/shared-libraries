@@ -64,6 +64,7 @@ set(base_qt_SOURCES
   BaseFileInfoConfigurationWidget.cpp
   BaseFileInfoIconView.cpp
   BaseFileInfoToolTipWidget.cpp
+  BaseFileInfoTreeViewItemDelegate.cpp
   BaseFileInformationDialog.cpp
   BaseFindDialog.cpp
   BaseFindWidget.cpp
