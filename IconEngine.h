@@ -26,48 +26,45 @@
 
 #include <QStringList>
 
-//! customized Icon factory to provide better looking disabled icons
+//* customized Icon factory to provide better looking disabled icons
 class IconEngine: public Counter
 {
 
     public:
 
-    //! retrieve singleton
+    //* retrieve singleton
     static IconEngine& get( void );
 
-    //! create icon
+    //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
     static const QIcon& get( const QString& file, Base::IconCacheItem::Flags flags = Base::IconCacheItem::Any )
     { return get()._get( file, flags ); }
 
-    //! copy an icon into another one
-    static QIcon copy( const QIcon& );
-
-    //! return cache
+    //* return cache
     static const Base::IconCache& cache( void )
     { return get().cache_; }
 
-    //! reload all icons set in cache from new path list
+    //* reload all icons set in cache from new path list
     bool reload( void );
 
     private:
 
-    //!@name non static methods are hidden
+    //*@name non static methods are hidden
     //@{
 
-    //! constructor
+    //* constructor
     IconEngine( void );
 
-    //! create icon
+    //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
     const Base::IconCacheItem& _get( const QString&, Base::IconCacheItem::Flags = Base::IconCacheItem::Any );
 
     //@}
 
-    //! pixmap path
+    //* pixmap path
     QStringList pixmapPath_;
 
-    //! map files and QIcon
+    //* map files and QIcon
     Base::IconCache cache_;
 
 };
