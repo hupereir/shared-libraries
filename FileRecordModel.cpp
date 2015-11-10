@@ -274,6 +274,6 @@ const QIcon& FileRecordModel::_icon( const QString& name )
 
     IconCache::const_iterator iter( _icons().find( name ) );
     if( iter != _icons().end() ) return iter.value();
-    else return _icons().insert( name, IconEngine::copy( IconEngine::get( name ) ) ).value();
+    else return _icons().insert( name, IconEngine::get( name ) ).value();
 
 }
