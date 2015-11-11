@@ -39,9 +39,9 @@ void BaseFileInfoItemDelegate::initStyleOption( QStyleOptionViewItem* option, co
     QStyleOptionViewItemV4 *optionV4 = qstyleoption_cast<QStyleOptionViewItemV4*>( option );
     if( !optionV4 || optionV4->icon.isNull() ) return;
 
-    // item view
-    QAbstractItemView* itemView( qobject_cast<QAbstractItemView*>(parent()) );
-    if( !itemView ) return;
+//     // item view
+//     QAbstractItemView* itemView( qobject_cast<QAbstractItemView*>(parent()) );
+//     if( !itemView ) return;
 
     // check type
     QVariant fileTypeVariant( index.data( Base::FileTypeRole ) );
@@ -50,7 +50,7 @@ void BaseFileInfoItemDelegate::initStyleOption( QStyleOptionViewItem* option, co
         const int type( fileTypeVariant.toInt() );
 
         // get pixmap
-        QPixmap pixmap( optionV4->icon.pixmap( itemView->iconSize() ) );
+        QPixmap pixmap( optionV4->icon.pixmap( optionV4->decorationSize ) );
         if( type & BaseFileInfo::Link ) pixmap = BaseFileIconProvider::linked( pixmap );
         if( type & BaseFileInfo::Hidden ) pixmap = BaseFileIconProvider::hidden( pixmap );
         if( type & BaseFileInfo::Clipped ) pixmap = BaseFileIconProvider::clipped( pixmap );
