@@ -51,6 +51,10 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     //*@name accessors
     //@{
 
+    //* show icons
+    virtual bool showIcons( void ) const
+    { return showIcons_; }
+
     //* flags
     virtual Qt::ItemFlags flags( const QModelIndex& ) const;
 
