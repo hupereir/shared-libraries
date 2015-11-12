@@ -106,6 +106,7 @@ namespace Svg
 
 }
 
+// need to be included after definition of StyleOptionWidget
 #include "SvgConfiguration.moc"
 
 namespace Svg
