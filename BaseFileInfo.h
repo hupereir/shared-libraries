@@ -161,6 +161,10 @@ class BaseFileInfo
     virtual bool isHidden( void ) const
     { return type_&Hidden; }
 
+    //* file is clipped
+    virtual bool isClipped( void ) const
+    { return type_&Clipped; }
+
     //* file size
     virtual qint64 size( void ) const
     { return size_; }
