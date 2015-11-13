@@ -257,8 +257,8 @@ void PlacesWidgetItem::_paint( QPainter* painter )
     QStyleOptionFrameV3 option;
     option.initFrom( this );
     const QSize size( style()->sizeFromContents( QStyle::CT_ItemViewItem, &option, QSize(0,0), this ) );
-    const int marginWidth( size.width()/2 );
-    const int marginHeight( size.height()/2 );
+    const int marginWidth( qMax( size.width()/2, 2 ) );
+    const int marginHeight( qMax( size.height()/2, 2 ) );
 
     // render text
     if( !text().isEmpty() )
