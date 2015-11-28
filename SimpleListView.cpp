@@ -182,6 +182,7 @@ SimpleListView::SimpleListView( QWidget* parent ):
     if( itemDelegate() ) itemDelegate()->deleteLater();
     setItemDelegate( new SimpleListViewDelegate( this ) );
     setMouseTracking( true );
+    setSelectionBehavior( SelectRows );
 
     // hover
     connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
