@@ -27,6 +27,7 @@
 #include <QDBusArgument>
 #include <QDBusInterface>
 #include <QDBusMetaType>
+#include <QDBusPendingCall>
 #endif
 
 #ifndef QT_NO_DBUS
@@ -70,10 +71,7 @@ SystemNotifications::SystemNotifications( QObject* parent, const QString& applic
     Counter( "SystemNotifications" )
 {
     Debug::Throw() << "SystemNotifications::SystemNotifications" << endl;
-
-    const QImage image( icon.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
-    imageData_ = Notifications::ImageData( image );
-
+    if( !icon.isNull() ) setIcon( icon );
 }
 
 //____________________________________________
@@ -81,12 +79,19 @@ SystemNotifications::~SystemNotifications( void )
 { _showMessageQueue(); }
 
 //____________________________________________
+void SystemNotifications::setIcon( const QIcon& icon )
+{
+    if( icon.isNull() ) imageData_ = Notifications::ImageData();
+    else imageData_ = Notifications::ImageData( icon.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
+}
+
+//____________________________________________
 bool SystemNotifications::isSupported( void )
 {
     #ifdef QT_NO_DBUS
     return false;
     #else
-    return QDBusConnection::sessionBus().isConnected();
+    return true;
     #endif
 }
 
@@ -129,20 +134,28 @@ void SystemNotifications::_showMessageQueue( void )
     if( messageQueue_.empty() ) return;
 
     #ifndef QT_NO_DBUS
-    if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-
     QDBusInterface interface(
         "org.freedesktop.Notifications",
         "/org/freedesktop/Notifications",
         "org.freedesktop.Notifications",
         QDBusConnection::sessionBus() );
 
-    QVariantMap hints;
-    hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
-
     QString message = messageQueue_.join( "\n" );
-    interface.call( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), hints, 5000 );
 
+    const int delay = 2000;
+    if( imageData_.isValid() )
+    {
+
+        if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
+        QVariantMap hints;
+        hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
+        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), hints, delay );
+
+    } else {
+
+        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), QVariantMap(), delay );
+
+    }
     #endif
     messageQueue_.clear();
 

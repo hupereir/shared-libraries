@@ -40,6 +40,9 @@ class SystemNotifications: public QObject, public Counter
     //* destructor
     virtual ~SystemNotifications( void );
 
+    //* set icon
+    void setIcon( const QIcon& );
+
     //* process message
     virtual void processMessage( const QString&, const QString& );
 
