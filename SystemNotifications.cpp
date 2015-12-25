@@ -23,6 +23,8 @@
 #include "Debug.h"
 #include "IconSize.h"
 
+#include <QCoreApplication>
+
 #ifndef QT_NO_DBUS
 #include <QDBusArgument>
 #include <QDBusInterface>
@@ -92,6 +94,7 @@ bool SystemNotifications::isSupported( void )
     return false;
     #else
     return true;
+    // return (qApp && QDBusConnection::sessionBus().isConnected());
     #endif
 }
 
@@ -142,18 +145,17 @@ void SystemNotifications::_showMessageQueue( void )
 
     QString message = messageQueue_.join( "\n" );
 
-    const int delay = 2000;
     if( imageData_.isValid() )
     {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
         QVariantMap hints;
         hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
-        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), hints, delay );
+        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), hints, -1 );
 
     } else {
 
-        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), QVariantMap(), delay );
+        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), QVariantMap(), -1 );
 
     }
     #endif
