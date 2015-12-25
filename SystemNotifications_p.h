@@ -1,5 +1,5 @@
-#ifndef SystemNotifications_h
-#define SystemNotifications_h
+#ifndef SystemNotifications_p_h
+#define SystemNotifications_p_h
 
 /******************************************************************************
 *
@@ -29,18 +29,16 @@
 #include <QStringList>
 #include <QTimerEvent>
 
-class SystemNotificationsP;
-
-class SystemNotifications: public QObject, public Counter
+class SystemNotificationsP: public QObject, public Counter
 {
 
     public:
 
     //* constructor
-    SystemNotifications( QObject* = nullptr );
+    SystemNotificationsP( QObject* = nullptr );
 
     //* destructor
-    virtual ~SystemNotifications( void );
+    virtual ~SystemNotificationsP( void ) = default;
 
     //* @name modifiers
     //@{
@@ -52,39 +50,20 @@ class SystemNotifications: public QObject, public Counter
     void setApplicationIcon( const QIcon& );
 
     //* process message
-    virtual void processMessage( const QString&, const QString& );
+    virtual void send( const QString&, const QString& );
 
     //@}
-
-    //* @name accessors
-    //@{
-
-    //* true if available
-    static bool isSupported( void );
-
-    //@}
-
-    protected:
-
-    //* event handler
-    virtual void timerEvent( QTimerEvent* );
-
-    //* process message queue
-    void _showMessageQueue( void );
 
     private:
 
-    //* timer
-    QBasicTimer timer_;
+    //* application name
+    QString applicationName_;
 
-    //* summary
-    QString summary_;
+    //* image data
+    Notifications::ImageData imageData_;
 
-    //* message queue
-    QStringList messageQueue_;
-
-    //* private
-    SystemNotificationsP* d_;
+    //* image data type id
+    int typeId_ = 0;
 
 };
 

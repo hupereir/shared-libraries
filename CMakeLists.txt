@@ -44,6 +44,7 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 set(base_notifications_SOURCES
   ImageData.cpp
   SystemNotifications.cpp
+  SystemNotifications_p.cpp
 )
 
 if(ENABLE_SHARED)

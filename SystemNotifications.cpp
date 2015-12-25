@@ -18,74 +18,30 @@
 *******************************************************************************/
 
 #include "SystemNotifications.h"
-#include "ImageData.h"
+#include "SystemNotifications_p.h"
 
 #include "Debug.h"
-#include "IconSize.h"
-
-#include <QCoreApplication>
-
-#ifndef QT_NO_DBUS
-#include <QDBusArgument>
-#include <QDBusInterface>
-#include <QDBusMetaType>
-#include <QDBusPendingCall>
-#endif
-
-#ifndef QT_NO_DBUS
-
-//____________________________________________________________
-QDBusArgument &operator << (QDBusArgument &argument, const Notifications::ImageData &imageData)
-{
-    argument.beginStructure();
-    argument
-        << imageData.width
-        << imageData.height
-        << imageData.rowStride
-        << imageData.hasAlpha
-        << imageData.bitsPerSample
-        << imageData.channels
-        << imageData.data;
-    argument.endStructure();
-    return argument;
-}
-
-//____________________________________________________________
-const QDBusArgument & operator >>(const QDBusArgument &argument, Notifications::ImageData &imageData)
-{
-    argument.beginStructure();
-    argument
-        >> imageData.width
-        >> imageData.height
-        >> imageData.rowStride
-        >> imageData.hasAlpha
-        >> imageData.bitsPerSample
-        >> imageData.channels
-        >> imageData.data;
-    argument.endStructure();
-    return argument;
-}
-#endif
 
 //____________________________________________
-SystemNotifications::SystemNotifications( QObject* parent, const QString& applicationName, const QIcon& icon ):
+SystemNotifications::SystemNotifications( QObject* parent ):
     QObject( parent ),
     Counter( "SystemNotifications" )
-{
-    Debug::Throw() << "SystemNotifications::SystemNotifications" << endl;
-    if( !icon.isNull() ) setIcon( icon );
-}
+{ d_ = new SystemNotificationsP( this ); }
 
 //____________________________________________
 SystemNotifications::~SystemNotifications( void )
-{ _showMessageQueue(); }
+{
+    _showMessageQueue();
+    delete d_;
+}
 
 //____________________________________________
-void SystemNotifications::setIcon( const QIcon& icon )
-{
-    if( icon.isNull() ) imageData_ = Notifications::ImageData();
-    else imageData_ = Notifications::ImageData( icon.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
-}
+void SystemNotifications::setApplicationName( const QString& value )
+{ d_->setApplicationName( value ); }
+
+//____________________________________________
+void SystemNotifications::setApplicationIcon( const QIcon& value )
+{ d_->setApplicationIcon( value ); }
 
 //____________________________________________
 bool SystemNotifications::isSupported( void )
@@ -134,31 +90,11 @@ void SystemNotifications::timerEvent( QTimerEvent* event )
 void SystemNotifications::_showMessageQueue( void )
 {
     Debug::Throw( "SystemNotifications::_showMessageQueue.\n" );
-    if( messageQueue_.empty() ) return;
-
-    #ifndef QT_NO_DBUS
-    QDBusInterface interface(
-        "org.freedesktop.Notifications",
-        "/org/freedesktop/Notifications",
-        "org.freedesktop.Notifications",
-        QDBusConnection::sessionBus() );
-
-    QString message = messageQueue_.join( "\n" );
-
-    if( imageData_.isValid() )
+    if( !messageQueue_.empty() )
     {
-
-        if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-        QVariantMap hints;
-        hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
-        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), hints, -1 );
-
-    } else {
-
-        interface.asyncCall( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), QVariantMap(), -1 );
-
+        d_->send( summary_, messageQueue_.join( "\n" ) );
+        messageQueue_.clear();
     }
-    #endif
-    messageQueue_.clear();
 
+    return;
 }
