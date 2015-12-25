@@ -30,6 +30,7 @@
 #endif
 
 #ifndef QT_NO_DBUS
+
 //____________________________________________________________
 QDBusArgument &operator << (QDBusArgument &argument, const Notifications::ImageData &imageData)
 {
@@ -66,9 +67,14 @@ const QDBusArgument & operator >>(const QDBusArgument &argument, Notifications::
 //____________________________________________
 SystemNotifications::SystemNotifications( QObject* parent, const QString& applicationName, const QIcon& icon ):
     QObject( parent ),
-    Counter( "SystemNotifications" ),
-    icon_( icon )
-{ Debug::Throw() << "SystemNotifications::SystemNotifications" << endl; }
+    Counter( "SystemNotifications" )
+{
+    Debug::Throw() << "SystemNotifications::SystemNotifications" << endl;
+
+    const QImage image( icon.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
+    imageData_ = Notifications::ImageData( image );
+
+}
 
 //____________________________________________
 SystemNotifications::~SystemNotifications( void )
@@ -80,7 +86,7 @@ bool SystemNotifications::isSupported( void )
     #ifdef QT_NO_DBUS
     return false;
     #else
-    return true;
+    return QDBusConnection::sessionBus().isConnected();
     #endif
 }
 
@@ -131,12 +137,8 @@ void SystemNotifications::_showMessageQueue( void )
         "org.freedesktop.Notifications",
         QDBusConnection::sessionBus() );
 
-
-    const QImage image( icon_.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
-    const Notifications::ImageData imageData( image );
-
     QVariantMap hints;
-    hints.insert( "image-data", QVariant( typeId_, &imageData ) );
+    hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
 
     QString message = messageQueue_.join( "\n" );
     interface.call( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), hints, 5000 );

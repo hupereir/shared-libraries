@@ -30,24 +30,26 @@ namespace Notifications
 
         public:
 
-        ImageData( void ):
-            width(0),
-            height(0),
-            rowStride(0),
-            hasAlpha(false),
-            channels(0),
-            bitsPerSample(0)
+        //* constructor
+        ImageData( void )
         {}
 
-
+        //* constructor
         ImageData( QImage image );
 
-        int width;
-        int height;
-        int rowStride;
-        bool hasAlpha;
-        int channels;
-        int bitsPerSample;
+        //* destructor
+        ~ImageData( void ) = default;
+
+        //* validity
+        bool isValid( void ) const
+        { return width > 0 && height > 0; }
+
+        int width = 0;
+        int height = 0;
+        int rowStride = 0;
+        bool hasAlpha = false;
+        int channels = 0;
+        int bitsPerSample = 0;
         QByteArray data;
 
     };

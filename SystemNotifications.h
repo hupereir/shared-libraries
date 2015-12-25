@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "ImageData.h"
 
 #include <QIcon>
 #include <QBasicTimer>
@@ -58,8 +59,8 @@ class SystemNotifications: public QObject, public Counter
     //* timer
     QBasicTimer timer_;
 
-    //* icon
-    QIcon icon_;
+    //* image data
+    Notifications::ImageData imageData_;
 
     //* image data type id
     int typeId_ = 0;
