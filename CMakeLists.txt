@@ -65,7 +65,7 @@ if(USE_QT5)
   qt5_use_modules(base-notifications Widgets)
   if(Qt5DBus_FOUND )
 
-    qt5_use_modules(base-server DBus)
+    qt5_use_modules(base-notifications DBus)
 
   else()
 
