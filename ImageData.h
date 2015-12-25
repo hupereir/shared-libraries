@@ -1,5 +1,5 @@
-#ifndef SystemNotifications_p_h
-#define SystemNotifications_p_h
+#ifndef ImageData_h
+#define ImageData_h
 
 /******************************************************************************
 *
@@ -20,29 +20,40 @@
 *
 *******************************************************************************/
 
-#include <QString>
+#include <QImage>
+#include <QMetaType>
 
-class QIcon;
-
-class SystemNotificationsP
+namespace Notifications
 {
+    class ImageData
+    {
 
-    public:
+        public:
 
-    // constructor
-    SystemNotificationsP( const QString&, const QIcon& );
+        ImageData( void ):
+            width(0),
+            height(0),
+            rowStride(0),
+            hasAlpha(false),
+            channels(0),
+            bitsPerSample(0)
+        {}
 
-    //* destructor
-    virtual ~SystemNotificationsP( void );
 
-    // initialize
-    void send( const QString&, const QString& = QString(), const QString& = QString() ) const;
+        ImageData( QImage image );
 
-    private:
+        int width;
+        int height;
+        int rowStride;
+        bool hasAlpha;
+        int channels;
+        int bitsPerSample;
+        QByteArray data;
 
-    //* icon image
-    void* icon_;
+    };
 
-};
+}
+
+Q_DECLARE_METATYPE( Notifications::ImageData )
 
 #endif

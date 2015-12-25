@@ -10,36 +10,26 @@ set(BASE_NOTIFICATIONS_SOVERSION ${BASE_NOTIFICATIONS_VERSION_MAJOR}.${BASE_NOTI
 if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5DBus)
 
 else()
 
   find_package(Qt4 REQUIRED)
+
+  if(UNIX AND NOT APPLE)
+
+    set(QT_USE_QTDBUS TRUE)
+
+  else()
+
+    add_definitions("-DQT_NO_DBUS")
+
+  endif()
+
   include(${QT_USE_FILE})
   add_definitions(${QT_DEFINITIONS})
 
 endif()
-
-############ Notifications
-find_package(PkgConfig)
-if(PKG_CONFIG_FOUND)
-
-  PKG_CHECK_MODULES(LIBNOTIFY libnotify)
-  if(LIBNOTIFY_FOUND)
-    include_directories(${LIBNOTIFY_INCLUDE_DIRS})
-    add_definitions(-DWITH_LIBNOTIFY=${LIBNOTIFY_FOUND})
-
-  else()
-
-    add_definitions(-DWITH_LIBNOTIFY=FALSE)
-
-  endif()
-
-else()
-
-  add_definitions(-DWITH_LIBNOTIFY=FALSE)
-
-endif()
-
 
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -52,8 +42,8 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 ########### next target ###############
 set(base_notifications_SOURCES
+  ImageData.cpp
   SystemNotifications.cpp
-  SystemNotifications_p.cpp
 )
 
 if(ENABLE_SHARED)
@@ -73,9 +63,14 @@ target_link_libraries(base-notifications ${QT_LIBRARIES} base base-qt)
 if(USE_QT5)
 
   qt5_use_modules(base-notifications Widgets)
+  if(Qt5DBus_FOUND )
 
-endif()
+    qt5_use_modules(base-server DBus)
 
-if(LIBNOTIFY_FOUND)
-  target_link_libraries(base-notifications ${LIBNOTIFY_LIBRARIES})
+  else()
+
+    add_definitions("-DQT_NO_DBUS")
+
+  endif()
+
 endif()

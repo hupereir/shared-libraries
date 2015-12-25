@@ -28,7 +28,6 @@
 #include <QStringList>
 #include <QTimerEvent>
 
-class SystemNotificationsP;
 class SystemNotifications: public QObject, public Counter
 {
 
@@ -59,14 +58,17 @@ class SystemNotifications: public QObject, public Counter
     //* timer
     QBasicTimer timer_;
 
+    //* icon
+    QIcon icon_;
+
+    //* image data type id
+    int typeId_ = 0;
+
     //* summary
     QString summary_;
 
     //* message queue
     QStringList messageQueue_;
-
-    //* notifications
-    SystemNotificationsP* notify_ = nullptr;
 
 };
 

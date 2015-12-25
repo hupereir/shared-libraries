@@ -18,31 +18,69 @@
 *******************************************************************************/
 
 #include "SystemNotifications.h"
-#include "SystemNotifications_p.h"
+#include "ImageData.h"
 
 #include "Debug.h"
+#include "IconSize.h"
+
+#ifndef QT_NO_DBUS
+#include <QDBusArgument>
+#include <QDBusInterface>
+#include <QDBusMetaType>
+#endif
+
+#ifndef QT_NO_DBUS
+//____________________________________________________________
+QDBusArgument &operator << (QDBusArgument &argument, const Notifications::ImageData &imageData)
+{
+    argument.beginStructure();
+    argument
+        << imageData.width
+        << imageData.height
+        << imageData.rowStride
+        << imageData.hasAlpha
+        << imageData.bitsPerSample
+        << imageData.channels
+        << imageData.data;
+    argument.endStructure();
+    return argument;
+}
+
+//____________________________________________________________
+const QDBusArgument & operator >>(const QDBusArgument &argument, Notifications::ImageData &imageData)
+{
+    argument.beginStructure();
+    argument
+        >> imageData.width
+        >> imageData.height
+        >> imageData.rowStride
+        >> imageData.hasAlpha
+        >> imageData.bitsPerSample
+        >> imageData.channels
+        >> imageData.data;
+    argument.endStructure();
+    return argument;
+}
+#endif
 
 //____________________________________________
 SystemNotifications::SystemNotifications( QObject* parent, const QString& applicationName, const QIcon& icon ):
     QObject( parent ),
     Counter( "SystemNotifications" ),
-    notify_( new SystemNotificationsP( applicationName, icon ) )
+    icon_( icon )
 { Debug::Throw() << "SystemNotifications::SystemNotifications" << endl; }
 
 //____________________________________________
 SystemNotifications::~SystemNotifications( void )
-{
-    _showMessageQueue();
-    delete notify_;
-}
+{ _showMessageQueue(); }
 
 //____________________________________________
 bool SystemNotifications::isSupported( void )
 {
-    #if WITH_LIBNOTIFY
-    return true;
-    #else
+    #ifdef QT_NO_DBUS
     return false;
+    #else
+    return true;
     #endif
 }
 
@@ -84,7 +122,26 @@ void SystemNotifications::_showMessageQueue( void )
     Debug::Throw( "SystemNotifications::_showMessageQueue.\n" );
     if( messageQueue_.empty() ) return;
 
+    #ifndef QT_NO_DBUS
+    if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
+
+    QDBusInterface interface(
+        "org.freedesktop.Notifications",
+        "/org/freedesktop/Notifications",
+        "org.freedesktop.Notifications",
+        QDBusConnection::sessionBus() );
+
+
+    const QImage image( icon_.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
+    const Notifications::ImageData imageData( image );
+
+    QVariantMap hints;
+    hints.insert( "image-data", QVariant( typeId_, &imageData ) );
+
     QString message = messageQueue_.join( "\n" );
+    interface.call( "Notify", "TestNotifications", (uint)0, QString(), summary_, message, QStringList(), hints, 5000 );
+
+    #endif
     messageQueue_.clear();
-    notify_->send( summary_, message );
+
 }
