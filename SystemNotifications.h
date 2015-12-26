@@ -34,6 +34,8 @@ class SystemNotificationsP;
 class SystemNotifications: public QObject, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor
@@ -51,6 +53,15 @@ class SystemNotifications: public QObject, public Counter
     //* set icon
     void setApplicationIcon( const QIcon& );
 
+    //* add action
+    void addAction( const QString& key, const QString& name );
+
+    //* set actions
+    void setActions( const QStringList& actions );
+
+    //* clear actions
+    void clearActions( void );
+
     //* process message
     virtual void processMessage( const QString&, const QString& );
 
@@ -63,6 +74,11 @@ class SystemNotifications: public QObject, public Counter
     static bool isSupported( void );
 
     //@}
+
+    Q_SIGNALS:
+
+    //* action invoked
+    void actionInvoked( quint32, QString );
 
     protected:
 

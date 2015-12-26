@@ -27,6 +27,7 @@
 #include <QDBusInterface>
 #include <QDBusMetaType>
 #include <QDBusPendingCall>
+#include <QDBusReply>
 #endif
 
 #ifndef QT_NO_DBUS
@@ -86,25 +87,62 @@ void SystemNotificationsP::send( const QString& summary, const QString& message 
 {
 
     #ifndef QT_NO_DBUS
+    QDBusConnection dbus( QDBusConnection::sessionBus() );
     QDBusInterface interface(
         "org.freedesktop.Notifications",
         "/org/freedesktop/Notifications",
         "org.freedesktop.Notifications",
-        QDBusConnection::sessionBus() );
+        dbus );
 
+    if( !initialized_ )
+    {
+        dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","NotificationClosed", this, SLOT(_notificationClosed(quint32,quint32)) );
+        dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","ActionInvoked", this, SLOT(_checkActionInvoked(quint32,QString)) );
+        initialized_ = true;
+    }
+
+    QDBusPendingCallWatcher* watcher = nullptr;
     if( imageData_.isValid() )
     {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
         QVariantMap hints;
         hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
-        interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, QStringList(), hints, -1 );
+
+        QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, actions_, hints, -1 );
+        watcher = new QDBusPendingCallWatcher( pendingCall, this );
 
     } else {
 
-        interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, QStringList(), QVariantMap(), -1 );
-
+        QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, actions_, QVariantMap(), -1 );
+        watcher = new QDBusPendingCallWatcher( pendingCall, this );
     }
+
+    connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
+
     #endif
 
 }
+
+#ifndef QT_NO_DBUS
+//____________________________________________
+void SystemNotificationsP::_pendingCallFinished( QDBusPendingCallWatcher* watcher )
+{
+    QDBusReply<quint32> reply( *watcher );
+    if( reply.isValid() ) notificationIds_.insert( reply.value() );
+    watcher->deleteLater();
+}
+
+//____________________________________________
+void SystemNotificationsP::_notificationClosed( quint32 id, quint32 reason )
+{ notificationIds_.remove( id ); }
+
+
+//____________________________________________
+void SystemNotificationsP::_checkActionInvoked( quint32 id, QString key )
+{
+    if( notificationIds_.contains( id ) && actions_.contains( key ) )
+    { emit actionInvoked( id, key ); }
+}
+
+#endif

@@ -26,14 +26,14 @@
 SystemNotifications::SystemNotifications( QObject* parent ):
     QObject( parent ),
     Counter( "SystemNotifications" )
-{ d_ = new SystemNotificationsP( this ); }
+{
+    d_ = new SystemNotificationsP( this );
+    connect( d_, SIGNAL(actionInvoked(quint32,QString)), this, SIGNAL(actionInvoked(quint32,QString)) );
+}
 
 //____________________________________________
 SystemNotifications::~SystemNotifications( void )
-{
-    _showMessageQueue();
-    delete d_;
-}
+{ _showMessageQueue(); }
 
 //____________________________________________
 void SystemNotifications::setApplicationName( const QString& value )
@@ -42,6 +42,19 @@ void SystemNotifications::setApplicationName( const QString& value )
 //____________________________________________
 void SystemNotifications::setApplicationIcon( const QIcon& value )
 { d_->setApplicationIcon( value ); }
+
+
+//____________________________________________
+void SystemNotifications::addAction( const QString& key, const QString& name )
+{ d_->addAction( key, name ); }
+
+//____________________________________________
+void SystemNotifications::setActions( const QStringList& actions )
+{ d_->setActions( actions ); }
+
+//____________________________________________
+void SystemNotifications::clearActions( void )
+{ d_->clearActions(); }
 
 //____________________________________________
 bool SystemNotifications::isSupported( void )

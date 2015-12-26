@@ -27,10 +27,17 @@
 #include <QBasicTimer>
 #include <QObject>
 #include <QStringList>
+#include <QSet>
 #include <QTimerEvent>
+
+#ifndef QT_NO_DBUS
+#include <QDBusPendingCallWatcher>
+#endif
 
 class SystemNotificationsP: public QObject, public Counter
 {
+
+    Q_OBJECT
 
     public:
 
@@ -43,27 +50,70 @@ class SystemNotificationsP: public QObject, public Counter
     //* @name modifiers
     //@{
 
-    //* applicatino name
+    //* application name
     void setApplicationName( const QString& );
 
     //* set icon
     void setApplicationIcon( const QIcon& );
+
+    //* add action
+    void addAction( const QString& key, const QString& name )
+    {
+        actions_.append( key );
+        actions_.append( name );
+    }
+
+    //* set actions
+    void setActions( const QStringList& actions )
+    { actions_ = actions; }
+
+    //* clear actions
+    void clearActions( void )
+    { actions_.clear(); }
 
     //* process message
     virtual void send( const QString&, const QString& );
 
     //@}
 
+    Q_SIGNALS:
+
+    //* action called
+    void actionInvoked( quint32, QString );
+
+    private Q_SLOTS:
+
+    #ifndef QT_NO_DBUS
+    //* pending dbus call finished
+    void _pendingCallFinished(QDBusPendingCallWatcher*);
+
+    //* notification closed
+    void _notificationClosed( quint32, quint32 );
+
+    //* check action invoked
+    void _checkActionInvoked( quint32, QString );
+
+    #endif
+
     private:
 
     //* application name
     QString applicationName_;
+
+    //* initialized
+    bool initialized_ = false;
 
     //* image data
     Notifications::ImageData imageData_;
 
     //* image data type id
     int typeId_ = 0;
+
+    //* last notification
+    QSet<quint32> notificationIds_;
+
+    //* action list
+    QStringList actions_;
 
 };
 
