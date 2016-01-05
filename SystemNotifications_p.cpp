@@ -142,6 +142,9 @@ void SystemNotificationsP::send( Notification notification )
     if( notification.flags() & Notification::Transient )
     { hints.insert( "transient", QVariant( true ) ); }
 
+    if( !notification.category().isEmpty() )
+    { hints.insert( "category", QVariant( notification.category() ) ); }
+
     // copy application name
     if( notification.applicationName().isEmpty() ) notification.setApplicationName( applicationName_ );
 

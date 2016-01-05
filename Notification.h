@@ -53,6 +53,9 @@ class Notification
     const QIcon& icon( void ) const
     { return icon_; }
 
+    const QString& category( void ) const
+    { return category_; }
+
     const QString& summary( void ) const
     { return summary_; }
 
@@ -95,6 +98,9 @@ class Notification
     void setIcon( const QIcon& value )
     { icon_ = value; }
 
+    void setCategory( const QString& value )
+    { category_ = value; }
+
     void setSummary( const QString& value )
     { summary_ = value; }
 
@@ -127,6 +133,9 @@ class Notification
 
     //* icon
     QIcon icon_;
+
+    //* category
+    QString category_;
 
     //* summary
     QString summary_;
