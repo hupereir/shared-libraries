@@ -106,13 +106,12 @@ void SystemNotificationsP::send( Notification notification )
     {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-        const Notifications::ImageData imageData( notification.icon().pixmap( IconSize( IconSize::Maximum ) ).toImage() );
-        hints.insert( "image-data", QVariant( typeId_, &imageData ) );
+        hints.insert( "image-data", QVariant::fromValue( Notifications::ImageData( notification.icon().pixmap( IconSize( IconSize::Maximum ) ).toImage() ) ) );
 
     } else if( imageData_.isValid() ) {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-        hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
+        hints.insert( "image-data", QVariant::fromValue( imageData_ ) );
 
     }
 
