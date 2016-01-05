@@ -75,7 +75,13 @@ if(USE_QT5)
 
   qt5_use_modules(base-server Widgets Network Xml)
   if(Qt5DBus_FOUND )
+
     qt5_use_modules(base-server DBus)
+
+  else()
+
+    add_definitions("-DQT_NO_DBUS")
+
   endif()
 
 endif()

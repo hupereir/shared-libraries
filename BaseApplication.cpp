@@ -106,6 +106,7 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
     #ifndef QT_NO_DBUS
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.connect( QString(), "/OxygenStyle", "org.kde.Oxygen.Style", "reparseConfiguration", this, SLOT(_updateFonts()) );
+    dbus.connect( QString(), "/BreezeStyle", "org.kde.Breeze.Style", "reparseConfiguration", this, SLOT(_updateFonts()) );
     dbus.connect( QString(), "/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange", this, SLOT(_updateFonts()) );
     #endif
 
