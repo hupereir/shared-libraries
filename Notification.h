@@ -35,6 +35,15 @@ class Notification
         body_( body )
     {}
 
+    //* flags
+    enum Flag
+    {
+        None = 0,
+        Transient = 1<< 0
+    };
+
+    Q_DECLARE_FLAGS( Flags, Flag );
+
     //*@name accessors
     //@{
 
@@ -55,6 +64,10 @@ class Notification
 
     int timeout( void ) const
     { return timeout_; }
+
+    //* flags
+    Flags flags( void ) const
+    { return flags_; }
 
     //* true if valid
     bool isValid( void ) const
@@ -98,6 +111,13 @@ class Notification
     void merge( const Notification& other )
     { body_+= QString( "\n" ) + other.body_; }
 
+    //* flags
+    void setFlag( Flag flag, bool value = true )
+    {
+        if( value ) flags_ |= flag;
+        else flags_ &= ~flag;
+    }
+
     //@}
 
     private:
@@ -120,6 +140,11 @@ class Notification
     //* timeout
     int timeout_ = -1;
 
+    //* flags
+    Flags flags_ = None;
+
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( Notification::Flags );
 
 #endif
