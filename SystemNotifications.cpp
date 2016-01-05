@@ -23,12 +23,17 @@
 #include "Debug.h"
 
 //____________________________________________
-SystemNotifications::SystemNotifications( QObject* parent ):
+SystemNotifications::SystemNotifications( QObject* parent, const QString& applicationName, const QIcon& applicationIcon ):
     QObject( parent ),
     Counter( "SystemNotifications" )
 {
+
     d_ = new SystemNotificationsP( this );
     connect( d_, SIGNAL(actionInvoked(quint32,QString)), this, SIGNAL(actionInvoked(quint32,QString)) );
+
+    if( !applicationName.isNull() ) setApplicationName( applicationName );
+    if( !applicationIcon.isNull() ) setApplicationIcon( applicationIcon );
+
 }
 
 //____________________________________________

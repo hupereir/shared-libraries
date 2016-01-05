@@ -39,7 +39,7 @@ class SystemNotifications: public QObject, public Counter
     public:
 
     //* constructor
-    SystemNotifications( QObject* = nullptr );
+    SystemNotifications( QObject* = nullptr, const QString& = QString(), const QIcon& = QIcon() );
 
     //* destructor
     virtual ~SystemNotifications( void );
