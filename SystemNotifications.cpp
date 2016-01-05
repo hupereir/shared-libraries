@@ -38,7 +38,7 @@ SystemNotifications::SystemNotifications( QObject* parent, const QString& applic
 
 //____________________________________________
 SystemNotifications::~SystemNotifications( void )
-{ _sendNotification(); }
+{ _sendPendingNotification(); }
 
 //____________________________________________
 void SystemNotifications::setApplicationName( const QString& value )
@@ -47,19 +47,6 @@ void SystemNotifications::setApplicationName( const QString& value )
 //____________________________________________
 void SystemNotifications::setApplicationIcon( const QIcon& value )
 { d_->setApplicationIcon( value ); }
-
-
-//____________________________________________
-void SystemNotifications::addAction( const QString& key, const QString& name )
-{ d_->addAction( key, name ); }
-
-//____________________________________________
-void SystemNotifications::setActions( const QStringList& actions )
-{ d_->setActions( actions ); }
-
-//____________________________________________
-void SystemNotifications::clearActions( void )
-{ d_->clearActions(); }
 
 //____________________________________________
 bool SystemNotifications::isSupported( void )
@@ -72,7 +59,7 @@ bool SystemNotifications::isSupported( void )
 }
 
 //____________________________________________
-void SystemNotifications::processNotification( const Notification& notification )
+void SystemNotifications::sendNotification( const Notification& notification )
 {
 
     // flush, if notifications cannot be merged
@@ -80,7 +67,7 @@ void SystemNotifications::processNotification( const Notification& notification 
     {
 
         timer_.stop();
-        _sendNotification();
+        _sendPendingNotification();
         notification_ = notification;
 
     } else {
@@ -104,16 +91,16 @@ void SystemNotifications::timerEvent( QTimerEvent* event )
     {
 
         timer_.stop();
-        _sendNotification();
+        _sendPendingNotification();
 
     } else return QObject::timerEvent( event );
 
 }
 
 //____________________________________________
-void SystemNotifications::_sendNotification( void )
+void SystemNotifications::_sendPendingNotification( void )
 {
-    Debug::Throw( "SystemNotifications::_sendNotification.\n" );
+    Debug::Throw( "SystemNotifications::_sendPendingNotification.\n" );
     if( notification_.isValid() )
     {
         // send

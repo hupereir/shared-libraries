@@ -57,21 +57,6 @@ class SystemNotificationsP: public QObject, public Counter
     //* set icon
     void setApplicationIcon( const QIcon& );
 
-    //* add action
-    void addAction( const QString& key, const QString& name )
-    {
-        actions_.append( key );
-        actions_.append( name );
-    }
-
-    //* set actions
-    void setActions( const QStringList& actions )
-    { actions_ = actions; }
-
-    //* clear actions
-    void clearActions( void )
-    { actions_.clear(); }
-
     //* process message
     virtual void send( Notification );
 
@@ -112,9 +97,6 @@ class SystemNotificationsP: public QObject, public Counter
 
     //* last notification
     QSet<quint32> notificationIds_;
-
-    //* action list
-    QStringList actions_;
 
 };
 

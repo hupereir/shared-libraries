@@ -53,21 +53,12 @@ class SystemNotifications: public QObject, public Counter
     //* set icon
     void setApplicationIcon( const QIcon& );
 
-    //* add action
-    void addAction( const QString& key, const QString& name );
-
-    //* set actions
-    void setActions( const QStringList& actions );
-
-    //* clear actions
-    void clearActions( void );
-
     //* process message
     virtual void processMessage( const QString& summary, const QString& body )
-    { processNotification( Notification( summary, body ) ); }
+    { sendNotification( Notification( summary, body ) ); }
 
     //* process notification
-    virtual void processNotification( const Notification& );
+    virtual void sendNotification( const Notification& );
 
     //@}
 
@@ -90,7 +81,7 @@ class SystemNotifications: public QObject, public Counter
     virtual void timerEvent( QTimerEvent* );
 
     //* process message queue
-    void _sendNotification( void );
+    void _sendPendingNotification( void );
 
     private:
 

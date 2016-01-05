@@ -101,17 +101,19 @@ void SystemNotificationsP::send( Notification notification )
         initialized_ = true;
     }
 
+    const QString iconDataString( "icon_data" );
+    // const QString iconDataString( "image-data" );
     QVariantMap hints;
     if( !notification.icon().isNull() )
     {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-        hints.insert( "image-data", QVariant::fromValue( Notifications::ImageData( notification.icon().pixmap( IconSize( IconSize::Maximum ) ).toImage() ) ) );
+        hints.insert( iconDataString, QVariant::fromValue( Notifications::ImageData( notification.icon().pixmap( IconSize( IconSize::Maximum ) ).toImage() ) ) );
 
     } else if( imageData_.isValid() ) {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-        hints.insert( "image-data", QVariant::fromValue( imageData_ ) );
+        hints.insert( iconDataString, QVariant::fromValue( imageData_ ) );
 
     }
 
@@ -119,9 +121,6 @@ void SystemNotificationsP::send( Notification notification )
 
     // copy application name
     if( notification.applicationName().isEmpty() ) notification.setApplicationName( applicationName_ );
-
-    // copy actions
-    if( notification.actionList().isEmpty() ) notification.setActionList( actions_ );
 
     // send
     QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0,
@@ -155,7 +154,7 @@ void SystemNotificationsP::_notificationClosed( quint32 id, quint32 reason )
 //____________________________________________
 void SystemNotificationsP::_checkActionInvoked( quint32 id, QString key )
 {
-    if( notificationIds_.contains( id ) && actions_.contains( key ) )
+    if( notificationIds_.contains( id ) )
     { emit actionInvoked( id, key ); }
 }
 
