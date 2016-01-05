@@ -63,7 +63,6 @@ bool SystemNotifications::isSupported( void )
     return false;
     #else
     return true;
-    // return (qApp && QDBusConnection::sessionBus().isConnected());
     #endif
 }
 

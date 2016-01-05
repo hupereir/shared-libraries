@@ -101,23 +101,19 @@ void SystemNotificationsP::send( const QString& summary, const QString& message 
         initialized_ = true;
     }
 
-    QDBusPendingCallWatcher* watcher = nullptr;
+    QVariantMap hints;
     if( imageData_.isValid() )
     {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-        QVariantMap hints;
         hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
 
-        QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, actions_, hints, -1 );
-        watcher = new QDBusPendingCallWatcher( pendingCall, this );
-
-    } else {
-
-        QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, actions_, QVariantMap(), -1 );
-        watcher = new QDBusPendingCallWatcher( pendingCall, this );
     }
 
+    hints.insert( "transient", QVariant( true ) );
+
+    QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, actions_, hints, -1 );
+    QDBusPendingCallWatcher* watcher = new QDBusPendingCallWatcher( pendingCall, this );
     connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
 
     #endif
