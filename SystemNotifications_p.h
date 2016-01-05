@@ -22,6 +22,7 @@
 
 #include "Counter.h"
 #include "ImageData.h"
+#include "Notification.h"
 
 #include <QIcon>
 #include <QBasicTimer>
@@ -72,7 +73,7 @@ class SystemNotificationsP: public QObject, public Counter
     { actions_.clear(); }
 
     //* process message
-    virtual void send( const QString&, const QString& );
+    virtual void send( Notification );
 
     //@}
 

@@ -21,7 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "ImageData.h"
+#include "Notification.h"
 
 #include <QIcon>
 #include <QBasicTimer>
@@ -63,7 +63,11 @@ class SystemNotifications: public QObject, public Counter
     void clearActions( void );
 
     //* process message
-    virtual void processMessage( const QString&, const QString& );
+    virtual void processMessage( const QString& summary, const QString& body )
+    { processNotification( Notification( summary, body ) ); }
+
+    //* process notification
+    virtual void processNotification( const Notification& );
 
     //@}
 
@@ -86,18 +90,15 @@ class SystemNotifications: public QObject, public Counter
     virtual void timerEvent( QTimerEvent* );
 
     //* process message queue
-    void _showMessageQueue( void );
+    void _sendNotification( void );
 
     private:
 
     //* timer
     QBasicTimer timer_;
 
-    //* summary
-    QString summary_;
-
-    //* message queue
-    QStringList messageQueue_;
+    //* running notification
+    Notification notification_;
 
     //* private
     SystemNotificationsP* d_;

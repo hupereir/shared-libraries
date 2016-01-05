@@ -38,7 +38,7 @@ SystemNotifications::SystemNotifications( QObject* parent, const QString& applic
 
 //____________________________________________
 SystemNotifications::~SystemNotifications( void )
-{ _showMessageQueue(); }
+{ _sendNotification(); }
 
 //____________________________________________
 void SystemNotifications::setApplicationName( const QString& value )
@@ -72,20 +72,27 @@ bool SystemNotifications::isSupported( void )
 }
 
 //____________________________________________
-void SystemNotifications::processMessage( const QString& summary, const QString& message )
+void SystemNotifications::processNotification( const Notification& notification )
 {
 
-    // flush, if summary has changed
-    if( !( messageQueue_.empty() || summary == summary_ ) )
+    // flush, if notifications cannot be merged
+    if( !notification_.canMerge( notification ) )
     {
+
         timer_.stop();
-        _showMessageQueue();
+        _sendNotification();
+        notification_ = notification;
+
+    } else {
+
+        // append to current
+        notification_.merge( notification );
+
     }
 
-    // append message and restart timer
-    summary_ = summary;
-    messageQueue_.append( message );
+    // restart timer
     if( !timer_.isActive() ) { timer_.start( 100, this ); }
+
 }
 
 //____________________________________________
@@ -97,21 +104,25 @@ void SystemNotifications::timerEvent( QTimerEvent* event )
     {
 
         timer_.stop();
-        _showMessageQueue();
+        _sendNotification();
 
     } else return QObject::timerEvent( event );
 
 }
 
 //____________________________________________
-void SystemNotifications::_showMessageQueue( void )
+void SystemNotifications::_sendNotification( void )
 {
-    Debug::Throw( "SystemNotifications::_showMessageQueue.\n" );
-    if( !messageQueue_.empty() )
+    Debug::Throw( "SystemNotifications::_sendNotification.\n" );
+    if( notification_.isValid() )
     {
-        d_->send( summary_, messageQueue_.join( "\n" ) );
-        messageQueue_.clear();
+        // send
+        d_->send( notification_ );
+
+        // clean
+        notification_ = Notification();
     }
 
     return;
+
 }

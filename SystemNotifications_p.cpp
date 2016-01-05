@@ -83,7 +83,7 @@ void SystemNotificationsP::setApplicationIcon( const QIcon& icon )
 }
 
 //____________________________________________
-void SystemNotificationsP::send( const QString& summary, const QString& message )
+void SystemNotificationsP::send( Notification notification )
 {
 
     #ifndef QT_NO_DBUS
@@ -102,8 +102,14 @@ void SystemNotificationsP::send( const QString& summary, const QString& message 
     }
 
     QVariantMap hints;
-    if( imageData_.isValid() )
+    if( !notification.icon().isNull() )
     {
+
+        if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
+        const Notifications::ImageData imageData( notification.icon().pixmap( IconSize( IconSize::Maximum ) ).toImage() );
+        hints.insert( "image-data", QVariant( typeId_, &imageData ) );
+
+    } else if( imageData_.isValid() ) {
 
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
         hints.insert( "image-data", QVariant( typeId_, &imageData_ ) );
@@ -112,7 +118,21 @@ void SystemNotificationsP::send( const QString& summary, const QString& message 
 
     hints.insert( "transient", QVariant( true ) );
 
-    QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0, applicationName_, summary, message, actions_, hints, -1 );
+    // copy application name
+    if( notification.applicationName().isEmpty() ) notification.setApplicationName( applicationName_ );
+
+    // copy actions
+    if( notification.actionList().isEmpty() ) notification.setActionList( actions_ );
+
+    // send
+    QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0,
+        notification.applicationName(),
+        notification.summary(),
+        notification.body(),
+        notification.actionList(),
+        hints,
+        notification.timeout() );
+
     QDBusPendingCallWatcher* watcher = new QDBusPendingCallWatcher( pendingCall, this );
     connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
 
@@ -132,7 +152,6 @@ void SystemNotificationsP::_pendingCallFinished( QDBusPendingCallWatcher* watche
 //____________________________________________
 void SystemNotificationsP::_notificationClosed( quint32 id, quint32 reason )
 { notificationIds_.remove( id ); }
-
 
 //____________________________________________
 void SystemNotificationsP::_checkActionInvoked( quint32 id, QString key )
