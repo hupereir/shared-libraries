@@ -32,6 +32,7 @@
 #include <QTimerEvent>
 
 #ifndef QT_NO_DBUS
+#include <QDBusInterface>
 #include <QDBusPendingCallWatcher>
 #endif
 
@@ -46,10 +47,13 @@ class SystemNotificationsP: public QObject, public Counter
     SystemNotificationsP( QObject* = nullptr );
 
     //* destructor
-    virtual ~SystemNotificationsP( void ) = default;
+    virtual ~SystemNotificationsP( void );
 
     //* @name modifiers
     //@{
+
+    //* initialize
+    void initialize( void );
 
     //* application name
     void setApplicationName( const QString& );
@@ -89,14 +93,22 @@ class SystemNotificationsP: public QObject, public Counter
     //* initialized
     bool initialized_ = false;
 
+    #ifndef QT_NO_DBUS
+    //* dbus interface
+    QDBusInterface* dbusInterface_ = nullptr;
+    #endif
+
     //* image data
     Notifications::ImageData imageData_;
 
     //* image data type id
     int typeId_ = 0;
 
-    //* last notification
-    QSet<quint32> notificationIds_;
+    //* notifications and associated actions
+    QHash<quint32, QStringList> notificationIds_;
+
+    //* action list
+    QStringList lastNotificationActions_;
 
 };
 

@@ -24,7 +24,6 @@
 
 #ifndef QT_NO_DBUS
 #include <QDBusArgument>
-#include <QDBusInterface>
 #include <QDBusMetaType>
 #include <QDBusPendingCall>
 #include <QDBusReply>
@@ -72,6 +71,10 @@ SystemNotificationsP::SystemNotificationsP( QObject* parent ):
 {}
 
 //____________________________________________
+SystemNotificationsP::~SystemNotificationsP( void )
+{ delete dbusInterface_; }
+
+//____________________________________________
 void SystemNotificationsP::setApplicationName( const QString& value )
 { applicationName_ = value; }
 
@@ -83,47 +86,70 @@ void SystemNotificationsP::setApplicationIcon( const QIcon& icon )
 }
 
 //____________________________________________
-void SystemNotificationsP::send( Notification notification )
+void SystemNotificationsP::initialize( void )
 {
+    if( initialized_ ) return;
+    initialized_ = true;
 
     #ifndef QT_NO_DBUS
+    // check session bus
     QDBusConnection dbus( QDBusConnection::sessionBus() );
-    QDBusInterface interface(
+    if( !dbus.isConnected() ) return;
+
+    // connections
+    dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","NotificationClosed", this, SLOT(_notificationClosed(quint32,quint32)) );
+    dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","ActionInvoked", this, SLOT(_checkActionInvoked(quint32,QString)) );
+
+    // delete old interface if any
+    delete dbusInterface_;
+
+    // create new interface
+    dbusInterface_ = new QDBusInterface(
         "org.freedesktop.Notifications",
         "/org/freedesktop/Notifications",
         "org.freedesktop.Notifications",
         dbus );
 
-    if( !initialized_ )
-    {
-        dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","NotificationClosed", this, SLOT(_notificationClosed(quint32,quint32)) );
-        dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","ActionInvoked", this, SLOT(_checkActionInvoked(quint32,QString)) );
-        initialized_ = true;
-    }
+    // setup type for image transfer
+    if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
+    #endif
 
-    const QString iconDataString( "icon_data" );
-    // const QString iconDataString( "image-data" );
+}
+
+//____________________________________________
+void SystemNotificationsP::send( Notification notification )
+{
+
+    #ifndef QT_NO_DBUS
+
+    // initialize
+    initialize();
+
+    // setup hints
     QVariantMap hints;
+    const QString iconDataString( "icon_data" );
     if( !notification.icon().isNull() )
     {
 
-        if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
         hints.insert( iconDataString, QVariant::fromValue( Notifications::ImageData( notification.icon().pixmap( IconSize( IconSize::Maximum ) ).toImage() ) ) );
 
     } else if( imageData_.isValid() ) {
 
-        if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
         hints.insert( iconDataString, QVariant::fromValue( imageData_ ) );
 
     }
 
-    hints.insert( "transient", QVariant( true ) );
+    if( notification.flags() & Notification::Transient )
+    { hints.insert( "transient", QVariant( true ) ); }
 
     // copy application name
     if( notification.applicationName().isEmpty() ) notification.setApplicationName( applicationName_ );
 
+    // store actions
+    lastNotificationActions_ = notification.actionList();
+
     // send
-    QDBusPendingCall pendingCall = interface.asyncCall( "Notify", "TestNotifications", (uint)0,
+    QDBusPendingCall pendingCall = dbusInterface_->asyncCall( "Notify", "TestNotifications", (uint)0,
         notification.applicationName(),
         notification.summary(),
         notification.body(),
@@ -143,8 +169,10 @@ void SystemNotificationsP::send( Notification notification )
 void SystemNotificationsP::_pendingCallFinished( QDBusPendingCallWatcher* watcher )
 {
     QDBusReply<quint32> reply( *watcher );
-    if( reply.isValid() ) notificationIds_.insert( reply.value() );
+    if( reply.isValid() ) notificationIds_.insert( reply.value(), lastNotificationActions_ );
+    lastNotificationActions_.clear();
     watcher->deleteLater();
+
 }
 
 //____________________________________________
@@ -154,7 +182,9 @@ void SystemNotificationsP::_notificationClosed( quint32 id, quint32 reason )
 //____________________________________________
 void SystemNotificationsP::_checkActionInvoked( quint32 id, QString key )
 {
-    if( notificationIds_.contains( id ) )
+    // find matching notification in map, and check action key
+    auto iter = notificationIds_.find( id );
+    if( iter != notificationIds_.end() && iter.value().contains( key ) )
     { emit actionInvoked( id, key ); }
 }
 

@@ -45,6 +45,10 @@ void SystemNotifications::setApplicationName( const QString& value )
 { d_->setApplicationName( value ); }
 
 //____________________________________________
+void SystemNotifications::initialize( void )
+{ d_->initialize(); }
+
+//____________________________________________
 void SystemNotifications::setApplicationIcon( const QIcon& value )
 { d_->setApplicationIcon( value ); }
 

@@ -47,6 +47,9 @@ class SystemNotifications: public QObject, public Counter
     //* @name modifiers
     //@{
 
+    //* initialize
+    void initialize( void );
+
     //* applicatino name
     void setApplicationName( const QString& );
 
