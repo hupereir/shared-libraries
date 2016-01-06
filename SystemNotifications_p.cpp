@@ -88,6 +88,9 @@ void SystemNotificationsP::setApplicationIcon( const QIcon& icon )
 //____________________________________________
 void SystemNotificationsP::initialize( void )
 {
+
+    Debug::Throw( "SystemNotificationsP::initialize.\n" );
+
     if( initialized_ ) return;
     initialized_ = true;
 
@@ -112,6 +115,19 @@ void SystemNotificationsP::initialize( void )
 
     // setup type for image transfer
     if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
+    #endif
+
+}
+
+//____________________________________________
+bool SystemNotificationsP::isSupported( void ) const
+{
+
+    Debug::Throw( "SystemNotificationsP::isSupported.\n" );
+    #ifndef QT_NO_DBUS
+    return initialized_ && QDBusConnection::sessionBus().isConnected() && dbusInterface_->isValid();
+    #else
+    return false;
     #endif
 
 }

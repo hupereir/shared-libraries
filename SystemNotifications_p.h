@@ -66,6 +66,14 @@ class SystemNotificationsP: public QObject, public Counter
 
     //@}
 
+    //* @name accessors
+    //@{
+
+    //* true if available
+    bool isSupported( void ) const;
+
+    //@}
+
     Q_SIGNALS:
 
     //* action called

@@ -28,8 +28,8 @@ SystemNotifications::SystemNotifications( QObject* parent, const QString& applic
     Counter( "SystemNotifications" )
 {
 
-    d_ = new SystemNotificationsP( this );
-    connect( d_, SIGNAL(actionInvoked(quint32,QString)), this, SIGNAL(actionInvoked(quint32,QString)) );
+    d = new SystemNotificationsP( this );
+    connect( d, SIGNAL(actionInvoked(quint32,QString)), this, SIGNAL(actionInvoked(quint32,QString)) );
 
     if( !applicationName.isNull() ) setApplicationName( applicationName );
     if( !applicationIcon.isNull() ) setApplicationIcon( applicationIcon );
@@ -42,25 +42,19 @@ SystemNotifications::~SystemNotifications( void )
 
 //____________________________________________
 void SystemNotifications::setApplicationName( const QString& value )
-{ d_->setApplicationName( value ); }
+{ d->setApplicationName( value ); }
 
 //____________________________________________
 void SystemNotifications::initialize( void )
-{ d_->initialize(); }
+{ d->initialize(); }
 
 //____________________________________________
 void SystemNotifications::setApplicationIcon( const QIcon& value )
-{ d_->setApplicationIcon( value ); }
+{ d->setApplicationIcon( value ); }
 
 //____________________________________________
-bool SystemNotifications::isSupported( void )
-{
-    #ifdef QT_NO_DBUS
-    return false;
-    #else
-    return true;
-    #endif
-}
+bool SystemNotifications::isSupported( void ) const
+{ return d->isSupported(); }
 
 //____________________________________________
 void SystemNotifications::sendNotification( const Notification& notification )
@@ -108,7 +102,7 @@ void SystemNotifications::_sendPendingNotification( void )
     if( notification_.isValid() )
     {
         // send
-        d_->send( notification_ );
+        d->send( notification_ );
 
         // clean
         notification_ = Notification();

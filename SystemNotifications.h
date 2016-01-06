@@ -57,7 +57,7 @@ class SystemNotifications: public QObject, public Counter
     void setApplicationIcon( const QIcon& );
 
     //* process message
-    virtual void processMessage( const QString& summary, const QString& body )
+    virtual void send( const QString& summary, const QString& body )
     { sendNotification( Notification( summary, body ) ); }
 
     //* process notification
@@ -69,7 +69,7 @@ class SystemNotifications: public QObject, public Counter
     //@{
 
     //* true if available
-    static bool isSupported( void );
+    bool isSupported( void ) const;
 
     //@}
 
@@ -95,7 +95,7 @@ class SystemNotifications: public QObject, public Counter
     Notification notification_;
 
     //* private
-    SystemNotificationsP* d_;
+    SystemNotificationsP* d;
 
 };
 
