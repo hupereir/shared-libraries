@@ -72,7 +72,11 @@ SystemNotificationsP::SystemNotificationsP( QObject* parent ):
 
 //____________________________________________
 SystemNotificationsP::~SystemNotificationsP( void )
-{ delete dbusInterface_; }
+{
+    #ifndef QT_NO_DBUS
+    delete dbusInterface_;
+    #endif
+}
 
 //____________________________________________
 void SystemNotificationsP::setApplicationName( const QString& value )
