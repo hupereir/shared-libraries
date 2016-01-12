@@ -153,7 +153,7 @@ void PathEditorItem::_startDrag( QPoint dragOrigin )
 
     top.appendChild( fileInfo.domElement( document ) );
 
-    const QString value( prefix_.isEmpty() ? path_ : prefix_ + "://" + path_ );
+    const QString value( prefix_.isEmpty() ? path_ : prefix_ + "//" + path_ );
     mimeData->setText( value );
     mimeData->setData( PathEditor::MimeType, document.toByteArray() );
     drag->setMimeData( mimeData );
