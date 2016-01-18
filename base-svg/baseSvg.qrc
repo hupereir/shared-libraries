@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+  <qresource>
+    <file alias="svg/background-air.svgz">background-air.svgz</file>
+    <file alias="svg/background-dark.svgz">background-dark.svgz</file>
+    <file alias="svg/background-light.svgz">background-light.svgz</file>
+  </qresource>
+</RCC>
