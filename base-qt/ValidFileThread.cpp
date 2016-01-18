@@ -36,6 +36,7 @@ ValidFileThread::ValidFileThread( QObject* parent ):
 void ValidFileThread::run( void )
 {
 
+    QMutexLocker lock( &mutex_ );
     bool hasInvalidRecords( false );
 
     // loop over files, check if exists, set validity accordingly, and post event
