@@ -172,7 +172,7 @@ void SystemNotificationsP::send( Notification notification )
     lastNotificationActions_ = notification.actionList();
 
     // send
-    QDBusPendingCall pendingCall = dbusInterface_->asyncCall( "Notify", "TestNotifications", (uint)0,
+    QDBusPendingCall pendingCall = dbusInterface_->asyncCall( "Notify", "Notification", (uint)0,
         notification.applicationName(),
         notification.summary(),
         notification.body(),
