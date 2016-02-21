@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
+#include "Option.h"
+
 #include <QDomDocument>
 #include <QDomElement>
 #include <QString>
-
-#include "Option.h"
 
 namespace Base
 {
