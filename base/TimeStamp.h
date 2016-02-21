@@ -22,6 +22,7 @@
 
 #include "Counter.h"
 
+#include <QDataStream>
 #include <QDateTime>
 #include <time.h>
 
@@ -236,7 +237,7 @@ class TimeStamp:public Counter
 
     private:
 
-    //* true if timeStamp is properly set
+    //* true if timestamp is properly set
     bool valid_ = false;
 
     //* unix time in second
@@ -244,6 +245,12 @@ class TimeStamp:public Counter
 
     //* time structure from localtime()
     struct tm tm_;
+
+    //*@name serializer
+    //@{
+    friend QDataStream& operator << ( QDataStream&, const TimeStamp& );
+    friend QDataStream& operator >> ( QDataStream&, TimeStamp& );
+    //@}
 
 };
 

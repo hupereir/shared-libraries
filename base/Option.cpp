@@ -65,6 +65,39 @@ Option::Option( const QByteArray& value, const QString& comments, Flags flags ):
 {}
 
 //________________________________________________________
+QDataStream &operator << ( QDataStream &stream, const Option& option )
+{
+    static const quint32 version = 0;
+    stream
+        << version
+        << option.value_
+        << option.defaultValue_
+        << option.comments_
+        << quint32(option.flags_)
+        << quint32(option.defaultFlags_);
+    return stream;
+}
+
+
+//________________________________________________________
+QDataStream &operator >> ( QDataStream &stream, Option& option )
+{
+    quint32 version;
+    quint32 flags;
+    quint32 defaultFlags;
+    stream
+        >> version
+        >> option.value_
+        >> option.defaultValue_
+        >> option.comments_
+        >> flags
+        >> defaultFlags;
+    option.flags_ = Option::Flags( flags );
+    option.defaultFlags_ = Option::Flags( defaultFlags );
+    return stream;
+}
+
+//________________________________________________________
 QTextStream &operator << ( QTextStream &out, const Option& option )
 {
     if( !option.isSet() ) out << "not set";

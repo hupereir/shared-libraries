@@ -27,6 +27,7 @@
 #include "TimeStamp.h"
 #include "XmlOption.h"
 
+#include <QDataStream>
 #include <QDomElement>
 #include <QDomDocument>
 #include <QString>
@@ -183,7 +184,7 @@ namespace Server
         TimeStamp timestamp_;
 
         //* client id
-        int clientId_;
+        qint32 clientId_;
 
         //* application id
         ApplicationId id_;
@@ -197,6 +198,11 @@ namespace Server
         //* option
         XmlOption option_;
 
+        //*@name serializer
+        //@{
+        friend QDataStream& operator << (QDataStream&, const ServerCommand& );
+        friend QDataStream& operator >> (QDataStream&, ServerCommand& );
+        //@}
     };
 };
 

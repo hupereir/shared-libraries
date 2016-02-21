@@ -125,4 +125,43 @@ namespace Server
 
     }
 
+    //__________________________________________________
+    QDataStream& operator << (QDataStream& stream, const ServerCommand& command )
+    {
+        static const quint32 version = 0;
+        stream
+            << version
+            << command.timestamp_
+            << command.clientId_
+            << command.id_
+            << quint32(command.command_)
+            << command.arguments_
+            << command.option_.name()
+            << command.option_;
+        return stream;
+    }
+
+    //__________________________________________________
+    QDataStream& operator >> (QDataStream& stream, ServerCommand& command )
+    {
+        quint32 version;
+        quint32 commandType;
+        QStringList arguments;
+        QString optionName;
+        Option option;
+        stream
+            >> version
+            >> command.timestamp_
+            >> command.clientId_
+            >> command.id_
+            >> commandType
+            >> arguments
+            >> optionName
+            >> option;
+        command.command_ = (ServerCommand::CommandType) commandType;
+        command.arguments_ = CommandLineArguments( arguments );
+        command.option_ = XmlOption( optionName, option );
+        return stream;
+    }
+
 }

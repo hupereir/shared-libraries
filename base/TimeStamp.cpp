@@ -91,3 +91,21 @@ TimeStamp& TimeStamp::setMonth( const QString& value )
     return *this;
 
 }
+
+//________________________________________________________________________________
+QDataStream& operator << ( QDataStream& stream, const TimeStamp& timestamp )
+{
+    static const quint32 version = 0;
+    stream << version << quint64( timestamp.time_ );
+    return stream;
+}
+
+//________________________________________________________________________________
+QDataStream& operator >> ( QDataStream& stream, TimeStamp& timestamp )
+{
+    quint32 version;
+    quint64 time;
+    stream >> version >> time;
+    timestamp.setTime( time );
+    return stream;
+}

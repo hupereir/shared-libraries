@@ -84,4 +84,20 @@ namespace Server
         int position( user_.indexOf( "@" ) );
         return (position < 0 ) ? "" : user_.mid(position+1 );
     }
+
+    //______________________________________________________
+    QDataStream& operator << (QDataStream& stream, const ApplicationId& id )
+    {
+        static const quint32 version = 0;
+        stream << version << id.name_ << id.user_ << id.pid_;
+        return stream;
+    }
+
+    //______________________________________________________
+    QDataStream& operator >> (QDataStream& stream, ApplicationId& id )
+    {
+        quint32 version;
+        stream >> version >> id.name_ >> id.user_ >> id.pid_;
+        return stream;
+    }
 }

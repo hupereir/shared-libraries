@@ -22,6 +22,7 @@
 
 #include "Counter.h"
 
+#include <QDataStream>
 #include <QDomDocument>
 #include <QDomElement>
 #include <QString>
@@ -113,6 +114,12 @@ namespace Server
 
         //* process id
         qint64 pid_;
+
+        //*@name serializer
+        //@{
+        friend QDataStream& operator << (QDataStream&, const ApplicationId& );
+        friend QDataStream& operator >> (QDataStream&, ApplicationId& );
+        //@}
 
     };
 };

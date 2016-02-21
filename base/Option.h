@@ -23,6 +23,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
+#include <QDataStream>
 #include <QString>
 #include <QTextStream>
 
@@ -278,11 +279,22 @@ class Option:public Counter
     //* default flags
     Flags defaultFlags_ = Recordable;
 
-    //* streamer
+    //*@name serializer
+    //@{
+
+    friend QDataStream &operator << (QDataStream&, const Option& option );
+    friend QDataStream &operator >> (QDataStream&, Option& option );
+
+
+    //@}
+
+    //*@name text streamer
+    //@{
     friend QTextStream &operator << ( QTextStream &out, const Option& option );
 
-    //* streamer
     friend QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
+    //@}
+
 
 };
 
