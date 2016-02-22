@@ -54,6 +54,7 @@ void BaseSocketInterface::_sendPendingBuffers( void )
 void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 {
     quint64 bufferSize( buffer.size() );
+    Debug::Throw(0) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << endl;
     socket_->write( reinterpret_cast<const char*>( &type ), sizeof( qint32 ) );
     socket_->write( reinterpret_cast<const char*>( &bufferSize ), sizeof( quint64 ) );
     socket_->write( buffer );
@@ -65,6 +66,7 @@ void BaseSocketInterface::_read( void )
 
     if( !socket_->bytesAvailable() ) return;
 
+    Debug::Throw(0) << "BaseSocketInterface::_read - bytes: " << socket_->bytesAvailable() << endl;
     forever
     {
 
@@ -73,12 +75,25 @@ void BaseSocketInterface::_read( void )
         {
             if( socket_->bytesAvailable() >= int(sizeof( qint32 )) ) socket_->read( reinterpret_cast<char*>( &bufferType_ ), sizeof( qint32 ) );
             else break;
+
+            Debug::Throw(0)
+                << "BaseSocketInterface::_read -"
+                << " bufferType: " << bufferType_
+                << " bytes: " << socket_->bytesAvailable()
+                << endl;
+
         }
 
         if( bufferSize_ == 0 )
         {
             if( socket_->bytesAvailable() >= int(sizeof( quint64 )) ) socket_->read( reinterpret_cast<char*>( &bufferSize_ ), sizeof( quint64 ) );
             else break;
+
+            Debug::Throw(0)
+                << "BaseSocketInterface::_read -"
+                << " bufferSize: " << bufferSize_
+                << " bytes: " << socket_->bytesAvailable()
+                << endl;
         }
 
         if( bufferSize_ == 0 ) break;
@@ -90,6 +105,12 @@ void BaseSocketInterface::_read( void )
             bufferSize_ = 0;
             bufferType_ = -1;
             emit bufferReceived( bufferType, array );
+
+            Debug::Throw(0)
+                << "BaseSocketInterface::_read -"
+                << " array size: " << array.size()
+                << " bytes: " << socket_->bytesAvailable()
+                << endl;
 
         } else break;
     }
