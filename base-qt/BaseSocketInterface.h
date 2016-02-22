@@ -101,7 +101,7 @@ class BaseSocketInterface: public QObject, public Counter
     buffertype_t bufferType_ = -1;
 
     //* running lenght
-    using buffersize_t = quint32;
+    using buffersize_t = quint64;
     buffersize_t bufferSize_ = 0;
 
     //* buffer
