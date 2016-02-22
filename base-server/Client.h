@@ -29,126 +29,126 @@
 namespace Server
 {
 
-  //* interprocess communication client
-  class Client : public QObject, public Counter
-  {
-
-    //* Qt meta object macro
-    Q_OBJECT
-
-    public:
-
-    //* client list
-    using List = QList< Client* >;
-
-    //* constructor
-    Client( QObject* parent, QTcpSocket* socket );
-
-    //* destructor
-    virtual ~Client( void ) = default;
-
-    //* id
-    int id( void ) const
-    { return id_; }
-
-    //* associated socket
-    QTcpSocket& socket( void )
-    { return *socket_; }
-
-    //* associated socket
-    virtual const QTcpSocket& socket( void ) const
-    { return *socket_; }
-
-    /** returns true if message could be sent */
-    bool sendCommand( const ServerCommand& );
-
-    //* used to retrieve clients for a given state
-    class SameStateFTor
-    {
-      public:
-
-      //* constructor
-      SameStateFTor( QAbstractSocket::SocketState state ):
-        state_( state )
-        {}
-
-      //* destructor
-      virtual ~SameStateFTor( void )
-      {}
-
-      //* predicate
-      virtual bool operator() ( const Client* client ) const
-      { return client->socket().state() == state_; }
-
-      private:
-
-      //* prediction
-      QAbstractSocket::SocketState state_;
-
-    };
-
-    //* used to retrieve client matching id
-    class SameIdFTor
+    //* interprocess communication client
+    class Client : public QObject, public Counter
     {
 
-      public:
+        //* Qt meta object macro
+        Q_OBJECT
 
-      //* constructor
-      SameIdFTor( int id ):
-        id_( id )
-        {}
+        public:
 
-      //* destructor
-      virtual ~SameIdFTor( void )
-      {}
+        //* client list
+        using List = QList< Client* >;
 
-      //* predicate
-      virtual bool operator() ( const Client* client ) const
-      { return client->id() == id_; }
+        //* constructor
+        Client( QObject* parent, QTcpSocket* socket );
 
-      protected:
+        //* destructor
+        virtual ~Client( void ) = default;
 
-      //* prediction
-      int id_;
+        //* id
+        int id( void ) const
+        { return id_; }
+
+        //* associated socket
+        QTcpSocket& socket( void )
+        { return *socket_; }
+
+        //* associated socket
+        virtual const QTcpSocket& socket( void ) const
+        { return *socket_; }
+
+        /** returns true if message could be sent */
+        bool sendCommand( const ServerCommand& );
+
+        //* used to retrieve clients for a given state
+        class SameStateFTor
+        {
+            public:
+
+            //* constructor
+            SameStateFTor( QAbstractSocket::SocketState state ):
+                state_( state )
+            {}
+
+            //* destructor
+            virtual ~SameStateFTor( void )
+            {}
+
+            //* predicate
+            virtual bool operator() ( const Client* client ) const
+            { return client->socket().state() == state_; }
+
+            private:
+
+            //* prediction
+            QAbstractSocket::SocketState state_;
+
+        };
+
+        //* used to retrieve client matching id
+        class SameIdFTor
+        {
+
+            public:
+
+            //* constructor
+            SameIdFTor( int id ):
+                id_( id )
+            {}
+
+            //* destructor
+            virtual ~SameIdFTor( void )
+            {}
+
+            //* predicate
+            virtual bool operator() ( const Client* client ) const
+            { return client->id() == id_; }
+
+            protected:
+
+            //* prediction
+            int id_;
+
+        };
+
+        Q_SIGNALS:
+
+        //* emitted when a message is available
+        void commandAvailable( Server::ServerCommand );
+
+        protected Q_SLOTS:
+
+        //* reads messages
+        virtual void _read( void );
+
+        private Q_SLOTS:
+
+        //* send all commands
+        virtual void _sendCommands( void );
+
+        private:
+
+        //* client counter
+        static int& _counter( void );
+
+        //* client id
+        int id_ = 0;
+
+        //* parent socket
+        QTcpSocket* socket_ = nullptr;
+
+        //* messages
+        using CommandList = QList< ServerCommand >;
+
+        //* commands
+        CommandList commands_;
+
+        //* buffer
+        MessageBuffer buffer_;
 
     };
-
-    Q_SIGNALS:
-
-    //* emitted when a message is available
-    void commandAvailable( Server::ServerCommand );
-
-    protected Q_SLOTS:
-
-    //* reads messages
-    virtual void _read( void );
-
-    private Q_SLOTS:
-
-    //* send all commands
-    virtual void _sendCommands( void );
-
-    private:
-
-    //* client counter
-    static int& _counter( void );
-
-    //* client id
-    int id_ = 0;
-
-    //* parent socket
-    QTcpSocket* socket_ = nullptr;
-
-    //* messages
-    using CommandList = QList< ServerCommand >;
-
-    //* commands
-    CommandList commands_;
-
-    //* buffer
-    MessageBuffer buffer_;
-
-  };
 
 };
 
