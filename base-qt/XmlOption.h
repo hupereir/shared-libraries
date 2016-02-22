@@ -48,6 +48,10 @@ class XmlOption:public Option
     public:
 
     //* constructor
+    XmlOption( void )
+    {}
+
+    //* constructor
     XmlOption( const QString& name, const Option& option ):
         Option( option ),
         name_( name )
