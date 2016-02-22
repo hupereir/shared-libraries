@@ -47,7 +47,7 @@ namespace Server
         virtual ~Client( void ) = default;
 
         //* id
-        int id( void ) const
+        quint32 id( void ) const
         { return id_; }
 
         /** returns true if message could be sent */
@@ -60,7 +60,7 @@ namespace Server
             public:
 
             //* constructor
-            SameIdFTor( int id ):
+            SameIdFTor( quint32 id ):
                 id_( id )
             {}
 
@@ -75,7 +75,7 @@ namespace Server
             protected:
 
             //* prediction
-            int id_;
+            quint32 id_;
 
         };
 
@@ -95,10 +95,10 @@ namespace Server
         private:
 
         //* client counter
-        static int& _counter( void );
+        static quint32& _counter( void );
 
         //* client id
-        int id_ = 0;
+        quint32 id_ = 0;
 
         //* messages
         using CommandList = QList<ServerCommand>;

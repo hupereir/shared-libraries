@@ -99,7 +99,7 @@ namespace Server
         { return timestamp_; }
 
         //* client id
-        const int& clientId( void ) const
+        quint32 clientId( void ) const
         { return clientId_; }
 
         //* application id
@@ -134,11 +134,8 @@ namespace Server
         //@{
 
         //* client id
-        ServerCommand& setClientId( int value )
-        {
-            clientId_ = value;
-            return *this;
-        }
+        void setClientId( quint32 value )
+        { clientId_ = value; }
 
         //* application id
         void setId( const ApplicationId& id )
@@ -176,7 +173,7 @@ namespace Server
         TimeStamp timestamp_;
 
         //* client id
-        qint32 clientId_;
+        quint32 clientId_;
 
         //* application id
         ApplicationId id_;

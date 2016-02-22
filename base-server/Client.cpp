@@ -28,9 +28,9 @@ namespace Server
     static const qint32 CommandType = 1;
 
     //_______________________________________________________
-    int& Client::_counter( void )
+    quint32& Client::_counter( void )
     {
-        static int counter( 0 );
+        static quint32 counter( 0 );
         return counter;
     }
 
