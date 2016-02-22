@@ -22,8 +22,6 @@
 #include "ServerXmlDef.h"
 #include "XmlDocument.h"
 
-#include <QTextStream>
-
 namespace Server
 {
     //_______________________________________________________
@@ -36,14 +34,14 @@ namespace Server
     //_______________________________________________________
     Client::Client( QObject* parent, QTcpSocket* socket ):
         QObject( parent ),
-        Counter( "Client" ),
+        Counter( "Server::Client" ),
         id_( _counter()++ ),
         socket_( socket )
     {
-        Debug::Throw( "Client::Client.\n" );
+        Debug::Throw( "Server::Client::Client.\n" );
         Q_CHECK_PTR( socket );
         connect( socket_, SIGNAL(connected()), SLOT(_sendCommands()) );
-        connect( socket_, SIGNAL(readyRead()), SLOT(_readMessage()) );
+        connect( socket_, SIGNAL(readyRead()), SLOT(_read()) );
     }
 
     //_______________________________________________________
@@ -75,12 +73,12 @@ namespace Server
     }
 
     //_______________________________________________________
-    bool Client::_readMessage( void )
+    void Client::_read( void )
     {
 
         // add to buffer
         if( socket_->bytesAvailable() ) buffer_.append( QString::fromUtf8( socket_->readAll() ) );
-        else return false;
+        else return;
 
         // parse buffer
         static const QString beginTag = QString( "<%1>" ).arg(Xml::Transmission);
@@ -122,7 +120,7 @@ namespace Server
                         ServerCommand command( element );
                         emit commandAvailable( command.setClientId( id() ) );
 
-                    } else { Debug::Throw(0) << "ServerCommand::_readMessage - unrecognized tagname: " << element.tagName() << endl; }
+                    } else { Debug::Throw(0) << "ServerCommand::_read - unrecognized tagname: " << element.tagName() << endl; }
 
                 }
 
@@ -133,7 +131,7 @@ namespace Server
 
         }
 
-        return true;
+        return;
 
     }
 

@@ -44,16 +44,19 @@ namespace Server
     //* constructor
     Client( QObject* parent, QTcpSocket* socket );
 
+    //* destructor
+    virtual ~Client( void ) = default;
+
     //* id
     int id( void ) const
     { return id_; }
 
     //* associated socket
-    QTcpSocket& socket()
+    QTcpSocket& socket( void )
     { return *socket_; }
 
     //* associated socket
-    virtual const QTcpSocket& socket() const
+    virtual const QTcpSocket& socket( void ) const
     { return *socket_; }
 
     /** returns true if message could be sent */
@@ -118,7 +121,7 @@ namespace Server
     protected Q_SLOTS:
 
     //* reads messages
-    virtual bool _readMessage( void );
+    virtual void _read( void );
 
     private Q_SLOTS:
 
