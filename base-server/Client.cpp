@@ -19,11 +19,14 @@
 
 #include "Client.h"
 #include "Debug.h"
-#include "ServerXmlDef.h"
-#include "XmlDocument.h"
+
+#include <QDataStream>
 
 namespace Server
 {
+
+    static const qint32 CommandType = 1;
+
     //_______________________________________________________
     int& Client::_counter( void )
     {
@@ -33,105 +36,46 @@ namespace Server
 
     //_______________________________________________________
     Client::Client( QObject* parent, QTcpSocket* socket ):
-        QObject( parent ),
-        Counter( "Server::Client" ),
-        id_( _counter()++ ),
-        socket_( socket )
+        BaseSocketInterface( parent, socket ),
+        id_( _counter()++ )
     {
-        Debug::Throw( "Server::Client::Client.\n" );
-        Q_CHECK_PTR( socket );
-        connect( socket_, SIGNAL(connected()), SLOT(_sendCommands()) );
-        connect( socket_, SIGNAL(readyRead()), SLOT(_read()) );
+        connect( socket, SIGNAL(connected()), SLOT(_sendCommands()) );
+        connect( this, SIGNAL(bufferReceived(qint32,QByteArray)), SLOT(_parseBuffer(qint32,QByteArray)) );
     }
 
     //_______________________________________________________
     bool Client::sendCommand( const ServerCommand& command )
     {
-
         commands_ << command;
-        if( socket_->state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
+        if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
         return true;
-
     }
 
     //_______________________________________________________
     void Client::_sendCommands( void )
     {
-
-        if( commands_.empty() ) return;
-
-        QDomDocument document;
-        QDomElement top = document.appendChild( document.createElement( Xml::Transmission ) ).toElement();
-        while( commands_.size() && socket_->state() == QAbstractSocket::ConnectedState )
+        foreach( auto command, commands_ )
         {
-            top.appendChild( commands_.front().domElement( document ) );
-            commands_.removeFirst();
+            QByteArray array;
+            QDataStream stream( &array, QIODevice::WriteOnly );
+            stream << command;
+            sendBuffer( CommandType, array );
         }
 
-        socket_->write( document.toByteArray() );
-
+        commands_.clear();
     }
 
     //_______________________________________________________
-    void Client::_read( void )
+    void Client::_parseBuffer( qint32 bufferType, QByteArray buffer )
     {
-
-        // add to buffer
-        if( socket_->bytesAvailable() ) buffer_.append( QString::fromUtf8( socket_->readAll() ) );
-        else return;
-
-        // parse buffer
-        static const QString beginTag = QString( "<%1>" ).arg(Xml::Transmission);
-        static const QString endTag = QString( "</%1>" ).arg(Xml::Transmission);
-
-        forever
+        if( bufferType == CommandType )
         {
-
-            // get first tag
-            int beginPosition( buffer_.text().indexOf( beginTag, buffer_.position() ) );
-            if( beginPosition < 0 ) break;
-
-            // get end tag
-            int endPosition( buffer_.text().indexOf( endTag, beginPosition+beginTag.size() ) );
-            if( endPosition < 0 ) break;
-
-            // create QDomDocument
-            QString local( buffer_.text().mid( beginPosition, endPosition+endTag.size()-beginPosition ) );
-
-            // create document
-            XmlDocument document;
-            if( !document.setContent( local ) )
-            {
-
-                Debug::Throw() << document.error() << endl;
-
-            } else {
-
-                // parse document
-                QDomElement docElement = document.documentElement();
-                Q_ASSERT( docElement.tagName() == Xml::Transmission );
-
-                for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
-                {
-                    QDomElement element = node.toElement();
-                    if( element.isNull() ) continue;
-                    if( element.tagName() == Xml::Command ) {
-
-                        ServerCommand command( element );
-                        emit commandAvailable( command.setClientId( id() ) );
-
-                    } else { Debug::Throw(0) << "ServerCommand::_read - unrecognized tagname: " << element.tagName() << endl; }
-
-                }
-
-            }
-
-            // flush buffer
-            buffer_.flush( endPosition+endTag.size() );
-
+            ServerCommand command;
+            QDataStream stream( &buffer, QIODevice::ReadOnly );
+            stream >> command;
+            command.setClientId( id() );
+            emit commandAvailable( command );
         }
-
-        return;
 
     }
 

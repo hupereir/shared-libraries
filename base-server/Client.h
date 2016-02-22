@@ -20,8 +20,7 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "MessageBuffer.h"
+#include "BaseSocketInterface.h"
 #include "ServerCommand.h"
 
 #include <QTcpSocket>
@@ -30,7 +29,7 @@ namespace Server
 {
 
     //* interprocess communication client
-    class Client : public QObject, public Counter
+    class Client : public BaseSocketInterface
     {
 
         //* Qt meta object macro
@@ -39,7 +38,7 @@ namespace Server
         public:
 
         //* client list
-        using List = QList< Client* >;
+        using List = QList<Client*>;
 
         //* constructor
         Client( QObject* parent, QTcpSocket* socket );
@@ -51,41 +50,8 @@ namespace Server
         int id( void ) const
         { return id_; }
 
-        //* associated socket
-        QTcpSocket& socket( void )
-        { return *socket_; }
-
-        //* associated socket
-        virtual const QTcpSocket& socket( void ) const
-        { return *socket_; }
-
         /** returns true if message could be sent */
         bool sendCommand( const ServerCommand& );
-
-        //* used to retrieve clients for a given state
-        class SameStateFTor
-        {
-            public:
-
-            //* constructor
-            SameStateFTor( QAbstractSocket::SocketState state ):
-                state_( state )
-            {}
-
-            //* destructor
-            virtual ~SameStateFTor( void )
-            {}
-
-            //* predicate
-            virtual bool operator() ( const Client* client ) const
-            { return client->socket().state() == state_; }
-
-            private:
-
-            //* prediction
-            QAbstractSocket::SocketState state_;
-
-        };
 
         //* used to retrieve client matching id
         class SameIdFTor
@@ -118,15 +84,13 @@ namespace Server
         //* emitted when a message is available
         void commandAvailable( Server::ServerCommand );
 
-        protected Q_SLOTS:
-
-        //* reads messages
-        virtual void _read( void );
-
         private Q_SLOTS:
 
         //* send all commands
         virtual void _sendCommands( void );
+
+        //* process buffer
+        virtual void _parseBuffer( qint32, QByteArray );
 
         private:
 
@@ -136,17 +100,11 @@ namespace Server
         //* client id
         int id_ = 0;
 
-        //* parent socket
-        QTcpSocket* socket_ = nullptr;
-
         //* messages
-        using CommandList = QList< ServerCommand >;
+        using CommandList = QList<ServerCommand>;
 
         //* commands
         CommandList commands_;
-
-        //* buffer
-        MessageBuffer buffer_;
 
     };
 
