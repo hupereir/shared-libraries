@@ -20,8 +20,6 @@
 #include "BaseSocketInterface.h"
 #include "Debug.h"
 
-#include <QtEndian>
-
 //_______________________________________________________
 BaseSocketInterface::BaseSocketInterface( QObject* parent, QTcpSocket* socket ):
   QObject( parent ),
@@ -55,7 +53,7 @@ void BaseSocketInterface::_sendPendingBuffers( void )
 //_______________________________________________________
 void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 {
-    quint64 bufferSize( qToBigEndian( buffer.size() ) );
+    quint64 bufferSize( buffer.size() );
     Debug::Throw(0) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << endl;
     socket_->write( reinterpret_cast<const char*>( &type ), sizeof( qint32 ) );
     socket_->write( reinterpret_cast<const char*>( &bufferSize ), sizeof( quint64 ) );
@@ -88,11 +86,9 @@ void BaseSocketInterface::_read( void )
 
         if( bufferSize_ == 0 )
         {
-            quint64 bufferSize;
-            if( socket_->bytesAvailable() >= int(sizeof( quint64 )) ) socket_->read( reinterpret_cast<char*>( &bufferSize ), sizeof( quint64 ) );
+            if( socket_->bytesAvailable() >= int(sizeof( quint64 )) ) socket_->read( reinterpret_cast<char*>( &bufferSize_ ), sizeof( quint64 ) );
             else break;
 
-            bufferSize_ = qFromBigEndian( bufferSize );
             Debug::Throw(0)
                 << "BaseSocketInterface::_read -"
                 << " bufferSize: " << bufferSize_
