@@ -46,30 +46,54 @@ void BaseSocketInterface::_read( void )
 
     if( !socket_->bytesAvailable() ) return;
 
+    Debug::Throw(0) << "BaseSocketInterface::_read - bytes available: " << socket_->bytesAvailable() << endl;
     forever
     {
 
         // buffer type
         if( bufferType_ < 0 )
         {
-            if( socket_->bytesAvailable() >= int(sizeof( qint32 )) ) socket_->read( reinterpret_cast<char*>( bufferType_ ), sizeof( qint32 ) );
-            else break;
+            if( socket_->bytesAvailable() >= int(sizeof( qint32 )) )
+            {
+                Debug::Throw(0, "BaseSocketInterface::_read - reading buffer type\n" );
+                socket_->read( reinterpret_cast<char*>( &bufferType_ ), sizeof( qint32 ) );
+                Debug::Throw(0)
+                    << "BaseSocketInterface::_read -"
+                    << " buffer type: " << bufferType_
+                    << " bytes available: " << socket_->bytesAvailable()
+                    << endl;
+           } else break;
         }
 
-        if( bufferSize_ < 0 )
+        if( bufferSize_ == 0 )
         {
-            if( socket_->bytesAvailable() >= int(sizeof( quint64 )) ) socket_->read( reinterpret_cast<char*>( bufferSize_ ), sizeof( quint64 ) );
-            else break;
+            if( socket_->bytesAvailable() >= int(sizeof( quint64 )) )
+            {
+                Debug::Throw(0, "BaseSocketInterface::_read - reading buffer size\n" );
+                socket_->read( reinterpret_cast<char*>( &bufferSize_ ), sizeof( quint64 ) );
+                Debug::Throw(0)
+                    << "BaseSocketInterface::_read -"
+                    << " buffer size: " << bufferSize_
+                    << " bytes available: " << socket_->bytesAvailable()
+                    << endl;
+            } else break;
         }
 
         if( bufferSize_ == 0 ) break;
         if( quint64(socket_->bytesAvailable()) >= bufferSize_ )
         {
 
+            Debug::Throw(0, "BaseSocketInterface::_read - reading buffer\n" );
             const QByteArray array = socket_->read( bufferSize_ );
             emit bufferReceived( bufferType_, array );
+
             bufferSize_ = 0;
             bufferType_ = -1;
+            Debug::Throw(0)
+                << "BaseSocketInterface::_read -"
+                << " buffer size: " << array.size()
+                << " bytes available: " << socket_->bytesAvailable()
+                << endl;
 
         } else break;
     }
