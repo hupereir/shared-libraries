@@ -104,7 +104,6 @@ namespace Server
         {
 
             QString host( parser.option( "--server-host" ) );
-            XmlOptions::get().setRaw( "SERVER_HOST", host );
             host_ = QHostAddress( host );
 
         } else host_ = QHostAddress( QString( XmlOptions::get().raw( "SERVER_HOST" ) ) );
@@ -114,7 +113,6 @@ namespace Server
         {
 
             int port( parser.option( "--server-port" ).toUInt() );
-            XmlOptions::get().set<int>( "SERVER_PORT", port );
             port_ = port;
 
         } else port_ = XmlOptions::get().get<int>( "SERVER_PORT" );
