@@ -11,6 +11,7 @@ if(USE_QT5)
 
   find_package(Qt5Gui REQUIRED)
   find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5Network REQUIRED)
   find_package(Qt5Xml REQUIRED)
   find_package(Qt5PrintSupport REQUIRED)
 
@@ -25,6 +26,7 @@ else()
 
   find_package(Qt4 REQUIRED)
   set(QT_USE_QTXML TRUE)
+  set(QT_USE_QTNETWORK TRUE)
   include(${QT_USE_FILE})
   add_definitions(${QT_DEFINITIONS})
 
@@ -75,6 +77,7 @@ set(base_qt_SOURCES
   BaseProgressBar.cpp
   BaseReplaceDialog.cpp
   BaseReplaceWidget.cpp
+  BaseSocketInterface.cpp
   BaseStatusBar.cpp
   BaseToolTipWidget.cpp
   BlockHighlight.cpp
@@ -249,7 +252,7 @@ target_link_libraries(base-qt ${QT_LIBRARIES} base)
 
 if(USE_QT5)
 
-  qt5_use_modules(base-qt Gui Widgets Xml PrintSupport)
+  qt5_use_modules(base-qt Gui Widgets Network PrintSupport Xml)
   if(WIN32)
     qt5_use_modules(base-qt WinExtras)
   endif()
