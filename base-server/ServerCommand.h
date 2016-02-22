@@ -28,8 +28,6 @@
 #include "XmlOption.h"
 
 #include <QDataStream>
-#include <QDomElement>
-#include <QDomDocument>
 #include <QString>
 #include <QHash>
 #include <QTextStream>
@@ -69,9 +67,6 @@ namespace Server
         //* constructor
         ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
 
-        //* constructor
-        ServerCommand( const QDomElement& );
-
         //* equal-to operator
         bool operator == ( const ServerCommand& command ) const
         {
@@ -93,9 +88,6 @@ namespace Server
 
         //*@name accessors
         //@{
-
-        //* dom element
-        QDomElement domElement( QDomDocument& ) const;
 
         //* true if this command is a child of argument
         /*! this is needed to have commands appear in Tree view */

@@ -19,7 +19,6 @@
 
 #include "ApplicationId.h"
 #include "Debug.h"
-#include "ServerXmlDef.h"
 #include "Util.h"
 
 namespace Server
@@ -35,40 +34,6 @@ namespace Server
         if( user.isNull() ) user = Util::user();
         if( display.isNull() ) display = Util::env( "DISPLAY", "0.0" ).replace( ":", "" );
         user_ = user + QString("@")+display;
-    }
-
-    //____________________________________________________
-    ApplicationId::ApplicationId( const QDomElement& element ):
-        Counter( "ApplicationId" ),
-        pid_( 0 )
-    {
-        Debug::Throw( "ApplicationId::ApplicationId (dom).\n" );
-
-        // parse attributes
-        QDomNamedNodeMap attributes( element.attributes() );
-        for( int i=0; i<attributes.count(); i++ )
-        {
-            QDomAttr attribute( attributes.item( i ).toAttr() );
-            if( attribute.isNull() ) continue;
-            if( attribute.name() == Xml::User ) setUser( attribute.value() );
-            else if( attribute.name() == Xml::Name ) setName( attribute.value() );
-            else if( attribute.name() == Xml::Pid ) setProcessId( attribute.value().toLongLong() );
-            else Debug::Throw() << "ApplicationId::ApplicationId - unrecognized attribute " << attribute.name() << endl;
-        }
-
-    }
-
-    //____________________________________________________
-    QDomElement ApplicationId::domElement( QDomDocument& document ) const
-    {
-
-        Debug::Throw( "ApplicationId::domElement" );
-        QDomElement out( document.createElement( Xml::Id ) );
-        if( !name().isEmpty() ) out.setAttribute( Xml::Name, name() );
-        if( !user().isEmpty() ) out.setAttribute( Xml::User, user() );
-        if( pid_ > 0 ) out.setAttribute( Xml::Pid, QString::number( pid_ ) );
-        return out;
-
     }
 
     //____________________________________________________

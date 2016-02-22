@@ -23,8 +23,6 @@
 #include "Counter.h"
 
 #include <QDataStream>
-#include <QDomDocument>
-#include <QDomElement>
 #include <QString>
 
 namespace Server
@@ -37,9 +35,6 @@ namespace Server
 
         //* constructor
         ApplicationId( const QString& = QString(), QString = QString(), QString = QString() );
-
-        //* constructor
-        ApplicationId( const QDomElement& );
 
         //* equal to operator
         bool operator == (const ApplicationId& app ) const
@@ -59,9 +54,6 @@ namespace Server
 
         //*@name accessors
         //@{
-
-        //* dom element
-        QDomElement domElement( QDomDocument& ) const;
 
         //* name
         const QString& name( void ) const

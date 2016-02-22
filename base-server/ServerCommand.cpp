@@ -19,8 +19,6 @@
 
 #include "Debug.h"
 #include "ServerCommand.h"
-#include "ServerXmlDef.h"
-#include "XmlCommandLineArguments.h"
 
 #include <QStringList>
 
@@ -63,67 +61,6 @@ namespace Server
         command_( command ),
         option_( "", ::Option() )
     { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
-
-    //___________________________________________
-    ServerCommand::ServerCommand( const QDomElement& element ):
-        Counter( "ServerCommand" ),
-        timestamp_( TimeStamp::now() ),
-        clientId_( 0 ),
-        command_( None ),
-        option_( "", ::Option() )
-    {
-
-        Debug::Throw( "ServerCommand::ServerCommand (dom).\n" );
-
-        // parse attributes
-        QDomNamedNodeMap attributes( element.attributes() );
-        for( int i=0; i<attributes.count(); i++ )
-        {
-            QDomAttr attribute( attributes.item( i ).toAttr() );
-            if( attribute.isNull() ) continue;
-            if( attribute.name() == Xml::Type ) setCommand( (CommandType) attribute.value().toUInt() );
-            else Debug::Throw(0) << "ServerCommand::ServerCommand - unrecognized attribute: " << attribute.name() << endl;
-        }
-
-        // loop over children
-        // parse children elements
-        for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
-        {
-            QDomElement child_element = child_node.toElement();
-            if( child_element.isNull() ) continue;
-            QString tagName( child_element.tagName() );
-            if( tagName == Xml::Id ) setId( ApplicationId( child_element ) );
-            else if( tagName == Xml::Arguments ) setArguments( XmlCommandLineArguments( child_element ) );
-            else if( tagName == Base::Xml::Option )
-            {
-                Q_ASSERT( command() == ServerCommand::Option );
-                setXmlOption( XmlOption( child_element ) );
-            }
-        }
-
-    }
-
-    //__________________________________________________
-    QDomElement ServerCommand::domElement( QDomDocument& document ) const
-    {
-
-        Debug::Throw( "ServerCommand::domElement.\n" );
-        QDomElement out( document.createElement( Xml::Command ) );
-
-        // type
-        out.setAttribute( Xml::Type, QString::number( command() ) );
-
-        // id
-        out.appendChild( id().domElement( document ) );
-
-        // arguments
-        if( !arguments().isEmpty() ) out.appendChild( XmlCommandLineArguments(arguments()).domElement( Xml::Arguments, document ) );
-        if( command() == ServerCommand::Option && !option_.name().isEmpty() )
-        { out.appendChild( option_.domElement( document ) ); }
-
-        return out;
-
-    }
 
     //__________________________________________________
     QDataStream& operator << (QDataStream& stream, const ServerCommand& command )
