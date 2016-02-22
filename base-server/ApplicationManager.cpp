@@ -318,15 +318,14 @@ namespace Server
     void ApplicationManager::_newConnection()
     {
         Debug::Throw( "ApplicationManager::_newConnection.\n" );
-
-        // check pending connection
-        if( !server_->hasPendingConnections() ) return;
-
-        // create client from pending connection
-        Client *client( new Client( this, server_->nextPendingConnection() ) );
-        connect( client, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
-        connect( &client->socket(), SIGNAL(disconnected()), SLOT(_clientConnectionClosed()) );
-        _connectedClients() << client;
+        while( server_->hasPendingConnections() )
+        {
+            // create client from pending connection
+            Client *client( new Client( this, server_->nextPendingConnection() ) );
+            connect( client, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
+            connect( &client->socket(), SIGNAL(disconnected()), SLOT(_clientConnectionClosed()) );
+            connectedClients_ << client;
+        }
 
     }
 
