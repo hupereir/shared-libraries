@@ -56,10 +56,8 @@ namespace Server
     ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& command ):
         Counter( "ServerCommand" ),
         timestamp_( TimeStamp::now() ),
-        clientId_( 0 ),
         id_( id ),
-        command_( command ),
-        option_( "", ::Option() )
+        command_( command )
     { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
 
     //__________________________________________________

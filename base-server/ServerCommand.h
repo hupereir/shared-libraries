@@ -173,7 +173,7 @@ namespace Server
         TimeStamp timestamp_;
 
         //* client id
-        quint32 clientId_;
+        quint32 clientId_ = 0;
 
         //* application id
         ApplicationId id_;
