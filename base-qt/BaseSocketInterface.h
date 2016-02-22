@@ -97,10 +97,12 @@ class BaseSocketInterface: public QObject, public Counter
     QTcpSocket* socket_ = nullptr;
 
     //* running type
-    qint32 bufferType_ = -1;
+    using buffertype_t = qint32;
+    buffertype_t bufferType_ = -1;
 
     //* running lenght
-    quint64 bufferSize_ = 0;
+    using buffersize_t = quint32;
+    buffersize_t bufferSize_ = 0;
 
     //* buffer
     QByteArray buffer_;

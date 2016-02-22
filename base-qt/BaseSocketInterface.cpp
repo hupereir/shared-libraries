@@ -55,8 +55,8 @@ void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 {
     quint64 bufferSize( buffer.size() );
     Debug::Throw(0) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << endl;
-    socket_->write( reinterpret_cast<const char*>( &type ), sizeof( qint32 ) );
-    socket_->write( reinterpret_cast<const char*>( &bufferSize ), sizeof( quint64 ) );
+    socket_->write( reinterpret_cast<const char*>( &type ), sizeof( buffertype_t ) );
+    socket_->write( reinterpret_cast<const char*>( &bufferSize ), sizeof( buffersize_t ) );
     socket_->write( buffer );
 }
 
@@ -73,7 +73,7 @@ void BaseSocketInterface::_read( void )
         // buffer type
         if( bufferType_ < 0 )
         {
-            if( socket_->bytesAvailable() >= int(sizeof( qint32 )) ) socket_->read( reinterpret_cast<char*>( &bufferType_ ), sizeof( qint32 ) );
+            if( socket_->bytesAvailable() >= int(sizeof( buffertype_t )) ) socket_->read( reinterpret_cast<char*>( &bufferType_ ), sizeof( buffertype_t ) );
             else break;
 
             Debug::Throw(0)
@@ -86,7 +86,7 @@ void BaseSocketInterface::_read( void )
 
         if( bufferSize_ == 0 )
         {
-            if( socket_->bytesAvailable() >= int(sizeof( quint64 )) ) socket_->read( reinterpret_cast<char*>( &bufferSize_ ), sizeof( quint64 ) );
+            if( socket_->bytesAvailable() >= int(sizeof( buffersize_t )) ) socket_->read( reinterpret_cast<char*>( &bufferSize_ ), sizeof( buffersize_t ) );
             else break;
 
             Debug::Throw(0)
@@ -101,7 +101,7 @@ void BaseSocketInterface::_read( void )
         {
 
             const QByteArray array = socket_->read( bufferSize_ );
-            const qint32 bufferType = bufferType_;
+            const buffertype_t bufferType = bufferType_;
             bufferSize_ = 0;
             bufferType_ = -1;
             emit bufferReceived( bufferType, array );
