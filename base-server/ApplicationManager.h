@@ -27,14 +27,13 @@
 #include "ServerCommand.h"
 
 #include <QBasicTimer>
+#include <QHostAddress>
 #include <QList>
 #include <QMap>
 #include <QObject>
 #include <QPair>
-#include <QTimerEvent>
-
 #include <QTcpServer>
-#include <QHostAddress>
+#include <QTimerEvent>
 
 namespace Server
 {
@@ -49,7 +48,7 @@ namespace Server
         public:
 
         //* constructor
-        ApplicationManager( QObject* parent );
+        ApplicationManager( QObject* );
 
         //* destructor
         virtual ~ApplicationManager( void );
@@ -156,14 +155,6 @@ namespace Server
             //* prediction
             Client* client_;
         };
-
-        //* map of accepted clients
-        ClientMap& _acceptedClients( void )
-        { return acceptedClients_; }
-
-        //* list of connected clients
-        ClientList& _connectedClients( void )
-        { return connectedClients_; }
 
         /** \brief register a client, returns true if application is new.
         if forced is set to true, the old cliend, if any, is replaced
