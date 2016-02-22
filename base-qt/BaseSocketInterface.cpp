@@ -28,11 +28,30 @@ BaseSocketInterface::BaseSocketInterface( QObject* parent, QTcpSocket* socket ):
 {
     Debug::Throw( "BaseSocketInterface::BaseSocketInterface.\n" );
     Q_CHECK_PTR( socket );
+    connect( socket_, SIGNAL(connected()), SLOT(_sendPendingBuffers()) );
     connect( socket_, SIGNAL(readyRead()), SLOT(_read()) );
 }
 
 //_______________________________________________________
 void BaseSocketInterface::sendBuffer( qint32 type, const QByteArray& buffer )
+{
+    if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendBuffer( type, buffer );
+    else pendingBuffers_.append( BufferPair( type, buffer ) );
+}
+
+//_______________________________________________________
+void BaseSocketInterface::_sendPendingBuffers( void )
+{
+
+    foreach( auto bufferPair, pendingBuffers_ )
+    { _sendBuffer( bufferPair.first, bufferPair.second ); }
+
+    pendingBuffers_.clear();
+
+}
+
+//_______________________________________________________
+void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 {
     quint64 bufferSize( buffer.size() );
     socket_->write( reinterpret_cast<const char*>( &type ), sizeof( qint32 ) );

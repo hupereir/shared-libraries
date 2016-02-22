@@ -105,7 +105,7 @@ namespace Server
         QString user_;
 
         //* process id
-        qint64 pid_;
+        qint64 pid_ = 0;
 
         //*@name serializer
         //@{

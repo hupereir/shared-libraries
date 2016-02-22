@@ -51,7 +51,7 @@ namespace Server
         { return id_; }
 
         /** returns true if message could be sent */
-        bool sendCommand( const ServerCommand& );
+        void sendCommand( const ServerCommand& );
 
         //* used to retrieve client matching id
         class SameIdFTor
@@ -86,9 +86,6 @@ namespace Server
 
         private Q_SLOTS:
 
-        //* send all commands
-        virtual void _sendCommands( void );
-
         //* process buffer
         virtual void _parseBuffer( qint32, QByteArray );
 
@@ -99,12 +96,6 @@ namespace Server
 
         //* client id
         quint32 id_ = 0;
-
-        //* messages
-        using CommandList = QList<ServerCommand>;
-
-        //* commands
-        CommandList commands_;
 
     };
 

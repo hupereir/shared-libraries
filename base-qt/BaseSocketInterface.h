@@ -82,10 +82,16 @@ class BaseSocketInterface: public QObject, public Counter
 
     protected Q_SLOTS:
 
+    //* send pending buffers
+    virtual void _sendPendingBuffers( void );
+
     //* read message from socket
     virtual void _read( void );
 
     private:
+
+    //* send buffer
+    void _sendBuffer( qint32, const QByteArray& );
 
     //* socket
     QTcpSocket* socket_ = nullptr;
@@ -98,6 +104,10 @@ class BaseSocketInterface: public QObject, public Counter
 
     //* buffer
     QByteArray buffer_;
+
+    //* pending buffers
+    using BufferPair = QPair<quint32, QByteArray>;
+    QList<BufferPair> pendingBuffers_;
 
 };
 

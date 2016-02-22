@@ -27,8 +27,7 @@ namespace Server
     //____________________________________________________
     ApplicationId::ApplicationId( const QString& name, QString user, QString display ):
         Counter( "ApplicationId" ),
-        name_( name ),
-        pid_( 0 )
+        name_( name )
     {
         Debug::Throw( "ApplicationId::ApplicationId.\n" );
         if( user.isNull() ) user = Util::user();

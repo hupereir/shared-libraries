@@ -38,31 +38,15 @@ namespace Server
     Client::Client( QObject* parent, QTcpSocket* socket ):
         BaseSocketInterface( parent, socket ),
         id_( _counter()++ )
-    {
-        connect( socket, SIGNAL(connected()), SLOT(_sendCommands()) );
-        connect( this, SIGNAL(bufferReceived(qint32,QByteArray)), SLOT(_parseBuffer(qint32,QByteArray)) );
-    }
+    { connect( this, SIGNAL(bufferReceived(qint32,QByteArray)), SLOT(_parseBuffer(qint32,QByteArray)) ); }
 
     //_______________________________________________________
-    bool Client::sendCommand( const ServerCommand& command )
+    void Client::sendCommand( const ServerCommand& command )
     {
-        commands_ << command;
-        if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendCommands();
-        return true;
-    }
-
-    //_______________________________________________________
-    void Client::_sendCommands( void )
-    {
-        foreach( auto command, commands_ )
-        {
-            QByteArray array;
-            QDataStream stream( &array, QIODevice::WriteOnly );
-            stream << command;
-            sendBuffer( CommandType, array );
-        }
-
-        commands_.clear();
+        QByteArray array;
+        QDataStream stream( &array, QIODevice::WriteOnly );
+        stream << command;
+        sendBuffer( CommandType, array );
     }
 
     //_______________________________________________________
