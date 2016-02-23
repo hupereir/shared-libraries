@@ -20,6 +20,8 @@
 #include "BaseSocketInterface.h"
 #include "Debug.h"
 
+static const int debugLevel = 1;
+
 //_______________________________________________________
 BaseSocketInterface::BaseSocketInterface( QObject* parent, QTcpSocket* socket ):
   QObject( parent ),
@@ -54,7 +56,7 @@ void BaseSocketInterface::_sendPendingBuffers( void )
 void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 {
     quint64 bufferSize( buffer.size() );
-    Debug::Throw(0) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << endl;
+    Debug::Throw(debugLevel) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << endl;
     socket_->write( reinterpret_cast<const char*>( &type ), sizeof( buffertype_t ) );
     socket_->write( reinterpret_cast<const char*>( &bufferSize ), sizeof( buffersize_t ) );
     socket_->write( buffer );
@@ -66,7 +68,7 @@ void BaseSocketInterface::_read( void )
 
     if( !socket_->bytesAvailable() ) return;
 
-    Debug::Throw(0) << "BaseSocketInterface::_read - bytes: " << socket_->bytesAvailable() << endl;
+    Debug::Throw(debugLevel) << "BaseSocketInterface::_read - bytes: " << socket_->bytesAvailable() << endl;
     forever
     {
 
@@ -76,7 +78,7 @@ void BaseSocketInterface::_read( void )
             if( socket_->bytesAvailable() >= int(sizeof( buffertype_t )) ) socket_->read( reinterpret_cast<char*>( &bufferType_ ), sizeof( buffertype_t ) );
             else break;
 
-            Debug::Throw(0)
+            Debug::Throw(debugLevel)
                 << "BaseSocketInterface::_read -"
                 << " bufferType: " << bufferType_
                 << " bytes: " << socket_->bytesAvailable()
@@ -89,7 +91,7 @@ void BaseSocketInterface::_read( void )
             if( socket_->bytesAvailable() >= int(sizeof( buffersize_t )) ) socket_->read( reinterpret_cast<char*>( &bufferSize_ ), sizeof( buffersize_t ) );
             else break;
 
-            Debug::Throw(0)
+            Debug::Throw(debugLevel)
                 << "BaseSocketInterface::_read -"
                 << " bufferSize: " << bufferSize_
                 << " bytes: " << socket_->bytesAvailable()
@@ -106,7 +108,7 @@ void BaseSocketInterface::_read( void )
             bufferType_ = -1;
             emit bufferReceived( bufferType, array );
 
-            Debug::Throw(0)
+            Debug::Throw(debugLevel)
                 << "BaseSocketInterface::_read -"
                 << " array size: " << array.size()
                 << " bytes: " << socket_->bytesAvailable()
