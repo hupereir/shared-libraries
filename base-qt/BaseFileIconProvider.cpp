@@ -42,12 +42,11 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     if( iter != icons_.end() ) return iter.value();
 
     // insert new entry in map
-    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
-    DefaultFolders::FolderMap::const_iterator nameIter( folders.find( fileInfo.file() ) );
-    if( nameIter == folders.end() ) return invalid_;
+    const DefaultFolders::Type folderType( DefaultFolders::get().type( fileInfo.file() ) );
+    if( folderType == DefaultFolders::Unknown ) return invalid_;
 
     // get icon name
-    const QString iconName( DefaultFolders::get().iconName( nameIter.value() ) );
+    const QString iconName( DefaultFolders::get().iconName( folderType ) );
     if( iconName.isEmpty() ) return invalid_;
 
     // get corresponding icon from icon engine
