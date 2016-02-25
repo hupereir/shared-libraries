@@ -111,6 +111,15 @@ DefaultFolders::Type DefaultFolders::type( const File& file ) const
 }
 
 //__________________________________________________________________________
+File DefaultFolders::file( DefaultFolders::Type type ) const
+{
+    for( auto iter = folders_.constBegin(); iter != folders_.constEnd(); ++iter )
+    { if( iter.value() == type ) return iter.key(); }
+
+    return File();
+}
+
+//__________________________________________________________________________
 QString DefaultFolders::name( Type type ) const
 {
     auto iter( names_.find( type ) );

@@ -59,6 +59,9 @@ class DefaultFolders: public QObject
     //* return type for a given folder
     Type type( const File& ) const;
 
+    //* return file for a given type
+    File file( Type ) const;
+
     //* name for a given type
     QString name( Type ) const;
 
