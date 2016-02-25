@@ -78,7 +78,7 @@ class BaseFileInfo
     static const QString MimeType;
 
     //* constructor
-    BaseFileInfo( const QString& file = QString(), TypeFlags type = None ):
+    explicit BaseFileInfo( const QString& file = QString(), TypeFlags type = None ):
         file_( file ),
         type_( type ),
         size_( 0 ),
