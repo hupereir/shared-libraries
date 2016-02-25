@@ -106,40 +106,37 @@ DefaultFolders::DefaultFolders( void )
 //__________________________________________________________________________
 DefaultFolders::Type DefaultFolders::type( const File& file ) const
 {
-    FolderMap::const_iterator iter = folders_.find( file );
-    return iter == folders_.end() ? Unknown:iter.value();
+    auto iter( allFolders_.find( file ) );
+    return iter == allFolders_.end() ? Unknown:iter.value();
 }
 
 //__________________________________________________________________________
 QString DefaultFolders::name( Type type ) const
 {
-    IconMap::const_iterator iter = names_.find( type );
+    auto iter( names_.find( type ) );
     return iter == names_.end() ? QString():iter.value();
 }
 
 //__________________________________________________________________________
 QString DefaultFolders::iconName( Type type ) const
 {
-    IconMap::const_iterator iter = iconNames_.find( type );
+    auto iter( iconNames_.find( type ) );
     return iter == iconNames_.end() ? QString():iter.value();
 }
 
 //__________________________________________________________________________
 void DefaultFolders::_insert( const QStringList& keys, Type value )
-{ if( !keys.isEmpty() ) _insert( keys.front(), value ); }
+{
+    foreach( auto key, keys ) allFolders_.insert( key, value );
+    if( !keys.isEmpty() ) folders_.insert( keys.front(), value );
+}
 
 //__________________________________________________________________________
 void DefaultFolders::_insert( const QString& key, Type value )
-{ if( !key.isEmpty() ) folders_.insert( key, value ); }
-
-//__________________________________________________________________________
-QString DefaultFolders::_defaultFolderName( qint64 key )
 {
-    #if defined( Q_OS_WIN )
-    TCHAR returnPath[MAX_PATH];
-    if( SUCCEEDED( SHGetFolderPath( 0, key, 0, 0, returnPath ) ) ) return QFileInfo( returnPath ).canonicalFilePath();
-    else return QString();
-    #else
-    return QString();
-    #endif
+    if( !key.isEmpty() )
+    {
+        allFolders_.insert( key, value );
+        folders_.insert( key, value );
+    }
 }

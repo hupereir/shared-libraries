@@ -22,6 +22,7 @@
 
 #include "File.h"
 
+#include <QHash>
 #include <QMap>
 #include <QObject>
 
@@ -72,23 +73,26 @@ class DefaultFolders: public QObject
     //* insert folder in map
     void _insert( const QString&, Type );
 
-    //* return default folder name under windows (vista and above)
-    QString _defaultFolderName( qint64 );
-
     private:
 
     //* constructor
     DefaultFolders( void );
 
     //* map folder and type
+    /* this list keeps only one folder per type */
     FolderMap folders_;
 
+    //* map 'all' folders to type
+    /* it also uses a hash, for faster access */
+    using FolderHash = QHash<File, Type>;
+    FolderHash allFolders_;
+
     //* icon names
-    using NameMap = QMap<Type, QString>;
+    using NameMap = QHash<Type, QString>;
     NameMap names_;
 
     //* map folder type and icon name
-    using IconMap = QMap<Type, QString>;
+    using IconMap = QHash<Type, QString>;
     IconMap iconNames_;
 
 };
