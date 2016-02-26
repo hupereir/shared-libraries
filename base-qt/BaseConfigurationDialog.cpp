@@ -59,6 +59,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
 
     // restore default
     _buttonBox().addButton( QDialogButtonBox::RestoreDefaults );
+    _buttonBox().button( QDialogButtonBox::RestoreDefaults )->setText( tr( "Defaults" ) );
+    _buttonBox().button( QDialogButtonBox::RestoreDefaults )->setIcon( IconEngine::get( IconNames::Revert ) );
     _buttonBox().button( QDialogButtonBox::RestoreDefaults )->setToolTip( tr( "Restore default value for all options" ) );
 
     connect( _buttonBox().button( QDialogButtonBox::RestoreDefaults ), SIGNAL(clicked()), SLOT(_restoreDefaults()) );
@@ -67,6 +69,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
     // reset
     _buttonBox().addButton( QDialogButtonBox::Reset );
     _buttonBox().button( QDialogButtonBox::Reset )->setToolTip( tr( "Reset configuration" ) );
+    _buttonBox().button( QDialogButtonBox::Reset )->setIcon( IconEngine::get( IconNames::Undo ) );
     connect( _buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SLOT(_reset()) );
     connect( _buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SIGNAL(reset()) );
 
