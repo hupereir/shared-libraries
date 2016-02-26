@@ -40,6 +40,9 @@ class BrowsedLineEditor: public QWidget, public Counter
     //* constructor;
     BrowsedLineEditor( QWidget* parent );
 
+    //* destructor
+    virtual ~BrowsedLineEditor( void ) = default;
+
     //* retrieve line editor
     virtual Editor& editor( void ) const
     { return *lineEditor_; }

@@ -48,7 +48,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     lineEditor_ = new Editor( this );
     layout->addWidget( lineEditor_, 1 );
 
-    // create push_button
+    // create button
     QToolButton *button = new QToolButton( this );
     button->setAutoRaise( true );
 
@@ -56,7 +56,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     button->setToolTip( tr( "Browse file system" ) );
     layout->addWidget( button, 0 );
 
-    // connect push_button
+    // connect button
     connect( button, SIGNAL(clicked()), SLOT(_browse()) );
 }
 
