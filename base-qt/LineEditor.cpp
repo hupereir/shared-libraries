@@ -360,10 +360,11 @@ void LineEditor::_modified( const QString& text )
     }
 
     // clear actions enability
-    clearAction_->setEnabled( !(isReadOnly() || text.isEmpty() ) );
+    const bool clearEnabled = !(isReadOnly() || text.isEmpty() );
+    clearAction_->setEnabled( clearEnabled );
     if( clearButton_ )
     {
-        if( text.isEmpty() ) clearButton_->hide();
+        if( !clearEnabled ) clearButton_->hide();
         else if( !clearButton_->isVisible() )
         {
 
@@ -508,7 +509,7 @@ void LineEditor::_updatePasteAction( void )
 
     Debug::Throw( "LineEditor::_updatePasteAction.\n" );
     bool editable( !isReadOnly() );
-    bool has_clipboard( !qApp->clipboard()->text().isEmpty() );
-    pasteAction_->setEnabled( editable && has_clipboard );
+    bool hasClipboard( !qApp->clipboard()->text().isEmpty() );
+    pasteAction_->setEnabled( editable && hasClipboard );
 
 }
