@@ -48,25 +48,24 @@ class BaseSocketInterface: public QObject, public Counter
     //* used to retrieve all readers for a given state
     class SameStateFTor
     {
-      public:
+        public:
 
-      //* constructor
-      SameStateFTor( QAbstractSocket::SocketState state ):
-        state_( state )
+        //* constructor
+        SameStateFTor( QAbstractSocket::SocketState state ):
+            state_( state )
         {}
 
-      //* destructor
-      virtual ~SameStateFTor( void )
-      {}
+        //* destructor
+        virtual ~SameStateFTor( void ) = default;
 
-      //* predicate
-      virtual bool operator() ( const BaseSocketInterface* reader ) const
-      { return reader->socket().state() == state_; }
+        //* predicate
+        virtual bool operator() ( const BaseSocketInterface* reader ) const
+        { return reader->socket().state() == state_; }
 
-      private:
+        private:
 
-      //* prediction
-      QAbstractSocket::SocketState state_;
+        //* prediction
+        QAbstractSocket::SocketState state_;
 
     };
 
