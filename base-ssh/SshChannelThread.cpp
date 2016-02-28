@@ -101,10 +101,11 @@ namespace Ssh
                 if( channel_ ) break;
                 else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN )
                 {
-                    char *err_msg;
-                    libssh2_session_last_error(session, &err_msg, NULL, 0);
-                    Debug::Throw() << "ChannelThread::run - error getting direct tpc channel: " << err_msg << endl;
-                    emit error( tr( "Failed to create channel to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
+
+//                     // for some reason emitting this message creates an infinite loop
+//                     char *errorMessage;
+//                     libssh2_session_last_error(session, &errorMessage, NULL, 0);
+//                     _setErrorString( tr( "Failed to create channel to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
                     return;
                 }
 
@@ -114,9 +115,9 @@ namespace Ssh
 
         // cast channel
         LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
-
+        static const int bufferSize = 1<<16;
         QByteArray buffer;
-        buffer.resize(16384);
+        buffer.resize(bufferSize);
         forever
         {
 
@@ -132,7 +133,7 @@ namespace Ssh
             const int result = select( socket_ + 1, &fileDescriptor, nullptr, nullptr, &timeValue );
             if( result == -1 )
             {
-                emit error( tr( "Error selecting socket forwarded to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
+                // _setErrorString( tr( "Error selecting socket forwarded to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
                 return;
             }
 
@@ -142,17 +143,17 @@ namespace Ssh
                 ssize_t bytesRead = recv(socket_, buffer.data(), buffer.size(), 0);
                 if( bytesRead<0 )
                 {
-                    emit error( tr( "Error reading from port %1" ).arg( attributes_.localPort() ) );
+                    _setErrorString( tr( "Error reading from port %1" ).arg( attributes_.localPort() ) );
                     return;
 
                 } else if( bytesRead == 0 ) {
 
-                    emit debug( QString( "Ssh::ChannelThread::run - local socket on port %1 disconnected" ).arg( attributes_.localPort() ) );
+                    _setErrorString( tr( "Local socket on port %1 disconnected" ).arg( attributes_.localPort() ) );
                     return;
 
                 }
 
-                emit debug( QString( "Ssh::ChannelThread::run - fromTcpSocket - bytesRead=%1" ).arg( bytesRead ) );
+                Debug::Throw( QString( "Ssh::ChannelThread::run - fromTcpSocket - bytesRead=%1" ).arg( bytesRead ) );
 
                 QMutexLocker lock( mutex_ );
                 ssize_t bytesWritten = 0;
@@ -163,7 +164,7 @@ namespace Ssh
                     if( i >= 0 ) bytesWritten += i;
                     else if( i != LIBSSH2_ERROR_EAGAIN )
                     {
-                        emit error( tr( "Error writting to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
+                        _setErrorString( tr( "Error writting to %1:%2" ).arg( attributes_.host() ).arg( attributes_.remotePort() ) );
                         return;
                     }
 
@@ -181,11 +182,11 @@ namespace Ssh
                 if( bytesRead == LIBSSH2_ERROR_EAGAIN ) break;
                 else if( bytesRead < 0 )
                 {
-                    emit error( tr( "Error reading from %1:%2 (%3)" ).arg( attributes_.host() ).arg( attributes_.remotePort() ).arg( bytesRead ) );
+                    _setErrorString( tr( "Error reading from %1:%2 (%3)" ).arg( attributes_.host() ).arg( attributes_.remotePort() ).arg( bytesRead ) );
                     return;
                 }
 
-                emit debug( QString( "Ssh::ChannelThread::run - fromSshSocket - bytesRead=%1" ).arg( bytesRead ) );
+                Debug::Throw( QString( "Ssh::ChannelThread::run - fromSshSocket - bytesRead=%1" ).arg( bytesRead ) );
 
                 ssize_t bytesWritten = 0;
                 while( bytesWritten < bytesRead )
@@ -194,7 +195,7 @@ namespace Ssh
                     if (i <= 0)
                     {
 
-                        emit error( tr( "Error writing to port %1" ).arg( attributes_.localPort() ) );
+                        _setErrorString( tr( "Error writing to port %1" ).arg( attributes_.localPort() ) );
                         return;
                     }
                     bytesWritten += i;
@@ -202,7 +203,7 @@ namespace Ssh
 
                 if (libssh2_channel_eof( channel ) )
                 {
-                    emit debug( "Ssh::ChannelThread::run - end of channel" );
+                    Debug::Throw( "Ssh::ChannelThread::run - end of channel" );
                     return;
                 }
             }

@@ -53,15 +53,13 @@ namespace Ssh
         int socket( void ) const
         { return socket_; }
 
+        //* error string
+        QString errorString( void ) const
+        { return errorString_; }
+
         //@}
 
         Q_SIGNALS:
-
-        //* error message
-        void error( QString );
-
-        //* debug message
-        void debug( QString );
 
         //* new connection is available
         void newConnection( int port, int socket );
@@ -81,6 +79,10 @@ namespace Ssh
         //* listen to connections to socket
         virtual void run( void );
 
+        //* assign error string
+        virtual void _setErrorString( QString value )
+        { errorString_ = value; }
+
         private:
 
         //* tunnel attributes
@@ -88,6 +90,9 @@ namespace Ssh
 
         //* socket
         int socket_ = -1;
+
+        //* error string
+        QString errorString_;
 
     };
 

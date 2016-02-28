@@ -66,7 +66,7 @@ namespace Ssh
     {
         if( socket_ >= 0 )
         {
-            emit debug( "Ssh::ListeningThread::close." );
+            Debug::Throw( "Ssh::ListeningThread::close." );
             ::close( socket_ );
         }
 
@@ -84,7 +84,7 @@ namespace Ssh
         address.sin_addr.s_addr = htonl( QHostAddress( QHostAddress::LocalHost ).toIPv4Address() );
         if( address.sin_addr.s_addr == INADDR_NONE )
         {
-            emit error( QString( "Invalid local host address" ) );
+            _setErrorString( QString( "Invalid local host address" ) );
             return;
         }
 
@@ -93,7 +93,7 @@ namespace Ssh
 
         if( socket_ < 0 )
         {
-            emit error( tr( "Invalid socket" ) );
+            _setErrorString( tr( "Invalid socket" ) );
             return;
         }
 
@@ -109,14 +109,14 @@ namespace Ssh
         socklen_t addressLength = sizeof(address);
         if( bind(socket_, (struct sockaddr *)&address, addressLength) == -1 )
         {
-            emit error( tr( "Could not bind socket to port %1 on localhost" ).arg( attributes_.localPort() ) );
+            _setErrorString( tr( "Could not bind socket to port %1 on localhost" ).arg( attributes_.localPort() ) );
             return;
         }
 
         // listen
         if( listen( socket_, 2 ) == -1 )
         {
-            emit error( tr( "Could listen to port %1 on localhost" ).arg( attributes_.localPort() ) );
+            _setErrorString( tr( "Could listen to port %1 on localhost" ).arg( attributes_.localPort() ) );
             return;
         }
 
@@ -128,7 +128,7 @@ namespace Ssh
             if( forwardSocket == -1 )
             {
 
-                emit error( tr( "Failed forwarding connection to port %1 on localhost" ).arg( attributes_.localPort() ) );
+                _setErrorString( tr( "Failed forwarding connection to port %1 on localhost" ).arg( attributes_.localPort() ) );
                 return;
 
             } else {

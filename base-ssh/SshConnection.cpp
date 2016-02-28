@@ -75,9 +75,6 @@ namespace Ssh
 
                 // create listening thread
                 ListeningThread* thread = new ListeningThread( this, attributes );
-                connect( thread, SIGNAL(error(QString)), this, SIGNAL(error(QString)) );
-                connect( thread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
-                connect( thread, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( thread, SIGNAL(newConnection(int,int)), this, SLOT(_newConnection(int,int)) );
                 connect( thread, SIGNAL(finished()), thread, SLOT(close()) );
                 connect( thread, SIGNAL(finished()), thread, SLOT(deleteLater()) );
@@ -745,9 +742,6 @@ namespace Ssh
                 const TunnelAttributes& attributes( thread->attributes() );
                 Debug::Throw() << "Ssh::Connection::_newConnection - new connection to " << attributes.host() << ":" << attributes.remotePort() << endl;
                 ChannelThread* channelThread= new ChannelThread( this, attributes, session_, socket );
-                connect( channelThread, SIGNAL(error(QString)), this, SIGNAL(error(QString)) );
-                connect( channelThread, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
-                connect( channelThread, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(close()) );
                 connect( channelThread, SIGNAL(finished()), channelThread, SLOT(deleteLater()) );
                 channelThread->setMutex( &mutex_ );
