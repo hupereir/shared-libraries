@@ -42,6 +42,9 @@ namespace Ssh
         //* constructor
         Tunnel( QObject*, QTcpSocket* );
 
+        //* destructor
+        virtual ~Tunnel( void ) = default;
+
         //*@name accessors
         //@{
 
@@ -73,9 +76,6 @@ namespace Ssh
 
         //* read from ssh socket
         void _readFromSshSocket( void );
-
-        //* ssh tunnel closed
-        void _sshChannelClosed( void );
 
         private:
 

@@ -117,11 +117,4 @@ namespace Ssh
         return;
     }
 
-    //______________________________________________________
-    void Ssh::Tunnel::_sshChannelClosed( void )
-    {
-        emit debug( tr( "Ssh::Tunnel::_sshChannelClosed" ) );
-        close();
-    }
-
 }
