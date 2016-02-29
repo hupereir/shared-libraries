@@ -34,6 +34,10 @@ BaseSocketInterface::BaseSocketInterface( QObject* parent, QTcpSocket* socket ):
 }
 
 //_______________________________________________________
+BaseSocketInterface::~BaseSocketInterface( void )
+{ delete socket_; }
+
+//_______________________________________________________
 void BaseSocketInterface::sendBuffer( qint32 type, const QByteArray& buffer )
 {
     if( socket().state() ==  QAbstractSocket::ConnectedState ) _sendBuffer( type, buffer );
