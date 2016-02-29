@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
 #include "BaseSocketInterface.h"
 #include "ServerCommand.h"
 
@@ -29,7 +30,7 @@ namespace Server
 {
 
     //* interprocess communication client
-    class Client : public BaseSocketInterface
+    class Client : public BaseSocketInterface, public Counter
     {
 
         //* Qt meta object macro

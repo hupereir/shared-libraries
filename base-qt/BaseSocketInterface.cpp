@@ -25,7 +25,6 @@ static const int debugLevel = 1;
 //_______________________________________________________
 BaseSocketInterface::BaseSocketInterface( QObject* parent, QTcpSocket* socket ):
   QObject( parent ),
-  Counter( "BaseSocketInterface" ),
   socket_( socket )
 {
     Debug::Throw( "BaseSocketInterface::BaseSocketInterface.\n" );

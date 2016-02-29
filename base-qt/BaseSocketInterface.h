@@ -20,11 +20,9 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-
 #include <QTcpSocket>
 
-class BaseSocketInterface: public QObject, public Counter
+class BaseSocketInterface: public QObject
 {
 
     Q_OBJECT
