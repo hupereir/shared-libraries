@@ -30,7 +30,7 @@ class BaseSocketInterface: public QObject
     public:
 
     //* constructor
-    BaseSocketInterface( QObject*, QTcpSocket* );
+    BaseSocketInterface( QObject*, QTcpSocket* = nullptr );
 
     //* destructor
     virtual ~BaseSocketInterface( void ) = default;

@@ -37,7 +37,7 @@ namespace Server
         port_( 8090 ),
         server_( new QTcpServer( this ) ),
         serverInitialized_( false ),
-        client_( new Client( this, new QTcpSocket( this ) ) ),
+        client_( new Client( this ) ),
         state_( AwaitingReply )
     {
 

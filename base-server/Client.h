@@ -42,7 +42,7 @@ namespace Server
         using List = QList<Client*>;
 
         //* constructor
-        Client( QObject* parent, QTcpSocket* socket );
+        Client( QObject*, QTcpSocket* = nullptr );
 
         //* destructor
         virtual ~Client( void ) = default;
