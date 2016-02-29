@@ -57,6 +57,7 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     iconNames_.insert( "png", "image-x-generic.png" );
     iconNames_.insert( "ico", "image-x-generic.png" );
     iconNames_.insert( "jpg", "image-x-generic.png" );
+    iconNames_.insert( "jpeg", "image-x-generic.png" );
     iconNames_.insert( "gif", "image-x-generic.png" );
 
     // videos
