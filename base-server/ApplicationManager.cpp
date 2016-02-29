@@ -62,11 +62,7 @@ namespace Server
 
     //_________________________________________
     ApplicationManager::~ApplicationManager( void )
-    {
-        Debug::Throw( "ApplicationManager::~ApplicationManager.\n" );
-        delete client_;
-        delete server_;
-    }
+    {}
 
     //_________________________________________
     CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings )
