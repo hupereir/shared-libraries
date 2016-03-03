@@ -74,10 +74,10 @@ class BaseCoreApplication: public QObject
 
     Q_SIGNALS:
 
-    //* emmited when configuration needs to be saved
+    //* emitted when configuration needs to be saved
     void saveConfiguration( void );
 
-    //* emmited when configuration is changed
+    //* emitted when configuration is changed
     void configurationChanged( void );
 
     protected Q_SLOTS:

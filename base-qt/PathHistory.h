@@ -97,7 +97,7 @@ class PathHistory:  public QObject, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when contents is changed
+    //* emitted when contents is changed
     void contentsChanged( void );
 
     protected:

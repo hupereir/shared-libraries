@@ -116,10 +116,10 @@ class OptionModel: public TreeModel<OptionPair>, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when one special option is modified
+    //* emitted when one special option is modified
     void specialOptionModified( OptionPair );
 
-    //* emmited when one option is modified
+    //* emitted when one option is modified
     void optionModified( OptionPair );
 
     protected:

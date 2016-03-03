@@ -62,16 +62,16 @@ class BaseReplaceWidget: public BaseFindWidget
 
     Q_SIGNALS:
 
-    //* emmited when Replace is pressed
+    //* emitted when Replace is pressed
     void replace( TextSelection );
 
-    //* emmited when Replace_in_window is pressed
+    //* emitted when Replace_in_window is pressed
     void replaceInWindow( TextSelection );
 
-    //* emmited when Replace_in_selection is pressed
+    //* emitted when Replace_in_selection is pressed
     void replaceInSelection( TextSelection );
 
-    //* emmited when text replacement is changed
+    //* emitted when text replacement is changed
     void replaceTextChanged( QString text_replace );
 
     protected Q_SLOTS:

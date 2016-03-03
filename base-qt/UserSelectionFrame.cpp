@@ -45,7 +45,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     connect( comboBox_, SIGNAL(activated(QString)), SLOT(_userChanged()) );
 
     // one must add a timer here so that the signal gets
-    // emmitted only after some delay, to avoid to many signals are sent when typing
+    // emitted only after some delay, to avoid to many signals are sent when typing
     connect( comboBox_, SIGNAL(editTextChanged(QString)),  SLOT(_delayedUserChanged()) );
 
 }

@@ -54,7 +54,7 @@ namespace SpellCheck
 
         Q_SIGNALS:
 
-        //* emmitted when selection is modified
+        //* emitted when selection is modified
         void modified( void );
 
         protected Q_SLOTS:

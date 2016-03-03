@@ -51,10 +51,10 @@ class PrinterOptionWidget: public QWidget, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when orientation is changed
+    //* emitted when orientation is changed
     void orientationChanged( QPrinter::Orientation );
 
-    //* emmited when pageMode is changed
+    //* emitted when pageMode is changed
     void pageModeChanged( BasePrintHelper::PageMode );
 
     protected Q_SLOTS:

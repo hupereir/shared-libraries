@@ -80,13 +80,13 @@ class LineEditor: public QLineEdit, public Counter
 
     Q_SIGNALS:
 
-    //* signal emmited when the cursor changes position
+    //* signal emitted when the cursor changes position
     void cursorPositionChanged( int position );
 
     //* modification state changed
     void modificationChanged( bool );
 
-    //* emmited when clear button is pressed
+    //* emitted when clear button is pressed
     void cleared( void );
 
     public Q_SLOTS:

@@ -439,19 +439,19 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* idle
     void idle( void );
 
-    //* emmitted when selection could not be found
+    //* emitted when selection could not be found
     void noMatchFound( void );
 
-    //* emmitted when selection could be found
+    //* emitted when selection could be found
     void matchFound( void );
 
-    //* emmitted when selected line is not found
+    //* emitted when selected line is not found
     void lineNotFound( void );
 
-    //* emmitted when selected line is found
+    //* emitted when selected line is found
     void lineFound( void );
 
-    //* emmited when recieve focus
+    //* emitted when recieve focus
     void hasFocus( TextEditor* );
 
     //* overwrite mode changed

@@ -68,7 +68,7 @@ class ColorMenu: public QMenu, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when a color is selected
+    //* emitted when a color is selected
     void selected( QColor );
 
     protected:

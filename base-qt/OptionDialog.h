@@ -40,7 +40,7 @@ class OptionDialog: public CustomDialog
 
     Q_SIGNALS:
 
-    //* emmited when options are modified
+    //* emitted when options are modified
     void configurationChanged( void );
 
     protected Q_SLOTS:

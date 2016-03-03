@@ -108,7 +108,7 @@ class BasePrintHelper: public QObject
 
     Q_SIGNALS:
 
-    //* emmited when number of pages has changed
+    //* emitted when number of pages has changed
     void pageCountChanged( int );
 
     protected:

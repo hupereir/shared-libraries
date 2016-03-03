@@ -37,7 +37,7 @@ class SimpleListView: public QListView
 
     Q_SIGNALS:
 
-    //* emmitted when index is hovered
+    //* emitted when index is hovered
     /**
     this is similar to the 'entered' signal,
     except that it is also sent when no index is selected,

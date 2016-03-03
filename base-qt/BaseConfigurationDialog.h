@@ -96,7 +96,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //* restore defaults button pressed
     void restoreDefaults( void );
 
-    //* emmited when configuration is changed
+    //* emitted when configuration is changed
     void configurationChanged();
 
     public Q_SLOTS:

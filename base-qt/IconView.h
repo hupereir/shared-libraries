@@ -188,13 +188,13 @@ class IconView: public QAbstractItemView, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when item is hovered. Invalid index means no hovered index
+    //* emitted when item is hovered. Invalid index means no hovered index
     void hovered( const QModelIndex& );
 
-    //* emmitted when selection could not be found
+    //* emitted when selection could not be found
     void noMatchFound( void );
 
-    //* emmitted when selection could be found
+    //* emitted when selection could be found
     void matchFound( void );
 
     #if QT_VERSION < 0x050000

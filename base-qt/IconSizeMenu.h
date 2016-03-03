@@ -44,7 +44,7 @@ class IconSizeMenu: public QMenu, public Counter
 
     Q_SIGNALS:
 
-    //! emmitted when a new size is selected
+    //! emitted when a new size is selected
     void iconSizeSelected( IconSize::Size );
 
     private Q_SLOTS:

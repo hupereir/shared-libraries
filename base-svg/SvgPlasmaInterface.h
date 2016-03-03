@@ -69,7 +69,7 @@ namespace Svg
 
     Q_SIGNALS:
 
-    //* emmited when svg file changed
+    //* emitted when svg file changed
     void themeChanged();
 
     private Q_SLOTS:

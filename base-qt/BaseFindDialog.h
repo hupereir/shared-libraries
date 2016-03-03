@@ -83,7 +83,7 @@ class BaseFindDialog: public BaseDialog, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when Find is pressed
+    //* emitted when Find is pressed
     void find( TextSelection );
 
     public Q_SLOTS:

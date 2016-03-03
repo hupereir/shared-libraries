@@ -41,7 +41,7 @@ class ClockTimer: public QObject, public Counter
 
     Q_SIGNALS:
 
-    //* emmited every time current time is changed
+    //* emitted every time current time is changed
     void timeChanged( const QString& );
 
     protected:

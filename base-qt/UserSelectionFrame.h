@@ -86,7 +86,7 @@ class UserSelectionFrame: public QWidget, public Counter
     CustomComboBox* comboBox_;
 
     //! current user
-    /*! it is used to avoid emmitting signal when user was changed but fall back to the current one*/
+    /*! it is used to avoid emitting signal when user was changed but fall back to the current one*/
     QString user_;
 
 };

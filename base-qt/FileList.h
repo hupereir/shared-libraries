@@ -93,10 +93,10 @@ class FileList: public QObject, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when thread has completed validity check
+    //* emitted when thread has completed validity check
     void validFilesChecked( void );
 
-    //* emmited when contents is changed
+    //* emitted when contents is changed
     void contentsChanged( void );
 
     public Q_SLOTS:

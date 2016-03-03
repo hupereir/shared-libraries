@@ -119,7 +119,7 @@ class ItemModel : public QAbstractItemModel
     virtual void _sort( void )
     { _sort( sortColumn(), sortOrder() ); }
 
-    //* private sort, with no signals emmitted
+    //* private sort, with no signals emitted
     virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) = 0;
 
     //* used to sort items in list

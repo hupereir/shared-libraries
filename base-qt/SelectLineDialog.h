@@ -55,7 +55,7 @@ class SelectLineDialog: public BaseDialog, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when pressing the Ok button
+    //* emitted when pressing the Ok button
     void lineSelected( int );
 
     private:

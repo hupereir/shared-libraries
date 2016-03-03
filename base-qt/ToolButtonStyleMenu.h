@@ -42,10 +42,10 @@ class ToolButtonStyleMenu: public QMenu, public Counter
 
     Q_SIGNALS:
 
-    //* emmitted when default size is selected
+    //* emitted when default size is selected
     void defaultStyleSelected( void );
 
-    //* emmitted when a new size is selected
+    //* emitted when a new size is selected
     void styleSelected( int );
 
     private Q_SLOTS:

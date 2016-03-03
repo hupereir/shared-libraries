@@ -220,7 +220,7 @@ class TreeView: public QTreeView, public Counter
 
     Q_SIGNALS:
 
-    //* emmitted when index is hovered
+    //* emitted when index is hovered
     /**
     this is similar to the 'entered' signal,
     except that it is also sent when no index is selected,
@@ -228,10 +228,10 @@ class TreeView: public QTreeView, public Counter
     */
     void hovered( const QModelIndex& );
 
-    //* emmitted when selection could not be found
+    //* emitted when selection could not be found
     void noMatchFound( void );
 
-    //* emmitted when selection could be found
+    //* emitted when selection could be found
     void matchFound( void );
 
     #if QT_VERSION < 0x050000

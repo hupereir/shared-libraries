@@ -83,10 +83,10 @@ class TabWidget: public QWidget, public Counter
 
     Q_SIGNALS:
 
-    //* emmited when box is detached
+    //* emitted when box is detached
     void detached( void );
 
-    //* emmited when box is attached
+    //* emitted when box is attached
     void attached( void );
 
     protected:
