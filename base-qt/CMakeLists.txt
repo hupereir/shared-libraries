@@ -142,6 +142,7 @@ set(base_qt_SOURCES
   LogWidget.cpp
   MimeTypeIconProvider.cpp
   MultipleClickCounter.cpp
+  OpenWithComboBox.cpp
   OptionBrowsedLineEditor.cpp
   OptionCheckBox.cpp
   OptionColorDisplay.cpp
