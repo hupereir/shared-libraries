@@ -109,6 +109,10 @@ class BaseFileInfo
     //*@name accessors
     //@{
 
+    //* validity
+    bool isValid( void ) const
+    { return !file_.isEmpty(); }
+
     //* file
     virtual const File& file( void ) const
     { return file_; }
