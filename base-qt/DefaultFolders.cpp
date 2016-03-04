@@ -74,6 +74,13 @@ DefaultFolders::DefaultFolders( void )
     _insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Downloads );
     #endif
 
+}
+
+//__________________________________________________________________________
+void DefaultFolders::initializeFolderNames( void )
+{
+    if( folderNamesInitialized_ ) return;
+
     // fill icons map
     names_.insert( Home, tr( "Home" ) );
     names_.insert( Desktop, tr( "Desktop" ) );
@@ -83,6 +90,14 @@ DefaultFolders::DefaultFolders( void )
     names_.insert( Pictures, tr( "Pictures" ) );
     names_.insert( Templates, tr( "Templates" ) );
     names_.insert( Videos, tr( "Video" ) );
+
+    folderNamesInitialized_ = true;
+}
+
+//__________________________________________________________________________
+void DefaultFolders::initializeIconNames( void )
+{
+    if( iconNamesInitialized_ ) return;
 
     // fill icons map
     iconNames_.insert( Home, "user-home.png" );
@@ -101,6 +116,7 @@ DefaultFolders::DefaultFolders( void )
     if( QIcon::hasThemeIcon( "folder-videos" ) ) iconNames_.insert( Videos, "folder-videos" );
     else iconNames_.insert( Videos, "folder-video" );
 
+    iconNamesInitialized_ = true;
 }
 
 //__________________________________________________________________________

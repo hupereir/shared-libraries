@@ -28,7 +28,11 @@
 BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
     QObject( parent ),
     Counter( "BaseFileIconProvider" )
-{}
+{
+    // initialize default folders
+    DefaultFolders::get().initializeFolderNames();
+    DefaultFolders::get().initializeIconNames();
+}
 
 //__________________________________________________________________________
 const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type )

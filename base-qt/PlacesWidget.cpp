@@ -492,6 +492,10 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
 
     Debug::Throw( "PlacesWidget::PlacesWidget.\n" );
 
+    // initialize default folders
+    DefaultFolders::get().initializeFolderNames();
+    DefaultFolders::get().initializeIconNames();
+
     // some styles require an item view passed to painting method to have proper selection rendered in items
     itemView_ = new QListView( this );
     itemView_->hide();

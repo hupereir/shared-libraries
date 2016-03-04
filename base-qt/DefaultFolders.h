@@ -36,6 +36,9 @@ class DefaultFolders: public QObject
     //* return singleton
     static DefaultFolders& get( void );
 
+    //*@name accessors
+    //@{
+
     //* folder type
     enum Type
     {
@@ -68,6 +71,20 @@ class DefaultFolders: public QObject
     //* return icon name for a given type
     QString iconName( Type ) const;
 
+    //@}
+
+
+    //*@name modifiers
+    //@{
+
+    //* initialize folder names
+    void initializeFolderNames( void );
+
+    //* initialize icon names
+    void initializeIconNames( void );
+
+    //@}
+
     protected:
 
     //* insert folder in map
@@ -90,11 +107,13 @@ class DefaultFolders: public QObject
     using FolderHash = QHash<File, Type>;
     FolderHash allFolders_;
 
-    //* icon names
+    //* folder names
+    bool folderNamesInitialized_ = false;
     using NameMap = QHash<Type, QString>;
     NameMap names_;
 
-    //* map folder type and icon name
+    //* icon names
+    bool iconNamesInitialized_ = false;
     using IconMap = QHash<Type, QString>;
     IconMap iconNames_;
 
