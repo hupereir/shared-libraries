@@ -110,7 +110,8 @@ class BaseFileInfoModel : public ListModel<T>
     { std::sort( ListModel<T>::_get().begin(), ListModel<T>::_get().end(), SortFTor( (ColumnType) column, order ) ); }
 
     //* icon matching given id
-    virtual QIcon _icon( const QModelIndex& ) const = 0;
+    virtual QIcon _icon( const QModelIndex& ) const
+    { return QIcon(); }
 
     private:
 
