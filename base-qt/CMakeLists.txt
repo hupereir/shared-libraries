@@ -143,6 +143,7 @@ set(base_qt_SOURCES
   MimeTypeIconProvider.cpp
   MultipleClickCounter.cpp
   OpenWithComboBox.cpp
+  OpenWithDialog.cpp
   OptionBrowsedLineEditor.cpp
   OptionCheckBox.cpp
   OptionColorDisplay.cpp
