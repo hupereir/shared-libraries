@@ -55,6 +55,8 @@ class BaseFileInfo
 
     public:
 
+    using List=QList<BaseFileInfo>;
+
     //* file properties
     enum Type
     {
