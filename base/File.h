@@ -33,7 +33,7 @@ class File: public QString
     public:
 
     //* shortcut to list of files
-    using List=QList<File>;;
+    using List=QList<File>;
 
     //* return list of files in a directory
     enum ListFlag
