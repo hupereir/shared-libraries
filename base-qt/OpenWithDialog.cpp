@@ -21,15 +21,20 @@
 
 #include "Command.h"
 #include "Debug.h"
+#include "BaseFileInfo.h"
+#include "BaseFileInfoModel.h"
 #include "BaseIconNames.h"
+#include "ElidedLabel.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
-#include "ElidedLabel.h"
+#include "TreeView.h"
 #include "XmlOptions.h"
 
 #include <QDesktopServices>
+#include <QHeaderView>
 #include <QLabel>
 #include <QLayout>
+#include <QScrollBar>
 #include <QUrl>
 
 //____________________________________________________________________________
@@ -43,6 +48,8 @@ OpenWithDialog::OpenWithDialog( QWidget* parent ):
 //____________________________________________________________________________
 void OpenWithDialog::realizeWidget( void )
 {
+
+    Q_ASSERT( !files_.isEmpty() );
 
     // try load Question icon
     QHBoxLayout *hLayout( new QHBoxLayout() );
@@ -69,8 +76,12 @@ void OpenWithDialog::realizeWidget( void )
 
         if( isLink_ )
         {
+
+            Q_ASSERT( files_.size() == 1 );
+
             vLayout->addWidget( new QLabel( tr( "Open link:" ), this ) );
-            QLabel* fileLabel = new ElidedLabel( file_, this );
+            ElidedLabel* fileLabel = new ElidedLabel( files_.front(), this );
+            fileLabel->setElideMode( Qt::ElideMiddle );
 
             // change font
             QFont font( fileLabel->font() );
@@ -79,13 +90,52 @@ void OpenWithDialog::realizeWidget( void )
 
             vLayout->addWidget( fileLabel );
 
+        } else if( files_.size() > 1 ) {
+
+            vLayout->addWidget( new QLabel( tr( "Open %1 files ? " ).arg( files_.size() ), this ) );
+
         } else {
 
-            vLayout->addWidget( new QLabel( tr( "Open file \"%1\" ? " ).arg( file_.localName() ), this ) );
+            vLayout->addWidget( new QLabel( tr( "Open file \"%1\" ? " ).arg( files_.front().localName() ), this ) );
 
         }
 
         vLayout->addStretch();
+    }
+
+    if( files_.size() > 1 )
+    {
+        BaseFileInfo::List fileInfoList;
+        foreach( auto file, files_ )
+        { fileInfoList.append( BaseFileInfo( file ) ); }
+
+        // list of multiple files
+        using FileInfoModel = BaseFileInfoModel<BaseFileInfo>;
+        FileInfoModel* model = new FileInfoModel( this );
+        model->setShowIcons( false );
+        model->set( fileInfoList );
+        model->sort( FileInfoModel::Filename, Qt::DescendingOrder );
+
+        // file list
+        TreeView* treeView = new TreeView();
+        treeView->setSelectionMode( QAbstractItemView::NoSelection );
+        mainLayout().addWidget( treeView );
+
+        treeView->setModel( model );
+        treeView->toggleShowHeader( false );
+        treeView->setMask( 1<<FileInfoModel::Filename );
+        treeView->header()->setSortIndicator( FileInfoModel::Filename, Qt::AscendingOrder );
+
+        // resize list to accomodate longest item
+        int maxWidth( 0 );
+        foreach( auto fileInfo, fileInfoList )
+        { maxWidth = qMax( maxWidth, treeView->fontMetrics().width( fileInfo.file() ) ); }
+
+        treeView->verticalScrollBar()->adjustSize();
+        treeView->setMinimumSize( QSize(
+            maxWidth + treeView->verticalScrollBar()->width() + 10,
+            treeView->fontMetrics().height() + 10 ) );
+
     }
 
     {
@@ -128,8 +178,11 @@ void OpenWithDialog::_open( void )
     if( comboBox_->currentIndex() == 0 )
     {
 
-        if( isLink_ ) QDesktopServices::openUrl( QUrl::fromEncoded( file_.toLatin1() ) );
-        else QDesktopServices::openUrl( QUrl::fromEncoded( QString( "file://%1" ).arg( file_ ).toLatin1() ) );
+        foreach( auto file, files_ )
+        {
+            if( isLink_ ) QDesktopServices::openUrl( QUrl::fromEncoded( file.toLatin1() ) );
+            else QDesktopServices::openUrl( QUrl::fromEncoded( QString( "file://%1" ).arg( file ).toLatin1() ) );
+        }
 
     } else {
 
@@ -149,7 +202,7 @@ void OpenWithDialog::_open( void )
         }
 
         // execute
-        ( Command( command ) << file_ ).run();
+        foreach( auto file, files_ ) { ( Command( command ) << file ).run(); }
 
     }
 

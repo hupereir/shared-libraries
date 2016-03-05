@@ -51,15 +51,30 @@ class OpenWithDialog: public CustomDialog
 
     //* file
     void setFile( const File& value )
-    { file_ = value; }
+    {
+        isLink_ = false;
+        files_.clear();
+        files_.append( value );
+    }
+
+    //* link
+    void setLink( const File& value )
+    {
+        isLink_ = true;
+        files_.clear();
+        files_.append( value );
+    }
+
+    //* file
+    void setFiles( const File::List value )
+    {
+        isLink_ = false;
+        files_ = value;
+    }
 
     //* icon
     void setIcon( const QIcon& value )
     { icon_ = value; }
-
-    //* type
-    void setIsLink( bool value )
-    { isLink_ = value; }
 
     //* option name
     void setOptionName( const QString& value )
@@ -81,7 +96,7 @@ class OpenWithDialog: public CustomDialog
     private:
 
     //* file
-    File file_;
+    File::List files_;
 
     //* icon
     QIcon icon_;
