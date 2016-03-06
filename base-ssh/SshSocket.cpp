@@ -97,7 +97,7 @@ namespace Ssh
         if( bytesAvailable_ <= 0 ) return bytesAvailable_;
 
         const qint64 bytesRead = qMin( maxSize, bytesAvailable_ );
-        strncpy( data, buffer_.data(), bytesRead );
+        memcpy( data, buffer_.data(), bytesRead );
         buffer_ = buffer_.mid( bytesRead );
         buffer_.resize( maxSize_ );
         bytesAvailable_ -= bytesRead;
