@@ -115,23 +115,19 @@ namespace Ssh
         #if HAVE_SSH
 
         qint64 bytesWritten = 0;
-        qint64 i = 0;
-        do
+        LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
+        while( bytesWritten < maxSize )
         {
 
-            LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
-            while( (i = libssh2_channel_write( channel, data, maxSize )) == LIBSSH2_ERROR_EAGAIN )
-            {}
-
-            if( i < 0 )
+            const qint64 i = libssh2_channel_write( channel, data + bytesWritten, maxSize - bytesWritten );
+            if( i >= 0 ) bytesWritten += i;
+            else if( i != LIBSSH2_ERROR_EAGAIN )
             {
                 setErrorString( tr( "invalid write: %1" ).arg( i ) );
                 return -1;
             }
 
-            bytesWritten += i;
-
-        } while( i > 0 && bytesWritten < maxSize );
+        }
 
         return bytesWritten;
 
