@@ -115,7 +115,7 @@ namespace Ssh
         QBasicTimer timer_;
 
         //* latency
-        int latency_ = 200;
+        int latency_ = 100;
 
         //* buffer
         QByteArray buffer_;
