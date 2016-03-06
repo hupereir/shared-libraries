@@ -26,7 +26,6 @@
 #include "WeakPointer.h"
 
 #include <QBasicTimer>
-#include <QMutex>
 #include <QObject>
 #include <QString>
 #include <QTimerEvent>
@@ -43,7 +42,7 @@ namespace Ssh
         public:
 
         //* constructor
-        Connection( QObject*, bool useThreads );
+        Connection( QObject* );
 
         //* destructor
         virtual ~Connection( void );
@@ -175,9 +174,6 @@ namespace Ssh
         //* new tcp connection (from QTcpServer)
         void _newConnection( void );
 
-        //* new tcp connection (from threads)
-        void _newConnection( int port, int socket );
-
         private:
 
         //* get message command
@@ -185,9 +181,6 @@ namespace Ssh
 
         //* abort all commands
         void _abortCommands( const QString& );
-
-        //* use threads
-        bool useThreads_ = false;
 
         //* ssh socket
         int sshSocket_ = -1;
@@ -203,10 +196,6 @@ namespace Ssh
 
         //* ssh host
         QHostInfo sshHost_;
-
-        //* mutex
-        /* needed for concurent access to Ssh session, in thread mode */
-        QMutex mutex_;
 
         //* connection attributes
         ConnectionAttributes attributes_;
