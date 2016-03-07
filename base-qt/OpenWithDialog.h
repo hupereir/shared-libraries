@@ -44,10 +44,23 @@ class OpenWithDialog: public CustomDialog
     OpenWithComboBox& comboBox( void ) const
     { return *comboBox_; }
 
+    //* true if command is valid
+    bool isCommandValid( void ) const;
+
+    //* true if command is default
+    bool isCommandDefault( void ) const;
+
+    //* current command
+    File command( void ) const;
+
     //@}
 
     //*@name modifiers
     //@{
+
+    //* true if opening is done automatically when closing dialog
+    void setAutoOpen( bool value )
+    { autoOpen_ = value; }
 
     //* file
     void setFile( const File& value )
@@ -100,6 +113,9 @@ class OpenWithDialog: public CustomDialog
 
     //* icon
     QIcon icon_;
+
+    //* true if opening is done automatically, when closing the dialog
+    bool autoOpen_ = true;
 
     //* true if link
     bool isLink_ = false;

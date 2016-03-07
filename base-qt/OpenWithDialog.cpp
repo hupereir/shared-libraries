@@ -46,6 +46,18 @@ OpenWithDialog::OpenWithDialog( QWidget* parent ):
 }
 
 //____________________________________________________________________________
+bool OpenWithDialog::isCommandValid( void ) const
+{ return comboBox_->isItemValid(); }
+
+//____________________________________________________________________________
+bool OpenWithDialog::isCommandDefault( void ) const
+{ return comboBox_->currentIndex() == 0; }
+
+//____________________________________________________________________________
+File OpenWithDialog::command( void ) const
+{ return comboBox_->command(); }
+
+//____________________________________________________________________________
 void OpenWithDialog::realizeWidget( void )
 {
 
@@ -70,7 +82,7 @@ void OpenWithDialog::realizeWidget( void )
         // vertical layout for question etc.
         QVBoxLayout* vLayout = new QVBoxLayout();
         vLayout->setMargin(0);
-        hLayout->addLayout( vLayout );
+        hLayout->addLayout( vLayout, 1 );
 
         vLayout->addStretch();
 
@@ -165,7 +177,7 @@ void OpenWithDialog::realizeWidget( void )
     comboBox_->insertItem(0, tr( "System Default" ) );
     comboBox_->setCurrentIndex( 0 );
 
-    // connect
+    // connection
     connect( &okButton(), SIGNAL(clicked()), this, SLOT(_open()) );
 
 }
@@ -175,34 +187,41 @@ void OpenWithDialog::_open( void )
 {
     Debug::Throw( "OpenWithDialog::_open.\n" );
 
-    if( comboBox_->currentIndex() == 0 )
+    // update options
+    if( !optionName_.isEmpty() && XmlOptions::get().isSpecialOption( optionName_ ) )
+    {
+        foreach( auto command, comboBox_->newItems() )
+        { XmlOptions::get().add( optionName_, Option( command, Option::Recordable|Option::Current ) ); }
+    }
+
+    // open
+    if( autoOpen_ )
     {
 
-        foreach( auto file, files_ )
+        if( comboBox_->currentIndex() == 0 )
         {
-            if( isLink_ ) QDesktopServices::openUrl( QUrl::fromEncoded( file.toLatin1() ) );
-            else QDesktopServices::openUrl( QUrl::fromEncoded( QString( "file://%1" ).arg( file ).toLatin1() ) );
+
+            // open files using default application
+            foreach( auto file, files_ )
+            {
+                if( isLink_ ) QDesktopServices::openUrl( QUrl::fromEncoded( file.toLatin1() ) );
+                else QDesktopServices::openUrl( QUrl::fromEncoded( QString( "file://%1" ).arg( file ).toLatin1() ) );
+            }
+
+        } else {
+
+            // retrieve application from combobox and add as options
+            const QString command = comboBox_->command();
+            if( command.isEmpty() || !comboBox_->isItemValid() )
+            {
+                InformationDialog( this, tr( "No command specified to open the selected files. <Open> canceled." ) ).exec();
+                return;
+            }
+
+            // execute
+            foreach( auto file, files_ ) { ( Command( command ) << file ).run(); }
+
         }
-
-    } else {
-
-        // retrieve application from combobox and add as options
-        const QString command = comboBox_->command();
-        if( command.isEmpty() || !comboBox_->isItemValid() )
-        {
-            InformationDialog( this, tr( "No command specified to open the selected files. <Open> canceled." ) ).exec();
-            return;
-        }
-
-        // update options
-        if( !optionName_.isEmpty() && XmlOptions::get().isSpecialOption( optionName_ ) )
-        {
-            foreach( auto command, comboBox_->newItems() )
-            { XmlOptions::get().add( optionName_, Option( command, Option::Recordable|Option::Current ) ); }
-        }
-
-        // execute
-        foreach( auto file, files_ ) { ( Command( command ) << file ).run(); }
 
     }
 
