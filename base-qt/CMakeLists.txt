@@ -208,7 +208,6 @@ set(base_qt_SOURCES
   XmlDocument.cpp
   XmlFileList.cpp
   XmlFileRecord.cpp
-  XmlMigration.cpp
   XmlOption.cpp
   XmlOptions.cpp
   XmlPathHistory.cpp
