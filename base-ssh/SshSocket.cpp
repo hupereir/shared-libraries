@@ -144,8 +144,6 @@ namespace Ssh
     void Socket::timerEvent( QTimerEvent* event )
     {
 
-        // Debug::Throw() << "Ssh::Socket::timerEvent" << endl;
-
         // check timer id
         if( event->timerId() != timer_.timerId() ) return QIODevice::timerEvent( event );
 
