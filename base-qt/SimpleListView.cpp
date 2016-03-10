@@ -186,7 +186,28 @@ SimpleListView::SimpleListView( QWidget* parent ):
 
     // hover
     connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
+}
 
+//_________________________________________________________
+void SimpleListView::setOrientation( Qt::Orientation value )
+{
+    if( orientation_ == value ) return;
+
+    orientation_ = value;
+
+    // unset previously set fixed dimension
+    if( orientation_ == Qt::Vertical )
+    {
+        setMinimumHeight( 0 );
+        setMaximumHeight( QWIDGETSIZE_MAX );
+        setFlow( QListView::TopToBottom );
+    } else {
+        setMinimumWidth( 0 );
+        setMaximumWidth( QWIDGETSIZE_MAX );
+        setFlow( QListView::LeftToRight );
+    }
+
+    _adjustSize();
 }
 
 //_________________________________________________________
@@ -196,26 +217,37 @@ void SimpleListView::setModel( QAbstractItemModel* model )
     if( model )
     {
         // connect model modification to resize
-        connect( model, SIGNAL(layoutChanged()), this, SLOT(_adjustWidth()) );
-        _adjustWidth();
+        connect( model, SIGNAL(layoutChanged()), this, SLOT(_adjustSize()) );
+        _adjustSize();
     }
 }
 
 //_______________________________________________
-void SimpleListView::_adjustWidth()
+void SimpleListView::_adjustSize()
 {
-    if (!model()) {
-        return;
-    }
+    if( !model() ) return;
 
     int rows = model()->rowCount();
 
-    int width = 0;
-    for (int i = 0; i < rows; ++i) {
-        width = qMax(width, sizeHintForIndex(model()->index(i, 0)).width());
+    if( orientation_ == Qt::Vertical )
+    {
+
+        int width = 0;
+        for( int i = 0; i < rows; ++i )
+        { width = qMax(width, sizeHintForIndex(model()->index(i, 0)).width()); }
+
+        setFixedWidth(width + 25);
+
+    } else {
+
+        int height = 0;
+        for( int i = 0; i < rows; ++i )
+        { height = qMax(height, sizeHintForIndex(model()->index(i, 0)).height()); }
+
+        setFixedHeight(height + 10);
+
     }
 
-    setFixedWidth(width + 25);
 }
 
 //____________________________________________________________________________

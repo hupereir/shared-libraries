@@ -32,6 +32,9 @@ class SimpleListView: public QListView
     //* constructor
     SimpleListView( QWidget* = nullptr );
 
+    //* orientation
+    void setOrientation( Qt::Orientation );
+
     //* model
     virtual void setModel( QAbstractItemModel* );
 
@@ -47,8 +50,8 @@ class SimpleListView: public QListView
 
     protected Q_SLOTS:
 
-    //* adjust width
-    void _adjustWidth( void );
+    //* adjust size
+    void _adjustSize( void );
 
     //* hover index
     virtual void _indexEntered( const QModelIndex& );
@@ -68,6 +71,9 @@ class SimpleListView: public QListView
     virtual void _setHoverIndex( const QModelIndex& );
 
     private:
+
+    //* orientation
+    Qt::Orientation orientation_ = Qt::Vertical;
 
     //* hover index
     QModelIndex hoverIndex_;
