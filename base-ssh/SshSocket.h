@@ -73,7 +73,7 @@ namespace Ssh
 
         //* wait for connected
         /** warning, this method is blocking */
-        void waitForConnected( void );
+        bool waitForConnected( int msecs = 30000 );
 
         //@}
 

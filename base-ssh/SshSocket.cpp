@@ -20,6 +20,8 @@
 #include "SshSocket.h"
 #include "Debug.h"
 
+#include <QElapsedTimer>
+
 #if HAVE_SSH
 #include <libssh2.h>
 #endif
@@ -52,13 +54,27 @@ namespace Ssh
         port_ = port;
 
         // make sure timer is running
+        _tryConnect();
         if( !timer_.isActive() ) timer_.start( latency_, this );
 
     }
 
     //_______________________________________________________________________
-    void Socket::waitForConnected( void )
-    { forever { if( _tryConnect() ) return; } }
+    bool Socket::waitForConnected( int msecs )
+    {
+
+        // do nothing if already connected
+        if( channel_ ) return true;
+
+        QElapsedTimer timer;
+        timer.start();
+
+        while( msecs == -1 || timer.elapsed() < msecs )
+        { if( _tryConnect() ) return true; }
+
+        return false;
+
+    }
 
     //_______________________________________________________________________
     bool Socket::atEnd( void ) const
@@ -240,7 +256,7 @@ namespace Ssh
         return true;
 
         #else
-        return falsee;
+        return false;
         #endif
 
     }
