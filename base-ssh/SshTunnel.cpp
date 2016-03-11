@@ -47,6 +47,10 @@ namespace Ssh
     void Tunnel::close( void )
     {
         Debug::Throw( "Ssh::Tunnel::close.\n" );
+
+        if( tcpSocket_->bytesAvailable() > 0 )
+        { sshSocket_->waitForConnected(); }
+
         tcpSocket_->close();
         sshSocket_->close();
     }
@@ -113,7 +117,6 @@ namespace Ssh
             } while( i > 0 && bytesWritten < bytesRead );
 
         }
-
         return;
     }
 
