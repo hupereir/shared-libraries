@@ -71,6 +71,10 @@ namespace Ssh
         //* connect to host
         void connectToHost( void*, const QString&, quint16 );
 
+        //* wait for connected
+        /** warning, this method is blocking */
+        void waitForConnected( void );
+
         //@}
 
         Q_SIGNALS:
@@ -98,6 +102,12 @@ namespace Ssh
         void timerEvent( QTimerEvent* );
 
         private:
+
+        //* try connect channel, returns true on success
+        bool _tryConnect( void );
+
+        //* try read data from channel
+        bool _tryRead( void );
 
         //* ssh channel
         void* channel_ = nullptr;

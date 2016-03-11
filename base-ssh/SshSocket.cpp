@@ -57,6 +57,10 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
+    void Socket::waitForConnected( void )
+    { forever { if( _tryConnect() ) return; } }
+
+    //_______________________________________________________________________
     bool Socket::atEnd( void ) const
     {
 
@@ -149,59 +153,7 @@ namespace Ssh
 
         #if HAVE_SSH
 
-        // check channel
-        if( !channel_ )
-        {
-
-            LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
-            if( (channel_ = libssh2_channel_direct_tcpip( session, qPrintable( host_ ), port_ ) ) )
-            {
-
-                setOpenMode( ReadWrite );
-                emit connected();
-                return;
-
-            } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
-
-                timer_.stop();
-                char *errMsg(nullptr);
-                libssh2_session_last_error(session, &errMsg, NULL, 0);
-                setErrorString( tr( "error getting direct tcp channel: %1" ).arg( errMsg ) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-
-            }
-
-        } else {
-
-            // read from channel
-            LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
-            qint64 length =  libssh2_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_ );
-            if( length == LIBSSH2_ERROR_EAGAIN ) return;
-            else if( length < 0 )
-            {
-
-                setErrorString( tr( "invalid read: %1" ).arg( length ) );
-                timer_.stop();
-                bytesAvailable_ = -1;
-
-            } else {
-
-                bytesAvailable_ += length;
-                emit readyRead();
-
-            }
-
-            // check at end
-            if( atEnd() )
-            {
-                timer_.stop();
-                setErrorString( "channel closed" );
-                emit readChannelFinished();
-            }
-
-        }
-
-
+        if( channel_ || _tryConnect() ) _tryRead();
         return;
 
         #else
@@ -211,6 +163,84 @@ namespace Ssh
         setErrorString( "no ssh" );
         return;
 
+        #endif
+
+    }
+
+    //_______________________________________________________________________
+    bool Socket::_tryConnect( void )
+    {
+
+        if( channel_ ) return true;
+
+        #if HAVE_SSH
+        LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        if( (channel_ = libssh2_channel_direct_tcpip( session, qPrintable( host_ ), port_ ) ) )
+        {
+
+            setOpenMode( ReadWrite );
+            emit connected();
+            return true;
+
+        } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
+
+            timer_.stop();
+            char *errMsg(nullptr);
+            libssh2_session_last_error(session, &errMsg, NULL, 0);
+            setErrorString( tr( "error getting direct tcp channel: %1" ).arg( errMsg ) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return true;
+
+        }
+
+        return false;
+
+        #else
+        return true;
+        #endif
+
+    }
+
+    //_______________________________________________________________________
+    bool Socket::_tryRead( void )
+    {
+
+        if( !channel_ ) return false;
+
+        #if HAVE_SSH
+
+        // read from channel
+        LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
+        qint64 length =  libssh2_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_ );
+        if( length == LIBSSH2_ERROR_EAGAIN ) return false ;
+        else if( length < 0 )
+        {
+
+            setErrorString( tr( "invalid read: %1" ).arg( length ) );
+            timer_.stop();
+            bytesAvailable_ = -1;
+
+            return false;
+
+        } else {
+
+            bytesAvailable_ += length;
+            emit readyRead();
+
+        }
+
+        // check at end
+        if( atEnd() )
+        {
+            timer_.stop();
+            setErrorString( "channel closed" );
+            emit readChannelFinished();
+        }
+
+        return true;
+
+        #else
+        return falsee;
         #endif
 
     }
