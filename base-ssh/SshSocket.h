@@ -131,7 +131,7 @@ namespace Ssh
         QByteArray buffer_;
 
         //* max buffer size
-        qint64 maxSize_ = 16384;
+        qint64 maxSize_ = 1<<16;
 
         //* bytes available
         qint64 bytesAvailable_ = 0;
