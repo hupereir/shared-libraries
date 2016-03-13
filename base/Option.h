@@ -291,7 +291,6 @@ class Option:public Counter
     //*@name text streamer
     //@{
     friend QTextStream &operator << ( QTextStream &out, const Option& option );
-
     friend QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
     //@}
 
