@@ -104,8 +104,13 @@ QDataStream& operator << ( QDataStream& stream, const TimeStamp& timestamp )
 QDataStream& operator >> ( QDataStream& stream, TimeStamp& timestamp )
 {
     quint32 version;
-    quint64 time;
-    stream >> version >> time;
-    timestamp.setTime( time );
+    stream >> version;
+    if( version == 0 )
+    {
+        quint64 time;
+        stream >> time;
+        timestamp.setTime( time );
+
+    } else Debug::Throw(0) << "Unrecognized TimeStamp version: " << version << endl;
     return stream;
 }

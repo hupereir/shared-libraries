@@ -83,17 +83,21 @@ QDataStream &operator << ( QDataStream &stream, const Option& option )
 QDataStream &operator >> ( QDataStream &stream, Option& option )
 {
     quint32 version;
-    quint32 flags;
-    quint32 defaultFlags;
-    stream
-        >> version
-        >> option.value_
-        >> option.defaultValue_
-        >> option.comments_
-        >> flags
-        >> defaultFlags;
-    option.flags_ = Option::Flags( flags );
-    option.defaultFlags_ = Option::Flags( defaultFlags );
+    stream >> version;
+    if( version == 0 )
+    {
+        quint32 flags;
+        quint32 defaultFlags;
+        stream
+            >> option.value_
+            >> option.defaultValue_
+            >> option.comments_
+            >> flags
+            >> defaultFlags;
+        option.flags_ = Option::Flags( flags );
+        option.defaultFlags_ = Option::Flags( defaultFlags );
+
+    } else Debug::Throw(0) << "Unrecognized Option version: " << version << endl;
     return stream;
 }
 

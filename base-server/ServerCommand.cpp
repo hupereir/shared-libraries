@@ -80,22 +80,27 @@ namespace Server
     QDataStream& operator >> (QDataStream& stream, ServerCommand& command )
     {
         quint32 version;
-        quint32 commandType;
-        QStringList arguments;
-        QString optionName;
-        Option option;
-        stream
-            >> version
-            >> command.timestamp_
-            >> command.clientId_
-            >> command.id_
-            >> commandType
-            >> arguments
-            >> optionName
-            >> option;
-        command.command_ = (ServerCommand::CommandType) commandType;
-        command.arguments_ = CommandLineArguments( arguments );
-        command.option_ = XmlOption( optionName, option );
+        stream >> version;
+        if( version == 0 )
+        {
+            quint32 commandType;
+            QStringList arguments;
+            QString optionName;
+            Option option;
+            stream
+                >> command.timestamp_
+                >> command.clientId_
+                >> command.id_
+                >> commandType
+                >> arguments
+                >> optionName
+                >> option;
+            command.command_ = (ServerCommand::CommandType) commandType;
+            command.arguments_ = CommandLineArguments( arguments );
+            command.option_ = XmlOption( optionName, option );
+
+        } else Debug::Throw(0) << "Unrecognized ServerCommand version: " << version << endl;
+
         return stream;
     }
 

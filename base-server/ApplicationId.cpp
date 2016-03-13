@@ -61,7 +61,9 @@ namespace Server
     QDataStream& operator >> (QDataStream& stream, ApplicationId& id )
     {
         quint32 version;
-        stream >> version >> id.name_ >> id.user_ >> id.pid_;
+        stream >> version;
+        if( version == 0 ) stream >> id.name_ >> id.user_ >> id.pid_;
+        else Debug::Throw(0) << "Unrecognized ApplicationId version: " << version << endl;
         return stream;
     }
 }
