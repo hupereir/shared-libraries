@@ -31,7 +31,7 @@ namespace Server
     {
         Debug::Throw( "ApplicationId::ApplicationId.\n" );
         if( user.isNull() ) user = Util::user();
-        if( display.isNull() ) display = Util::env( "DISPLAY", "0.0" ).replace( ":", "" );
+        if( display.isNull() ) display = Util::env( "DISPLAY", "0.0" );
         user_ = user + QString("@")+display;
     }
 
