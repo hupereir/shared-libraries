@@ -31,8 +31,8 @@ const QString IconCacheModel::columnTitles_[ IconCacheModel::nColumns ] =
 QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
 {
 
-    // check index, role and column
-    if( !index.isValid() ) return QVariant();
+    // check index
+    if( !contains( index ) ) return QVariant();
 
     // associated icon pair
     const Base::IconCache::Pair& iconPair( get(index) );

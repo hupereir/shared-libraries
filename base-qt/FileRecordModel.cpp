@@ -69,7 +69,7 @@ Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
 
     // default flags
     Qt::ItemFlags flags;
-    if( !( index.isValid() && contains( index ) ) ) return flags;
+    if( !contains( index ) ) return flags;
 
     // check associated record validity
     const FileRecord& record( get(index) );
@@ -87,8 +87,8 @@ Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
 QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 {
 
-    // check index, role and column
-    if( !index.isValid() ) return QVariant();
+    // check index
+    if( !contains( index ) ) return QVariant();
 
     // retrieve associated file info
     const FileRecord& record( get(index) );

@@ -158,8 +158,8 @@ const QString TabbedDialog::Model::columnTitles_[ TabbedDialog::Model::nColumns 
 QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
 {
 
-    // check index, role and column
-    if( !index.isValid() ) return QVariant();
+    // check index
+    if( !contains( index ) ) return QVariant();
 
     // retrieve associated file info
     Item item( get()[index.row()] );

@@ -608,8 +608,8 @@ namespace SpellCheck
     QVariant SpellDialog::Model::data( const QModelIndex &index, int role) const
     {
 
-        // check index, role and column
-        if( !index.isValid() ) return QVariant();
+        // check index
+        if( !contains( index ) ) return QVariant();
 
         // retrieve associated file info
         const QString& word( get(index) );

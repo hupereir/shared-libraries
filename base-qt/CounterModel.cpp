@@ -30,8 +30,8 @@ const QString CounterModel::columnTitles_[ CounterModel::nColumns ] =
 QVariant CounterModel::data( const QModelIndex& index, int role ) const
 {
 
-    // check index, role and column
-    if( !index.isValid() ) return QVariant();
+    // check index
+    if( !contains( index ) ) return QVariant();
 
     // retrieve associated file info
     const CounterPair& counter( get(index) );

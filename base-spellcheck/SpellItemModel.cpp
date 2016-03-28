@@ -32,9 +32,8 @@ namespace SpellCheck
     {
         Debug::Throw( "SpellItemModel::data.\n" );
 
-
-        // check index, role and column
-        if( !index.isValid() ) return QVariant();
+        // check index
+        if( !contains( index ) ) return QVariant();
 
         // retrieve associated file info
         const QString& text( get(index) );
