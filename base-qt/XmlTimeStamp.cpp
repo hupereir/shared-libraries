@@ -17,7 +17,6 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "XmlTimeStamp.h"
 
 namespace Xml
@@ -30,7 +29,6 @@ namespace Xml
 //______________________________________________________
 XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
 {
-    Debug::Throw( "XmlTimeStamp::XmlTimeStamp.\n" );
 
     // parse attributes
     QDomNamedNodeMap attributes( element.attributes() );
@@ -46,7 +44,6 @@ XmlTimeStamp::XmlTimeStamp( const QDomElement& element )
 //_______________________________________________________
 QDomElement XmlTimeStamp::domElement( const QString& name, QDomDocument& document ) const
 {
-    Debug::Throw( "XmlTimeStamp::domElement.\n" );
     QDomElement out( document.createElement( name ) );
     out.setAttribute( Xml::Time, QString::number( unixTime() ) );
     return out;
