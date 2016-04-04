@@ -34,7 +34,7 @@ namespace Server
         QObject( parent ),
         Counter( "ApplicationManager" ),
         host_( QHostAddress::LocalHost ),
-        port_( 8090 ),
+        port_( 8091 ),
         server_( new QTcpServer( this ) ),
         serverInitialized_( false ),
         client_( new Client( this ) ),
