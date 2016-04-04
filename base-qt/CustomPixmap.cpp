@@ -206,7 +206,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 
     Debug::Throw( "CustomPixmap::highlighted.\n" );
     if( opacity <= 0 ) return *this;
-    opacity = qMin( opacity, 1.0 );
+    opacity = qMin<qreal>( opacity, 1.0 );
 
     // compute mask
     QPixmap mask( *this );
