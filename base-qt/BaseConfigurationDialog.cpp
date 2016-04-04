@@ -578,7 +578,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
 
                 Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " does not match" << endl;
                 Debug::Throw(0) << "BaseConfigurationDialog::_findModification - could not find: " << option << endl;
-                Debug::Throw(0) << "BaseConfigurationDialog::_findModification -  first values: " << firstIter.value() << endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - first values: " << firstIter.value() << endl;
                 Debug::Throw(0) << "BaseConfigurationDialog::_findModification - second values: " << options << endl;
                 return true;
             }
