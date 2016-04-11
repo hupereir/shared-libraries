@@ -76,7 +76,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
 
     } else if( QFileInfo( file ).isAbsolute() ) {
 
-        out.addPixmap( QPixmap( file ) );
+        out.QIcon::addFile( file );
         out.addFile( file );
 
     } else {
