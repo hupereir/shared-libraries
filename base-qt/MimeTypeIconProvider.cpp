@@ -27,76 +27,79 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
 {
 
     // source code
-    iconNames_.insert( "C", "text-x-csrc.png" );
-    iconNames_.insert( "cxx", "text-x-c++src.png" );
-    iconNames_.insert( "cpp", "text-x-c++src.png" );
-    iconNames_.insert( "h", "text-x-chdr.png" );
+    iconNames_.insert( "C", "text-x-csrc" );
+    iconNames_.insert( "cxx", "text-x-c++src" );
+    iconNames_.insert( "cpp", "text-x-c++src" );
+    iconNames_.insert( "h", "text-x-chdr" );
 
     // shell scripts
-    iconNames_.insert( "sh", "application-x-shellscript.png" );
-    iconNames_.insert( "csh", "application-x-shellscript.png" );
-    iconNames_.insert( "tcsh", "application-x-shellscript.png" );
-    iconNames_.insert( "bash", "application-x-shellscript.png" );
-    iconNames_.insert( "zsh", "application-x-shellscript.png" );
-    iconNames_.insert( "pl", "application-x-perl.png" );
+    iconNames_.insert( "sh", "application-x-shellscript" );
+    iconNames_.insert( "csh", "application-x-shellscript" );
+    iconNames_.insert( "tcsh", "application-x-shellscript" );
+    iconNames_.insert( "bash", "application-x-shellscript" );
+    iconNames_.insert( "zsh", "application-x-shellscript" );
+    iconNames_.insert( "pl", "application-x-perl" );
 
     // double check
-    iconNames_.insert( "la", "application-x-perl.png" );
+    iconNames_.insert( "la", "application-x-perl" );
 
     // latex
-    iconNames_.insert( "tex", "text-x-tex.png" );
-    iconNames_.insert( "sty", "text-x-tex.png" );
-    iconNames_.insert( "bib", "text-x-bibtex.png" );
-    iconNames_.insert( "aux", "text-plain.png" );
-    iconNames_.insert( "eps", "image-x-eps.png" );
-    iconNames_.insert( "ps", "application-postscript.png" );
-    iconNames_.insert( "pdf", "application-pdf.png" );
-    iconNames_.insert( "fig", "image-x-xfig.png" );
+    iconNames_.insert( "tex", "text-x-tex" );
+    iconNames_.insert( "sty", "text-x-tex" );
+    iconNames_.insert( "bib", "text-x-bibtex" );
+    iconNames_.insert( "aux", "text-plain" );
+    iconNames_.insert( "eps", "image-x-eps" );
+    iconNames_.insert( "ps", "application-postscript" );
+    iconNames_.insert( "pdf", "application-pdf" );
+    iconNames_.insert( "fig", "image-x-xfig" );
 
     // images
-    iconNames_.insert( "png", "image-x-generic.png" );
-    iconNames_.insert( "ico", "image-x-generic.png" );
-    iconNames_.insert( "jpg", "image-x-generic.png" );
-    iconNames_.insert( "jpeg", "image-x-generic.png" );
-    iconNames_.insert( "gif", "image-x-generic.png" );
+    iconNames_.insert( "png", "image-x-generic" );
+    iconNames_.insert( "ico", "image-x-generic" );
+    iconNames_.insert( "jpg", "image-x-generic" );
+    iconNames_.insert( "jpeg", "image-x-generic" );
+    iconNames_.insert( "gif", "image-x-generic" );
+
+    iconNames_.insert( "svg", "image-svg+xml" );
+    iconNames_.insert( "svgz", "image-svg+xml-compressed" );
 
     // videos
-    iconNames_.insert( "avi", "video-x-generic.png" );
-    iconNames_.insert( "mp4", "video-x-generic.png" );
-    iconNames_.insert( "mkv", "video-x-generic.png" );
+    iconNames_.insert( "avi", "video-x-generic" );
+    iconNames_.insert( "mp4", "video-x-generic" );
+    iconNames_.insert( "mkv", "video-x-generic" );
 
     // music
-    iconNames_.insert( "mp3", "audio-x-generic.png" );
-    iconNames_.insert( "flac", "audio-x-generic.png" );
-    iconNames_.insert( "wav", "audio-x-generic.png" );
-    iconNames_.insert( "ogg", "audio-x-generic.png" );
+    iconNames_.insert( "mp3", "audio-x-generic" );
+    iconNames_.insert( "flac", "audio-x-generic" );
+    iconNames_.insert( "wav", "audio-x-generic" );
+    iconNames_.insert( "ogg", "audio-x-generic" );
 
     // text formats
-    iconNames_.insert( "txt", "text-plain.png" );
-    iconNames_.insert( "qrc", "text-plain.png" );
-    iconNames_.insert( "log", "text-plain.png" );
-    iconNames_.insert( "xml", "text-xml.png" );
-    iconNames_.insert( "html", "text-html.png" );
-    iconNames_.insert( "css", "text-css.png" );
-    iconNames_.insert( "php", "application-x-php.png" );
+    iconNames_.insert( "txt", "text-plain" );
+    iconNames_.insert( "qrc", "text-plain" );
+    iconNames_.insert( "log", "text-plain" );
+    iconNames_.insert( "xml", "text-xml" );
+    iconNames_.insert( "html", "text-html" );
+    iconNames_.insert( "css", "text-css" );
+    iconNames_.insert( "php", "application-x-php" );
 
     // cmake
-    iconNames_.insert( "cmake", "text-x-cmake.png" );
+    iconNames_.insert( "cmake", "text-x-cmake" );
 
     // archives
-    iconNames_.insert( "gz", "application-x-archive.png" );
-    iconNames_.insert( "xz", "application-x-archive.png" );
-    iconNames_.insert( "bz2", "application-x-archive.png" );
-    iconNames_.insert( "tgz", "application-x-archive.png" );
-    iconNames_.insert( "zip", "application-x-archive.png" );
+    iconNames_.insert( "gz", "application-x-archive" );
+    iconNames_.insert( "xz", "application-x-archive" );
+    iconNames_.insert( "bz2", "application-x-archive" );
+    iconNames_.insert( "tgz", "application-x-archive" );
+    iconNames_.insert( "zip", "application-x-archive" );
 
     // misc
-    iconNames_.insert( "root", "application-x-object.png" );
-    iconNames_.insert( "o", "application-x-object.png" );
-    iconNames_.insert( "obj", "application-x-object.png" );
-    iconNames_.insert( "so", "application-x-object.png" );
-    iconNames_.insert( "a", "application-x-archive.png" );
-    iconNames_.insert( "exe", "application-x-ms-dos-executable.png" );
+    iconNames_.insert( "root", "application-x-object" );
+    iconNames_.insert( "o", "application-x-object" );
+    iconNames_.insert( "obj", "application-x-object" );
+    iconNames_.insert( "so", "application-x-object" );
+    iconNames_.insert( "a", "application-x-archive" );
+    iconNames_.insert( "exe", "application-x-ms-dos-executable" );
 
 }
 
