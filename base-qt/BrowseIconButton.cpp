@@ -31,12 +31,8 @@
 #include <QUrl>
 
 //_____________________________________________
-const QString BrowseIconButton::NO_ICON = "none";
-
-//_____________________________________________
 BrowseIconButton::BrowseIconButton( QWidget* parent, const QString& file):
-    CustomToolButton( parent ),
-    file_( NO_ICON )
+    CustomToolButton( parent )
 {
 
     setIconSize( IconSize( IconSize::Huge ) );
@@ -54,11 +50,14 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 
     Debug::Throw() << "BrowseIconButton::setFile - " << file << endl;
 
+    // do nothing for empty file
+    if( file.isEmpty() ) return false;
+
     // load pixmap
     CustomPixmap pixmap( file );
 
     // update file if pixmap is valid or current file is undefined
-    if( !pixmap.isNull() || file_ == NO_ICON )
+    if( !pixmap.isNull() || file_.isEmpty() )
     { file_ = file; }
 
     // update pixmap if valid
@@ -98,7 +97,8 @@ void BrowseIconButton::_browse( void )
     dialog.setWindowTitle( tr( "Open" ) );
     QtUtil::centerOnParent( &dialog );
 
-    if( file_ != NO_ICON ) {
+    if( !file_.isEmpty() )
+    {
 
         // warning: inneficient
         File path( File( file_ ).path() );

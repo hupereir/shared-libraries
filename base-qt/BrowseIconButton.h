@@ -24,7 +24,6 @@
 #include "Counter.h"
 #include "Debug.h"
 
-
 #include <QString>
 
 //* customized tool button to display tooltip in a dedicated label
@@ -36,13 +35,10 @@ class BrowseIconButton: public CustomToolButton
 
     public:
 
-    //* no icon filename
-    static const QString NO_ICON;
-
     //* creator
     BrowseIconButton(
         QWidget* parent,
-        const QString& file = NO_ICON
+        const QString& file = QString()
         );
 
     //* iconFile
