@@ -31,15 +31,17 @@
 class ImageFileDialog: public QFileDialog
 {
 
-    //! Qt meta object declaration
     Q_OBJECT
 
-        public:
+    public:
 
-        //! creator
-        ImageFileDialog( QWidget* parent );
+    //* creator
+    ImageFileDialog( QWidget* );
 
-    //! select file
+    //* destructor
+    virtual ~ImageFileDialog( void ) = default;
+
+    //* select file
     void selectFile( const QString& filename )
     {
         emit _currentChanged( filename );
@@ -48,56 +50,52 @@ class ImageFileDialog: public QFileDialog
 
     private Q_SLOTS:
 
-    //! update current
+    //* update current
     void _currentChanged( const QString& path );
 
-    //! display current image
+    //* display current image
     void _preview( void );
 
     protected:
 
     virtual void showEvent( QShowEvent* e )
     {
-        QFileDialog::showEvent( e );
+        QFileDialog::showEvent(e);
         _preview();
     }
 
     private Q_SLOTS:
 
-    //! stores working directory when changed
-    void _saveWorkingDirectory( const QString& directory );
+    //* stores working directory when changed
+    void _saveWorkingDirectory( QString directory );
 
     private:
 
-    //! automatic preview checkbox
-    QCheckBox& _automaticPreviewCheckbox( void ) const
-    { return *automaticPreview_; }
+    //* automatic preview checkbox
+    QCheckBox* automaticPreview_ = nullptr;
 
-    //! automatic preview checkbox
-    QCheckBox* automaticPreview_;
-
-    //! current file
+    //* current file
     QString currentPath_;
 
     class Label: public QLabel, public Counter
     {
         public:
 
-        //! constructor
+        //* constructor
         Label( QWidget* parent );
 
         protected:
 
-        //! drag enter event
+        //* drag enter event
         virtual void dragEnterEvent( QDragEnterEvent* );
 
-        //! drop event
+        //* drop event
         virtual void dropEvent( QDropEvent* );
 
     };
 
-    //! preview label
-    Label* preview_;
+    //* preview label
+    Label* preview_ = nullptr;
 
 };
 

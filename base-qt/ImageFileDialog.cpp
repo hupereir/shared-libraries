@@ -55,24 +55,24 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     {
         QWidget *main( new QWidget() );
         splitter->addWidget( main );
-        QVBoxLayout *v_layout = new QVBoxLayout();
-        main->setLayout( v_layout );
-        v_layout->setSpacing(5);
-        v_layout->setMargin(0);
-        v_layout->addWidget( preview_ = new Label( main ), 1 );
+        QVBoxLayout *vLayout = new QVBoxLayout();
+        main->setLayout( vLayout );
+        vLayout->setSpacing(5);
+        vLayout->setMargin(0);
+        vLayout->addWidget( preview_ = new Label( main ), 1 );
         preview_->setAlignment( Qt::AlignCenter );
         preview_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
 
-        QHBoxLayout *h_layout = new QHBoxLayout();
-        h_layout->setSpacing(5);
-        h_layout->setMargin(0);
-        v_layout->addLayout( h_layout );
+        QHBoxLayout *hLayout = new QHBoxLayout();
+        hLayout->setSpacing(5);
+        hLayout->setMargin(0);
+        vLayout->addLayout( hLayout );
 
-        h_layout->addWidget( automaticPreview_ = new QCheckBox( tr( "Automatic preview" ), main ) );
-        _automaticPreviewCheckbox().setChecked( true );
+        hLayout->addWidget( automaticPreview_ = new QCheckBox( tr( "Automatic preview" ), main ) );
+        automaticPreview_->setChecked( true );
 
         QPushButton* button = new QPushButton( tr( "Preview" ), main );
-        h_layout->addWidget( button );
+        hLayout->addWidget( button );
         connect( button, SIGNAL(clicked()), SLOT(_preview()) );
 
     } else Debug::Throw(0) << "QFileDialog::QFileDialog - unable to find splitter." << endl;
@@ -115,7 +115,7 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 
                 dialog.setDirectory( fileInfo.path() );
                 dialog.selectFile( fileInfo.fileName() );
-                if( dialog._automaticPreviewCheckbox().isChecked() ) dialog._currentChanged( fileInfo.filePath() );
+                if( dialog.automaticPreview_->isChecked() ) dialog._currentChanged( fileInfo.filePath() );
 
             }
             event->acceptProposedAction();
@@ -126,7 +126,7 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 }
 
 //______________________________________________________________________
-void ImageFileDialog::_saveWorkingDirectory( const QString& directory )
+void ImageFileDialog::_saveWorkingDirectory( QString directory )
 {
     Debug::Throw( "ImageFileDialog::_saveWorkingDirectory.\n" );
     FileDialog::_workingDirectory() = QFileInfo( directory ).absolutePath();
@@ -137,7 +137,7 @@ void ImageFileDialog::_currentChanged( const QString& value )
 {
     Debug::Throw( "ImageFileDialog::_currentChanged.\n" );
     currentPath_ = value;
-    if( _automaticPreviewCheckbox().isChecked() ) _preview();
+    if( automaticPreview_->isChecked() ) _preview();
 }
 
 //______________________________________________________________________
@@ -146,7 +146,18 @@ void ImageFileDialog::_preview( void )
 
     Debug::Throw( "ImageFileDialog::_preview.\n" );
 
-    CustomPixmap pixmap( currentPath_ );
+    // try load svg
+    CustomPixmap pixmap;
+
+    if( currentPath_.endsWith( ".svg" ) || currentPath_.endsWith( ".svgz" ) )
+    {
+
+        QSize size( 0.8*preview_->width(), 0.8*preview_->height() );
+        pixmap = QIcon( currentPath_ ).pixmap( size );
+
+    } else pixmap = CustomPixmap ( currentPath_ );
+
+    // check and scale
     if( pixmap.isNull() ) preview_->setPixmap( QPixmap() );
     else {
 
