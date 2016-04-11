@@ -44,7 +44,7 @@
 #include <QToolButton>
 
 //___________________________________________________________________
-const double PathEditorButton::BorderWidth = 1.5;
+const qreal PathEditorButton::BorderWidth = 1.5;
 const QString PathEditor::MimeType( "internal/path-editor-item" );
 
 //____________________________________________________________________________
