@@ -36,6 +36,9 @@ class FileDialog: public QObject, public Counter
     //* creator
     FileDialog( QWidget* parent );
 
+    //* destructor
+    virtual ~FileDialog( void ) = default;
+
     //* open mode
     virtual FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
     {

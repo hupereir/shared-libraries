@@ -47,7 +47,9 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     if( !FileDialog::_workingDirectory().isEmpty() && QFileInfo( FileDialog::_workingDirectory() ).isDir() )
     { setDirectory( QDir( FileDialog::_workingDirectory() ) ); }
 
-    connect( this, SIGNAL(currentChanged(QString)), SLOT(_saveWorkingDirectory(QString)) );
+    Debug::Throw() << "ImageFileDialog::ImageFileDialog - working directory: " << FileDialog::_workingDirectory() << endl;
+
+    connect( this, SIGNAL(directoryEntered(QString)), SLOT(_saveWorkingDirectory(QString)) );
 
     // add image display
     QSplitter* splitter = findChild<QSplitter*>( "splitter" );
@@ -128,7 +130,7 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 //______________________________________________________________________
 void ImageFileDialog::_saveWorkingDirectory( QString directory )
 {
-    Debug::Throw( "ImageFileDialog::_saveWorkingDirectory.\n" );
+    Debug::Throw() << "ImageFileDialog::_saveWorkingDirectory - directory: " << directory << endl;
     FileDialog::_workingDirectory() = QFileInfo( directory ).absolutePath();
 }
 
