@@ -34,10 +34,6 @@
 
 #include <QSettings>
 
-// #ifndef QT_NO_DBUS
-// #include <QDBusConnection>
-// #endif
-
 //____________________________________________
 namespace Server
 {
@@ -121,14 +117,6 @@ bool BaseApplication::realizeWidget( void )
 
     // check if the method has already been called.
     if( !BaseCoreApplication::realizeWidget() ) return false;
-
-//     // use DBus connection to update on oxygen configuration change
-//     #ifndef QT_NO_DBUS
-//     QDBusConnection dbus = QDBusConnection::sessionBus();
-//     dbus.connect( QString(), "/OxygenStyle", "org.kde.Oxygen.Style", "reparseConfiguration", this, SLOT(_updateFonts()) );
-//     dbus.connect( QString(), "/BreezeStyle", "org.kde.Breeze.Style", "reparseConfiguration", this, SLOT(_updateFonts()) );
-//     dbus.connect( QString(), "/KGlobalSettings", "org.kde.KGlobalSettings", "notifyChange", this, SLOT(_updateFonts()) );
-//     #endif
 
     // parse user argument
     #if QT_VERSION >= 0x050400

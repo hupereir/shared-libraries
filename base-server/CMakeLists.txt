@@ -12,23 +12,12 @@ if(USE_QT5)
   find_package(Qt5Widgets REQUIRED)
   find_package(Qt5Network REQUIRED)
   find_package(Qt5Xml REQUIRED)
-  # find_package(Qt5DBus)
 
 else()
 
   find_package(Qt4 REQUIRED)
   set(QT_USE_QTXML TRUE)
   set(QT_USE_QTNETWORK TRUE)
-
-#   if(UNIX AND NOT APPLE)
-#
-#     set(QT_USE_QTDBUS TRUE)
-#
-#   else()
-#
-#     add_definitions("-DQT_NO_DBUS")
-#
-#   endif()
 
   include(${QT_USE_FILE})
   add_definitions(${QT_DEFINITIONS})
