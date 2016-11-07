@@ -130,6 +130,8 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "QPainter::end: Painter not active, aborted" );
     disableMessage( "QCoreApplication::postEvent: Unexpected null receiver" );
 
+    disableMessage( "Qt: Session management error: Could not open network socket" );
+
     disableMessage( "Could not resolve property" );
 
 
