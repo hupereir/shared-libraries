@@ -31,22 +31,14 @@ namespace Ssh
 
     //_______________________________________________________________________
     Socket::Socket( QObject* parent ):
-        QIODevice( parent ),
-        Counter( "Ssh::Socket" )
-    { buffer_.resize( maxSize_ ); }
-
-    //_______________________________________________________________________
-    Socket::~Socket( void )
-    { close(); }
+        BaseSocket( parent )
+        {}
 
     //_______________________________________________________________________
     void Socket::connectToHost( void* session, const QString& host, quint16 port )
     {
 
         Debug::Throw() << "Ssh::Socket::connectToHost - " << host << ":" << port << endl;
-
-        // disconnect
-        if( channel_ ) close();
 
         // store session, host and port
         session_ = session;
@@ -64,7 +56,7 @@ namespace Ssh
     {
 
         // do nothing if already connected
-        if( channel_ ) return true;
+        if( isConnected() ) return true;
 
         QElapsedTimer timer;
         timer.start();
@@ -77,109 +69,27 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool Socket::atEnd( void ) const
-    {
-
-        // check channel
-        if( !channel_ ) return true;
-
-        #if HAVE_SSH
-        return libssh2_channel_eof( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
-        #else
-        return true;
-        #endif
-    }
-
-    //_______________________________________________________________________
-    void Socket::close( void )
-    {
-        Debug::Throw( "Ssh::Socket:close.\n" );
-
-        // stop timer
-        if( timer_.isActive() ) timer_.stop();
-
-        #if HAVE_SSH
-        // close channel
-        if( channel_ )
-        {
-            libssh2_channel_free( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
-            channel_ = nullptr;
-        }
-        #endif
-
-    }
-
-    //_______________________________________________________________________
-    qint64 Socket::readData( char* data, qint64 maxSize )
-    {
-
-        Debug::Throw() << "Ssh::Socket::readData - length: " << maxSize << endl;
-        if( bytesAvailable_ <= 0 ) return bytesAvailable_;
-
-        const qint64 bytesRead = qMin( maxSize, bytesAvailable_ );
-        memcpy( data, buffer_.data(), bytesRead );
-        buffer_ = buffer_.mid( bytesRead );
-        buffer_.resize( maxSize_ );
-        bytesAvailable_ -= bytesRead;
-        return bytesRead;
-
-    }
-
-    //_______________________________________________________________________
-    qint64 Socket::writeData( const char* data, qint64 maxSize )
-    {
-
-        Debug::Throw() << "Ssh::Socket::writeData - size: " << maxSize << endl;
-
-        if( !channel_ ) return -1;
-        #if HAVE_SSH
-
-        qint64 bytesWritten = 0;
-        LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
-        while( bytesWritten < maxSize )
-        {
-
-            const qint64 i = libssh2_channel_write( channel, data + bytesWritten, maxSize - bytesWritten );
-            if( i >= 0 ) bytesWritten += i;
-            else if( i != LIBSSH2_ERROR_EAGAIN )
-            {
-                setErrorString( tr( "invalid write: %1" ).arg( i ) );
-                return -1;
-            }
-
-        }
-
-        return bytesWritten;
-
-        #else
-
-        setErrorString( "invalid channel" );
-        return -1;
-
-        #endif
-
-    }
-
-    //_______________________________________________________________________
     void Socket::timerEvent( QTimerEvent* event )
     {
 
         // check timer id
-        if( event->timerId() != timer_.timerId() ) return QIODevice::timerEvent( event );
+        if( event->timerId() == timer_.timerId() )
+        {
 
-        #if HAVE_SSH
+            #if HAVE_SSH
 
-        if( channel_ || _tryConnect() ) _tryRead();
-        return;
+            if( _tryConnect() ) timer_.stop();
+            return;
 
-        #else
+            #else
 
-        timer_.stop();
-        bytesAvailable_ = -1;
-        setErrorString( "no ssh" );
-        return;
+            timer_.stop();
+            setErrorString( "no ssh" );
+            return;
 
-        #endif
+            #endif
+
+        } else return BaseSocket::timerEvent( event );
 
     }
 
@@ -187,15 +97,17 @@ namespace Ssh
     bool Socket::_tryConnect( void )
     {
 
-        if( channel_ ) return true;
+        if( isConnected() ) return true;
 
         #if HAVE_SSH
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
-        if( (channel_ = libssh2_channel_direct_tcpip( session, qPrintable( host_ ), port_ ) ) )
+        auto channel = libssh2_channel_direct_tcpip( session, qPrintable( host_ ), port_ );
+
+        if( channel )
         {
 
             setOpenMode( ReadWrite );
-            emit connected();
+            _setChannel( channel );
             return true;
 
         } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
@@ -213,50 +125,6 @@ namespace Ssh
 
         #else
         return true;
-        #endif
-
-    }
-
-    //_______________________________________________________________________
-    bool Socket::_tryRead( void )
-    {
-
-        if( !channel_ ) return false;
-
-        #if HAVE_SSH
-
-        // read from channel
-        LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
-        qint64 length =  libssh2_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_ );
-        if( length == LIBSSH2_ERROR_EAGAIN ) return false ;
-        else if( length < 0 )
-        {
-
-            setErrorString( tr( "invalid read: %1" ).arg( length ) );
-            timer_.stop();
-            bytesAvailable_ = -1;
-
-            return false;
-
-        } else {
-
-            bytesAvailable_ += length;
-            emit readyRead();
-
-        }
-
-        // check at end
-        if( atEnd() )
-        {
-            timer_.stop();
-            setErrorString( "channel closed" );
-            emit readChannelFinished();
-        }
-
-        return true;
-
-        #else
-        return false;
         #endif
 
     }

@@ -20,9 +20,8 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
+#include "SshBaseSocket.h"
 
-#include <QAbstractSocket>
 #include <QBasicTimer>
 #include <QByteArray>
 #include <QHostAddress>
@@ -32,7 +31,7 @@ namespace Ssh
 {
 
     //* ssh socket
-    class Socket: public QIODevice, public Counter
+    class Socket: public BaseSocket
     {
 
         Q_OBJECT
@@ -43,27 +42,7 @@ namespace Ssh
         Socket( QObject* );
 
         //* destructor
-        virtual ~Socket( void );
-
-        //*@name accessors
-        //@{
-
-        //* true if connected
-        bool isConnected( void ) const
-        { return channel_; }
-
-        //* true if channel is closed
-        bool atEnd( void ) const;
-
-        //* sequencial mode
-        bool isSequential( void ) const
-        { return true; }
-
-        //* bytes available
-        qint64 bytesAvailable( void ) const
-        { return bytesAvailable_; }
-
-        //@}
+        virtual ~Socket( void ) = default;
 
         //*@name modifiers
         //@{
@@ -77,26 +56,7 @@ namespace Ssh
 
         //@}
 
-        Q_SIGNALS:
-
-        //* emit when connected
-        int connected( void );
-
-        //* error
-        void error(QAbstractSocket::SocketError);
-
-        public Q_SLOTS:
-
-        //* close
-        void close( void );
-
         protected:
-
-        //* read
-        virtual qint64 readData( char*, qint64 maxSize );
-
-        //* write
-        virtual qint64 writeData( const char*, qint64 maxSize );
 
         //* timer event
         void timerEvent( QTimerEvent* );
@@ -105,12 +65,6 @@ namespace Ssh
 
         //* try connect channel, returns true on success
         bool _tryConnect( void );
-
-        //* try read data from channel
-        bool _tryRead( void );
-
-        //* ssh channel
-        void* channel_ = nullptr;
 
         //* session pointer
         void* session_;
@@ -126,15 +80,6 @@ namespace Ssh
 
         //* latency
         const int latency_ = 100;
-
-        //* buffer
-        QByteArray buffer_;
-
-        //* max buffer size
-        qint64 maxSize_ = 1<<16;
-
-        //* bytes available
-        qint64 bytesAvailable_ = 0;
 
     };
 
