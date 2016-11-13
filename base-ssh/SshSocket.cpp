@@ -69,7 +69,7 @@ namespace Ssh
         QElapsedTimer timer;
         timer.start();
 
-        while( msecs == -1 || timer.elapsed() < msecs )
+        while( msecs < 0 || timer.elapsed() < msecs )
         { if( _tryConnect() ) return true; }
 
         return false;
