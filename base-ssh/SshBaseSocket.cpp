@@ -44,7 +44,7 @@ namespace Ssh
     {
 
         // check channel
-        if( !channel_ ) return true;
+        if( !isConnected() ) return true;
 
         #if HAVE_SSH
         return libssh2_channel_eof( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
@@ -63,7 +63,7 @@ namespace Ssh
 
         #if HAVE_SSH
         // close channel
-        if( channel_ )
+        if( isConnected() )
         {
             libssh2_channel_free( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
             channel_ = nullptr;
@@ -77,6 +77,12 @@ namespace Ssh
     {
 
         Debug::Throw() << "Ssh::BaseSocket::readData - length: " << maxSize << endl;
+        if( !( openMode() & QIODevice::ReadOnly ) )
+        {
+            setErrorString( tr( "Socket is writeOnly" ) );
+            return -1;
+        }
+
         if( bytesAvailable_ <= 0 ) return bytesAvailable_;
 
         const qint64 bytesRead = qMin( maxSize, bytesAvailable_ );
@@ -94,7 +100,13 @@ namespace Ssh
 
         Debug::Throw() << "Ssh::BaseSocket::writeData - size: " << maxSize << endl;
 
-        if( !channel_ ) return -1;
+        if( !(openMode() & QIODevice::WriteOnly) )
+        {
+            setErrorString( tr( "Socket is readOnly" ) );
+            return -1;
+        }
+
+        if( !isConnected() ) return -1;
         #if HAVE_SSH
 
         qint64 bytesWritten = 0;
@@ -132,7 +144,7 @@ namespace Ssh
 
         #if HAVE_SSH
 
-        if( channel_ ) _tryRead();
+        if( isConnected() ) _tryRead();
         return;
 
         #else
@@ -147,19 +159,26 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    void BaseSocket::_setChannel( void* channel )
+    void BaseSocket::_setChannel( void* channel, QIODevice::OpenMode openMode )
     {
 
         // close existing channel if any
-        if( channel_ ) close();
+        if( isConnected() ) close();
+
+        // stop timer
+        if( timer_.isActive() ) timer_.stop();
+
+        // assign open mode
+        setOpenMode( openMode );
 
         // assign new channel
         channel_ = channel;
 
-        if( channel_ )
+        if( isConnected() )
         {
+
             // start timer
-            if( !timer_.isActive() ) timer_.start( latency_, this );
+            if( openMode&QIODevice::ReadOnly ) timer_.start( latency_, this );
 
             // emit signal
             emit connected();
@@ -172,7 +191,7 @@ namespace Ssh
     bool BaseSocket::_tryRead( void )
     {
 
-        if( !channel_ ) return false;
+        if( !isConnected() ) return false;
 
         #if HAVE_SSH
 

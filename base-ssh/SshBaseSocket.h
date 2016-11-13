@@ -93,7 +93,7 @@ namespace Ssh
         void* _channel( void ) { return channel_; }
 
         //* channel
-        void _setChannel( void* );
+        void _setChannel( void*, QIODevice::OpenMode );
 
         private:
 

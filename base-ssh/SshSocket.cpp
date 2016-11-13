@@ -106,8 +106,7 @@ namespace Ssh
         if( channel )
         {
 
-            setOpenMode( ReadWrite );
-            _setChannel( channel );
+            _setChannel( channel, QIODevice::ReadWrite );
             return true;
 
         } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
