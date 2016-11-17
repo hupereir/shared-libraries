@@ -45,6 +45,8 @@ set(base_ssh_SOURCES
   SshBaseSocket.cpp
   SshConnection.cpp
   SshConnectionAttributes.cpp
+  SshFileReadSocket.cpp
+  SshFileWriteSocket.cpp
   SshLoginDialog.cpp
   SshSingleton.cpp
   SshSocket.cpp
