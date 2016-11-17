@@ -67,7 +67,7 @@ namespace Ssh
         bool _tryConnect( void );
 
         //* session pointer
-        void* session_;
+        void* session_ = nullptr;
 
         //* host
         QString host_;
