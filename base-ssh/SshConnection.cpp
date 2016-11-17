@@ -21,15 +21,17 @@
 
 #include "Debug.h"
 #include "File.h"
+#include "Sleep.h"
 #include "SshLoginDialog.h"
 #include "SshSingleton.h"
 #include "SshSocket.h"
 #include "SshTunnel.h"
 
+#include <QElapsedTimer>
 #include <QTcpServer>
 #include <QTextStream>
 #include <QTimer>
-
+#include <QThread>
 #if defined(Q_OS_WIN)
 #include <ws2tcpip.h>
 #else
@@ -42,6 +44,7 @@
 #if HAVE_SSH
 #include <libssh2.h>
 #endif
+
 
 namespace Ssh
 {
@@ -180,6 +183,34 @@ namespace Ssh
 
         addCommand(Connection::AuthenticateWithPassword);
         return true;
+
+    }
+
+    //_______________________________________________________________________
+    bool Connection::waitForConnected( int msecs )
+    {
+
+        // do nothing if already connected
+        if( isConnected() ) return true;
+
+        QElapsedTimer timer;
+        timer.start();
+
+        // setup host manually if not already set
+        if( sshHost_.lookupId() < 0 )
+        {
+            sshHost_ = QHostInfo::fromName( attributes_.host() );
+            sshHost_.setLookupId( 0 );
+        }
+
+        while( msecs < 0 || timer.elapsed() < msecs )
+        {
+            // qApp->processEvents();
+            if( !_processCommands() ) break;
+            Sleep::msleep( 100 );
+        }
+
+        return isConnected();
 
     }
 
@@ -340,7 +371,7 @@ namespace Ssh
 
         #if HAVE_SSH
 
-        Debug::Throw() << "Ssh::Connection::timerEvent - processing command: " << _commandMessage(commands_.front()) << " (" << commands_.front() << ")" << endl;
+        Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << " (" << commands_.front() << ")" << endl;
 
         // cast session. It is used for almost all commands
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
@@ -351,7 +382,11 @@ namespace Ssh
             {
 
                 // check host
-                if( sshHost_.lookupId() < 0 ) break;
+                if( sshHost_.lookupId() < 0 )
+                {
+                    Debug::Throw() << "Ssh::Connection::_processCommands - lookup failed" << endl;
+                    break;
+                }
 
                 // initialize socket address structure
                 QHostAddress address;
@@ -364,7 +399,7 @@ namespace Ssh
 
                 }
 
-                Debug::Throw() << "Ssh::Connection::timerEvent - connection."
+                Debug::Throw() << "Ssh::Connection::_processCommands - connection."
                     << " Host: " << attributes_.host()
                     << " Port: " << attributes_.port()
                     << endl;
@@ -503,7 +538,7 @@ namespace Ssh
 
             } else if( !authenticationMethods_.contains( "publickey" ) ) {
 
-                Debug::Throw( 0, "Ssh::Connection::timerEvent - public key authentication is not supported.\n" );
+                Debug::Throw( 0, "Ssh::Connection::_processCommands - public key authentication is not supported.\n" );
                 commands_.removeFirst();
                 return true;
 
@@ -533,13 +568,13 @@ namespace Ssh
 
             } else if( !authenticationMethods_.contains( "publickey" ) ) {
 
-                Debug::Throw( 0, "Ssh::Connection::timerEvent - public key authentication is not supported.\n" );
+                Debug::Throw( 0, "Ssh::Connection::_processCommands - public key authentication is not supported.\n" );
                 commands_.removeFirst();
                 return true;
 
             } else {
 
-                Debug::Throw() << "Ssh::Connection::timerEvent - identity: " << identity_ << endl;
+                Debug::Throw() << "Ssh::Connection::_processCommands - identity: " << identity_ << endl;
 
                 LIBSSH2_AGENT* agent( reinterpret_cast<LIBSSH2_AGENT*>(agent_) );
                 struct libssh2_agent_publickey* identity( reinterpret_cast<struct libssh2_agent_publickey*>( identity_ ) );
@@ -593,13 +628,13 @@ namespace Ssh
             {
 
                 // check authentication methods
-                Debug::Throw( 0, "Ssh::Connection::timerEvent - password authentication is not supported.\n" );
+                Debug::Throw( 0, "Ssh::Connection::_processCommands - password authentication is not supported.\n" );
                 commands_.removeFirst();
                 return true;
 
             } else {
 
-                Debug::Throw() << "Ssh::Connection::timerEvent - password authentication."
+                Debug::Throw() << "Ssh::Connection::_processCommands - password authentication."
                     << " Host: " << attributes_.host()
                     << " User: " << attributes_.userName()
                     << " Password: " << attributes_.password()
