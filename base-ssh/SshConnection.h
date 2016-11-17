@@ -101,6 +101,10 @@ namespace Ssh
         //* connect
         bool connect( void );
 
+        //* wait for connected
+        /** warning, this method is blocking */
+        bool waitForConnected( int msecs = 30000 );
+
         //* authenticate
         bool authenticate( bool forceRequestIdentity = false );
 
@@ -186,6 +190,9 @@ namespace Ssh
 
         //* get message command
         QString _commandMessage( SshCommand ) const;
+
+        //* process pending commands
+        bool _processCommands( void );
 
         //* abort all commands
         void _abortCommands( const QString& );

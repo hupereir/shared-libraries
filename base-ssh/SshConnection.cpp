@@ -302,21 +302,33 @@ namespace Ssh
     void Connection::timerEvent( QTimerEvent* event )
     {
 
-        if( event->timerId() != timer_.timerId() )
-        { return QObject::timerEvent( event ); }
+        if( event->timerId() == timer_.timerId() )
+        {
+
+            if( !_processCommands() && timer_.isActive() ) timer_.stop();
+
+        } else {
+
+            return QObject::timerEvent( event );
+
+        }
+
+    }
+
+
+
+    //_______________________________________________
+    bool Connection::_processCommands( void )
+    {
 
         // check empty commands list
-        if( commands_.empty() )
-        {
-            timer_.stop();
-            return;
-        }
+        if( commands_.empty() ) return false;
 
         // check session
         if( !session_ )
         {
             _abortCommands( tr( "Session is invalid" ) );
-            return;
+            return false;
         }
 
         // emit message
@@ -348,7 +360,7 @@ namespace Ssh
                 {
 
                     _abortCommands( tr( "Invalid host: %1" ).arg( attributes_.host() ) );
-                    return;
+                    return false;
 
                 }
 
@@ -370,7 +382,7 @@ namespace Ssh
 
                     // success
                     commands_.removeFirst();
-                    return;
+                    return true;
 
                 } else if( errno != EALREADY && errno != EINPROGRESS ) {
 
@@ -378,7 +390,7 @@ namespace Ssh
                         .arg(attributes_.host())
                         .arg(attributes_.port())
                         .arg(errno) );
-                    return;
+                    return false;
 
                 }
 
@@ -394,12 +406,12 @@ namespace Ssh
 
                     // success
                     commands_.removeFirst();
-                    return;
+                    return true;
 
                 } else if( result != LIBSSH2_ERROR_EAGAIN ) {
 
                     _abortCommands( tr( "Handshake failed" ) );
-                    return;
+                    return false;
 
                 }
 
@@ -412,7 +424,7 @@ namespace Ssh
 
                 // skip if no agent is defined
                 commands_.removeFirst();
-                return;
+                return true;
 
             } else {
 
@@ -422,7 +434,7 @@ namespace Ssh
                 {
 
                     commands_.removeFirst();
-                    return;
+                    return true;
 
                 }
 
@@ -450,12 +462,12 @@ namespace Ssh
                     }
 
                     commands_.removeFirst();
-                    return;
+                    return true;
 
                 } else {
 
                     _abortCommands( tr( "Login cancelled" ) );
-                    return;
+                    return false;
 
                 }
 
@@ -469,12 +481,12 @@ namespace Ssh
 
                     // success
                     commands_.removeFirst();
-                    return;
+                    return true;
 
                 } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
 
                     _abortCommands( tr( "Failed retrieving authentication methods" ) );
-                    return;
+                    return false;
 
                 }
 
@@ -487,13 +499,13 @@ namespace Ssh
 
                 // skip if no agent is defined
                 commands_.removeFirst();
-                return;
+                return true;
 
             } else if( !authenticationMethods_.contains( "publickey" ) ) {
 
                 Debug::Throw( 0, "Ssh::Connection::timerEvent - public key authentication is not supported.\n" );
                 commands_.removeFirst();
-                return;
+                return true;
 
             } else {
 
@@ -504,7 +516,7 @@ namespace Ssh
 
                     identity_ = nullptr;
                     commands_.removeFirst();
-                    return;
+                    return true;
 
                 }
 
@@ -517,13 +529,13 @@ namespace Ssh
 
                 // skip if no agent is defined
                 commands_.removeFirst();
-                return;
+                return true;
 
             } else if( !authenticationMethods_.contains( "publickey" ) ) {
 
                 Debug::Throw( 0, "Ssh::Connection::timerEvent - public key authentication is not supported.\n" );
                 commands_.removeFirst();
-                return;
+                return true;
 
             } else {
 
@@ -544,7 +556,7 @@ namespace Ssh
                         state_ |= Connected;
                         commands_.clear();
                         emit connected();
-                        return;
+                        return false;
 
                     } else if( result == LIBSSH2_ERROR_EAGAIN ) {
 
@@ -569,7 +581,8 @@ namespace Ssh
                 {
                     identity_ = nullptr;
                     commands_.removeFirst();
-                    return;
+                    return true;
+
                 } else identity_ = nextIdentity;
 
             }
@@ -582,7 +595,7 @@ namespace Ssh
                 // check authentication methods
                 Debug::Throw( 0, "Ssh::Connection::timerEvent - password authentication is not supported.\n" );
                 commands_.removeFirst();
-                return;
+                return true;
 
             } else {
 
@@ -602,7 +615,7 @@ namespace Ssh
                     commands_.clear();
                     emit connected();
 
-                    return;
+                    return false;
 
                 }  else if( result != LIBSSH2_ERROR_EAGAIN ) {
 
@@ -613,7 +626,7 @@ namespace Ssh
                     _disconnectSession();
                     connect();
                     authenticate( true );
-                    return;
+                    return true;
 
                 }
 
@@ -622,13 +635,17 @@ namespace Ssh
 
             default:
             commands_.removeFirst();
-            return;
+            return true;
 
         }
+
+        return true;
+
 
         #else
 
         _abortCommands( tr( "No SSH support" ) );
+        return false;
 
         #endif
 
