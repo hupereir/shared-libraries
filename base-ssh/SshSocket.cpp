@@ -54,8 +54,8 @@ namespace Ssh
         port_ = port;
 
         // make sure timer is running
-        _tryConnect();
-        if( !timer_.isActive() ) timer_.start( latency_, this );
+        if( timer_.isActive() ) timer_.stop();
+        if( !_tryConnect() ) timer_.start( latency_, this );
 
     }
 
