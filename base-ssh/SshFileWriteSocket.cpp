@@ -38,7 +38,7 @@ namespace Ssh
     void FileWriteSocket::connectToFile( void* session, const QString& path, quint64 size, int mode )
     {
 
-        Debug::Throw() << "Ssh::FileWriteSocket::connectToHost - " << path << endl;
+        Debug::Throw() << "Ssh::FileWriteSocket::connectToFile - " << path << " size: " << size << endl;
 
         // store session, host and port
         session_ = session;
@@ -100,9 +100,11 @@ namespace Ssh
 
         if( isConnected() ) return true;
 
+        Debug::Throw( "FileWriteSocket::_tryConnect.\n" );
+
         #if HAVE_SSH
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
-        auto channel = libssh2_scp_send64( session, qPrintable( path_ ), mode_, size_, 0, 0 );
+        auto channel = libssh2_scp_send64( session, qPrintable( path_ ), mode_&0777, (libssh2_uint64_t) size_, 0, 0 );
         if( channel )
         {
 
