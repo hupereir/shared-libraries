@@ -137,6 +137,7 @@ namespace Ssh
         Debug::Throw( "Ssh::FileTransferObject::_prepareReading.\n" );
 
         // store file size
+        state_ |= Connected;
         fileSize_ = qobject_cast<FileReadSocket*>( sshSocket_ )->fileSize();
         bytesTransferred_ = 0;
     }
@@ -216,6 +217,8 @@ namespace Ssh
 
         if( !sshSocket_->isConnected() ) return;
         if( !sourceFile_->isOpen() ) return;
+
+        state_ |= Connected;
 
         // read from socket, write through ssh
         qint64 bytesAvailable = 0;
