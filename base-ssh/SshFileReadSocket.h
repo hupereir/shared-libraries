@@ -59,6 +59,15 @@ namespace Ssh
 
         //@}
 
+        //*@name accessors
+        //@{
+
+        //* file size
+        qint64 fileSize( void ) const
+        { return isConnected() ? stat_.st_size:0; }
+
+        //@}
+
         protected:
 
         //* timer event
