@@ -22,6 +22,7 @@
 
 #include "Counter.h"
 
+#include <QAbstractSocket>
 #include <QByteArray>
 #include <QObject>
 #include <QString>
@@ -31,8 +32,7 @@
 namespace Ssh
 {
 
-    class FileReadSocket;
-    class FileWriteSocket;
+    class BaseSocket;
 
     class FileTransferObject: public QObject, public Counter
     {
@@ -55,7 +55,11 @@ namespace Ssh
 
         //* wait for transfered
         /** warning, this method is blocking */
-        bool waitForTransfered( int msecs = 30000 );
+        bool waitForRead( int msecs = 30000 );
+
+        //* wait for transfered
+        /** warning, this method is blocking */
+        bool waitForWritten( int msecs = 30000 );
 
         //@}
 
@@ -67,8 +71,8 @@ namespace Ssh
         { return fileSize_; }
 
         //* bytes written
-        qint64 bytesRead( void ) const
-        { return bytesRead_; }
+        qint64 bytesTransferred( void ) const
+        { return bytesTransferred_; }
 
         //@}
 
@@ -82,11 +86,17 @@ namespace Ssh
 
         protected Q_SLOTS:
 
+        //* process error
+        void _processError( QAbstractSocket::SocketError );
+
         //* prepare reading
         void _prepareReading( void );
 
         //* read from ssh socket
         void _readFromSocket( void );
+
+        //* write to ssh socket
+        void _writeToSocket( void );
 
         //* close source file, once reading is finished
         void _closeSourceFile( void );
@@ -103,16 +113,13 @@ namespace Ssh
         qint64 fileSize_ = 0;
 
         //* bytes read
-        qint64 bytesRead_ = 0;
+        qint64 bytesTransferred_ = 0;
 
         //* source file
         QFile* sourceFile_ = nullptr;
 
         //* read socket
-        FileReadSocket* fileReadSocket_ = nullptr;
-
-        //* write socket
-        FileWriteSocket* fileWriteSocket_ = nullptr;
+        BaseSocket* sshSocket_ = nullptr;
 
         //* buffer
         QByteArray buffer_;
