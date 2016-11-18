@@ -48,10 +48,14 @@ namespace Ssh
     bool FileTransferObject::read( void* session )
     {
 
+        state_ = Uninitialized;
+        error_.clear();
+
         // create source file
         if( !sourceFile_->open( QIODevice::WriteOnly ) )
         {
-            Debug::Throw(0) << "FileTransferObject::read - could not open file " << sourceFilename_ << " for writting" << endl;
+            emit error( error_ = tr( "cannot open file %1 for writting" ).arg( sourceFilename_ ) );
+            _setFailed();
             return false;
         }
 
@@ -62,6 +66,7 @@ namespace Ssh
         connect( sshSocket_, SIGNAL(connected()), this, SLOT(_prepareReading()) );
         connect( sshSocket_, SIGNAL(readyRead()), this, SLOT(_readFromSocket()) );
         connect( sshSocket_, SIGNAL(readChannelFinished()), this, SLOT(_closeSourceFile()) );
+        connect( sshSocket_, SIGNAL(readChannelFinished()), this, SLOT(_closeSocket()) );
 
         qobject_cast<FileReadSocket*>(sshSocket_)->connectToFile( session, destinationFilename_ );
         return true;
@@ -72,9 +77,12 @@ namespace Ssh
     bool FileTransferObject::write( void* session )
     {
 
+        state_ = Uninitialized;
+
         if( !sourceFile_->open( QIODevice::ReadOnly ) )
         {
-            Debug::Throw(0) << "FileTransferObject::write - could not open file " << sourceFilename_ << " for reading" << endl;
+            emit error( error_ = tr( "cannot open file %1 for reading" ).arg( sourceFilename_ ) );
+            _setFailed();
             return false;
         }
 
@@ -85,7 +93,6 @@ namespace Ssh
         sshSocket_ = new FileWriteSocket( this );
         connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT( _processError(QAbstractSocket::SocketError)) );
         connect( sshSocket_, SIGNAL(connected()), this, SLOT(_writeToSocket()) );
-
         qobject_cast<FileWriteSocket*>(sshSocket_)->connectToFile( session, destinationFilename_, fileSize_ );
 
         return true;
@@ -93,50 +100,36 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool FileTransferObject::waitForRead( int msecs )
+    bool FileTransferObject::waitForTransferred( int msecs )
     {
 
         // do nothing if socket is already closed
-        if( sshSocket_->isConnected() && sshSocket_->atEnd() ) return true;
+        if( isCompleted() ) return !isFailed();
 
         QElapsedTimer timer;
         timer.start();
 
-        while( msecs < 0 || timer.elapsed() < msecs )
-        {
-            qApp->processEvents();
-            if( sshSocket_->isConnected() && sshSocket_->atEnd() ) break;
-        }
+        while( ( msecs < 0 || timer.elapsed() < msecs ) && !(state_&Completed) )
+        { qApp->processEvents(); }
 
-        // return sshSocket_->isConnected() && sshSocket_->atEnd() &&
-        return sshSocket_->isConnected() && fileSize_ == bytesTransferred_;
-
-    }
-
-    //_______________________________________________________________________
-    bool FileTransferObject::waitForWritten( int msecs )
-    {
-
-        // do nothing if socket is already closed
-        if( sshSocket_->isConnected() && sourceFile_->atEnd() ) return true;
-
-        QElapsedTimer timer;
-        timer.start();
-
-        while( msecs < 0 || timer.elapsed() < msecs )
-        {
-            qApp->processEvents();
-            if( sshSocket_->isConnected() && sourceFile_->atEnd() ) break;
-        }
-
-        // return sshSocket_->isConnected() && sshSocket_->atEnd() &&
-        return !sshSocket_->isConnected() && fileSize_ == bytesTransferred_;
+        return isCompleted() && !isFailed();
 
     }
 
     //____________________________________________________________________________
     void FileTransferObject::_processError( QAbstractSocket::SocketError )
-    {  if( sshSocket_ ) Debug::Throw() << sshSocket_->errorString() << endl; }
+    {
+        if( sshSocket_ )
+        {
+            Debug::Throw() << sshSocket_->errorString() << endl;
+            emit error( error_ = sshSocket_->errorString() );
+        }
+
+        _closeSourceFile();
+        _closeSocket();
+        _setFailed();
+
+    }
 
     //____________________________________________________________________________
     void FileTransferObject::_prepareReading( void )
@@ -146,7 +139,6 @@ namespace Ssh
         // store file size
         fileSize_ = qobject_cast<FileReadSocket*>( sshSocket_ )->fileSize();
         bytesTransferred_ = 0;
-
     }
 
     //____________________________________________________________________________
@@ -169,8 +161,10 @@ namespace Ssh
 
             if( bytesRead < 0 )
             {
-                emit error( tr( "invalid read from ssh socket: %1" ).arg( bytesRead ) );
+                emit error( error_ = tr( "invalid read from ssh socket: %1" ).arg( bytesRead ) );
                 _closeSourceFile();
+                _closeSocket();
+                _setFailed();
                 return;
             }
 
@@ -189,7 +183,10 @@ namespace Ssh
                 i = sourceFile_->write( buffer_.data() + bytesWritten, bytesRead - bytesWritten );
                 if (i < 0)
                 {
-                    emit error( tr( "invalid write to source file: %1" ).arg( i ) );
+                    emit error( error_ = tr( "invalid write to source file: %1" ).arg( i ) );
+                    _closeSourceFile();
+                    _closeSocket();
+                    _setFailed();
                     return;
                 }
 
@@ -200,6 +197,13 @@ namespace Ssh
         }
 
         Debug::Throw(0) << "Ssh::FileTransferObject::_readFromSocket - read " << 100*bytesTransferred_/fileSize_ << "%" << endl;
+        emit transferred( fileSize_, bytesTransferred_ );
+        if( fileSize_ == bytesTransferred_ )
+        {
+            _closeSourceFile();
+            _closeSocket();
+            _setCompleted();
+        }
 
         return;
 
@@ -225,6 +229,8 @@ namespace Ssh
             {
                 emit error( tr( "invalid read from source file: %1" ).arg( bytesRead ) );
                 _closeSourceFile();
+                _closeSocket();
+                _setFailed();
                 return;
             }
 
@@ -241,6 +247,9 @@ namespace Ssh
                 if (i < 0)
                 {
                     emit error( tr( "invalid write to tcp socket: %1, error: %2" ).arg( i ).arg( sshSocket_->errorString() ) );
+                    _closeSourceFile();
+                    _closeSocket();
+                    _setFailed();
                     return;
                 }
 
@@ -251,21 +260,22 @@ namespace Ssh
             bytesTransferred_ += bytesRead;
 
             Debug::Throw(0) << "Ssh::FileTransferObject::_writeToSocket - wrote " << 100*bytesTransferred_/fileSize_ << "%" << endl;
+            emit transferred( fileSize_, bytesTransferred_ );
         }
 
         _closeSourceFile();
-        sshSocket_->close();
+        _closeSocket();
+        _setCompleted();
 
         return;
     }
 
     //____________________________________________________________________________
     void FileTransferObject::_closeSourceFile( void )
-    {
+    { if( sourceFile_ ) sourceFile_->close(); }
 
-        Debug::Throw( "Ssh::FileTransferObject::_closeSourceFile.\n" );
-        sourceFile_->close();
-
-    }
+    //____________________________________________________________________________
+    void FileTransferObject::_closeSocket( void )
+    { if( sshSocket_ ) sshSocket_->close(); }
 
 }

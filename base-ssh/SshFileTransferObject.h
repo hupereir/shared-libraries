@@ -55,11 +55,7 @@ namespace Ssh
 
         //* wait for transfered
         /** warning, this method is blocking */
-        bool waitForRead( int msecs = 30000 );
-
-        //* wait for transfered
-        /** warning, this method is blocking */
-        bool waitForWritten( int msecs = 30000 );
+        bool waitForTransferred( int msecs = 30000 );
 
         //@}
 
@@ -74,15 +70,51 @@ namespace Ssh
         qint64 bytesTransferred( void ) const
         { return bytesTransferred_; }
 
+        //* connection state
+        enum State
+        {
+            Uninitialized = 0,
+            Connected = 1 << 0,
+            Completed = 1 << 1,
+            Failed = 1 << 2
+        };
+
+        Q_DECLARE_FLAGS( StateMask, State );
+
+        //* state
+        StateMask state( void ) const
+        { return state_; }
+
+        //* true when transfer is completed
+        bool isCompleted( void ) const
+        { return state_&Completed; }
+
+        //* true when transfer has failed
+        bool isFailed( void ) const
+        { return state_&Failed; }
+
+        //* error string
+        QString errorString( void ) const
+        { return error_; }
+
         //@}
 
         Q_SIGNALS:
+
+        //* transfer percentage
+        void transferred( qint64 size, qint64 transferred );
 
         //* error message
         void error( QString );
 
         //* debug message
         void debug( QString );
+
+        //* emited when transfer is completed
+        void completed( void );
+
+        //* emited when transfer has failed
+        void failed( void );
 
         protected Q_SLOTS:
 
@@ -101,7 +133,30 @@ namespace Ssh
         //* close source file, once reading is finished
         void _closeSourceFile( void );
 
+        //* close socket
+        void _closeSocket( void );
+
         private:
+
+        //* set completed
+        void _setCompleted( void )
+        {
+            if( !(state_ & Completed ) )
+            {
+                state_ |= Completed;
+                emit completed();
+            }
+        }
+
+        //* set failed
+        void _setFailed( void )
+        {
+            if( !(state_ & Failed) )
+            {
+                state_ |= StateMask(Failed|Completed);
+                emit failed();
+            }
+        }
 
         //* source
         QString sourceFilename_;
@@ -121,6 +176,12 @@ namespace Ssh
         //* read socket
         BaseSocket* sshSocket_ = nullptr;
 
+        //* state
+        StateMask state_ = Uninitialized;
+
+        //* error string
+        QString error_;
+
         //* buffer
         QByteArray buffer_;
 
@@ -130,5 +191,7 @@ namespace Ssh
     };
 
 }
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( Ssh::FileTransferObject::StateMask );
 
 #endif
