@@ -104,6 +104,8 @@ namespace Ssh
 
         #if HAVE_SSH
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+
+        // 511 (dec) is 777 (oct)
         auto channel = libssh2_scp_send64( session, qPrintable( path_ ), mode_&0777, (libssh2_uint64_t) size_, 0, 0 );
         if( channel )
         {

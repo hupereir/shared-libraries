@@ -86,7 +86,7 @@ namespace Ssh
         connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT( _processError(QAbstractSocket::SocketError)) );
         connect( sshSocket_, SIGNAL(connected()), this, SLOT(_writeToSocket()) );
 
-        qobject_cast<FileWriteSocket*>(sshSocket_)->connectToFile( session, destinationFilename_, fileSize_, sourceFile_->permissions() );
+        qobject_cast<FileWriteSocket*>(sshSocket_)->connectToFile( session, destinationFilename_, fileSize_ );
 
         return true;
 

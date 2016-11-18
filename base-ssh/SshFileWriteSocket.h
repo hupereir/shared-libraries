@@ -51,7 +51,7 @@ namespace Ssh
         //@{
 
         //* connect to remote
-        void connectToFile( void*, const QString&, quint64 size, int mode = 644  );
+        void connectToFile( void*, const QString&, quint64 size, int mode = 0644  );
 
         //* wait for connected
         /** warning, this method is blocking */
