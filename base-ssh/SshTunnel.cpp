@@ -65,12 +65,20 @@ namespace Ssh
             qint64 bytesRead = tcpSocket_->read( buffer_.data(), buffer_.size() );
             emit debug( QString( "Ssh::Tunnel::_readFromTcpSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
 
+            if( bytesRead < 0 )
+            {
+                emit error( tr( "invalid read from tcp socket: %1" ).arg( bytesRead ) );
+                return;
+            }
+
+
             ssize_t bytesWritten = 0;
             ssize_t i = 0;
             do
             {
                 i = sshSocket_->write( buffer_.data() + bytesWritten, bytesRead-bytesWritten );
                 Debug::Throw() << "Ssh::Tunnel::_readFromTcpSocket - written: " << i << endl;
+
                 if (i < 0)
                 {
                     emit error( tr( "invalid write to tcp socket: %1, error: %2" ).arg( i ).arg( sshSocket_->errorString() ) );
@@ -97,6 +105,13 @@ namespace Ssh
         {
             qint64 bytesRead = sshSocket_->read( buffer_.data(), buffer_.size() );
             emit debug( QString( "Ssh::Tunnel::_readFromSshSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
+
+            if( bytesRead < 0 )
+            {
+                emit error( tr( "invalid read from ssh socket: %1" ).arg( bytesRead ) );
+                return;
+            }
+
             ssize_t bytesWritten = 0;
             ssize_t i = 0;
             do
@@ -104,7 +119,7 @@ namespace Ssh
                 i = tcpSocket_->write( buffer_.data() + bytesWritten, bytesRead - bytesWritten );
                 if (i < 0)
                 {
-                    emit error( tr( "invalid write to ssh socket: %1" ).arg( i ) );
+                    emit error( tr( "invalid write to tcp socket: %1" ).arg( i ) );
                     return;
                 }
 
