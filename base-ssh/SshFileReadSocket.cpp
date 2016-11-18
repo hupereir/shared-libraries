@@ -38,7 +38,7 @@ namespace Ssh
     void FileReadSocket::connectToFile( void* session, const QString& path )
     {
 
-        Debug::Throw() << "Ssh::FileReadSocket::connectToHost - " << path << endl;
+        Debug::Throw() << "Ssh::FileReadSocket::connectToFile - " << path << endl;
 
         // store session, host and port
         session_ = session;
@@ -74,9 +74,7 @@ namespace Ssh
         // check timer id
         if( event->timerId() == timer_.timerId() )
         {
-
             #if HAVE_SSH
-
             if( _tryConnect() ) timer_.stop();
             return;
 
@@ -98,14 +96,16 @@ namespace Ssh
 
         if( isConnected() ) return true;
 
+        Debug::Throw( "FileReadSocket::_tryConnect.\n" );
+
         #if HAVE_SSH
         LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
-        // auto channel = libssh2_scp_recv2( session, path_, &stat_ );
         auto channel = libssh2_scp_recv( session, qPrintable( path_ ), &stat_ );
         if( channel )
         {
 
             _setChannel( channel, QIODevice::ReadOnly );
+            Debug::Throw() << "FileReadSocket::_tryConnect - connected - file size:" << stat_.st_size << endl;
             return true;
 
         } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
