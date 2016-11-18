@@ -65,6 +65,7 @@ namespace Ssh
         // close channel
         if( isConnected() )
         {
+            libssh2_channel_close( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
             libssh2_channel_free( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
             channel_ = nullptr;
         }
@@ -97,8 +98,6 @@ namespace Ssh
     //_______________________________________________________________________
     qint64 BaseSocket::writeData( const char* data, qint64 maxSize )
     {
-
-        Debug::Throw() << "Ssh::BaseSocket::writeData - size: " << maxSize << endl;
 
         if( !(openMode() & QIODevice::WriteOnly) )
         {
