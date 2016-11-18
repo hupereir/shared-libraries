@@ -76,7 +76,6 @@ namespace Ssh
     qint64 BaseSocket::readData( char* data, qint64 maxSize )
     {
 
-        Debug::Throw() << "Ssh::BaseSocket::readData - length: " << maxSize << endl;
         if( !( openMode() & QIODevice::ReadOnly ) )
         {
             setErrorString( tr( "Socket is writeOnly" ) );
@@ -90,6 +89,7 @@ namespace Ssh
         buffer_ = buffer_.mid( bytesRead );
         buffer_.resize( maxSize_ );
         bytesAvailable_ -= bytesRead;
+
         return bytesRead;
 
     }
