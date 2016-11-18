@@ -54,6 +54,10 @@ namespace Ssh
         const ConnectionAttributes& attributes( void ) const
         { return attributes_; }
 
+        //* session
+        void* session( void ) const
+        { return session_; }
+
         //* connection state
         enum State
         {
