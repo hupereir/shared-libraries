@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QString>
 
-#include <QFile>
+#include <QIODevice>
 
 namespace Ssh
 {
@@ -42,20 +42,31 @@ namespace Ssh
         public:
 
         //* constructor
-        FileTransferObject( QObject*, QString, QString );
+        FileTransferObject( QObject*, QString );
 
         //*@name modifiers
         //@{
 
-        //* read (remote to local)
-        bool read( void* );
+        using QObject::connect;
 
-        //* write (local to remote
-        bool write( void* );
+        //* connect to remote file
+        bool connect( void*, QIODevice::OpenMode );
+
+        //* read (remote to local)
+        bool fromRemote( void*, QString );
+
+        //* read (remote to local)
+        bool fromRemote( void*, QIODevice* );
+
+        //* write (local to remote)
+        bool toRemote( void*, QString );
+
+        //* write (local to remote)
+        bool toRemote( void*, QIODevice* );
 
         //* wait for transfered
         /** warning, this method is blocking */
-        bool waitForTransferred( int msecs = 30000 );
+        bool waitForCompleted( int msecs = 30000 );
 
         //@}
 
@@ -158,11 +169,8 @@ namespace Ssh
             }
         }
 
-        //* source
-        QString sourceFilename_;
-
         //* destination
-        QString destinationFilename_;
+        QString remoteFilename_;
 
         //* file size
         qint64 fileSize_ = 0;
@@ -171,7 +179,10 @@ namespace Ssh
         qint64 bytesTransferred_ = 0;
 
         //* source file
-        QFile* sourceFile_ = nullptr;
+        QIODevice* localDevice_ = nullptr;
+
+        //* true if source device is owned by us
+        bool deviceOwned_ = false;
 
         //* read socket
         BaseSocket* sshSocket_ = nullptr;
