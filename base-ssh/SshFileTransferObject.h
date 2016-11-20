@@ -64,6 +64,10 @@ namespace Ssh
         //* write (local to remote)
         bool toRemote( void*, QIODevice* );
 
+        //* wait for connected
+        /** warning, this method is blocking */
+        bool waitForConnected( int msecs = 30000 );
+
         //* wait for transfered
         /** warning, this method is blocking */
         bool waitForCompleted( int msecs = 30000 );
@@ -95,6 +99,10 @@ namespace Ssh
         //* state
         StateMask state( void ) const
         { return state_; }
+
+        //* true when remote file socket is connected
+        bool isConnected( void ) const
+        { return state_&Connected; }
 
         //* true when transfer is completed
         bool isCompleted( void ) const
@@ -131,6 +139,10 @@ namespace Ssh
 
         //* process error
         void _processError( QAbstractSocket::SocketError );
+
+        //* mark as connected
+        void _setConnected( void )
+        { state_ |= Connected; }
 
         //* prepare reading
         void _prepareReading( void );

@@ -50,6 +50,7 @@ namespace Ssh
             // connect to remote file and start reading
             sshSocket_ = new FileReadSocket( this );
             connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT( _processError(QAbstractSocket::SocketError)) );
+            connect( sshSocket_, SIGNAL(connected()), this, SLOT(_setConnected()) );
             qobject_cast<FileReadSocket*>(sshSocket_)->connectToFile( session, remoteFilename_ );
             return true;
 
@@ -60,6 +61,7 @@ namespace Ssh
 
             sshSocket_ = new FileWriteSocket( this );
             connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT( _processError(QAbstractSocket::SocketError)) );
+            connect( sshSocket_, SIGNAL(connected()), this, SLOT(_setConnected()) );
             qobject_cast<FileWriteSocket*>(sshSocket_)->connectToFile( session, remoteFilename_, fileSize_ );
             return true;
 
@@ -106,7 +108,7 @@ namespace Ssh
 
         // create socket if needed
         if( !sshSocket_ ) connect( session, QIODevice::ReadOnly );
-        else if( sshSocket_->openMode() != QIODevice::ReadOnly )
+        else if( !qobject_cast<FileReadSocket*>(sshSocket_) )
         {
             emit error( error_ = tr( "file %1 not opended for reading" ).arg( remoteFilename_ ) );
             _setFailed();
@@ -166,7 +168,7 @@ namespace Ssh
 
         // create socket if needed
         if( !sshSocket_ ) connect( session, QIODevice::WriteOnly );
-        else if( sshSocket_->openMode() != QIODevice::WriteOnly )
+        else if( !qobject_cast<FileWriteSocket*>(sshSocket_) )
         {
             emit error( error_ = tr( "file %1 not opended for writing" ).arg( remoteFilename_ ) );
             _setFailed();
@@ -181,6 +183,23 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
+    bool FileTransferObject::waitForConnected( int msecs )
+    {
+
+        // do nothing if socket is already closed
+        if( isConnected() ) return !isFailed();
+
+        QElapsedTimer timer;
+        timer.start();
+
+        while( ( msecs < 0 || timer.elapsed() < msecs ) && !(state_&(Connected|Failed)) )
+        { qApp->processEvents(); }
+
+        return isConnected() && !isFailed();
+
+    }
+
+    //_______________________________________________________________________
     bool FileTransferObject::waitForCompleted( int msecs )
     {
 
@@ -190,7 +209,7 @@ namespace Ssh
         QElapsedTimer timer;
         timer.start();
 
-        while( ( msecs < 0 || timer.elapsed() < msecs ) && !(state_&Completed) )
+        while( ( msecs < 0 || timer.elapsed() < msecs ) && !(state_&(Completed|Failed)) )
         { qApp->processEvents(); }
 
         return isCompleted() && !isFailed();
@@ -218,7 +237,6 @@ namespace Ssh
         Debug::Throw( "Ssh::FileTransferObject::_prepareReading.\n" );
 
         // store file size
-        state_ |= Connected;
         fileSize_ = qobject_cast<FileReadSocket*>( sshSocket_ )->fileSize();
         bytesTransferred_ = 0;
     }
@@ -298,8 +316,6 @@ namespace Ssh
 
         if( !sshSocket_->isConnected() ) return;
         if( !localDevice_->isOpen() ) return;
-
-        state_ |= Connected;
 
         // read from socket, write through ssh
         qint64 bytesAvailable = 0;
