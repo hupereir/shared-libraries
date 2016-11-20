@@ -80,6 +80,10 @@ namespace Ssh
         bool isConnecting( void ) const
         { return !(isDisconnected() || isConnected() ); }
 
+        //* error string
+        QString errorString( void ) const
+        { return error_; }
+
         //@}
 
         //*@name modifiers
@@ -168,6 +172,10 @@ namespace Ssh
         //* error handling
         void _notifyError( QString );
 
+        //* process error
+        void _processError( QString error )
+        { emit( error_ = error ); }
+
         //* error handling
         void _notifyDebug( QString );
 
@@ -205,6 +213,9 @@ namespace Ssh
 
         //* state
         StateMask state_ = Uninitialized;
+
+        //* error string
+        QString error_;
 
         //* command list
         using CommandList = QList<SshCommand>;
