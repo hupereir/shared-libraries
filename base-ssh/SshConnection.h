@@ -237,7 +237,7 @@ namespace Ssh
         QBasicTimer timer_;
 
         //* latency
-        int latency_ = 20;
+        int latency_ = 10;
 
     };
 }

@@ -65,6 +65,15 @@ namespace Ssh
 
         //@}
 
+        //*@name modifiers
+        //@{
+
+        //* change latency
+        virtual void setLatency( int latency )
+        { latency_ = latency; }
+
+        //@}
+
         Q_SIGNALS:
 
         //* emit when connected
@@ -89,6 +98,10 @@ namespace Ssh
         //* timer event
         void timerEvent( QTimerEvent* );
 
+        //* get socket latency
+        int _latency( void ) const
+        { return latency_; }
+
         //* channel
         void* _channel( void ) { return channel_; }
 
@@ -110,7 +123,7 @@ namespace Ssh
         QBasicTimer timer_;
 
         //* latency
-        const int latency_ = 100;
+        int latency_ = 10;
 
         //* buffer
         QByteArray buffer_;

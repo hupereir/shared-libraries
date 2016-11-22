@@ -90,9 +90,6 @@ namespace Ssh
         //* timer
         QBasicTimer timer_;
 
-        //* latency
-        const int latency_ = 100;
-
     };
 
 }

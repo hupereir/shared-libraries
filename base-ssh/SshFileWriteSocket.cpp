@@ -48,7 +48,7 @@ namespace Ssh
 
         // make sure timer is running
         if( timer_.isActive() ) timer_.stop();
-        if( !_tryConnect() ) timer_.start( latency_, this );
+        if( !_tryConnect() ) timer_.start( _latency(), this );
 
     }
 
