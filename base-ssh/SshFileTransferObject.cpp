@@ -296,8 +296,12 @@ namespace Ssh
 
         }
 
-        Debug::Throw() << "Ssh::FileTransferObject::_readFromSocket - read " << 100*bytesTransferred_/fileSize_ << "%" << endl;
-        emit transferred( fileSize_, bytesTransferred_ );
+        if( fileSize_ >  0 )
+        {
+            Debug::Throw() << "Ssh::FileTransferObject::_readFromSocket - read " << 100*bytesTransferred_/fileSize_ << "%" << endl;
+            emit transferred( fileSize_, bytesTransferred_ );
+        }
+
         if( fileSize_ == bytesTransferred_ )
         {
             _closeSourceFile();
@@ -359,8 +363,11 @@ namespace Ssh
 
             bytesTransferred_ += bytesRead;
 
-            Debug::Throw() << "Ssh::FileTransferObject::_writeToSocket - wrote " << 100*bytesTransferred_/fileSize_ << "%" << endl;
-            emit transferred( fileSize_, bytesTransferred_ );
+            if( fileSize_ > 0 )
+            {
+                Debug::Throw(0) << "Ssh::FileTransferObject::_writeToSocket - wrote " << 100*bytesTransferred_/fileSize_ << "%" << endl;
+                emit transferred( fileSize_, bytesTransferred_ );
+            }
         }
 
         _closeSourceFile();
