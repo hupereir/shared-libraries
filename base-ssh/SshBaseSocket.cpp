@@ -65,8 +65,9 @@ namespace Ssh
         // close channel
         if( isConnected() )
         {
-            libssh2_channel_close( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
-            libssh2_channel_free( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
+            auto channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
+            libssh2_channel_close( channel );
+            libssh2_channel_free( channel );
             channel_ = nullptr;
         }
         #endif
