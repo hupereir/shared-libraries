@@ -53,9 +53,15 @@ namespace Ssh
         //* connect to remote
         void connectToFile( void*, const QString&, quint64 size, int mode = 0644  );
 
+        //* send eof
+        void sendEof( void );
+
         //* wait for connected
         /** warning, this method is blocking */
         bool waitForConnected( int msecs = 30000 );
+
+        //* wait for completed
+        bool waitForCompleted( int msecs = 30000 );
 
         //@}
 
@@ -66,8 +72,33 @@ namespace Ssh
 
         private:
 
+        //* command list
+        enum Command
+        {
+            None,
+            Connect,
+            SendEof,
+            WaitForEof,
+            WaitForClosed
+        };
+
+        //* add command
+        void _addCommand( Command );
+
+        //* process pending commands
+        bool _processCommands( void );
+
         //* try connect channel, returns true on success
         bool _tryConnect( void );
+
+        //* try send eof to channel, returns true on success
+        bool _trySendEof( void );
+
+        //* try wait for eof from channel, returns true on success
+        bool _tryWaitEof( void );
+
+        //* try close channel, returns true on success
+        bool _tryClose( void );
 
         //* session pointer
         void* session_ = nullptr;
@@ -80,6 +111,10 @@ namespace Ssh
 
         //* file information
         int mode_ = 0;
+
+        //* command list
+        using CommandList = QList<Command>;
+        CommandList commands_;
 
         //* timer
         QBasicTimer timer_;

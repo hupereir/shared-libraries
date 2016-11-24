@@ -48,8 +48,16 @@ namespace Ssh
 
         // make sure timer is running
         if( timer_.isActive() ) timer_.stop();
-        if( !_tryConnect() ) timer_.start( _latency(), this );
+        _addCommand( Connect );
 
+    }
+
+    //_______________________________________________________________________
+    void FileWriteSocket::sendEof( void )
+    {
+        _addCommand( SendEof );
+        _addCommand( WaitForEof );
+        _addCommand( WaitForClosed );
     }
 
     //_______________________________________________________________________
@@ -63,7 +71,21 @@ namespace Ssh
         timer.start();
 
         while( msecs < 0 || timer.elapsed() < msecs )
-        { if( _tryConnect() ) return true; }
+        { if( !_processCommands() ) return true; }
+
+        return false;
+
+    }
+
+    //_______________________________________________________________________
+    bool FileWriteSocket::waitForCompleted( int msecs )
+    {
+
+        QElapsedTimer timer;
+        timer.start();
+
+        while( msecs < 0 || timer.elapsed() < msecs )
+        { if( !_processCommands() ) return true; }
 
         return false;
 
@@ -77,20 +99,63 @@ namespace Ssh
         if( event->timerId() == timer_.timerId() )
         {
 
-            #if HAVE_SSH
-
-            if( _tryConnect() ) timer_.stop();
-            return;
-
-            #else
-
-            timer_.stop();
-            setErrorString( "no ssh" );
-            return;
-
-            #endif
+            if( !_processCommands() && timer_.isActive() ) timer_.stop();
 
         } else return BaseSocket::timerEvent( event );
+
+    }
+
+    //_______________________________________________
+    void FileWriteSocket::_addCommand( Command command )
+    {
+        Debug::Throw() << "Ssh::FileWriteSocket::_AddCommand: " << command << endl;
+        commands_.append( command );
+        if( !timer_.isActive() ) timer_.start( _latency(), this );
+    }
+
+
+    //_______________________________________________
+    bool FileWriteSocket::_processCommands( void )
+    {
+
+        // check empty commands list
+        if( commands_.empty() ) return false;
+
+        switch( commands_.front() )
+        {
+
+            case Connect:
+            {
+                if( _tryConnect() ) commands_.removeFirst();
+                return true;
+            }
+
+            case SendEof:
+            {
+                if( _trySendEof() ) commands_.removeFirst();
+                return true;
+            }
+
+
+            case WaitForEof:
+            {
+                if( _tryWaitEof() ) commands_.removeFirst();
+                return true;
+            }
+
+            case WaitForClosed:
+            {
+                if( _tryClose() ) commands_.removeFirst();
+                return true;
+            }
+
+            default:
+            commands_.removeFirst();
+            return true;
+
+        }
+
+        return false;
 
     }
 
@@ -103,9 +168,14 @@ namespace Ssh
         Debug::Throw( "FileWriteSocket::_tryConnect.\n" );
 
         #if HAVE_SSH
-        LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        auto session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        if( !session )
+        {
+            setErrorString( tr( "invalid session" ) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return true;
+        }
 
-        // 511 (dec) is 777 (oct)
         auto channel = libssh2_scp_send64( session, qPrintable( path_ ), mode_&0777, (libssh2_uint64_t) size_, 0, 0 );
         if( channel )
         {
@@ -115,7 +185,6 @@ namespace Ssh
 
         } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
 
-            timer_.stop();
             char *errMsg(nullptr);
             libssh2_session_last_error(session, &errMsg, NULL, 0);
             setErrorString( tr( "error connecting to remote file %1: %2" ).arg( path_ ).arg( errMsg ) );
@@ -127,6 +196,115 @@ namespace Ssh
         return false;
 
         #else
+        return true;
+        #endif
+
+    }
+
+    //_______________________________________________________________________
+    bool FileWriteSocket::_trySendEof( void )
+    {
+
+        Debug::Throw( "FileWriteSocket::_trySendEof.\n" );
+
+        #if HAVE_SSH
+        auto session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        if( !session )
+        {
+            setErrorString( tr( "invalid session" ) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return true;
+        }
+
+        auto channel( reinterpret_cast<LIBSSH2_CHANNEL*>(_channel() ) );
+        int result = libssh2_channel_send_eof( channel );
+
+        if( result == 0 ) return true;
+        else if( result == LIBSSH2_ERROR_EAGAIN ) return false;
+        else {
+
+            char *errMsg(nullptr);
+            libssh2_session_last_error(session, &errMsg, NULL, 0);
+            setErrorString( tr( "error sending eof to remote file %1: %2" ).arg( path_ ).arg( errMsg ) );
+            emit error( QAbstractSocket::UnknownSocketError );
+            return true;
+
+        }
+
+        #else
+        setErrorString( tr( "no ssh" ) );
+        return true;
+        #endif
+
+    }
+
+    //_______________________________________________________________________
+    bool FileWriteSocket::_tryWaitEof( void )
+    {
+
+        Debug::Throw( "FileWriteSocket::_tryWaitEof.\n" );
+
+        #if HAVE_SSH
+        auto session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        if( !session )
+        {
+            setErrorString( tr( "invalid session" ) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return true;
+        }
+
+        auto channel( reinterpret_cast<LIBSSH2_CHANNEL*>(_channel() ) );
+        int result = libssh2_channel_wait_eof( channel );
+        if( result == 0 ) return true;
+        else if( result == LIBSSH2_ERROR_EAGAIN ) return false;
+        else {
+
+            char *errMsg(nullptr);
+            libssh2_session_last_error(session, &errMsg, NULL, 0);
+            setErrorString( tr( "error waiting for eof from remote file %1: %2" ).arg( path_ ).arg( errMsg ) );
+            emit error( QAbstractSocket::UnknownSocketError );
+            return true;
+
+        }
+
+        #else
+        setErrorString( tr( "no ssh" ) );
+        return true;
+        #endif
+
+    }
+
+    //_______________________________________________________________________
+    bool FileWriteSocket::_tryClose( void )
+    {
+
+        Debug::Throw( "FileWriteSocket::_tryClose.\n" );
+
+        #if HAVE_SSH
+        auto session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        if( !session )
+        {
+            setErrorString( tr( "invalid session" ) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return true;
+        }
+
+        auto channel( reinterpret_cast<LIBSSH2_CHANNEL*>(_channel() ) );
+        int result = libssh2_channel_wait_closed( channel );
+        if( result == 0 ) return true;
+        else if( result == LIBSSH2_ERROR_EAGAIN ) return false;
+        else {
+
+            char *errMsg(nullptr);
+            libssh2_session_last_error(session, &errMsg, NULL, 0);
+            setErrorString( tr( "error waiting for closed from remote file %1: %2" ).arg( path_ ).arg( errMsg ) );
+            emit error( QAbstractSocket::UnknownSocketError );
+            return true;
+
+        }
+
+        #else
+        setErrorString( tr( "no ssh" ) );
         return true;
         #endif
 

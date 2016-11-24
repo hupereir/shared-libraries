@@ -347,10 +347,10 @@ namespace Ssh
             do
             {
                 i = sshSocket_->write( buffer_.data() + bytesWritten, bytesRead-bytesWritten );
-                Debug::Throw() << "Ssh::Tunnel::_readFromTcpSocket - written: " << i << endl;
+                Debug::Throw() << "Ssh::FileTransferObject::_writeToSocket - written: " << i << endl;
                 if (i < 0)
                 {
-                    emit error( tr( "invalid write to tcp socket: %1, error: %2" ).arg( i ).arg( sshSocket_->errorString() ) );
+                    emit error( tr( "invalid write to socket: %1, error: %2" ).arg( i ).arg( sshSocket_->errorString() ) );
                     _closeSourceFile();
                     _closeSocket();
                     _setFailed();
@@ -371,6 +371,13 @@ namespace Ssh
         }
 
         _closeSourceFile();
+
+        {
+            auto fileWriteSocket = qobject_cast<FileWriteSocket*>( sshSocket_ );
+            fileWriteSocket->sendEof();
+            fileWriteSocket->waitForCompleted();
+        }
+
         _closeSocket();
         _setCompleted();
 
