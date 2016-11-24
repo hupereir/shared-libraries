@@ -113,7 +113,7 @@ namespace Ssh
         bool authenticate( bool forceRequestIdentity = false );
 
         //* command list
-        enum SshCommand
+        enum Command
         {
             None,
             Connect,
@@ -127,7 +127,7 @@ namespace Ssh
         };
 
         //* add command
-        void addCommand( SshCommand );
+        void addCommand( Command );
 
         //* abort commands
         /* warning, if happens while SshInterface is in timer event, this might cause crash */
@@ -193,7 +193,7 @@ namespace Ssh
         private:
 
         //* get message command
-        QString _commandMessage( SshCommand ) const;
+        QString _commandMessage( Command ) const;
 
         //* process pending commands
         bool _processCommands( void );
@@ -229,9 +229,9 @@ namespace Ssh
         QString error_;
 
         //* command list
-        using CommandList = QList<SshCommand>;
+        using CommandList = QList<Command>;
         CommandList commands_;
-        SshCommand lastCommand_ = None;
+        Command lastCommand_ = None;
 
         //* timer
         QBasicTimer timer_;

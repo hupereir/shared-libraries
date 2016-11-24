@@ -215,7 +215,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::addCommand( SshCommand command )
+    void Connection::addCommand( Command command )
     {
         Debug::Throw() << "Ssh::Connection::AddCommand: " << command << endl;
         commands_.append( command );
@@ -740,7 +740,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    QString Connection::_commandMessage( SshCommand command ) const
+    QString Connection::_commandMessage( Command command ) const
     {
         switch( command )
         {
