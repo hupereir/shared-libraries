@@ -193,9 +193,6 @@ namespace Ssh
         // do nothing if already connected
         if( isConnected() ) return true;
 
-        QElapsedTimer timer;
-        timer.start();
-
         // setup host manually if not already set
         if( sshHost_.lookupId() < 0 )
         {
@@ -203,6 +200,9 @@ namespace Ssh
             sshHost_.setLookupId( 0 );
         }
 
+        // start timer
+        QElapsedTimer timer;
+        timer.start();
         while( msecs < 0 || timer.elapsed() < msecs )
         {
             // qApp->processEvents();
@@ -345,8 +345,6 @@ namespace Ssh
         }
 
     }
-
-
 
     //_______________________________________________
     bool Connection::_processCommands( void )
