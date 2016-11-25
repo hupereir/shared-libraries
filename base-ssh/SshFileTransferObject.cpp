@@ -56,9 +56,6 @@ namespace Ssh
 
         } else if( mode == QIODevice::WriteOnly ) {
 
-            state_ = Uninitialized;
-            error_.clear();
-
             sshSocket_ = new FileWriteSocket( this );
             connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT( _processError(QAbstractSocket::SocketError)) );
             connect( sshSocket_, SIGNAL(connected()), this, SLOT(_setConnected()) );
