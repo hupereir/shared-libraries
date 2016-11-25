@@ -156,6 +156,9 @@ namespace Ssh
         void _readFromSocket( void );
 
         //* write to ssh socket
+        void _writeToSocketDelayed( void );
+
+        //* write to ssh socket
         void _writeToSocket( void );
 
         //* close source file, once reading is finished

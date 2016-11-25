@@ -26,6 +26,7 @@
 #include <QCoreApplication>
 #include <QElapsedTimer>
 #include <QFile>
+#include <QTimer>
 
 namespace Ssh
 {
@@ -173,7 +174,7 @@ namespace Ssh
         }
 
         if( sshSocket_->isConnected() ) _writeToSocket();
-        else connect( sshSocket_, SIGNAL(connected()), this, SLOT(_writeToSocket()) );
+        else connect( sshSocket_, SIGNAL(connected()), this, SLOT(_writeToSocketDelayed()) );
 
         return true;
 
@@ -182,6 +183,7 @@ namespace Ssh
     //_______________________________________________________________________
     bool FileTransferObject::waitForConnected( int msecs )
     {
+        Debug::Throw( "Ssh::FileTransferObject::waitForConnected.\n" );
 
         // do nothing if socket is already closed
         if( isConnected() ) return !isFailed();
@@ -199,6 +201,7 @@ namespace Ssh
     //_______________________________________________________________________
     bool FileTransferObject::waitForCompleted( int msecs )
     {
+        Debug::Throw( "Ssh::FileTransferObject::waitForCompleted.\n" );
 
         // do nothing if socket is already closed
         if( isCompleted() ) return !isFailed();
@@ -209,6 +212,7 @@ namespace Ssh
         while( ( msecs < 0 || timer.elapsed() < msecs ) && !(state_&(Completed|Failed)) )
         { qApp->processEvents(); }
 
+        Debug::Throw( "Ssh::FileTransferObject::waitForCompleted - done\n" );
         return isCompleted() && !isFailed();
 
     }
@@ -309,6 +313,10 @@ namespace Ssh
         return;
 
     }
+
+    //______________________________________________________
+    void FileTransferObject::_writeToSocketDelayed( void )
+    { QTimer::singleShot( 0, this, SLOT(_writeToSocket())); }
 
     //______________________________________________________
     void FileTransferObject::_writeToSocket( void )
