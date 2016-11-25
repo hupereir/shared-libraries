@@ -47,6 +47,11 @@ namespace Ssh
         //*@name modifiers
         //@{
 
+        //* set file size (for writing to remote)
+        /** it must be called before calling ::connect */
+        void setFileSize( qint64 fileSize )
+        { fileSize_ = fileSize; }
+
         using QObject::connect;
 
         //* connect to remote file
