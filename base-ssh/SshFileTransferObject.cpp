@@ -26,7 +26,6 @@
 #include <QCoreApplication>
 #include <QElapsedTimer>
 #include <QFile>
-#include <QTimer>
 
 namespace Ssh
 {
@@ -174,7 +173,7 @@ namespace Ssh
         }
 
         if( sshSocket_->isConnected() ) _writeToSocket();
-        else connect( sshSocket_, SIGNAL(connected()), this, SLOT(_writeToSocketDelayed()) );
+        else connect( sshSocket_, SIGNAL(connected()), this, SLOT(_writeToSocket()) );
 
         return true;
 
@@ -313,10 +312,6 @@ namespace Ssh
         return;
 
     }
-
-    //______________________________________________________
-    void FileTransferObject::_writeToSocketDelayed( void )
-    { QTimer::singleShot( 0, this, SLOT(_writeToSocket())); }
 
     //______________________________________________________
     void FileTransferObject::_writeToSocket( void )
