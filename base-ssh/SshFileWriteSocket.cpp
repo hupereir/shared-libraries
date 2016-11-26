@@ -126,31 +126,32 @@ namespace Ssh
 
             case Connect:
             {
-                if( _tryConnect() ) commands_.removeFirst();
+                if( _tryConnect() && !commands_.empty() ) commands_.removeFirst();
                 return true;
             }
 
             case SendEof:
             {
-                if( _trySendEof() ) commands_.removeFirst();
+                if( _trySendEof() && !commands_.empty() ) commands_.removeFirst();
                 return true;
             }
 
 
             case WaitForEof:
             {
-                if( _tryWaitEof() ) commands_.removeFirst();
+                if( _tryWaitEof() && !commands_.empty() ) commands_.removeFirst();
                 return true;
             }
 
             case WaitForClosed:
             {
-                if( _tryClose() ) commands_.removeFirst();
+                if( _tryClose() && !commands_.empty() ) commands_.removeFirst();
                 return true;
             }
 
             default:
-            commands_.removeFirst();
+            if( !commands_.empty() )
+            { commands_.removeFirst(); }
             return true;
 
         }
