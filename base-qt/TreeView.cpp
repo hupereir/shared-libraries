@@ -477,7 +477,7 @@ void TreeView::storeExpandedIndexes( void )
     model_->clearExpandedIndexes();
 
     // retrieve selected indexes in list
-    for( index:model_->indexes() )
+    for( auto index:model_->indexes() )
     { if( isExpanded( index ) ) model_->setIndexExpanded( index, true ); }
 
     storeScrollBarPosition();
