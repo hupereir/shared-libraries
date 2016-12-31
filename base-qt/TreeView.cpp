@@ -458,7 +458,7 @@ void TreeView::restoreSelectedIndexes( void )
         const QModelIndexList selection( model_->selectedIndexes() );
 
         selectionModel()->clear();
-        foreach( const QModelIndex& index, selection )
+        for( auto index:selection )
         { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
 
         selectionModel()->setCurrentIndex( model_->currentIndex(), QItemSelectionModel::Current );
@@ -477,7 +477,7 @@ void TreeView::storeExpandedIndexes( void )
     model_->clearExpandedIndexes();
 
     // retrieve selected indexes in list
-    foreach( const QModelIndex& index, model_->indexes() )
+    for( index:model_->indexes() )
     { if( isExpanded( index ) ) model_->setIndexExpanded( index, true ); }
 
     storeScrollBarPosition();
@@ -491,7 +491,7 @@ void TreeView::restoreExpandedIndexes( void )
     QModelIndexList indexes( model_->expandedIndexes() );
 
     collapseAll();
-    foreach( const QModelIndex& index, indexes )
+    for( auto index:indexes )
     { setExpanded( index, true ); }
 
     restoreScrollBarPosition();
@@ -526,7 +526,9 @@ void TreeView::mouseMoveEvent( QMouseEvent *event )
     if( !indexAt( event->pos() ).isValid() )
     { _setHoverIndex( QModelIndex() ); }
 
-    return QTreeView::mouseMoveEvent( event );
+    if( !hasMouseTracking() || event->buttons() != Qt::NoButton )
+    { return QTreeView::mouseMoveEvent( event ); }
+
 }
 
 //__________________________________________________________
