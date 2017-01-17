@@ -51,21 +51,15 @@ class BoxSelection: public Counter
     //* constructor
     BoxSelection( TextEditor* parent );
 
-    //* synchronize two box selection
-    void synchronize( const BoxSelection& selection );
-
     //*@ accessors
     //@{
-
-    //* configuration update
-    void updateConfiguration( void );
-
-    //* try enable box selection
-    bool checkEnabled( void );
 
     //* enability
     bool isEnabled( void ) const
     { return enabled_; }
+
+    //* empty
+    bool empty( void ) const;
 
     //* forgeround color
     const QColor& color( void ) const
@@ -96,6 +90,15 @@ class BoxSelection: public Counter
     //*@name modifiers
     //@{
 
+    //* synchronize two box selection
+    void synchronize( const BoxSelection& selection );
+
+    //* configuration update
+    void updateConfiguration( void );
+
+    //* try enable box selection
+    bool checkEnabled( void );
+
     //* start
     bool start( QPoint point );
 
@@ -117,9 +120,9 @@ class BoxSelection: public Counter
         public:
 
         //* constructor
-        CursorList( const int& first_column = 0, const int& columns = 0 ):
+        CursorList( const int& firstColumn = 0, const int& columns = 0 ):
             Counter( "CursorList" ),
-            firstColumn_( first_column ),
+            firstColumn_( firstColumn ),
             columns_( columns )
         {}
 
@@ -136,10 +139,10 @@ class BoxSelection: public Counter
 
         //* first column
         /*! it is used for lines that are entirely outside of the existing blocks */
-        int firstColumn_;
+        int firstColumn_ = 0;
 
         //* selection columns
-        int columns_;
+        int columns_ = 0;
 
     };
 

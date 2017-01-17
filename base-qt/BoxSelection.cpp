@@ -39,6 +39,15 @@ BoxSelection::BoxSelection( TextEditor* parent ):
 }
 
 //________________________________________________________________________
+bool BoxSelection::empty( void ) const
+{
+    return
+        !enabled_ ||
+        state_ == SelectionEmpty ||
+        ( state_ == SelectionFinished && cursors_.empty() );
+}
+
+//________________________________________________________________________
 void BoxSelection::synchronize( const BoxSelection& box )
 {
 
@@ -59,6 +68,7 @@ void BoxSelection::synchronize( const BoxSelection& box )
     return;
 
 }
+
 
 //________________________________________________________________________
 void BoxSelection::updateConfiguration( void )
@@ -506,15 +516,15 @@ void BoxSelection::_store( void )
     Debug::Throw( debugLevel, "BoxSelection::_store.\n" );
 
     // retrieve box selection size
-    int first_column = rect().left() / fontWidth_;
+    int firstColumn = rect().left() / fontWidth_;
     int columns = rect().width() / fontWidth_;
     int rows = rect().height() / fontHeight_ + 1;
 
-    Debug::Throw() << "BoxSelection::_store - [" << first_column << "," << columns << "," << rows << "]" << endl;
+    Debug::Throw() << "BoxSelection::_store - [" << firstColumn << "," << columns << "," << rows << "]" << endl;
 
     // translate rect
     QRect local( parent_->toViewport( rect() ) );
-    cursors_ = CursorList( first_column, columns );
+    cursors_ = CursorList( firstColumn, columns );
     for( int row = 0; row < rows; row ++ )
     {
 
