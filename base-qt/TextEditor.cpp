@@ -212,6 +212,10 @@ bool TextEditor::isCursorVisible( void ) const
 }
 
 //______________________________________________________________________
+bool TextEditor::hasSelection( void ) const
+{ return textCursor().hasSelection() || !boxSelection_.empty(); }
+
+//______________________________________________________________________
 TextSelection TextEditor::selection( void ) const
 {
     Debug::Throw( "TextEditor::selection.\n" );

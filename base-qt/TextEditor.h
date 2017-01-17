@@ -116,6 +116,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual bool isActive( void ) const
     { return active_; }
 
+    //* has selection
+    bool hasSelection( void ) const;
+
     //* TextSelection object from this selection, or clipboard
     TextSelection selection( void ) const;
 
