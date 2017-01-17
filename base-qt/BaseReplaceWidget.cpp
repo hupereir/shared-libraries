@@ -84,6 +84,7 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     connect( action, SIGNAL(triggered()), this, SLOT(_replaceInSelection()) );
     connect( action, SIGNAL(triggered()), this, SLOT(_updateFindComboBox()) );
     connect( action, SIGNAL(triggered()), this, SLOT(_updateReplaceComboBox()) );
+    replaceInSelectionAction_ = action;
 
     // replace in window action
     replaceAllMenu_->addAction( action = new QAction( tr( "Window" ), this ) );

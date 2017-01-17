@@ -51,6 +51,10 @@ class BaseReplaceWidget: public BaseFindWidget
     //*@name modifiers
     //@{
 
+    //* enable replace in selection
+    void enableReplaceInSelection( bool value )
+    { replaceInSelectionAction_->setEnabled( value ); }
+
     //* string to replace
     void setReplaceText( const QString& text )
     { replaceEditor_->setEditText( text ); }
@@ -113,6 +117,9 @@ class BaseReplaceWidget: public BaseFindWidget
 
     //* replace all menu
     QMenu* replaceAllMenu_ = nullptr;
+
+    //* replace in selection action
+    QAction* replaceInSelectionAction_ = nullptr;
 
     //* replaced strings
     static QOrderedSet<QString>& _replacedStrings();
