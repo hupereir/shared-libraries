@@ -66,6 +66,9 @@ class BaseReplaceWidget: public BaseFindWidget
 
     Q_SIGNALS:
 
+    //* emitted when replace all menu is about to show
+    void menuAboutToShow( void );
+
     //* emitted when Replace is pressed
     void replace( TextSelection );
 

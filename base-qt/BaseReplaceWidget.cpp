@@ -92,6 +92,8 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     connect( action, SIGNAL(triggered()), this, SLOT(_updateFindComboBox()) );
     connect( action, SIGNAL(triggered()), this, SLOT(_updateReplaceComboBox()) );
 
+    connect( replaceAllMenu_, SIGNAL(aboutToShow()), SIGNAL(menuAboutToShow()) );
+
 }
 
 //_____________________________________________________
