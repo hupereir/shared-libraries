@@ -633,6 +633,7 @@ void TextEditor::createReplaceWidget( bool compact )
         connect( replaceWidget_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
         connect( replaceWidget_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
         connect( replaceWidget_, SIGNAL(replaceInSelection(TextSelection)), SLOT(replaceInSelection(TextSelection)) );
+        connect( replaceWidget_, SIGNAL(menuAboutToShow()), SLOT(_updateReplaceInSelection()) );
         connect( this, SIGNAL(matchFound()), replaceWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), replaceWidget_, SLOT(noMatchFound()) );
         connect( this, SIGNAL(destroyed()), replaceWidget_, SLOT(deleteLater()) );
@@ -2834,6 +2835,10 @@ void TextEditor::_replaceFromDialog( void )
 
     return;
 }
+
+//_____________________________________________
+void TextEditor::_updateReplaceInSelection( void )
+{ if( replaceWidget_ ) replaceWidget_->enableReplaceInSelection( hasSelection() ); }
 
 //________________________________________________
 void TextEditor::_selectLineFromDialog( void )

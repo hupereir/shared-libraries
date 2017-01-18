@@ -777,6 +777,9 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* select line from dialog
     virtual void _selectLineFromDialog( void );
 
+    //* update replace in selection action
+    void _updateReplaceInSelection( void );
+
     private Q_SLOTS:
 
     //* update configuration
