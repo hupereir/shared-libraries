@@ -523,11 +523,21 @@ bool TreeView::event( QEvent* event )
 void TreeView::mouseMoveEvent( QMouseEvent *event )
 {
 
-    if( !indexAt( event->pos() ).isValid() )
-    { _setHoverIndex( QModelIndex() ); }
+    if( hasMouseTracking() && event->buttons() == Qt::NoButton )
+    {
 
-    if( !hasMouseTracking() || event->buttons() != Qt::NoButton )
-    { return QTreeView::mouseMoveEvent( event ); }
+        // when mouse tracking is no, need to intercept mouseMoveEvents
+        // because they break drag and drop
+        _setHoverIndex( indexAt(( event->pos() ) ) );
+
+    } else {
+
+        if( !indexAt( event->pos() ).isValid() )
+        { _setHoverIndex( QModelIndex() ); }
+
+        return QTreeView::mouseMoveEvent( event );
+
+    }
 
 }
 
