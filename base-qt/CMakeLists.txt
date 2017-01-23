@@ -119,6 +119,7 @@ set(base_qt_SOURCES
   FileList.cpp
   FilePermissionsWidget.cpp
   FileRecordModel.cpp
+  FileRecordToolTipWidget.cpp
   FileSystemWatcher.cpp
   FontEditor.cpp
   FontInfo.cpp
