@@ -24,13 +24,11 @@
 
 #include <QDir>
 
-const int debugLevel = 0;
-
 //_________________________________________________________
 ResourceMigration::ResourceMigration( File source ):
     Counter( "ResourceMigration" ),
     source_( source )
-{ Debug::Throw( debugLevel, "ResourceMigration::ResourceMigration.\n" ); }
+{ Debug::Throw( "ResourceMigration::ResourceMigration.\n" ); }
 
 //_________________________________________________________
 bool ResourceMigration::migrate( File destination ) const
@@ -39,21 +37,22 @@ bool ResourceMigration::migrate( File destination ) const
     // check source
     if( !source_.exists() )
     {
-        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - file " << source_ << " does not exist" << endl;
+        Debug::Throw() << "ResourceMigration::migrate - file " << source_ << " does not exist" << endl;
         return false;
     }
 
     // check destination
     if( destination.exists() )
     {
-        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - file " << destination << " already exists" << endl;
+        Debug::Throw() << "ResourceMigration::migrate - file " << destination << " already exists" << endl;
+        if( source_.exists() ) source_.remove();
         return false;
     }
 
     // create destination directory
     if( !QDir().mkpath( destination.path() ) )
     {
-        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - unable to create path " << destination.path() << endl;
+        Debug::Throw() << "ResourceMigration::migrate - unable to create path " << destination.path() << endl;
         return false;
     }
 
@@ -62,12 +61,12 @@ bool ResourceMigration::migrate( File destination ) const
     {
 
         source_.remove();
-        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - successful migration" << endl;
+        Debug::Throw(0) << "ResourceMigration::migrate - migration from " << source_ << " to " << destination << " succesful" << endl;
         return true;
 
     } else {
 
-        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - cannot copy " << source_ << " over " << destination << endl;
+        Debug::Throw() << "ResourceMigration::migrate - cannot copy " << source_ << " over " << destination << endl;
         return false;
 
     }
