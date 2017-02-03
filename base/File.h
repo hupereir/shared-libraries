@@ -20,8 +20,6 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-
 #include <QFileInfo>
 #include <QList>
 #include <QString>
