@@ -1,0 +1,75 @@
+/******************************************************************************
+*
+* Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
+*
+* This is free software; you can redistribute it and/or modify it under the
+* terms of the GNU General Public License as published by the Free Software
+* Foundation; either version 2 of the License, or (at your option) any later
+* version.
+*
+* This software is distributed in the hope that it will be useful, but WITHOUT
+* Any WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+* for more details.
+*
+* You should have received a copy of the GNU General Public License along with
+* this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*******************************************************************************/
+
+#include "ResourceMigration.h"
+
+#include "Debug.h"
+#include "Util.h"
+
+#include <QDir>
+
+const int debugLevel = 0;
+
+//_________________________________________________________
+ResourceMigration::ResourceMigration( File source ):
+    Counter( "ResourceMigration" ),
+    source_( source )
+{ Debug::Throw( debugLevel, "ResourceMigration::ResourceMigration.\n" ); }
+
+//_________________________________________________________
+bool ResourceMigration::migrate( File destination ) const
+{
+
+    // check source
+    if( !source_.exists() )
+    {
+        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - file " << source_ << " does not exist" << endl;
+        return false;
+    }
+
+    // check destination
+    if( destination.exists() )
+    {
+        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - file " << destination << " already exists" << endl;
+        return false;
+    }
+
+    // create destination directory
+    if( !QDir().mkpath( destination.path() ) )
+    {
+        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - unable to create path " << destination.path() << endl;
+        return false;
+    }
+
+    // copy source over destination
+    if( source_.copy( destination ) )
+    {
+
+        source_.remove();
+        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - successful migration" << endl;
+        return true;
+
+    } else {
+
+        Debug::Throw( debugLevel ) << "ResourceMigration::migrate - cannot copy " << source_ << " over " << destination << endl;
+        return false;
+
+    }
+
+}

@@ -44,6 +44,7 @@ set(base_SOURCES
   Key.cpp
   Option.cpp
   Options.cpp
+  ResourceMigration.cpp
   Singleton.cpp
   TimeStamp.cpp
   Util.cpp
