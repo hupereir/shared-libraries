@@ -47,6 +47,9 @@ class Util
     //* temporary directory ("/tmp")
     static QString tmp( void );
 
+    //* user config path
+    static QString config( void );
+
     /** returns the host name.
     \par short_name if true returns only the string located before the first '.'
     */

@@ -19,11 +19,16 @@
 
 #include "Util.h"
 #include "Debug.h"
+#include "File.h"
 
 #include <QDir>
 #include <QProcess>
 #include <QStringList>
 #include <QHostInfo>
+
+#if QT_VERSION >= 0x050000
+#include <QStandardPaths>
+#endif
 
 #include <unistd.h>
 
@@ -71,16 +76,6 @@ QString Util::domain( void )
 
     return QHostInfo::localDomainName();
 
-//     #else
-//
-//     // use build-in unix function
-//     char *buf = new char[ LONGSTR ];
-//     if( !buf ) return "";
-//     getdomainname( buf, LONGSTR );
-//     QString out( buf );
-//     delete[] buf;
-//     return out;
-//
     #else
 
     // use system environment.
@@ -110,6 +105,18 @@ QString Util::home( void )
 //______________________________________________________________________
 QString Util::tmp( void )
 { return QDir::tempPath(); }
+
+//______________________________________________________________________
+QString Util::config( void )
+{
+
+    #if QT_VERSION >= 0x050000
+    return QStandardPaths::writableLocation( QStandardPaths::ConfigLocation );
+    #else
+    return File( ".config/" ).addPath( home() );
+    #endif
+
+}
 
 //______________________________________________________________________
 QString Util::host( bool shortName )
