@@ -136,7 +136,7 @@ QDomElement XmlFileRecord::List::domElement( QDomDocument& document ) const
 {
     Debug::Throw( "XmlFileRecord::List::domElement.\n" );
     QDomElement top = document.appendChild( document.createElement( Base::Xml::FileList ) ).toElement();
-    foreach( const XmlFileRecord& record, *this )
+    for( auto record:*this )
     {
         if( !record.file().isEmpty() )
         { top.appendChild( XmlFileRecord( record ).domElement( document ) ); }

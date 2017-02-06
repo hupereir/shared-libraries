@@ -36,7 +36,7 @@ void ScratchFileMonitor::deleteScratchFiles( void )
 
     // create records
     FileRecordModel::List records;
-    foreach( const File& file, files_ )
+    for( auto file:files_ )
     {
 
         if( file.exists() && file.isWritable() && (file.isLink() || !file.isDirectory() ) )
@@ -73,13 +73,13 @@ void ScratchFileMonitor::deleteScratchFiles( void )
 
     // try remove directories
     // subdirectories are automatically removed unless non-empty
-    foreach( const File& file, files_ )
+    for( auto file:files_ )
     {
         if( file.isLink() || !file.isDirectory() ) continue;
 
         // get list of contained files
         bool empty( true );
-        foreach( const File& child, file.listFiles( File::Recursive ) )
+        for( auto child:file.listFiles( File::Recursive ) )
         {
             if( child.isLink() || !child.isDirectory() )
             {

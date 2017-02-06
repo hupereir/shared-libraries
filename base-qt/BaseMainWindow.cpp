@@ -213,7 +213,7 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
     if( actions.size() > 1 )
     {
         QMenu* toolbarsMenu( menu->addMenu( tr( "Toolbars" ) ) );
-        foreach( QAction* action, actions )
+        for( auto action:actions )
         { toolbarsMenu->addAction( action ); }
     }
 
@@ -299,7 +299,7 @@ bool BaseMainWindow::_hasToolBars( void ) const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
     QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
-    foreach( QToolBar* toolbar, toolbars )
+    for( auto toolbar:toolbars )
     {
 
         // skip toolbars with no names
@@ -325,7 +325,7 @@ bool BaseMainWindow::_hasLockableToolBars( void ) const
     Debug::Throw( "BaseMainWindow::_hasLockableToolBars.\n" );
 
     QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
-    foreach( QToolBar* toolbar, toolbars )
+    for( auto toolbar:toolbars )
     {
 
         // try cast to custom
@@ -358,7 +358,7 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
     ActionList actions;
 
     QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
-    foreach( QToolBar* toolbar, toolbars )
+    for( auto toolbar:toolbars )
     {
 
         // try cast to custom
@@ -453,7 +453,7 @@ void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 void BaseMainWindow::_lockToolBars( bool value )
 {
     Debug::Throw( "BaseMainWindow::_lockToolBars.\n" );
-    foreach( QToolBar* toolbar, findChildren<QToolBar*>() )
+    for( auto toolbar:findChildren<QToolBar*>() )
     {
 
         // skip if parent is not this
@@ -476,7 +476,7 @@ void BaseMainWindow::_lockToolBars( bool value )
 void BaseMainWindow::_lockPanels( bool value )
 {
     Debug::Throw( "BaseMainWindow::_lockPanels.\n" );
-    foreach( DockWidget* panel, findChildren<DockWidget*>() )
+    for( auto panel:findChildren<DockWidget*>() )
     { panel->setLocked( value ); }
 
     if( hasOptionName() ) XmlOptions::get().set<bool>( lockPanelsOptionName_, value );

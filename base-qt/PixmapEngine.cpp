@@ -70,7 +70,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool fromCache )
     else {
 
         if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" );
-        foreach( const QString& path, pixmapPath_ )
+        for( auto path:pixmapPath_ )
         {
 
             // skip empty path

@@ -135,7 +135,7 @@ void RecentFilesMenu::_loadFiles( void )
     else { std::sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
     // retrieve stored file record
-    foreach( const FileRecord& record, records )
+    for( auto record:records )
     {
 
         QString label( record.file() );

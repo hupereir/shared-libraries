@@ -109,7 +109,7 @@ void OptionDialog::_reload( void )
     {
         model_.add( OptionPair( iter.key(), "" ) );
         OptionModel::List options;
-        foreach( const Option& option, iter.value() )
+        for( auto option:iter.value() )
         { model_.add( OptionPair( iter.key(), option ) ); }
 
     }
@@ -163,7 +163,7 @@ void OptionDialog::_specialOptionModified( OptionPair option )
     {
 
         XmlOptions::get().keep( option.first );
-        foreach( const OptionPair& optionPair, values )
+        for( auto optionPair:values )
         {
             if( !optionPair.second.raw().isEmpty() )
             { XmlOptions::get().add( optionPair.first, optionPair.second ); }

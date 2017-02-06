@@ -24,7 +24,7 @@ void EmbeddedWidget::showEvent( QShowEvent* event )
 {
     if( parentWidget() )
     {
-        foreach( auto sibling, parentWidget()->findChildren<EmbeddedWidget*>() )
+        for( auto sibling:parentWidget()->findChildren<EmbeddedWidget*>() )
         { if( sibling->isVisible() && sibling != this ) sibling->hide(); }
     }
 

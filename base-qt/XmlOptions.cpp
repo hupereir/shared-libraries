@@ -45,7 +45,7 @@ bool XmlOptionsSingleton::_differs( const Options& first, const Options& second 
         Options::List options( second.specialOptions( firstIter.key() ) );
 
         // loop over options in first list
-        foreach( const Option& option, firstIter.value() )
+        for( auto option:firstIter.value() )
         {
             // skip non recordable options
             if( !option.isRecordable() ) continue;

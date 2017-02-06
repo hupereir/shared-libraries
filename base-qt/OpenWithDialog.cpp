@@ -118,7 +118,7 @@ void OpenWithDialog::realizeWidget( void )
     if( files_.size() > 1 )
     {
         BaseFileInfo::List fileInfoList;
-        foreach( auto file, files_ )
+        for( auto file:files_ )
         { fileInfoList.append( BaseFileInfo( file ) ); }
 
         // list of multiple files
@@ -140,7 +140,7 @@ void OpenWithDialog::realizeWidget( void )
 
         // resize list to accomodate longest item
         int maxWidth( 0 );
-        foreach( auto fileInfo, fileInfoList )
+        for( auto fileInfo:fileInfoList )
         { maxWidth = qMax( maxWidth, treeView->fontMetrics().width( fileInfo.file() ) ); }
 
         treeView->verticalScrollBar()->adjustSize();
@@ -169,7 +169,7 @@ void OpenWithDialog::realizeWidget( void )
     {
         // retrieve applications from options
         const auto applications( XmlOptions::get().specialOptions( optionName_ ) );
-        foreach( auto option, applications )
+        for( auto option:applications )
         { comboBox_->addItem( File( option.raw() ) ); }
     }
 
@@ -190,7 +190,7 @@ void OpenWithDialog::_open( void )
     // update options
     if( !optionName_.isEmpty() && XmlOptions::get().isSpecialOption( optionName_ ) )
     {
-        foreach( auto command, comboBox_->newItems() )
+        for( auto command:comboBox_->newItems() )
         { XmlOptions::get().add( optionName_, Option( command, Option::Recordable|Option::Current ) ); }
     }
 
@@ -202,7 +202,7 @@ void OpenWithDialog::_open( void )
         {
 
             // open files using default application
-            foreach( auto file, files_ )
+            for( auto file:files_ )
             {
                 if( isLink_ ) QDesktopServices::openUrl( QUrl::fromEncoded( file.toLatin1() ) );
                 else QDesktopServices::openUrl( QUrl::fromEncoded( QString( "file://%1" ).arg( file ).toLatin1() ) );
@@ -219,7 +219,7 @@ void OpenWithDialog::_open( void )
             }
 
             // execute
-            foreach( auto file, files_ ) { ( Command( command ) << file ).run(); }
+            for( auto file:files_ ) { ( Command( command ) << file ).run(); }
 
         }
 

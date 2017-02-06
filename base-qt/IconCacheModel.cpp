@@ -82,7 +82,7 @@ QString IconCacheModel::_availableSizes( const Base::IconCache::Pair& iconPair )
     QString buffer;
     QTextStream what( &buffer );
     bool first( true );
-    foreach( const QSize& size, iconPair.second.availableSizes() )
+    for( auto size:iconPair.second.availableSizes() )
     {
         if( first ) first = false;
         else what << ", ";

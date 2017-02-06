@@ -39,9 +39,8 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     // use MIBs to get rid of aliases
-    const QList<int> codecIds( QTextCodec::availableMibs() );
     QList<TextEncodingString> codecStrings;
-    foreach( const int& codecId, codecIds )
+    for( auto codecId:QTextCodec::availableMibs() )
     {
         QTextCodec* codec( QTextCodec::codecForMib( codecId ) );
         if( codec ) codecStrings.append( codec->name() );
@@ -49,7 +48,7 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
 
     // store in menu
     std::sort( codecStrings.begin(), codecStrings.end() );
-    foreach( const TextEncodingString& codecString, codecStrings )
+    for( auto codecString:codecStrings )
     {
 
         const QByteArray value( qPrintable( codecString ) );

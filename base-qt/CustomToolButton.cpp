@@ -62,9 +62,9 @@ bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
     QList<QIcon::State> states;
     states << QIcon::Off << QIcon::On;
 
-    foreach( const QSize& size, source.availableSizes() )
-    foreach( const QIcon::Mode& mode, modes )
-    foreach( const QIcon::State& state, states )
+    for( auto size:source.availableSizes() )
+    for( auto mode:modes )
+    for( auto state:states )
     {
         CustomPixmap pixmap( source.pixmap( size, mode, state ) );
         if( pixmap.isNull() ) continue;

@@ -41,22 +41,22 @@ ColorComboBox::ColorComboBox( QWidget* parent ):
 //_________________________________________________________
 Base::Color::Set ColorComboBox::colors( void ) const
 {
-    
+
     Debug::Throw( "ColorComboBox::colors.\n" );
-    
+
     Base::Color::Set out;
     for( int index = 0; index < QComboBox::count(); ++index )
     {
-        
+
         const QVariant data( itemData( index ) );
         QColor color;
         if( data.canConvert<QColor>() ) color = data.value<QColor>();
         if( color.isValid() ) out.insert( color );
 
     }
-    
+
     return out;
-       
+
 }
 
 //_________________________________________________________
@@ -66,57 +66,57 @@ QColor ColorComboBox::color( void ) const
 //_________________________________________________________
 void ColorComboBox::setColors( const Base::Color::Set& colors )
 {
-    
+
     Debug::Throw( "ColorComboBox::addColors.\n" );
-   
+
     // first clear
     clear();
-    
+
     // insert new action
     insertItem( QComboBox::count(), IconEngine::get( IconNames::Add ), tr( "New" ) );
-    
+
     // insert default action
     insertItem( QComboBox::count(), CustomPixmap( IconSize( IconSize::Huge ), CustomPixmap::Transparent ), tr( "Default" ) );
-    
+
     // loop over colors
-    foreach( const Base::Color& color, colors )
+    for( auto color:colors )
     { addColor( color ); }
-        
+
 }
 
 //_________________________________________________________
 void ColorComboBox::addColor( const QColor& color )
 {
     Debug::Throw() << "ColorComboBox::addColor - color: " << color.name() << endl;
-    
+
     // create pixmap
     QPixmap pixmap = QPixmap( IconSize( IconSize::Huge ) );
     pixmap.fill( Qt::transparent );
-    
+
     QPainter painter( &pixmap );
     painter.setPen( Qt::NoPen );
     painter.setRenderHints( QPainter::Antialiasing|QPainter::SmoothPixmapTransform );
-    
+
     QRectF rect( pixmap.rect() );
     rect.adjust( 0.5, 0.5, -0.5, -0.5 );
-    
+
     painter.setBrush( color );
     painter.setPen( Qt::NoPen );
     painter.drawEllipse( rect );
     painter.end();
-    
-    insertItem( QComboBox::count(), pixmap, color.name(), color );        
-        
+
+    insertItem( QComboBox::count(), pixmap, color.name(), color );
+
 }
 
 //_________________________________________________________
 void ColorComboBox::selectColor( const QColor&  color )
 {
-    
+
     Debug::Throw() << "ColorComboBox::selectColor - color: " << color.name() << endl;
     if( !color.isValid() ) setCurrentIndex( 1 );
     else {
-        
+
         bool found( false );
         for( int index = 2; index < QComboBox::count(); ++index )
         {
@@ -127,17 +127,17 @@ void ColorComboBox::selectColor( const QColor&  color )
                 found = true;
                 break;
             }
-        
+
         }
-    
+
         if( !found )
         {
             addColor( color );
             setCurrentIndex( QComboBox::count()-1 );
         }
-        
+
     }
-    
+
 }
 
 //_________________________________________________________
@@ -146,22 +146,22 @@ void ColorComboBox::_updateActiveIndex( int index )
     Debug::Throw() << "ColorComboBox::_updateActiveIndex - index: " << index << endl;
     if( index == 0 )
     {
-        
+
         // select a new color
         QColor color( QColorDialog::getColor( Qt::white, this ) );
         if( color.isValid() )
         {
-        
+
             addColor( color );
             lastColor_ = color;
             selectColor( color );
 
         } else {
-            
+
             selectColor( lastColor_ );
-            
+
         }
-    
+
     }
 
 }

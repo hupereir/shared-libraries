@@ -66,7 +66,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     editor_->setEditable( true );
     editor_->setAutoCompletion( true, Qt::CaseSensitive );
     editor_->setNavigationEnabled( false );
-    
+
     connect( editor_->lineEdit(), SIGNAL(cleared()), this, SLOT(matchFound()) );
     connect( editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_find()) );
     connect( editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateFindComboBox()) );
@@ -233,7 +233,7 @@ void BaseFindWidget::synchronize( void )
     Debug::Throw( "BaseFindWidget::synchronize.\n" );
     editor_->clear();
 
-    foreach( const auto& string, _searchedStrings() )
+    for( auto string:_searchedStrings() )
     { editor_->addItem( string ); }
 }
 
@@ -256,7 +256,7 @@ void BaseFindWidget::_updateButtons( const QString& text )
     Debug::Throw( "BaseFindWidget::_updateButtons.\n" );
 
     const bool enabled( !( text.isNull() || text.isEmpty() ) );
-    foreach( const auto& button, buttons_ )
+    for( auto button:buttons_ )
     { button->setEnabled( enabled ); }
 
 }

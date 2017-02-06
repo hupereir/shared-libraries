@@ -79,7 +79,7 @@ void ErrorHandler::_throw( QtMsgType type, const char* message )
 
     // check if message is to be disabled
     bool disabled( false );
-    foreach( const QString& message, get()._disabledMessages() )
+    for( auto message:get()._disabledMessages() )
     {
         if( localMessage.indexOf( message ) >= 0 )
         {

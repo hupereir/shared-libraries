@@ -55,7 +55,7 @@ void ContextMenu::_hideActions( void )
     if( _hideDisabledActions() )
     {
 
-        foreach( QAction* action, actions() )
+        for( auto action:actions() )
         {
             if( !action->isEnabled() && action->isVisible() )
             {
@@ -75,7 +75,7 @@ void ContextMenu::_showActions( void )
     if( _hideDisabledActions() )
     {
 
-        foreach( ActionPointer action, hiddenActions_ )
+        for( auto action:hiddenActions_ )
         {
             if( action )
             {

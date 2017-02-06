@@ -128,7 +128,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     layout->addStretch();
 
     // hide everything, they are shown when proper values are set
-    foreach( GridLayoutItem* item, items )
+    for( auto item:items )
     { item->hide(); }
 
     permissionsWidget_->hide();

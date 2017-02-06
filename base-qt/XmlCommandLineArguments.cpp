@@ -48,7 +48,7 @@ XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
 QDomElement XmlCommandLineArguments::domElement( const QString& name, QDomDocument& parent ) const
 {
     QDomElement out( parent.createElement( name ) );
-    foreach( const QString& argument, *this )
+    for( auto argument:*this )
     {
         out.
             appendChild( parent.createElement( Xml::Argument ) ).

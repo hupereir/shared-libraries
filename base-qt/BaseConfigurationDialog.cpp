@@ -570,7 +570,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
 
         // loop over options in first list
         const Options::List options( second.specialOptions( firstIter.key() ) );
-        foreach( const Option& option, firstIter.value() )
+        for( auto option:firstIter.value() )
         {
             // find in second list
             if( options.indexOf( option ) < 0 )

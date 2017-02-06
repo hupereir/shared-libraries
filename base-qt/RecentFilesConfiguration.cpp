@@ -162,7 +162,7 @@ void RecentFilesConfiguration::reload( void )
 
     Debug::Throw( "RecentFilesConfiguration::reload.\n" );
     FileRecordModel::List recordModelList;
-    foreach( const FileRecord& record, recentFiles_->records() )
+    for( auto record:recentFiles_->records() )
     { recordModelList << record; }
     model_.set( recordModelList );
 

@@ -62,7 +62,7 @@ File::List FileList::files( void ) const
 
     FileRecord::List records( _truncatedList( _records() ) );
     File::List out;
-    foreach( const FileRecord& record, records )
+    for( auto record:records )
     { out << record.file(); }
 
     return out;

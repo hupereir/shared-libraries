@@ -132,7 +132,7 @@ bool XmlFileList::write( File file )
 
     // create main element and insert records
     QDomElement top = document.createElement( tagName_ );
-    foreach( const FileRecord& record, records )
+    for( auto record:records )
     {
 
         if( !record.file().isEmpty() )

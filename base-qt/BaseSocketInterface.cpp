@@ -44,7 +44,7 @@ void BaseSocketInterface::sendBuffer( qint32 type, const QByteArray& buffer )
 void BaseSocketInterface::_sendPendingBuffers( void )
 {
 
-    foreach( auto bufferPair, pendingBuffers_ )
+    for( auto bufferPair:pendingBuffers_ )
     { _sendBuffer( bufferPair.first, bufferPair.second ); }
 
     pendingBuffers_.clear();

@@ -98,7 +98,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
 
             // store list of loaded sizes
             QList<QSize> sizes;
-            foreach( const QString& path, pixmapPath_ )
+            for( auto path:pixmapPath_ )
             {
 
                 // skip empty path
