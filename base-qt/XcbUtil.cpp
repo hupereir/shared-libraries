@@ -243,15 +243,13 @@ XcbUtil& XcbUtil::get( void )
 }
 
 //________________________________________________________________________
-XcbUtil::XcbUtil( void )
-{
-    Debug::Throw( "XcbUtil::XcbUtil.\n" );
-    d = new Private();
-}
+XcbUtil::XcbUtil( void ):
+    d( new Private )
+{ Debug::Throw( "XcbUtil::XcbUtil.\n" ); }
 
 //________________________________________________________________________
 XcbUtil::~XcbUtil( void )
-{ delete d; }
+{}
 
 //________________________________________________________________________
 int XcbUtil::defaultScreenNumber( void ) const

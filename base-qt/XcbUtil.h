@@ -26,6 +26,8 @@
 #include <QScopedPointer>
 #include <QWidget>
 
+#include <memory>
+
 class XcbUtil: private XcbDefines
 {
 
@@ -151,7 +153,7 @@ class XcbUtil: private XcbDefines
 
     //* private pointer
     class Private;
-    Private* d;
+    std::unique_ptr<Private> d;
 
 };
 

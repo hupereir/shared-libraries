@@ -25,6 +25,8 @@
 #include <QWidget>
 #include <QPixmap>
 
+#include <memory>
+
 class WinUtilPrivate;
 
 class WinUtil
@@ -64,7 +66,7 @@ class WinUtil
     private:
 
     //* private
-    WinUtilPrivate* private_;
+    std::unique_ptr<WinUtilPrivate> private_;
 
     //* target widget
     QWidget *target_;

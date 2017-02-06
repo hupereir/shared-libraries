@@ -100,13 +100,12 @@ class WinUtilPrivate
 
 //_______________________________________
 WinUtil::WinUtil( QWidget* target ):
-    private_(0),
     target_( target )
 { Q_CHECK_PTR( target_ ); }
 
 //_______________________________________
 WinUtil::~WinUtil( void )
-{ delete private_; }
+{}
 
 //_______________________________________
 void WinUtil::update( const QPixmap& pixmap, double opacity ) const
