@@ -86,7 +86,8 @@ namespace SpellCheck
 
         // populate list
         bool first( true );
-        foreach( const QString& dictionary, SpellCheck::SpellInterface().dictionaries() )
+        auto dictionaries( SpellCheck::SpellInterface().dictionaries() );
+        for( auto dictionary:dictionaries )
         {
 
             // check against list of disabled dictionaries

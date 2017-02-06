@@ -289,7 +289,7 @@ namespace SpellCheck
         dictionariesComboBox_->clear();
 
         // get dictionary list and populate combobox
-        foreach( const QString& dictionary, interface().dictionaries() )
+        for( auto dictionary:interface().dictionaries() )
         { if( !disabledDictionaries.contains( dictionary ) ) dictionariesComboBox_->addItem( dictionary ); }
 
         // restore default value
@@ -312,7 +312,7 @@ namespace SpellCheck
         filtersComboBox_->clear();
 
         // get dictionary list and populate combobox
-        foreach( const QString& filter, interface().filters() )
+        for( auto filter:interface().filters() )
         { if( !disabledFilters.contains( filter ) ) filtersComboBox_->addItem( filter ); }
 
         // restore default value

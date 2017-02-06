@@ -67,7 +67,7 @@ namespace Ssh
         if( !Singleton::get().initialized() ) return false;
 
         // loop over tunnel attributes
-        foreach( auto attributes, attributes_.tunnels() )
+        for( auto attributes:attributes_.tunnels() )
         {
 
             // create Tcp server
@@ -251,7 +251,7 @@ namespace Ssh
         Debug::Throw( "Ssh::Connection::_disconnectChannels.\n" );
 
         // loop over tunnels and delete
-        foreach( auto tunnel, findChildren<Tunnel*>() )
+        for( auto tunnel:findChildren<Tunnel*>() )
         {
             tunnel->close();
             tunnel->deleteLater();
@@ -308,7 +308,7 @@ namespace Ssh
         Debug::Throw( "Ssh::Connection::_disconnectTunnel.\n" );
 
         // disconnect all tcp servers
-        foreach( auto tcpServer, findChildren<QTcpServer*>() )
+        for( auto tcpServer:findChildren<QTcpServer*>() )
         {
             if( tcpServer->isListening() ) tcpServer->close();
             tcpServer->deleteLater();
@@ -705,7 +705,7 @@ namespace Ssh
         }
 
         // loop over tcp servers
-        foreach( auto tcpServer, findChildren<QTcpServer*>() )
+        for( auto tcpServer:findChildren<QTcpServer*>() )
         {
 
             // check pending connection

@@ -99,7 +99,7 @@ namespace SpellCheck
     {
         if( dictionaries_.isEmpty() ) return;
         Debug::Throw(0) << QObject::tr( "Available dictionaries: " ) << endl;
-        foreach( const QString& dictionary, dictionaries_ )
+        for( auto dictionary:dictionaries_ )
         { Debug::Throw(0) << "  " << dictionary << endl; }
     }
 
@@ -407,7 +407,7 @@ namespace SpellCheck
         process.start( XmlOptions::get().raw("ASPELL") + " dump modes" );
         process.waitForFinished();
         const QStringList lines( QString( process.readAllStandardOutput() ).split( "\n" ) );
-        foreach( const QString& line, lines )
+        for( auto line:lines )
         {
             QRegExp regExp( "\\s+" );
             const int position( line.indexOf( regExp ) );

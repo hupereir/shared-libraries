@@ -27,7 +27,7 @@ namespace SpellCheck
     QString TexString::toLatexAccents( void ) const
     {
         QString out( *this );
-        foreach( const Conversion& conversion, conversions() )
+        for( auto conversion:conversions() )
         { if( !conversion.first.isEmpty() ) out = out.replace( conversion.first, conversion.second ); }
         return out;
     }
@@ -36,7 +36,7 @@ namespace SpellCheck
     QString TexString::toTextAccents( void ) const
     {
         QString out( *this );
-        foreach( const Conversion& conversion, conversions() )
+        for( auto conversion:conversions() )
         { if( !conversion.second.isEmpty() ) out = out.replace( conversion.second, conversion.first ); }
         return out;
     }
@@ -48,20 +48,20 @@ namespace SpellCheck
 
         if( conversions_.empty() )
         {
-            conversions_ << Conversion( "à", "\\`a" );
-            conversions_ << Conversion( "â", "\\^a" );
-            conversions_ << Conversion( "ä", "\\\"a" );
-            conversions_ << Conversion( "é", "\\'e" );
-            conversions_ << Conversion( "è", "\\`e" );
-            conversions_ << Conversion( "ê", "\\^e" );
-            conversions_ << Conversion( "ë", "\\\"e" );
-            conversions_ << Conversion( "î", "\\^\\i " );
-            conversions_ << Conversion( "ï", "\\\"\\i " );
-            conversions_ << Conversion( "ô", "\\^o" );
-            conversions_ << Conversion( "ö", "\\\"o" );
-            conversions_ << Conversion( "ù", "\\`u" );
-            conversions_ << Conversion( "û", "\\^u" );
-            conversions_ << Conversion( "ç", "\\c c" );
+            conversions_ << Conversion( "ï¿½", "\\`a" );
+            conversions_ << Conversion( "ï¿½", "\\^a" );
+            conversions_ << Conversion( "ï¿½", "\\\"a" );
+            conversions_ << Conversion( "ï¿½", "\\'e" );
+            conversions_ << Conversion( "ï¿½", "\\`e" );
+            conversions_ << Conversion( "ï¿½", "\\^e" );
+            conversions_ << Conversion( "ï¿½", "\\\"e" );
+            conversions_ << Conversion( "ï¿½", "\\^\\i " );
+            conversions_ << Conversion( "ï¿½", "\\\"\\i " );
+            conversions_ << Conversion( "ï¿½", "\\^o" );
+            conversions_ << Conversion( "ï¿½", "\\\"o" );
+            conversions_ << Conversion( "ï¿½", "\\`u" );
+            conversions_ << Conversion( "ï¿½", "\\^u" );
+            conversions_ << Conversion( "ï¿½", "\\c c" );
             // (wtf) conversions_ << Conversion( "?", "-" );
         }
 

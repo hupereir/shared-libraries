@@ -76,7 +76,7 @@ namespace SpellCheck
             text = TexString( text ).toTextAccents();
 
             // build positions list
-            foreach( const TexString::Conversion& conversion, TexString::conversions() )
+            for( auto conversion:TexString::conversions() )
             {
                 int position(0);
                 while( (position = constText.indexOf( conversion.second, position )) >= 0 )
@@ -108,7 +108,7 @@ namespace SpellCheck
 
                 // update position
                 int offset = 0;
-                foreach( const Position& position, positions )
+                for( auto position:positions )
                 {
                     if( position.position_ - offset <= wordPosition ) offset += (position.conversion_.second.size() - position.conversion_.first.size() );
                     else break;
@@ -117,7 +117,7 @@ namespace SpellCheck
                 wordPosition += offset;
 
                 // update word
-                foreach( const Position& position, positions )
+                for( auto position:positions )
                 {
                     if( position.position_ < wordPosition ) continue;
                     else if( position.position_ - wordPosition > word.size() ) break;

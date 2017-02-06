@@ -274,7 +274,7 @@ void BaseApplication::_updateConfiguration( void )
     qApp->setWindowIcon( icon );
 
     // also assign to all existing top level widgets
-    foreach( QWidget* widget, qApp->topLevelWidgets() )
+    for( auto widget:qApp->topLevelWidgets() )
     { widget->setWindowIcon( icon ); }
 
     // reload IconEngine cache (in case of icon_path_list that changed)
@@ -311,7 +311,7 @@ void BaseApplication::_updateFonts( void )
             << Util::home() + "/.kde/share/config/kdeglobals";
 
         bool found( false );
-        foreach( const QString& file, files )
+        for( auto file:files )
         {
 
             // check file existence

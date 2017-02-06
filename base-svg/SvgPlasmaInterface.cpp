@@ -63,7 +63,7 @@ namespace Svg
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 const QStringList configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
-                foreach( const QString& path, configurationPath )
+                for( auto path:configurationPath )
                 { configurationFiles << File( "plasmarc" ).addPath( path ); }
 
             }
@@ -87,12 +87,12 @@ namespace Svg
 
         // add valid configuration files to watcher
         QStringList oldFiles( fileSystemWatcher_->files() );
-        foreach( const File& file, configurationFiles )
+        for( auto file:configurationFiles )
         { if( file.exists() && !oldFiles.contains( file ) ) fileSystemWatcher_->addPath( file ); }
 
         // look for theme in selected configuration files
         QString theme( "default" );
-        foreach( const File& file, configurationFiles )
+        for( auto file:configurationFiles )
         {
             if( !file.exists() ) continue;
 
@@ -166,10 +166,10 @@ namespace Svg
                 const QStringList configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
 
                 #if QT_VERSION >= 0x050000
-                foreach( const QString& path, configurationPath )
+                for( auto path:configurationPath )
                 { themePathList << File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( path ) ); }
                 #else
-                foreach( const QString& path, configurationPath )
+                for( auto path:configurationPath )
                 { themePathList << File( theme ).addPath( File( "desktoptheme/" ).addPath( path ) ); }
                 #endif
 
@@ -185,14 +185,14 @@ namespace Svg
                 << ".kde/share/apps/desktoptheme/"
                 << ".kde4/share/apps/desktoptheme/";
 
-            foreach( const QString& pathName, localPath )
+            for( auto pathName:localPath )
             { themePathList << File( theme ).addPath( File( pathName ).addPath( Util::home() ) ); }
 
         }
 
         // add local path
         themePathList << File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) );
-        foreach( const File& themePath, themePathList )
+        for( auto themePath:themePathList )
         {
             Debug::Throw() << "SvgPlasmaInterface::_setTheme - checking " << themePath << endl;
             if( themePath.exists() && !_findImage( themePath, WidgetBackground ).isEmpty() )
@@ -238,7 +238,7 @@ namespace Svg
             << imagePath
             << File( imagePath + ".svg" )
             << File( imagePath + ".svgz" );
-        foreach( File file, files )
+        for( auto file:files )
         { if( (file = file.addPath( path ) ).exists() ) return file; }
 
         return File();

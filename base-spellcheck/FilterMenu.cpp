@@ -83,7 +83,7 @@ namespace SpellCheck
 
         // populate list
         bool first( true );
-        foreach( const QString& filter, SpellCheck::SpellInterface().filters() )
+        for( auto filter:SpellCheck::SpellInterface().filters() )
         {
 
             // check against list of disabled filters
