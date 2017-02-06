@@ -167,7 +167,7 @@ template<class T> class TreeItem: public TreeItemBase
     {
 
         ValueList out;
-        for( auto item:children_ )
+        for( const auto& item:children_ )
         {
             out << item.get();
             out << item.childValues();
