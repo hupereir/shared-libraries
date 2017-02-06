@@ -125,7 +125,7 @@ class XmlError: public Counter
         QString toString( void ) const
         {
             QStringList out;
-            foreach( const XmlError& error, *this )
+            for( auto error:*this )
             { out << error.toString(); }
             return out.join( "\n" );
         }

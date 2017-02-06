@@ -428,7 +428,7 @@ template <typename T>
 QOrderedSet<T> QOrderedSet<T>::fromList(const QList<T> &list)
 {
     QOrderedSet<T> out;
-    foreach( const T& t, list )
+    for( auto t:list )
     { out.insert( t ); }
 
     return out;

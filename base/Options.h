@@ -86,10 +86,8 @@ class Options: public Counter
     template <typename T> QList<T> specialOptions( const QString& name ) const
     {
 
-        const List& optionList( specialOptions( name ) );
         QList<T> out;
-
-        foreach( const Option& option, optionList )
+        for( auto option:specialOptions( name ) )
         { out << option.get<T>(); }
         return out;
 

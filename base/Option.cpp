@@ -113,7 +113,7 @@ QTextStream &operator << ( QTextStream &out, const Option& option )
 //________________________________________________________
 QTextStream &operator << ( QTextStream &out, const QList<Option>& options )
 {
-    foreach( const Option& option, options )
+    for( auto option:options )
     { out << option << " "; }
     return out;
 }

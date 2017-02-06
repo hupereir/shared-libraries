@@ -49,7 +49,7 @@ namespace Base
             key_( _counter()++ ),
             associatedKeys_( key.associatedKeys_ )
         {
-            foreach( Key* associate, associatedKeys_ )
+            for( auto associate:associatedKeys_ )
             { associate->_associate( this ); }
         }
 
@@ -82,7 +82,8 @@ namespace Base
         //* clear associations for this key
         void clearAssociations( void )
         {
-            foreach( Key* key, associatedKeys_ ) key->_disassociate( this );
+            for( auto key:associatedKeys_ )
+            { key->_disassociate( this ); }
             associatedKeys_.clear();
         }
 
@@ -204,7 +205,7 @@ namespace Base
             {
                 out << " associations:";
 
-                foreach( Key* associate, key.associatedKeys_ )
+                for( auto associate:key.associatedKeys_ )
                 { out << " " << associate->key(); }
 
             }
@@ -237,7 +238,7 @@ namespace Base
         KeySet( const Key* key )
         {
 
-            foreach( Key* associate, key->getAssociated() )
+            for( auto associate:key->getAssociated() )
             {
                 T* t( dynamic_cast<T*>( associate ) );
                 if( t ) this->insert( t );
@@ -252,7 +253,7 @@ namespace Base
         KeySet( const Key& key )
         {
 
-            foreach( Key* associate, key.getAssociated() )
+            for( auto associate:key.getAssociated() )
             {
                 T* t( dynamic_cast<T*>( associate ) );
                 if( t ) this->insert( t );
@@ -263,7 +264,7 @@ namespace Base
         //* Merge argument KeySet with this one
         void merge( const KeySet<T>& keySet )
         {
-            foreach( T* key, keySet )
+            for( auto key:keySet )
             { this->insert( key ); }
         }
 
@@ -290,8 +291,7 @@ namespace Base
 //______________________________________________________________
 template<typename T> void Base::Key::clearAssociations( void )
 {
-    KeySet<T> tmp( this );
-    foreach( T* key, tmp )
+    for( auto key:KeySet<T>(this) )
     {
         key->_disassociate( this );
         _disassociate( key );

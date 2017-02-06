@@ -97,7 +97,7 @@ class ListModel : public ItemModel
     virtual void setSelectedIndexes( const QModelIndexList& indexes )
     {
         selectedItems_.clear();
-        foreach( const QModelIndex& index, indexes )
+        for( auto index:indexes )
         { if( contains( index ) ) selectedItems_ << values_[index.row()]; }
     }
 
@@ -114,7 +114,7 @@ class ListModel : public ItemModel
     {
 
         QModelIndexList out;
-        foreach( const ValueType& value, selectedItems_ )
+        for( auto value:selectedItems_ )
         {
             QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
@@ -173,7 +173,7 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-        foreach( const ValueType& value, values ) _add( value );
+        for( auto value:values ) _add( value );
         _sort();
         emit layoutChanged();
 
@@ -247,7 +247,7 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-        foreach( const ValueType& value, values ) _remove( value );
+        for( auto value:values ) _remove( value );
         emit layoutChanged();
         return;
 
@@ -286,10 +286,10 @@ class ListModel : public ItemModel
         }
 
         // remove values that have not been found in new list
-        foreach( const ValueType& value, removedValues ) _remove( value );
+        for( auto value:removedValues ) _remove( value );
 
         // add remaining values
-        foreach( const ValueType& value, values ) _add( value );
+        for( auto value:values ) _add( value );
 
         _sort();
         emit layoutChanged();
@@ -324,7 +324,7 @@ class ListModel : public ItemModel
     List get( const QModelIndexList& indexes ) const
     {
         List out;
-        foreach( const QModelIndex& index, indexes )
+        for( auto index:indexes )
         { if( index.isValid() && index.row() < values_.size() ) out << get( index ); }
         return out;
     }
