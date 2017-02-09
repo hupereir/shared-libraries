@@ -44,9 +44,6 @@ namespace Ssh
         //* constructor
         FileReadSocket( QObject* );
 
-        //* destructor
-        virtual ~FileReadSocket( void ) = default;
-
         //*@name modifiers
         //@{
 

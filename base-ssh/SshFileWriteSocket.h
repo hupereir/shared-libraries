@@ -44,9 +44,6 @@ namespace Ssh
         //* constructor
         FileWriteSocket( QObject* );
 
-        //* destructor
-        virtual ~FileWriteSocket( void ) = default;
-
         //*@name modifiers
         //@{
 

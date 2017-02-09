@@ -39,9 +39,6 @@ class ImageFileDialog: public QFileDialog
     //* creator
     ImageFileDialog( QWidget* );
 
-    //* destructor
-    virtual ~ImageFileDialog( void ) = default;
-
     //* select file
     void selectFile( const QString& filename )
     {

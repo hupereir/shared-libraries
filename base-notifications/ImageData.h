@@ -37,9 +37,6 @@ namespace Notifications
         //* constructor
         ImageData( QImage image );
 
-        //* destructor
-        ~ImageData( void ) = default;
-
         //* validity
         bool isValid( void ) const
         { return width > 0 && height > 0; }

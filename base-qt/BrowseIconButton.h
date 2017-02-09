@@ -38,9 +38,6 @@ class BrowseIconButton: public CustomToolButton
     //* creator
     BrowseIconButton( QWidget*, const QString& = QString() );
 
-    //* destructor
-    virtual ~BrowseIconButton( void ) = default;
-
     //* iconFile
     virtual const QString& file( void ) const
     { return file_; }

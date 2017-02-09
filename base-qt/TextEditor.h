@@ -414,9 +414,6 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
         //* constructor
         Container( QWidget*, TextEditor* );
 
-        //* destructor
-        ~Container( void ) = default;
-
         //*@name accessors
         TextEditor& editor( void ) const
         { return *editor_; }

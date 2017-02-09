@@ -29,16 +29,16 @@
 
 class TreeView;
 
-//! QDialog used to commit selected files
+//* QDialog used to commit selected files
 class ScratchFileRemoveDialog: public CustomDialog
 {
 
-    //! Qt meta object
+    //* Qt meta object
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     ScratchFileRemoveDialog( QWidget*, const FileRecordModel::List& files = FileRecordModel::List() );
 
     // return selected files
@@ -46,27 +46,27 @@ class ScratchFileRemoveDialog: public CustomDialog
 
     protected Q_SLOTS:
 
-    //! update button states
+    //* update button states
     virtual void _updateActions( void );
 
-    //! context menu
+    //* context menu
     virtual void _updateContextMenu( const QPoint& );
 
     private:
 
-    //! install actions
+    //* install actions
     void _installActions( void );
 
-    //! list of files
-    TreeView* list_;
+    //* list of files
+    TreeView* list_ = nullptr;
 
-    //! model
+    //* model
     FileRecordModel model_;
 
-    //!@name actions
+    //*@name actions
     //@{
-    QAction* selectAllAction_;
-    QAction* clearSelectionAction_;
+    QAction* selectAllAction_ = nullptr;
+    QAction* clearSelectionAction_ = nullptr;
     //@}
 
 };

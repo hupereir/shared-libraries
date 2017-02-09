@@ -38,9 +38,6 @@ class OpenWithComboBox: public QComboBox, public Counter
     //* constructor
     OpenWithComboBox( QWidget* = nullptr );
 
-    //* destructor
-    virtual ~OpenWithComboBox( void ) = default;
-
     //*@name accessors
     //@{
 

@@ -41,9 +41,6 @@ namespace Ssh
         //* constructor
         Socket( QObject* );
 
-        //* destructor
-        virtual ~Socket( void ) = default;
-
         //*@name modifiers
         //@{
 

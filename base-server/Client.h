@@ -44,9 +44,6 @@ namespace Server
         //* constructor
         Client( QObject*, QTcpSocket* = nullptr );
 
-        //* destructor
-        virtual ~Client( void ) = default;
-
         //* id
         quint32 id( void ) const
         { return id_; }
