@@ -87,7 +87,7 @@ class Options: public Counter
     {
 
         QList<T> out;
-        for( auto option:specialOptions( name ) )
+        for( const auto& option:specialOptions( name ) )
         { out << option.get<T>(); }
         return out;
 

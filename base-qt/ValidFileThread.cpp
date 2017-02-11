@@ -40,10 +40,10 @@ void ValidFileThread::run( void )
     bool hasInvalidRecords( false );
 
     // loop over files, check if exists, set validity accordingly, and post event
-    for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); ++iter )
+    for( auto& record:records_ )
     {
-        iter->setValid( File( iter->file() ).exists() );
-        hasInvalidRecords |= !iter->isValid();
+        record.setValid( File( record.file() ).exists() );
+        hasInvalidRecords |= !record.isValid();
     }
 
     // look for duplicated records

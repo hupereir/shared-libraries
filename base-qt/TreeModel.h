@@ -180,7 +180,7 @@ template<class T> class TreeModel : public ItemModel
     List get( const QModelIndexList& indexes ) const
     {
         List out;
-        for( auto index:indexes )
+        for( const auto& index:indexes )
         { if( index.isValid() ) out << get( index ); }
         return out;
     }
@@ -198,7 +198,7 @@ template<class T> class TreeModel : public ItemModel
     virtual void setSelectedIndexes( const QModelIndexList& indexes )
     {
         selectedItems_.clear();
-        for( auto index:indexes )
+        for( const auto& index:indexes )
         { if( index.isValid() ) selectedItems_ << get( index ); }
     }
 
@@ -214,7 +214,7 @@ template<class T> class TreeModel : public ItemModel
     virtual QModelIndexList selectedIndexes( void ) const
     {
         QModelIndexList out;
-        for( auto value:selectedItems_ )
+        for( const auto& value:selectedItems_ )
         {
             QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
@@ -264,7 +264,7 @@ template<class T> class TreeModel : public ItemModel
     virtual void setExpandedIndexes( const QModelIndexList& indexes )
     {
         expandedItems_.clear();
-        for( auto index:indexes )
+        for( const auto& index:indexes )
         { if( index.isValid() ) expandedItems_ << get( index ); }
     }
 
@@ -280,7 +280,7 @@ template<class T> class TreeModel : public ItemModel
     virtual QModelIndexList expandedIndexes( void ) const
     {
         QModelIndexList out;
-        for( auto value:expandedItems_ )
+        for( const auto& value:expandedItems_ )
         {
             QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
@@ -440,7 +440,7 @@ template<class T> class TreeModel : public ItemModel
     //* add
     void _add( Item& item, List values )
     {
-        for( auto value:values )
+        for( const auto& value:values )
         { item.add( value ); }
     }
 
@@ -456,7 +456,7 @@ template<class T> class TreeModel : public ItemModel
     {
 
         // remove all values from selection
-        for( auto value:values )
+        for( const auto& value:values )
         { selectedItems_.removeAll( value ); }
 
         // remove children that are found in list, and remove from list

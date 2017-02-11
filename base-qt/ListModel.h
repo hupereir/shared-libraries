@@ -97,7 +97,7 @@ class ListModel : public ItemModel
     virtual void setSelectedIndexes( const QModelIndexList& indexes )
     {
         selectedItems_.clear();
-        for( auto index:indexes )
+        for( const auto& index:indexes )
         { if( contains( index ) ) selectedItems_ << values_[index.row()]; }
     }
 
@@ -114,7 +114,7 @@ class ListModel : public ItemModel
     {
 
         QModelIndexList out;
-        for( auto value:selectedItems_ )
+        for( const auto& value:selectedItems_ )
         {
             QModelIndex index( this->index( value ) );
             if( index.isValid() ) out << index;
@@ -173,7 +173,7 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-        for( auto value:values ) _add( value );
+        for( const auto& value:values ) _add( value );
         _sort();
         emit layoutChanged();
 
@@ -247,7 +247,7 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-        for( auto value:values ) _remove( value );
+        for( const auto& value:values ) _remove( value );
         emit layoutChanged();
         return;
 
@@ -286,10 +286,10 @@ class ListModel : public ItemModel
         }
 
         // remove values that have not been found in new list
-        for( auto value:removedValues ) _remove( value );
+        for( const auto& value:removedValues ) _remove( value );
 
         // add remaining values
-        for( auto value:values ) _add( value );
+        for( const auto& value:values ) _add( value );
 
         _sort();
         emit layoutChanged();
@@ -324,7 +324,7 @@ class ListModel : public ItemModel
     List get( const QModelIndexList& indexes ) const
     {
         List out;
-        for( auto index:indexes )
+        for( const auto& index:indexes )
         { if( index.isValid() && index.row() < values_.size() ) out << get( index ); }
         return out;
     }

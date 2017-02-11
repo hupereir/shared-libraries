@@ -144,7 +144,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     {
 
         // update columns
-        for( auto record:values )
+        for( const auto& record:values )
         { _updateColumns( record ); }
 
     }

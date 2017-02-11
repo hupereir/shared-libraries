@@ -217,7 +217,7 @@ namespace Format
         friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock::List& formats )
         {
             out << "TextFormatList: " << endl;
-            for( auto block:formats )
+            for( const auto& block:formats )
             { out << block; }
             out << endl;
             return out;
