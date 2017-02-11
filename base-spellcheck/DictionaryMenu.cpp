@@ -87,7 +87,7 @@ namespace SpellCheck
         // populate list
         bool first( true );
         auto dictionaries( SpellCheck::SpellInterface().dictionaries() );
-        for( auto dictionary:dictionaries )
+        for( const auto& dictionary:dictionaries )
         {
 
             // check against list of disabled dictionaries

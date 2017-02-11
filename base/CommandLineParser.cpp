@@ -46,7 +46,7 @@ void CommandLineParser::usage( void ) const
     Debug::Throw( "CommandLineParser::usage.\n" );
 
     QTextStream stream( stdout );
-    for( auto groupName:groupNames_ )
+    for( const auto& groupName:groupNames_ )
     {
         if( !groups_.contains( groupName ) ) continue;
 
@@ -128,7 +128,7 @@ CommandLineArguments CommandLineParser::arguments( void ) const
     }
 
     // add orphans
-    for( auto orphan:orphans_ )
+    for( const auto& orphan:orphans_ )
     { out << orphan; }
 
     return out;

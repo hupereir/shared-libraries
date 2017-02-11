@@ -38,7 +38,7 @@ static const int LONGSTR = 256;
 QString Util::env( const QString& val, const QString& defaultValue )
 {
 
-    for( auto entry:QProcess::systemEnvironment() )
+    for( const auto& entry:QProcess::systemEnvironment() )
     {
 
         // TODO: should use regular expression

@@ -264,7 +264,7 @@ void IconView::doItemsLayout( void )
     const int rowCount( model()->rowCount() );
 
     // first remove invalid items
-    for( auto key:items_.keys() )
+    for( const auto& key:items_.keys() )
     { if( key >= rowCount ) items_.remove( key ); }
 
     // update existing items and insert new ones
@@ -328,7 +328,7 @@ void IconView::restoreSelectedIndexes( void )
 
         const QModelIndexList selection( model_->selectedIndexes() );
         selectionModel()->clear();
-        for( auto index:selection )
+        for( const auto& index:selection )
         { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
 
         selectionModel()->setCurrentIndex( model_->currentIndex(), QItemSelectionModel::Current );
@@ -439,7 +439,7 @@ void IconView::setSelection( const QRect& constRect, QItemSelectionModel::Select
     else {
 
         QItemSelection selection;
-        for( auto index:indexes ) selection.select( index, index );
+        for( const auto& index:indexes ) selection.select( index, index );
         selectionModel()->select( selection, flags );
 
     }
@@ -454,7 +454,7 @@ void IconView::startDrag( Qt::DropActions supportedActions )
 
     // get list of dragable indexes
     QModelIndexList indexes;
-    for( auto index:selectionModel()->selectedIndexes() )
+    for( const auto& index:selectionModel()->selectedIndexes() )
     { if( model()->flags( index ) & Qt::ItemIsDragEnabled ) indexes << index; }
     if( indexes.isEmpty() ) return;
 
@@ -501,9 +501,9 @@ QRegion IconView::visualRegionForSelection( const QItemSelection& selection ) co
     if( selection.empty() ) return QRegion();
 
     QRegion region;
-    for( auto range:selection )
+    for( const auto& range:selection )
     {
-        for( auto index:range.indexes() )
+        for( const auto& index:range.indexes() )
         { region += visualRect( index ); }
     }
 
@@ -932,7 +932,7 @@ void IconView::_layoutItems( void )
 
         // compute total width and compare to max
         totalWidth = 0;
-        for( auto width:columnSizes ) totalWidth += width;
+        for( const auto& width:columnSizes ) totalWidth += width;
         totalWidth += (columnSizes.size()-1)*spacing_;
 
         if( totalWidth <= maxWidth || columnCount_ == 1 ) break;
@@ -986,7 +986,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
     if( indexes.isEmpty() ) return QPixmap();
 
     IconViewItem::Map items;
-    for( auto index:indexes )
+    for( const auto& index:indexes )
     {
         // find item
         IconViewItem::Map::const_iterator iter( items_.find( index.row() ) );

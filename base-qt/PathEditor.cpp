@@ -491,7 +491,7 @@ void PathEditor::setIsLocal( bool value )
 
     // assign to this widget, and children
     isLocal_ = value;
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     { item->setIsLocal( value ); }
 
 }
@@ -503,7 +503,7 @@ void PathEditor::setDragEnabled( bool value )
 
     // assign to this widget, and children
     dragEnabled_ = value;
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     { item->dragMonitor().setDragEnabled( value ); }
 
 }
@@ -521,7 +521,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
         File root( "/" );
         File path( constPath );
 
-        for( auto file:rootPathList_ )
+        for( const auto& file:rootPathList_ )
         {
             if( path.startsWith( file ) )
             {
@@ -788,7 +788,7 @@ void PathEditor::_menuButtonClicked( void )
 
     // get list of hidden buttons
     File::List pathList;
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
         if( item->isHidden() ) pathList << item->path();
         else {
@@ -812,7 +812,7 @@ void PathEditor::_menuButtonClicked( void )
     if( rootPathList_.size() > 1 )
     {
         // add root path list
-        for( auto path:rootPathList_ )
+        for( const auto& path:rootPathList_ )
         {
 
             QAction* action = menu->addAction( path );
@@ -832,7 +832,7 @@ void PathEditor::_menuButtonClicked( void )
     }
 
     // add path
-    for( auto path:pathList )
+    for( const auto& path:pathList )
     { menu->addAction( path ); }
 
     connect( menu, SIGNAL(triggered(QAction*)), SLOT(_updatePath(QAction*)) );
@@ -891,7 +891,7 @@ void PathEditor::_updateButtonVisibility( void )
     bool hasHomePath( false );
     if( truncate_ && !home_.isEmpty() )
     {
-        for( auto item:items_ )
+        for( const auto& item:items_ )
         {
             if( item->path() == home_ )
             {
@@ -907,7 +907,7 @@ void PathEditor::_updateButtonVisibility( void )
     if( !hasHiddenButtons )
     {
         int width( 0 );
-        for( auto item:items_ )
+        for( const auto& item:items_ )
         {
             width += item->sizeHint().width();
             if( width > maxWidth )
@@ -960,7 +960,7 @@ void PathEditor::_updatePathMenus( void )
     // previous
     int index = 0;
     previousPathMenu_->clear();
-    for( auto record:history_->previousPathList() )
+    for( const auto& record:history_->previousPathList() )
     {
         QAction* action( previousPathMenu_->addAction( record.file() ) );
         action->setData( index );
@@ -970,7 +970,7 @@ void PathEditor::_updatePathMenus( void )
     // next
     ++index;
     nextPathMenu_->clear();
-    for( auto record:history_->nextPathList() )
+    for( const auto& record:history_->nextPathList() )
     {
         QAction* action( nextPathMenu_->addAction( record.file() ) );
         action->setData( index );

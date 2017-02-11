@@ -116,7 +116,7 @@ void BaseReplaceWidget::synchronize( void )
 
     // replace editor
     replaceEditor_->clear();
-    for( auto string:_replacedStrings() )
+    for( const auto& string:_replacedStrings() )
     { replaceEditor_->addItem( string ); }
 
     // clear replace combobox text

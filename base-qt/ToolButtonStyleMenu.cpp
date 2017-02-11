@@ -44,7 +44,7 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
         << NamePair( tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon );
 
     // generic action
-    for( auto namePair:actionNames )
+    for( const auto& namePair:actionNames )
     {
         QAction* action = new QAction( namePair.first, this );
         addAction( action );

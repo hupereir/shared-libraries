@@ -79,7 +79,7 @@ void ColorComboBox::setColors( const Base::Color::Set& colors )
     insertItem( QComboBox::count(), CustomPixmap( IconSize( IconSize::Huge ), CustomPixmap::Transparent ), tr( "Default" ) );
 
     // loop over colors
-    for( auto color:colors )
+    for( const auto& color:colors )
     { addColor( color ); }
 
 }

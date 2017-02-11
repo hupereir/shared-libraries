@@ -28,7 +28,7 @@ void FileSystemWatcher::timerEvent( QTimerEvent* event )
         Debug::Throw("FileSystemWatcher::timerEvent.\n" );
 
         timer_.stop();
-        for( auto directory:directories_ )
+        for( const auto& directory:directories_ )
         { emit directoryChangedDelayed( directory ); }
 
         directories_.clear();

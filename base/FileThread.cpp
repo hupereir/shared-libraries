@@ -104,7 +104,7 @@ void FileThread::_listFiles( const File& parent )
     // clear current list of files
     files_.clear();
     File::List directories;
-    for( auto file:parent.listFiles( flags ) )
+    for( const auto& file:parent.listFiles( flags ) )
     {
 
         files_ << file;
@@ -130,7 +130,7 @@ void FileThread::_listFiles( const File& parent )
     // list sub-directories if needed
     if( command_ == ListRecursive || command_ == SizeRecursive )
     {
-        for( auto file:directories )
+        for( const auto& file:directories )
         { _listFiles( file ); }
     }
 
@@ -141,7 +141,7 @@ bool FileThread::_updateTotalSize( void )
 {
 
     qint64 size(0);
-    for( auto file:files_ )
+    for( const auto& file:files_ )
     { if( !file.isLink() ) size += file.fileSize(); }
 
     if( size >= 0 )
@@ -159,7 +159,7 @@ void FileThread::_computeTotalSize( void )
 {
 
     totalSize_ = 0;
-    for( auto file:filesRecursive_ )
+    for( const auto& file:filesRecursive_ )
     {  if( !file.isLink() ) totalSize_ += file.fileSize(); }
     return;
 

@@ -155,7 +155,7 @@ bool XmlPathHistory::write( File file )
 
     // create main element and insert
     QDomElement top = document.createElement( tagName_ );
-    for( auto path:pathList )
+    for( const auto& path:pathList )
     {
 
         if( !path.file().isEmpty() )

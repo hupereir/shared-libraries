@@ -97,7 +97,7 @@ void HtmlDialog::setOptionWidgets( QList<QWidget*> widgets )
     tabWidget_ = new QTabWidget( this );
     mainLayout().addWidget( tabWidget_ );
 
-    for( auto widget:widgets )
+    for( const auto& widget:widgets )
     { tabWidget_->addTab( widget, widget->windowTitle() ); }
 
 }

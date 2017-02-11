@@ -55,7 +55,7 @@ void ContextMenu::_hideActions( void )
     if( _hideDisabledActions() )
     {
 
-        for( auto action:actions() )
+        for( const auto& action:actions() )
         {
             if( !action->isEnabled() && action->isVisible() )
             {
@@ -75,7 +75,7 @@ void ContextMenu::_showActions( void )
     if( _hideDisabledActions() )
     {
 
-        for( auto action:hiddenActions_ )
+        for( const auto& action:hiddenActions_ )
         {
             if( action )
             {

@@ -50,7 +50,7 @@ void OptionWidgetList::read( const Options& options )
 {
 
     Debug::Throw( "OptionWidgetList::read.\n" );
-    for( auto widget:optionWidgets_ )
+    for( const auto& widget:optionWidgets_ )
     {
         widget->read( options );
         if( !_connected() && hasBuddy() && widget->hasBuddy() )
@@ -70,7 +70,7 @@ void OptionWidgetList::read( const Options& options )
 void OptionWidgetList::write( Options& options ) const
 {
     Debug::Throw( "OptionWidgetList::write\n" );
-    for( auto widget:optionWidgets_ )
+    for( const auto& widget:optionWidgets_ )
     { widget->write( options ); }
 }
 

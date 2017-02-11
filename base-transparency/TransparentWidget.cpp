@@ -327,7 +327,7 @@ namespace Transparency
         QVector<QRect> rects( region.rects() );
 
         QVector<uint32_t> data;
-        for( auto r:rects )
+        for( const auto& r:rects )
         { data << r.x() << r.y() << r.width() << r.height(); }
 
         // get connection and atom

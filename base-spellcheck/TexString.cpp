@@ -27,7 +27,7 @@ namespace SpellCheck
     QString TexString::toLatexAccents( void ) const
     {
         QString out( *this );
-        for( auto conversion:conversions() )
+        for( const auto& conversion:conversions() )
         { if( !conversion.first.isEmpty() ) out = out.replace( conversion.first, conversion.second ); }
         return out;
     }
@@ -36,7 +36,7 @@ namespace SpellCheck
     QString TexString::toTextAccents( void ) const
     {
         QString out( *this );
-        for( auto conversion:conversions() )
+        for( const auto& conversion:conversions() )
         { if( !conversion.second.isEmpty() ) out = out.replace( conversion.second, conversion.first ); }
         return out;
     }

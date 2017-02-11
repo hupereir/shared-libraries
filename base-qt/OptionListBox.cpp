@@ -223,7 +223,7 @@ void OptionListBox::read( const Options& options )
 
     // add to model.
     OptionModel::List optionList;
-    for( auto option:values )
+    for( const auto& option:values )
     { optionList << OptionPair( optionName(), option ); }
 
     model_->set( optionList );
@@ -241,7 +241,7 @@ void OptionListBox::write( Options& options ) const
     options.clearSpecialOptions( optionName() );
     options.keep( optionName() );
 
-    for( auto optionPair:model_->children() )
+    for( const auto& optionPair:model_->children() )
     { options.add( optionPair.first, optionPair.second ); }
 
 }
@@ -259,7 +259,7 @@ void OptionListBox::_updateButtons( void )
     defaultAction_->setEnabled( current.isValid() );
 
     bool removeEnabled( false );
-    for( auto optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
+    for( const auto& optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
     {
         if( optionPair.second.hasFlag( Option::Recordable ) )
         {
@@ -374,7 +374,7 @@ void OptionListBox::_remove( void )
 
     // retrieve selected items; retrieve only recordable options
     OptionModel::List removed;
-    for( auto optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
+    for( const auto& optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
     { if( optionPair.second.hasFlag( Option::Recordable ) ) removed << optionPair; }
 
     // remove

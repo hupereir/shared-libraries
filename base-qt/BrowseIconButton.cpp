@@ -147,7 +147,7 @@ void BrowseIconButton::dropEvent( QDropEvent *event )
     if( !event->mimeData()->hasUrls() ) return;
 
     // loop over event URLs
-    for( auto url:event->mimeData()->urls() )
+    for( const auto& url:event->mimeData()->urls() )
     {
         QFileInfo fileInfo( url.toLocalFile() );
         if( fileInfo.exists() && setFile( fileInfo.filePath(), true ) ) event->acceptProposedAction();

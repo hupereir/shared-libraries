@@ -40,7 +40,7 @@ namespace Ssh
     bool ConnectionAttributes::isValid( void ) const
     {
         if( host_.isEmpty() ) return false;
-        for( auto tunnel:tunnels_ )
+        for( const auto& tunnel:tunnels_ )
         { if( !tunnel.isValid() ) return false; }
 
         return true;
@@ -50,7 +50,7 @@ namespace Ssh
     void ConnectionAttributes::setTunnels( const TunnelAttributes::List attributesList )
     {
         tunnels_.clear();
-        for( auto attributes:attributesList )
+        for( const auto& attributes:attributesList )
         { addTunnel( attributes ); }
     }
 

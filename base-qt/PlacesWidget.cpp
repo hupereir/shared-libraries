@@ -102,7 +102,7 @@ QDomElement LocalFileInfo::List::domElement( QDomDocument& document ) const
 
     // create main element
     QDomElement top = document.createElement( Xml::FileInfoList );
-    for( auto fileInfo:*this )
+    for( const auto& fileInfo:*this )
     { top.appendChild( fileInfo.domElement( document ) );  }
     return top;
 
@@ -557,7 +557,7 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
     iconProvider_ = provider;
 
     // update icons for existing items
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
         if( item->icon().isNull() )
         { item->setIcon( iconProvider_->icon( item->fileInfo() ) ); }
@@ -570,7 +570,7 @@ QList<BaseFileInfo> PlacesWidget::items( void ) const
 {
     Debug::Throw( "PlacesWidget::items.\n" );
     QList<BaseFileInfo> out;
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     { out.append( item->fileInfo() );  }
 
     return out;
@@ -581,7 +581,7 @@ bool PlacesWidget::setItemIsValid( const BaseFileInfo& fileInfo, bool value )
 {
     Debug::Throw() << "PlacesWidget::setItemIsValid - fileInfo: " << fileInfo << " value: " << value << endl;
     bool changed( false );
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
 
         if( item->fileInfo().file() == fileInfo.file() && item->fileInfo().location() == fileInfo.location() )
@@ -636,7 +636,7 @@ bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
 void PlacesWidget::clear( void )
 {
     // delete all items
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
         // remove from group and delete later
         group_->removeButton( item );
@@ -783,7 +783,7 @@ void PlacesWidget::_updateFocus( QAbstractButton* button )
     if( currentItem ) currentItem->setFocus( true );
 
     // disable focus for all other buttons
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     { if( item != currentItem ) item->setFocus( false ); }
 
 }
@@ -831,7 +831,7 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
     }
 
     bool hasHiddenItems( false );
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
         if( item->hasFlag( LocalFileInfo::Hidden ) )
         { hasHiddenItems = true; break; }
@@ -860,7 +860,7 @@ void PlacesWidget::_updateIconSize( IconSize::Size size )
 
     // update button sizes
     QSize iconSize = size==IconSize::Default ? PlacesWidgetItem().iconSize() : IconSize( size );
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
         item->setIconSize( iconSize );
         item->updateMinimumSize();
@@ -1090,7 +1090,7 @@ void PlacesWidget::_updateItems( void )
 {
     Debug::Throw( "PlacesWidget::_updateItems.\n" );
     bool changed( false );
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
 
         const BaseFileInfo fileInfo( item->fileInfo() );
@@ -1129,12 +1129,12 @@ void PlacesWidget::_toggleShowAllEntries( bool value )
     if( value )
     {
 
-        for( auto item:items_ )
+        for( const auto& item:items_ )
         { item->show(); }
 
     } else {
 
-        for( auto item:items_ )
+        for( const auto& item:items_ )
         { if( item->hasFlag( LocalFileInfo::Hidden ) ) item->hide(); }
 
     }
@@ -1189,7 +1189,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
 
         // internal dragging. Try re-order items
         PlacesWidgetItem* dragItem( nullptr );
-        for( auto item:items_ )
+        for( const auto& item:items_ )
         {
             if( item->dragMonitor().isDragInProgress() )
             { dragItem = item; break; }
@@ -1221,7 +1221,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
 
         // find insertion index based on target
         int insertionIndex( _index( dragTarget_ ) );
-        for( auto fileInfo:fileInfoList )
+        for( const auto& fileInfo:fileInfoList )
         {
             insert( insertionIndex, fileInfo );
             ++insertionIndex;
@@ -1237,7 +1237,7 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
     Debug::Throw( "PlacesWidget::mousePressEvent.\n" );
 
     const QPoint position( event->pos() );
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {  item->setFocus( item->isVisible() && item->rect().translated( item->pos() ).contains( position ) ); }
 
     QWidget::mousePressEvent( event );
@@ -1246,7 +1246,7 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
 //_________________________________________________________________________________
 void PlacesWidget::_updateDragState( void ) const
 {
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     { item->dragMonitor().setDragEnabled( items_.size()>1 ); }
 }
 
@@ -1254,7 +1254,7 @@ void PlacesWidget::_updateDragState( void ) const
 QPoint PlacesWidget::_updateDragTarget( const QPoint& position ) const
 {
     int y(0);
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
         if( item->isHidden() ) continue;
         const QRect rect( item->rect().translated( item->pos() ) );
@@ -1275,7 +1275,7 @@ int PlacesWidget::_index( const QPoint& position ) const
 {
 
     int index = 0;
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     {
         if( item->isHidden() || position.y()+1 >= item->rect().translated( item->pos() ).bottom() ) ++index;
         else break;
@@ -1331,7 +1331,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
 
     } else if( mimeData->hasUrls() ) {
 
-        for( auto url:mimeData->urls() )
+        for( const auto& url:mimeData->urls() )
         {
 
             #if QT_VERSION >= 0x040800
@@ -1366,7 +1366,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
 //_________________________________________________________________________________
 PlacesWidgetItem* PlacesWidget::_focusItem( void ) const
 {
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     { if( item->hasFocus() ) return item; }
 
     return nullptr;
@@ -1415,7 +1415,7 @@ bool PlacesWidget::_read( void )
     if( topNodes.isEmpty() ) return false;
 
     const LocalFileInfo::List fileInfoList( topNodes.at(0).toElement() );
-    for( auto fileInfo:fileInfoList )
+    for( const auto& fileInfo:fileInfoList )
     {
 
         if( fileInfo.hasFlag( LocalFileInfo::Separator ) ) _addSeparator();
@@ -1454,7 +1454,7 @@ bool PlacesWidget::_write( void )
     // get list of items and create file info list
     QList<PlacesWidgetItem*> items( items_ );
     LocalFileInfo::List fileInfoList;
-    for( auto item:items )
+    for( const auto& item:items )
     {
         LocalFileInfo fileInfo( item->fileInfo() );
         fileInfo.setFlags( item->flags() );
@@ -1499,7 +1499,7 @@ void PlacesWidget::_addDefaultPlaces( void )
 
     // get list of existing files
     File::List currentFiles;
-    for( auto item:items_ )
+    for( const auto& item:items_ )
     { currentFiles.append( item->fileInfo().file() ); }
 
     // loop over default folders, backward and insert front

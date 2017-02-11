@@ -317,7 +317,7 @@ bool File::removeRecursive( void ) const
 
     // list content of directory
     QDir dir( *this );
-    for( auto value:dir.entryList( QDir::AllEntries|QDir::Hidden|QDir::System ) )
+    for( const auto& value:dir.entryList( QDir::AllEntries|QDir::Hidden|QDir::System ) )
     {
         // skip "." and ".."
         if( value == "." || value == ".." ) continue;
@@ -368,7 +368,7 @@ bool File::copy( const File& newFile, bool force ) const
         if( !newFile.createDirectory() ) return false;
 
         // list files, and copy, recursively
-        for( auto file:listFiles( ShowHiddenFiles ) )
+        for( const auto& file:listFiles( ShowHiddenFiles ) )
         { if( !file.copy( file.localName().addPath( newFile ) ) ) return false; }
 
         return true;
@@ -488,7 +488,7 @@ File::List File::listFiles( ListFlags flags ) const
 
     const QDir dir( fullname );
     if( flags & ShowHiddenFiles ) filter |= QDir::Hidden;
-    for( auto value:dir.entryList( filter ) )
+    for( const auto& value:dir.entryList( filter ) )
     {
 
         if( value == "." || value == ".." ) continue;
@@ -538,7 +538,7 @@ File File::find( const File& file, bool caseSensitive ) const
     #endif
 
     const QDir dir( fullname );
-    for( auto value:dir.entryList( filter ) )
+    for( const auto& value:dir.entryList( filter ) )
     {
         if( value == "." || value == ".." ) continue;
 

@@ -341,7 +341,7 @@ bool BoxSelection::removeSelectedText( void ) const
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( auto savedCursor:cursorList() )
+    for( const auto& savedCursor:cursorList() )
     {
 
         // select line and remove
@@ -376,7 +376,7 @@ bool BoxSelection::toUpper( void )
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( auto savedCursor:cursorList() )
+    for( const auto& savedCursor:cursorList() )
     {
 
         // select line and remove
@@ -414,7 +414,7 @@ bool BoxSelection::toLower( void )
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( auto savedCursor:cursorList() )
+    for( const auto& savedCursor:cursorList() )
     {
 
         // select line and remove
@@ -455,7 +455,7 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
     QTextCursor stored( parent_->textCursor() );
     QTextCursor cursor( parent_->textCursor() );
     cursor.beginEditBlock();
-    for( auto savedCursor:cursorList() )
+    for( const auto& savedCursor:cursorList() )
     {
 
         // select line and remove

@@ -233,7 +233,7 @@ void BaseFindWidget::synchronize( void )
     Debug::Throw( "BaseFindWidget::synchronize.\n" );
     editor_->clear();
 
-    for( auto string:_searchedStrings() )
+    for( const auto& string:_searchedStrings() )
     { editor_->addItem( string ); }
 }
 
@@ -256,7 +256,7 @@ void BaseFindWidget::_updateButtons( const QString& text )
     Debug::Throw( "BaseFindWidget::_updateButtons.\n" );
 
     const bool enabled( !( text.isNull() || text.isEmpty() ) );
-    for( auto button:buttons_ )
+    for( const auto& button:buttons_ )
     { button->setEnabled( enabled ); }
 
 }

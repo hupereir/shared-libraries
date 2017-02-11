@@ -83,7 +83,7 @@ namespace SpellCheck
 
         // populate list
         bool first( true );
-        for( auto filter:SpellCheck::SpellInterface().filters() )
+        for( const auto& filter:SpellCheck::SpellInterface().filters() )
         {
 
             // check against list of disabled filters

@@ -128,7 +128,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     layout->addStretch();
 
     // hide everything, they are shown when proper values are set
-    for( auto item:items )
+    for( const auto& item:items )
     { item->hide(); }
 
     permissionsWidget_->hide();

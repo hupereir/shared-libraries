@@ -117,7 +117,7 @@ namespace SpellCheck
 
         // get dictionary list and populate combobox
         SpellCheck::SpellInterface interface;
-        for( auto dictionary:interface.dictionaries() )
+        for( const auto& dictionary:interface.dictionaries() )
         { if( !disabledDictionaries.contains( dictionary ) ) dictionariesComboBox_->addItem( dictionary ); }
 
         // read default value from options
@@ -140,7 +140,7 @@ namespace SpellCheck
 
         // get dictionary list and populate combobox
         SpellCheck::SpellInterface interface;
-        for( auto filter:interface.filters() )
+        for( const auto& filter:interface.filters() )
         { if( !disabledFilters.contains( filter ) ) filtersComboBox_->addItem( filter ); }
 
         // read default value from options
