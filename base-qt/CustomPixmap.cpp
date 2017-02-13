@@ -161,6 +161,24 @@ CustomPixmap CustomPixmap::desaturate( void ) const
 }
 
 //_________________________________________________
+CustomPixmap CustomPixmap::colorize( const QColor& color ) const
+{
+
+    CustomPixmap out = this->desaturate();
+    QPainter painter( &out );
+    painter.setCompositionMode(QPainter::CompositionMode_Screen);
+    painter.fillRect(rect(), color);
+
+    // copy alpha channel from source
+    painter.setCompositionMode( QPainter::CompositionMode_DestinationIn );
+    painter.drawPixmap( out.rect(), *this );
+
+    painter.end();
+    return out;
+}
+
+
+//_________________________________________________
 CustomPixmap CustomPixmap::merge( const CustomPixmap& pixmap, Corner corner ) const
 {
     if( isNull() ) return *this;

@@ -81,6 +81,9 @@ class CustomPixmap: public QPixmap, public Counter
     //* returns a desaturated pixmap
     virtual CustomPixmap desaturate( void ) const;
 
+    //* colorize
+    virtual CustomPixmap colorize( const QColor& ) const;
+
     //* corner enumeration for merging pixmap
     enum Corner
     {
