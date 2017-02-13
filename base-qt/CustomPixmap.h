@@ -73,16 +73,16 @@ class CustomPixmap: public QPixmap, public Counter
     };
 
     //* rotation
-    CustomPixmap rotate( const Rotation& value );
+    CustomPixmap rotated( const Rotation& value );
 
     //* returns a transparent pixmap
     virtual CustomPixmap transparent( qreal ) const;
 
     //* returns a desaturated pixmap
-    virtual CustomPixmap desaturate( void ) const;
+    virtual CustomPixmap desaturated( void ) const;
 
     //* colorize
-    virtual CustomPixmap colorize( const QColor& ) const;
+    virtual CustomPixmap colorized( const QColor& ) const;
 
     //* corner enumeration for merging pixmap
     enum Corner
@@ -95,7 +95,7 @@ class CustomPixmap: public QPixmap, public Counter
     };
 
     //* merge pixmap, using the specified corner as an anchor
-    virtual CustomPixmap merge( const CustomPixmap&, Corner corner = TOP_LEFT ) const;
+    virtual CustomPixmap merged( const CustomPixmap&, Corner corner = TOP_LEFT ) const;
 
     //* return highlighted pixmap
     virtual CustomPixmap highlighted( qreal opacity ) const;

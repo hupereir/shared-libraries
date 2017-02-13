@@ -74,12 +74,12 @@ bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
             ( rotation_ == CustomPixmap::None && value == CustomPixmap::CounterClockwise ) ||
             ( rotation_ == CustomPixmap::Clockwise && value == CustomPixmap::None ) )
         {
-            copy.addPixmap( pixmap.rotate( CustomPixmap::Clockwise ), mode, state );
+            copy.addPixmap( pixmap.rotated( CustomPixmap::Clockwise ), mode, state );
         } else if(
             ( rotation_ == CustomPixmap::None && value == CustomPixmap::Clockwise ) ||
             ( rotation_ == CustomPixmap::CounterClockwise && value == CustomPixmap::None ) )
         {
-            copy.addPixmap( pixmap.rotate( CustomPixmap::CounterClockwise ), mode, state );
+            copy.addPixmap( pixmap.rotated( CustomPixmap::CounterClockwise ), mode, state );
         }
 
     }

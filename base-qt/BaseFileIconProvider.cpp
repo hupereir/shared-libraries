@@ -85,7 +85,9 @@ QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
     else overlaySize = QSize( 64, 64 );
 
     const CustomPixmap overlayPixmap( linkOverlay.pixmap( overlaySize ) );
-    return source.merge( overlayPixmap.scaled( overlaySize*overlayPixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ), CustomPixmap::BOTTOM_RIGHT );
+    return source.merged(
+        overlayPixmap.scaled( overlaySize*overlayPixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ), 
+        CustomPixmap::BOTTOM_RIGHT );
 
 }
 
@@ -95,4 +97,4 @@ QPixmap BaseFileIconProvider::hidden( const CustomPixmap& source )
 
 //____________________________________________________
 QPixmap BaseFileIconProvider::clipped( const CustomPixmap& source )
-{ return source.desaturate().transparent( 0.6 ); }
+{ return source.desaturated().transparent( 0.6 ); }

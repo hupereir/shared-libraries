@@ -87,7 +87,7 @@ CustomPixmap CustomPixmap::find( const QString& file )
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::rotate( const CustomPixmap::Rotation& rotation )
+CustomPixmap CustomPixmap::rotated( const CustomPixmap::Rotation& rotation )
 {
     if( rotation == None ) return *this;
 
@@ -133,7 +133,7 @@ CustomPixmap CustomPixmap::transparent( qreal intensity ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::desaturate( void ) const
+CustomPixmap CustomPixmap::desaturated( void ) const
 {
     if( isNull() ) return *this;
 
@@ -161,10 +161,10 @@ CustomPixmap CustomPixmap::desaturate( void ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::colorize( const QColor& color ) const
+CustomPixmap CustomPixmap::colorized( const QColor& color ) const
 {
 
-    CustomPixmap out = this->desaturate();
+    CustomPixmap out( desaturated() );
     QPainter painter( &out );
     painter.setCompositionMode(QPainter::CompositionMode_Screen);
     painter.fillRect(rect(), color);
@@ -179,7 +179,7 @@ CustomPixmap CustomPixmap::colorize( const QColor& color ) const
 
 
 //_________________________________________________
-CustomPixmap CustomPixmap::merge( const CustomPixmap& pixmap, Corner corner ) const
+CustomPixmap CustomPixmap::merged( const CustomPixmap& pixmap, Corner corner ) const
 {
     if( isNull() ) return *this;
 
