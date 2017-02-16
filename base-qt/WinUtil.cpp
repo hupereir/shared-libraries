@@ -165,7 +165,7 @@ void WinUtil::enableBlurBehind( const Base::Margins& margins )
     if(QSysInfo::WindowsVersion < QSysInfo::WV_6_0) return;
 
     // initialize private
-    if( !private_ ) private_ = new WinUtilPrivate();
+    if( !private_ ) private_.reset( new WinUtilPrivate() );
 
     // check function pointer
     if( !private_->blurBehindFunction_ ) return;
