@@ -64,7 +64,7 @@ namespace SpellCheck
         gridLayout->addWidget( new QLabel( tr( "Highlight font format:" ), this ), 2, 0 );
         OptionFontInfo* fontinfo =  new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" );
         fontinfo->layout()->setMargin(0);
-        gridLayout->addWidget( fontinfo );
+        gridLayout->addWidget( fontinfo, 2, 1, 5, 1 );
         fontinfo->setToolTip( tr( "Font format for misspelled words" ) );
         addOptionWidget( fontinfo );
 
