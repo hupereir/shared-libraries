@@ -40,8 +40,18 @@ class XmlFileList: public FileList
     //* constuctor
     XmlFileList( QObject* parent = nullptr );
 
+    //*@name modifiers
+    //@{
+
     // set tag name
     void setTagName( const QString& );
+
+    //* set db file
+    virtual bool setDBFile( const File& );
+
+    //@}
+
+    public Q_SLOTS:
 
     //* Read fileList from file
     virtual bool read( File = File() );
@@ -51,24 +61,13 @@ class XmlFileList: public FileList
 
     protected:
 
-    //* set db file
-    virtual bool _setDBFile( const File& );
-
     //* read
     virtual bool _read( const XmlDocument& );
 
-    private Q_SLOTS:
-
-    //* update configuration
-    void _updateConfiguration( void );
-
-    //* save configuration
-    void _saveConfiguration( void );
+    private:
 
     //* compare two record lists
     bool _differs( const FileRecord::List&, const FileRecord::List& ) const;
-
-    private:
 
     //* tag name
     QString tagName_;

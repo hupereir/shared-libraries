@@ -20,10 +20,8 @@
 #include "XmlFileList.h"
 
 #include "Debug.h"
-#include "Singleton.h"
 #include "XmlDocument.h"
 #include "XmlFileRecord.h"
-#include "XmlOptions.h"
 
 #include <QApplication>
 #include <QFile>
@@ -35,9 +33,7 @@ XmlFileList::XmlFileList( QObject* parent ):
 {
 
     Debug::Throw( "XmlFileList::XmlFileList.\n" );
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
-    connect( qApp, SIGNAL(aboutToQuit()), SLOT(_saveConfiguration()) );
-    _updateConfiguration();
+    connect( qApp, SIGNAL(aboutToQuit()), SLOT(write()) );
 
 }
 
@@ -52,6 +48,27 @@ void XmlFileList::setTagName( const QString& value )
     tagName_ = value;
     clear();
     read();
+
+}
+
+//_______________________________________________
+bool XmlFileList::setDBFile( const File& file )
+{
+    Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
+
+    // check file
+    if( dbFile_ == file && !_records().isEmpty() ) return false;
+
+    // store file and read
+    dbFile_ = file;
+
+    // make sure file is hidden (windows only)
+    if( dbFile_.localName().startsWith( '.' ) )
+    { dbFile_.setHidden(); }
+
+    read();
+
+    return true;
 
 }
 
@@ -149,46 +166,6 @@ bool XmlFileList::write( File file )
     }
 
     return true;
-}
-
-//_______________________________________________
-bool XmlFileList::_setDBFile( const File& file )
-{
-    Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
-
-    // check file
-    if( dbFile_ == file && !_records().isEmpty() ) return false;
-
-    // store file and read
-    dbFile_ = file;
-
-    // make sure file is hidden (windows only)
-    if( dbFile_.localName().startsWith( '.' ) )
-    { dbFile_.setHidden(); }
-
-    read();
-
-    return true;
-
-}
-
-//______________________________________
-void XmlFileList::_updateConfiguration( void )
-{
-    Debug::Throw( "XmlFileList::_updateConfiguration.\n" );
-
-    // DB file
-    _setDBFile( File( XmlOptions::get().raw( "RC_FILE" ) ) );
-    _setMaxSize( XmlOptions::get().get<int>( "DB_SIZE" ) );
-    return;
-
-}
-
-//______________________________________
-void XmlFileList::_saveConfiguration( void )
-{
-    Debug::Throw( "XmlFileList::_saveConfiguration.\n" );
-    write();
 }
 
 //______________________________________
