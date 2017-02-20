@@ -228,7 +228,7 @@ void FileRecordModel::_updateColumns( const ValueType& value )
 
     // loop over available properties
     const FileRecord::PropertyMap& properties( value.properties() );
-    for( FileRecord::PropertyMap::const_iterator iter = properties.begin(); iter != properties.end(); ++iter )
+    for( auto iter = properties.begin(); iter != properties.end(); ++iter )
     {
         // look for property name in list of columns
         if( std::find( columnTitles_.begin(), columnTitles_.end(), FileRecord::PropertyId::get( iter.key() ) ) == columnTitles_.end() )

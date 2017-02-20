@@ -43,7 +43,7 @@ void ColumnSelectionMenu::_updateActions( void )
     Debug::Throw( "ColumnSelectionMenu::_updateActions.\n" );
 
     // clear existing actions
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     { delete iter.key(); }
     actions_.clear();
 
@@ -88,7 +88,7 @@ void ColumnSelectionMenu::_updateActions( void )
     // if only one column is visible, disable corresponding action
     if( visibleColumns == 1 )
     {
-        for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+        for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
         { if( iter.key()->isChecked() ) iter.key()->setEnabled( false ); }
     }
 

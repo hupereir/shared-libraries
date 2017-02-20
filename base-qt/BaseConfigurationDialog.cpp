@@ -558,7 +558,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
 
     // this is a slightly modified version of XmlOptions::_differs
     // check special options
-    for( Options::SpecialMap::const_iterator firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
+    for( auto&& firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
     {
 
         // get matching options in the second set
@@ -588,7 +588,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
     }
 
     // loop over options and check existence in other map
-    for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
+    for( auto&& firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
     {
 
         const Options::Map::const_iterator secondIter( second.options().constFind( firstIter.key() ) );
@@ -678,7 +678,7 @@ void BaseConfigurationDialog::_restoreDefaults( void )
     // list options that have no default values
     const Options::Map& options( XmlOptions::get().options() );
     OptionModel::List local;
-    for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); ++iter )
+    for( auto&& iter = options.begin(); iter != options.end(); ++iter )
     { if( iter.value().defaultValue().isEmpty() ) local << OptionPair( iter.key(), iter.value() ); }
 
     QuestionDialog dialog( this );

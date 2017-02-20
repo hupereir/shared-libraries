@@ -34,7 +34,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
 
     // generic action
     QAction* action;
-    for( IconSize::Map::const_iterator iter = sizes.begin(); iter != sizes.end(); ++iter )
+    for( auto iter = sizes.begin(); iter != sizes.end(); ++iter )
     {
 
         // skip some items depending on custom flags
@@ -54,7 +54,7 @@ void IconSizeMenu::select( IconSize::Size size )
 {
 
     Debug::Throw( "IconSizeMenu::select.\n" );
-    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+    for( auto iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
         if( iter.value() == size )
         {

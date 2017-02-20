@@ -111,7 +111,7 @@ namespace SpellCheck
 
         // maximum length
         const int maxLength = std::max_element( filters_.constBegin(), filters_.constEnd(), MinLengthFTor() )->size();
-        for( FilterMap::const_iterator iter = filterMap_.constBegin(); iter != filterMap_.constEnd(); ++iter )
+        for( auto iter = filterMap_.constBegin(); iter != filterMap_.constEnd(); ++iter )
         { Debug::Throw(0) << "  " << iter.key().leftJustified( maxLength + 1 ) <<  iter.value() << endl; }
 
     }

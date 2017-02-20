@@ -44,16 +44,14 @@ QStringList Command::_parse( const QString &in ) const
     QStringList out;
 
     // first split using '"' as separator to get "single string" arguments that contain strings
-    QStringList local = in.split( "\"", QString::KeepEmptyParts );
-
     // split strings that are not enclosed into quotes using white spaces as separator
     bool split( true );
-    for( QStringList::const_iterator iter = local.begin(); iter != local.end(); ++iter )
+    for( const auto& line:in.split( "\"", QString::KeepEmptyParts ) )
     {
-        if( !iter->isEmpty() )
+        if( !line.isEmpty() )
         {
-            if( split ) out << iter->split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
-            else out << QString("\"") + *iter + "\"" ;
+            if( split ) out << line.split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
+            else out << QString("\"") + line + "\"" ;
         }
 
         split = !split;
@@ -62,8 +60,8 @@ QStringList Command::_parse( const QString &in ) const
     // print output
     if( Debug::level() >= 1 )
     {
-        for( QStringList::const_iterator iter = out.begin(); iter != out.end(); ++iter )
-        { Debug::Throw(0) << "Command::parse - \"" << *iter << "\"" << endl; }
+        for( const auto& line:out )
+        { Debug::Throw(0) << "Command::parse - \"" << line << "\"" << endl; }
     }
 
     return out;

@@ -46,7 +46,7 @@ bool IconEngine::reload( void )
 
     pixmapPath_ = pathList;
 
-    for( Base::IconCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+    for( auto&& iter = cache_.begin(); iter != cache_.end(); ++iter )
     { cache_[iter.key()] = _get( iter.key(), iter.value().flags()&~Base::IconCacheItem::FromCache ); }
 
     return true;

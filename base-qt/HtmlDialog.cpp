@@ -79,8 +79,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     XmlOptions::get().keep( "HTML_COMMAND" );
 
     Options::List commands( XmlOptions::get().specialOptions( "HTML_COMMAND" ) );
-    for( Options::List::iterator iter = commands.begin(); iter != commands.end(); ++iter )
-    { addCommand( iter->raw() ); }
+    for( const auto& command:commands ) addCommand( command.raw() );
 
     connect( &okButton(), SIGNAL(clicked()), SLOT(_saveCommands()) );
 

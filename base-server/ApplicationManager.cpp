@@ -281,7 +281,7 @@ namespace Server
                 send the associated Identity to the sender
                 */
 
-                for( ClientMap::iterator it=acceptedClients_.begin(); it!=acceptedClients_.end(); it++ )
+                for( auto&& it=acceptedClients_.begin(); it!=acceptedClients_.end(); it++ )
                 { sender->sendCommand( ServerCommand( it.key(), ServerCommand::Identify ) ); }
 
                 return;
@@ -303,8 +303,8 @@ namespace Server
     {
 
         Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << endl;
-        for( ClientList::iterator iter = connectedClients_.begin(); iter != connectedClients_.end(); ++iter )
-        { if( (*iter) != sender ) (*iter)->sendCommand( command ); }
+        for( auto& client:connectedClients_ )
+        { if( client != sender ) client->sendCommand( command ); }
 
     }
 

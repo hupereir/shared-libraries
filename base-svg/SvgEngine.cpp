@@ -57,7 +57,7 @@ namespace Svg
         {
 
             SvgId::List svgIdList;
-            for( Svg::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+            for( auto&& iter = cache_.begin(); iter != cache_.end(); ++iter )
             { svgIdList << iter.key(); }
 
             cache_.clear();
@@ -93,7 +93,7 @@ namespace Svg
     void SvgEngine::_processImageCache( const ImageCache& cache )
     {
 
-        for( ImageCache::const_iterator iter = cache.begin(); iter != cache.end(); ++iter )
+        for( auto&& iter = cache.begin(); iter != cache.end(); ++iter )
         { cache_.insert( iter.key(), QPixmap::fromImage( iter.value() ) ); }
 
     }
@@ -149,10 +149,9 @@ namespace Svg
         #endif
 
         bool found( false );
-        Options::List fileList( XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) );
-        for( Options::List::const_iterator iter = fileList.begin(); iter != fileList.end(); ++iter )
+        for( const auto& option:XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) )
         {
-            QString file( iter->raw() );
+            QString file( option.raw() );
             svg_.load( QString( file ) );
             if( svg_.isValid() )
             {

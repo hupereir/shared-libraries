@@ -35,13 +35,13 @@ FileList::FileList( QObject* parent ):
 
 //_______________________________________________
 bool FileList::contains( const File& file ) const
-{ return std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ) != _records().end(); }
+{ return std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( file ) ) != records_.end(); }
 
 //_______________________________________________
 void FileList::remove( const File& file )
 {
     Debug::Throw() << "FileList::remove - " << file << endl;
-    _records().erase(std::remove_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( file ) ), _records().end() );
+    records_.erase(std::remove_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( file ) ), records_.end() );
     return;
 }
 
@@ -50,7 +50,7 @@ void FileList::set( const FileRecord::List& records )
 {
 
     Debug::Throw( "FileList::set.\n" );
-    _records() = records;
+    records_ = records;
     emit contentsChanged();
 
 }
@@ -60,7 +60,7 @@ File::List FileList::files( void ) const
 {
     Debug::Throw( "FileList::files.\n" );
 
-    FileRecord::List records( _truncatedList( _records() ) );
+    FileRecord::List records( _truncatedList( records_ ) );
     File::List out;
     for( const auto& record:records )
     { out << record.file(); }
@@ -75,8 +75,8 @@ FileRecord FileList::lastValidFile( void )
     Debug::Throw( "FileList::lastValidFile.\n" );
 
     // sort list
-    std::sort( _records().begin(), _records().end(), FileRecord::FirstOpenFTor() );
-    FileRecord::ListIterator iter( _records() );
+    std::sort( records_.begin(), records_.end(), FileRecord::FirstOpenFTor() );
+    FileRecord::ListIterator iter( records_ );
     iter.toBack();
     while( iter.hasPrevious() )
     {
@@ -94,7 +94,7 @@ void FileList::checkValidFiles( void )
     Debug::Throw( "FileList::checkValidFiles.\n" );
     if( !check() ) return;
     if( thread_.isRunning() ) return;
-    thread_.setRecords( _records() );
+    thread_.setRecords( records_ );
     thread_.start();
 }
 
@@ -103,12 +103,11 @@ void FileList::_processRecords( const FileRecord::List& records, bool hasInvalid
 {
 
     // set file records validity
-    FileRecord::List& currentRecords( _records() );
-    for( FileRecord::List::iterator iter = currentRecords.begin(); iter != currentRecords.end(); ++iter )
+    for( auto& record:records_ )
     {
-        FileRecord::List::const_iterator found = std::find_if( records.begin(), records.end(), FileRecord::SameFileFTor( iter->file() ) );
+        FileRecord::List::const_iterator found = std::find_if( records.begin(), records.end(), FileRecord::SameFileFTor( record.file() ) );
         if( found == records.end() ) continue;
-        iter->setValid( found->isValid() );
+        record.setValid( found->isValid() );
     }
 
     _setCleanEnabled( hasInvalidRecords );
@@ -124,14 +123,14 @@ void FileList::clean( void )
 
     if( !check() )
     {
-        _records().clear();
+        records_.clear();
         return;
     }
 
     // remove invalid files
-    _records().erase(
-        std::remove_if( _records().begin(), _records().end(), FileRecord::InvalidFTor() ),
-        _records().end() );
+    records_.erase(
+        std::remove_if( records_.begin(), records_.end(), FileRecord::InvalidFTor() ),
+        records_.end() );
 
     return;
 }
@@ -140,15 +139,15 @@ void FileList::clean( void )
 void FileList::clear( void )
 {
     Debug::Throw( "FileList::clear" );
-    _records().clear();
+    records_.clear();
     return;
 }
 
 //_______________________________________________
-void FileList::_setMaxSize( int value )
+void FileList::setMaxSize( int value )
 {
 
-    Debug::Throw( "FileList::_setMaxSize.\n" );
+    Debug::Throw( "FileList::setMaxSize.\n" );
     maxSize_ = value;
     return;
 
@@ -164,8 +163,8 @@ FileRecord& FileList::_add(
     // do not add empty files
     Q_ASSERT( !record.file().isEmpty() );
 
-    FileRecord::List::iterator iter = std::find_if( _records().begin(), _records().end(), FileRecord::SameFileFTor( record.file() ) );
-    if( iter != _records().end() )
+    auto&& iter = std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( record.file() ) );
+    if( iter != records_.end() )
     {
 
         Debug::Throw() << "FileList::_add - updating: " << record.file() << endl;
@@ -180,10 +179,10 @@ FileRecord& FileList::_add(
     } else {
 
         Debug::Throw() << "FileList::_add - adding: " << record.file() << endl;
-        _records() << record;
+        records_ << record;
 
         if( emitSignal ) emit contentsChanged();
-        return _records().back();
+        return records_.back();
 
     }
 
@@ -202,7 +201,7 @@ FileRecord::List FileList::_truncatedList( FileRecord::List records ) const
 
             while( int(records.size()) > maxSize_ )
             {
-                FileRecord::List::iterator iter( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
+                auto&& iter( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
                 if( iter != records.end() ) records.erase( iter );
                 else break;
             }

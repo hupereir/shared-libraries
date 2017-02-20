@@ -47,11 +47,10 @@ CustomDialog( parent, CloseButton )
     list->setMask( (1<<OptionModel::Name)|(1<<OptionModel::Value) );
 
     // retrieve environment variables from QProcess
-    QStringList env( QProcess::systemEnvironment() );
     OptionModel::List options;
-    for( QStringList::iterator iter = env.begin(); iter != env.end(); ++iter )
+    for( auto line:QProcess::systemEnvironment())
     {
-        QStringList parsed( (iter)->split( "=" ) );
+        QStringList parsed( line.split( "=" ) );
         if( parsed.empty() ) continue;
 
         options << OptionPair( parsed[0], parsed.size() > 1 ? parsed[1]: "" );

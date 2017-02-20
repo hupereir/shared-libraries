@@ -41,8 +41,43 @@ class FileList: public QObject, public Counter
     //* constructor
     FileList( QObject* );
 
+    //*@name accessors
+    //@{
+
     //* returns true if file is found in list
     virtual bool contains( const File& ) const;
+
+    //* empty
+    virtual bool isEmpty( void ) const
+    { return records_.isEmpty(); }
+
+    //* file list size
+    virtual int size( void ) const
+    { return records_.size(); }
+
+    //* file list max size
+    virtual int maxSize( void ) const
+    { return maxSize_; }
+
+    //* all records
+    FileRecord::List records( void ) const
+    { return _truncatedList( records_ ); }
+
+    //* all files
+    File::List files( void ) const;
+
+    //* returns true if file list can be cleaned
+    virtual bool cleanEnabled( void ) const
+    { return (check()) ? cleanEnabled_ : !isEmpty(); }
+
+    //* check flag
+    virtual bool check( void ) const
+    { return check_; }
+
+    //@}
+
+    //*@name modifiers
+    //@{
 
     //* remove file from database
     virtual void remove( const File& );
@@ -52,30 +87,11 @@ class FileList: public QObject, public Counter
     virtual FileRecord& get( const File& file )
     { return _add( FileRecord( file ), false ); }
 
-    //* empty
-    virtual bool isEmpty( void ) const
-    { return _records().isEmpty(); }
-
-    //* gets file list size
-    virtual int size( void ) const
-    { return _records().size(); }
-
-    //* all records
-    FileRecord::List records( void ) const
-    { return _truncatedList( _records() ); }
-
     //* set record
     virtual void set( const FileRecord::List& );
 
-    //* all files
-    File::List files( void ) const;
-
     //* get last valid file
     virtual FileRecord lastValidFile( void );
-
-    //* returns true if file list can be cleaned
-    virtual bool cleanEnabled( void ) const
-    { return (check()) ? cleanEnabled_ : !isEmpty(); }
 
     //* clean files. Remove either invalid or all files, depending on check_
     virtual void clean( void );
@@ -83,13 +99,14 @@ class FileList: public QObject, public Counter
     //* clear files. Remove all
     virtual void clear( void );
 
-    //* check flag
-    virtual bool check( void ) const
-    { return check_; }
-
     //* check_ flag
     virtual void setCheck( bool value )
     { check_ = value; }
+
+    //* maximum Size
+    virtual void setMaxSize( int );
+
+    //@}
 
     Q_SIGNALS:
 
@@ -109,9 +126,6 @@ class FileList: public QObject, public Counter
     void checkValidFiles( void );
 
     protected:
-
-    //* maximum Size
-    virtual void _setMaxSize( int );
 
     //* maximum size
     virtual const int& _maxSize( void ) const

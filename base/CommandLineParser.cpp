@@ -259,7 +259,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                 iter.value().set_ = true;
 
                 // also find true option in group lists and set flag
-                for( Group::Map::iterator groupIter = groups_.begin(); groupIter != groups_.end(); ++groupIter )
+                for( auto&& groupIter = groups_.begin(); groupIter != groups_.end(); ++groupIter )
                 {
                     Group::FlagMap::iterator iter( _findTag( groupIter.value().flags_, tagName ) );
                     if( iter != groupIter.value().flags_.end() )
@@ -309,7 +309,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     iter.value().value_ = value;
 
                     // also find true option in group lists and set flag
-                    for( Group::Map::iterator groupIter = groups_.begin(); groupIter != groups_.end(); ++groupIter )
+                    for( auto&& groupIter = groups_.begin(); groupIter != groups_.end(); ++groupIter )
                     {
                         Group::OptionMap::iterator iter( _findTag( groupIter.value().options_, tagName ) );
                         if( iter != groupIter.value().options_.end() )
@@ -361,7 +361,7 @@ void CommandLineParser::clear( void )
     applicationName_.clear();
     orphans_.clear();
 
-    for( Group::Map::iterator iter = groups_.begin(); iter != groups_.end(); ++iter )
+    for( auto&& iter = groups_.begin(); iter != groups_.end(); ++iter )
     { iter.value().clear(); }
 
 }
@@ -466,11 +466,11 @@ CommandLineParser::Group::OptionMap::const_iterator CommandLineParser::_findTag(
 void CommandLineParser::Group::clear( void )
 {
     // clear flags
-    for( FlagMap::iterator iter = flags_.begin(); iter != flags_.end(); ++iter )
+    for( auto&& iter = flags_.begin(); iter != flags_.end(); ++iter )
     { iter.value().set_ = false; }
 
     // clear options
-    for( OptionMap::iterator iter = options_.begin(); iter != options_.end(); ++iter )
+    for( auto&& iter = options_.begin(); iter != options_.end(); ++iter )
     {
         iter.value().set_ = false;
         iter.value().value_.clear();

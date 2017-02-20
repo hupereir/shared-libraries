@@ -49,7 +49,7 @@ namespace SpellCheck
 
         Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
 
-        for( ActionMap::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        for( auto&& iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
         { if( iter.value() == filter ) iter.key()->setChecked( true ); }
 
         return;
@@ -64,7 +64,7 @@ namespace SpellCheck
 
         // store selected filter
         QString selection;
-        for( ActionMap::iterator iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        for( auto&& iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
         { if( iter.key()->isChecked() ) selection = iter.value(); }
 
         // clear actions

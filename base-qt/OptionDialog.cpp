@@ -105,7 +105,7 @@ void OptionDialog::_reload( void )
 
     // retrieve all special options
     const Options::SpecialMap specialOptions( backupOptions_.specialOptions() );
-    for( Options::SpecialMap::const_iterator iter = specialOptions.begin(); iter != specialOptions.end(); ++iter )
+    for( auto&& iter = specialOptions.begin(); iter != specialOptions.end(); ++iter )
     {
         model_.add( OptionPair( iter.key(), "" ) );
         OptionModel::List options;
@@ -117,7 +117,7 @@ void OptionDialog::_reload( void )
     // retrieve normal options
     const Options::Map& options( backupOptions_.options() );
     OptionModel::List optionList;
-    for( Options::Map::const_iterator iter = options.begin(); iter != options.end(); ++iter )
+    for( auto&& iter = options.begin(); iter != options.end(); ++iter )
     { optionList << OptionPair( iter.key(), iter.value() ); }
     model_.add( optionList );
 

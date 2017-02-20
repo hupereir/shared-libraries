@@ -60,7 +60,7 @@ void CounterDialog::update( void )
     QMutexLocker lock( &counters.mutex() );
 
     CounterModel::List counterList;
-    for( CounterMap::const_iterator iter = counters.begin(); iter != counters.end(); ++iter )
+    for( auto&& iter = counters.begin(); iter != counters.end(); ++iter )
     { counterList << qMakePair( iter.key(), iter.value() ); }
 
     model_.add( counterList );

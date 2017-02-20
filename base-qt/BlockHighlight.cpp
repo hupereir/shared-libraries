@@ -39,7 +39,7 @@ void BlockHighlight::clear( void )
   if( cleared_ ) return;
 
   // loop over all blocks
-  for( QTextBlock block = parent_->document()->begin(); block.isValid(); block = block.next() )
+  for( auto&& block = parent_->document()->begin(); block.isValid(); block = block.next() )
   {
 
     if( parent_->textCursor().block() == block && isEnabled() ) continue;
@@ -121,7 +121,7 @@ void BlockHighlight::_updateEditors( void )
 
   Base::KeySet<TextEditor> editors( parent_ );
   editors.insert( parent_ );
-  for( Base::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
-  { (*iter)->viewport()->update(); }
+  for( const auto& editor:Base::KeySet<TextEditor>(parent_) )
+  { editor->viewport()->update(); }
 
 }

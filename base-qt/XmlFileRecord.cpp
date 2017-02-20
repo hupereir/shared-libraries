@@ -99,7 +99,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 
     if( flags() ) out.setAttribute( Base::Xml::Flags, QString::number( flags() ) );
 
-    for( PropertyMap::const_iterator iter = properties().begin(); iter != properties().end(); ++iter )
+    for( auto&& iter = properties().begin(); iter != properties().end(); ++iter )
     {
         QDomElement property( parent.createElement( Base::Xml::Property ) );
         property.setAttribute( Base::Xml::Name, PropertyId::get(iter.key()) );

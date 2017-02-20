@@ -76,7 +76,7 @@ void TextEncodingMenu::select( const QByteArray& constValue )
     QByteArray value( codec->name() );
 
     // select corresponding action
-    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
         if( iter.value() == value )
         {

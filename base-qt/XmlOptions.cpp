@@ -139,7 +139,7 @@ bool XmlOptions::write( void )
     QDomElement top = document.createElement( Base::Xml::Options ).toElement();
 
     // write list of special option names
-    for( Options::SpecialMap::const_iterator iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
+    for( auto&& iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
     {
         // check size of options
         if( iter.value().empty() ) continue;
@@ -151,15 +151,14 @@ bool XmlOptions::write( void )
     }
 
     // write options
-    for( Options::SpecialMap::const_iterator iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
+    for( auto&& iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
     {
 
-        Options::List option_list( iter.value() );
-        for( Options::List::iterator listIter = option_list.begin(); listIter != option_list.end(); ++listIter )
+        for( const auto& option:iter.value() )
         {
 
-            if( listIter->hasFlag( Option::Recordable ) && listIter->isSet() )
-            { top.appendChild( XmlOption( iter.key(), *listIter ).domElement( document ) ); }
+            if( option.hasFlag( Option::Recordable ) && option.isSet() )
+            { top.appendChild( XmlOption( iter.key(), option ).domElement( document ) ); }
 
         }
 

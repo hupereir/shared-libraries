@@ -109,24 +109,24 @@ void LineNumberDisplay::paint( QPainter& painter )
     QTextBlock block( editor_->document()->begin() );
     unsigned int id( 0 );
 
-    for( LineNumberData::List::iterator iter = lineNumberData_.begin(); iter != lineNumberData_.end(); ++iter )
+    for( auto& data:lineNumberData_ )
     {
 
         // skip if block is not (yet) in window
-        if( iter->cursor() < firstIndex ) continue;
+        if( data.cursor() < firstIndex ) continue;
 
         // stop if block is outside (below) window
-        if( iter->cursor() > lastIndex ) break;
+        if( data.cursor() > lastIndex ) break;
 
         // check validity
-        if( !iter->isValid() ) _updateLineNumberData( block, id, *iter );
+        if( !data.isValid() ) _updateLineNumberData( block, id, data );
 
         // check position
-        if( iter->isValid() && iter->position() > height ) continue;
+        if( data.isValid() && data.position() > height ) continue;
 
-        QString numtext( QString::number( iter->lineNumber() ) );
+        QString numtext( QString::number( data.lineNumber() ) );
         painter.drawText(
-            0, iter->position(), width_-8,
+            0, data.position(), width_-8,
             metric.lineSpacing(),
             Qt::AlignRight | Qt::AlignTop,
             numtext );

@@ -398,8 +398,7 @@ void OptionListBox::_setDefault( void )
     Options::Pair currentOption( model_->get( current ) );
 
     OptionModel::List options( model_->children() );
-    for( OptionModel::List::iterator iter = options.begin(); iter != options.end(); ++iter )
-    { iter->second.setCurrent( false ); }
+    for( auto& option:options ) option.second.setCurrent( false );
 
     model_->set( options );
 

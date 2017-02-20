@@ -49,7 +49,7 @@ void ValidFileThread::run( void )
     // look for duplicated records
     if( checkDuplicates_ )
     {
-        for( FileRecord::List::iterator iter = records_.begin(); iter != records_.end(); )
+        for( auto&& iter = records_.begin(); iter != records_.end(); )
         {
 
             // check item validity
