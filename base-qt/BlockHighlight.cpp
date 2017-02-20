@@ -27,38 +27,38 @@
 
 //_______________________________________________________________________
 BlockHighlight::BlockHighlight( TextEditor* parent ):
-  QObject( parent ),
-  Counter( "BlockHighlight" ),
-  parent_( parent )
+QObject( parent ),
+Counter( "BlockHighlight" ),
+parent_( parent )
 { Debug::Throw( "BlockHighlight::BlockHighlight.\n" ); }
 
 //______________________________________________________________________
 void BlockHighlight::clear( void )
 {
 
-  if( cleared_ ) return;
+    if( cleared_ ) return;
 
-  // loop over all blocks
-  for( auto&& block = parent_->document()->begin(); block.isValid(); block = block.next() )
-  {
-
-    if( parent_->textCursor().block() == block && isEnabled() ) continue;
-
-    TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
-    if( data && data->hasFlag( TextBlock::CurrentBlock ) )
+    // loop over all blocks
+    for( auto&& block = parent_->document()->begin(); block.isValid(); block = block.next() )
     {
 
-      // reset flag
-      data->setFlag( TextBlock::CurrentBlock, false );
+        if( parent_->textCursor().block() == block && isEnabled() ) continue;
 
-      // mark contents dirty to trigger document update
-      _updateEditors();
+        TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
+        if( data && data->hasFlag( TextBlock::CurrentBlock ) )
+        {
+
+            // reset flag
+            data->setFlag( TextBlock::CurrentBlock, false );
+
+            // mark contents dirty to trigger document update
+            _updateEditors();
+
+        }
 
     }
 
-  }
-
-  cleared_ = true;
+    cleared_ = true;
 
 }
 
@@ -66,10 +66,10 @@ void BlockHighlight::clear( void )
 void BlockHighlight::highlight( void )
 {
 
-  if( !isEnabled() ) return;
+    if( !isEnabled() ) return;
 
-  clear();
-  timer_.start(50, this );
+    clear();
+    timer_.start(50, this );
 
 }
 
@@ -77,9 +77,9 @@ void BlockHighlight::highlight( void )
 void BlockHighlight::timerEvent( QTimerEvent* event )
 {
 
-  if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event );
-  timer_.stop();
-  _highlight();
+    if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event );
+    timer_.stop();
+    _highlight();
 
 }
 
@@ -87,31 +87,30 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
 void BlockHighlight::_highlight( void )
 {
 
-  if( !isEnabled() ) return;
+    if( !isEnabled() ) return;
 
-  // retrieve current block
-  QTextBlock block( parent_->textCursor().block() );
+    // retrieve current block
+    QTextBlock block( parent_->textCursor().block() );
 
-  TextBlockData* data = static_cast<TextBlockData*>( block.userData() );
-  if( !data )
-  {
-    data = new TextBlockData();
-    block.setUserData( data );
-  } else if( data->hasFlag( TextBlock::CurrentBlock ) ) return;
+    TextBlockData* data = static_cast<TextBlockData*>( block.userData() );
+    if( !data )
+    {
+        data = new TextBlockData();
+        block.setUserData( data );
+    } else if( data->hasFlag( TextBlock::CurrentBlock ) ) return;
 
-  // need to redo the clear a second time, forced,
-  // in case the previous draw action occured after the previous clear.
-  cleared_ = false;
-  clear();
+    // need to redo the clear a second time, forced,
+    // in case the previous draw action occured after the previous clear.
+    cleared_ = false;
+    clear();
 
-  // mark block as current
-  data->setFlag( TextBlock::CurrentBlock, true );
+    // mark block as current
+    data->setFlag( TextBlock::CurrentBlock, true );
 
-  // mark contents dirty to trigger document update
-  // parent_->document()->markContentsDirty(block.position(), block.length()-1);
-  _updateEditors();
+    // mark contents dirty to trigger document update
+    _updateEditors();
 
-  cleared_ = false;
+    cleared_ = false;
 
 }
 
@@ -119,9 +118,7 @@ void BlockHighlight::_highlight( void )
 void BlockHighlight::_updateEditors( void )
 {
 
-  Base::KeySet<TextEditor> editors( parent_ );
-  editors.insert( parent_ );
-  for( const auto& editor:Base::KeySet<TextEditor>(parent_) )
-  { editor->viewport()->update(); }
-
+    Base::KeySet<TextEditor> editors( parent_ );
+    editors.insert( parent_ );
+    for( const auto& editor:editors ) editor->viewport()->update();
 }
