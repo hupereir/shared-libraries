@@ -85,7 +85,7 @@ void FilePermissionsWidget::setPermissions( QFile::Permissions permissions )
     Debug::Throw( "FilePermissionsWidget::setPermissions\n" );
 
     // set checkboxes
-    for( CheckBoxMap::iterator iter = checkboxes_.begin(); iter != checkboxes_.end(); ++iter )
+    for( auto&& iter = checkboxes_.begin(); iter != checkboxes_.end(); ++iter )
     {
         iter.value()->setChecked( permissions & iter.key() );
         iter.value()->setEnabled( false );

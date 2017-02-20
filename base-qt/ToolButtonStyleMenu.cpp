@@ -60,7 +60,7 @@ void ToolButtonStyleMenu::select( int style )
 {
 
     Debug::Throw() << "ToolButtonStyleMenu::select - style: " << style << endl;
-    for( ActionMap::const_iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
         if( iter.value() == style )
         {

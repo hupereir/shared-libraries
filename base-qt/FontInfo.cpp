@@ -36,7 +36,7 @@ QWidget( parent )
     layout()->addWidget( checkBoxes_.insert( Format::Strike, new QCheckBox( tr( "Strike" ), this ) ).value() );
     layout()->addWidget( checkBoxes_.insert( Format::Overline, new QCheckBox( tr( "Overline" ), this ) ).value() );
 
-    for( CheckBoxMap::iterator iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
+    for( auto&& iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
     { connect( iter.value(), SIGNAL(toggled(bool)), SIGNAL(modified())); }
 }
 

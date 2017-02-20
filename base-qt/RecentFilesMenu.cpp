@@ -78,7 +78,7 @@ void RecentFilesMenu::_updateActions( void )
 
     // set actions enability
     FileRecord::List records( fileList_->records() );
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
 
         FileRecord::List::const_iterator found = std::find_if(
@@ -125,7 +125,7 @@ void RecentFilesMenu::_loadFiles( void )
     cleanAction_->setEnabled( fileList_->cleanEnabled() );
 
     // clear menu an actions map
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     { delete iter.key(); }
     actions_.clear();
 

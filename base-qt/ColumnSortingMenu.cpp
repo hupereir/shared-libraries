@@ -69,7 +69,7 @@ void ColumnSortingMenu::_updateActions( void )
     Debug::Throw( "ColumnSortingMenu::_updateActions.\n" );
 
     // clear existing actions
-    for( ActionMap::iterator iter = actions_.begin(); iter != actions_.end(); ++iter )
+    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     { delete iter.key(); }
     actions_.clear();
 

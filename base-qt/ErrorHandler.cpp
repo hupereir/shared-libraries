@@ -132,9 +132,6 @@ ErrorHandler::ErrorHandler( void )
 
     disableMessage( "Qt: Session management error: Could not open network socket" );
 
-    disableMessage( "Could not resolve property" );
-
-
     // QT5 specific messages
     disableMessage( "void QWindow::setTransientParent" );
     disableMessage( "QBackingStore::flush() called with non-exposed window" );

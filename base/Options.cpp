@@ -157,16 +157,10 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
     // if option is first, set as current
     if( iter.value().empty() ) option.setCurrent( true );
     else if( option.isCurrent() )
-    {
-
-        // set all remaining options to non default
-        for( List::iterator option_iter = iter.value().begin(); option_iter != iter.value().end(); option_iter ++ )
-        { option_iter->setCurrent( false ); }
-
-    }
+    { for( auto& option:iter.value() ) option.setCurrent( false ); }
 
     // see if option is already in list
-    List::iterator sameOptionIter = std::find_if( iter.value().begin(), iter.value().end(), Option::SameValueFTor( option ) );
+    auto&& sameOptionIter = std::find_if( iter.value().begin(), iter.value().end(), Option::SameValueFTor( option ) );
     if( sameOptionIter != iter.value().end() )
     {
 
@@ -195,21 +189,21 @@ void Options::restoreDefaults( void )
 {
 
     // restore standard options
-    for( Map::iterator iter = options_.begin(); iter != options_.end(); ++iter )
+    for( auto&& iter = options_.begin(); iter != options_.end(); ++iter )
     {
         if( iter.value().defaultValue().isEmpty() ) continue;
         iter.value().restoreDefault();
     }
 
     // restore standard options
-    for( SpecialMap::iterator iter = specialOptions_.begin(); iter != specialOptions_.end(); ++iter )
+    for( auto&& iter = specialOptions_.begin(); iter != specialOptions_.end(); ++iter )
     {
-        Options::List optionList( iter.value() );
+        auto optionList( iter.value() );
         iter.value().clear();
-        for( Options::List::iterator listIter = optionList.begin(); listIter != optionList.end(); ++listIter )
+        for( auto& option:optionList )
         {
-            if( listIter->defaultValue().isEmpty() ) continue;
-            add( iter.key(), listIter->restoreDefault() );
+            if( option.defaultValue().isEmpty() ) continue;
+            add( iter.key(), option.restoreDefault() );
         }
     }
 
@@ -220,17 +214,17 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
 {
 
     // print normal options
-    for( Options::Map::const_iterator iter = options.options().begin(); iter != options.options().end(); ++iter )
+    for( auto&& iter = options.options().begin(); iter != options.options().end(); ++iter )
     { out << "  " << iter.key() << ":" << iter.value() << endl; }
 
     // write special options
-    for( Options::SpecialMap::const_iterator iter = options.specialOptions().begin(); iter != options.specialOptions().end(); ++iter )
+    for( auto&& iter = options.specialOptions().begin(); iter != options.specialOptions().end(); ++iter )
     {
         const Options::List& optionList( iter.value() );
-        for( Options::List::const_iterator listIter = optionList.begin(); listIter != optionList.end(); ++listIter )
+        for( const auto& option:optionList )
         {
-            if( listIter->hasFlag( Option::Recordable ) && listIter->isSet() )
-            { out << "  " << iter.key() << ":" << *listIter << endl; }
+            if( option.hasFlag( Option::Recordable ) && option.isSet() )
+            { out << "  " << iter.key() << ":" << option << endl; }
         }
     }
 

@@ -46,7 +46,7 @@ bool PixmapEngine::reload( void )
     if( pathList == pixmapPath_ ) return false;
 
     pixmapPath_ = pathList;
-    for( Base::PixmapCache::iterator iter = cache_.begin(); iter != cache_.end(); ++iter )
+    for( auto&& iter = cache_.begin(); iter != cache_.end(); ++iter )
     { cache_[iter.key()] = _get( iter.key(), false ); }
 
     return true;

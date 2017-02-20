@@ -166,7 +166,7 @@ QModelIndex IconView::indexAt( const QPoint& constPosition ) const
     QPoint position( constPosition + _scrollBarPosition() );
 
     // find matching item
-    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+    for( auto&& iter = items_.begin(); iter != items_.end(); ++iter )
     {
         if( iter.value().boundingRect().translated( iter.value().position() ).contains( position ) )
         { return model()->index( iter.key(), 0 ); }

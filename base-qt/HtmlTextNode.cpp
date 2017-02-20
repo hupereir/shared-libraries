@@ -31,7 +31,7 @@ HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocume
     if( lines.empty() ) return;
 
     // first append the first line
-    QStringList::iterator iter = lines.begin();
+    auto&& iter = lines.begin();
     parent.appendChild( document.createTextNode( *iter ) );
     ++iter;
 

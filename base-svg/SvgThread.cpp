@@ -44,13 +44,13 @@ namespace Svg
         svg_.updateConfiguration();
         cache_.clear();
 
-        for( SvgId::List::const_iterator iter = svgIds_.begin(); iter != svgIds_.end(); ++iter )
+        for( const auto& svg:svgIds_ )
         {
 
-            QImage image( iter->size(), QImage::Format_ARGB32_Premultiplied );
+            QImage image( svg.size(), QImage::Format_ARGB32_Premultiplied );
             image.fill( Qt::transparent );
-            svg_.render( image, iter->id() );
-            cache_.insert( *iter, image );
+            svg_.render( image, svg.id() );
+            cache_.insert( svg, image );
 
         }
 

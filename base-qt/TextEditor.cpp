@@ -913,8 +913,8 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, bool showD
 
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
         BoxSelection::CursorList cursors( boxSelection_.cursorList() );
-        for( BoxSelection::CursorList::iterator iter = cursors.begin(); iter != cursors.end(); ++iter )
-        { counts += _replaceInRange( selection, *iter, MoveCursor ); }
+        for( auto& cursor:cursors )
+        { counts += _replaceInRange( selection, cursor, MoveCursor ); }
 
         boxSelection_.clear();
 
@@ -1057,7 +1057,7 @@ bool TextEditor::event( QEvent* event )
                 QTextCursor cursor( cursorForPosition( position ) );
                 QTextBlock block( cursor.block() );
 
-                for( QTextBlock::iterator it = block.begin(); !(it.atEnd()); ++it)
+                for( auto&& it = block.begin(); !(it.atEnd()); ++it)
                 {
                     QTextFragment fragment = it.fragment();
                     if( !fragment.isValid() ) continue;
@@ -2322,8 +2322,8 @@ void TextEditor::_synchronizeBoxSelection( void ) const
 
     // Debug::Throw( "TextEditor::_synchronizeBoxSelection.\n" );
     Base::KeySet<TextEditor> displays( this );
-    for( Base::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
-    { (*iter)->boxSelection_.synchronize( boxSelection_ ); }
+    for( const auto& editor:Base::KeySet<TextEditor>(this) )
+    { editor->boxSelection_.synchronize( boxSelection_ ); }
 
 }
 
@@ -2471,30 +2471,27 @@ void TextEditor::_synchronizeSelection( void )
     //Debug::Throw( "TextEditor::_synchronizeSelection.\n" );
     if( !isSynchronized() ) return;
 
-    Base::KeySet<TextEditor> editors( this );
-    for( Base::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
+    for( const auto& editor:Base::KeySet<TextEditor>(this) )
     {
-        TextEditor &editor( **iter );
 
         // check if textCursor is different
-        if(
-            editor.textCursor().position() == textCursor().position() &&
-            editor.textCursor().anchor() == textCursor().anchor() )
+        if( editor->textCursor().position() == textCursor().position() &&
+            editor->textCursor().anchor() == textCursor().anchor() )
             continue;
 
         // store scrollbar positions
-        QPoint scrollbars( editor.scrollbarPosition() );
+        QPoint scrollbars( editor->scrollbarPosition() );
 
-        editor.setSynchronized( false );
-        editor.setUpdatesEnabled( false );
-        editor.setTextCursor( textCursor() );
+        editor->setSynchronized( false );
+        editor->setUpdatesEnabled( false );
+        editor->setTextCursor( textCursor() );
 
         // restore scrollbar positions
-        editor.horizontalScrollBar()->setValue( scrollbars.x() );
-        editor.verticalScrollBar()->setValue( scrollbars.y() );
+        editor->horizontalScrollBar()->setValue( scrollbars.x() );
+        editor->verticalScrollBar()->setValue( scrollbars.y() );
 
-        editor.setUpdatesEnabled( true );
-        editor.setSynchronized( true );
+        editor->setUpdatesEnabled( true );
+        editor->setSynchronized( true );
     }
 }
 
@@ -2645,10 +2642,8 @@ void TextEditor::_toggleBlockHighlight( bool state )
         // to avoid infinite loop
         setSynchronized( false );
 
-        Base::KeySet<TextEditor> displays( this );
-        for( Base::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
-
-        { if( (*iter)->isSynchronized() ) (*iter)->blockHighlightAction_->setChecked( state ); }
+        for( const auto& editor:Base::KeySet<TextEditor>( this ) )
+        { if( editor->isSynchronized() ) editor->blockHighlightAction_->setChecked( state ); }
         setSynchronized( true );
 
     }
@@ -2672,9 +2667,8 @@ bool TextEditor::_toggleWrapMode( bool state )
         // temporarely disable synchronization
         // to avoid infinite loop
         setSynchronized( false );
-        Base::KeySet<TextEditor> editors( this );
-        for( Base::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
-        { if( (*iter)->isSynchronized() ) (*iter)->wrapModeAction().setChecked( state ); }
+        for( const auto& editor:Base::KeySet<TextEditor>( this ) )
+        { if( editor->isSynchronized() ) editor->wrapModeAction().setChecked( state ); }
         setSynchronized( true );
 
     }
@@ -2704,9 +2698,8 @@ bool TextEditor::_toggleTabEmulation( bool state )
         // temporarely disable synchronization
         // to avoid infinite loop
         setSynchronized( false );
-        Base::KeySet<TextEditor> editors( this );
-        for( Base::KeySet<TextEditor>::iterator iter = editors.begin(); iter != editors.end(); ++iter )
-        { if( (*iter)->isSynchronized() ) (*iter)->tabEmulationAction().setChecked( state ); }
+        for( const auto& editor:Base::KeySet<TextEditor>( this ) )
+        { if( editor->isSynchronized() ) editor->tabEmulationAction().setChecked( state ); }
         setSynchronized( true );
 
     }
@@ -2731,9 +2724,8 @@ void TextEditor::_toggleShowLineNumbers( bool state )
         // to avoid infinite loop
         setSynchronized( false );
 
-        Base::KeySet<TextEditor> displays( this );
-        for( Base::KeySet<TextEditor>::iterator iter = displays.begin(); iter != displays.end(); ++iter )
-        { if( (*iter)->isSynchronized() ) (*iter)->showLineNumberAction().setChecked( state ); }
+        for( const auto& editor:Base::KeySet<TextEditor>( this ) )
+        { if( editor->isSynchronized() ) editor->showLineNumberAction().setChecked( state ); }
         setSynchronized( true );
 
     }

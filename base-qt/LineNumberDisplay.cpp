@@ -167,7 +167,7 @@ void LineNumberDisplay::_updateLineNumberData( void )
     unsigned int id( 0 );
     unsigned int block_count( 1 );
     QTextDocument &document( *editor_->document() );
-    for( QTextBlock block = document.begin(); block.isValid(); block = block.next(), id++ )
+    for( auto&& block = document.begin(); block.isValid(); block = block.next(), id++ )
     {
 
         // insert new data

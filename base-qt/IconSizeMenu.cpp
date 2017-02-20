@@ -34,7 +34,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
 
     // generic action
     QAction* action;
-    for( auto iter = sizes.begin(); iter != sizes.end(); ++iter )
+    for( auto&& iter = sizes.begin(); iter != sizes.end(); ++iter )
     {
 
         // skip some items depending on custom flags
