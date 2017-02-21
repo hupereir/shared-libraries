@@ -131,7 +131,17 @@ void Options::set( const QString& name, const Option& constOption, bool isDefaul
     Q_ASSERT( !isSpecialOption( name ) );
     Option option( constOption );
     if( isDefault || _autoDefault() ) option.setDefault();
+
+    // find old option to assign comments, if any
+    if( option.comments().isEmpty() )
+    {
+        auto iter( options_.find( name ) );
+        if( iter != options_.end() ) option.setComments( iter->comments() );
+    }
+
+    // store
     options_[name] = option;
+
 }
 
 //________________________________________________
