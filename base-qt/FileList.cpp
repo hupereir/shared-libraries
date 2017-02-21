@@ -163,7 +163,7 @@ FileRecord& FileList::_add(
     // do not add empty files
     Q_ASSERT( !record.file().isEmpty() );
 
-    auto&& iter = std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( record.file() ) );
+    auto iter = std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( record.file() ) );
     if( iter != records_.end() )
     {
 
@@ -201,7 +201,7 @@ FileRecord::List FileList::_truncatedList( FileRecord::List records ) const
 
             while( int(records.size()) > maxSize_ )
             {
-                auto&& iter( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
+                auto iter( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
                 if( iter != records.end() ) records.erase( iter );
                 else break;
             }

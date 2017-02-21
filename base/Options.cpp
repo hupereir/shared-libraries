@@ -160,7 +160,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
     { for( auto& option:iter.value() ) option.setCurrent( false ); }
 
     // see if option is already in list
-    auto&& sameOptionIter = std::find_if( iter.value().begin(), iter.value().end(), Option::SameValueFTor( option ) );
+    auto sameOptionIter = std::find_if( iter.value().begin(), iter.value().end(), Option::SameValueFTor( option ) );
     if( sameOptionIter != iter.value().end() )
     {
 

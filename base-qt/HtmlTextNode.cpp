@@ -30,16 +30,12 @@ HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocume
     QStringList lines( text.split( '\n' ) );
     if( lines.empty() ) return;
 
-    // first append the first line
-    auto&& iter = lines.begin();
-    parent.appendChild( document.createTextNode( *iter ) );
-    ++iter;
-
-    // append remaining lines, after end of line tag
-    for( ;iter != lines.end(); ++iter )
+    bool first = true;
+    for( const auto& line:lines )
     {
-        parent.appendChild( document.createElement( "br" ) );
-        parent.appendChild( document.createTextNode( *iter ) );
+        if( !first ) parent.appendChild( document.createElement( "br" ) );
+        parent.appendChild( document.createTextNode( line ) );
+        first = false;
     }
 
     return;
