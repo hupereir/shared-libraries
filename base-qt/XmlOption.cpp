@@ -53,11 +53,8 @@ XmlOption::XmlOption( const QDomElement& element )
         if( attribute.name() == Base::Xml::Name ) setName( attribute.value() );
         else if( attribute.name() == Base::Xml::Value ) setRaw( XmlString( attribute.value() ) );
         else if( attribute.name() == Base::Xml::Comments ) setComments( XmlString( attribute.value() ) );
-        else if( attribute.name() == Base::Xml::Flags ) {
-
-            setFlags( (Option::Flags) attribute.value().toInt() );
-
-        } else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized attribute " << attribute.name() << ".\n";
+        else if( attribute.name() == Base::Xml::Flags ) setFlags( (Option::Flags) attribute.value().toInt() );
+        else Debug::Throw(0) << "XmlOption::XmlOption - unrecognized attribute " << attribute.name() << ".\n";
 
     }
 
@@ -82,21 +79,9 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
     Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
 
     QDomElement out = document.createElement( Base::Xml::Option );
-
-    out.appendChild( document.createElement( Base::Xml::Name ) ).
-        appendChild( document.createTextNode( name() ) );
-
-    out.appendChild( document.createElement( Base::Xml::Value ) ).
-        appendChild( document.createTextNode( QString::fromUtf8( raw() ) ) );
-
-    out.appendChild( document.createElement( Base::Xml::Flags ) ).
-        appendChild( document.createTextNode( QString::number( flags() ) ) );
-
-    if( comments().size() )
-    {
-        out.appendChild( document.createElement( Base::Xml::Comments ) ).
-            appendChild( document.createTextNode( comments() ) );
-    }
+    out.setAttribute( Base::Xml::Name, name() );
+    out.setAttribute( Base::Xml::Flags, QString::number( flags() ) );
+    out.setAttribute( Base::Xml::Value, QString::fromUtf8( raw() ) );
 
     return out;
 
