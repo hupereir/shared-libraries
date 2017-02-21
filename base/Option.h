@@ -59,9 +59,6 @@ class Option:public Counter
     Option( const QByteArray&, Flags = Recordable );
 
     //* constructor
-    Option( const QByteArray&, const QString&, Flags = Recordable );
-
-    //* constructor
     Option( const QString&, Flags = Recordable );
 
     //* less than operator
@@ -70,8 +67,7 @@ class Option:public Counter
         if( value_ != other.value_ ) return value_ < other.value_;
         else if( flags_ != other.flags_ ) return flags_ < other.flags_;
         else if( defaultValue_ != other.defaultValue_ ) return defaultValue_ < other.defaultValue_;
-        else if( defaultFlags_ != other.defaultFlags_ ) return defaultFlags_ < other.defaultFlags_;
-        else return comments_ < other.comments_;
+        else return defaultFlags_ < other.defaultFlags_;
     }
 
     //* equal operator
@@ -84,10 +80,6 @@ class Option:public Counter
 
     //*@name accessors
     //@{
-
-    //* option comments
-    const QString& comments( void ) const
-    { return comments_; }
 
     //* flags
     Flags flags( void ) const
@@ -143,13 +135,6 @@ class Option:public Counter
 
     //*@name modifiers
     //@{
-
-    //* option comments
-    Option& setComments( const QString& comments )
-    {
-        comments_ = comments;
-        return *this;
-    }
 
     //* flags
     Option& setFlags( Flags value )
@@ -269,9 +254,6 @@ class Option:public Counter
 
     //* option default value
     QByteArray defaultValue_;
-
-    //* option comments
-    QString comments_;
 
     //* flags
     Flags flags_ = Recordable;

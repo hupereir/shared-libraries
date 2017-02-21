@@ -57,14 +57,6 @@ Option::Option( const QString& value, Flags flags ):
 {}
 
 //________________________________________________________
-Option::Option( const QByteArray& value, const QString& comments, Flags flags ):
-    Counter( "Option" ),
-    value_( value ),
-    comments_( comments ),
-    flags_( flags )
-{}
-
-//________________________________________________________
 QDataStream &operator << ( QDataStream &stream, const Option& option )
 {
     static const quint32 version = 0;
@@ -72,7 +64,6 @@ QDataStream &operator << ( QDataStream &stream, const Option& option )
         << version
         << option.value_
         << option.defaultValue_
-        << option.comments_
         << quint32(option.flags_)
         << quint32(option.defaultFlags_);
     return stream;
@@ -91,7 +82,6 @@ QDataStream &operator >> ( QDataStream &stream, Option& option )
         stream
             >> option.value_
             >> option.defaultValue_
-            >> option.comments_
             >> flags
             >> defaultFlags;
         option.flags_ = Option::Flags( flags );

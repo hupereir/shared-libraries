@@ -70,9 +70,6 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
     if( role == Qt::DecorationRole && index.column() == Current )
     { return option.second.isCurrent() ? IconEngine::get( IconNames::DialogAccept ):QVariant(); }
 
-    if( role == Qt::ToolTipRole && index.column() == Name )
-    { return option.second.comments(); }
-
     return QVariant();
 
 }
