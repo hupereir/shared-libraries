@@ -77,7 +77,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
         hLayout->addWidget( button );
         connect( button, SIGNAL(clicked()), SLOT(_preview()) );
 
-    } else Debug::Throw(0) << "QFileDialog::QFileDialog - unable to find splitter." << endl;
+    } else Debug::Throw(0) << "ImageFileDialog::ImageFileDialog - unable to find splitter." << endl;
 
     connect( this, SIGNAL(currentChanged (QString)), SLOT(_currentChanged(QString)) );
 
@@ -117,7 +117,8 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 
                 dialog.setDirectory( fileInfo.path() );
                 dialog.selectFile( fileInfo.fileName() );
-                if( dialog.automaticPreview_->isChecked() ) dialog._currentChanged( fileInfo.filePath() );
+                if( dialog.automaticPreview_ && dialog.automaticPreview_->isChecked() )
+                { dialog._currentChanged( fileInfo.filePath() ); }
 
             }
             event->acceptProposedAction();
@@ -139,7 +140,7 @@ void ImageFileDialog::_currentChanged( const QString& value )
 {
     Debug::Throw( "ImageFileDialog::_currentChanged.\n" );
     currentPath_ = value;
-    if( automaticPreview_->isChecked() ) _preview();
+    if( automaticPreview_ && automaticPreview_->isChecked() ) _preview();
 }
 
 //______________________________________________________________________
@@ -148,6 +149,9 @@ void ImageFileDialog::_preview( void )
 
     Debug::Throw( "ImageFileDialog::_preview.\n" );
 
+    // nothing if no preview
+    if( !preview_ ) return;
+    
     // try load svg
     CustomPixmap pixmap;
 
