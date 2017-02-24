@@ -167,7 +167,7 @@ xcb_screen_t* XcbUtil::Private::screen( int screenNumber )
     for( xcb_screen_iterator_t iter = xcb_setup_roots_iterator( xcb_get_setup( connection() ) ); iter.rem; --screenNumber, xcb_screen_next( &iter ) )
     { if( screenNumber == 0 ) return iter.data; }
 
-    return 0x0;
+    return nullptr;
 
 }
 
@@ -202,7 +202,7 @@ xcb_atom_t* XcbUtil::Private::atom( const QString& atomName )
 
     // create atom if not found
     xcb_intern_atom_cookie_t cookie( xcb_intern_atom( connection(), false, atomName.size(), qPrintable( atomName ) ) );
-    ScopedPointer<xcb_intern_atom_reply_t> reply( xcb_intern_atom_reply( connection(), cookie, 0x0 ) );
+    ScopedPointer<xcb_intern_atom_reply_t> reply( xcb_intern_atom_reply( connection(), cookie, nullptr ) );
     xcb_atom_t out = reply ? reply->atom:0;
     return &(namedAtomId_[atomName] = out);
 
@@ -220,7 +220,7 @@ xcb_atom_t* XcbUtil::Private::atom( AtomId atom )
 
     // create atom if not found
     xcb_intern_atom_cookie_t cookie( xcb_intern_atom( connection(), false, atomNames_[atom].size(), qPrintable( atomNames_[atom] ) ) );
-    ScopedPointer<xcb_intern_atom_reply_t> reply( xcb_intern_atom_reply( connection(), cookie, 0x0 ) );
+    ScopedPointer<xcb_intern_atom_reply_t> reply( xcb_intern_atom_reply( connection(), cookie, nullptr ) );
     xcb_atom_t out = reply ? reply->atom:0;
     return &(atoms_[atom] = out);
 
@@ -317,7 +317,7 @@ bool XcbUtil::isSupported( AtomId atomId ) const
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property( d->connection(), 0, d->appRootWindow(), netSupported, XCB_ATOM_ATOM, offset, 1 ) );
-        ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+        ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, nullptr ) );
         if( !reply )
         {
             Debug::Throw(debugLevel) << "XcbUtil::isSupported - XGetProperty failed" << endl;
@@ -362,7 +362,7 @@ bool XcbUtil::isRealWindow( WId window ) const
     const uint32_t maxLength = std::string().max_size();
 
     xcb_get_property_cookie_t cookie = xcb_get_property( connection, 0, window, atom,  XCB_ATOM_ANY, 0, maxLength );
-    XcbUtil::ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( connection, cookie, 0x0 ) );
+    XcbUtil::ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( connection, cookie, nullptr ) );
     return ( reply && xcb_get_property_value_length( reply.data() ) > 0 && reply.data()->type != XCB_ATOM_NONE );
 
     #else
@@ -390,7 +390,7 @@ bool XcbUtil::hasState( WId window, AtomId atomId ) const
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, window, netWMState, XCB_ATOM_ATOM, offset, 1 ) );
-        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, nullptr ) );
         if( !reply )
         {
             Debug::Throw(debugLevel) << "XcbUtil::hasState - XGetProperty failed" << endl;
@@ -429,7 +429,7 @@ void XcbUtil::printState( WId window ) const
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, window, netWMState, XCB_ATOM_ATOM, offset, 1 ) );
-        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, nullptr ) );
         if( !reply )
         {
             Debug::Throw(debugLevel) << "XcbUtil::hasState - XGetProperty failed" << endl;
@@ -471,7 +471,7 @@ uint32_t XcbUtil::cardinal( WId window, AtomId atom ) const
 
     xcb_atom_t searched( *d->atom(atom) );
     xcb_get_property_cookie_t cookie( xcb_get_property( d->connection(), 0, window, searched, XCB_ATOM_CARDINAL, 0, 1 ) );
-    ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+    ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, nullptr ) );
     if( !( reply && xcb_get_property_value_length( reply.data() ) > 0 ) ) return 0;
 
     return reinterpret_cast<uint32_t*>(xcb_get_property_value( reply.data() ) )[0];
@@ -606,7 +606,7 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
     {
 
         xcb_get_property_cookie_t cookie( xcb_get_property(  d->connection(), 0, widget->winId(), netWMState, XCB_ATOM_ATOM, offset, 1 ) );
-        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, 0x0 ) );
+        ScopedPointer<xcb_get_property_reply_t>reply( xcb_get_property_reply( d->connection(), cookie, nullptr ) );
         if( !reply )
         {
             Debug::Throw(debugLevel) << "XcbUtil::hasState - XGetProperty failed" << endl;
