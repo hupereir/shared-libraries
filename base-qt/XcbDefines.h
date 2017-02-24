@@ -27,6 +27,9 @@ class XcbDefines
 
     public:
 
+    //* used to access properties
+    static const uint32_t MAX_PROP_SIZE = 100000;
+
     //* used for stickyness
     static const uint32_t ALL_DESKTOPS = ~0;
 

@@ -359,9 +359,8 @@ bool XcbUtil::isRealWindow( WId window ) const
 
     xcb_connection_t* connection( d->connection() );
     xcb_atom_t atom( *d->atom( XcbDefines::WM_STATE ) );
-    const uint32_t maxLength = std::string().max_size();
 
-    xcb_get_property_cookie_t cookie = xcb_get_property( connection, 0, window, atom,  XCB_ATOM_ANY, 0, maxLength );
+    xcb_get_property_cookie_t cookie = xcb_get_property( connection, 0, window, atom,  XCB_ATOM_ANY, 0, XcbDefines::MAX_PROP_SIZE );
     XcbUtil::ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( connection, cookie, nullptr ) );
     return ( reply && xcb_get_property_value_length( reply.data() ) > 0 && reply.data()->type != XCB_ATOM_NONE );
 
