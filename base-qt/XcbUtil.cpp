@@ -79,20 +79,20 @@ class XcbUtil::Private
     SupportedAtomHash supportedAtomId_;
 
     //* default screen number
-    int defaultScreenNumber_;
+    int defaultScreenNumber_ = 0;
 
     private:
 
     #if HAVE_XCB
 
     //* xcb connection
-    xcb_connection_t* connection_;
+    xcb_connection_t* connection_ = nullptr;
 
     //* default screen
-    xcb_screen_t* defaultScreen_;
+    xcb_screen_t* defaultScreen_ = nullptr;
 
     //* root window
-    xcb_window_t appRootWindow_;
+    xcb_window_t appRootWindow_ = 0;
 
     //* atom names map
     typedef QHash<QString, xcb_atom_t> NamedAtomHash;
@@ -109,12 +109,6 @@ class XcbUtil::Private
 XcbUtil::Private::Private( void )
 {
 
-    #if HAVE_XCB
-    connection_ = 0;
-    defaultScreenNumber_ = 0;
-    defaultScreen_ = 0;
-    appRootWindow_ = 0;
-    #endif
     atomNames_[WM_STATE] = "WM_STATE";
 
     atomNames_[_NET_SUPPORTED] = "_NET_SUPPORTED";
