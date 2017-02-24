@@ -23,7 +23,6 @@
 #include "XcbDefines.h"
 
 #include <QHash>
-#include <QScopedPointer>
 #include <QWidget>
 
 #include <memory>
@@ -33,17 +32,7 @@ class XcbUtil: private XcbDefines
 
     public:
 
-    //* convenience class to handle xcb replies
-    template <typename T> class ScopedPointer: public QScopedPointer<T, QScopedPointerPodDeleter>
-    {
-        public:
-
-        //* constructor
-        ScopedPointer( T* t ):
-            QScopedPointer<T, QScopedPointerPodDeleter>( t )
-            {}
-    };
-
+    template <typename T> using ScopedPointer = std::unique_ptr<T>;
 
     //* singleton
     static XcbUtil& get( void );

@@ -325,7 +325,7 @@ bool XcbUtil::isSupported( AtomId atomId ) const
         }
 
         // cast atom
-        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
         if( searched == current )
         {
 
@@ -362,7 +362,7 @@ bool XcbUtil::isRealWindow( WId window ) const
 
     xcb_get_property_cookie_t cookie = xcb_get_property( connection, 0, window, atom,  XCB_ATOM_ANY, 0, XcbDefines::MAX_PROP_SIZE );
     XcbUtil::ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( connection, cookie, nullptr ) );
-    return ( reply && xcb_get_property_value_length( reply.data() ) > 0 && reply.data()->type != XCB_ATOM_NONE );
+    return ( reply && xcb_get_property_value_length( reply.get() ) > 0 && reply->type != XCB_ATOM_NONE );
 
     #else
 
@@ -397,7 +397,7 @@ bool XcbUtil::hasState( WId window, AtomId atomId ) const
         }
 
         // cast atom
-        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
 
         if( searched == current ) return true;
         else if( reply->bytes_after == 0 ) return false;
@@ -436,13 +436,13 @@ void XcbUtil::printState( WId window ) const
         }
 
         // cast atom
-        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
         {
 
             xcb_get_atom_name_cookie_t cookie( xcb_get_atom_name( d->connection(), current ) );
             XcbUtil::ScopedPointer<xcb_get_atom_name_reply_t> reply( xcb_get_atom_name_reply( d->connection(), cookie, 0 ) );
             if( reply )
-            { atomNames.append( QString( QByteArray( xcb_get_atom_name_name( reply.data() ), xcb_get_atom_name_name_length( reply.data() ) ) ) ); }
+            { atomNames.append( QString( QByteArray( xcb_get_atom_name_name( reply.get() ), xcb_get_atom_name_name_length( reply.get() ) ) ) ); }
 
         }
 
@@ -471,9 +471,9 @@ uint32_t XcbUtil::cardinal( WId window, AtomId atom ) const
     xcb_atom_t searched( *d->atom(atom) );
     xcb_get_property_cookie_t cookie( xcb_get_property( d->connection(), 0, window, searched, XCB_ATOM_CARDINAL, 0, 1 ) );
     ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, nullptr ) );
-    if( !( reply && xcb_get_property_value_length( reply.data() ) > 0 ) ) return 0;
+    if( !( reply && xcb_get_property_value_length( reply.get() ) > 0 ) ) return 0;
 
-    return reinterpret_cast<uint32_t*>(xcb_get_property_value( reply.data() ) )[0];
+    return reinterpret_cast<uint32_t*>(xcb_get_property_value( reply.get() ) )[0];
 
     #else
     return 0;
@@ -613,7 +613,7 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
         }
 
         // cast atom and append
-        xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.data() ))[0] );
+        xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
         atoms.append( current );
 
         if( reply->bytes_after == 0 ) break;

@@ -80,8 +80,8 @@ KeyModifier::State KeyModifier::state( void ) const
         if( !reply ) return Unknown;
 
         // get modifiers
-        xcb_keycode_t *modifiers( xcb_get_modifier_mapping_keycodes( reply.data() ) );
-        const int count( xcb_get_modifier_mapping_keycodes_length( reply.data() ) );
+        xcb_keycode_t *modifiers( xcb_get_modifier_mapping_keycodes( reply.get() ) );
+        const int count( xcb_get_modifier_mapping_keycodes_length( reply.get() ) );
 
         for( int i = 0; i<count; ++i )
         {
@@ -97,7 +97,7 @@ KeyModifier::State KeyModifier::state( void ) const
     {
         xcb_query_pointer_cookie_t cookie( xcb_query_pointer( connection, XcbUtil::get().appRootWindow() ) );
         XcbUtil::ScopedPointer<xcb_query_pointer_reply_t> reply( xcb_query_pointer_reply( connection, cookie, nullptr ) );
-        if( reply ) return ( reply.data()->mask & keyMask ) ? On:Off;
+        if( reply ) return ( reply->mask & keyMask ) ? On:Off;
     }
 
     #endif
