@@ -32,7 +32,11 @@ class XcbUtil: private XcbDefines
 
     public:
 
-    template <typename T> using ScopedPointer = std::unique_ptr<T>;
+    //* delete object allocated with malloc
+    struct pod_delete{ void operator()(void* x) { free(x); } };
+
+    //* specialized unique pointer
+    template <typename T> using ScopedPointer = std::unique_ptr<T,pod_delete>;
 
     //* singleton
     static XcbUtil& get( void );
