@@ -69,7 +69,7 @@ class WinUtil
     std::unique_ptr<WinUtilPrivate> private_;
 
     //* target widget
-    QWidget *target_;
+    QWidget *target_ = nullptr;
 
 };
 
