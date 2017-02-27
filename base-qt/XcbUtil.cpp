@@ -637,10 +637,11 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
     }
 
     // change property
-    xcb_change_property( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), netWMState, XCB_ATOM_ATOM, 32, atoms.size(), reinterpret_cast<const void*>( atoms.constData() ) );
+    auto cookie = xcb_change_property_checked( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), netWMState, XCB_ATOM_ATOM, 32, atoms.size(), reinterpret_cast<const void*>( atoms.constData() ) );
+    ScopedPointer<xcb_generic_error_t> error( xcb_request_check( d->connection(), cookie ) );
     xcb_flush( d->connection() );
 
-    return true;
+    return !error;
     #endif
 
     return false;
@@ -702,10 +703,10 @@ bool XcbUtil::_changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) co
     if( !isSupported( atom ) ) return false;
 
     xcb_atom_t searched( *d->atom( atom ) );
-    xcb_change_property( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), searched, XCB_ATOM_CARDINAL, 32, 1, &value );
+    auto cookie = xcb_change_property_checked( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), searched, XCB_ATOM_CARDINAL, 32, 1, &value );
+    ScopedPointer<xcb_generic_error_t> error( xcb_request_check( d->connection(), cookie ) );
     xcb_flush( d->connection() );
-
-    return true;
+    return !error;
     #endif
 
     return false;
@@ -715,7 +716,7 @@ bool XcbUtil::_changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) co
 bool XcbUtil::_requestCardinalChange( QWidget* widget, AtomId atom, uint32_t value ) const
 {
 
-    Debug::Throw( "XcbUtil::_requestChangeCardinal.\n" );
+    Debug::Throw( 0, "XcbUtil::_requestChangeCardinal.\n" );
 
     #if HAVE_XCB
 
