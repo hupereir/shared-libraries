@@ -81,7 +81,7 @@ namespace Ssh
                     .arg( tcpServer->errorString() );
 
                 Debug::Throw() << "Ssh::Connection::connectTunnels - " << message << endl;
-                emit error( error_ = message );
+                _notifyError( message );
 
                 return false;
             }
@@ -107,7 +107,7 @@ namespace Ssh
         sshSocket_ = socket( PF_INET, SOCK_STREAM, IPPROTO_TCP);
         if( sshSocket_ == -1 )
         {
-            emit error( error_ = tr( "unable to create ssh socket" ) );
+            _notifyError( tr( "unable to create ssh socket" ) );
             return false;
         }
 
@@ -115,13 +115,13 @@ namespace Ssh
         const int flags( fcntl(sshSocket_, F_GETFL ) );
         if( flags < 0 )
         {
-            emit error( error_ = tr( "unable to get socket flags" ) );
+            _notifyError( tr( "unable to get socket flags" ) );
             return false;
         }
 
         if( fcntl( sshSocket_, F_SETFL, flags|O_NONBLOCK ) < 0 )
         {
-            emit error( error_ = tr( "unable to set socket flags" ) );
+            _notifyError( tr( "unable to set socket flags" ) );
             return false;
         }
 
@@ -132,7 +132,7 @@ namespace Ssh
         if(!( session_ = libssh2_session_init() ))
         {
             Debug::Throw() << "Ssh::Connection::connect - Cannot initialize session" << endl;
-            emit error( error_ = tr( "cannot initialize ssh session" ) );
+            _notifyError( tr( "cannot initialize ssh session" ) );
             return false;
         }
 
@@ -364,7 +364,7 @@ namespace Ssh
         if( commands_.front() != lastCommand_ )
         {
             lastCommand_ = commands_.front();
-            emit message( _commandMessage( lastCommand_ ) );
+            _notifyMessage( _commandMessage( lastCommand_ ) );
         }
 
         #if HAVE_SSH
@@ -685,8 +685,19 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_notifyError( QString message )
-    { Debug::Throw(0) << "Ssh::Connection::_notifyError: " << message << endl; }
+    void Connection::_notifyError( QString error )
+    {
+        Debug::Throw(0) << "Ssh::Connection::_notifyError: " << error << endl;
+        error_ = error;
+        emit this->error( error );
+    }
+
+    //_______________________________________________
+    void Connection::_notifyMessage( QString message )
+    {
+        Debug::Throw() << "Ssh::Connection::_notifyMessage: " << message << endl;
+        emit this->message( message );
+    }
 
     //_______________________________________________
     void Connection::_notifyDebug( QString message )
@@ -726,7 +737,6 @@ namespace Ssh
                 Tunnel* tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
 
-                connect( tunnel, SIGNAL(error(QString)), this, SLOT(_processError(QString)) );
                 connect( tunnel, SIGNAL(error(QString)), this, SLOT(_notifyError(QString)) );
                 connect( tunnel, SIGNAL(debug(QString)), this, SLOT(_notifyDebug(QString)) );
                 connect( tunnel->sshSocket(), SIGNAL(error(QAbstractSocket::SocketError)), tunnel, SLOT(deleteLater()) );
@@ -763,7 +773,7 @@ namespace Ssh
         Debug::Throw( "Ssh::Connection::_abortCommands.\n" );
         if( timer_.isActive() ) timer_.stop();
         commands_.clear();
-        emit error( error_ = errorMessage );
+        _notifyError( errorMessage );
     }
 
 }

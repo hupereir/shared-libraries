@@ -177,12 +177,11 @@ namespace Ssh
         //* disconnect tunnel
         void _disconnectTunnels( void );
 
+        //* message handling
+        void _notifyMessage( QString );
+
         //* error handling
         void _notifyError( QString );
-
-        //* process error
-        void _processError( QString error )
-        { emit( error_ = error ); }
 
         //* error handling
         void _notifyDebug( QString );
