@@ -44,251 +44,258 @@
 #include <QToolButton>
 
 //___________________________________________________________________
-const qreal PathEditorButton::BorderWidth = 1.5;
 const QString PathEditor::MimeType( "internal/path-editor-item" );
 
-//____________________________________________________________________________
-bool PathEditorButton::event( QEvent* event )
+namespace Private
 {
 
-    switch( event->type() )
+    //___________________________________________________________________
+    const qreal PathEditorButton::BorderWidth = 1.5;
+
+    //____________________________________________________________________________
+    bool PathEditorButton::event( QEvent* event )
     {
 
-        case QEvent::HoverEnter: mouseOver_ = true; break;
-        case QEvent::HoverLeave: mouseOver_ = false; break;
-        default: break;
-    }
+        switch( event->type() )
+        {
 
-    return QAbstractButton::event( event );
+            case QEvent::HoverEnter: mouseOver_ = true; break;
+            case QEvent::HoverLeave: mouseOver_ = false; break;
+            default: break;
+        }
 
-}
-
-//____________________________________________________________________________
-PathEditorItem::PathEditorItem( QWidget* parent ):
-    PathEditorButton( parent ),
-    Counter( "PathEditorItem" ),
-    isLocal_( true ),
-    isSelectable_( true ),
-    isLast_( false )
-{
-    Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-    dragMonitor_ = new DragMonitor( this );
-    dragMonitor_->setDragEnabled( false );
-    connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), this, SLOT(_startDrag(QPoint)));
-}
-
-//____________________________________________________________________________
-void PathEditorItem::setPath( const File& path, const QString& name )
-{
-
-    Debug::Throw( "PathEditorItem::setPath.\n" );
-
-    path_ = path;
-
-    if( name.isEmpty() )
-    {
-
-        // get local name
-        File localName( path.localName() );
-        if( localName.endsWith( "/" ) ) localName = localName.left( localName.size()-1 );
-        Q_ASSERT( !localName.isEmpty() );
-
-        setText( localName );
-
-    } else setText( name );
-
-    updateMinimumSize();
-
-}
-
-//____________________________________________________________________________
-void PathEditorItem::updateMinimumSize( void )
-{
-    Debug::Throw( "PathEditorItem::updateMinimumSize.\n" );
-    QFont adjustedFont(font());
-    adjustedFont.setBold( isLast_ );
-
-    // text size
-    QSize size( QFontMetrics( adjustedFont ).boundingRect( text() ).size() );
-
-    // margins
-    size.rwidth() += 2*BorderWidth;
-    size.rheight() += 4*BorderWidth;
-
-    // arrow width
-    const int arrowWidth( _arrowWidth() );
-    if( arrowWidth > 0 ) size.rwidth() += arrowWidth + 2*BorderWidth;
-
-    // update
-    setMinimumSize( size );
-}
-
-//_______________________________________________
-void PathEditorItem::_startDrag( QPoint dragOrigin )
-{
-
-    Debug::Throw( "PathEditorItem::_startDrag.\n" );
-
-    // start drag
-    QDrag *drag = new QDrag(this);
-    QMimeData *mimeData = new QMimeData;
-
-    // fill Drag data. Use XML
-    QDomDocument document;
-    QDomElement top = document.appendChild( document.createElement( Xml::FileInfoList ) ).toElement();
-
-    BaseFileInfo fileInfo( path_ );
-    fileInfo.setAlias( text() );
-    fileInfo.setIsFolder();
-    if( isLocal_ )
-    {
-
-        fileInfo.setLocal();
-        fileInfo.update();
-        if( path_.isLink() ) fileInfo.setIsLink();
-        if( path_.isBrokenLink() ) fileInfo.setIsBrokenLink();
-        if( path_.isHidden() ) fileInfo.setIsHidden();
-
-    } else fileInfo.setRemote();
-
-    top.appendChild( fileInfo.domElement( document ) );
-
-    const QString value( prefix_.isEmpty() ? path_ : prefix_ + "//" + path_ );
-    mimeData->setText( value );
-    mimeData->setData( PathEditor::MimeType, document.toByteArray() );
-    drag->setMimeData( mimeData );
-
-    // create drag pixmap
-    QPixmap pixmap( size() );
-    pixmap.fill( Qt::transparent );
-    QPainter painter( &pixmap );
-    _paint( &painter );
-
-    drag->setPixmap( pixmap );
-    drag->setHotSpot( QPoint( (dragOrigin-rect().topLeft()).x(), 0 ) );
-
-    drag->start();
-
-}
-
-//____________________________________________________________________________
-void PathEditorItem::paintEvent( QPaintEvent* event )
-{
-    QPainter painter( this );
-    painter.setClipRegion( event->region() );
-
-    _paint( &painter );
-    painter.end();
-}
-
-//____________________________________________________________________________
-void PathEditorItem::_paint( QPainter* painter )
-{
-
-    // render mouse over
-    if( _mouseOver() && isSelectable() )
-    {
-
-        QStyleOptionViewItemV4 option;
-        option.initFrom( this );
-        option.showDecorationSelected = true;
-        option.rect = rect();
-        option.state |= QStyle::State_MouseOver;
-        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, _itemView() );
+        return QAbstractButton::event( event );
 
     }
 
-    // save layout direction
-    const bool isRightToLeft( qApp->isRightToLeft() );
-
-    // render text
-    QRect textRect( rect().adjusted( 0, 2*BorderWidth, 0, -2*BorderWidth ) );
-    if( !isLast_ )
+    //____________________________________________________________________________
+    PathEditorItem::PathEditorItem( QWidget* parent ):
+        PathEditorButton( parent ),
+        Counter( "PathEditorItem" ),
+        isLocal_( true ),
+        isSelectable_( true ),
+        isLast_( false )
     {
-        if( isRightToLeft ) textRect.adjust(_arrowWidth()-2*BorderWidth, 0, 0, 0 );
-        else textRect.adjust( 0, 0, -_arrowWidth()-2*BorderWidth, 0 );
+        Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+        dragMonitor_ = new DragMonitor( this );
+        dragMonitor_->setDragEnabled( false );
+        connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), this, SLOT(_startDrag(QPoint)));
     }
 
-    QFont adjustedFont(font());
-    adjustedFont.setBold( isLast_ );
-    painter->setFont( adjustedFont );
-    painter->drawText( QRectF( textRect ), Qt::AlignHCenter|Qt::AlignBottom|Qt::TextHideMnemonic, text() );
-
-    // render arrow
-    if( !isLast_ )
+    //____________________________________________________________________________
+    void PathEditorItem::setPath( const File& path, const QString& name )
     {
-        QStyleOption option;
-        option.initFrom(this);
 
-        if( isRightToLeft ) option.rect = QRect( 0, 0, textRect.left()+BorderWidth, rect().height() );
-        else option.rect = QRect( textRect.width(), 0, rect().width()-textRect.width()-BorderWidth, rect().height() );
+        Debug::Throw( "PathEditorItem::setPath.\n" );
 
-        option.palette = palette();
-        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, painter, this );
-    }
+        path_ = path;
 
-}
+        if( name.isEmpty() )
+        {
 
-//____________________________________________________________________________
-void PathEditorMenuButton::paintEvent( QPaintEvent* event )
-{
-    QPainter painter( this );
-    painter.setClipRegion( event->region() );
+            // get local name
+            File localName( path.localName() );
+            if( localName.endsWith( "/" ) ) localName = localName.left( localName.size()-1 );
+            Q_ASSERT( !localName.isEmpty() );
 
-    if( _mouseOver() )
-    {
-        // mouse over
-        QStyleOptionViewItemV4 option;
-        option.initFrom( this );
-        option.showDecorationSelected = true;
-        option.rect = rect();
-        option.state |= QStyle::State_MouseOver;
-        style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
+            setText( localName );
+
+        } else setText( name );
+
+        updateMinimumSize();
 
     }
 
+    //____________________________________________________________________________
+    void PathEditorItem::updateMinimumSize( void )
     {
-        // arrow
-        QStyleOption option;
-        option.initFrom(this);
-        option.rect = rect();
-        option.palette = palette();
-        const bool isRightToLeft( qApp->isRightToLeft() );
-        style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this);
+        Debug::Throw( "PathEditorItem::updateMinimumSize.\n" );
+        QFont adjustedFont(font());
+        adjustedFont.setBold( isLast_ );
+
+        // text size
+        QSize size( QFontMetrics( adjustedFont ).boundingRect( text() ).size() );
+
+        // margins
+        size.rwidth() += 2*BorderWidth;
+        size.rheight() += 4*BorderWidth;
+
+        // arrow width
+        const int arrowWidth( _arrowWidth() );
+        if( arrowWidth > 0 ) size.rwidth() += arrowWidth + 2*BorderWidth;
+
+        // update
+        setMinimumSize( size );
     }
 
-    painter.end();
+    //_______________________________________________
+    void PathEditorItem::_startDrag( QPoint dragOrigin )
+    {
 
-}
+        Debug::Throw( "PathEditorItem::_startDrag.\n" );
 
-//____________________________________________________________________________
-void PathEditorMenuButton::updateMinimumSize( void )
-{
-    Debug::Throw( "PathEditorMenuButton::updateMinimumSize.\n" );
-    QFont adjustedFont(font());
-    adjustedFont.setBold( true );
+        // start drag
+        QDrag *drag = new QDrag(this);
+        QMimeData *mimeData = new QMimeData;
 
-    QFontMetrics metrics( adjustedFont );
-    QSize size( metrics.height(), metrics.height() );
-    size.rwidth() += 2*BorderWidth;
-    size.rheight() += 4*BorderWidth;
+        // fill Drag data. Use XML
+        QDomDocument document;
+        QDomElement top = document.appendChild( document.createElement( Xml::FileInfoList ) ).toElement();
 
-    // update
-    setMinimumSize( size );
-}
+        BaseFileInfo fileInfo( path_ );
+        fileInfo.setAlias( text() );
+        fileInfo.setIsFolder();
+        if( isLocal_ )
+        {
 
-//________________________________________________________________________
-void PathEditorSwitch::paintEvent( QPaintEvent* event )
-{
+            fileInfo.setLocal();
+            fileInfo.update();
+            if( path_.isLink() ) fileInfo.setIsLink();
+            if( path_.isBrokenLink() ) fileInfo.setIsBrokenLink();
+            if( path_.isHidden() ) fileInfo.setIsHidden();
 
-    if( _mouseOver() && isEnabled() )
+        } else fileInfo.setRemote();
+
+        top.appendChild( fileInfo.domElement( document ) );
+
+        const QString value( prefix_.isEmpty() ? path_ : prefix_ + "//" + path_ );
+        mimeData->setText( value );
+        mimeData->setData( PathEditor::MimeType, document.toByteArray() );
+        drag->setMimeData( mimeData );
+
+        // create drag pixmap
+        QPixmap pixmap( size() );
+        pixmap.fill( Qt::transparent );
+        QPainter painter( &pixmap );
+        _paint( &painter );
+
+        drag->setPixmap( pixmap );
+        drag->setHotSpot( QPoint( (dragOrigin-rect().topLeft()).x(), 0 ) );
+
+        drag->start();
+
+    }
+
+    //____________________________________________________________________________
+    void PathEditorItem::paintEvent( QPaintEvent* event )
     {
         QPainter painter( this );
         painter.setClipRegion( event->region() );
 
-        painter.setPen( QPen( palette().color( foregroundRole() ), 2 ) );
-        painter.setBrush( Qt::NoBrush );
-        painter.drawLine( rect().topLeft() + QPoint( 1, 2*BorderWidth ), rect().bottomLeft() + QPoint( 1, -2*BorderWidth ) );
+        _paint( &painter );
+        painter.end();
+    }
+
+    //____________________________________________________________________________
+    void PathEditorItem::_paint( QPainter* painter )
+    {
+
+        // render mouse over
+        if( _mouseOver() && isSelectable() )
+        {
+
+            QStyleOptionViewItemV4 option;
+            option.initFrom( this );
+            option.showDecorationSelected = true;
+            option.rect = rect();
+            option.state |= QStyle::State_MouseOver;
+            style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, _itemView() );
+
+        }
+
+        // save layout direction
+        const bool isRightToLeft( qApp->isRightToLeft() );
+
+        // render text
+        QRect textRect( rect().adjusted( 0, 2*BorderWidth, 0, -2*BorderWidth ) );
+        if( !isLast_ )
+        {
+            if( isRightToLeft ) textRect.adjust(_arrowWidth()-2*BorderWidth, 0, 0, 0 );
+            else textRect.adjust( 0, 0, -_arrowWidth()-2*BorderWidth, 0 );
+        }
+
+        QFont adjustedFont(font());
+        adjustedFont.setBold( isLast_ );
+        painter->setFont( adjustedFont );
+        painter->drawText( QRectF( textRect ), Qt::AlignHCenter|Qt::AlignBottom|Qt::TextHideMnemonic, text() );
+
+        // render arrow
+        if( !isLast_ )
+        {
+            QStyleOption option;
+            option.initFrom(this);
+
+            if( isRightToLeft ) option.rect = QRect( 0, 0, textRect.left()+BorderWidth, rect().height() );
+            else option.rect = QRect( textRect.width(), 0, rect().width()-textRect.width()-BorderWidth, rect().height() );
+
+            option.palette = palette();
+            style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, painter, this );
+        }
+
+    }
+
+    //____________________________________________________________________________
+    void PathEditorMenuButton::paintEvent( QPaintEvent* event )
+    {
+        QPainter painter( this );
+        painter.setClipRegion( event->region() );
+
+        if( _mouseOver() )
+        {
+            // mouse over
+            QStyleOptionViewItemV4 option;
+            option.initFrom( this );
+            option.showDecorationSelected = true;
+            option.rect = rect();
+            option.state |= QStyle::State_MouseOver;
+            style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
+
+        }
+
+        {
+            // arrow
+            QStyleOption option;
+            option.initFrom(this);
+            option.rect = rect();
+            option.palette = palette();
+            const bool isRightToLeft( qApp->isRightToLeft() );
+            style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, &painter, this);
+        }
+
+        painter.end();
+
+    }
+
+    //____________________________________________________________________________
+    void PathEditorMenuButton::updateMinimumSize( void )
+    {
+        Debug::Throw( "PathEditorMenuButton::updateMinimumSize.\n" );
+        QFont adjustedFont(font());
+        adjustedFont.setBold( true );
+
+        QFontMetrics metrics( adjustedFont );
+        QSize size( metrics.height(), metrics.height() );
+        size.rwidth() += 2*BorderWidth;
+        size.rheight() += 4*BorderWidth;
+
+        // update
+        setMinimumSize( size );
+    }
+
+    //________________________________________________________________________
+    void PathEditorSwitch::paintEvent( QPaintEvent* event )
+    {
+
+        if( _mouseOver() && isEnabled() )
+        {
+            QPainter painter( this );
+            painter.setClipRegion( event->region() );
+
+            painter.setPen( QPen( palette().color( foregroundRole() ), 2 ) );
+            painter.setBrush( Qt::NoBrush );
+            painter.drawLine( rect().topLeft() + QPoint( 1, 2*BorderWidth ), rect().bottomLeft() + QPoint( 1, -2*BorderWidth ) );
+        }
+
     }
 
 }
@@ -324,12 +331,12 @@ PathEditor::PathEditor( QWidget* parent ):
 
         // prefix label
         prefixLabel_ = new QLabel( browserContainer_ );
-        prefixLabel_->setMargin( 2*PathEditorButton::BorderWidth );
+        prefixLabel_->setMargin( 2*Private::PathEditorButton::BorderWidth );
         hLayout->addWidget( prefixLabel_ );
         prefixLabel_->hide();
 
         // menu button
-        hLayout->addWidget( menuButton_ = new PathEditorMenuButton( browserContainer_ ) );
+        hLayout->addWidget( menuButton_ = new Private::PathEditorMenuButton( browserContainer_ ) );
         menuButton_->setItemView( itemView_ );
         menuButton_->hide();
         connect( menuButton_, SIGNAL(clicked()), SLOT(_menuButtonClicked()) );
@@ -340,7 +347,7 @@ PathEditor::PathEditor( QWidget* parent ):
         buttonLayout_->setMargin(0);
 
         // switch
-        PathEditorSwitch* editorSwitch = new PathEditorSwitch( browserContainer_ );
+        Private::PathEditorSwitch* editorSwitch = new Private::PathEditorSwitch( browserContainer_ );
         hLayout->addWidget( editorSwitch, 1 );
         connect( editorSwitch, SIGNAL(clicked()), SLOT(_showEditor()) );
 
@@ -540,7 +547,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
         // create root item
         int index = 0;
-        PathEditorItem* item(0);
+        Private::PathEditorItem* item(0);
         if( index < items_.size() ) {
 
             item = items_[index];
@@ -548,7 +555,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
         } else {
 
-            item = new PathEditorItem( browserContainer_ );
+            item = new Private::PathEditorItem( browserContainer_ );
             item->setPrefix( prefix_ );
             item->setIsLocal( isLocal_ );
             item->setItemView( itemView_ );
@@ -579,7 +586,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
             } else {
 
-                item = new PathEditorItem( browserContainer_ );
+                item = new Private::PathEditorItem( browserContainer_ );
                 item->setPrefix( prefix_ );
                 item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
@@ -607,7 +614,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
             } else {
 
-                item = new PathEditorItem( browserContainer_ );
+                item = new Private::PathEditorItem( browserContainer_ );
                 item->setPrefix( prefix_ );
                 item->setIsLocal( isLocal_ );
                 item->setItemView( itemView_ );
@@ -837,7 +844,7 @@ void PathEditor::_menuButtonClicked( void )
 
     connect( menu, SIGNAL(triggered(QAction*)), SLOT(_updatePath(QAction*)) );
     menu->exec( menuButton_->mapToGlobal( menuButton_->rect().bottomLeft() ) );
-    static_cast<PathEditorButton*>(menuButton_)->setMouseOver( false );
+    static_cast<Private::PathEditorButton*>(menuButton_)->setMouseOver( false );
 
 }
 
@@ -854,7 +861,7 @@ void PathEditor::_buttonClicked( QAbstractButton* button )
 {
 
     // cast button
-    PathEditorItem* item( static_cast<PathEditorItem*>( button ) );
+    Private::PathEditorItem* item( static_cast<Private::PathEditorItem*>( button ) );
 
     // check selectable test
     if( !item->isSelectable() ) return;
@@ -932,12 +939,12 @@ void PathEditor::_updateButtonVisibility( void )
     {
         int width = 0;
         bool homeFound( false );
-        PathEditorItem::ListIterator iterator( items_ );
+        Private::PathEditorItem::ListIterator iterator( items_ );
         iterator.toBack();
         while( iterator.hasPrevious() )
         {
             // get item
-            PathEditorItem* item( iterator.previous() );
+            Private::PathEditorItem* item( iterator.previous() );
 
             // update width
             width += item->sizeHint().width();

@@ -46,6 +46,62 @@
 #include <QLayout>
 #include <QLabel>
 
+namespace Private
+{
+
+    //_________________________________________________________
+    IconThemeDialog::IconThemeDialog( QWidget* parent ):
+        CustomDialog( parent, OkButton ),
+        OptionWidgetList( this )
+    {
+
+        OptionCheckBox* checkBox;
+        mainLayout().addWidget( checkBox = new OptionCheckBox( tr( "Use custom icon theme" ), this, "USE_ICON_THEME" ) );
+        addOptionWidget( checkBox );
+
+        QWidget* box = new QWidget( this );
+        mainLayout().addWidget( box );
+
+        GridLayout* gridLayout = new GridLayout();
+        gridLayout->setMaxCount(2);
+        gridLayout->setMargin(0);
+        gridLayout->setSpacing(5);
+        box->setLayout( gridLayout );
+
+        QLabel* label;
+        gridLayout->addWidget( label = new QLabel( tr( "Theme name:" ), box ) );
+
+        {
+            OptionLineEditor* editor;
+            gridLayout->addWidget( editor = new OptionLineEditor( box, "ICON_THEME" ) );
+            addOptionWidget( editor );
+            label->setBuddy( editor );
+            label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+        }
+
+        gridLayout->addWidget( label = new QLabel( tr( "Path:" ), box ) );
+        {
+            OptionBrowsedLineEditor* editor;
+            gridLayout->addWidget( editor = new OptionBrowsedLineEditor( box, "ICON_THEME_PATH" ) );
+            addOptionWidget( editor );
+            label->setBuddy( editor );
+            label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
+
+            editor->setFileMode( QFileDialog::Directory );
+            editor->setAcceptMode( QFileDialog::AcceptOpen );
+        }
+
+        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignCenter );
+
+        box->setEnabled( false );
+        connect( checkBox, SIGNAL( toggled( bool ) ), box, SLOT( setEnabled( bool ) ) );
+
+        read( XmlOptions::get() );
+
+    }
+
+}
+
 //_________________________________________________________
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, ConfigurationFlags flags ):
     TabbedDialog( parent ),
@@ -518,7 +574,7 @@ void BaseConfigurationDialog::_editIconTheme( void )
     Debug::Throw( "BaseConfigurationDialog::_editIconTheme.\n" );
     if( !iconThemeDialog_ )
     {
-        iconThemeDialog_ = new IconThemeDialog( this );
+        iconThemeDialog_ = new Private::IconThemeDialog( this );
         iconThemeDialog_->read( XmlOptions::get() );
         addOptionWidget( iconThemeDialog_ );
     }

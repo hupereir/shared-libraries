@@ -36,404 +36,409 @@
 
 class DragMonitor;
 
-//* local file info, needed to store flags
-class LocalFileInfo: public BaseFileInfo
+namespace Private
 {
 
-    public:
-
-    enum Flag
+    //* local file info, needed to store flags
+    class LocalFileInfo: public BaseFileInfo
     {
-        ReadOnly = 1<<0,
-        Hidden = 1<<1,
-        Separator = 1<<2
-    };
 
-    Q_DECLARE_FLAGS( Flags, Flag );
-
-    //* default constructor
-    LocalFileInfo( void )
-    {}
-
-    //* copy constructor
-    LocalFileInfo( const BaseFileInfo& other ):
-        BaseFileInfo( other )
-    {}
-
-    //* constructor from DOM element
-    LocalFileInfo( const QDomElement& );
-
-    //* equal to operator
-    bool operator == (const LocalFileInfo& other ) const
-    {
-        return
-            (BaseFileInfo::operator == (other)) &&
-            alias() == other.alias() &&
-            flags_ == other.flags_;
-    }
-
-    //*@name accessors
-    //@{
-
-    //* dump to dom element
-    virtual QDomElement domElement( QDomDocument& ) const;
-
-    //* flags
-    Flags flags( void ) const
-    { return flags_; }
-
-    //* has flag
-    bool hasFlag( Flag flag ) const
-    { return flags_&flag; }
-
-    //@}
-
-    //*@name modifiers
-    //@{
-
-    //* set flags
-    void setFlags( Flags flags )
-    { flags_ = flags; }
-
-    //* set flag
-    void setFlag( Flag flag, bool value )
-    {
-        if( value ) flags_ |= flag;
-        else flags_ &= ~flag;
-    }
-
-    //@}
-
-    class List: public QList<LocalFileInfo>
-    {
         public:
 
-        //* constructor
-        List( void )
+        enum Flag
+        {
+            ReadOnly = 1<<0,
+            Hidden = 1<<1,
+            Separator = 1<<2
+        };
+
+        Q_DECLARE_FLAGS( Flags, Flag );
+
+        //* default constructor
+        LocalFileInfo( void )
+        {}
+
+        //* copy constructor
+        LocalFileInfo( const BaseFileInfo& other ):
+            BaseFileInfo( other )
         {}
 
         //* constructor from DOM element
-        List( const QDomElement& );
+        LocalFileInfo( const QDomElement& );
+
+        //* equal to operator
+        bool operator == (const LocalFileInfo& other ) const
+        {
+            return
+                (BaseFileInfo::operator == (other)) &&
+                alias() == other.alias() &&
+                flags_ == other.flags_;
+        }
+
+        //*@name accessors
+        //@{
 
         //* dump to dom element
         virtual QDomElement domElement( QDomDocument& ) const;
 
+        //* flags
+        Flags flags( void ) const
+        { return flags_; }
+
+        //* has flag
+        bool hasFlag( Flag flag ) const
+        { return flags_&flag; }
+
+        //@}
+
+        //*@name modifiers
+        //@{
+
+        //* set flags
+        void setFlags( Flags flags )
+        { flags_ = flags; }
+
+        //* set flag
+        void setFlag( Flag flag, bool value )
+        {
+            if( value ) flags_ |= flag;
+            else flags_ &= ~flag;
+        }
+
+        //@}
+
+        class List: public QList<LocalFileInfo>
+        {
+            public:
+
+            //* constructor
+            List( void )
+            {}
+
+            //* constructor from DOM element
+            List( const QDomElement& );
+
+            //* dump to dom element
+            virtual QDomElement domElement( QDomDocument& ) const;
+
+        };
+
+        private:
+
+        //* flags
+        Flags flags_ = 0;
+
+
     };
 
-    private:
-
-    //* flags
-    Flags flags_ = 0;
-
-
-};
-
-//* places widget item
-class PlacesWidgetItem: public QAbstractButton
-{
-
-    Q_OBJECT
-
-    public:
-
-    //* dragging
-    static const QString MimeType;
-
-    //* constructor
-    PlacesWidgetItem( QWidget* = nullptr );
-
-    //*@name accessors
-    //@{
-
-    //* file info
-    const BaseFileInfo& fileInfo( void ) const
-    { return fileInfo_; }
-
-    //* true if is separator
-    bool isSeparator( void ) const
-    { return hasFlag( LocalFileInfo::Separator ); }
-
-    //* true if valid
-    bool isValid( void ) const
-    { return valid_; }
-
-    //* focus
-    bool hasFocus( void ) const
-    { return hasFocus_; }
-
-    //* size hint
-    virtual QSize sizeHint( void ) const
-    { return minimumSize(); }
-
-    //* flags
-    LocalFileInfo::Flags flags( void ) const
-    { return flags_; }
-
-    //* has flag
-    bool hasFlag( LocalFileInfo::Flag flag ) const
-    { return flags_&flag; }
-
-    //* drag monitor
-    DragMonitor& dragMonitor( void ) const
-    { return *dragMonitor_; }
-
-    //@}
-
-    //*@name modifiers
-    //@{
-
-    //* set is separator
-    void setIsSeparator( bool value )
-    { setFlag( LocalFileInfo::Separator, true ); updateMinimumSize(); update(); }
-
-    //* icon
-    void setIcon( const QIcon& icon )
-    { QAbstractButton::setIcon( icon ); updateMinimumSize(); update(); }
-
-    //* name
-    void setText( const QString& text )
-    { QAbstractButton::setText( text ); updateMinimumSize(); update(); }
-
-    //* file info
-    void setFileInfo( const BaseFileInfo& fileInfo )
-    { fileInfo_ = fileInfo; }
-
-    //* some styles require an item view passed to painting method to have proper selection rendered in items
-    void setItemView( QWidget* widget )
-    { itemView_ = widget; }
-
-    //* set validity
-    bool setIsValid( bool value )
+    //* places widget item
+    class PlacesWidgetItem: public QAbstractButton
     {
-        if( valid_ == value ) return false;
-        valid_ = value;
-        return true;
-    }
 
-    //* set mouse over manualy
-    void setMouseOver( bool value )
-    { mouseOver_ = value; }
+        Q_OBJECT
 
-    //* update minimum width
-    void updateMinimumSize( void );
+        public:
 
-    //* focus
-    void setFocus( bool value )
-    {
-        if( hasFocus_ == value ) return;
-        hasFocus_ = value;
-        update();
-    }
+        //* dragging
+        static const QString MimeType;
 
-    //* set flags
-    void setFlags( LocalFileInfo::Flags flags )
-    { flags_ = flags; }
+        //* constructor
+        PlacesWidgetItem( QWidget* = nullptr );
 
-    //* set flag
-    void setFlag( LocalFileInfo::Flag flag, bool value )
-    {
-        if( value ) flags_ |= flag;
-        else flags_ &= ~flag;
-    }
+        //*@name accessors
+        //@{
 
-    //@}
+        //* file info
+        const BaseFileInfo& fileInfo( void ) const
+        { return fileInfo_; }
 
-    protected:
+        //* true if is separator
+        bool isSeparator( void ) const
+        { return hasFlag( LocalFileInfo::Separator ); }
 
-    //* event
-    virtual bool event( QEvent* );
+        //* true if valid
+        bool isValid( void ) const
+        { return valid_; }
 
-    //* paint event
-    virtual void paintEvent( QPaintEvent* );
+        //* focus
+        bool hasFocus( void ) const
+        { return hasFocus_; }
 
-    //* paint
-    virtual void _paint( QPainter* );
+        //* size hint
+        virtual QSize sizeHint( void ) const
+        { return minimumSize(); }
 
-    protected Q_SLOTS:
+        //* flags
+        LocalFileInfo::Flags flags( void ) const
+        { return flags_; }
 
-    //* start drag
-    void _startDrag( QPoint );
+        //* has flag
+        bool hasFlag( LocalFileInfo::Flag flag ) const
+        { return flags_&flag; }
 
-    private Q_SLOTS:
+        //* drag monitor
+        DragMonitor& dragMonitor( void ) const
+        { return *dragMonitor_; }
 
-    //* update configuration
-    void _updateConfiguration( void );
+        //@}
 
-    private:
+        //*@name modifiers
+        //@{
 
-    //* some styles require an item view passed to painting method to have proper selection rendered in items
-    QWidget* itemView_ = nullptr;
+        //* set is separator
+        void setIsSeparator( bool value )
+        { setFlag( LocalFileInfo::Separator, true ); updateMinimumSize(); update(); }
 
-    //* drag monitor
-    DragMonitor* dragMonitor_ = nullptr;
+        //* icon
+        void setIcon( const QIcon& icon )
+        { QAbstractButton::setIcon( icon ); updateMinimumSize(); update(); }
 
-    //* file info
-    BaseFileInfo fileInfo_;
+        //* name
+        void setText( const QString& text )
+        { QAbstractButton::setText( text ); updateMinimumSize(); update(); }
 
-    //* flags
-    LocalFileInfo::Flags flags_ = 0;
+        //* file info
+        void setFileInfo( const BaseFileInfo& fileInfo )
+        { fileInfo_ = fileInfo; }
 
-    //* true if valid (true by default)
-    bool valid_ = false;
+        //* some styles require an item view passed to painting method to have proper selection rendered in items
+        void setItemView( QWidget* widget )
+        { itemView_ = widget; }
 
-    //* mouse over
-    bool mouseOver_ = false;
+        //* set validity
+        bool setIsValid( bool value )
+        {
+            if( valid_ == value ) return false;
+            valid_ = value;
+            return true;
+        }
 
-    //* focus
-    bool hasFocus_ = false;
+        //* set mouse over manualy
+        void setMouseOver( bool value )
+        { mouseOver_ = value; }
 
-};
+        //* update minimum width
+        void updateMinimumSize( void );
 
-//* edit item dialog
-class PlacesWidgetItemDialog: public CustomDialog
-{
+        //* focus
+        void setFocus( bool value )
+        {
+            if( hasFocus_ == value ) return;
+            hasFocus_ = value;
+            update();
+        }
 
-    Q_OBJECT
+        //* set flags
+        void setFlags( LocalFileInfo::Flags flags )
+        { flags_ = flags; }
 
-    public:
+        //* set flag
+        void setFlag( LocalFileInfo::Flag flag, bool value )
+        {
+            if( value ) flags_ |= flag;
+            else flags_ &= ~flag;
+        }
 
-    //* constructor
-    PlacesWidgetItemDialog( QWidget* = nullptr );
+        //@}
 
-    //* accessors
-    //@{
+        protected:
 
-    //* name
-    QString name( void ) const
-    { return nameEditor_->text(); }
+        //* event
+        virtual bool event( QEvent* );
 
-    //* file
-    QString file( void ) const
-    { return fileEditor_->editor().text(); }
+        //* paint event
+        virtual void paintEvent( QPaintEvent* );
 
-    //* remote
-    bool isRemote( void ) const
-    { return remoteCheckBox_->isChecked(); }
+        //* paint
+        virtual void _paint( QPainter* );
 
-    //@}
+        protected Q_SLOTS:
 
-    //*@name modifiers
-    //@{
+        //* start drag
+        void _startDrag( QPoint );
 
-    //* name
-    void setName( const QString& value )
-    { nameEditor_->setText( value ); }
+        private Q_SLOTS:
 
-    //* file
-    void setFile( const BaseFileInfo& value )
-    {
-        fileEditor_->setFile( value.file() );
-        remoteCheckBox_->setChecked( value.isRemote() );
-    }
+        //* update configuration
+        void _updateConfiguration( void );
 
-    //@}
+        private:
 
-    private:
+        //* some styles require an item view passed to painting method to have proper selection rendered in items
+        QWidget* itemView_ = nullptr;
 
-    //* name
-    LineEditor* nameEditor_ = nullptr;
+        //* drag monitor
+        DragMonitor* dragMonitor_ = nullptr;
 
-    //* file
-    BrowsedLineEditor* fileEditor_ = nullptr;
+        //* file info
+        BaseFileInfo fileInfo_;
 
-    //* remote checkbox
-    QCheckBox* remoteCheckBox_ = nullptr;
+        //* flags
+        LocalFileInfo::Flags flags_ = 0;
 
-};
+        //* true if valid (true by default)
+        bool valid_ = false;
 
-//* tooltip widget
-class PlacesToolTipWidget: public BaseToolTipWidget
-{
+        //* mouse over
+        bool mouseOver_ = false;
 
-    Q_OBJECT
+        //* focus
+        bool hasFocus_ = false;
 
-    public:
-
-    //* constructor
-    PlacesToolTipWidget( QWidget* );
-
-    //* set data
-    void setFileInfo( const QString&, const BaseFileInfo&, const QIcon& = QIcon() );
-
-    //* mask
-    void setPixmapSize( int value )
-    {
-        if( pixmapSize_ == value ) return;
-        pixmapSize_ = value;
-        _reload();
-    }
-
-    //* information mask
-    enum Type
-    {
-        None = 0,
-        Size = 1<<0,
-        Modified = 1<<1,
-        User = 1<<2,
-        Group = 1<<3,
-        Permissions = 1<<4,
-        Default = Size|Modified
     };
 
-    Q_DECLARE_FLAGS(Types, Type)
-
-    //* mask
-    void setMask( Types value )
+    //* edit item dialog
+    class PlacesWidgetItemDialog: public CustomDialog
     {
-        if( mask_ == value ) return;
-        mask_ = value;
-        _reload();
-    }
 
-    protected:
+        Q_OBJECT
 
-    //* reload
-    virtual void _reload( void )
-    { setFileInfo( name_, fileInfo_, icon_ ); }
+        public:
 
-    private Q_SLOTS:
+        //* constructor
+        PlacesWidgetItemDialog( QWidget* = nullptr );
 
-    //* update configuration
-    void _updateConfiguration( void );
+        //* accessors
+        //@{
 
-    private:
+        //* name
+        QString name( void ) const
+        { return nameEditor_->text(); }
 
-    //* pixmap size
-    int pixmapSize_ = 0;
+        //* file
+        QString file( void ) const
+        { return fileEditor_->editor().text(); }
 
-    //* information mask
-    Types mask_ = None;
+        //* remote
+        bool isRemote( void ) const
+        { return remoteCheckBox_->isChecked(); }
 
-    //* name
-    QString name_;
+        //@}
 
-    //* local icon copy
-    QIcon icon_;
+        //*@name modifiers
+        //@{
 
-    //* local fileInfo copy
-    BaseFileInfo fileInfo_;
+        //* name
+        void setName( const QString& value )
+        { nameEditor_->setText( value ); }
 
-    //* icon label
-    QLabel* iconLabel_ = nullptr;
+        //* file
+        void setFile( const BaseFileInfo& value )
+        {
+            fileEditor_->setFile( value.file() );
+            remoteCheckBox_->setChecked( value.isRemote() );
+        }
 
-    //* file name label
-    QLabel* nameLabel_ = nullptr;
+        //@}
 
-    //* separator
-    QFrame* separator_ = nullptr;
+        private:
 
-    //*@name items
-    //@{
-    GridLayoutItem* pathItem_ = nullptr;
-    GridLayoutItem* lastModifiedItem_ = nullptr;
-    GridLayoutItem* userItem_ = nullptr;
-    GridLayoutItem* groupItem_ = nullptr;
-    GridLayoutItem* permissionsItem_ = nullptr;
-    //@}
+        //* name
+        LineEditor* nameEditor_ = nullptr;
 
-};
+        //* file
+        BrowsedLineEditor* fileEditor_ = nullptr;
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( LocalFileInfo::Flags )
-Q_DECLARE_OPERATORS_FOR_FLAGS( PlacesToolTipWidget::Types )
+        //* remote checkbox
+        QCheckBox* remoteCheckBox_ = nullptr;
+
+    };
+
+    //* tooltip widget
+    class PlacesToolTipWidget: public BaseToolTipWidget
+    {
+
+        Q_OBJECT
+
+        public:
+
+        //* constructor
+        PlacesToolTipWidget( QWidget* );
+
+        //* set data
+        void setFileInfo( const QString&, const BaseFileInfo&, const QIcon& = QIcon() );
+
+        //* mask
+        void setPixmapSize( int value )
+        {
+            if( pixmapSize_ == value ) return;
+            pixmapSize_ = value;
+            _reload();
+        }
+
+        //* information mask
+        enum Type
+        {
+            None = 0,
+            Size = 1<<0,
+            Modified = 1<<1,
+            User = 1<<2,
+            Group = 1<<3,
+            Permissions = 1<<4,
+            Default = Size|Modified
+        };
+
+        Q_DECLARE_FLAGS(Types, Type)
+
+            //* mask
+            void setMask( Types value )
+        {
+            if( mask_ == value ) return;
+            mask_ = value;
+            _reload();
+        }
+
+        protected:
+
+        //* reload
+        virtual void _reload( void )
+        { setFileInfo( name_, fileInfo_, icon_ ); }
+
+        private Q_SLOTS:
+
+        //* update configuration
+        void _updateConfiguration( void );
+
+        private:
+
+        //* pixmap size
+        int pixmapSize_ = 0;
+
+        //* information mask
+        Types mask_ = None;
+
+        //* name
+        QString name_;
+
+        //* local icon copy
+        QIcon icon_;
+
+        //* local fileInfo copy
+        BaseFileInfo fileInfo_;
+
+        //* icon label
+        QLabel* iconLabel_ = nullptr;
+
+        //* file name label
+        QLabel* nameLabel_ = nullptr;
+
+        //* separator
+        QFrame* separator_ = nullptr;
+
+        //*@name items
+        //@{
+        GridLayoutItem* pathItem_ = nullptr;
+        GridLayoutItem* lastModifiedItem_ = nullptr;
+        GridLayoutItem* userItem_ = nullptr;
+        GridLayoutItem* groupItem_ = nullptr;
+        GridLayoutItem* permissionsItem_ = nullptr;
+        //@}
+
+    };
+
+}
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( Private::LocalFileInfo::Flags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( Private::PlacesToolTipWidget::Types )
 
 #endif

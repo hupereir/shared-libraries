@@ -27,25 +27,6 @@
 #include <QStyle>
 
 //_________________________________________________________
-namespace Private
-{
-    class TitleBarWidget: public QWidget
-    {
-        public:
-
-        //* minimum size hint
-        virtual QSize minimumSizeHint( void ) const
-        { return QSize( 1, 2 ); }
-
-        //* minimum size hint
-        virtual QSize sizeHint( void ) const
-        { return minimumSizeHint(); }
-
-    };
-
-}
-
-//_________________________________________________________
 DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& optionName ):
     QDockWidget(title, parent ),
     optionName_( optionName )
@@ -60,7 +41,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     _installActions();
 
     // setup container
-    MainWidget* main = new MainWidget();
+    Private::MainWidget* main = new Private::MainWidget();
     main->windowMonitor().setMode( WidgetMonitor::Size );
     main->windowMonitor().setOptionName( optionName );
     main->setLayout( new QVBoxLayout() );
@@ -90,7 +71,7 @@ void DockWidget::setUseScrollArea( bool value )
     if( useScrollArea_ )
     {
 
-        ContainerScrollArea* container = new ContainerScrollArea( widget() );
+        Private::ContainerScrollArea* container = new Private::ContainerScrollArea( widget() );
 
         if( mainWidget_ ) container->setWidget( mainWidget_ );
         if( container_ )
@@ -104,7 +85,7 @@ void DockWidget::setUseScrollArea( bool value )
 
     } else {
 
-        ContainerWidget* container = new ContainerWidget( widget() );
+        Private::ContainerWidget* container = new Private::ContainerWidget( widget() );
         if( mainWidget_ )
         {
             mainWidget_->setParent( container );
@@ -167,7 +148,7 @@ void DockWidget::setMainWidget( QWidget* mainWidget )
     if( container_ )
     {
 
-        if( useScrollArea_ ) static_cast<ContainerScrollArea*>( container_ )->setWidget( mainWidget_ );
+        if( useScrollArea_ ) qobject_cast<Private::ContainerScrollArea*>( container_ )->setWidget( mainWidget_ );
         else {
 
             mainWidget_->setParent( container_ );

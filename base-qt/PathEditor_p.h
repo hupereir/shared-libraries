@@ -33,224 +33,229 @@
 
 class DragMonitor;
 
-//* path editor button
-class PathEditorButton: public QAbstractButton
+namespace Private
 {
 
-    Q_OBJECT
+    //* path editor button
+    class PathEditorButton: public QAbstractButton
+    {
 
-    public:
+        Q_OBJECT
 
-    //* constructor
-    PathEditorButton( QWidget* parent ):
+        public:
+
+        //* constructor
+        PathEditorButton( QWidget* parent ):
         QAbstractButton( parent )
+        {
+            Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+            setAttribute( Qt::WA_Hover );
+            setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
+            setMinimumHeight(parent->minimumHeight());
+        }
+
+        //* some styles require an item view passed to painting method to have proper selection rendered in items
+        void setItemView( QWidget* widget )
+        { itemView_ = widget; }
+
+        //* set mouse over manualy
+        void setMouseOver( bool value )
+        { mouseOver_ = value; }
+
+        //* border width
+        static const qreal BorderWidth;
+
+        protected:
+
+        //* event
+        virtual bool event( QEvent* );
+
+        //* item view
+        QWidget* _itemView( void ) const
+        { return itemView_; }
+
+        //* true if mouse over
+        bool _mouseOver( void ) const
+        { return mouseOver_; }
+
+        private:
+
+        //* some styles require an item view passed to painting method to have proper selection rendered in items
+        QWidget* itemView_ = nullptr;
+
+        //* mouse over
+        bool mouseOver_ = false;
+
+    };
+
+    //* path item
+    class PathEditorItem: public PathEditorButton, public Counter
     {
-        Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-        setAttribute( Qt::WA_Hover );
-        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
-        setMinimumHeight(parent->minimumHeight());
-    }
 
-    //* some styles require an item view passed to painting method to have proper selection rendered in items
-    void setItemView( QWidget* widget )
-    { itemView_ = widget; }
+        Q_OBJECT
 
-    //* set mouse over manualy
-    void setMouseOver( bool value )
-    { mouseOver_ = value; }
+        public:
 
-    //* border width
-    static const qreal BorderWidth;
+        //* constructor
+        PathEditorItem( QWidget* );
 
-    protected:
+        //*@name accessors
+        //@{
 
-    //* event
-    virtual bool event( QEvent* );
+        //* is selectable
+        bool isSelectable( void ) const
+        { return isSelectable_; }
 
-    //* item view
-    QWidget* _itemView( void ) const
-    { return itemView_; }
+        //* is last
+        bool isLast( void ) const
+        { return isLast_; }
 
-    //* true if mouse over
-    bool _mouseOver( void ) const
-    { return mouseOver_; }
+        //* path
+        const File& path( void ) const
+        { return path_; }
 
-    private:
+        //* size hint
+        virtual QSize sizeHint( void ) const
+        { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
 
-    //* some styles require an item view passed to painting method to have proper selection rendered in items
-    QWidget* itemView_ = nullptr;
+        //* drag monitor
+        DragMonitor& dragMonitor( void ) const
+        { return *dragMonitor_; }
 
-    //* mouse over
-    bool mouseOver_ = false;
+        //@}
 
-};
+        //*@name modifiers
+        //@{
 
-//* path item
-class PathEditorItem: public PathEditorButton, public Counter
-{
+        //* set prefix
+        void setPrefix( const QString& value )
+        { prefix_ = value; }
 
-    Q_OBJECT
+        //* set local flag
+        void setIsLocal( bool value )
+        { isLocal_ = value; }
 
-    public:
+        //* set selectable flag
+        void setIsSelectable( bool value )
+        {
+            if( isSelectable_ == value ) return;
+            isSelectable_ = value;
+            update();
+        }
 
-    //* constructor
-    PathEditorItem( QWidget* );
+        //* set is last
+        void setIsLast( bool value )
+        {
+            if( isLast_ == value ) return;
+            isLast_ = value;
+            updateMinimumSize();
+            update();
+        }
 
-    //*@name accessors
-    //@{
+        //* set path
+        void setPath( const File&, const QString& = QString() );
 
-    //* is selectable
-    bool isSelectable( void ) const
-    { return isSelectable_; }
+        //@}
 
-    //* is last
-    bool isLast( void ) const
-    { return isLast_; }
+        //* update minimum width
+        void updateMinimumSize( void );
 
-    //* path
-    const File& path( void ) const
-    { return path_; }
+        //* shortcuts
+        using List = QList<PathEditorItem*>;
+        using ListIterator = QListIterator<PathEditorItem*>;
 
-    //* size hint
-    virtual QSize sizeHint( void ) const
-    { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
+        protected:
 
-    //* drag monitor
-    DragMonitor& dragMonitor( void ) const
-    { return *dragMonitor_; }
+        //* paint event
+        virtual void paintEvent( QPaintEvent* );
 
-    //@}
+        //* paint
+        void _paint( QPainter* );
 
-    //*@name modifiers
-    //@{
+        //* arrow width
+        int _arrowWidth( void ) const
+        { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
 
-    //* set prefix
-    void setPrefix( const QString& value )
-    { prefix_ = value; }
+        protected Q_SLOTS:
 
-    //* set local flag
-    void setIsLocal( bool value )
-    { isLocal_ = value; }
+        //* start drag
+        void _startDrag( QPoint );
 
-    //* set selectable flag
-    void setIsSelectable( bool value )
+        private:
+
+        //* path
+        File path_;
+
+        //* prefix
+        QString prefix_;
+
+        //* true if path is in local file system
+        bool isLocal_ = true;
+
+        //* true if selectable
+        bool isSelectable_ = true;
+
+        //* true if last
+        bool isLast_ = false;
+
+        //* drag monitor
+        DragMonitor* dragMonitor_ = nullptr;
+
+    };
+
+    //* path editor menu button
+    class PathEditorMenuButton: public PathEditorButton, public Counter
     {
-        if( isSelectable_ == value ) return;
-        isSelectable_ = value;
-        update();
-    }
 
-    //* set is last
-    void setIsLast( bool value )
+        Q_OBJECT
+
+        public:
+
+        //* constructor
+        PathEditorMenuButton( QWidget* parent ):
+            PathEditorButton( parent ),
+            Counter( "PathEditorMenuButton" )
+        {
+            Debug::Throw( "PathEditorMenuButton::PathEditorMenuButton.\n" );
+            setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
+            updateMinimumSize();
+        }
+
+        // minimum size
+        void updateMinimumSize( void );
+
+        protected:
+
+        //* paint event
+        virtual void paintEvent( QPaintEvent* );
+
+    };
+
+    //* path editor switch. Toggle path editor to combobox
+    class PathEditorSwitch: public PathEditorButton, public Counter
     {
-        if( isLast_ == value ) return;
-        isLast_ = value;
-        updateMinimumSize();
-        update();
-    }
 
-    //* set path
-    void setPath( const File&, const QString& = QString() );
+        Q_OBJECT
 
-    //@}
+        public:
 
-    //* update minimum width
-    void updateMinimumSize( void );
+        //* constructor
+        PathEditorSwitch( QWidget* parent ):
+            PathEditorButton( parent ),
+            Counter( "PathEditorSwitch" )
+        {
+            Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+            setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+            setCursor( Qt::IBeamCursor );
+        }
 
-    //* shortcuts
-    using List = QList<PathEditorItem*>;
-    using ListIterator = QListIterator<PathEditorItem*>;
+        protected:
 
-    protected:
+        //* paint event
+        virtual void paintEvent( QPaintEvent* );
 
-    //* paint event
-    virtual void paintEvent( QPaintEvent* );
+    };
 
-    //* paint
-    void _paint( QPainter* );
 
-    //* arrow width
-    int _arrowWidth( void ) const
-    { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
-
-    protected Q_SLOTS:
-
-    //* start drag
-    void _startDrag( QPoint );
-
-    private:
-
-    //* path
-    File path_;
-
-    //* prefix
-    QString prefix_;
-
-    //* true if path is in local file system
-    bool isLocal_ = true;
-
-    //* true if selectable
-    bool isSelectable_ = true;
-
-    //* true if last
-    bool isLast_ = false;
-
-    //* drag monitor
-    DragMonitor* dragMonitor_ = nullptr;
-
-};
-
-//* path editor menu button
-class PathEditorMenuButton: public PathEditorButton, public Counter
-{
-
-    Q_OBJECT
-
-    public:
-
-    //* constructor
-    PathEditorMenuButton( QWidget* parent ):
-        PathEditorButton( parent ),
-        Counter( "PathEditorMenuButton" )
-    {
-        Debug::Throw( "PathEditorMenuButton::PathEditorMenuButton.\n" );
-        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
-        updateMinimumSize();
-    }
-
-    // minimum size
-    void updateMinimumSize( void );
-
-    protected:
-
-    //* paint event
-    virtual void paintEvent( QPaintEvent* );
-
-};
-
-//* path editor switch. Toggle path editor to combobox
-class PathEditorSwitch: public PathEditorButton, public Counter
-{
-
-    Q_OBJECT
-
-    public:
-
-    //* constructor
-    PathEditorSwitch( QWidget* parent ):
-        PathEditorButton( parent ),
-        Counter( "PathEditorSwitch" )
-    {
-        Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-        setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
-        setCursor( Qt::IBeamCursor );
-    }
-
-    protected:
-
-    //* paint event
-    virtual void paintEvent( QPaintEvent* );
-
-};
-
+}
 #endif

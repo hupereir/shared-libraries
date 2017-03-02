@@ -27,64 +27,93 @@
 #include <QScrollArea>
 #include <QSize>
 
-//* container widget
-class MainWidget: public QWidget
+namespace Private
 {
-    public:
-
-    //* constructor
-    MainWidget( QWidget* parent = nullptr ):
-        QWidget( parent ),
-        monitor_( this )
-    {}
-
-    // monitor
-    WidgetMonitor& windowMonitor( void )
-    { return monitor_; }
-
-    //* size hint
-    virtual QSize sizeHint( void ) const
+    //* container widget
+    class MainWidget: public QWidget
     {
-        const QSize size( monitor_.sizeHint() );
-        return size.isValid() ? size:QWidget::sizeHint();
-    }
 
-    private:
+        Q_OBJECT
 
-    //* window monitor
-    WidgetMonitor monitor_;
+        public:
 
-};
+        //* constructor
+        MainWidget( QWidget* parent = nullptr ):
+            QWidget( parent ),
+            monitor_( this )
+        {}
 
-//* container widget
-class ContainerWidget: public QWidget
-{
+        // monitor
+        WidgetMonitor& windowMonitor( void )
+        { return monitor_; }
 
-    public:
+        //* size hint
+        virtual QSize sizeHint( void ) const
+        {
+            const QSize size( monitor_.sizeHint() );
+            return size.isValid() ? size:QWidget::sizeHint();
+        }
 
-    ContainerWidget( QWidget* parent = nullptr ):
-        QWidget( parent )
+        private:
+
+        //* window monitor
+        WidgetMonitor monitor_;
+
+    };
+
+    //* title bar widget
+    class TitleBarWidget: public QWidget
     {
-        setLayout( new QVBoxLayout() );
-        layout()->setSpacing(0);
-        layout()->setMargin(0);
-    }
 
-};
+        Q_OBJECT
 
-//* container scroll area
-class ContainerScrollArea: public QScrollArea
-{
+        public:
 
-    public:
+        //* minimum size hint
+        virtual QSize minimumSizeHint( void ) const
+        { return QSize( 1, 2 ); }
 
-    ContainerScrollArea( QWidget* parent ):
-        QScrollArea( parent )
+        //* minimum size hint
+        virtual QSize sizeHint( void ) const
+        { return minimumSizeHint(); }
+
+    };
+
+    //* container widget
+    class ContainerWidget: public QWidget
     {
-        setWidgetResizable ( true );
-        setFrameStyle( QFrame::NoFrame );
-    }
 
-};
+        Q_OBJECT
+
+        public:
+
+        ContainerWidget( QWidget* parent = nullptr ):
+            QWidget( parent )
+        {
+            setLayout( new QVBoxLayout() );
+            layout()->setSpacing(0);
+            layout()->setMargin(0);
+        }
+
+    };
+
+    //* container scroll area
+    class ContainerScrollArea: public QScrollArea
+    {
+
+        Q_OBJECT
+
+        public:
+
+        ContainerScrollArea( QWidget* parent ):
+            QScrollArea( parent )
+        {
+            setWidgetResizable ( true );
+            setFrameStyle( QFrame::NoFrame );
+        }
+
+    };
+
+}
 
 #endif

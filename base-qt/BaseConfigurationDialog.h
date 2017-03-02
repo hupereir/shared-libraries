@@ -27,7 +27,11 @@
 #include <QLayout>
 
 class CustomDialog;
-class IconThemeDialog;
+
+namespace Private
+{
+    class IconThemeDialog;
+};
 
 //* configuration dialog
 class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
@@ -147,7 +151,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     CustomDialog* pixmapPathDialog_ = nullptr;
 
     //* icon theme dialog
-    IconThemeDialog* iconThemeDialog_ = nullptr;
+    Private::IconThemeDialog* iconThemeDialog_ = nullptr;
 
 };
 

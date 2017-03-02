@@ -36,8 +36,12 @@
 #include <QWidget>
 
 // forward declaration
-class PathEditorItem;
-class PathEditorMenuButton;
+namespace Private
+{
+    class PathEditorItem;
+    class PathEditorMenuButton;
+}
+
 class PathHistory;
 
 //* path editor
@@ -237,7 +241,7 @@ class PathEditor: public QStackedWidget, public Counter
     File::List rootPathList_;
 
     //* menu button
-    PathEditorMenuButton* menuButton_ = nullptr;
+    Private::PathEditorMenuButton* menuButton_ = nullptr;
 
     //* previous path menu
     QMenu* previousPathMenu_ = nullptr;
@@ -246,7 +250,7 @@ class PathEditor: public QStackedWidget, public Counter
     QMenu* nextPathMenu_ = nullptr;
 
     //* item buttons
-    QList<PathEditorItem*> items_;
+    QList<Private::PathEditorItem*> items_;
 
     //* path history
     PathHistory* history_ = nullptr;

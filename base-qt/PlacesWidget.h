@@ -40,8 +40,12 @@
 #include <QWidget>
 
 // forward declaration
-class PlacesToolTipWidget;
-class PlacesWidgetItem;
+namespace Private
+{
+    class PlacesToolTipWidget;
+    class PlacesWidgetItem;
+}
+
 class BaseFileIconProvider;
 class IconSizeMenu;
 
@@ -194,7 +198,7 @@ class PlacesWidget: public QWidget, public Counter
     QList<BaseFileInfo> _decode( const QMimeData* ) const;
 
     //* return item that have focus or none
-    PlacesWidgetItem* _focusItem( void ) const;
+    Private::PlacesWidgetItem* _focusItem( void ) const;
 
     private Q_SLOTS:
 
@@ -222,16 +226,16 @@ class PlacesWidget: public QWidget, public Counter
     IconSizeMenu* iconSizeMenu_ = nullptr;
 
     //* tooltip widget
-    PlacesToolTipWidget* toolTipWidget_ = nullptr;
+    Private::PlacesToolTipWidget* toolTipWidget_ = nullptr;
 
     //* list of items
-    QList<PlacesWidgetItem*> items_;
+    QList<Private::PlacesWidgetItem*> items_;
 
     //* focus item (for context menu actions)
-    PlacesWidgetItem* focusItem_ = nullptr;
+    Private::PlacesWidgetItem* focusItem_ = nullptr;
 
     //* drag item
-    PlacesWidgetItem* dragItem_ = nullptr;
+    Private::PlacesWidgetItem* dragItem_ = nullptr;
 
     //* icon provider
     BaseFileIconProvider* iconProvider_ = nullptr;
