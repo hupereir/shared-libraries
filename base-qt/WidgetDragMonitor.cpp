@@ -21,7 +21,6 @@
 #include "XcbUtil.h"
 
 #include <QMouseEvent>
-#include <QTimer>
 
 //_________________________________________________________
 WidgetDragMonitor::WidgetDragMonitor( QWidget* parent ):
@@ -197,8 +196,7 @@ void WidgetDragMonitor::timerEvent( QTimerEvent* event )
     if( !enabled_ ) emit stateChangeRequest();
     if( !enabled_ ) return;
 
-    QTimer::singleShot( 100, this, SLOT(_startDrag()));
-
+    QMetaObject::invokeMethod( this, "_startDrag", Qt::QueuedConnection );
 }
 
 //________________________________________________
