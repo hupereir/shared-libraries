@@ -1,5 +1,5 @@
-#ifndef TextEditionDelegate_h
-#define TextEditionDelegate_h
+#ifndef TextEditionDelegate_p_h
+#define TextEditionDelegate_p_h
 
 /******************************************************************************
 *
@@ -20,31 +20,38 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "TreeViewItemDelegate.h"
+#include "LineEditor.h"
 
-class TextEditionDelegate : public TreeViewItemDelegate, public Counter
+namespace Private
 {
 
-    Q_OBJECT
+    class LocalEditor: public LineEditor
+    {
 
-    public:
+        Q_OBJECT
 
-    //* constructor
-    TextEditionDelegate( QObject* = nullptr );
+        public:
 
-    //* create editor
-    QWidget *createEditor( QWidget*, const QStyleOptionViewItem&, const QModelIndex& ) const;
+        //* constructor
+        LocalEditor( QWidget* = nullptr );
 
-    //* set editor data
-    void setEditorData( QWidget*, const QModelIndex& ) const;
+        //* true if edition is valid
+        bool isEditionValid( void ) const
+        { return valid_; }
 
-    //* set model data from editor
-    void setModelData( QWidget*, QAbstractItemModel*, const QModelIndex& ) const;
+        protected Q_SLOTS:
 
-    //* editor geometry
-    void updateEditorGeometry( QWidget*, const QStyleOptionViewItem&, const QModelIndex& ) const;
+        //* validate edition
+        /** it is called when returnPressed is triggered */
+        void _validate();
 
-};
+        private:
+
+        //* set to true when return was pressed
+        bool valid_ = false;
+
+    };
+
+}
 
 #endif

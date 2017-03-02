@@ -18,10 +18,27 @@
 *******************************************************************************/
 
 #include "TextEditionDelegate.h"
-#include "LineEditor.h"
 #include "Debug.h"
+#include "TextEditionDelegate_p.h"
 
 #include <QAbstractItemModel>
+
+namespace Private
+{
+
+    //______________________________________________________________
+    LocalEditor::LocalEditor( QWidget* parent ):
+        LineEditor( parent )
+    { connect( this, SIGNAL(returnPressed()), SLOT(_validate()) );}
+
+    //______________________________________________________________
+    void LocalEditor::_validate( void )
+    {
+        Debug::Throw( "Private::LocalEditor::_validate.\n" );
+        valid_ = true;
+    }
+
+};
 
 //______________________________________________________________
 TextEditionDelegate::TextEditionDelegate( QObject *parent ):
@@ -33,32 +50,37 @@ TextEditionDelegate::TextEditionDelegate( QObject *parent ):
 QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
     Debug::Throw( "TextEditionDelegate::createEditor.\n" );
-    LineEditor *editor = new LineEditor( parent );
+    auto editor = new Private::LocalEditor( parent );
     editor->setFrame( false );
     return editor;
 }
 
 //______________________________________________________________
-void TextEditionDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void TextEditionDelegate::setEditorData(QWidget *widget, const QModelIndex &index) const
 {
     Debug::Throw( "TextEditionDelegate::setEditorData.\n" );
     QString text = index.model()->data(index, Qt::DisplayRole).toString();
-    LineEditor *lineEditor = static_cast<LineEditor*>(editor);
-    lineEditor->setText( text );
+    auto editor = qobject_cast<Private::LocalEditor*>(widget);
+    if( editor ) editor->setText( text );
 }
 
 //______________________________________________________________
-void TextEditionDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void TextEditionDelegate::setModelData(QWidget *widget, QAbstractItemModel *model, const QModelIndex &index) const
 {
     Debug::Throw( "TextEditionDelegate::setModelData.\n" );
-    LineEditor *lineEditor = static_cast<LineEditor*>(editor);
-    QString value( lineEditor->text() );
-    model->setData( index, value, Qt::EditRole);
+    Private::LocalEditor *editor = qobject_cast<Private::LocalEditor*>(widget);
+
+    // update model only if edition is "valid", meaning that return was pressed
+    if( editor && editor->isEditionValid() )
+    {
+        QString value( editor->text() );
+        model->setData( index, value, Qt::EditRole);
+    }
 }
 
 //______________________________________________________________
-void TextEditionDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &) const
+void TextEditionDelegate::updateEditorGeometry(QWidget *widget, const QStyleOptionViewItem &option, const QModelIndex &) const
 {
     Debug::Throw( "TextEditionDelegate::updateEditorGeometry.\n" );
-    editor->setGeometry(option.rect);
+    widget->setGeometry(option.rect);
 }
