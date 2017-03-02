@@ -53,6 +53,13 @@ bool IconEngine::reload( void )
 }
 
 //__________________________________________________________
+void IconEngine::clear( void )
+{
+    Debug::Throw( "IconEngine::clear.\n" );
+    cache_.clear();
+}
+
+//__________________________________________________________
 const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCacheItem::Flags flags )
 {
 

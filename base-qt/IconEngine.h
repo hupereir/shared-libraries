@@ -47,6 +47,9 @@ class IconEngine: public Counter
     //* reload all icons set in cache from new path list
     bool reload( void );
 
+    //* clear
+    void clear( void );
+
     private:
 
     //*@name non static methods are hidden
