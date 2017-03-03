@@ -31,13 +31,13 @@
 #include <QTextLayout>
 
 //_________________________________________________________
-SimpleListViewDelegate::SimpleListViewDelegate( QObject *parent ):
+Private::SimpleListViewDelegate::SimpleListViewDelegate( QObject *parent ):
     QAbstractItemDelegate( parent ),
-    Counter( "SimpleListViewDelegate" )
-{ Debug::Throw( "SimpleListViewDelegate::SimpleListViewDelegate.\n" ); }
+    Counter( "Private::SimpleListViewDelegate" )
+{ Debug::Throw( "Private::SimpleListViewDelegate::SimpleListViewDelegate.\n" ); }
 
 //_________________________________________________________
-void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const
+void Private::SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const
 {
 
     // check index
@@ -98,7 +98,7 @@ void SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 }
 
 //_________________________________________________________
-QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const
+QSize Private::SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const
 {
 
     if ( !index.isValid() ) return QSize();
@@ -136,7 +136,7 @@ QSize SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &option, cons
 }
 
 //_________________________________________________________
-int SimpleListViewDelegate::_layoutText(QTextLayout *layout, int maxWidth) const
+int Private::SimpleListViewDelegate::_layoutText(QTextLayout *layout, int maxWidth) const
 {
     qreal height = 0;
     int textWidth = 0;
@@ -156,7 +156,7 @@ int SimpleListViewDelegate::_layoutText(QTextLayout *layout, int maxWidth) const
 }
 
 //_________________________________________________________
-void SimpleListViewDelegate::_drawFocus( QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect ) const
+void Private::SimpleListViewDelegate::_drawFocus( QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect ) const
 {
     if (option.state & QStyle::State_HasFocus)
     {
@@ -180,7 +180,7 @@ SimpleListView::SimpleListView( QWidget* parent ):
 {
     // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
-    setItemDelegate( new SimpleListViewDelegate( this ) );
+    setItemDelegate( new Private::SimpleListViewDelegate( this ) );
     setMouseTracking( true );
     setSelectionBehavior( SelectRows );
 

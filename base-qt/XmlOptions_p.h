@@ -24,46 +24,51 @@
 #include "File.h"
 #include "XmlError.h"
 
-//____________________________________________________________________
-class XmlOptionsSingleton
+namespace Private
 {
-    public:
 
-    //* constructor
-    XmlOptionsSingleton( void )
-    { options_.installDefaultOptions(); }
-
-    //* file
-    const File& file( void ) const
-    { return file_; }
-
-    //* set file
-    bool setFile( const File& file )
+    //____________________________________________________________________
+    class XmlOptionsSingleton
     {
-        if( file_ == file ) return false;
-        file_ = file;
-        return true;
-    }
+        public:
 
-    //* true if options have changed with respect to current
-    /** read-only options are ignored, as well as default values and default flags */
-    bool differs( const Options& other ) const
-    { return _differs( options_, other ) || _differs( other, options_ ); }
+        //* constructor
+        XmlOptionsSingleton( void )
+        { options_.installDefaultOptions(); }
 
-    //* options
-    Options options_;
+        //* file
+        const File& file( void ) const
+        { return file_; }
 
-    //* error
-    XmlError error_;
+        //* set file
+        bool setFile( const File& file )
+        {
+            if( file_ == file ) return false;
+            file_ = file;
+            return true;
+        }
 
-    private:
+        //* true if options have changed with respect to current
+        /** read-only options are ignored, as well as default values and default flags */
+        bool differs( const Options& other ) const
+        { return _differs( options_, other ) || _differs( other, options_ ); }
 
-    //* return true if two sets of options differ
-    bool _differs( const Options&, const Options& ) const;
+        //* options
+        Options options_;
 
-    //* file
-    File file_;
+        //* error
+        XmlError error_;
 
-};
+        private:
+
+        //* return true if two sets of options differ
+        bool _differs( const Options&, const Options& ) const;
+
+        //* file
+        File file_;
+
+    };
+
+}
 
 #endif

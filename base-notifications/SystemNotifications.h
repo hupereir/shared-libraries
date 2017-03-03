@@ -29,7 +29,10 @@
 #include <QStringList>
 #include <QTimerEvent>
 
-class SystemNotificationsP;
+namespace Private
+{
+    class SystemNotificationsP;
+};
 
 class SystemNotifications: public QObject, public Counter
 {
@@ -95,7 +98,7 @@ class SystemNotifications: public QObject, public Counter
     Notification notification_;
 
     //* private
-    SystemNotificationsP* d;
+    Private::SystemNotificationsP* d;
 
 };
 

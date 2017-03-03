@@ -28,7 +28,7 @@
 #include <QLabel>
 #include <QIntValidator>
 
-namespace Print
+namespace Private
 {
     class OptionMenu;
     class NavigationWidget;
@@ -67,10 +67,10 @@ class PrintPreviewDialog: public CustomDialog
     private:
 
     //* option widget
-    Print::OptionMenu* optionMenu_ = nullptr;
+    Private::OptionMenu* optionMenu_ = nullptr;
 
     //* navigation widget
-    Print::NavigationWidget* navigationWidget_ = nullptr;
+    Private::NavigationWidget* navigationWidget_ = nullptr;
 
     //* preview widget
     QPrintPreviewWidget* previewWidget_ = nullptr;

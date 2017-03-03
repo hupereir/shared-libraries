@@ -33,13 +33,13 @@
 #include <QShortcut>
 #include <QWheelEvent>
 
-namespace Print
+namespace Private
 {
 
     //_________________________________________________________________
     OptionMenu::OptionMenu( QWidget* parent ):
         QMenuBar( parent ),
-        Counter( "Print::OptionMenu" )
+        Counter( "Private::OptionMenu" )
     {
 
         {
@@ -114,7 +114,7 @@ namespace Print
     //_________________________________________________________________
     NavigationWidget::NavigationWidget( QWidget* parent ):
         QWidget( parent ),
-        Counter( "Print::NavigationWidget" ),
+        Counter( "Private::NavigationWidget" ),
         pages_( 0 )
     {
         Debug::Throw( "NavigationWidget::NavigationWidget.\n" );
@@ -297,11 +297,11 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags fla
     mainLayout().setMargin(0);
     mainLayout().setSpacing(0);
 
-    mainLayout().addWidget( optionMenu_ = new Print::OptionMenu( this ) );
+    mainLayout().addWidget( optionMenu_ = new Private::OptionMenu( this ) );
     mainLayout().addWidget( previewWidget_ = new QPrintPreviewWidget( this ) );
     previewWidget_->setZoomMode( QPrintPreviewWidget::FitToWidth );
 
-    mainLayout().addWidget( navigationWidget_ = new Print::NavigationWidget( this ), 0, Qt::AlignCenter );
+    mainLayout().addWidget( navigationWidget_ = new Private::NavigationWidget( this ), 0, Qt::AlignCenter );
     connect( navigationWidget_, SIGNAL(pageChanged(int)), previewWidget_, SLOT(setCurrentPage(int)) );
 
     // close accelerator

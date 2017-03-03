@@ -27,54 +27,59 @@
 #include <QFile>
 
 //____________________________________________________________________
-XmlOptionsSingleton XmlOptions::singleton_;
-
-//____________________________________________________________________
-bool XmlOptionsSingleton::_differs( const Options& first, const Options& second ) const
+namespace Private
 {
 
-    // check special options
-    for( Options::SpecialMap::const_iterator firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
+    XmlOptionsSingleton XmlOptions::singleton_;
+
+    //____________________________________________________________________
+    bool XmlOptionsSingleton::_differs( const Options& first, const Options& second ) const
     {
 
-        // skip empty special options
-        if( firstIter.value().isEmpty() ) continue;
-
-        // get matching options in the second set
-        if( !second.isSpecialOption( firstIter.key() ) ) return true;
-        Options::List options( second.specialOptions( firstIter.key() ) );
-
-        // loop over options in first list
-        for( const auto& option:firstIter.value() )
+        // check special options
+        for( Options::SpecialMap::const_iterator firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
         {
-            // skip non recordable options
-            if( !option.isRecordable() ) continue;
 
-            // find in second list
-            if( options.indexOf( option ) < 0 ) return true;
+            // skip empty special options
+            if( firstIter.value().isEmpty() ) continue;
+
+            // get matching options in the second set
+            if( !second.isSpecialOption( firstIter.key() ) ) return true;
+            Options::List options( second.specialOptions( firstIter.key() ) );
+
+            // loop over options in first list
+            for( const auto& option:firstIter.value() )
+            {
+                // skip non recordable options
+                if( !option.isRecordable() ) continue;
+
+                // find in second list
+                if( options.indexOf( option ) < 0 ) return true;
+
+            }
 
         }
 
-    }
-
-    // loop over options and check existence in other map
-    for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
-    {
-
-        // skip non recordable options
-        if( !firstIter.value().isRecordable() ) continue;
-
-        const Options::Map::const_iterator secondIter( second.options().constFind( firstIter.key() ) );
-        if( secondIter == second.options().constEnd() )
+        // loop over options and check existence in other map
+        for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
         {
 
-            if( !firstIter.value().isDefault() ) return true;
+            // skip non recordable options
+            if( !firstIter.value().isRecordable() ) continue;
 
-        } else if( firstIter.value() != secondIter.value() ) return true;
+            const Options::Map::const_iterator secondIter( second.options().constFind( firstIter.key() ) );
+            if( secondIter == second.options().constEnd() )
+            {
+
+                if( !firstIter.value().isDefault() ) return true;
+
+            } else if( firstIter.value() != secondIter.value() ) return true;
+
+        }
+
+        return false;
 
     }
-
-    return false;
 
 }
 

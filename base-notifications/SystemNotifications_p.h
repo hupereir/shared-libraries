@@ -36,88 +36,93 @@
 #include <QDBusPendingCallWatcher>
 #endif
 
-class SystemNotificationsP: public QObject, public Counter
+namespace Private
 {
 
-    Q_OBJECT
+    class SystemNotificationsP: public QObject, public Counter
+    {
 
-    public:
+        Q_OBJECT
 
-    //* constructor
-    SystemNotificationsP( QObject* = nullptr );
+        public:
 
-    //* destructor
-    virtual ~SystemNotificationsP( void );
+        //* constructor
+        SystemNotificationsP( QObject* = nullptr );
 
-    //* @name modifiers
-    //@{
+        //* destructor
+        virtual ~SystemNotificationsP( void );
 
-    //* initialize
-    void initialize( void );
+        //* @name modifiers
+        //@{
 
-    //* application name
-    void setApplicationName( const QString& );
+        //* initialize
+        void initialize( void );
 
-    //* set icon
-    void setApplicationIcon( const QIcon& );
+        //* application name
+        void setApplicationName( const QString& );
 
-    //* process message
-    virtual void send( Notification );
+        //* set icon
+        void setApplicationIcon( const QIcon& );
 
-    //@}
+        //* process message
+        virtual void send( Notification );
 
-    //* @name accessors
-    //@{
+        //@}
 
-    //* true if available
-    bool isSupported( void ) const;
+        //* @name accessors
+        //@{
 
-    //@}
+        //* true if available
+        bool isSupported( void ) const;
 
-    Q_SIGNALS:
+        //@}
 
-    //* action called
-    void actionInvoked( quint32, QString );
+        Q_SIGNALS:
 
-    private Q_SLOTS:
+        //* action called
+        void actionInvoked( quint32, QString );
 
-    #ifndef QT_NO_DBUS
-    //* pending dbus call finished
-    void _pendingCallFinished(QDBusPendingCallWatcher*);
+        private Q_SLOTS:
 
-    //* notification closed
-    void _notificationClosed( quint32, quint32 );
+        #ifndef QT_NO_DBUS
+        //* pending dbus call finished
+        void _pendingCallFinished(QDBusPendingCallWatcher*);
 
-    //* check action invoked
-    void _checkActionInvoked( quint32, QString );
+        //* notification closed
+        void _notificationClosed( quint32, quint32 );
 
-    #endif
+        //* check action invoked
+        void _checkActionInvoked( quint32, QString );
 
-    private:
+        #endif
 
-    //* application name
-    QString applicationName_;
+        private:
 
-    //* initialized
-    bool initialized_ = false;
+        //* application name
+        QString applicationName_;
 
-    #ifndef QT_NO_DBUS
-    //* dbus interface
-    QDBusInterface* dbusInterface_ = nullptr;
-    #endif
+        //* initialized
+        bool initialized_ = false;
 
-    //* image data
-    Notifications::ImageData imageData_;
+        #ifndef QT_NO_DBUS
+        //* dbus interface
+        QDBusInterface* dbusInterface_ = nullptr;
+        #endif
 
-    //* image data type id
-    int typeId_ = 0;
+        //* image data
+        Notifications::ImageData imageData_;
 
-    //* notifications and associated actions
-    QHash<quint32, QStringList> notificationIds_;
+        //* image data type id
+        int typeId_ = 0;
 
-    //* action list
-    QStringList lastNotificationActions_;
+        //* notifications and associated actions
+        QHash<quint32, QStringList> notificationIds_;
 
-};
+        //* action list
+        QStringList lastNotificationActions_;
+
+    };
+
+}
 
 #endif

@@ -26,7 +26,11 @@
 //* forward declaration
 class XmlDocument;
 class XmlError;
-class XmlOptionsSingleton;
+
+namespace Private
+{
+    class XmlOptionsSingleton;
+}
 
 //* Option file parser based on xml
 class XmlOptions
@@ -74,7 +78,7 @@ class XmlOptions
     private:
 
     //* singleton
-    static XmlOptionsSingleton singleton_;
+    static Private::XmlOptionsSingleton singleton_;
 
 };
 
