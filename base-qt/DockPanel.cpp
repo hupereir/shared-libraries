@@ -165,14 +165,6 @@ void DockPanel::_toggleDock( void )
 
 }
 
-//___________________________________________________________
-void DockPanel::hideEvent( QHideEvent* event )
-{
-    Debug::Throw( "DockPanel::hideEvent.\n" );
-    emit visibilityChanged( false );
-    QWidget::hideEvent( event );
-}
-
 namespace Private
 {
 

@@ -88,18 +88,10 @@ class DockPanel: public QWidget, public Counter
     //* emitted when panel is detached
     void detached( void );
 
-    //* visibility changed
-    void visibilityChanged( bool );
-
     protected Q_SLOTS:
 
     //* toggle dock
     virtual void _toggleDock( void );
-
-    protected:
-
-    //* hide event
-    virtual void hideEvent( QHideEvent* );
 
     private:
 
