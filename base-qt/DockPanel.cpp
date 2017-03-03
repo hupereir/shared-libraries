@@ -50,11 +50,11 @@ DockPanel::DockPanel( QWidget* parent ):
     QVBoxLayout* vLayout( new QVBoxLayout() );
     vLayout->setMargin(0);
     vLayout->setSpacing(0);
-    vLayout->addSpacing( 5 );
     vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
     dock_->setLayout( vLayout );
 
     {
+        dockTitleLabel_->setMargin(5);
         dockTitleLabel_->setAlignment( Qt::AlignHCenter );
         dockTitleLabel_->setFont( QtUtil::titleFont( dockTitleLabel_->font() ) );
     }
