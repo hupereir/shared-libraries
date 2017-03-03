@@ -45,12 +45,12 @@ DockPanel::DockPanel( QWidget* parent ):
     Debug::Throw( "DockPanel::DockPanel.\n" );
 
     // dock
-    dock_.reset( new Private::LocalDockWidget(nullptr) );
+    dock_ = new Private::LocalDockWidget(nullptr);
     dock_->setWindowIcon( windowIcon() );
     QVBoxLayout* vLayout( new QVBoxLayout() );
     vLayout->setMargin(0);
     vLayout->setSpacing(0);
-    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
+    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
     dock_->setLayout( vLayout );
 
     {
@@ -142,7 +142,7 @@ void DockPanel::_toggleDock( void )
 
         // change parent
         const QPoint position( panel_->mapToGlobal( QPoint( 0, 0 ) ) );
-        panel_->setParent( dock_.get() );
+        panel_->setParent( dock_ );
         dock_->layout()->addWidget( panel_ );
         panel_->show();
 
