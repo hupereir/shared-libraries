@@ -96,6 +96,7 @@ void ColorMenu::_display( void )
 
     // new color action
     addAction( IconEngine::get( IconNames::Add ), tr( "New" ), this, SLOT(_new()) );
+    addSeparator();
 
     // default color action
     addAction( tr( "Default" ), this, SLOT(_default()) );
