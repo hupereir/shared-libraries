@@ -29,6 +29,7 @@
 #include <QApplication>
 #include <QGridLayout>
 #include <QPainter>
+#include <QSizeGrip>
 #include <QStyleHintReturnMask>
 #include <QStyleOption>
 #include <QStyleOptionMenuItem>
@@ -47,11 +48,9 @@ TabWidget::TabWidget( QTabWidget* parent ):
     // dock
     dock_ = new Private::LocalTabWidget(nullptr);
     dock_->setWindowIcon( windowIcon() );
-    QVBoxLayout* vLayout( new QVBoxLayout() );
-    vLayout->setMargin(0);
-    vLayout->setSpacing(0);
-    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
-    dock_->setLayout( vLayout );
+    dock_->mainLayout()->setMargin(0);
+    dock_->mainLayout()->setSpacing(0);
+    dock_->mainLayout()->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
 
     {
         dockTitleLabel_->setMargin(5);
@@ -138,8 +137,8 @@ void TabWidget::_toggleDock( void )
         const QPoint position( mapToGlobal( QPoint( 0, 0 ) ) );
 
         // change parent
-        setParent( dock_ );
-        dock_->layout()->addWidget( this );
+        setParent( dock_->mainWidget() );
+        dock_->mainLayout()->addWidget( this );
         show();
         dock_->show();
 
@@ -263,14 +262,44 @@ namespace Private
 {
 
     //___________________________________________________________
+    class SizeGrip: public QSizeGrip
+    {
+        public:
+
+        SizeGrip( QWidget* parent ):
+            QSizeGrip( parent )
+        {}
+
+        protected:
+
+        virtual void paintEvent( QPaintEvent* )
+        {}
+
+    };
+
+    //___________________________________________________________
     LocalTabWidget::LocalTabWidget( QWidget* parent ):
         QWidget( parent, Qt::FramelessWindowHint|Qt::Window ),
         Counter( "Private::LocalTabWidget" )
     {
 
-//         setAttribute(Qt::WA_TranslucentBackground);
-//         setAttribute(Qt::WA_StyledBackground);
-//         setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
+        #if QT_VERSION < 0x050000
+        setAttribute(Qt::WA_TranslucentBackground);
+        setAttribute(Qt::WA_StyledBackground);
+        #endif
+
+        setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
+
+        // grid layout to overlay main layout and invisible grip
+        QGridLayout *gridLayout( new QGridLayout() );
+        gridLayout->setMargin(0);
+        gridLayout->setSpacing(0);
+        setLayout( gridLayout );
+
+        gridLayout->addWidget( mainWidget_ = new QWidget(), 0, 0, 1, 1 );
+        gridLayout->addWidget( new SizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
+
+        mainWidget_->setLayout( mainLayout_ = new QVBoxLayout() );
 
     }
 

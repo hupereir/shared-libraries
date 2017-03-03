@@ -22,6 +22,7 @@
 
 #include "Counter.h"
 
+#include <QLayout>
 #include <QObject>
 
 //* local dock widget
@@ -35,6 +36,14 @@ namespace Private
 
         //* constructor
         LocalTabWidget( QWidget* );
+
+        //* main widget
+        QWidget* mainWidget( void )
+        { return mainWidget_; }
+
+        //* main layout
+        QVBoxLayout* mainLayout( void )
+        { return mainLayout_; }
 
         Q_SIGNALS:
 
@@ -51,6 +60,14 @@ namespace Private
 
         //* resize event
         virtual void resizeEvent( QResizeEvent* );
+
+        private:
+
+        //* main widget
+        QWidget* mainWidget_;
+
+        //* layout
+        QVBoxLayout* mainLayout_;
 
     };
 
