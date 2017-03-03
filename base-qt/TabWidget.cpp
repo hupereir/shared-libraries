@@ -135,15 +135,20 @@ void TabWidget::_toggleDock( void )
 
         // move position
         const QPoint position( mapToGlobal( QPoint( 0, 0 ) ) );
+        const QSize size( this->size() );
 
         // change parent
         setParent( dock_->mainWidget() );
         dock_->mainLayout()->addWidget( this );
         show();
-        dock_->show();
 
-        // move and resize
-        dock_->move( position - geometry().topLeft() );
+        // adjust geometry
+        dock_->setGeometry(
+            QRect( position - QPoint( 0, dockTitleLabel_->height() ),
+            QSize( size.width(), size.height() + dockTitleLabel_->height() ) ) );
+
+        // show
+        dock_->show();
 
         widgetDragMonitor_.setEnabled( true );
 
