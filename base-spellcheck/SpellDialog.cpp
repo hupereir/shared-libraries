@@ -203,6 +203,10 @@ namespace SpellCheck
         readOnlyEditor_ = editor_->isReadOnly();
         editor_->setReadOnly( true );
 
+        // connection
+        connect( &closeButton(), SIGNAL(clicked()), SLOT(_saveWordList()) );
+        connect( &closeButton(), SIGNAL(clicked()), SLOT(_restoreReadOnly()) );
+
         Debug::Throw( "SpellCheck::SpellDialog::SpellDialog - done.\n" );
 
     }
@@ -551,11 +555,19 @@ namespace SpellCheck
     //__________________________________________
     void SpellDialog::closeEvent( QCloseEvent *e )
     {
-        Debug::Throw( "SpellCheck::SpellDialog::closeEvent.\n" );
-        interface().saveWordList();
-        editor_->setReadOnly( readOnlyEditor_ );
+        Debug::Throw( 0, "SpellCheck::SpellDialog::closeEvent.\n" );
+        _restoreReadOnly();
+        _saveWordList();
         QDialog::closeEvent( e );
     }
+
+    //__________________________________________
+    void SpellDialog::_saveWordList( void )
+    { interface().saveWordList(); }
+
+    //__________________________________________
+    void SpellDialog::_restoreReadOnly( void )
+    { editor_->setReadOnly( readOnlyEditor_ ); }
 
     //_________________________________________________________________
     void SpellDialog::_updateSelection( const unsigned int& index, const unsigned int& length )

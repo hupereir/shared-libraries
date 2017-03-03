@@ -140,6 +140,14 @@ namespace SpellCheck
         //* close
         virtual void closeEvent( QCloseEvent *e );
 
+        protected Q_SLOTS:
+
+        //* save word list
+        virtual void _saveWordList( void );
+
+        //* restore read only state
+        virtual void _restoreReadOnly( void );
+
         private:
 
         //* qlistview for object IconCaches
