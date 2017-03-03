@@ -33,6 +33,15 @@
 #include <QLayout>
 #include <QPixmap>
 
+#include <memory>
+
+// forward declaration
+namespace Private
+{
+    class LocalDockWidget;
+    class LocalWidget;
+}
+
 //* detachable generic panel
 class DockPanel: public QWidget, public Counter
 {
@@ -52,8 +61,7 @@ class DockPanel: public QWidget, public Counter
     //@{
 
     //* get panel (to add contents)
-    virtual QWidget& panel( void )
-    { return *panel_; }
+    virtual QWidget& panel( void );
 
     //* true if detached
     bool isDetached( void ) const;
@@ -67,11 +75,7 @@ class DockPanel: public QWidget, public Counter
     void setOptionName( QString );
 
     //* set detachable group panel title
-    void setTitle( const QString& title )
-    {
-        dock_->setWindowTitle( title );
-        dockTitleLabel_->setText( title );
-    }
+    void setTitle( QString );
 
     //@}
 
@@ -108,10 +112,10 @@ class DockPanel: public QWidget, public Counter
     QLabel* dockTitleLabel_ = nullptr;
 
     //* dock
-    QWidget* dock_ = nullptr;
+    std::unique_ptr<Private::LocalDockWidget> dock_;
 
     //* contents panel
-    QWidget* panel_ = nullptr;
+    Private::LocalWidget* panel_ = nullptr;
 
 };
 

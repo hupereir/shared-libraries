@@ -45,12 +45,12 @@ DockPanel::DockPanel( QWidget* parent ):
     Debug::Throw( "DockPanel::DockPanel.\n" );
 
     // dock
-    dock_ = new Private::LocalDockWidget(0);
+    dock_.reset( new Private::LocalDockWidget(nullptr) );
     dock_->setWindowIcon( windowIcon() );
     QVBoxLayout* vLayout( new QVBoxLayout() );
     vLayout->setMargin(0);
     vLayout->setSpacing(0);
-    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
+    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
     dock_->setLayout( vLayout );
 
     {
@@ -71,11 +71,11 @@ DockPanel::DockPanel( QWidget* parent ):
     layout()->addWidget( panel_ = new Private::LocalWidget( this ) );
 
     // install dragMonitor on dock
-    dock_->installEventFilter( &reinterpret_cast<Private::LocalWidget*>(panel_)->widgetDragMonitor() );
+    dock_->installEventFilter( &panel_->widgetDragMonitor() );
 
-    reinterpret_cast<Private::LocalWidget*>(panel_)->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
-    connect( &reinterpret_cast<Private::LocalWidget*>(panel_)->detachAction(), SIGNAL(triggered()), SLOT(_toggleDock()) );
-    connect( &reinterpret_cast<Private::LocalWidget*>(panel_)->widgetDragMonitor(), SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
+    panel_->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
+    connect( &panel_->detachAction(), SIGNAL(triggered()), SLOT(_toggleDock()) );
+    connect( &panel_->widgetDragMonitor(), SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
 
     // vertical layout for children
     mainLayout_ = new QVBoxLayout();
@@ -95,12 +95,23 @@ DockPanel::~DockPanel( void )
 }
 
 //___________________________________________________________
+QWidget& DockPanel::panel( void )
+{ return *panel_; }
+
+//___________________________________________________________
 bool DockPanel::isDetached( void ) const
-{ return reinterpret_cast<Private::LocalWidget*>(panel_)->isDetached(); }
+{ return panel_->isDetached(); }
+
+//___________________________________________________________
+void DockPanel::setTitle( QString title )
+{
+    dock_->setWindowTitle( title );
+    dockTitleLabel_->setText( title );
+}
 
 //___________________________________________________________
 void DockPanel::setOptionName( QString value )
-{ return reinterpret_cast<Private::LocalWidget*>(panel_)->setOptionName( value ); }
+{ return panel_->setOptionName( value ); }
 
 //___________________________________________________________
 void DockPanel::_toggleDock( void )
@@ -108,10 +119,10 @@ void DockPanel::_toggleDock( void )
 
     Debug::Throw( "DockPanel::_toggleDock.\n" );
 
-    if( reinterpret_cast<Private::LocalWidget*>(panel_)->isDetached() )
+    if( panel_->isDetached() )
     {
 
-        reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( false );
+        panel_->setDetached( false );
 
         // re show
         show();
@@ -131,7 +142,7 @@ void DockPanel::_toggleDock( void )
 
         // change parent
         const QPoint position( panel_->mapToGlobal( QPoint( 0, 0 ) ) );
-        panel_->setParent( dock_ );
+        panel_->setParent( dock_.get() );
         dock_->layout()->addWidget( panel_ );
         panel_->show();
 
@@ -140,7 +151,7 @@ void DockPanel::_toggleDock( void )
         // move and resize
         dock_->move( position - panel_->geometry().topLeft() );
 
-        reinterpret_cast<Private::LocalWidget*>(panel_)->setDetached( true );
+        panel_->setDetached( true );
         hide();
 
         // signals
