@@ -27,10 +27,9 @@
 #include <QFile>
 
 //____________________________________________________________________
+Private::XmlOptionsSingleton XmlOptions::singleton_;
 namespace Private
 {
-
-    XmlOptionsSingleton XmlOptions::singleton_;
 
     //____________________________________________________________________
     bool XmlOptionsSingleton::_differs( const Options& first, const Options& second ) const
