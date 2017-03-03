@@ -33,7 +33,10 @@
 #include <QTabWidget>
 
 // forward declaration
-class TabWidget;
+namespace Private
+{
+    class LocalTabWidget;
+}
 
 //* Tab Child container
 class TabWidget: public QWidget, public Counter
@@ -47,12 +50,11 @@ class TabWidget: public QWidget, public Counter
     //* constructor
     TabWidget( QTabWidget* parent );
 
-    //* set tab title
-    void setTitle( const QString& title )
-    {
-        title_ = title;
-        titleLabel_->setText( title );
-    }
+    //* destructor
+    virtual ~TabWidget( void );
+
+    //*@name accessors
+    //@{
 
     //* title
     const QString& title( void ) const
@@ -62,12 +64,9 @@ class TabWidget: public QWidget, public Counter
     QTabWidget& parentTabWidget( void )
     { return *parent_; }
 
-    //* get box
-    QWidget& box( void )
-    { return *box_; }
-
-    //* update actions
-    void updateActions( bool );
+    //* true if attached
+    bool isDetached( void ) const
+    { return widgetDragMonitor_.isEnabled(); }
 
     //* detach action
     QAction& detachAction( void ) const
@@ -81,40 +80,29 @@ class TabWidget: public QWidget, public Counter
     QAction& stickyAction( void ) const
     { return *stickyAction_; }
 
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* change title
+    void setTitle( QString );
+
+    //* update actions
+    void updateActions( bool );
+
+    //@}
+
     Q_SIGNALS:
+
+    //* emitted when state is changed
+    void attached( bool state );
 
     //* emitted when box is detached
     void detached( void );
 
     //* emitted when box is attached
     void attached( void );
-
-    protected:
-
-    //* close event
-    virtual void closeEvent( QCloseEvent* );
-
-    //* resize
-    virtual void resizeEvent( QResizeEvent* );
-
-    //* paint
-    virtual void paintEvent( QPaintEvent* );
-
-    //* has size grip
-    bool _hasSizeGrip( void ) const
-    { return (bool)sizeGrip_; }
-
-    //* size grip
-    QSizeGrip& _sizeGrip( void ) const
-    { return *sizeGrip_; }
-
-    //* show size grip
-    void _showSizeGrip( void )
-    { if( _hasSizeGrip() ) _sizeGrip().show(); }
-
-    //* hide size grip
-    void _hideSizeGrip( void )
-    { if( _hasSizeGrip() ) _sizeGrip().hide(); }
 
     protected Q_SLOTS:
 
@@ -135,41 +123,17 @@ class TabWidget: public QWidget, public Counter
     //* actions
     void _installActions( void );
 
-    //* flags
-    unsigned int flags_;
+    //* parent TabWidget
+    QTabWidget* parent_ = nullptr;
 
     //* title
     QString title_;
 
     //* dock title
-    QLabel* titleLabel_ = nullptr;
+    QLabel* dockTitleLabel_ = nullptr;
 
-    //* parent TabWidget
-    QTabWidget* parent_ = nullptr;
-
-    //* vertical layout
-    QVBoxLayout* mainLayout_ = nullptr;
-
-    //* contents vbox
-    QWidget* box_ = nullptr;
-
-    class SizeGrip: public QSizeGrip
-    {
-        public:
-
-        SizeGrip( QWidget* parent ):
-            QSizeGrip( parent )
-        {}
-
-        protected:
-
-        virtual void paintEvent( QPaintEvent* )
-        {}
-
-    };
-
-    //* size grip
-    SizeGrip* sizeGrip_ = nullptr;
+    //* dock
+    Private::LocalTabWidget* dock_ = nullptr;
 
     //* index in parent tab
     int index_ = 0;

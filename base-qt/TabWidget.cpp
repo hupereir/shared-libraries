@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "TabWidget.h"
+#include "TabWidget_p.h"
 
 #include "BaseContextMenu.h"
 #include "File.h"
@@ -35,58 +36,42 @@
 
 //________________________________________________________
 TabWidget::TabWidget( QTabWidget* parent ):
-    QWidget(),
+    QWidget( parent ),
     Counter( "TabWidget" ),
     parent_( parent ),
-    sizeGrip_( 0 ),
-    index_( 0 ),
     widgetDragMonitor_( this )
 {
 
     Debug::Throw( "TabWidget::TabWidget.\n" );
 
-    #if QT_VERSION < 0x050000
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_StyledBackground);
-    #endif
 
-    setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
-
-    // grid layout to overlay main layout and invisible grip
-    QGridLayout *gridLayout( new QGridLayout() );
-    gridLayout->setMargin(0);
-    gridLayout->setSpacing(0);
-    setLayout( gridLayout );
-
-    gridLayout->addLayout( mainLayout_ = new QVBoxLayout(), 0, 0, 1, 1 );
-    mainLayout_->setMargin(5);
-    mainLayout_->setSpacing(2);
-    mainLayout_->addWidget( titleLabel_ = new QLabel( this ) );
+    // dock
+    dock_ = new Private::LocalTabWidget(nullptr);
+    dock_->setWindowIcon( windowIcon() );
+    QVBoxLayout* vLayout( new QVBoxLayout() );
+    vLayout->setMargin(0);
+    vLayout->setSpacing(0);
+    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
+    dock_->setLayout( vLayout );
 
     {
-        titleLabel_->setAlignment( Qt::AlignHCenter );
-        titleLabel_->setFont( QtUtil::titleFont( titleLabel_->font() ) );
+        dockTitleLabel_->setMargin(5);
+        dockTitleLabel_->setAlignment( Qt::AlignHCenter );
+        dockTitleLabel_->setFont( QtUtil::titleFont( dockTitleLabel_->font() ) );
     }
 
-    titleLabel_->hide();
-
-    // vertical box
-    box_ = new QWidget( this );
-    box_->setLayout( new QVBoxLayout() );
-    box_->layout()->setSpacing( 2 );
-    box_->layout()->setMargin( 0 );
-
-    mainLayout_->addWidget( box_ );
-
-    {
-        gridLayout->addWidget( sizeGrip_ = new SizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
-        _hideSizeGrip();
-    }
+    dock_->hide();
 
     _installActions();
     updateActions( false );
 
-    // detach
+    // install dragMonitor on dock
+    dock_->installEventFilter( &widgetDragMonitor_ );
+
+    // connections
+    connect( dock_, SIGNAL(closeEventRequest()), detachAction_, SLOT(trigger()) );
     connect( &widgetDragMonitor_, SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
 
     // context menu
@@ -95,14 +80,30 @@ TabWidget::TabWidget( QTabWidget* parent ):
 
 }
 
+//___________________________________________________________
+TabWidget::~TabWidget( void )
+{
+
+    Debug::Throw( "DockPanel::~DockPanel.\n" );
+    dock_->deleteLater();
+
+}
+
+//___________________________________________________________
+void TabWidget::setTitle( QString title )
+{
+    title_ = title;
+    dock_->setWindowTitle( title );
+    dockTitleLabel_->setText( title );
+}
 
 //___________________________________________________________
 void TabWidget::updateActions( bool detached )
 {
 
-    detachAction().setText( detached ? tr( "Attach" ): tr( "Detach" ) );
-    stickyAction().setEnabled( detached );
-    staysOnTopAction().setEnabled( detached );
+    detachAction_->setText( detached ? tr( "Attach" ): tr( "Detach" ) );
+    stickyAction_->setEnabled( detached );
+    staysOnTopAction_->setEnabled( detached );
 
 }
 
@@ -112,23 +113,22 @@ void TabWidget::_toggleDock( void )
 
     Debug::Throw( "TabWidget::_toggleDock.\n" );
 
-    if( !parent() ) {
+    if( isDetached() )
+    {
 
         widgetDragMonitor_.setEnabled( false );
 
-        // store size for later detach
+        // update actions
         updateActions( false );
 
         // reinsert into parent and select
         parent_->QTabWidget::insertTab( index_, this, title_ );
         parent_->QTabWidget::setCurrentWidget( this );
 
-        // hide title label
-        titleLabel_->hide();
+        // hide dock
+        dock_->hide();
 
-        // size grip
-        _hideSizeGrip();
-
+        emit attached(true);
         emit attached();
 
     } else {
@@ -137,48 +137,39 @@ void TabWidget::_toggleDock( void )
         // and remove from parent TabWidget
         index_ = parent_->indexOf( this );
 
-        // keep track of parent
-        QWidget *parent( parentWidget() );
+        // move position
+        const QPoint position( mapToGlobal( QPoint( 0, 0 ) ) );
 
-        // reparent to top level
-        setParent( 0 );
-
-        // window flags
-        setWindowFlags( Qt::FramelessWindowHint|Qt::Window );
+        // change parent
+        setParent( dock_ );
+        dock_->layout()->addWidget( this );
+        show();
+        dock_->show();
 
         // move and resize
-        move( parent->mapToGlobal( QPoint(0,0) ) );
-        widgetDragMonitor_.setEnabled( true );
+        dock_->move( position - geometry().topLeft() );
 
-        if( !title_.isEmpty() )
-        {
-            setWindowTitle( title_ );
-            titleLabel_->show();
-        }
+        widgetDragMonitor_.setEnabled( true );
 
         // change action text
         updateActions( true );
 
-        _toggleStaysOnTop( staysOnTopAction().isChecked() );
-        _toggleSticky( stickyAction().isChecked() );
-
-        // show widgets
-        _showSizeGrip();
-        show();
+        _toggleStaysOnTop( staysOnTopAction_->isChecked() );
+        _toggleSticky( stickyAction_->isChecked() );
 
         // signal
+        emit attached( false );
         emit detached();
     }
 
 }
 
-
 //__________________________________________________________
 void TabWidget::_toggleStaysOnTop( bool state )
 {
 
-    // check that widget is top level
-    if( parentWidget() ) return;
+    // make sure that detached
+    if( !isDetached() ) return;
 
     #if HAVE_XCB
 
@@ -207,8 +198,8 @@ void TabWidget::_toggleSticky( bool state )
 
     Debug::Throw( "TabWidget::_toggleSticky.\n" );
 
-    // check that widget is top level
-    if( parentWidget() ) return;
+    // make sure that detached
+    if( !isDetached() ) return;
 
     #if HAVE_XCB
     if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
@@ -223,59 +214,6 @@ void TabWidget::_toggleSticky( bool state )
 
     }
     #endif
-}
-
-//___________________________________________________________
-void TabWidget::closeEvent( QCloseEvent* event )
-{
-    Debug::Throw( "TabWidget::closeEvent.\n" );
-    if( !parent() ) detachAction().trigger();
-    event->ignore();
-}
-
-//___________________________________________________________
-void TabWidget::resizeEvent( QResizeEvent *event )
-{
-
-    QStyleHintReturnMask menuMask;
-    QStyleOption option;
-    option.initFrom(this);
-    if( style()->styleHint(QStyle::SH_Menu_Mask, &option, this, &menuMask) )
-    { setMask(menuMask.region); }
-
-}
-
-//___________________________________________________________
-void TabWidget::paintEvent( QPaintEvent *event )
-{
-    if( parentWidget() ) { QWidget::paintEvent( event ); }
-    else {
-
-        QPainter p( this );
-
-        if( !( style()->inherits( "Oxygen::Style" ) || style()->inherits( "Breeze::Style" ) ) )
-        {  p.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
-
-        // background
-        QStyleOptionMenuItem menuOpt;
-        menuOpt.initFrom(this);
-        menuOpt.state = QStyle::State_None;
-        menuOpt.checkType = QStyleOptionMenuItem::NotCheckable;
-        menuOpt.maxIconWidth = 0;
-        menuOpt.tabWidth = 0;
-        style()->drawPrimitive(QStyle::PE_PanelMenu, &menuOpt, &p, this);
-
-        // frame
-        QStyleOptionFrame frame;
-        frame.rect = rect();
-        frame.palette = palette();
-        frame.state = QStyle::State_None;
-        frame.lineWidth = style()->pixelMetric(QStyle::PM_MenuPanelWidth);
-        frame.midLineWidth = 0;
-        style()->drawPrimitive(QStyle::PE_FrameMenu, &frame, &p, this);
-        p.end();
-    }
-
 }
 
 //______________________________________________________________________
@@ -321,5 +259,75 @@ void TabWidget::_installActions( void )
     stickyAction_->setCheckable( true );
     stickyAction_->setChecked( false );
     connect( stickyAction_, SIGNAL(toggled(bool)), SLOT(_toggleSticky(bool)) );
+
+}
+
+namespace Private
+{
+
+    //___________________________________________________________
+    LocalTabWidget::LocalTabWidget( QWidget* parent ):
+        QWidget( parent, Qt::FramelessWindowHint|Qt::Window ),
+        Counter( "Private::LocalTabWidget" )
+    {
+
+//         setAttribute(Qt::WA_TranslucentBackground);
+//         setAttribute(Qt::WA_StyledBackground);
+//         setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
+
+    }
+
+    //___________________________________________________________
+    void LocalTabWidget::paintEvent( QPaintEvent *event )
+    {
+        QPainter painter( this );
+        painter.setClipRegion( event->region() );
+
+        if( !( style()->inherits( "Oxygen::Style" ) || style()->inherits( "Breeze::Style" ) ) )
+        {  painter.fillRect( event->rect(), palette().color( backgroundRole() ) ); }
+
+        {
+            // background
+            QStyleOptionMenuItem option;
+            option.initFrom(this);
+            option.state = QStyle::State_None;
+            option.checkType = QStyleOptionMenuItem::NotCheckable;
+            option.maxIconWidth = 0;
+            option.tabWidth = 0;
+            style()->drawPrimitive(QStyle::PE_PanelMenu, &option, &painter, this);
+        }
+
+        {
+            // frame
+            QStyleOptionFrame option;
+            option.rect = rect();
+            option.palette = palette();
+            option.state = QStyle::State_None;
+            option.lineWidth = style()->pixelMetric(QStyle::PM_MenuPanelWidth);
+            option.midLineWidth = 0;
+            style()->drawPrimitive(QStyle::PE_FrameMenu, &option, &painter, this);
+        }
+
+    }
+
+    //___________________________________________________________
+    void LocalTabWidget::resizeEvent( QResizeEvent *event )
+    {
+
+        QStyleHintReturnMask menuMask;
+        QStyleOption option;
+        option.initFrom(this);
+        if( style()->styleHint(QStyle::SH_Menu_Mask, &option, this, &menuMask) )
+        { setMask(menuMask.region); }
+
+    }
+
+    //___________________________________________________________
+    void LocalTabWidget::closeEvent( QCloseEvent* event )
+    {
+        Debug::Throw( 0, "LocalWidget::closeEvent.\n" );
+        event->ignore();
+        emit closeEventRequest();
+    }
 
 }
