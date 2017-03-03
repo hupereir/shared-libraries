@@ -531,24 +531,6 @@ bool XcbUtil::moveResizeWidget(
 
     #endif
 
-    // button release event
-    xcb_button_release_event_t releaseEvent;
-    memset(&releaseEvent, 0, sizeof(releaseEvent));
-
-    releaseEvent.response_type = XCB_BUTTON_RELEASE;
-    releaseEvent.event =  widget->winId();
-    releaseEvent.child = XCB_WINDOW_NONE;
-    releaseEvent.root = appRootWindow();
-    releaseEvent.event_x = localPosition.x();
-    releaseEvent.event_y = localPosition.y();
-    releaseEvent.root_x = position.x();
-    releaseEvent.root_y = position.y();
-    releaseEvent.detail = XCB_BUTTON_INDEX_1;
-    releaseEvent.state = XCB_BUTTON_MASK_1;
-    releaseEvent.time = XCB_CURRENT_TIME;
-    releaseEvent.same_screen = true;
-    xcb_send_event( d->connection(), false, widget->winId(), XCB_EVENT_MASK_BUTTON_RELEASE, reinterpret_cast<const char*>(&releaseEvent));
-
     xcb_ungrab_pointer( d->connection(), XCB_TIME_CURRENT_TIME );
 
     // move resize event
