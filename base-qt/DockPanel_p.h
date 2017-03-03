@@ -39,10 +39,21 @@ namespace Private
         //* constructor
         LocalDockWidget( QWidget* );
 
+        Q_SIGNALS:
+
+        //* emitted when close event is received
+        void closeEventRequest();
+
         protected:
 
         //* paint event
         virtual void paintEvent( QPaintEvent* );
+
+        //* closeEvent
+        virtual void closeEvent( QCloseEvent* event );
+
+        //* resize event
+        virtual void resizeEvent( QResizeEvent* );
 
     };
 
@@ -109,12 +120,6 @@ namespace Private
         //@}
 
         protected:
-
-        //* closeEvent
-        virtual void closeEvent( QCloseEvent* event );
-
-        //* resize event
-        virtual void resizeEvent( QResizeEvent* );
 
         //* update actions
         void _updateActions( void );

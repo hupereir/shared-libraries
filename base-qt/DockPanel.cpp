@@ -73,6 +73,9 @@ DockPanel::DockPanel( QWidget* parent ):
     // install dragMonitor on dock
     dock_->installEventFilter( &panel_->widgetDragMonitor() );
 
+    // and connect close event request
+    connect( dock_, SIGNAL(closeEventRequest()), &panel_->detachAction(), SLOT(trigger()) );
+
     panel_->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
     connect( &panel_->detachAction(), SIGNAL(triggered()), SLOT(_toggleDock()) );
     connect( &panel_->widgetDragMonitor(), SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
@@ -219,6 +222,26 @@ namespace Private
     }
 
     //___________________________________________________________
+    void LocalDockWidget::resizeEvent( QResizeEvent *event )
+    {
+
+        QStyleHintReturnMask menuMask;
+        QStyleOption option;
+        option.initFrom(this);
+        if( style()->styleHint(QStyle::SH_Menu_Mask, &option, this, &menuMask) )
+        { setMask(menuMask.region); }
+
+    }
+
+    //___________________________________________________________
+    void LocalDockWidget::closeEvent( QCloseEvent* event )
+    {
+        Debug::Throw( 0, "LocalWidget::closeEvent.\n" );
+        event->ignore();
+        emit closeEventRequest();
+    }
+
+    //___________________________________________________________
     LocalWidget::LocalWidget( QWidget* parent ):
         QFrame( parent ),
         Counter( "Private::LocalWidget" ),
@@ -264,29 +287,6 @@ namespace Private
             _toggleSticky( stickyAction_->isChecked() );
 
         } else setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
-
-    }
-
-    //___________________________________________________________
-    void LocalWidget::closeEvent( QCloseEvent* event )
-    {
-        Debug::Throw( "LocalWidget::closeEvent.\n" );
-        if( widgetDragMonitor_.isEnabled() )
-        {
-            detachAction_->trigger();
-            event->ignore();
-        }
-    }
-
-    //___________________________________________________________
-    void LocalWidget::resizeEvent( QResizeEvent *event )
-    {
-
-        QStyleHintReturnMask menuMask;
-        QStyleOption option;
-        option.initFrom(this);
-        if( style()->styleHint(QStyle::SH_Menu_Mask, &option, this, &menuMask) )
-        { setMask(menuMask.region); }
 
     }
 
