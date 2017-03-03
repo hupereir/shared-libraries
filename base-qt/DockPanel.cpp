@@ -59,7 +59,6 @@ DockPanel::DockPanel( QWidget* parent ):
         dockTitleLabel_->setFont( QtUtil::titleFont( dockTitleLabel_->font() ) );
     }
 
-
     dock_->hide();
 
     // this layout
