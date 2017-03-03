@@ -44,9 +44,6 @@ TabWidget::TabWidget( QTabWidget* parent ):
 
     Debug::Throw( "TabWidget::TabWidget.\n" );
 
-    setAttribute(Qt::WA_TranslucentBackground);
-    setAttribute(Qt::WA_StyledBackground);
-
     // dock
     dock_ = new Private::LocalTabWidget(nullptr);
     dock_->setWindowIcon( windowIcon() );
