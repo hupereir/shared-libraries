@@ -28,7 +28,14 @@ GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags f
     Counter( "GridLayoutItem" ),
     flags_( flags )
 {
+
     layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
+
+    auto palette( key_->palette() );
+    auto color( palette.color( QPalette::WindowText ) );
+    color.setAlpha( 0.8*color.alpha() );
+    palette.setColor( QPalette::WindowText, color );
+    key_->setPalette( palette );
 
     // create correct value label
     if( flags & Elide ) value_ = new ElidedLabel( parent );

@@ -41,10 +41,8 @@ class GridLayoutItem: public QObject, public Counter
     {
         None = 0,
         Elide = 1<<0,
-        Bold = 1<<1,
-        Title = Bold,
         Selectable = 1<<2,
-        All = Elide|Bold|Selectable
+        All = Elide|Selectable
     };
 
     Q_DECLARE_FLAGS( ItemFlags, ItemFlag );

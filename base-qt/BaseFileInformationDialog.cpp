@@ -82,7 +82,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     // store all items in array, for visibility
     QList<GridLayoutItem*> items;
 
-    items.append(fileItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Bold|GridLayoutItem::Selectable|GridLayoutItem::Elide ) );
+    items.append(fileItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
     items.append(typeItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
     items.append(pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Selectable|GridLayoutItem::Elide ) );
     items.append(sizeItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Selectable ) );
