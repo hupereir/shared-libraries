@@ -214,6 +214,7 @@ namespace Private
         { emit actionInvoked( id, key ); }
     }
 
+    #endif
+
 }
 
-#endif
