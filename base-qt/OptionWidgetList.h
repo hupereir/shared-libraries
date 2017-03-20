@@ -25,41 +25,41 @@
 
 #include <QList>
 
-//! abstract container for OptionWidgets
+//* abstract container for OptionWidgets
 class OptionWidgetList: public OptionWidget
 {
 
     public:
 
-    //! constructor
-    OptionWidgetList( QObject* buddy = 0 ):
+    //* constructor
+    OptionWidgetList( QObject* buddy = nullptr ):
         OptionWidget( "generic", buddy )
     {}
 
-    //! add option widget
+    //* add option widget
     virtual void addOptionWidget( OptionWidget* );
 
-    //! clear option widgets
+    //* clear option widgets
     virtual void clearOptionWidgets( void )
     {
         Debug::Throw( "OptionWidgetList::clearOptionWidgets.\n" );
         optionWidgets_.clear();
     }
 
-    //! read options
+    //* read options
     virtual void read( const Options& );
 
-    //! read options
+    //* read options
     virtual void write( Options& ) const;
 
     protected:
 
-    //! get necessary spacing for checkbox alignment
+    //* get necessary spacing for checkbox alignment
     int _checkBoxSpacing( void ) const;
 
     private:
 
-    //! contained options
+    //* contained options
     QList< OptionWidget* > optionWidgets_;
 
 };
