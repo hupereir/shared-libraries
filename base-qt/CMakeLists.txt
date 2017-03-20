@@ -123,6 +123,7 @@ set(base_qt_SOURCES
   FileSystemWatcher.cpp
   FontEditor.cpp
   FontInfo.cpp
+  GridLayout.cpp
   GridLayoutItem.cpp
   HtmlDialog.cpp
   HtmlTextNode.cpp

@@ -29,6 +29,8 @@
 class GridLayout: public QGridLayout, public Counter
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor
