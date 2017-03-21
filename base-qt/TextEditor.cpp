@@ -100,7 +100,9 @@ TextEditor::TextEditor( QWidget *parent ):
     connect( this, SIGNAL(selectionChanged()), SLOT(_synchronizeSelection()) );
     connect( this, SIGNAL(selectionChanged()), SLOT(_updateClipboard()) );
     connect( this, SIGNAL(cursorPositionChanged()), SLOT(_synchronizeSelection()) );
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+
+    if( Singleton::get().hasApplication() )
+    { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
 
     // track changes of block counts
     connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
