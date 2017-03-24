@@ -27,6 +27,7 @@
 #include "SshSocket.h"
 #include "SshTunnel.h"
 
+#include <QCoreApplication>
 #include <QElapsedTimer>
 #include <QTcpServer>
 #include <QTextStream>
@@ -203,12 +204,16 @@ namespace Ssh
         // start timer
         QElapsedTimer timer;
         timer.start();
-        while( msecs < 0 || timer.elapsed() < msecs )
-        {
-            // qApp->processEvents();
-            if( !_processCommands() ) break;
-            Sleep::msleep( 100 );
-        }
+
+        while( (msecs < 0 || timer.elapsed() < msecs) && _processCommands() )
+        { qApp->processEvents(); }
+
+//         while( msecs < 0 || timer.elapsed() < msecs )
+//         {
+//             // qApp->processEvents();
+//             if( !_processCommands() ) break;
+//             Sleep::msleep( 100 );
+//         }
 
         return isConnected();
 
