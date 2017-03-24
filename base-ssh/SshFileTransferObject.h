@@ -146,8 +146,7 @@ namespace Ssh
         void _processError( QAbstractSocket::SocketError );
 
         //* mark as connected
-        void _setConnected( void )
-        { state_ |= Connected; }
+        void _setConnected( void );
 
         //* prepare reading
         void _prepareReading( void );

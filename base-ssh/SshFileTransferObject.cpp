@@ -76,14 +76,10 @@ namespace Ssh
     bool FileTransferObject::fromRemote( void* session, QString localFilename)
     {
 
-        Debug::Throw(0)
-            << "FileTransferObject::fromRemote -"
-            << " remote file: " << remoteFilename_
-            << " local file: " << localFilename
-            << endl;
-
         deviceOwned_ = true;
         QFile* device = new QFile( localFilename, this );
+
+        emit debug( tr( "Transfering remote file %1 to local file %2" ).arg( remoteFilename_ ).arg( localFilename ) );
 
         if( device->open( QIODevice::WriteOnly ) ) return fromRemote( session, device );
         else
@@ -129,13 +125,9 @@ namespace Ssh
     bool FileTransferObject::toRemote( void* session, QString localFilename )
     {
 
-        Debug::Throw(0)
-            << "FileTransferObject::toRemote -"
-            << " local file: " << localFilename
-            << " remote file: " << remoteFilename_
-            << endl;
-
         deviceOwned_ = true;
+
+        emit debug( tr( "Transfering local file %1 to remote file %2" ).arg( localFilename ).arg( remoteFilename_ ) );
 
         QFile* device = new QFile( localFilename, this );
         if( device->open( QIODevice::ReadOnly ) ) return toRemote( session, device );
@@ -232,6 +224,13 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
+    void FileTransferObject::_setConnected( void )
+    {
+        state_ |= Connected;
+        emit debug( tr( "Succesfully connected to %1" ).arg( remoteFilename_ ) );
+    }
+
+    //____________________________________________________________________________
     void FileTransferObject::_prepareReading( void )
     {
         Debug::Throw( "Ssh::FileTransferObject::_prepareReading.\n" );
@@ -257,7 +256,7 @@ namespace Ssh
         {
 
             qint64 bytesRead = sshSocket_->read( buffer_.data(), buffer_.size() );
-            emit debug( QString( "Ssh::FileTransferObject::_readFromSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
+            // emit debug( QString( "Ssh::FileTransferObject::_readFromSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
 
             if( bytesRead < 0 )
             {
@@ -297,10 +296,7 @@ namespace Ssh
         }
 
         if( fileSize_ >  0 )
-        {
-            Debug::Throw() << "Ssh::FileTransferObject::_readFromSocket - read " << 100*bytesTransferred_/fileSize_ << "%" << endl;
-            emit transferred( fileSize_, bytesTransferred_ );
-        }
+        { emit transferred( fileSize_, bytesTransferred_ ); }
 
         if( fileSize_ == bytesTransferred_ )
         {
@@ -327,7 +323,7 @@ namespace Ssh
         {
 
             qint64 bytesRead = localDevice_->read( buffer_.data(), buffer_.size() );
-            emit debug( QString( "Ssh::FileTransferObject::_writeToSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
+            // emit debug( QString( "Ssh::FileTransferObject::_writeToSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
 
             if( bytesRead < 0 )
             {
@@ -364,10 +360,8 @@ namespace Ssh
             bytesTransferred_ += bytesRead;
 
             if( fileSize_ > 0 )
-            {
-                Debug::Throw(0) << "Ssh::FileTransferObject::_writeToSocket - wrote " << 100*bytesTransferred_/fileSize_ << "%" << endl;
-                emit transferred( fileSize_, bytesTransferred_ );
-            }
+            { emit transferred( fileSize_, bytesTransferred_ ); }
+
         }
 
         _closeSourceFile();
