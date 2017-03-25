@@ -100,7 +100,7 @@ namespace Ssh
         if( isConnected() ) return true;
 
         #if HAVE_SSH
-        LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         auto channel = libssh2_channel_direct_tcpip( session, qPrintable( host_ ), port_ );
 
         if( channel )

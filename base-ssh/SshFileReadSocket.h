@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "SshBaseSocket.h"
+#include "TimeStamp.h"
 
 #include <QBasicTimer>
 #include <QByteArray>
@@ -62,6 +63,14 @@ namespace Ssh
         //* file size
         qint64 fileSize( void ) const
         { return isConnected() ? stat_.st_size:0; }
+
+        //* access time
+        TimeStamp accessTime( void ) const
+        { return isConnected() ? TimeStamp( stat_.st_atime ):TimeStamp(); }
+
+        //* modification time
+        TimeStamp modificationTime( void ) const
+        { return isConnected() ? TimeStamp( stat_.st_mtime ):TimeStamp(); }
 
         //@}
 

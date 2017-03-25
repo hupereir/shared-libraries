@@ -152,14 +152,14 @@ class XcbUtil: private XcbDefines
 
 //________________________________________________________________________
 template <typename T> T* XcbUtil::connection( void ) const
-{ return reinterpret_cast<T*>( _connection() ); }
+{ return static_cast<T*>( _connection() ); }
 
 //________________________________________________________________________
 template <typename T> T* XcbUtil::atom( const QString& value ) const
-{ return reinterpret_cast<T*>( _atom( value ) ); }
+{ return static_cast<T*>( _atom( value ) ); }
 
 //________________________________________________________________________
 template <typename T> T* XcbUtil::atom( XcbUtil::AtomId value ) const
-{ return reinterpret_cast<T*>( _atom( value ) ); }
+{ return static_cast<T*>( _atom( value ) ); }
 
 #endif

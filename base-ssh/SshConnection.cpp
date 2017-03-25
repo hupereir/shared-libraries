@@ -138,7 +138,7 @@ namespace Ssh
         }
 
         // cast session
-        LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
 
         // initialize agent
         agent_ = libssh2_agent_init(session);
@@ -277,7 +277,7 @@ namespace Ssh
             // disconnect agent
             if( agent_ )
             {
-                LIBSSH2_AGENT* agent( reinterpret_cast<LIBSSH2_AGENT*>(agent_) );
+                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
                 libssh2_agent_disconnect(agent);
                 libssh2_agent_free(agent);
                 agent_ = nullptr;
@@ -287,7 +287,7 @@ namespace Ssh
             // close session
             if( session_ )
             {
-                LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+                auto session( static_cast<LIBSSH2_SESSION*>(session_) );
                 libssh2_session_disconnect( session, "Client disconnecting normally" );
                 libssh2_session_free( session );
                 session_ = nullptr;
@@ -377,7 +377,7 @@ namespace Ssh
         Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << " (" << commands_.front() << ")" << endl;
 
         // cast session. It is used for almost all commands
-        LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         switch( commands_.front() )
         {
 
@@ -414,7 +414,7 @@ namespace Ssh
                 socketAddress.sin_addr.s_addr = htonl(address.toIPv4Address());
 
                 // try connect
-                const int result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) );
+                auto result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) );
                 if( !result )
                 {
 
@@ -467,7 +467,7 @@ namespace Ssh
             } else {
 
                 // accept in all cases except EAGAIN
-                LIBSSH2_AGENT* agent( reinterpret_cast<LIBSSH2_AGENT*>(agent_) );
+                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
                 if( libssh2_agent_connect(agent) != LIBSSH2_ERROR_EAGAIN  )
                 {
 
@@ -548,7 +548,7 @@ namespace Ssh
             } else {
 
                 // accept in all cases except EAGAIN
-                LIBSSH2_AGENT* agent( reinterpret_cast<LIBSSH2_AGENT*>(agent_) );
+                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
                 if( libssh2_agent_list_identities( agent ) != LIBSSH2_ERROR_EAGAIN  )
                 {
 
@@ -579,8 +579,8 @@ namespace Ssh
 
                 Debug::Throw() << "Ssh::Connection::_processCommands - identity: " << identity_ << endl;
 
-                LIBSSH2_AGENT* agent( reinterpret_cast<LIBSSH2_AGENT*>(agent_) );
-                struct libssh2_agent_publickey* identity( reinterpret_cast<struct libssh2_agent_publickey*>( identity_ ) );
+                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
+                auto identity( static_cast<struct libssh2_agent_publickey*>( identity_ ) );
                 if( identity )
                 {
 

@@ -99,7 +99,7 @@ namespace Ssh
         Debug::Throw( "FileReadSocket::_tryConnect.\n" );
 
         #if HAVE_SSH
-        LIBSSH2_SESSION* session( reinterpret_cast<LIBSSH2_SESSION*>(session_) );
+        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         auto channel = libssh2_scp_recv( session, qPrintable( path_ ), &stat_ );
         if( channel )
         {

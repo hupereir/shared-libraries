@@ -139,10 +139,10 @@ xcb_connection_t* XcbUtil::Private::connection( void )
 
         // get display
         #if QT_VERSION >= 0x050000
-        QPlatformNativeInterface *native = qApp->platformNativeInterface();
-        Display *display = reinterpret_cast<Display*>(native->nativeResourceForScreen(QByteArray("display"), QGuiApplication::primaryScreen()) );
+        auto nativeInterface = qApp->platformNativeInterface();
+        auto display = static_cast<Display*>(nativeInterface->nativeResourceForScreen(QByteArray("display"), QGuiApplication::primaryScreen()) );
         #else
-        Display* display = QX11Info::display();
+        auto display = QX11Info::display();
         #endif
 
         // get matching xcb connection
@@ -325,7 +325,7 @@ bool XcbUtil::isSupported( AtomId atomId ) const
         }
 
         // cast atom
-        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
+        auto current( static_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
         if( searched == current )
         {
 
@@ -397,7 +397,7 @@ bool XcbUtil::hasState( WId window, AtomId atomId ) const
         }
 
         // cast atom
-        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
+        auto current( static_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
 
         if( searched == current ) return true;
         else if( reply->bytes_after == 0 ) return false;
@@ -436,7 +436,7 @@ void XcbUtil::printState( WId window ) const
         }
 
         // cast atom
-        const xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
+        auto current( static_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
         {
 
             xcb_get_atom_name_cookie_t cookie( xcb_get_atom_name( d->connection(), current ) );
@@ -473,7 +473,7 @@ uint32_t XcbUtil::cardinal( WId window, AtomId atom ) const
     ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( d->connection(), cookie, nullptr ) );
     if( !( reply && xcb_get_property_value_length( reply.get() ) > 0 ) ) return 0;
 
-    return reinterpret_cast<uint32_t*>(xcb_get_property_value( reply.get() ) )[0];
+    return static_cast<uint32_t*>(xcb_get_property_value( reply.get() ) )[0];
 
     #else
     return 0;
@@ -595,7 +595,7 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
         }
 
         // cast atom and append
-        xcb_atom_t current( reinterpret_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
+        auto current( static_cast<xcb_atom_t*>(xcb_get_property_value( reply.get() ))[0] );
         atoms.append( current );
 
         if( reply->bytes_after == 0 ) break;
@@ -619,7 +619,7 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
     }
 
     // change property
-    auto cookie = xcb_change_property_checked( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), netWMState, XCB_ATOM_ATOM, 32, atoms.size(), reinterpret_cast<const void*>( atoms.constData() ) );
+    auto cookie = xcb_change_property_checked( d->connection(), XCB_PROP_MODE_REPLACE, widget->winId(), netWMState, XCB_ATOM_ATOM, 32, atoms.size(), static_cast<const void*>( atoms.constData() ) );
     ScopedPointer<xcb_generic_error_t> error( xcb_request_check( d->connection(), cookie ) );
     xcb_flush( d->connection() );
 
