@@ -307,20 +307,20 @@ void TextEditor::paintMargin( QPainter& painter )
     }
 
     if( marginWidget_->drawVerticalLine() ) {
-        painter.setBrush( QBrush( marginWidget_->palette().color( QPalette::WindowText ), Qt::Dense4Pattern ) );
+        painter.setBrush( QBrush( marginWidget_->foregroundColor(), Qt::Dense4Pattern ) );
         painter.drawRect( _leftMargin()-1, verticalScrollBar()->value(), 1, height+verticalScrollBar()->value() );
     }
 
     // set brush and pen suitable to further painting
     painter.setBrush( Qt::NoBrush );
-    painter.setPen(marginWidget_->palette().color( QPalette::WindowText )  );
+    painter.setPen(marginWidget_->foregroundColor()  );
 
     // draw lines
     if(
-        _hasLineNumberDisplay() &&
-        hasLineNumberAction() &&
-        showLineNumberAction().isVisible() &&
-        showLineNumberAction().isChecked() )
+        lineNumberDisplay_ &&
+        showLineNumberAction_ &&
+        showLineNumberAction_->isVisible() &&
+        showLineNumberAction_->isChecked() )
     { lineNumberDisplay_->paint( painter ); }
 
 }
@@ -470,10 +470,10 @@ void TextEditor::synchronize( TextEditor* editor )
 
     // synchronize tab emulation
     _setTabSize( editor->emulatedTabCharacter().size() );
-    tabEmulationAction().setChecked( editor->tabEmulationAction().isChecked() );
+    tabEmulationAction_->setChecked( editor->tabEmulationAction_->isChecked() );
 
     // synchronize wrap mode
-    wrapModeAction().setChecked( editor->wrapModeAction().isChecked() );
+    wrapModeAction_->setChecked( editor->wrapModeAction_->isChecked() );
 
     // track changes of block counts
     lineNumberDisplay_->synchronize( &editor->_lineNumberDisplay() );
@@ -1665,7 +1665,7 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 
     if( lineWrapMode() == BaseEditor::NoWrap ) return;
     if( event->oldSize().width() == event->size().width() ) return;
-    if( !_hasLineNumberDisplay() ) return;
+    if( !lineNumberDisplay_ ) return;
 
     // tell line number display to update at next draw
     lineNumberDisplay_->needUpdate();
@@ -2409,7 +2409,7 @@ bool TextEditor::_updateMargin( void )
     Debug::Throw( "TextEditor::_updateMargin.\n" );
     int left_margin( 0 );
 
-    if( showLineNumberAction().isChecked() && showLineNumberAction().isVisible() )
+    if( showLineNumberAction_->isChecked() && showLineNumberAction_->isVisible() )
     { left_margin += lineNumberDisplay_->width(); }
 
     return _setLeftMargin( left_margin );
@@ -2426,14 +2426,14 @@ void TextEditor::_updateConfiguration( void )
 
     // wrap mode
     if( wrapFromOptions() )
-    { wrapModeAction().setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
+    { wrapModeAction_->setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
 
     if( lineNumbersFromOptions() )
-    { showLineNumberAction().setChecked( XmlOptions::get().get<bool>( "SHOW_LINE_NUMBERS" ) ); }
+    { showLineNumberAction_->setChecked( XmlOptions::get().get<bool>( "SHOW_LINE_NUMBERS" ) ); }
 
     // tab emulation
     _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
-    tabEmulationAction().setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
+    tabEmulationAction_->setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
 
     // paragraph highlighting
     if( highlightBlockFromOptions_ )
@@ -2670,7 +2670,7 @@ bool TextEditor::_toggleWrapMode( bool state )
         // to avoid infinite loop
         setSynchronized( false );
         for( const auto& editor:Base::KeySet<TextEditor>( this ) )
-        { if( editor->isSynchronized() ) editor->wrapModeAction().setChecked( state ); }
+        { if( editor->isSynchronized() ) editor->wrapModeAction_->setChecked( state ); }
         setSynchronized( true );
 
     }
@@ -2701,7 +2701,7 @@ bool TextEditor::_toggleTabEmulation( bool state )
         // to avoid infinite loop
         setSynchronized( false );
         for( const auto& editor:Base::KeySet<TextEditor>( this ) )
-        { if( editor->isSynchronized() ) editor->tabEmulationAction().setChecked( state ); }
+        { if( editor->isSynchronized() ) editor->tabEmulationAction_->setChecked( state ); }
         setSynchronized( true );
 
     }
@@ -2727,7 +2727,7 @@ void TextEditor::_toggleShowLineNumbers( bool state )
         setSynchronized( false );
 
         for( const auto& editor:Base::KeySet<TextEditor>( this ) )
-        { if( editor->isSynchronized() ) editor->showLineNumberAction().setChecked( state ); }
+        { if( editor->isSynchronized() ) editor->showLineNumberAction_->setChecked( state ); }
         setSynchronized( true );
 
     }
@@ -2742,8 +2742,8 @@ void TextEditor::_blockCountChanged( int count )
     Debug::Throw( "TextEditor::_blockCountChanged.\n" );
 
     // margins
-    if( !( _hasLineNumberDisplay() && lineNumberDisplay_->updateWidth( count ) ) ) return;
-    if( !( hasLineNumberAction() && showLineNumberAction().isChecked() && showLineNumberAction().isVisible() ) ) return;
+    if( !( lineNumberDisplay_ && lineNumberDisplay_->updateWidth( count ) ) ) return;
+    if( !( showLineNumberAction_ && showLineNumberAction_->isChecked() && showLineNumberAction_->isVisible() ) ) return;
     _updateMargin();
     update();
 

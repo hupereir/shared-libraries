@@ -465,33 +465,6 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
         out = box;
     }
 
-    // margins
-    if( flags&Margins )
-    {
-        QGroupBox* box;
-        parent->layout()->addWidget( box = new QGroupBox( tr( "Margin" ), parent ) );
-
-        GridLayout* gridLayout = new GridLayout();
-        gridLayout->setMaxCount(2);
-        gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
-        box->setLayout( gridLayout );
-
-        QLabel* label;
-        OptionColorDisplay* colorDisplay;
-        gridLayout->addWidget( label = new QLabel( tr( "Foreground:" ), box ) );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "MARGIN_FOREGROUND" ) );
-        addOptionWidget( colorDisplay );
-        colorDisplay->setToolTip( tr( "Margins foreground color" ) );
-        label->setBuddy( colorDisplay );
-
-        gridLayout->addWidget( label = new QLabel( tr( "Background:" ), box ) );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( box, "MARGIN_BACKGROUND" ) );
-        addOptionWidget( colorDisplay );
-        colorDisplay->setToolTip( tr( "Margins background color" ) );
-        label->setBuddy( colorDisplay );
-        out = box;
-    }
-
     if( flags&TextEditionFlags )
     {
 

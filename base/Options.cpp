@@ -86,10 +86,6 @@ void Options::installDefaultOptions( void )
     set<int>( "LIST_ICON_SIZE", 24 );
     set<int>( "LIST_ITEM_MARGIN", 0 );
 
-    // textEditor
-    set<Base::Color>( "MARGIN_FOREGROUND", QColor("#136872") );
-    set<Base::Color>( "MARGIN_BACKGROUND", QColor("#ecffec") );
-
     // dock widgets
     set<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED", false );
 

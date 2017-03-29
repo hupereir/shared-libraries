@@ -21,9 +21,7 @@
 
 #include "Color.h"
 #include "Debug.h"
-#include "Singleton.h"
 #include "TextEditor.h"
-#include "XmlOptions.h"
 
 #include <QPainter>
 
@@ -36,15 +34,18 @@ TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):
     Debug::Throw( "TextEditorMarginWidget::TextEditorMarginWidget.\n" );
     resize(0,0);
 
-    setBackgroundRole( QPalette::Window );
+    setBackgroundRole( QPalette::AlternateBase );
+    setForegroundRole( QPalette::Text );
     setAutoFillBackground( true );
-
-    if( Singleton::get().hasApplication() )
-    { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
-
-    _updateConfiguration();
-
 }
+
+//________________________________________________________________
+QColor TextEditorMarginWidget::backgroundColor( void ) const
+{ return palette().color( QPalette::AlternateBase ); }
+
+//________________________________________________________________
+QColor TextEditorMarginWidget::foregroundColor( void ) const
+{ return Base::Color( palette().color( QPalette::Text ) ).merge( palette().color( QPalette::AlternateBase ), 0.6 ); }
 
 //________________________________________________________________
 void TextEditorMarginWidget::setDirty( void )
@@ -54,26 +55,6 @@ void TextEditorMarginWidget::setDirty( void )
         dirty_ = true;
         update();
     }
-}
-
-//________________________________________________________________
-void TextEditorMarginWidget::_updateConfiguration( void )
-{
-
-    Debug::Throw( "TextEditorMarginWiget::_updateConfiguration.\n" );
-
-    // update palette using colors from options
-    QPalette palette( TextEditorMarginWidget::palette() );
-    QColor color;
-
-    if( ( color = QColor( XmlOptions::get().get<Base::Color>("MARGIN_FOREGROUND") ) ).isValid() )
-    { palette.setColor( QPalette::WindowText, color ); }
-
-    if( ( color = QColor( XmlOptions::get().get<Base::Color>("MARGIN_BACKGROUND") ) ).isValid() )
-    { palette.setColor( QPalette::Window, color ); }
-
-    setPalette( palette );
-
 }
 
 //________________________________________________

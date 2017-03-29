@@ -40,19 +40,25 @@ class TextEditorMarginWidget: public QWidget, public Counter
     //* constructor
     TextEditorMarginWidget( TextEditor* );
 
+    //*@name accessors
+    //@{
+
     //* vertical line
     bool drawVerticalLine( void ) const
     { return true; }
+
+    //* background color
+    QColor backgroundColor( void ) const;
+
+    //* foreground color
+    QColor foregroundColor( void ) const;
+
+    //@}
 
     public Q_SLOTS:
 
     //* dirty
     void setDirty( void );
-
-    private Q_SLOTS:
-
-    //* configuration
-    void _updateConfiguration( void );
 
     protected:
 

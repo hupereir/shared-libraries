@@ -51,10 +51,9 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
         TextEdition = 1<<3,
         TabEmulation = 1<<4,
         ParagraphHighlight = 1<<5,
-        Margins = 1<<6,
-        TextEditionFlags = 1<<7,
+        TextEditionFlags = 1<<6,
         Default = Base|List,
-        AllTextEdition = TabEmulation|ParagraphHighlight|Margins|TextEditionFlags
+        AllTextEdition = TabEmulation|ParagraphHighlight|TextEditionFlags
 
     };
 
