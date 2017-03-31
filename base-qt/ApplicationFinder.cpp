@@ -21,7 +21,11 @@
 
 #include "LineEditor.h"
 
+#if QT_VERSION < 0x050000
 #include <QProcessEnvironment>
+#else
+#include <QStandardPaths>
+#endif
 
 //_________________________________________________
 ApplicationFinder::ApplicationFinder( QObject* parent ):
@@ -38,7 +42,9 @@ void ApplicationFinder::update( void )
 {
 
     // path list
+    #if QT_VERSION < 0x050000
     File::List pathList;
+    #endif
 
     for( const auto& application:applications_ )
     {
@@ -47,6 +53,7 @@ void ApplicationFinder::update( void )
         File current( application.second->text() );
         if( current.exists() ) continue;
 
+        #if QT_VERSION < 0x050000
         if( pathList.empty() )
         {
             // get path list from environment
@@ -62,6 +69,10 @@ void ApplicationFinder::update( void )
         }
 
         File found = application.first.find( pathList );
+        #else
+        File found = QStandardPaths::findExecutable( application.first );
+        #endif
+
         if( !found.isEmpty() ) application.second->setText( found );
 
     }
