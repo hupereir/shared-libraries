@@ -60,6 +60,7 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 ########### next target ###############
 set(base_qt_SOURCES
+  ApplicationFinder.cpp
   BaseContextMenu.cpp
   BaseFileIconProvider.cpp
   BaseFileInfo.cpp
