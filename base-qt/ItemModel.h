@@ -34,18 +34,11 @@ class ItemModel : public QAbstractItemModel
     //* constructor
     ItemModel(QObject *parent = nullptr);
 
-    //* return all indexes in model starting from parent [recursive]
-    QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
-
-    //*@name sorting
+    //*@name accessors
     //@{
 
-    //* sort
-    virtual void sort( void )
-    { sort( sortColumn(), sortOrder() ); }
-
-    //* sort
-    virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+    //* return all indexes in model starting from parent [recursive]
+    QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
 
     //* current sorting column
     const int& sortColumn( void ) const
@@ -55,10 +48,31 @@ class ItemModel : public QAbstractItemModel
     const Qt::SortOrder& sortOrder( void ) const
     { return sortOrder_; }
 
+    //* get list of internal selected items
+    virtual QModelIndexList selectedIndexes( void ) const = 0;
+
+    //* restore currentIndex
+    virtual QModelIndex currentIndex( void ) const = 0;
+
+    //* true if expended indexes are supported
+    virtual bool supportsExpandedIndexes( void ) const
+    { return false; }
+
+    //* get list of internal selected items
+    virtual QModelIndexList expandedIndexes( void ) const
+    { return QModelIndexList(); }
+
     //@}
 
-    //*@name selected indexes
+    //*@name modifiers
     //@{
+
+    //* sort
+    virtual void sort( void )
+    { sort( sortColumn(), sortOrder() ); }
+
+    //* sort
+    virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
 
     //* clear internal list selected items
     virtual void clearSelectedIndexes( void ) = 0;
@@ -69,31 +83,11 @@ class ItemModel : public QAbstractItemModel
     //* store index internal selection state
     virtual void setIndexSelected( const QModelIndex&, bool ) = 0;
 
-    //* get list of internal selected items
-    virtual QModelIndexList selectedIndexes( void ) const = 0;
-
-    //@}
-
-    //*@name current index
-    //@{
-
     //* current index;
     virtual void clearCurrentIndex( void ) = 0;
 
     //* store current index
     virtual void setCurrentIndex( const QModelIndex& ) = 0;
-
-    //* restore currentIndex
-    virtual QModelIndex currentIndex( void ) const = 0;
-
-    //@}
-
-    //*@name expanded indexes
-    //@{
-
-    //* true if expended indexes are supported
-    virtual bool supportsExpandedIndexes( void ) const
-    { return false; }
 
     //* clear internal list of expanded items
     virtual void clearExpandedIndexes( void )
@@ -106,10 +100,6 @@ class ItemModel : public QAbstractItemModel
     //* store index internal selection state
     virtual void setIndexExpanded( const QModelIndex&, bool )
     {}
-
-    //* get list of internal selected items
-    virtual QModelIndexList expandedIndexes( void ) const
-    { return QModelIndexList(); }
 
     //@}
 

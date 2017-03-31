@@ -51,7 +51,7 @@ class ListModel : public ItemModel
         ItemModel( parent )
     {}
 
-    //*@name methods reimplemented from base class
+    //*@name accessors
     //@{
 
     //* flags
@@ -84,9 +84,56 @@ class ListModel : public ItemModel
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const
     { return parent.isValid() ? 0:values_.size(); }
 
+    //* get list of internal selected items
+    virtual QModelIndexList selectedIndexes( void ) const
+    {
+
+        QModelIndexList out;
+        for( const auto& value:selectedItems_ )
+        {
+            QModelIndex index( this->index( value ) );
+            if( index.isValid() ) out << index;
+        }
+        return out;
+
+    }
+
+    //* restore currentIndex
+    virtual QModelIndex currentIndex( void ) const
+    { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
+
+    //* return all values
+    const List& get( void ) const
+    { return values_; }
+
+    //* return true if model contains given index
+    virtual bool contains( const QModelIndex& index ) const
+    { return index.isValid() && index.row() < values_.size(); }
+
+    //* return value for given index
+    virtual ValueType get( const QModelIndex& index ) const
+    { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
+
+    //* return all values
+    List get( const QModelIndexList& indexes ) const
+    {
+        List out;
+        for( const auto& index:indexes )
+        { if( index.isValid() && index.row() < values_.size() ) out << get( index ); }
+        return out;
+    }
+
+    //* return index associated to a given value
+    virtual QModelIndex index( const ValueType& value, int column = 0 ) const
+    {
+        for( int row=0; row<values_.size(); ++row )
+        { if( EqualTo()(value, values_[row]) ) return index( row, column ); }
+        return QModelIndex();
+    }
+
     //@}
 
-    //*@name selection
+    //*@name modifiers
     //@{
 
     //* clear internal list selected items
@@ -109,25 +156,6 @@ class ListModel : public ItemModel
         else selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), values_[index.row()] ) ), selectedItems_.end() );
     }
 
-    //* get list of internal selected items
-    virtual QModelIndexList selectedIndexes( void ) const
-    {
-
-        QModelIndexList out;
-        for( const auto& value:selectedItems_ )
-        {
-            QModelIndex index( this->index( value ) );
-            if( index.isValid() ) out << index;
-        }
-        return out;
-
-    }
-
-    //@}
-
-    //*@name current index
-    //@{
-
     //* current index;
     virtual void clearCurrentIndex( void )
     { hasCurrentItem_ = false; }
@@ -143,15 +171,6 @@ class ListModel : public ItemModel
 
         } else hasCurrentItem_ = false;
     }
-
-    //* restore currentIndex
-    virtual QModelIndex currentIndex( void ) const
-    { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
-
-    //@}
-
-    //*@name interface
-    //@{
 
     //* add value
     virtual void add( const ValueType& value )
@@ -306,35 +325,6 @@ class ListModel : public ItemModel
         emit layoutChanged();
 
         return;
-    }
-
-    //* return all values
-    const List& get( void ) const
-    { return values_; }
-
-    //* return true if model contains given index
-    virtual bool contains( const QModelIndex& index ) const
-    { return index.isValid() && index.row() < values_.size(); }
-
-    //* return value for given index
-    virtual ValueType get( const QModelIndex& index ) const
-    { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
-
-    //* return all values
-    List get( const QModelIndexList& indexes ) const
-    {
-        List out;
-        for( const auto& index:indexes )
-        { if( index.isValid() && index.row() < values_.size() ) out << get( index ); }
-        return out;
-    }
-
-    //* return index associated to a given value
-    virtual QModelIndex index( const ValueType& value, int column = 0 ) const
-    {
-        for( int row=0; row<values_.size(); ++row )
-        { if( EqualTo()(value, values_[row]) ) return index( row, column ); }
-        return QModelIndex();
     }
 
     //@}
