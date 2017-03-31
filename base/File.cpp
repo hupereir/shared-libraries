@@ -510,6 +510,22 @@ File File::find( const File& file, bool caseSensitive ) const
 }
 
 //_____________________________________________________________________
+File File::find( const File::List& pathList ) const
+{
+
+    // if absolute, return this if exists
+    if( isAbsolute() ) return exists() ? *this:File();
+
+    for( const auto& path:pathList )
+    {
+        auto out = addPath( path );
+        if( out.exists() ) return out;
+    }
+
+    return File();
+
+}
+//_____________________________________________________________________
 File::List File::listFiles( ListFlags flags ) const
 {
 

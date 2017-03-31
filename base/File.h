@@ -151,7 +151,11 @@ class File: public QString
     virtual File truncatedName( void ) const;
 
     //* return first file with matching short name, or empty string if not found
+    /** search recursively in this directory and subdirectories */
     virtual File find( const File& file, bool = true ) const;
+
+    //* find file matching this (assuming short name) in list of directries or empty if not found
+    virtual File find( const List& ) const;
 
     //* return list of files in a directory
     virtual List listFiles( ListFlags flags ) const;
