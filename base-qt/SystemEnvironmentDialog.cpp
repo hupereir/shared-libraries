@@ -20,7 +20,7 @@
 #include "SystemEnvironmentDialog.h"
 #include "TreeView.h"
 
-#include <QProcess>
+#include <QProcessEnvironment>
 #include <QPushButton>
 #include <QLayout>
 
@@ -48,14 +48,9 @@ CustomDialog( parent, CloseButton )
 
     // retrieve environment variables from QProcess
     OptionModel::List options;
-    for( auto line:QProcess::systemEnvironment())
-    {
-        QStringList parsed( line.split( "=" ) );
-        if( parsed.empty() ) continue;
-
-        options << OptionPair( parsed[0], parsed.size() > 1 ? parsed[1]: "" );
-
-    }
+    auto environment = QProcessEnvironment::systemEnvironment();
+    for( const auto& key:environment.keys() )
+    { options << OptionPair( key, environment.value( key ) ); }
 
     model_.set( options );
     list->resizeColumns();
