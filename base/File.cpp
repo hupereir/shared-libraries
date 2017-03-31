@@ -38,18 +38,6 @@ bool File::isAbsolute( void ) const
 { return QFileInfo( *this ).isAbsolute(); }
 
 //_____________________________________________________________________
-bool File::create( void ) const
-{ return QFile( *this ).open( QIODevice::WriteOnly ); }
-
-//_____________________________________________________________________
-bool File::createDirectory( const File& constPath ) const
-{
-    if( exists() && !isDirectory() ) return false;
-    if( !QDir( *this ).mkpath( constPath ) ) return false;
-    return true;
-}
-
-//_____________________________________________________________________
 time_t File::created( void ) const
 {
     if( !exists() ) return -1;
@@ -70,12 +58,18 @@ time_t File::lastAccessed( void ) const
     return QFileInfo( *this ).lastRead().toTime_t();
 }
 
-
 //_____________________________________________________________________
 unsigned int File::userId( void ) const
 {
     if( !exists() ) return 0;
     return QFileInfo( *this ).ownerId();
+}
+
+//_____________________________________________________________________
+unsigned int File::groupId( void ) const
+{
+    if( !exists() ) return 0;
+    return QFileInfo( *this ).groupId();
 }
 
 //_____________________________________________________________________
@@ -85,13 +79,6 @@ QString File::userName( void ) const
     QString out( QFileInfo( *this ).owner() );
     if( out.isNull() || out.isEmpty() ) out = QString::number( QFileInfo( *this ).ownerId() );
     return out;
-}
-
-//_____________________________________________________________________
-unsigned int File::groupId( void ) const
-{
-    if( !exists() ) return 0;
-    return QFileInfo( *this ).groupId();
 }
 
 //_____________________________________________________________________
@@ -134,6 +121,7 @@ QString File::permissionsString( const QFile::Permissions& mode ) const
     return out;
 
 }
+
 //_____________________________________________________________________
 qint64 File::fileSize( void ) const
 {
@@ -201,16 +189,112 @@ bool File::isDirectory( void ) const
 { return !isEmpty() && QFileInfo( *this ).isDir(); }
 
 //_____________________________________________________________________
-bool File::isBrokenLink( void ) const
-{ return isLink() && !File( QFileInfo( *this ).symLinkTarget() ).exists(); }
+bool File::isHidden( void ) const
+{ return !isEmpty() && QFileInfo( *this ).isHidden(); }
 
 //_____________________________________________________________________
 bool File::isLink( void ) const
 { return !isEmpty() && QFileInfo( *this ).isSymLink(); }
 
 //_____________________________________________________________________
-bool File::isHidden( void ) const
-{ return !isEmpty() && QFileInfo( *this ).isHidden(); }
+bool File::isBrokenLink( void ) const
+{ return isLink() && !File( QFileInfo( *this ).symLinkTarget() ).exists(); }
+
+//_____________________________________________________________________
+bool File::diff(const File& file ) const
+{
+
+    // no file exists
+    if( !( exists() || file.exists() ) ) return false;
+
+    // one of the file does not exists and the other does
+    if( !( exists() && file.exists() ) ) return true;
+
+    QFile first( *this );
+    QFile second( file );
+    bool first_open( first.open( QIODevice::ReadOnly ) );
+    bool second_open( second.open( QIODevice::ReadOnly ) );
+
+    // no file exists
+    if( !( first_open || second_open ) ) return false;
+
+    // one of the file does not exists and the other does
+    if( !( first_open && second_open ) ) return true;
+
+    return( first.readAll() != second.readAll() );
+
+}
+
+//_____________________________________________________________________
+bool File::isEqual( const File& other ) const
+{ return expand() == other.expand(); }
+
+//_____________________________________________________________________
+File File::path( bool use_absolute ) const
+{
+
+    if( isEmpty() ) return File();
+    if( use_absolute ) return QFileInfo(*this).absolutePath();
+    else return QFileInfo(*this).path();
+
+}
+
+//_____________________________________________________________________
+File File::localName( void ) const
+{ return isEmpty() ? File(): File( QFileInfo(*this).fileName() ); }
+
+//_____________________________________________________________________
+File File::canonicalName( void ) const
+{
+    if( isEmpty() ) return File();
+    QString canonicalName( QFileInfo(*this).canonicalFilePath() );
+    return canonicalName.isEmpty() ? File():File( canonicalName );
+}
+
+//_____________________________________________________________________
+File File::extension( void ) const
+{
+    // check file name
+    if( isEmpty() ) return File();
+
+    // loop over characters
+    QString local( localName() );
+    int dotpos = local.lastIndexOf(".");
+    return File( dotpos < 0 ? "" : local.mid( dotpos+1 ) );
+
+}
+
+//_____________________________________________________________________
+File File::truncatedName( void ) const
+{
+
+    // check file name
+    if( isEmpty() ) return File();
+
+    // loop over characters
+    int dotpos = lastIndexOf(".");
+    int slashpos = lastIndexOf( "/" );
+
+    if( dotpos < 0 ) return *this;
+    if( slashpos < 0 ) return File( dotpos >= 0 ? left(dotpos):"");
+    if( slashpos < dotpos ) return left(dotpos);
+
+    return *this;
+
+}
+
+
+//_____________________________________________________________________
+bool File::create( void ) const
+{ return QFile( *this ).open( QIODevice::WriteOnly ); }
+
+//_____________________________________________________________________
+bool File::createDirectory( const File& constPath ) const
+{
+    if( exists() && !isDirectory() ) return false;
+    if( !QDir( *this ).mkpath( constPath ) ) return false;
+    return true;
+}
 
 //_____________________________________________________________________
 void File::setHidden( void ) const
@@ -253,35 +337,6 @@ File File::backup( void ) const
     return backup;
 
 }
-
-//_____________________________________________________________________
-bool File::diff(const File& file ) const
-{
-
-    // no file exists
-    if( !( exists() || file.exists() ) ) return false;
-
-    // one of the file does not exists and the other does
-    if( !( exists() && file.exists() ) ) return true;
-
-    QFile first( *this );
-    QFile second( file );
-    bool first_open( first.open( QIODevice::ReadOnly ) );
-    bool second_open( second.open( QIODevice::ReadOnly ) );
-
-    // no file exists
-    if( !( first_open || second_open ) ) return false;
-
-    // one of the file does not exists and the other does
-    if( !( first_open && second_open ) ) return true;
-
-    return( first.readAll() != second.readAll() );
-
-}
-
-//_____________________________________________________________________
-bool File::isEqual( const File& other ) const
-{ return expand() == other.expand(); }
 
 //_____________________________________________________________________
 File File::readLink( void ) const
@@ -418,56 +473,39 @@ File File::expand( void ) const
 }
 
 //_____________________________________________________________________
-File File::path( bool use_absolute ) const
+File File::find( const File& file, bool caseSensitive ) const
 {
 
-    if( isEmpty() ) return File();
-    if( use_absolute ) return QFileInfo(*this).absolutePath();
-    else return QFileInfo(*this).path();
+    if( !( exists() && isDirectory() ) ) return File();
 
-}
+    // check local files
+    File local;
+    if( ( local = File( file ).addPath( *this ) ).exists() ) return local;
 
-//_____________________________________________________________________
-File File::localName( void ) const
-{ return isEmpty() ? File(): File( QFileInfo(*this).fileName() ); }
+    // get subdirectories
+    File fullname( *this );
+    if( !fullname.endsWith( "/" ) ) fullname += "/";
 
-//_____________________________________________________________________
-File File::canonicalName( void ) const
-{
-    if( isEmpty() ) return File();
-    QString canonicalName( QFileInfo(*this).canonicalFilePath() );
-    return canonicalName.isEmpty() ? File():File( canonicalName );
-}
+    // filter
+    QDir::Filters filter = QDir::Dirs;
+    #if QT_VERSION >= 0x040800
+    filter |= QDir::NoDotDot;
+    #endif
 
-//_____________________________________________________________________
-File File::extension( void ) const
-{
-    // check file name
-    if( isEmpty() ) return File();
+    const QDir dir( fullname );
+    for( const auto& value:dir.entryList( filter ) )
+    {
+        if( value == "." || value == ".." ) continue;
 
-    // loop over characters
-    QString local( localName() );
-    int dotpos = local.lastIndexOf(".");
-    return File( dotpos < 0 ? "" : local.mid( dotpos+1 ) );
+        QFileInfo fileInfo;
+        fileInfo.setFile( dir, value );
+        const File local( fileInfo.absoluteFilePath() );
+        File found( local.find( file, caseSensitive ) );
+        if( !found.isEmpty() ) return found;
 
-}
+    }
 
-//_____________________________________________________________________
-File File::truncatedName( void ) const
-{
-
-    // check file name
-    if( isEmpty() ) return File();
-
-    // loop over characters
-    int dotpos = lastIndexOf(".");
-    int slashpos = lastIndexOf( "/" );
-
-    if( dotpos < 0 ) return *this;
-    if( slashpos < 0 ) return File( dotpos >= 0 ? left(dotpos):"");
-    if( slashpos < dotpos ) return left(dotpos);
-
-    return *this;
+    return File();
 
 }
 
@@ -514,42 +552,5 @@ File::List File::listFiles( ListFlags flags ) const
     }
 
     return out;
-
-}
-
-//_____________________________________________________________________
-File File::find( const File& file, bool caseSensitive ) const
-{
-
-    if( !( exists() && isDirectory() ) ) return File();
-
-    // check local files
-    File local;
-    if( ( local = File( file ).addPath( *this ) ).exists() ) return local;
-
-    // get subdirectories
-    File fullname( *this );
-    if( !fullname.endsWith( "/" ) ) fullname += "/";
-
-    // filter
-    QDir::Filters filter = QDir::Dirs;
-    #if QT_VERSION >= 0x040800
-    filter |= QDir::NoDotDot;
-    #endif
-
-    const QDir dir( fullname );
-    for( const auto& value:dir.entryList( filter ) )
-    {
-        if( value == "." || value == ".." ) continue;
-
-        QFileInfo fileInfo;
-        fileInfo.setFile( dir, value );
-        const File local( fileInfo.absoluteFilePath() );
-        File found( local.find( file, caseSensitive ) );
-        if( !found.isEmpty() ) return found;
-
-    }
-
-    return File();
 
 }

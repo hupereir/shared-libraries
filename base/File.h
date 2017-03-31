@@ -53,14 +53,11 @@ class File: public QString
         QString( value )
     {}
 
+    //*@name accessors
+    //@{
+
     //* returns true if file has absolute pathname
     bool isAbsolute( void ) const;
-
-    //* try create
-    bool create( void ) const;
-
-    //* try create directory
-    bool createDirectory( const File& = File(".") ) const;
 
     //* time of file creation
     virtual time_t created( void ) const;
@@ -83,7 +80,7 @@ class File: public QString
     //* group name
     virtual QString groupName( void ) const;
 
-    //* permission string
+    //* permissions
     virtual QFile::Permissions permissions( void ) const;
 
     //* permission string
@@ -119,24 +116,14 @@ class File: public QString
     //* tells if a file exists and is a directory
     virtual bool isDirectory( void ) const;
 
-    //* tells if a file is a broken symbolic link
-    virtual bool isBrokenLink( void ) const;
+    //* tells if a file is hidden
+    virtual bool isHidden( void ) const;
 
     //* tells if a file is a symbolic link
     virtual bool isLink( void ) const;
 
-    //* tells if a file is hidden
-    virtual bool isHidden( void ) const;
-
-    //* set file as hidden (WIN32 only)
-    virtual void setHidden( void ) const;
-
-    //* returns a versioned filename
-    /** (add _i at the end with i the first integer for which file is not found) */
-    virtual File version( void ) const;
-
-    //* make a backup copy (terminated by ~) of a file, returns backup file
-    virtual File backup( void ) const;
+    //* tells if a file is a broken symbolic link
+    virtual bool isBrokenLink( void ) const;
 
     //* returns true if two file differs
     virtual bool diff( const File& ) const;
@@ -147,6 +134,49 @@ class File: public QString
     for pathnames, the trailing backslash is ignored
     */
     virtual bool isEqual( const File& ) const;
+
+    //* get path associated to full name
+    virtual File path( bool absolute = true ) const;
+
+    //* remove path from full name
+    virtual File localName( void ) const;
+
+    //* return canonical name (follow links and remove ".." and ".")
+    virtual File canonicalName( void ) const;
+
+    //* get file extension
+    virtual File extension( void ) const;
+
+    //* get truncated file (no extension)
+    virtual File truncatedName( void ) const;
+
+    //* return first file with matching short name, or empty string if not found
+    virtual File find( const File& file, bool = true ) const;
+
+    //* return list of files in a directory
+    virtual List listFiles( ListFlags flags ) const;
+
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* try create
+    bool create( void ) const;
+
+    //* try create directory
+    bool createDirectory( const File& = File(".") ) const;
+
+    //* set file as hidden (WIN32 only)
+    virtual void setHidden( void ) const;
+
+    //* returns a versioned filename
+    /** (add _i at the end with i the first integer for which file is not found) */
+    virtual File version( void ) const;
+
+    //* make a backup copy (terminated by ~) of a file, returns backup file
+    virtual File backup( void ) const;
 
     //* return link destination file
     virtual File readLink( void ) const;
@@ -175,26 +205,7 @@ class File: public QString
     //* expand a file name replacing .. or ~ to full path
     virtual File expand( void ) const;
 
-    //* get path associated to full name
-    virtual File path( bool absolute = true ) const;
-
-    //* remove path from full name
-    virtual File localName( void ) const;
-
-    //* return canonical name (follow links and remove ".." and ".")
-    virtual File canonicalName( void ) const;
-
-    //* get file extension
-    virtual File extension( void ) const;
-
-    //* get truncated file (no extension)
-    virtual File truncatedName( void ) const;
-
-    //* return first file with matching short name, or empty string if not found
-    virtual File find( const File& file, bool = true ) const;
-
-    //* return list of files in a directory
-    virtual List listFiles( ListFlags flags ) const;
+    //@}
 
     //* used to find files pointing to the same link
     class SameLinkFTor
