@@ -22,13 +22,22 @@ else()
 endif()
 
 ########### ssh #########
-find_package( PkgConfig REQUIRED )
-pkg_check_modules(LIBSSH2 libssh2>=1.2.8)
-if(${LIBSSH2_FOUND})
-   add_definitions(-DHAVE_SSH=1)
+find_package( PkgConfig )
+if(PKG_CONFIG_FOUND)
+
+  pkg_check_modules(LIBSSH2 libssh2>=1.2.8)
+
+endif()
+
+if($LIBSSH2_FOUND)
+
+  add_definitions(-DHAVE_SSH=1)
   include_directories(${LIBSSH2_INCLUDE_DIRS})
+
 else()
-   add_definitions(-DHAVE_SSH=0)
+
+  add_definitions(-DHAVE_SSH=0)
+
 endif()
 
 ########### includes #########
