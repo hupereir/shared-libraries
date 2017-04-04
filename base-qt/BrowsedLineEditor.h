@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "File.h"
 
 #include <QFileDialog>
 #include <QWidget>
@@ -40,9 +41,22 @@ class BrowsedLineEditor: public QWidget, public Counter
     //* constructor;
     BrowsedLineEditor( QWidget* parent );
 
+    //*@name accessors
+    //@{
+
     //* retrieve line editor
     virtual Editor& editor( void ) const
     { return *lineEditor_; }
+
+    //*}
+
+    //*@name modifiers
+    //@{
+
+
+    //* set target application
+    /** it is used to browse application path and update, if not found */
+    void setTargetApplication( File );
 
     //* open mode
     virtual void setAcceptMode( const QFileDialog::AcceptMode mode )
@@ -51,6 +65,8 @@ class BrowsedLineEditor: public QWidget, public Counter
     //* file mode
     virtual void setFileMode( const QFileDialog::FileMode& mode )
     { fileMode_ = mode; }
+
+    //@}
 
     public Q_SLOTS:
 
@@ -72,6 +88,9 @@ class BrowsedLineEditor: public QWidget, public Counter
     //* opens a file dialog, stores result in line edit
     virtual void _browse( void );
 
+    //* target
+    void _findTargetApplication( void );
+
     private:
 
     //* line editor widget
@@ -82,6 +101,12 @@ class BrowsedLineEditor: public QWidget, public Counter
 
     //* File dialog mode
     QFileDialog::FileMode fileMode_ = QFileDialog::ExistingFile;
+
+    //* target application
+    File targetApplication_;
+
+    //* update target button
+    QWidget* findTargetButton_ = nullptr;
 
 };
 

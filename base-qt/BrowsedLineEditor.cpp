@@ -27,8 +27,14 @@
 #include "Util.h"
 #include "Debug.h"
 
-#include <QHBoxLayout>
+#include <QLayout>
 #include <QToolButton>
+
+#if QT_VERSION < 0x050000
+#include <QProcessEnvironment>
+#else
+#include <QStandardPaths>
+#endif
 
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
@@ -60,6 +66,33 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     connect( button, SIGNAL(clicked()), SLOT(_browse()) );
 }
 
+//_____________________________________________________________
+void BrowsedLineEditor::setTargetApplication( File target )
+{
+    targetApplication_ = target;
+    if( findTargetButton_ && target.isEmpty() )
+    {
+        findTargetButton_->hide();
+        findTargetButton_->deleteLater();
+        findTargetButton_ = nullptr;
+        return;
+    }
+
+    if( !findTargetButton_ )
+    {
+        auto button = new QToolButton( this );
+        button->setAutoRaise( true );
+        button->setIcon( IconEngine::get( IconNames::Reload ) );
+        button->setText( tr( "Refresh" ) );
+        layout()->addWidget( button );
+        connect( button, SIGNAL(clicked()), SLOT(_findTargetApplication()) );
+
+        findTargetButton_ = button;
+
+    }
+
+}
+
 //____________________________________________________________
 void BrowsedLineEditor::setFile( const QString& file )
 { editor().setText( file ); }
@@ -77,4 +110,40 @@ void BrowsedLineEditor::_browse( void )
     QString file( dialog.getFile() );
     if( !file.isNull() ) setFile( file );
     return;
+}
+
+//_____________________________________________________________
+void BrowsedLineEditor::_findTargetApplication( void )
+{
+
+    // check if current text is valid
+    File current( editor().text() );
+    if( current.exists() ) return;
+
+    // path list
+    #if QT_VERSION < 0x050000
+
+    // get path list from environment
+    auto environment = QProcessEnvironment::systemEnvironment();
+    auto path = environment.value( "path" );
+    if( path.isEmpty() ) path = environment.value( "PATH" );
+    if( path.isEmpty() ) return;
+
+    // split
+    File::List pathList;
+    auto list = path.split(":", QString::SkipEmptyParts);
+    for( const auto& item:list ) pathList.append( item );
+    if( pathList.empty() ) return;
+
+    // find
+    File found = targetApplication_.find( pathList );
+
+    #else
+
+    File found = QStandardPaths::findExecutable( targetApplication_ );
+
+    #endif
+
+    editor().setText( found );
+
 }

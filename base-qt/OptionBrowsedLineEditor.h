@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "LineEditor.h"
 #include "BrowsedLineEditor.h"
+#include "LineEditor.h"
 #include "OptionWidget.h"
 
 //* QLineEdit associated to an option for configuration dialogs
@@ -38,6 +38,18 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
         OptionWidget( optionName, this )
     {}
 
+    //*@name accessors
+    //@{
+
+    //* write value to option
+    void write( Options& options ) const
+    { options.setRaw( optionName(), editor().text() ); }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
     //* read value from option
     void read( const Options& options )
     {
@@ -49,13 +61,12 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
         }
     }
 
-    //* write value to option
-    void write( Options& options ) const
-    { options.setRaw( optionName(), editor().text() ); }
+    //@}
 
     Q_SIGNALS:
 
     //* modified signal
     void modified( void );
+
 };
 #endif
