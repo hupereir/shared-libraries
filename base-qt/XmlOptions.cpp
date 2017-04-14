@@ -142,18 +142,6 @@ bool XmlOptions::write( void )
     // create main element
     QDomElement top = document.createElement( Base::Xml::Options ).toElement();
 
-    // write list of special option names
-    for( auto&& iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
-    {
-        // check size of options
-        if( iter.value().empty() ) continue;
-
-        // dump option name
-        QDomElement element = document.createElement( Base::Xml::SpecialOption );
-        element.setAttribute( Base::Xml::Value, iter.key() );
-        top.appendChild( element );
-    }
-
     // write options
     for( auto&& iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
     {
