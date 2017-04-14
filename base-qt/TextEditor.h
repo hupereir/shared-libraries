@@ -499,10 +499,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual void replace( TextSelection selection );
 
     //* replace selection in range
-    virtual unsigned int replaceInSelection( TextSelection selection, bool showDialog = true );
+    virtual int replaceInSelection( TextSelection selection, bool showDialog = true );
 
     //* replace selection in window, returns number of replacements
-    virtual unsigned int replaceInWindow( TextSelection selection, bool showDialog = true );
+    virtual int replaceInWindow( TextSelection selection, bool showDialog = true );
 
     //* replace again forward
     virtual void replaceAgainForward( void );
@@ -607,7 +607,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     };
 
     //* replace selection in range refered to by cursor
-    virtual unsigned int _replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode );
+    virtual int _replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode );
 
     //@}
 

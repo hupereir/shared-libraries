@@ -75,7 +75,7 @@ TextEditor::TextEditor( QWidget *parent ):
     Debug::Throw( "TextEditor::TextEditor.\n" );
 
     // set customized document
-    CustomTextDocument* document( new CustomTextDocument(0) );
+    auto document( new CustomTextDocument(0) );
     Base::Key::associate( this, document );
 
     #ifdef QT_USE_PLAIN_TEXT_EDIT
@@ -125,7 +125,7 @@ TextEditor::~TextEditor( void )
     Debug::Throw() << "TextEditor::~TextEditor - key: " << key() << endl;
 
     // cast document
-    CustomTextDocument* document( qobject_cast<CustomTextDocument*>( TextEditor::document() ) );
+    auto document( qobject_cast<CustomTextDocument*>( TextEditor::document() ) );
     if( document && Base::KeySet<TextEditor>( document ).size() == 1 ) document->deleteLater();
 
     // update associates synchronization flags
@@ -172,7 +172,7 @@ int TextEditor::blockCount( void ) const
 TextPosition TextEditor::textPosition( void )
 {
 
-    QTextCursor cursor( textCursor() );
+    auto cursor( textCursor() );
     QTextBlock block( cursor.block() );
 
     // calculate index
@@ -331,7 +331,7 @@ void TextEditor::selectWord( void )
     Debug::Throw( "TextEditor::selectWord.\n" );
 
     // retrieve text cursor, block and text
-    QTextCursor cursor( textCursor() );
+    auto cursor( textCursor() );
     QTextBlock block( cursor.block() );
     QString text( cursor.block().text() );
 
@@ -378,8 +378,8 @@ void TextEditor::selectLine( void )
 {
     Debug::Throw( "TextEditor::selectLine.\n" );
 
-    QTextCursor cursor( textCursor() );
-    QTextBlock block( cursor.block() );
+    auto cursor( textCursor() );
+    auto block( cursor.block() );
     int begin( block.position() );
     int end( block.position() + block.length() );
     if( !block.next().isValid() ) end--;
@@ -405,7 +405,7 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 
     static QRegExp regexp( "\\s+$" );
 
-    QTextCursor cursor( textCursor() );
+    auto cursor( textCursor() );
     if( cursor.hasSelection() )
     {
 
@@ -448,7 +448,7 @@ void TextEditor::synchronize( TextEditor* editor )
     Debug::Throw( "TextEditor::synchronize.\n" );
 
     // retrieve and cast old document
-    CustomTextDocument* document( qobject_cast<CustomTextDocument*>( BaseEditor::document() ) );
+    auto document( qobject_cast<CustomTextDocument*>( BaseEditor::document() ) );
 
     // assign new document and associate
     setDocument( editor->document() );
@@ -602,7 +602,6 @@ void TextEditor::installContextMenuActions( BaseContextMenu* menu, bool allActio
 
 }
 
-
 //______________________________________________________________________
 void TextEditor::createFindWidget( bool compact )
 {
@@ -620,7 +619,6 @@ void TextEditor::createFindWidget( bool compact )
     return;
 
 }
-
 
 //______________________________________________________________________
 void TextEditor::createReplaceWidget( bool compact )
@@ -667,7 +665,7 @@ void TextEditor::setBackground( QTextBlock block, const QColor& color )
     Debug::Throw( "TextEditor::setBackground.\n" );
 
     // try retrieve data or create
-    TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
+    auto data( static_cast<TextBlockData*>( block.userData() ) );
     if( !data ) block.setUserData( data = new TextBlockData() );
 
     // try assign color
@@ -682,7 +680,7 @@ void TextEditor::clearBackground( QTextBlock block )
 {
 
     Debug::Throw( "TextEditor::clearBackground.\n" );
-    TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
+    auto data( static_cast<TextBlockData*>( block.userData() ) );
     if( data && data->hasFlag( TextBlock::HasBackground ) && data->setBackground( QColor() ) && updatesEnabled()  )
     { document()->markContentsDirty(block.position(), block.length()-1); }
 
@@ -693,7 +691,7 @@ void TextEditor::clearBackground( QTextBlock block )
 void TextEditor::clearAllBackgrounds( void )
 {
     Debug::Throw( "TextEditor::clearAllBackgrounds.\n" );
-    for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() )
+    for( auto block = document()->begin(); block.isValid(); block = block.next() )
     { clearBackground( block ); }
 }
 
@@ -709,10 +707,12 @@ void TextEditor::cut( void )
 
     if( boxSelection_.state() == BoxSelection::SelectionFinished )
     {
+
         boxSelection_.toClipboard( QClipboard::Clipboard );
         boxSelection_.removeSelectedText();
         boxSelection_.clear();
         emit copyAvailable( false );
+
     } else BaseEditor::cut();
 
     return;
@@ -721,9 +721,11 @@ void TextEditor::cut( void )
 //________________________________________________
 void TextEditor::copy( void )
 {
+
     Debug::Throw( "TextEditor::copy.\n" );
     if( boxSelection_.state() == BoxSelection::SelectionFinished ) boxSelection_.toClipboard( QClipboard::Clipboard );
     else BaseEditor::copy();
+
 }
 
 //________________________________________________
@@ -755,7 +757,7 @@ void TextEditor::upperCase( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    QTextCursor cursor( textCursor() );
+    auto cursor = textCursor();
     if( cursor.hasSelection() )
     {
 
@@ -783,7 +785,7 @@ void TextEditor::lowerCase( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    QTextCursor cursor( textCursor() );
+    auto cursor = textCursor();
 
     if( cursor.hasSelection() )
     {
@@ -851,12 +853,14 @@ void TextEditor::replace( TextSelection selection )
 
     // see if current selection match
     // perform replacement if yes
-    QTextCursor cursor( textCursor() );
+    auto cursor = textCursor();
     bool accepted( true );
     accepted &= cursor.hasSelection();
     if( selection.flag( TextSelection::RegExp ) )
     {
+
         accepted &= QRegExp( selection.text() ).exactMatch( cursor.selectedText() );
+
     } else {
 
         accepted &= ( !cursor.selectedText().compare(
@@ -881,7 +885,7 @@ void TextEditor::replace( TextSelection selection )
 void TextEditor::replaceAgainForward( void )
 {
     Debug::Throw( "TextEditor::replaceAgainForward.\n" );
-    TextSelection selection( lastSelection() );
+    auto selection = lastSelection();
     selection.setFlag( TextSelection::Backward, false );
     replace( selection );
 }
@@ -890,13 +894,13 @@ void TextEditor::replaceAgainForward( void )
 void TextEditor::replaceAgainBackward( void )
 {
     Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
-    TextSelection selection( lastSelection() );
+    auto selection = lastSelection();
     selection.setFlag( TextSelection::Backward, true );
     replace( selection );
 }
 
 //______________________________________________________________________
-unsigned int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
+int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 {
 
     Debug::Throw( "TextEditor::replaceInSelection.\n" );
@@ -908,13 +912,13 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, bool showD
     // progress dialog
     if( showDialog ) _createProgressDialog();
 
-    unsigned int counts(0);
+    int counts(0);
 
     if( boxSelection_.state() == BoxSelection::SelectionFinished )
     {
 
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
-        BoxSelection::CursorList cursors( boxSelection_.cursorList() );
+        auto cursors( boxSelection_.cursorList() );
         for( auto& cursor:cursors )
         { counts += _replaceInRange( selection, cursor, MoveCursor ); }
 
@@ -922,7 +926,7 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, bool showD
 
     } else {
         Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
-        QTextCursor cursor( textCursor() );
+        auto cursor = textCursor();
         counts = _replaceInRange( selection, cursor, ExpandCursor );
     }
 
@@ -933,7 +937,7 @@ unsigned int TextEditor::replaceInSelection( TextSelection selection, bool showD
 }
 
 //______________________________________________________________________
-unsigned int TextEditor::replaceInWindow( TextSelection selection, bool showDialog )
+int TextEditor::replaceInWindow( TextSelection selection, bool showDialog )
 {
 
     Debug::Throw( "TextEditor::replaceInWindow.\n" );
@@ -945,10 +949,10 @@ unsigned int TextEditor::replaceInWindow( TextSelection selection, bool showDial
     // the shortcut still can be called
     if( isReadOnly() ) return 0;
 
-    QTextCursor cursor( textCursor() );
+    auto cursor = textCursor();
     cursor.movePosition( QTextCursor::Start );
     cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
-    unsigned int counts( _replaceInRange( selection, cursor, ExpandCursor ) );
+    auto counts = _replaceInRange( selection, cursor, ExpandCursor );
 
     if( showDialog ) showReplacements( counts );
     return counts;
@@ -961,7 +965,7 @@ void TextEditor::selectLine( int index )
 
     Debug::Throw() << "TextEditor::selectLine - index: " << index << endl;
     int localIndex( 0 );
-    QTextBlock block = document()->begin();
+    auto block = document()->begin();
     for( ;localIndex < index && block.isValid(); block = block.next(), localIndex++ )
     {}
 
@@ -997,14 +1001,16 @@ void TextEditor::removeLine()
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    QTextCursor cursor( textCursor() );
+    auto cursor = textCursor();
     cursor.movePosition( QTextCursor::StartOfBlock, QTextCursor::MoveAnchor );
 
     // create cursor selection, depending on whether next block is valid or not
     if( cursor.block().next().isValid() )
     {
+
         cursor.movePosition( QTextCursor::NextBlock, QTextCursor::KeepAnchor );
         removeLineBuffer_.append( cursor.selectedText() );
+
     } else {
 
         // move to previous character
@@ -1017,6 +1023,7 @@ void TextEditor::removeLine()
         // move to end of current block
         cursor.movePosition( QTextCursor::EndOfBlock, QTextCursor::KeepAnchor );
         removeLineBuffer_.append( cursor.selectedText() );
+
     }
 
     setUpdatesEnabled( false );
@@ -1049,19 +1056,19 @@ bool TextEditor::event( QEvent* event )
     {
         case QEvent::ToolTip:
         {
-            QHelpEvent* helpEvent( static_cast<QHelpEvent*>(event) );
-            const QPoint position( helpEvent->pos() );
-            const QPoint globalPosition( helpEvent->globalPos() );
+            auto helpEvent( static_cast<QHelpEvent*>(event) );
+            auto position( helpEvent->pos() );
+            auto globalPosition( helpEvent->globalPos() );
             QString anchor;
             if( trackAnchors_ && !( anchor = anchorAt( position ) ).isEmpty() )
             {
                 QRect rect;
-                QTextCursor cursor( cursorForPosition( position ) );
-                QTextBlock block( cursor.block() );
+                auto cursor( cursorForPosition( position ) );
+                auto block( cursor.block() );
 
                 for( auto&& it = block.begin(); !(it.atEnd()); ++it)
                 {
-                    QTextFragment fragment = it.fragment();
+                    auto fragment = it.fragment();
                     if( !fragment.isValid() ) continue;
                     if( fragment.position() > cursor.position() || fragment.position() + fragment.length() <= cursor.position() )
                     { continue; }
@@ -1111,7 +1118,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
     {
 
         // increment multiple clicks
-        QTextCursor cursor( textCursor() );
+        auto cursor( textCursor() );
 
         // increment counter
         clickCounter_.increment( cursorForPosition( event->pos() ).position() );
@@ -1273,12 +1280,11 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     if( event->buttons() == Qt::LeftButton && boxSelection_.state() == BoxSelection::SelectionFinished && (event->pos() - dragStart_ ).manhattanLength() > QApplication::startDragDistance() )
     {
         // start drag
-        QDrag *drag = new QDrag(this);
+        auto drag( new QDrag(this) );
 
         // store data
-        QString text( boxSelection_.toString() );
-
-        QMimeData *data = new QMimeData();
+        auto text( boxSelection_.toString() );
+        auto data = new QMimeData();
         data->setText( text );
         data->setData( BoxSelection::mimeType, qPrintable( text ) );
         drag->setMimeData( data );
@@ -1338,10 +1344,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
     }
 
     if( event->button() == Qt::MidButton  && boxSelection_.state() == BoxSelection::SelectionFinished )
-    {
-        boxSelection_.clear();
-        boxSelection_.clear();
-    }
+    { boxSelection_.clear(); }
 
     // process event
     BaseEditor::mouseReleaseEvent( event );
@@ -1356,8 +1359,8 @@ void TextEditor::dropEvent( QDropEvent* event )
 
     // static empty mimeData used to pass to base class
     // so that drop events are finished properly even when actually doing nothing
-    static QMimeData* empty_data( new QMimeData() );
-    QDropEvent empty_event( event->pos(), event->possibleActions(), empty_data, Qt::NoButton, Qt::NoModifier );
+    static auto emptyData( new QMimeData() );
+    QDropEvent dropEvent( event->pos(), event->possibleActions(), emptyData, Qt::NoButton, Qt::NoModifier );
 
     // if mimeData is block selection, block selection is enabled here
     // and there is no active selection (standard or box), insert new box selection
@@ -1382,7 +1385,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         boxSelection_.clear();
 
         event->acceptProposedAction();
-        BaseEditor::dropEvent( &empty_event );
+        BaseEditor::dropEvent( &dropEvent );
         return;
 
     }
@@ -1402,7 +1405,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         int rowCount( boxSelection_.cursorList().size() - 1 );
 
         // store cursor at new insertion position
-        QTextCursor newCursor( cursorForPosition( event->pos() ) );
+        auto newCursor( cursorForPosition( event->pos() ) );
 
         // remove current selection
         boxSelection_.removeSelectedText();
@@ -1411,7 +1414,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         // prepare new selection
         QRect rect( cursorRect( newCursor ) );
         QPoint start( rect.center().x(), rect.top() );
-        QPoint end( rect.center().x(), rect.top() + rowCount*QFontMetrics( font() ).height() );
+        QPoint end( rect.center().x(), rect.top() + rowCount*fontMetrics().height() );
 
         boxSelection_.start( start );
         boxSelection_.finish( end );
@@ -1425,7 +1428,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         newCursor.endEditBlock();
 
         event->acceptProposedAction();
-        BaseEditor::dropEvent( &empty_event );
+        BaseEditor::dropEvent( &dropEvent );
         return;
 
 
@@ -1445,7 +1448,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             // current selection is inserted in itself. Doing nothing
             Debug::Throw( "TextEditor::dropEvent - [box] doing nothing.\n" );
             event->acceptProposedAction();
-            BaseEditor::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &dropEvent );
             return;
 
         } else {
@@ -1456,7 +1459,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             setTextCursor( boxSelection_.cursorList().back() );
             boxSelection_.clear();
             event->acceptProposedAction();
-            BaseEditor::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &dropEvent );
             return;
 
         }
@@ -1465,8 +1468,8 @@ void TextEditor::dropEvent( QDropEvent* event )
     // retrieve selection bounding rect
     if( event->mimeData()->hasText() && textCursor().hasSelection() )
     {
-        QTextCursor cursor( textCursor() );
-        QTextCursor newCursor( cursorForPosition( event->pos() ) );
+        auto cursor( textCursor() );
+        auto newCursor( cursorForPosition( event->pos() ) );
 
         bool contained(
             newCursor.position() >= qMin( cursor.position(), cursor.anchor() ) &&
@@ -1479,7 +1482,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             Debug::Throw( "TextEditor::dropEvent - inserting selection.\n" );
             cursor.insertText( event->mimeData()->text() );
             event->acceptProposedAction();
-            BaseEditor::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &dropEvent );
             return;
 
         }
@@ -1498,7 +1501,7 @@ void TextEditor::dropEvent( QDropEvent* event )
             setTextCursor( cursor );
 
             event->acceptProposedAction();
-            BaseEditor::dropEvent( &empty_event );
+            BaseEditor::dropEvent( &dropEvent );
             return;
 
         }
@@ -1693,11 +1696,11 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
         // retrieve block data and check background
         // static cast is use because should be faster and safe enough here
-        TextBlockData *data( static_cast<TextBlockData*>( block.userData() ) );
+        auto data( static_cast<TextBlockData*>( block.userData() ) );
         if( !(data && data->hasFlag( TextBlock::HasBackground|TextBlock::CurrentBlock ) ) ) continue;
 
         // retrieve block rect
-        QRectF blockRect( document()->documentLayout()->blockBoundingRect( block ) );
+        auto blockRect( document()->documentLayout()->blockBoundingRect( block ) );
         blockRect.setLeft(0);
         blockRect.setWidth( viewport()->width() + scrollbarPosition().x() );
 
@@ -1747,8 +1750,8 @@ void TextEditor::timerEvent(QTimerEvent *event)
     if (event->timerId() == autoScrollTimer_.timerId() )
     {
 
-        const QPoint globalPosition = QCursor::pos();
-        const QPoint position = viewport()->mapFromGlobal(globalPosition);
+        auto globalPosition = QCursor::pos();
+        auto position = viewport()->mapFromGlobal(globalPosition);
         QMouseEvent mouseEvent(QEvent::MouseMove, position, globalPosition, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
         mouseMoveEvent(&mouseEvent);
 
@@ -1900,6 +1903,7 @@ void TextEditor::_installActions( void )
     // copy link
     addAction( copyLinkAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy Link Location" ), this ) );
     connect( copyLinkAction_, SIGNAL(triggered()), this, SLOT(_copyLinkLocation()) );
+
     // update actions that depend on the presence of a selection
     _updateSelectionActions( textCursor().hasSelection() );
 
@@ -1966,7 +1970,7 @@ void TextEditor::_createProgressDialog( void )
     Debug::Throw( "TextEditor::_createProgressDialog.\n" );
 
     // create dialog
-    QProgressDialog* dialog = new QProgressDialog(0);
+    auto dialog = new QProgressDialog(0);
     dialog->setAttribute( Qt::WA_DeleteOnClose, true );
     dialog->setLabelText( tr( "Replace text in selection" ) );
     dialog->setWindowTitle( tr( "Replace in Text" ) );
@@ -1991,7 +1995,7 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
     setLastSelection( selection );
 
     // retrieve current cursor
-    QTextCursor cursor( textCursor() );
+    auto cursor( textCursor() );
 
     // if no_increment, start from the beginning of the possible current selection
     if( cursor.hasSelection() && selection.flag( TextSelection::NoIncrement ) )
@@ -2012,7 +2016,7 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
         regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
         // make a copy of current cursor
-        QTextCursor found( cursor );
+        auto found( cursor );
 
         // if current text has selection that match, make sure pointer is located at the end of it
         if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) )
@@ -2062,7 +2066,7 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
         if( selection.flag( TextSelection::CaseSensitive ) )  flags |= QTextDocument::FindCaseSensitively;
         if( selection.flag( TextSelection::EntireWord ) ) flags |= QTextDocument::FindWholeWords;
 
-        QTextCursor found( document()->find( selection.text(), cursor, flags ) );
+        auto found( document()->find( selection.text(), cursor, flags ) );
 
         // find failed.
         if( found.isNull() && rewind )
@@ -2099,7 +2103,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
     setLastSelection( selection );
 
     // retrieve current cursor
-    QTextCursor cursor( textCursor() );
+    auto cursor( textCursor() );
 
     // if no_increment, start from the beginning of the possible current selection
     if( cursor.hasSelection() && selection.flag( TextSelection::NoIncrement ) )
@@ -2120,7 +2124,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
         regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
 
         // make a copy of current cursor
-        QTextCursor found( cursor );
+        auto found( cursor );
 
         // if current text has selection that match, make sure pointer is located at the end of it
         if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) )
@@ -2169,7 +2173,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
         if( selection.flag( TextSelection::CaseSensitive ) )  flags |= QTextDocument::FindCaseSensitively;
         if( selection.flag( TextSelection::EntireWord ) ) flags |= QTextDocument::FindWholeWords;
 
-        QTextCursor found( document()->find( selection.text(), cursor, flags ) );
+        auto found( document()->find( selection.text(), cursor, flags ) );
 
         // find failed.
         if( found.isNull() && rewind )
@@ -2191,7 +2195,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
 }
 
 //______________________________________________________________________
-unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
+int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cursor, CursorMode mode )
 {
 
     Debug::Throw()
@@ -2215,7 +2219,7 @@ unsigned int TextEditor::_replaceInRange( const TextSelection& selection, QTextC
 
     // store number of matches
     // and make local copy of cursor
-    unsigned int found = 0;
+    int found = 0;
 
     int savedAnchor( qMin( cursor.position(), cursor.anchor() ) );
     int savedPosition( qMax( cursor.position(), cursor.anchor() ) );
@@ -2361,15 +2365,15 @@ bool TextEditor::_setTabSize( const int& tabSize )
     Debug::Throw() << "TextEditor::_setTabSize - " << tabSize << endl;
     Q_ASSERT( tabSize > 0 );
 
-    int stop_width( tabSize * QFontMetrics( font() ).width( " " ) );
-    if( tabSize == emulatedTab_.size() && tabStopWidth() == stop_width )
+    int stopWidth( tabSize * fontMetrics().width( " " ) );
+    if( tabSize == emulatedTab_.size() && tabStopWidth() == stopWidth )
     { return false; }
 
     // create strings and regular expressions
     // define normal tabs
     normalTab_ = "\t";
     normalTabRegexp_.setPattern( "^(\\t)+" );
-    setTabStopWidth( stop_width );
+    setTabStopWidth( stopWidth );
 
     // define emulated tabs
     emulatedTab_ = QString( tabSize, ' ' );
@@ -2386,7 +2390,7 @@ void TextEditor::_insertTab( void )
     Debug::Throw( "TextEditor::_insertTab.\n" );
 
     // retrieve current cursor
-    QTextCursor cursor( textCursor() );
+    auto cursor( textCursor() );
     if( !_hasTabEmulation() ) cursor.insertText( normalTabCharacter() );
     else {
 
@@ -2407,13 +2411,13 @@ bool TextEditor::_updateMargin( void )
 {
 
     Debug::Throw( "TextEditor::_updateMargin.\n" );
-    int left_margin( 0 );
+    int leftMargin( 0 );
 
     if( showLineNumberAction_->isChecked() && showLineNumberAction_->isVisible() )
-    { left_margin += lineNumberDisplay_->width(); }
+    { leftMargin += lineNumberDisplay_->width(); }
 
-    return _setLeftMargin( left_margin );
-    if( leftMargin_ == left_margin ) return false;
+    return _setLeftMargin( leftMargin );
+    if( leftMargin_ == leftMargin ) return false;
     return true;
 
 }
@@ -2482,7 +2486,7 @@ void TextEditor::_synchronizeSelection( void )
             continue;
 
         // store scrollbar positions
-        QPoint scrollbars( editor->scrollbarPosition() );
+        auto scrollbars( editor->scrollbarPosition() );
 
         editor->setSynchronized( false );
         editor->setUpdatesEnabled( false );
@@ -2599,7 +2603,7 @@ void TextEditor::_copyLinkLocation( void )
     Debug::Throw( "TextEditor::_copyLinkLocation.\n" );
     if( !trackAnchors_ ) return;
 
-    const QString anchor( this->anchor() );
+    auto anchor( this->anchor() );
     if( anchor.isEmpty() ) return;
 
     // copy selected text to clipboard
