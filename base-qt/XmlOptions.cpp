@@ -157,7 +157,7 @@ bool XmlOptions::write( void )
     }
 
     // write standard options
-    for( Options::Map::const_iterator iter = singleton_.options_.options().begin(); iter != singleton_.options_.options().end(); ++iter )
+    for( auto&& iter = singleton_.options_.options().begin(); iter != singleton_.options_.options().end(); ++iter )
     {
 
         if( iter.value().hasFlag( Option::Recordable ) && iter.value().isSet() && !iter.value().isDefault() )
