@@ -129,6 +129,7 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "QPainter::setCompositionMode: Painter not active" );
     disableMessage( "QPainter::end: Painter not active, aborted" );
     disableMessage( "QCoreApplication::postEvent: Unexpected null receiver" );
+    disableMessage( "Invalid entry (missing '=')" );
 
     disableMessage( "Qt: Session management error: Could not open network socket" );
 
