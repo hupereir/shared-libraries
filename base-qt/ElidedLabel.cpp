@@ -137,7 +137,7 @@ void ElidedLabel::updateElidedText( void )
 {
     if( fullText_.isEmpty() ) return;
 
-    QFontMetrics fm(fontMetrics());
+    auto fontMetrics( this->fontMetrics() );
     int labelWidth = size().width();
 
     QStringList elidedLines;
@@ -176,11 +176,11 @@ void ElidedLabel::updateElidedText( void )
             default: break;
         }
 
-        int lineWidth = fm.width(line);
+        int lineWidth = fontMetrics.width(line);
         if (lineWidth > labelWidth)
         {
             elided = true;
-            elidedLines << prefix + fm.elidedText(line, elideMode_, labelWidth ) + suffix;
+            elidedLines << prefix + fontMetrics.elidedText(line, elideMode_, labelWidth ) + suffix;
 
         } else {
 

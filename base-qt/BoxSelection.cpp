@@ -107,8 +107,8 @@ bool BoxSelection::checkEnabled( void )
     if( !isEnabled() ) return false;
 
     // read font attributes
-    fontWidth_ = QFontMetrics( parent_->font() ).width( " " );
-    fontHeight_ = QFontMetrics( parent_->font() ).height();
+    fontWidth_ = parent_->fontMetrics().width( " " );
+    fontHeight_ = parent_->fontMetrics().height();
 
     return true;
 }

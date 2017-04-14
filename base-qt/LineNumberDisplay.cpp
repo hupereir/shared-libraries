@@ -92,7 +92,7 @@ void LineNumberDisplay::paint( QPainter& painter )
     needsUpdate_ = false;
 
     // font metric and offset
-    const QFontMetrics metric( editor_->fontMetrics() );
+    auto metric( editor_->fontMetrics() );
 
     // calculate dimensions
     int yOffset = editor_->verticalScrollBar()->value() - editor_->frameWidth();

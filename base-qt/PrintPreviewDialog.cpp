@@ -193,7 +193,7 @@ namespace Private
         if( editor_->text().toInt() > pages ) editor_->setText( QString::number(pages) );
 
         // update editor
-        const QFontMetrics metrics( editor_->fontMetrics() );
+        auto metrics( editor_->fontMetrics() );
         editor_->setFixedSize( metrics.maxWidth()*( editor_->text().size()+1 ), editor_->height() );
 
         // update buttons

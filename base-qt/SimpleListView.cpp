@@ -51,7 +51,7 @@ void Private::SimpleListViewDelegate::paint( QPainter *painter, const QStyleOpti
     const CustomPixmap pixmap( icon.pixmap( iconSize, iconSize ) );
     const QPen oldPen = painter->pen();
 
-    QFontMetrics fontMetrics = painter->fontMetrics();
+    auto fontMetrics = painter->fontMetrics();
     int pixmapWidth = pixmap.width()/pixmap.devicePixelRatio();
     int pixmapHeight = pixmap.height()/pixmap.devicePixelRatio();
 
@@ -104,11 +104,11 @@ QSize Private::SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &opt
     if ( !index.isValid() ) return QSize();
 
     const int iconSize = QApplication::style()->pixelMetric(QStyle::PM_IconViewIconSize);
-    const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
-    const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
+    auto text = index.model()->data( index, Qt::DisplayRole ).toString();
+    auto icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
     const CustomPixmap pixmap( icon.pixmap( iconSize, iconSize ) );
 
-    QFontMetrics fontMetrics = option.fontMetrics;
+    auto fontMetrics = option.fontMetrics;
     int gap = fontMetrics.height();
     int pixmapHeight = 0;
     int pixmapWidth = iconSize;

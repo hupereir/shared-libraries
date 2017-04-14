@@ -397,7 +397,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
         const Qt::Alignment alignment( QStyle::visualAlignment( frameOption.direction, this->alignment() ) );
 
         // font metrics
-        const QFontMetrics fontMetrics( this->fontMetrics() );
+        auto fontMetrics( this->fontMetrics() );
 
         // adjust text rect
         const int minBearing = qMax(0, -fontMetrics.minLeftBearing());
