@@ -70,12 +70,12 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
 }
 
 //____________________________________________________________________________
-void TreeViewConfiguration::read( void )
+void TreeViewConfiguration::read( const Options& options )
 {
     Debug::Throw( "TreeViewConfiguration::read.\n" );
 
     // set check button state according to the backup mask
-    unsigned int mask( XmlOptions::get().get<unsigned int>( optionName() ) );
+    unsigned int mask( options.get<unsigned int>( optionName() ) );
     for( int index = 0; index < checkbox_.size(); index++ )
     {
         checkbox_[index]->setChecked( mask & (1<<index) );
@@ -90,7 +90,7 @@ void TreeViewConfiguration::read( void )
 }
 
 //____________________________________________________________________________
-void TreeViewConfiguration::write( void ) const
+void TreeViewConfiguration::write( Options& options ) const
 {
     Debug::Throw( "TreeViewConfiguration::write.\n" );
 
@@ -98,7 +98,7 @@ void TreeViewConfiguration::write( void ) const
     for( int index = 0; index < checkbox_.size(); index++ )
     { mask |= (checkbox_[index]->isChecked() << index); }
 
-    XmlOptions::get().set<unsigned int>( optionName(), mask );
+    options.set<unsigned int>( optionName(), mask );
 
     return;
 

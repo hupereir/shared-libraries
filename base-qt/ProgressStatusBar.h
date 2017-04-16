@@ -45,7 +45,7 @@ class ProgressStatusBar: public BaseStatusBar
     void setProgressBar( QProgressBar* );
 
     //* retrieves label with given index
-    virtual StatusBarLabel& label( const unsigned int& i = 0  ) const
+    virtual StatusBarLabel& label( int i = 0  ) const
     { return (i==0) ? *label_:BaseStatusBar::label(i); }
 
     public Q_SLOTS:

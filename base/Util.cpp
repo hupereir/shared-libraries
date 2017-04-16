@@ -32,8 +32,6 @@
 
 #include <unistd.h>
 
-static const int LONGSTR = 256;
-
 //______________________________________________________________________
 QString Util::env( const QString& val, const QString& defaultValue )
 {

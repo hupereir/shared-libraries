@@ -1148,9 +1148,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
 
         } else {
 
-            QModelIndex previous( index );
             index = _indexAfter( index );
-
             if( rewind && !index.isValid() )
             {
                 rewind = false;

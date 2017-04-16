@@ -27,7 +27,7 @@
 #include <QTreeView>
 #include <QList>
 
-//! Configuration vbox for TreeView columns
+//* Configuration vbox for TreeView columns
 class TreeViewConfiguration: public QGroupBox, public OptionWidget
 {
 
@@ -35,14 +35,14 @@ class TreeViewConfiguration: public QGroupBox, public OptionWidget
 
     public:
 
-    //! constructor
+    //* constructor
     TreeViewConfiguration( QWidget*, QTreeView*, const QString&  );
 
-    //! read value from option
-    void read( void );
+    //* read value from option
+    void read( const Options& );
 
-    //! write value to option
-    void write( void ) const;
+    //* write value to option
+    void write( Options& ) const;
 
     Q_SIGNALS:
 
@@ -50,7 +50,7 @@ class TreeViewConfiguration: public QGroupBox, public OptionWidget
 
     private:
 
-    //! checkboxes
+    //* checkboxes
     QList< QCheckBox* > checkbox_;
 
 };

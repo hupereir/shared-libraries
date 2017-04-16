@@ -173,7 +173,6 @@ TextPosition TextEditor::textPosition( void )
 {
 
     auto cursor( textCursor() );
-    QTextBlock block( cursor.block() );
 
     // calculate index
     TextPosition out;
@@ -187,6 +186,7 @@ TextPosition TextEditor::textPosition( void )
     #else
 
     // slow access for prior versions of Qt
+    auto block( cursor.block() );
     out.index() = cursor.position() - block.position();
     while( block.isValid() )
     {

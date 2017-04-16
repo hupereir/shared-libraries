@@ -94,7 +94,7 @@ class FileRecordModel: public ListModel<FileRecord>, public Counter
     }
 
     //* set values (overloaded)
-    void update( const List& values )
+    void update( List values )
     {
         _updateColumns( values );
         ListModel<FileRecord>::update( values );
