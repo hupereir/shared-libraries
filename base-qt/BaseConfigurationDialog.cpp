@@ -391,7 +391,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
         tr( "Text Edition" ),
         tr( "Settings for text display and edition" ) );
 
-    QWidget* out(0);
+    QWidget* out = nullptr;
 
     // tab emulation
     if( flags&TabEmulation )
@@ -440,7 +440,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
     }
 
     // box selection
-    if( false )
+    if( flags&BoxSelection )
     {
         QGroupBox* box = new QGroupBox( tr( "Box Selection" ), parent );
         GridLayout* gridLayout = new GridLayout();
