@@ -30,7 +30,7 @@
 
 namespace Format
 {
-    //! text format
+    //* text format
     /*!
     starting with Qt4, text blocks are no longer referenced by paragraph and index separately, but
     by an absolute index in document. However one must keep the possibility to handle paragraph id
@@ -42,11 +42,8 @@ namespace Format
 
         public:
 
-        //! constructor
-        TextFormatBlock(
-            int begin = 0, int end = 0,
-            TextFormatFlags format = 0,
-            const QColor& color = QColor() ):
+        //* constructor
+        TextFormatBlock( int begin = 0, int end = 0, TextFormatFlags format = 0, const QColor& color = QColor() ):
             Counter( "TextFormatBlock" ),
             begin_( begin ),
             end_( end ),
@@ -54,152 +51,156 @@ namespace Format
             color_( color )
         {}
 
-        //! less than operator (based on Begin position)
+        //* less than operator (based on Begin position)
         bool operator < (const TextFormatBlock& format ) const
         { return begin_ < format.begin_; }
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! true if format info is empty
+        //* true if format info is empty
         bool isEmpty( void ) const
         { return begin_ == end_; }
 
-        //! begin position
+        //* begin position
         int begin() const
         { return begin_; }
 
-        //! end position
+        //* end position
         int end() const
         { return end_; }
 
-        //! format
+        //* format
         TextFormatFlags format() const
         { return format_; }
 
-        //! color
+        //* color
         const QColor& color() const
         { return color_; }
 
-        //! href
+        //* href
         const QString& href() const
         { return href_; }
 
         //@}
 
-        //!@name modifiers
+        //*@name modifiers
         //@{
 
-        //! begin position
+        //* begin position
         void setBegin( int value )
         { begin_ = value; }
 
-        //! end position
+        //* end position
         void setEnd( int value )
         { end_ = value; }
 
-        //! format
+        //* format
         void setFormat( TextFormatFlags value )
         { format_ = value; }
 
-        //! color
+        //* color
         void setColor( const QColor& value )
         { color_ = value; }
 
-        //! href
+        //* unset color (replace by invalid)
+        void unsetColor( void )
+        { color_ = QColor(); }
+
+        //* href
         void setHRef( const QString& value )
         { href_ = value; }
 
         //@}
 
-        //! get TextFormatBlock matching a given begin position
+        //* get TextFormatBlock matching a given begin position
         class SamePositionBeginFTor
         {
 
             public:
 
-            //! constructor
+            //* constructor
             SamePositionBeginFTor( const int& position ):
                 position_( position )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() (const TextFormatBlock& format ) const
             { return format.begin() == position_; }
 
             private:
 
-            //! predicted position
-            int position_;
+            //* predicted position
+            int position_ = 0;
 
         };
 
-        //! get TextFormatBlock matching a given end position
+        //* get TextFormatBlock matching a given end position
         class SamePositionEndFTor
         {
 
             public:
 
-            //! constructor
+            //* constructor
             SamePositionEndFTor( const int& position ):
                 position_( position )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() (const TextFormatBlock& format ) const
             { return format.end() == position_; }
 
             private:
 
-            //! predicted position
-            int position_;
+            //* predicted position
+            int position_ = 0;
 
         };
 
-        //! get TextFormatBlock containing a given position
+        //* get TextFormatBlock containing a given position
         class ContainsFTor
         {
 
             public:
 
-            //! constructor
+            //* constructor
             ContainsFTor( const int& position ):
                 position_( position )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() (const TextFormatBlock& format ) const
             { return position_ >= format.begin() && position_ < format.end(); }
 
             private:
 
-            //! predicted position
-            int position_;
+            //* predicted position
+            int position_ = 0;
 
         };
 
 
-        //! format list
+        //* format list
         using List = QList<Format::TextFormatBlock>;
 
         private:
 
-        //! starting range
-        int begin_;
+        //* starting range
+        int begin_ = 0;
 
-        //! ending range
-        int end_;
+        //* ending range
+        int end_ = 0;
 
-        //! format (a bitwise or of the format bits above)
-        TextFormatFlags format_;
+        //* format (a bitwise or of the format bits above)
+        TextFormatFlags format_ = 0;
 
-        //! color
+        //* color
         QColor color_;
 
-        //! href
+        //* href
         QString href_;
 
-        //! streamer
+        //* streamer
         friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock& format )
         {
             out
@@ -213,7 +214,7 @@ namespace Format
             return out;
         }
 
-        //! streamer
+        //* streamer
         friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock::List& formats )
         {
             out << "TextFormatList: " << endl;

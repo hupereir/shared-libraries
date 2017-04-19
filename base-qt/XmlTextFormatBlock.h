@@ -28,30 +28,28 @@ namespace Format
 {
     namespace Xml
     {
-
         static const QString Tag = "TextFormat";
-
     }
 
-    //! text format with Xml abilities
+    //* text format with Xml abilities
     class XmlTextFormatBlock:public TextFormatBlock
     {
 
         public:
 
-        //! constructor
-        XmlTextFormatBlock( const QDomElement& element );
+        //* constructor
+        XmlTextFormatBlock( const QDomElement& );
 
-        //! constructor
+        //* constructor
         XmlTextFormatBlock( const TextFormatBlock& format ):
             TextFormatBlock( format )
         {}
 
-        //! get dom element
+        //* get dom element
         QDomElement domElement( QDomDocument& parent ) const;
 
     };
 
-};
+}
 
 #endif
