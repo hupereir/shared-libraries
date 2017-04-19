@@ -36,6 +36,8 @@
 #if defined(Q_OS_WIN)
 #include <ws2tcpip.h>
 #else
+#include <sys/types.h>
+#include <sys/socket.h>
 #include <netinet/in.h>
 #endif
 
