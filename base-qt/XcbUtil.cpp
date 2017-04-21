@@ -698,7 +698,7 @@ bool XcbUtil::_changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) co
 bool XcbUtil::_requestCardinalChange( QWidget* widget, AtomId atom, uint32_t value ) const
 {
 
-    Debug::Throw( "XcbUtil::_requestChangeCardinal.\n" );
+    Debug::Throw( "XcbUtil::_requestCardinalChange.\n" );
 
     #if HAVE_XCB
 
