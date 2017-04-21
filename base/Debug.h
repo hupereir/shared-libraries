@@ -27,31 +27,31 @@ class Debug
 {
     public:
 
-    //!@name static accessors
+    //*@name static accessors
     //@{
 
-    //! retrieves the debug level
-    static const int& level( void );
+    //* retrieves the debug level
+    static int level( void );
 
     //@}
 
-    //!@name static modifiers
+    //*@name static modifiers
     //@{
 
-    //! sets the debug level. Everything thrown of bigger level is not discarded
-    static void setLevel( const int& level );
+    //* sets the debug level. Everything thrown of bigger level is not discarded
+    static void setLevel( int );
 
-    //! set file name
-    static void setFileName( const QString& );
+    //* set file name
+    static void setFileName( QString );
 
-    //! writes string to clog if level is lower than level_
-    static void Throw( int level, QString str );
+    //* writes string to clog if level is lower than level_
+    static void Throw( int, QString );
 
-    //! writes string to clog if level_ is bigger than 0
-    static void Throw( QString str );
+    //* writes string to clog if level_ is bigger than 0
+    static void Throw( QString );
 
-    //! returns either clog or dummy stream depending of the level
-    static QTextStream& Throw( int level = 1 );
+    //* returns either clog or dummy stream depending of the level
+    static QTextStream& Throw( int = 1 );
 
     //@}
 
@@ -59,7 +59,7 @@ class Debug
 
     class Private;
 
-    //! return singleton
+    //* return singleton
     static Private& _get( void );
 
 };

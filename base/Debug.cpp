@@ -82,15 +82,15 @@ class Debug::Private
 };
 
 //______________________________________
-const int& Debug::level( void )
+int Debug::level( void )
 { return _get().level_; }
 
 //______________________________________
-void Debug::setLevel( const int& level )
+void Debug::setLevel( int level )
 { _get().level_ = level; }
 
 //______________________________________
-void Debug::setFileName( const QString& filename )
+void Debug::setFileName( QString filename )
 {
     if( filename.isEmpty() )
     {
