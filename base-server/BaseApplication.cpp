@@ -319,25 +319,25 @@ void BaseApplication::_updateFonts( void )
             if( !File( file ).exists() ) continue;
             found = true;
 
-            Debug::Throw(0) << "BaseApplication::_updateFonts - file: " << file << endl;
+            Debug::Throw() << "BaseApplication::_updateFonts - file: " << file << endl;
 
             // load settings
             QSettings settings( file, QSettings::IniFormat );
             settings.sync();
 
             // generic font
-            QString value( settings.value( "font" ).toStringList().join( "," ) );
+            const QString fontName( settings.value( "font" ).toStringList().join( "," ) );
             QFont font;
-            font.fromString( value );
+            font.fromString( fontName );
             qApp->setFont( font );
-            Debug::Throw(0) << "BaseApplication::_updateFonts - font: " << value << endl;
+            Debug::Throw() << "BaseApplication::_updateFonts - font: " << fontName << endl;
 
             // fixed fonts
             if( useFixedFonts() )
             {
-                value = settings.value( "fixed" ).toStringList().join( "," );
-                font.fromString( value );
-                Debug::Throw(0) << "BaseApplication::_updateFonts - fixed: " << value << endl;
+                const QString fixedFontName( settings.value( "fixed" ).toStringList().join( "," ) );
+                font.fromString( fixedFontName );
+                Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << fixedFontName << endl;
             }
             qApp->setFont( font, "QTextEdit" );
             qApp->setFont( font, "QPlainTextEdit" );
