@@ -308,7 +308,8 @@ void BaseApplication::_updateFonts( void )
         QStringList files;
         files
             << Util::home() + "/.kde4/share/config/kdeglobals"
-            << Util::home() + "/.kde/share/config/kdeglobals";
+            << Util::home() + "/.kde/share/config/kdeglobals"
+            << Util::home() + "/.config/kdeglobals";
 
         bool found( false );
         for( const auto& file:files )
@@ -318,21 +319,26 @@ void BaseApplication::_updateFonts( void )
             if( !File( file ).exists() ) continue;
             found = true;
 
+            Debug::Throw(0) << "BaseApplication::_updateFonts - file: " << file << endl;
+
             // load settings
             QSettings settings( file, QSettings::IniFormat );
             settings.sync();
 
-            // debug
-            Debug::Throw() << "BaseApplication::_updateFonts - font: " << settings.value( "font" ).toStringList().join( "," ) << endl;
-            Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << settings.value( "fixed" ).toStringList().join( "," ) << endl;
-
             // generic font
+            QString value( settings.value( "font" ).toStringList().join( "," ) );
             QFont font;
-            font.fromString( settings.value( "font" ).toStringList().join( "," ) );
+            font.fromString( value );
             qApp->setFont( font );
+            Debug::Throw(0) << "BaseApplication::_updateFonts - font: " << value << endl;
 
             // fixed fonts
-            if( useFixedFonts() ) font.fromString( settings.value( "fixed" ).toStringList().join( "," ) );
+            if( useFixedFonts() )
+            {
+                value = settings.value( "fixed" ).toStringList().join( "," );
+                font.fromString( value );
+                Debug::Throw(0) << "BaseApplication::_updateFonts - fixed: " << value << endl;
+            }
             qApp->setFont( font, "QTextEdit" );
             qApp->setFont( font, "QPlainTextEdit" );
 
@@ -342,6 +348,7 @@ void BaseApplication::_updateFonts( void )
         {
             qApp->setFont( QFont() );
             qApp->setFont( QFont(), "QTextEdit" );
+            qApp->setFont( QFont(), "QPlainTextEdit" );
         }
 
     }
