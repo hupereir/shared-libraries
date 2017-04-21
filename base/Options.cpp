@@ -58,8 +58,8 @@ void Options::installDefaultOptions( void )
 
     // fonts
     set<bool>( "USE_SYSTEM_FONT", true );
-    set( "FIXED_FONT_NAME", "Sans" );
-    set( "FONT_NAME", "Sans" );
+    set( "FIXED_FONT_NAME", "Sans Serif,10" );
+    set( "FONT_NAME", "Monospace,10" );
 
     // toolbars default configuration
     set<int>( "TOOLBUTTON_ICON_SIZE", 0 );
