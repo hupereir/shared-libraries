@@ -56,13 +56,13 @@ bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 
         case QEvent::Show:
 
-        if( QMessageBox* messageBox = qobject_cast<QMessageBox*>( object ) )
+        if( auto messageBox = qobject_cast<QMessageBox*>( object ) )
         {
 
             // try cast to message box and change buttons
             messageBox->setStandardButtons( QMessageBox::Close );
 
-        } else if( QDialogButtonBox* buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
+        } else if( auto buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
 
             // insert separator
             if( QGridLayout* gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
@@ -120,7 +120,7 @@ bool BaseApplication::realizeWidget( void )
 
     // parse user argument
     #if QT_VERSION >= 0x050400
-    const CommandLineParser parser( commandLineParser( _arguments() ) );
+    auto parser( commandLineParser( _arguments() ) );
     if( parser.hasFlag( "--highdpi" ) )
     {
 
@@ -214,7 +214,7 @@ void BaseApplication::_about( void )
     Debug::Throw( "BaseApplication::_about.\n" );
 
     // make sure name is all lower case and starts with upper case.
-    QString name( applicationName() );
+    auto name( applicationName() );
     if( !name.isEmpty() )
     {
         name = name.toLower();
@@ -222,7 +222,7 @@ void BaseApplication::_about( void )
     }
 
     // modify version to remove qt4 for version
-    QString version( applicationVersion() );
+    auto version( applicationVersion() );
     if( version.indexOf( "qt4_" ) >= 0 )
     { version = version.replace( "qt4_", "" ) + " (qt4)"; }
 
@@ -243,7 +243,7 @@ void BaseApplication::_about( void )
 
     QMessageBox dialog;
     dialog.setWindowTitle( QString( tr( "About %1" ).arg( name ) ) );
-    const QIcon icon( applicationIcon() );
+    auto icon( applicationIcon() );
     dialog.setWindowIcon( icon );
 
     QSize size = IconSize( IconSize::Maximum );
@@ -326,7 +326,7 @@ void BaseApplication::_updateFonts( void )
             settings.sync();
 
             // generic font
-            const QString fontName( settings.value( "font" ).toStringList().join( "," ) );
+            auto fontName( settings.value( "font" ).toStringList().join( "," ) );
             QFont font;
             font.fromString( fontName );
             qApp->setFont( font );
@@ -335,7 +335,7 @@ void BaseApplication::_updateFonts( void )
             // fixed fonts
             if( useFixedFonts() )
             {
-                const QString fixedFontName( settings.value( "fixed" ).toStringList().join( "," ) );
+                auto fixedFontName( settings.value( "fixed" ).toStringList().join( "," ) );
                 font.fromString( fixedFontName );
                 Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << fixedFontName << endl;
             }

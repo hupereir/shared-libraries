@@ -76,7 +76,7 @@ bool BaseCoreApplication::initApplicationManager( void )
     qApp->setApplicationName( applicationName() );
 
     // parse arguments
-    const CommandLineParser parser( commandLineParser( arguments_ ) );
+    auto parser( commandLineParser( arguments_ ) );
     if( parser.hasFlag( "--help" ) )
     {
 
