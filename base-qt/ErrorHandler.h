@@ -41,7 +41,7 @@ class ErrorHandler
     static void initialize( void );
 
     //* adds a disabled message in the list
-    void disableMessage( const QString& message )
+    void disableMessage( QString message )
     { disabledMessages_ << message; }
 
     //* adds a disabled message in the list
@@ -56,7 +56,13 @@ class ErrorHandler
     //* constructor
     ErrorHandler( void );
 
-    using MessageList=QStringList;
+    //* copy constructor
+    ErrorHandler( const ErrorHandler& ) = delete;
+
+    //* equal to operator
+    ErrorHandler& operator = ( const ErrorHandler& ) = delete;
+
+    using MessageList = QStringList;
 
     //* disabled message
     const MessageList& _disabledMessages( void ) const
@@ -68,7 +74,7 @@ class ErrorHandler
     #endif
 
     //* check/display Qt error messages
-    /*! qt4 version */
+    /** qt4 version */
     static void _throw( QtMsgType, const char* );
 
     private:

@@ -26,7 +26,6 @@
 //_____________________________________________________________
 void ErrorHandler::initialize( void )
 {
-
     #if QT_VERSION >= 0x050000
     qInstallMessageHandler( _throw );
     #else
@@ -45,14 +44,11 @@ ErrorHandler& ErrorHandler::get( void )
 //_____________________________________________________________
 void ErrorHandler::exit( void )
 {
-
     #if QT_VERSION >= 0x050000
     qInstallMessageHandler( 0 );
     #else
     qInstallMsgHandler( 0 );
     #endif
-
-    clearDisabledMessages();
 }
 
 //_____________________________________________________________
@@ -73,8 +69,6 @@ void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, co
 //_____________________________________________________________
 void ErrorHandler::_throw( QtMsgType type, const char* message )
 {
-    Debug::Throw() << "ErrorHandler::Throw - " << message << endl;
-
     QString localMessage( message );
 
     // check if message is to be disabled
@@ -130,6 +124,7 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "QPainter::end: Painter not active, aborted" );
     disableMessage( "QCoreApplication::postEvent: Unexpected null receiver" );
     disableMessage( "Invalid entry (missing '=')" );
+    disableMessage( "KConfigIni" );
 
     disableMessage( "Qt: Session management error: Could not open network socket" );
 
