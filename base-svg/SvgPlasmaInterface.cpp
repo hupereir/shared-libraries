@@ -62,7 +62,7 @@ namespace Svg
             process.start( Command( kde4ConfigCommand ) << "--path" << "config" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
-                const QStringList configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
+                auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
                 for( const auto& path:configurationPath )
                 { configurationFiles << File( "plasmarc" ).addPath( path ); }
 
@@ -86,7 +86,7 @@ namespace Svg
         }
 
         // add valid configuration files to watcher
-        QStringList oldFiles( fileSystemWatcher_->files() );
+        auto oldFiles( fileSystemWatcher_->files() );
         for( const auto& file:configurationFiles )
         { if( file.exists() && !oldFiles.contains( file ) ) fileSystemWatcher_->addPath( file ); }
 

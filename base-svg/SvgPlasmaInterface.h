@@ -56,7 +56,7 @@ namespace Svg
     { return valid_; }
 
     //* filename
-    const QString& fileName( void ) const
+    QString fileName( void ) const
     { return filename_; }
 
     //* get default theme from configuration file
