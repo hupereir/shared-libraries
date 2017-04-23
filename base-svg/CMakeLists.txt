@@ -21,7 +21,7 @@ else()
 
 endif()
 
-########### aspell ###############
+########### kde config ###############
 if(USE_QT5)
 find_program(KDE4_CONFIG kf5-config)
 else()
