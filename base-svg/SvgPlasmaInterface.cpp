@@ -50,13 +50,11 @@ namespace Svg
     {
 
         File::List configurationFiles;
-
-        // TODO: use kde4-config to get the path of all config files
-        if( XmlOptions::get().contains( "KDE4_CONFIG" ) )
+        if( XmlOptions::get().contains( "KDE_CONFIG" ) )
         {
 
             // get kde4 config command and retrieve output
-            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE4_CONFIG" ) );
+            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
 
             CustomProcess process( this );
             process.start( Command( kde4ConfigCommand ) << "--path" << "config" );
@@ -153,11 +151,11 @@ namespace Svg
         Debug::Throw() << "SvgPlasmaInterface::_setTheme - theme:" << theme << endl;
         File::List themePathList;
 
-        if( XmlOptions::get().contains( "KDE4_CONFIG" ) )
+        if( XmlOptions::get().contains( "KDE_CONFIG" ) )
         {
 
             // get kde4 config command and retrieve output
-            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE4_CONFIG" ) );
+            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
 
             CustomProcess process( this );
             process.start( Command( kde4ConfigCommand ) << "--path" << "data" );

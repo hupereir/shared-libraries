@@ -26,6 +26,12 @@ endif()
 
 # DBUS: is forced to false on APPLE
 
+########### kde config ###############
+find_program(KDE_CONFIG NAMES kf5-config kde4-config)
+
+########### configuration files ###############
+configure_file(ServerSystemOptions.h.cmake ServerSystemOptions.h)
+
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/base)

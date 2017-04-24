@@ -19,10 +19,13 @@
 
 #include "BaseApplication.h"
 #include "BaseIconNames.h"
+#include "Command.h"
+#include "CustomProcess.h"
 #include "File.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "QtUtil.h"
+#include "ServerSystemOptions.h"
 #include "Util.h"
 #include "XmlOptions.h"
 
@@ -94,6 +97,9 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
 {
 
     Debug::Throw( "BaseApplication::BaseApplication.\n" );
+
+    installServerSystemOptions();
+
     connect( this, SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     connect( this, SIGNAL(configurationChanged()), SLOT(_updateFonts()) );
     connect( this, SIGNAL(configurationChanged()), SLOT(_updateIconTheme()) );
@@ -305,19 +311,41 @@ void BaseApplication::_updateFonts( void )
 
     } else {
 
-        QStringList files;
-        files
-            << Util::home() + "/.kde4/share/config/kdeglobals"
-            << Util::home() + "/.kde/share/config/kdeglobals"
-            << Util::home() + "/.config/kdeglobals";
+        File::List configurationFiles;
+        if( XmlOptions::get().contains( "KDE_CONFIG" ) )
+        {
 
-        bool found( false );
-        for( const auto& file:files )
+            // get kde4 config command and retrieve output
+            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
+
+            CustomProcess process( this );
+            process.start( Command( kde4ConfigCommand ) << "--path" << "config" );
+            if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
+            {
+                auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
+                for( const auto& path:configurationPath )
+                { configurationFiles << File( "kdeglobals" ).addPath( path ); }
+
+            }
+
+        }
+
+        if( configurationFiles.isEmpty() )
+        {
+            // add some files manually in case the above failed
+            configurationFiles
+                << File( ".config/kdeglobals" ).addPath( Util::home() )
+                << File( ".kde/share/config/kdeglobals" ).addPath( Util::home() )
+                << File( ".kde4/share/config/kdeglobals" ).addPath( Util::home() );
+        }
+
+        bool fontFound( false );
+        bool fixedFontFound( !useFixedFonts() );
+        for( const auto& file:configurationFiles )
         {
 
             // check file existence
-            if( !File( file ).exists() ) continue;
-            found = true;
+            if( !file.exists() ) continue;
 
             Debug::Throw() << "BaseApplication::_updateFonts - file: " << file << endl;
 
@@ -326,25 +354,35 @@ void BaseApplication::_updateFonts( void )
             settings.sync();
 
             // generic font
-            auto fontName( settings.value( "font" ).toStringList().join( "," ) );
-            QFont font;
-            font.fromString( fontName );
-            qApp->setFont( font );
-            Debug::Throw() << "BaseApplication::_updateFonts - font: " << fontName << endl;
+            if( !fontFound && settings.contains( "font" ) )
+            {
+                auto fontName( settings.value( "font" ).toStringList().join( "," ) );
+                QFont font;
+                font.fromString( fontName );
+                qApp->setFont( font );
+                qApp->setFont( font, "QTextEdit" );
+                qApp->setFont( font, "QPlainTextEdit" );
+                fontFound = true;
+                Debug::Throw() << "BaseApplication::_updateFonts - font: " << fontName << endl;
+            }
 
             // fixed fonts
-            if( useFixedFonts() )
+            if( useFixedFonts() && !fixedFontFound && settings.contains( "fixed" ))
             {
                 auto fixedFontName( settings.value( "fixed" ).toStringList().join( "," ) );
+                QFont font;
                 font.fromString( fixedFontName );
+                fixedFontFound = true;
                 Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << fixedFontName << endl;
+                qApp->setFont( font, "QTextEdit" );
+                qApp->setFont( font, "QPlainTextEdit" );
             }
-            qApp->setFont( font, "QTextEdit" );
-            qApp->setFont( font, "QPlainTextEdit" );
+
+            if( fontFound && fixedFontFound ) break;
 
         }
 
-        if( !found )
+        if( !( fontFound && fixedFontFound ) )
         {
             qApp->setFont( QFont() );
             qApp->setFont( QFont(), "QTextEdit" );

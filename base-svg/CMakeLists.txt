@@ -22,11 +22,7 @@ else()
 endif()
 
 ########### kde config ###############
-if(USE_QT5)
-find_program(KDE4_CONFIG kf5-config)
-else()
-find_program(KDE4_CONFIG kde4-config)
-endif()
+find_program(KDE_CONFIG NAMES kf5-config kde4-config)
 
 ########### configuration files ###############
 configure_file(SvgSystemOptions.h.cmake SvgSystemOptions.h)

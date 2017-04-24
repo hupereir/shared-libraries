@@ -28,7 +28,7 @@
 
 //_____________________________________________________
 //! default options installer
-void installSvgSystemOptions( void )
+void installServerSystemOptions( void )
 {
     XmlOptions::get().setAutoDefault( true );
     XmlOptions::get().set( "KDE_CONFIG", Option( "@KDE_CONFIG@", Option::None ) );
