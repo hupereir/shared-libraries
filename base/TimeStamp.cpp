@@ -65,7 +65,7 @@ QString TimeStamp::toString( TimeStamp::Format format ) const
         return toString( "dd MMM yyyy hh::mm::ss (ddd)" );
 
         case DateTag:
-        return toString( "dd_MM_yy" );
+        return toString( "yyyyMMdd" );
 
         case JobTag:
         return toString( "MMM dd hh:mm" );
