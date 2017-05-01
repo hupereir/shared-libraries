@@ -78,10 +78,7 @@ class TreeView: public QTreeView, public Counter
     { return showHeaderOptionName_; }
 
     //* get mask
-    virtual unsigned int mask( void ) const;
-
-    //* set mask manually
-    virtual void setMask( const unsigned int& );
+    virtual int mask( void ) const;
 
     //* item margin
     virtual int itemMargin( void ) const
@@ -163,6 +160,9 @@ class TreeView: public QTreeView, public Counter
 
     //* restore scrollbar position
     void restoreScrollBarPosition( void );
+
+    //* set mask manually
+    virtual void setMask( int );
 
     //@}
 
@@ -246,7 +246,7 @@ class TreeView: public QTreeView, public Counter
     { resizeColumns( mask() ); }
 
     //* resize all visible columns to match contents
-    virtual void resizeColumns( const unsigned int& mask );
+    virtual void resizeColumns( int mask );
 
     //* toggle show header
     virtual void toggleShowHeader( bool value );
@@ -437,7 +437,7 @@ class TreeView: public QTreeView, public Counter
     int horizontal_ = 0;
 
     //* locked columns
-    unsigned lockedColumns_ = 0;
+    int lockedColumns_ = 0;
 
     friend class Container;
 

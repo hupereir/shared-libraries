@@ -49,7 +49,7 @@ TreeView::TreeView( QWidget* parent ):
 
     // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
-    TreeViewItemDelegate* delegate = new TreeViewItemDelegate( this );
+    auto delegate = new TreeViewItemDelegate( this );
     setItemDelegate( delegate );
 
     // actions
@@ -153,7 +153,7 @@ TextSelection TreeView::selection( void ) const
     Debug::Throw( "TreeView::selection.\n" );
 
     // copy last selection
-    TextSelection out( "" );
+    TextSelection out;
     out.setFlag( TextSelection::CaseSensitive, TextEditor::lastSelection().flag( TextSelection::CaseSensitive ) );
     out.setFlag( TextSelection::EntireWord, TextEditor::lastSelection().flag( TextSelection::EntireWord ) );
 
@@ -277,17 +277,17 @@ bool TreeView::setOptionName( const QString& value )
 }
 
 //_______________________________________________
-unsigned int TreeView::mask( void ) const
+int TreeView::mask( void ) const
 {
     Debug::Throw( "TreeView::mask.\n" );
-    unsigned int mask = 0;
+    int mask = 0;
     for( int index=0; model() && index < model()->columnCount(); index++ )
-        if( !isColumnHidden( index ) ) mask |= (1<<index);
+    { if( !isColumnHidden( index ) ) mask |= (1<<index); }
     return mask;
 }
 
 //_______________________________________________
-void TreeView::setMask( const unsigned int& mask )
+void TreeView::setMask( int mask )
 {
 
     Debug::Throw( "TreeView::setMask.\n" );
@@ -322,7 +322,7 @@ void TreeView::restoreScrollBarPosition( void )
 }
 
 //______________________________________________________
-void TreeView::resizeColumns( const unsigned int& mask )
+void TreeView::resizeColumns( int mask )
 {
 
     // if no items present, do nothing
@@ -353,7 +353,7 @@ void TreeView::updateMask( void )
     if( !XmlOptions::get().contains( maskOptionName() ) ) return;
 
     // assign mask from options
-    setMask( XmlOptions::get().get<unsigned int>( maskOptionName() ) );
+    setMask( XmlOptions::get().get<int>( maskOptionName() ) );
     resizeColumns();
 
 }
@@ -364,7 +364,7 @@ void TreeView::saveMask( void )
 
     Debug::Throw( "TreeView::saveMask.\n" );
     if( !hasOptionName() ) return;
-    XmlOptions::get().set<unsigned int>( maskOptionName(), mask() );
+    XmlOptions::get().set<int>( maskOptionName(), mask() );
 
 }
 
@@ -455,7 +455,7 @@ void TreeView::restoreSelectedIndexes( void )
     if( selectionModel() )
     {
 
-        const QModelIndexList selection( model_->selectedIndexes() );
+        auto selection( model_->selectedIndexes() );
 
         selectionModel()->clear();
         for( const auto& index:selection )
@@ -488,7 +488,7 @@ void TreeView::storeExpandedIndexes( void )
 void TreeView::restoreExpandedIndexes( void )
 {
 
-    QModelIndexList indexes( model_->expandedIndexes() );
+    auto indexes( model_->expandedIndexes() );
 
     collapseAll();
     for( const auto& index:indexes )
@@ -528,7 +528,7 @@ void TreeView::mouseMoveEvent( QMouseEvent *event )
 
         // when mouse tracking is no, need to intercept mouseMoveEvents
         // because they break drag and drop
-        _setHoverIndex( indexAt(( event->pos() ) ) );
+        _setHoverIndex( indexAt( event->pos() ) );
 
     } else {
 
