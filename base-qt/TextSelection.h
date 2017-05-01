@@ -45,8 +45,8 @@ class TextSelection
 
     //* default constructor
     TextSelection(
-        const QString& text = "",
-        const QString& replaceText = "",
+        const QString& text = QString(),
+        const QString& replaceText = QString(),
         Flags flags = None ):
         text_( text ),
         replaceText_( replaceText ),
