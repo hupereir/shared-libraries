@@ -101,6 +101,7 @@ set(base_qt_SOURCES
   CursorMonitor.cpp
   CustomComboBox.cpp
   CustomDialog.cpp
+  CustomMenu.cpp
   CustomPixmap.cpp
   CustomSlider.cpp
   CustomTextDocument.cpp

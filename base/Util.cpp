@@ -90,7 +90,7 @@ QString Util::windowTitle( const QString& title )
 
     QString host( Util::host() );
     if( host.contains( "localhost" ) ) return title;
-    else return QString( "%1 [%2]" ).arg( title ).arg( host );
+    else return QString( "%1 [%2]" ).arg( title, host );
 
     return title;
 

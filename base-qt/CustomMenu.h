@@ -1,6 +1,5 @@
-#ifndef QuestionDialog_h
-#define QuestionDialog_h
-
+#ifndef CustomMenu_h
+#define CustomMenu_h
 
 /******************************************************************************
 *
@@ -21,39 +20,55 @@
 *
 *******************************************************************************/
 
-#include "DetailsDialog.h"
 #include "Counter.h"
+#include "WeakPointer.h"
 
-#include <QString>
-#include <QLabel>
+#include <QAction>
+#include <QKeyEvent>
+#include <QMenu>
+#include <QList>
 
-//* simplified question dialog
-class QuestionDialog: public DetailsDialog
+
+//* some basic runtime debuging
+class CustomMenu: public QMenu, public Counter
 {
+
+    //* Qt meta object declaration
+    Q_OBJECT
 
     public:
 
     //* constructor
-    QuestionDialog( QWidget*, const QString& = QString() );
+    CustomMenu( QWidget* = nullptr );
+
+    //* constructor
+    CustomMenu( const QString&, QWidget* = nullptr );
 
     //*@name modifiers
     //@{
 
-    //* set text
-    void setText( const QString& );
+    //* add actions that become visible only when pressing the shift key
+    void addInvisibleAction( QAction* );
+
+    //* clear
+    void clear( void );
 
     //@}
 
     protected:
 
-    //* label
-    QLabel& _label( void ) const
-    { return *label_; }
+    //* key press
+    void keyPressEvent( QKeyEvent* ) override;
+
+    //* key release
+    void keyReleaseEvent( QKeyEvent* ) override;
 
     private:
 
-    //* main label
-    QLabel *label_ = nullptr;
+    //* action list
+    using ActionPointer=Base::WeakPointer<QAction>;
+    using ActionList=QList<ActionPointer>;
+    ActionList invisibleActions_;
 
 };
 

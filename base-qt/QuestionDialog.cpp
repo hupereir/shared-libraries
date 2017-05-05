@@ -31,12 +31,12 @@ QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
     Debug::Throw( "QuestionDialog::QuestionDialog\n" );
 
     // try load Question icon
-    QHBoxLayout *hLayout( new QHBoxLayout() );
+    auto hLayout( new QHBoxLayout() );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);
     mainLayout().addLayout( hLayout );
 
-    QLabel* label = new QLabel( this );
+    auto label = new QLabel( this );
     label->setPixmap( IconEngine::get( IconNames::DialogWarning ).pixmap( iconSize() ) );
     hLayout->addWidget( label, 0 );
     hLayout->addWidget( label_ = new QLabel( this ), 1 );

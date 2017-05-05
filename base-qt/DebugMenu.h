@@ -23,7 +23,6 @@
 #include "Counter.h"
 
 #include <QMenu>
-#include <QDialog>
 
 class CounterDialog;
 class IconCacheDialog;

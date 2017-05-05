@@ -20,8 +20,11 @@
 *
 *******************************************************************************/
 
+#if QT_VERSION >= 0x050000
 #include <QPointer>
+#else
 #include <QWeakPointer>
+#endif
 
 namespace Base
 {
