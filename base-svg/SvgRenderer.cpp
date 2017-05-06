@@ -40,6 +40,10 @@ namespace Svg
     bool SvgRenderer::load( QString filename )
     {
 
+        #if WITH_ZLIB
+
+        // when zlib is available we try to uncompress the file manually before passing to QSvgRenderer
+        // this will allow to alter the file and in particular to change colors using current palette.
         QFile in( filename );
         in.open( QIODevice::ReadOnly );
         if( !( in.isOpen() && in.isReadable() ) ) return false;
@@ -48,17 +52,18 @@ namespace Svg
         if( content.isEmpty() )
         {
 
-            Debug::Throw(0) << "Svg::SvgRenderer::load - failed to uncompressed file " << filename << endl;
             in.seek(0);
             content = in.readAll();
-
-        } else {
-
-            Debug::Throw(0) << "Svg::SvgRenderer::load - sucessfully uncompressed file " << filename << endl;
 
         }
 
         bool loaded( QSvgRenderer::load( content ) );
+
+        #else
+
+        bool loaded( QSvgRenderer::load( file ) );
+
+        #endif
 
         if( loaded )
         {
@@ -177,15 +182,7 @@ namespace Svg
         stream.avail_in = 0;
         stream.next_in = nullptr;
 
-        if( inflateInit2(&stream, MAX_WBITS + 16) != Z_OK)
-        {
-            QTextStream(stdout)
-                << "Failed to initialize decompression stream - error: "
-                << (stream.msg ? stream.msg:"unknown")
-                << endl;
-            return out;
-        }
-
+        if( inflateInit2(&stream, MAX_WBITS + 16) != Z_OK) return out;
 
         // read chunks of max size chunksize from input source
         const int chunkSize = 16384;
@@ -223,10 +220,6 @@ namespace Svg
                     case Z_MEM_ERROR:
                     {
                         inflateEnd( &stream );
-                        QTextStream(stdout)
-                            << "Error while inflating gzip file. Error: "
-                            << (stream.msg ? stream.msg : "unknown" )
-                            << endl;
                         out.chop(stream.avail_out);
                         return out;
                     }
@@ -288,10 +281,10 @@ namespace Svg
         if( !QSvgRenderer::isValid() ) return false;
 
         // make sure needed elements are present
-        if( (mask & Top) && !elementExists( prefix+Svg::MarginTop ) ) return false;
-        if( (mask & Left) && !elementExists( prefix+Svg::MarginLeft ) ) return false;
-        if( (mask & Right) && !elementExists( prefix+Svg::MarginRight ) ) return false;
-        if( (mask & Bottom) && !elementExists( prefix+Svg::MarginBottom ) ) return false;
+        if( (mask & Top) && !elementExists( prefix + Svg::MarginTop ) ) return false;
+        if( (mask & Left) && !elementExists( prefix + Svg::MarginLeft ) ) return false;
+        if( (mask & Right) && !elementExists( prefix + Svg::MarginRight ) ) return false;
+        if( (mask & Bottom) && !elementExists( prefix + Svg::MarginBottom ) ) return false;
         return true;
 
     }
