@@ -27,11 +27,11 @@
 #include <QMutexLocker>
 #include <QThread>
 
-//! used to post a new grid when ready
+//* used to post a new grid when ready
 namespace Svg
 {
 
-    //! independent thread used to automatically save file
+    //* independent thread used to automatically save file
     class SvgThread: public QThread
     {
 
@@ -39,17 +39,17 @@ namespace Svg
 
         public:
 
-        //! constructor
+        //* constructor
         SvgThread( QObject* );
 
-        //! svg file
-        void setSvgFile( const QString& file )
+        //* svg file
+        void setSvgFile( QString file )
         {
             QMutexLocker lock( &mutex_ );
             svg_.load( file );
         }
 
-        //! set file
+        //* set file
         void setSvgIdList( const SvgId::List& svgIds )
         {
             QMutexLocker lock( &mutex_ );
@@ -58,26 +58,26 @@ namespace Svg
 
         Q_SIGNALS:
 
-        //! image cache available
-        void imageCacheAvailable( const Svg::ImageCache& );
+        //* image cache available
+        void imageCacheAvailable( Svg::ImageCache );
 
         protected:
 
-        //! Check files validity. Post a SvgEvent when finished
+        //* Check files validity. Post a SvgEvent when finished
         virtual void run( void );
 
         private:
 
-        //! mutex
+        //* mutex
         QMutex mutex_;
 
-        //! svg renderer
+        //* svg renderer
         SvgRenderer svg_;
 
-        //! requested sizes
+        //* requested sizes
         SvgId::List svgIds_;
 
-        //! image cache
+        //* image cache
         ImageCache cache_;
 
     };

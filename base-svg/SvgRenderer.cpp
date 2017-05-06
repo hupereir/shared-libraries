@@ -23,6 +23,10 @@
 
 #include <QPainter>
 
+#if WITH_ZLIB
+#include <zlib.h>
+#endif
+
 namespace Svg
 {
 
@@ -33,44 +37,64 @@ namespace Svg
     {}
 
     //________________________________________________
-    bool SvgRenderer::load( const QString& filename )
+    bool SvgRenderer::load( QString filename )
     {
-      bool loaded( QSvgRenderer::load( filename ) );
-      if( loaded )
-      {
-        isValid_ = _hasPrefix();
-        if( !_hasMargins() )
+
+        QFile in( filename );
+        in.open( QIODevice::ReadOnly );
+        if( !( in.isOpen() && in.isReadable() ) ) return false;
+
+        auto content = _tryUncompress( in );
+        if( content.isEmpty() )
         {
-            hasShadowMargins_ = _hasMargins( "shadow" );
-            hasShadowPrefix_ = _hasPrefix( "shadow", Ring );
-            hasShadow_ = hasShadowMargins_ && hasShadowPrefix_;
+
+            Debug::Throw(0) << "Svg::SvgRenderer::load - failed to uncompressed file " << filename << endl;
+            in.seek(0);
+            content = in.readAll();
+
+        } else {
+
+            Debug::Throw(0) << "Svg::SvgRenderer::load - sucessfully uncompressed file " << filename << endl;
+
         }
 
-        hasOverlay_ = elementExists( Svg::Overlay );
+        bool loaded( QSvgRenderer::load( content ) );
 
-        // centering hints
-        overlayHints_ = OverlayNone;
-        if( elementExists( "hint-overlay-pos-right" ) ) overlayHints_ |= OverlayPosRight;
-        if( elementExists( "hint-overlay-pos-bottom" ) ) overlayHints_ |= OverlayPosBottom;
+        if( loaded )
+        {
+            isValid_ = _hasPrefix();
+            if( !_hasMargins() )
+            {
+                hasShadowMargins_ = _hasMargins( "shadow" );
+                hasShadowPrefix_ = _hasPrefix( "shadow", Ring );
+                hasShadow_ = hasShadowMargins_ && hasShadowPrefix_;
+            }
 
-        if( elementExists( "hint-overlay-stretch") ) overlayHints_ |= OverlayStretch;
-        else if( elementExists( "hint-overlay-tile-horizontal" ) ) overlayHints_ |= OverlayTileHorizontal;
-        else if( elementExists( "hint-overlay-tile-vertical") ) overlayHints_ |= OverlayTileVertical;
+            hasOverlay_ = elementExists( Svg::Overlay );
 
-        hints_ = HintNone;
-        if( elementExists( "hint-compose-over-border" ) ) hints_ = HintComposeOverBorder;
+            // centering hints
+            overlayHints_ = OverlayNone;
+            if( elementExists( "hint-overlay-pos-right" ) ) overlayHints_ |= OverlayPosRight;
+            if( elementExists( "hint-overlay-pos-bottom" ) ) overlayHints_ |= OverlayPosBottom;
 
-        if( _hasPrefix( "mask-overlay" ) ) maskPrefix_ = "mask-overlay";
-        else if( _hasPrefix( "mask" ) ) maskPrefix_ = "mask";
-        else maskPrefix_ = QString();
+            if( elementExists( "hint-overlay-stretch") ) overlayHints_ |= OverlayStretch;
+            else if( elementExists( "hint-overlay-tile-horizontal" ) ) overlayHints_ |= OverlayTileHorizontal;
+            else if( elementExists( "hint-overlay-tile-vertical") ) overlayHints_ |= OverlayTileVertical;
 
-      } else {
+            hints_ = HintNone;
+            if( elementExists( "hint-compose-over-border" ) ) hints_ = HintComposeOverBorder;
 
-        isValid_ = false;
+            if( _hasPrefix( "mask-overlay" ) ) maskPrefix_ = "mask-overlay";
+            else if( _hasPrefix( "mask" ) ) maskPrefix_ = "mask";
+            else maskPrefix_ = QString();
 
-      }
+        } else {
 
-      return loaded;
+            isValid_ = false;
+
+        }
+
+        return loaded;
 
     }
 
@@ -84,7 +108,7 @@ namespace Svg
     }
 
     //________________________________________________
-    void SvgRenderer::render( QPaintDevice& device, const QString& id )
+    void SvgRenderer::render( QPaintDevice& device, QString id )
     {
 
         // check device size
@@ -133,6 +157,98 @@ namespace Svg
         }
 
         return;
+
+    }
+
+    //________________________________________________
+    QByteArray SvgRenderer::_tryUncompress( QIODevice& in ) const
+    {
+
+        QByteArray out;
+        if( !( in.isOpen() && in.isReadable() ) ) return out;
+
+        #if WITH_ZLIB
+
+        // initialize zlib stream
+        z_stream stream;
+        stream.zalloc = nullptr;
+        stream.zfree = nullptr;
+        stream.opaque = nullptr;
+        stream.avail_in = 0;
+        stream.next_in = nullptr;
+
+        if( inflateInit2(&stream, MAX_WBITS + 16) != Z_OK)
+        {
+            QTextStream(stdout)
+                << "Failed to initialize decompression stream - error: "
+                << (stream.msg ? stream.msg:"unknown")
+                << endl;
+            return out;
+        }
+
+
+        // read chunks of max size chunksize from input source
+        const int chunkSize = 16384;
+        forever
+        {
+
+            // read chunk from input and store in stream
+            auto source = in.read( chunkSize );
+            if( source.isEmpty() )
+            {
+                out.chop(stream.avail_out);
+                break;
+            }
+
+            stream.avail_in = source.size();
+            stream.next_in = reinterpret_cast<Bytef*>(source.data());
+
+            // uncompress chunk and append to output stream
+            int result = Z_OK;
+            do
+            {
+
+                // prepare destination buffer
+                auto size = out.size();
+                out.resize( size+chunkSize );
+                stream.avail_out = chunkSize;
+                stream.next_out = reinterpret_cast<Bytef*>(out.data() + size);
+
+                result = inflate(&stream, Z_NO_FLUSH);
+                switch( result )
+                {
+                    case Z_NEED_DICT:
+                    case Z_DATA_ERROR:
+                    case Z_STREAM_ERROR:
+                    case Z_MEM_ERROR:
+                    {
+                        inflateEnd( &stream );
+                        QTextStream(stdout)
+                            << "Error while inflating gzip file. Error: "
+                            << (stream.msg ? stream.msg : "unknown" )
+                            << endl;
+                        out.chop(stream.avail_out);
+                        return out;
+                    }
+                }
+
+
+            } while( stream.avail_out == 0 );
+
+            // Chop off trailing space in the buffer
+            out.chop(stream.avail_out);
+
+            if( result == Z_STREAM_END )
+            {
+                // Make sure there are no more members to process before exiting
+                if( !(stream.avail_in && inflateReset(&stream) == Z_OK ) ) break;
+            }
+
+        }
+
+        inflateEnd(&stream);
+        #endif
+        return out;
 
     }
 

@@ -44,18 +44,17 @@ namespace Svg
         //* retrieve singleton
         static SvgEngine& get( void );
 
+        //*@name accessors
+        //@{
+
         //* create pixmap
         /** the size is stored into a cache to avoid duplicate pixmaps manipulations */
-        static const QPixmap& get( SvgId id )
+        static QPixmap get( SvgId id )
         { return get()._get( id ); }
 
         //* is valid
         bool isValid( void ) const
-        { return svg_.isValid(); }
-
-        //* preload sizes
-        /** uses a separate thread, in order not to slow down application */
-        void preload( const SvgId::List& );
+        { return renderer_.isValid(); }
 
         //* margins
         Base::Margins margins( void ) const
@@ -65,6 +64,14 @@ namespace Svg
         Base::Margins outerPadding( void ) const
         { return outerPadding_; }
 
+        //@}
+
+        //*@name modifiers
+        //@{
+
+        /** uses a separate thread, in order not to slow down application */
+        void preload( const SvgId::List& );
+
         Q_SIGNALS:
 
         //* emitted when svg files are changed
@@ -72,7 +79,7 @@ namespace Svg
 
         public Q_SLOTS:
 
-       //* reload all icons set in cache from new path list
+        //* reload all icons set in cache from new path list
         /** return true if changed */
         bool forceReload( void )
         { return reload( true ); }
@@ -99,7 +106,7 @@ namespace Svg
 
         //* create icon
         /** the file is stored into a cache to avoid all pixmaps manipulations */
-        const QPixmap& _get( const SvgId&, bool from_cache = true );
+        QPixmap _get( const SvgId&, bool fromCache = true );
 
         //@}
 
@@ -121,7 +128,7 @@ namespace Svg
         QString svgFile_;
 
         //* svg renderer
-        SvgRenderer svg_;
+        SvgRenderer renderer_;
 
         //* map size and pixmap
         PixmapCache cache_;
@@ -129,7 +136,10 @@ namespace Svg
         //* thread preload sizes
         SvgThread thread_;
 
+        //* margins
         Base::Margins margins_;
+
+        //* outer padding
         Base::Margins outerPadding_;
 
     };

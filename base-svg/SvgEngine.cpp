@@ -36,15 +36,14 @@ namespace Svg
 
     //__________________________________________________________
     SvgEngine::SvgEngine( void ):
-        plasmaInterface_( 0 ),
         thread_( this )
-    { connect( &thread_, SIGNAL(imageCacheAvailable(const Svg::ImageCache&)), this, SLOT(_processImageCache(const Svg::ImageCache&)) ); }
+    { connect( &thread_, SIGNAL(imageCacheAvailable(Svg::ImageCache)), this, SLOT(_processImageCache(Svg::ImageCache)) ); }
 
     //__________________________________________________________
     bool SvgEngine::reload( bool forced )
     {
 
-        bool configurationChanged( svg_.updateConfiguration() );
+        bool configurationChanged( renderer_.updateConfiguration() );
         bool fileChanged( _loadSvg( forced ) );
         if( !isValid() )
         {
@@ -64,8 +63,8 @@ namespace Svg
             preload( svgIdList );
 
             // update margins and outer padding
-            margins_ = svg_.margins();
-            outerPadding_ = svg_.outerPadding();
+            margins_ = renderer_.margins();
+            outerPadding_ = renderer_.outerPadding();
 
             emit SvgEngine::changed();
             return true;
@@ -76,15 +75,15 @@ namespace Svg
     }
 
     //__________________________________________________________
-    void SvgEngine::preload( const SvgId::List& svg_ids )
+    void SvgEngine::preload( const SvgId::List& ids )
     {
 
-        if( svg_ids.empty() ) return;
+        if( ids.empty() ) return;
         if( !isValid() ) return;
         if( thread_.isRunning() ) return;
 
         thread_.setSvgFile( svgFile_ );
-        thread_.setSvgIdList( svg_ids );
+        thread_.setSvgIdList( ids );
         thread_.start();
 
     }
@@ -99,16 +98,16 @@ namespace Svg
     }
 
     //__________________________________________________________
-    const QPixmap& SvgEngine::_get( const SvgId& id, bool fromCache )
+    QPixmap SvgEngine::_get( const SvgId& id, bool fromCache )
     {
 
-        PixmapCache::iterator iter( cache_.find( id ) );
+        auto&& iter( cache_.find( id ) );
         if( iter != cache_.end() ) return iter.value();
 
         // add to map
         QPixmap pixmap( id.size() );
         pixmap.fill( Qt::transparent );
-        svg_.render( pixmap, id.id() );
+        renderer_.render( pixmap, id.id() );
 
         return cache_.insert( id, pixmap ).value();
 
@@ -135,8 +134,8 @@ namespace Svg
             if( _plasmaInterface().isValid() )
             {
                 QString file( _plasmaInterface().fileName() );
-                svg_.load( QString( file ) );
-                if( svg_.isValid() )
+                renderer_.load( QString( file ) );
+                if( renderer_.isValid() )
                 {
 
                     changed = ( svgFile_ != file );
@@ -152,8 +151,8 @@ namespace Svg
         for( const auto& option:XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) )
         {
             QString file( option.raw() );
-            svg_.load( QString( file ) );
-            if( svg_.isValid() )
+            renderer_.load( QString( file ) );
+            if( renderer_.isValid() )
             {
                 changed = ( svgFile_ != file );
                 svgFile_ = file;
@@ -162,7 +161,7 @@ namespace Svg
             }
         }
 
-        if( !found )  svg_.load( QString() );
+        if( !found )  renderer_.load( QString() );
 
         return changed || forced;
 

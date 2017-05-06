@@ -23,8 +23,10 @@
 #include "Counter.h"
 #include "Margins.h"
 
-#include <QSvgRenderer>
+#include <QByteArray>
+#include <QIODevice>
 #include <QPaintDevice>
+#include <QSvgRenderer>
 
 //* construct pixmap of given size using Svg renderer
 namespace Svg
@@ -36,25 +38,6 @@ namespace Svg
 
         //* constructor
         SvgRenderer( void );
-
-        //* render
-        void render( QPaintDevice&, const QString& id = QString() );
-
-        //* validity
-        virtual bool isValid( void ) const
-        { return isValid_; }
-
-        //* configuration
-        bool updateConfiguration( void );
-
-        //* load file
-        virtual bool load( const QString& );
-
-        //* margins
-        Base::Margins margins( void ) const;
-
-        //* outer padding
-        Base::Margins outerPadding( void ) const;
 
         // svg element enumeration
         enum SvgElement
@@ -74,7 +57,40 @@ namespace Svg
 
         Q_DECLARE_FLAGS( SvgElements, SvgElement );
 
+        //*@name accessors
+        //@{
+
+        //* validity
+        virtual bool isValid( void ) const
+        { return isValid_; }
+
+        //* margins
+        Base::Margins margins( void ) const;
+
+        //* outer padding
+        Base::Margins outerPadding( void ) const;
+
+        //@}
+
+        //*@name modifiers
+        //@{
+
+
+        //* configuration
+        bool updateConfiguration( void );
+
+        //* load file
+        virtual bool load( QString );
+
+        //* render
+        void render( QPaintDevice&, QString id = QString() );
+
+        //@}
+
         protected:
+
+        //* uncompress (gzip) input
+        QByteArray _tryUncompress( QIODevice& ) const;
 
         //* true if svg has all elements matching prefix
         bool _hasPrefix( QString prefix = QString(), SvgElements = All ) const;
