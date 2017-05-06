@@ -24,6 +24,25 @@ endif()
 ########### kde config ###############
 find_program(KDE_CONFIG NAMES kf5-config kde4-config)
 
+########### zlib ###############
+find_package(PkgConfig)
+if(${PKG_CONFIG_FOUND})
+
+  pkg_check_modules(ZLIB zlib )
+
+endif()
+
+if(ZLIB_FOUND)
+
+  include_directories(${ZLIB_INCLUDE_DIRS})
+  add_definitions(-DWITH_ZLIB=${ZLIB_FOUND})
+
+else()
+
+  add_definitions(-DWITH_ZLIB=FALSE)
+
+endif()
+
 ########### configuration files ###############
 configure_file(SvgSystemOptions.h.cmake SvgSystemOptions.h)
 
@@ -71,6 +90,12 @@ else()
 endif()
 
 target_link_libraries(base-svg ${QT_LIBRARIES} base-transparency)
+
+if( ZLIB_FOUND )
+
+  target_link_libraries(base-svg ${ZLIB_LIBRARIES})
+
+endif()
 
 if(USE_QT5)
 
