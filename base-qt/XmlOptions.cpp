@@ -140,7 +140,7 @@ bool XmlOptions::write( void )
     if( !singleton_.differs( options ) ) return true;
 
     // create main element
-    QDomElement top = document.createElement( Base::Xml::Options ).toElement();
+    auto top = document.createElement( Base::Xml::Options ).toElement();
 
     // write options
     for( auto&& iter = singleton_.options_.specialOptions().begin(); iter != singleton_.options_.specialOptions().end(); ++iter )
