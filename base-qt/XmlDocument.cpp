@@ -75,7 +75,7 @@ void XmlDocument::replaceChild( QDomElement& element )
     }
 
     // find previous options element
-    QDomNodeList children( elementsByTagName( element.tagName() ) );
+    auto&& children( elementsByTagName( element.tagName() ) );
     if( !children.isEmpty() )
     {
 
