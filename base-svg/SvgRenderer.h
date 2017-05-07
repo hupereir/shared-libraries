@@ -26,6 +26,7 @@
 #include <QByteArray>
 #include <QIODevice>
 #include <QPaintDevice>
+#include <QPalette>
 #include <QSvgRenderer>
 
 //* construct pixmap of given size using Svg renderer
@@ -61,7 +62,7 @@ namespace Svg
         //@{
 
         //* validity
-        virtual bool isValid( void ) const
+        bool isValid( void ) const
         { return isValid_; }
 
         //* margins
@@ -79,8 +80,11 @@ namespace Svg
         //* configuration
         bool updateConfiguration( void );
 
+        //* generate style sheet
+        void createStyleSheet( QPalette );
+
         //* load file
-        virtual bool load( QString );
+        bool load( QString );
 
         //* render
         void render( QPaintDevice&, QString id = QString() );
@@ -142,7 +146,8 @@ namespace Svg
         OverlayHints overlayHints_ = OverlayNone;
 
         //* painting hints
-        enum Hint {
+        enum Hint
+        {
             HintNone,
             HintComposeOverBorder,
         };
@@ -152,6 +157,9 @@ namespace Svg
 
         //* prefix for loading mask
         QString maskPrefix_;
+
+        //* style sheet
+        QString styleSheet_;
 
     };
 

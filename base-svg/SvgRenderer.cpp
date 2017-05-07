@@ -22,6 +22,7 @@
 #include "XmlOptions.h"
 
 #include <QPainter>
+#include <QDomDocument>
 
 #if WITH_ZLIB
 #include <zlib.h>
@@ -35,6 +36,41 @@ namespace Svg
         QSvgRenderer(),
         Counter( "Svg::SvgRendered" )
     {}
+
+
+    //________________________________________________
+    bool SvgRenderer::updateConfiguration( void )
+    {
+        bool drawOverlay( XmlOptions::get().get<bool>( "SVG_DRAW_OVERLAY" ) );
+        if( drawOverlay == drawOverlay_ ) return false;
+        drawOverlay_ = drawOverlay;
+        return true;
+    }
+
+    //________________________________________________
+    void SvgRenderer::createStyleSheet( QPalette palette )
+    {
+        palette.setCurrentColorGroup( QPalette::Active );
+        styleSheet_.clear();
+
+        auto addColor = [](QString name, QColor color )
+        { return QString( ".ColorScheme-%1 {\n  color:%2;\n  stop-color:%2;\n}\n" ).arg( name, color.name()); };
+
+        styleSheet_ += addColor( "Text", palette.color( QPalette::WindowText ) );
+        styleSheet_ += addColor( "Background", palette.color( QPalette::Window ) );
+        styleSheet_ += addColor( "Highlight", palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( "ViewText", palette.color( QPalette::Text ) );
+        styleSheet_ += addColor( "ViewBackground", palette.color( QPalette::Base ) );
+        styleSheet_ += addColor( "ViewHover", palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( "ViewFocus", palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( "ButtonText", palette.color( QPalette::ButtonText ) );
+        styleSheet_ += addColor( "ButtonBackground", palette.color( QPalette::Button ) );
+        styleSheet_ += addColor( "ButtonHover", palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( "ButtonFocus", palette.color( QPalette::Highlight ) );
+
+        // Debug::Throw(0) << "SvgRenderer::createStyleSheet - styleSheet: " << styleSheet_ << endl;
+
+    }
 
     //________________________________________________
     bool SvgRenderer::load( QString filename )
@@ -54,6 +90,38 @@ namespace Svg
 
             in.seek(0);
             content = in.readAll();
+
+        }
+
+        // update stylesheet
+        if( !styleSheet_.isEmpty() && content.contains( "current-color-scheme" ) )
+        {
+            QDomDocument document;
+            document.setContent( content );
+
+            // create new style element
+            QDomElement element = document.createElement( QLatin1String( "style" ) );
+            element.setAttribute( QLatin1String( "type" ), QLatin1String( "text/css" ) );
+            element.setAttribute( QLatin1String( "id" ), QLatin1String( "current-color-scheme" ) );
+            element.appendChild( document.createTextNode( styleSheet_ ) );
+
+            // find child in document
+            auto&& children( document.elementsByTagName( element.tagName() ) );
+            bool replaced( false );
+            for( int i = 0; i < children.size() && !replaced; ++i )
+            {
+
+                auto&& child( children.at(i) );
+                if( child.toElement().attribute( QLatin1String( "id" ) ) == QLatin1String( "current-color-scheme" ) )
+                {
+                    auto parent( child.parentNode() );
+                    parent.replaceChild( element, child );
+                    replaced = true;
+                    break;
+                }
+            }
+
+            if( replaced ) content = document.toByteArray();
 
         }
 
@@ -101,15 +169,6 @@ namespace Svg
 
         return loaded;
 
-    }
-
-    //________________________________________________
-    bool SvgRenderer::updateConfiguration( void )
-    {
-        bool drawOverlay( XmlOptions::get().get<bool>( "SVG_DRAW_OVERLAY" ) );
-        if( drawOverlay == drawOverlay_ ) return false;
-        drawOverlay_ = drawOverlay;
-        return true;
     }
 
     //________________________________________________

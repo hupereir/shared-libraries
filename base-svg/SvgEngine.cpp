@@ -43,6 +43,9 @@ namespace Svg
     bool SvgEngine::reload( bool forced )
     {
 
+        QPalette palette;
+        renderer_.createStyleSheet( palette );
+        thread_.createStyleSheet( palette );
         bool configurationChanged( renderer_.updateConfiguration() );
         bool fileChanged( _loadSvg( forced ) );
         if( !isValid() )

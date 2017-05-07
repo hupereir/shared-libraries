@@ -38,10 +38,10 @@ namespace Svg
     void SvgThread::run( void )
     {
 
-        if( !svg_.isValid() ) return;
+        if( !renderer_.isValid() ) return;
         if( svgIds_.empty() ) return;
 
-        svg_.updateConfiguration();
+        renderer_.updateConfiguration();
         cache_.clear();
 
         for( const auto& svg:svgIds_ )
@@ -49,7 +49,7 @@ namespace Svg
 
             QImage image( svg.size(), QImage::Format_ARGB32_Premultiplied );
             image.fill( Qt::transparent );
-            svg_.render( image, svg.id() );
+            renderer_.render( image, svg.id() );
             cache_.insert( svg, image );
 
         }

@@ -25,6 +25,7 @@
 
 #include <QMutex>
 #include <QMutexLocker>
+#include <QPalette>
 #include <QThread>
 
 //* used to post a new grid when ready
@@ -42,11 +43,18 @@ namespace Svg
         //* constructor
         SvgThread( QObject* );
 
+        //* create style sheet
+        void createStyleSheet( QPalette palette )
+        {
+            QMutexLocker lock( &mutex_ );
+            renderer_.createStyleSheet( palette );
+        }
+
         //* svg file
         void setSvgFile( QString file )
         {
             QMutexLocker lock( &mutex_ );
-            svg_.load( file );
+            renderer_.load( file );
         }
 
         //* set file
@@ -72,7 +80,7 @@ namespace Svg
         QMutex mutex_;
 
         //* svg renderer
-        SvgRenderer svg_;
+        SvgRenderer renderer_;
 
         //* requested sizes
         SvgId::List svgIds_;
