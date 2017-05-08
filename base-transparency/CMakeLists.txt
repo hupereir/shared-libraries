@@ -10,7 +10,6 @@ set(BASE_TRANSPARENCY_SOVERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSP
 if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5Network REQUIRED)
 
 else()
 
@@ -70,6 +69,6 @@ target_link_libraries(base-transparency ${QT_LIBRARIES} base-qt)
 
 if(USE_QT5)
 
-  target_link_libraries(base-transparency Qt5::Widgets Qt5::Network)
+  target_link_libraries(base-transparency Qt5::Widgets)
 
 endif()

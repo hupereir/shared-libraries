@@ -10,7 +10,6 @@ set(BASE_SPELLCHECK_SOVERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK
 if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5Network REQUIRED)
 
 else()
 
@@ -66,6 +65,6 @@ target_link_libraries(base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base b
 
 if(USE_QT5)
 
-  target_link_libraries(base-spellcheck Qt5::Widgets Qt5::Network)
+  target_link_libraries(base-spellcheck Qt5::Widgets)
 
 endif()

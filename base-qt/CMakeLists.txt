@@ -9,7 +9,6 @@ set(BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR})
 ########### Qt configuration #########
 if(USE_QT5)
 
-  find_package(Qt5Gui REQUIRED)
   find_package(Qt5Widgets REQUIRED)
   find_package(Qt5Network REQUIRED)
   find_package(Qt5Xml REQUIRED)
@@ -35,10 +34,9 @@ endif()
 ########### X11 #########
 if(UNIX AND NOT APPLE)
 
-  find_package(X11)
   find_package(XCB COMPONENTS XCB KEYSYMS)
   find_package(X11_XCB)
-  if( X11_FOUND AND XCB_XCB_FOUND AND XCB_KEYSYMS_FOUND AND X11_XCB_FOUND )
+  if( XCB_XCB_FOUND AND XCB_KEYSYMS_FOUND AND X11_XCB_FOUND )
       add_definitions(-DHAVE_XCB=1)
   else()
     add_definitions(-DHAVE_XCB=0)
@@ -244,9 +242,8 @@ else()
 
 endif()
 
-if(X11_FOUND)
+if(XCB_FOUND)
 
-  target_link_libraries(base-qt ${X11_X11_LIB})
   target_link_libraries(base-qt ${XCB_LIBRARIES})
   target_link_libraries(base-qt ${X11_XCB_LIBRARIES})
 
@@ -256,7 +253,7 @@ target_link_libraries(base-qt ${QT_LIBRARIES} base)
 
 if(USE_QT5)
 
-  target_link_libraries(base-qt Qt5::Gui Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Xml)
+  target_link_libraries(base-qt Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Xml)
   if(WIN32)
     target_link_libraries(base-qt Qt5::WinExtras)
   endif()
