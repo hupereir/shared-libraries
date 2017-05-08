@@ -21,6 +21,8 @@
 
 #include <QList>
 
+#if HAVE_XCB
+
 #if QT_VERSION >= 0x050000
 #include <QWindow>
 #include <QGuiApplication>
@@ -29,9 +31,9 @@
 #include <QX11Info>
 #endif
 
-#if HAVE_XCB
 #include <X11/Xlib-xcb.h>
 #include <xcb/xcb.h>
+
 #endif
 
 //________________________________________________________________________
