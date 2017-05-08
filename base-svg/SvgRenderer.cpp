@@ -78,12 +78,13 @@ namespace Svg
 
         #if WITH_ZLIB
 
-        // when zlib is available we try to uncompress the file manually before passing to QSvgRenderer
-        // this will allow to alter the file and in particular to change colors using current palette.
+        // open file
         QFile in( filename );
         in.open( QIODevice::ReadOnly );
         if( !( in.isOpen() && in.isReadable() ) ) return false;
 
+        // when zlib is available we try to uncompress the file manually before passing to QSvgRenderer
+        // this will allow to alter the file and in particular to change colors using current palette.
         auto content = _tryUncompress( in );
         if( content.isEmpty() )
         {
@@ -129,7 +130,8 @@ namespace Svg
 
         #else
 
-        bool loaded( QSvgRenderer::load( file ) );
+        // load filename directly
+        bool loaded( QSvgRenderer::load( filename ) );
 
         #endif
 

@@ -39,7 +39,7 @@ if(ZLIB_FOUND)
 
 else()
 
-  add_definitions(-DWITH_ZLIB=FALSE)
+  add_definitions(-DWITH_ZLIB=0)
 
 endif()
 
