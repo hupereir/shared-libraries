@@ -256,9 +256,9 @@ target_link_libraries(base-qt ${QT_LIBRARIES} base)
 
 if(USE_QT5)
 
-  qt5_use_modules(base-qt Gui Widgets Network PrintSupport Xml)
+  target_link_libraries(base-qt Qt5::Gui Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Xml)
   if(WIN32)
-    qt5_use_modules(base-qt WinExtras)
+    target_link_libraries(base-qt Qt5::WinExtras)
   endif()
 
 endif()

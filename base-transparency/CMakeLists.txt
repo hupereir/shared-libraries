@@ -70,6 +70,6 @@ target_link_libraries(base-transparency ${QT_LIBRARIES} base-qt)
 
 if(USE_QT5)
 
-  qt5_use_modules(base-transparency Widgets Network)
+  target_link_libraries(base-transparency Qt5::Widgets Qt5::Network)
 
 endif()

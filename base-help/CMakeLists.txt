@@ -54,6 +54,6 @@ target_link_libraries(base-help ${QT_LIBRARIES} base base-qt)
 
 if(USE_QT5)
 
-  qt5_use_modules(base-help Widgets Xml)
+  target_link_libraries(base-help Qt5::Widgets Qt5::Xml)
 
 endif()

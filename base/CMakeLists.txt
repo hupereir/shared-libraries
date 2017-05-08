@@ -66,6 +66,6 @@ endif()
 
 if(USE_QT5)
 
-  qt5_use_modules(base Widgets Network)
+  target_link_libraries(base Qt5::Widgets Qt5::Network)
 
 endif()

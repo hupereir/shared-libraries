@@ -99,6 +99,6 @@ endif()
 
 if(USE_QT5)
 
-  qt5_use_modules(base-svg Widgets Svg)
+  target_link_libraries(base-svg Qt5::Widgets Qt5::Svg)
 
 endif()

@@ -63,10 +63,10 @@ target_link_libraries(base-notifications ${QT_LIBRARIES} base base-qt)
 
 if(USE_QT5)
 
-  qt5_use_modules(base-notifications Widgets)
+  target_link_libraries(base-notifications Qt5::Widgets)
   if(Qt5DBus_FOUND )
 
-    qt5_use_modules(base-notifications DBus)
+    target_link_libraries(base-notifications Qt5::DBus)
 
   else()
 

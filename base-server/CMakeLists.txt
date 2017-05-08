@@ -68,10 +68,10 @@ target_link_libraries(base-server ${QT_LIBRARIES} base base-qt)
 
 if(USE_QT5)
 
-  qt5_use_modules(base-server Widgets Network Xml)
+  target_link_libraries(base-server Qt5::Widgets Qt5::Network Qt5::Xml)
   if(Qt5DBus_FOUND )
 
-    qt5_use_modules(base-server DBus)
+    target_link_libraries(base-server Qt5::DBus)
 
   else()
 

@@ -66,6 +66,6 @@ target_link_libraries(base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base b
 
 if(USE_QT5)
 
-  qt5_use_modules(base-spellcheck Widgets Network)
+  target_link_libraries(base-spellcheck Qt5::Widgets Qt5::Network)
 
 endif()

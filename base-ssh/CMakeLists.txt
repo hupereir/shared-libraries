@@ -89,6 +89,6 @@ endif()
 
 if(USE_QT5)
 
-  qt5_use_modules(base-ssh Widgets Network)
+  target_link_libraries(base-ssh Qt5::Widgets Qt5::Network)
 
 endif()
