@@ -101,9 +101,6 @@ macro(add_unix_executable target)
   add_executable(${target} ${ARGN})
   set(BIN_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 
-  ### unix specific links
-  target_link_libraries(${target} ${X11_X11_LIB})
-
 endmacro()
 
 ###################### Install application #########################
