@@ -11,11 +11,13 @@ if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
   find_package(Qt5Svg REQUIRED)
+  find_package(Qt5Xml REQUIRED)
 
 else()
 
   find_package(Qt4 REQUIRED)
   set(QT_USE_QTSVG TRUE)
+  set(QT_USE_QTXML TRUE)
   include(${QT_USE_FILE})
   add_definitions(${QT_DEFINITIONS})
 
@@ -99,6 +101,6 @@ endif()
 
 if(USE_QT5)
 
-  target_link_libraries(base-svg Qt5::Widgets Qt5::Svg)
+  target_link_libraries(base-svg Qt5::Widgets Qt5::Svg Qt5::Xml)
 
 endif()
