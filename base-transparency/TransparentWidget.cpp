@@ -41,11 +41,7 @@ namespace Transparency
     //____________________________________________________________________
     TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
         QWidget( parent, flags ),
-        Counter( "Transparency::TransparentWidget" ),
-        hasInputShape_( false ),
-        backgroundChanged_( true ),
-        foregroundIntensity_( 255 ),
-        shadowOffset_( 0 )
+        Counter( "Transparency::TransparentWidget" )
     {
 
         Debug::Throw( "TransparentWidget::TransparentWidget.\n" );
@@ -64,7 +60,7 @@ namespace Transparency
         _installActions();
 
         // configuration
-        _updateConfiguration();
+        // _updateConfiguration();
 
         if( Singleton::get().hasApplication() )
         { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
@@ -181,6 +177,7 @@ namespace Transparency
     //____________________________________________________________________
     void TransparentWidget::_toggleInverseColors( bool value )
     {
+        Debug::Throw( "TransparentWidget::_toggleInverseColors.\n" );
         XmlOptions::get().set<bool>( "TRANSPARENCY_INVERSE_COLORS", value );
         update();
     }
@@ -201,11 +198,11 @@ namespace Transparency
         _setShadowOffset( XmlOptions::get().get<int>("TRANSPARENCY_SHADOW_OFFSET") );
 
         // inverse colors
-        inverseColorsAction().setChecked( XmlOptions::get().get<bool>( "TRANSPARENCY_INVERSE_COLORS" ) );
+        inverseColorsAction_->setChecked( XmlOptions::get().get<bool>( "TRANSPARENCY_INVERSE_COLORS" ) );
 
         // tint
-        QColor tintColor( XmlOptions::get().get<Base::Color>( "TRANSPARENCY_TINT_COLOR" ) );
-        unsigned int tintIntensity(  XmlOptions::get().get<int>( "TRANSPARENCY_TINT_INTENSITY" ) );
+        auto tintColor = XmlOptions::get().get<Base::Color>( "TRANSPARENCY_TINT_COLOR" );
+        int tintIntensity(  XmlOptions::get().get<int>( "TRANSPARENCY_TINT_INTENSITY" ) );
         if( tintColor.isValid() && tintIntensity )
         {
 
@@ -275,13 +272,13 @@ namespace Transparency
         // check outer padding
         // TODO: should remove existing shape if any
         // TODO: should check shape extension version
-        if( _outerPadding().isNull() )
+        if( outerPadding_.isNull() )
         {
 
             if( hasInputShape_ )
             {
                 // reset shape
-                xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
+                auto connection = XcbUtil::get().connection<xcb_connection_t>();
                 xcb_shape_mask( connection, XCB_SHAPE_SO_SET, XCB_SHAPE_SK_INPUT, winId(), 0, 0, XCB_PIXMAP_NONE);
                 xcb_flush( connection );
 
@@ -291,14 +288,14 @@ namespace Transparency
         } else {
 
             // update shape
-            const QRect rect( _outerPadding().adjustedRect( this->rect() ) );
+            auto rect = outerPadding_.adjustedRect( this->rect() );
             xcb_rectangle_t xrect;
             xrect.x = rect.x();
             xrect.y = rect.y();
             xrect.width = rect.width();
             xrect.height = rect.height();
 
-            xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
+            auto connection = XcbUtil::get().connection<xcb_connection_t>();
             xcb_shape_rectangles(
                 connection,
                 XCB_SHAPE_SO_SET, XCB_SHAPE_SK_INPUT, XCB_CLIP_ORDERING_YX_BANDED, winId(),
@@ -324,14 +321,14 @@ namespace Transparency
 
         // create data
         blurRegion_ = region;
-        QVector<QRect> rects( region.rects() );
+        auto&& rects = region.rects();
 
         QVector<uint32_t> data;
         for( const auto& r:rects )
         { data << r.x() << r.y() << r.width() << r.height(); }
 
         // get connection and atom
-        xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
+        auto connection = XcbUtil::get().connection<xcb_connection_t>();
         xcb_atom_t atom( *XcbUtil::get().atom<xcb_atom_t>( XcbDefines::_KDE_NET_WM_BLUR_BEHIND_REGION ) );
         xcb_change_property( connection, XCB_PROP_MODE_REPLACE, winId(), atom, XCB_ATOM_CARDINAL, 32, data.size(), data.constData() );
         xcb_flush( connection );

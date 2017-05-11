@@ -32,56 +32,56 @@
 namespace Transparency
 {
 
-    //! transparent widget
+    //* transparent widget
     class TransparentWidget: public QWidget, public Counter
     {
 
-        //! Qt meta object declaration
+        //* Qt meta object declaration
         Q_OBJECT
 
         public:
 
-        //! constructor
-        TransparentWidget( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+        //* constructor
+        TransparentWidget( QWidget* = nullptr, Qt::WindowFlags flags = 0 );
 
-        //!@name actions
+        //*@name actions
         //@{
 
-        //! reload blur region action
+        //* reload blur region action
         QAction& reloadBlurRegionAction( void ) const
         { return *reloadBlurRegionAction_; }
 
-        //! inverse colors
+        //* inverse colors
         QAction& inverseColorsAction( void ) const
         { return *inverseColorsAction_; }
 
         //@}
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! foreground
+        //* foreground
         virtual const QColor& foregroundColor( void ) const
         { return inverseColorsAction().isChecked() ? shadowColor_ : foregroundColor_; }
 
-        //! shadow
+        //* shadow
         virtual const QColor& shadowColor( void ) const
         { return inverseColorsAction().isChecked() ? foregroundColor_ : shadowColor_; }
 
-        //! foreground intensity
+        //* foreground intensity
         virtual int foregroundIntensity( void ) const
         { return foregroundIntensity_; }
 
-        //! shadow offset
+        //* shadow offset
         virtual int shadowOffset( void ) const
         { return shadowOffset_; }
 
         //@}
 
-        //!@name modifiers
+        //*@name modifiers
         //@{
 
-        //! background changed
+        //* background changed
         void setBackgroundChanged( bool value )
         { backgroundChanged_ = value; }
 
@@ -89,181 +89,181 @@ namespace Transparency
 
         public Q_SLOTS:
 
-        //! force reloading of the background
+        //* force reloading of the background
         virtual void setBackgroundChanged( void );
 
         protected:
 
-        //! foreground
+        //* foreground
         virtual void _setForegroundColor( const QColor& );
 
-        //! shadow
+        //* shadow
         virtual void _setShadowColor( const QColor& );
 
-        //! tint
+        //* tint
         virtual void _setTintColor( const QColor& );
 
-        //! tint color
+        //* tint color
         virtual const QColor& _tintColor( void ) const
         { return tintColor_; }
 
-        //! shadow offset
+        //* shadow offset
         virtual void _setShadowOffset( int value )
         { shadowOffset_ = value; }
 
-        //! foreground intensity
+        //* foreground intensity
         virtual void _setForegroundIntensity( int value );
 
-        //! background pixmap
+        //* background pixmap
         virtual QPixmap& _backgroundPixmap( void )
         { return backgroundPixmap_; }
 
-        //! background pixmap
+        //* background pixmap
         virtual const QPixmap& _backgroundPixmap( void ) const
         { return backgroundPixmap_; }
 
-        //!@name event handlers
+        //*@name event handlers
         //@{
 
-        //! resize
+        //* resize
         virtual void resizeEvent( QResizeEvent* );
 
-        //! show
+        //* show
         virtual void showEvent( QShowEvent* );
 
-        //! paint
+        //* paint
         virtual void paintEvent( QPaintEvent* );
 
         //@}
 
-        //!@name margins
+        //*@name margins
         //@{
 
-        //! margins
+        //* margins
         const Base::Margins& _margins( void ) const
         { return margins_; }
 
-        //! clear margins
+        //* clear margins
         void _clearMargins( void )
         { margins_.clear(); }
 
-        //! margins
+        //* margins
         void _setMargins( const Base::Margins& margins )
         { margins_ = margins; }
 
-        //! margins
+        //* margins
         void _setMargins( int margins )
         { margins_ = Base::Margins( margins ); }
 
-        //! outer padding
+        //* outer padding
         Base::Margins _outerPadding( void ) const
         { return outerPadding_; }
 
-        //! clear outer padding
+        //* clear outer padding
         void _clearOuterPadding( void )
         { outerPadding_.clear(); }
 
-        //! outer padding
+        //* outer padding
         void _setOuterPadding( const Base::Margins& margins )
         { outerPadding_ = margins; }
 
-        //! outer padding
+        //* outer padding
         void _setOuterPadding( int margins )
         { outerPadding_ = Base::Margins( margins ); }
 
         //@}
 
-        //! background changed
+        //* background changed
         bool _backgroundChanged( void ) const
         { return backgroundChanged_; }
 
-        //! paint background on devide
+        //* paint background on devide
         virtual void _paintBackground( QPaintDevice&, const QRect& );
 
-        //! paint main widget on devide
+        //* paint main widget on devide
         /*! this must be re-implemented by derived classes */
         virtual void _paint( QPaintDevice&, const QRect& )
         { return; }
 
-        //! update input shape (to prevent input events in outerPadding region)
+        //* update input shape (to prevent input events in outerPadding region)
         virtual void _updateInputShape( void );
 
-        //! update blur region
+        //* update blur region
         virtual void _updateBlurRegion( const QRegion& );
 
         protected Q_SLOTS:
 
-        //! update background pixmap
+        //* update background pixmap
         virtual void _updateBackgroundPixmap( void );
 
-        //! update blur region
+        //* update blur region
         virtual void _updateBlurRegion( void )
         {
             if( blurRegion_.isEmpty() ) blurRegion_ = rect().translated( mapTo( window(), QPoint(0,0) ) );
             _updateBlurRegion( blurRegion_ );
         }
 
-        //! toggle inverse colors
+        //* toggle inverse colors
         virtual void _toggleInverseColors( bool );
 
         private Q_SLOTS:
 
-        //! update configuration
+        //* update configuration
         void _updateConfiguration( void );
 
         private:
 
-        //! actions
+        //* actions
         void _installActions( void );
 
-        //!@name actions
+        //*@name actions
         //@{
 
-        //! reload blur region
-        QAction* reloadBlurRegionAction_;
+        //* reload blur region
+        QAction* reloadBlurRegionAction_ = nullptr;
 
-        //! inverse colors
-        QAction* inverseColorsAction_;
+        //* inverse colors
+        QAction* inverseColorsAction_ = nullptr;
 
         //@}
 
-        //! true if input shape is set
-        bool hasInputShape_;
+        //* true if input shape is set
+        bool hasInputShape_ = false;
 
-        //! true when background needs to be reloaded
-        bool backgroundChanged_;
+        //* true when background needs to be reloaded
+        bool backgroundChanged_ = true;
 
-        //! foreground
+        //* foreground
         QColor foregroundColor_;
 
-        //! shadow
+        //* shadow
         QColor shadowColor_;
 
-        //! tint color
+        //* tint color
         QColor tintColor_;
 
-        //! foreground intensity
-        int foregroundIntensity_;
+        //* foreground intensity
+        int foregroundIntensity_ = 255;
 
-        //! shadow offset
-        int shadowOffset_;
+        //* shadow offset
+        int shadowOffset_ = 0;
 
-        //! margins
+        //* margins
         Base::Margins margins_;
 
-        //! margins
+        //* margins
         Base::Margins outerPadding_;
 
-        //! store last blur region
+        //* store last blur region
         QRegion blurRegion_;
 
         #if defined(Q_OS_WIN)
-        //! widget pixmap
+        //* widget pixmap
         /*! it is used as widget storage when using full translucency */
         QPixmap widgetPixmap_;
         #endif
 
-        //! background pixmap
+        //* background pixmap
         QPixmap backgroundPixmap_;
 
     };
