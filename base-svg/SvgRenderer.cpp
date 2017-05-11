@@ -67,14 +67,14 @@ namespace Svg
         styleSheet_ += addColor( "ButtonBackground", palette.color( QPalette::Button ) );
         styleSheet_ += addColor( "ButtonHover", palette.color( QPalette::Highlight ) );
         styleSheet_ += addColor( "ButtonFocus", palette.color( QPalette::Highlight ) );
-
-        // Debug::Throw(0) << "SvgRenderer::createStyleSheet - styleSheet: " << styleSheet_ << endl;
-
     }
 
     //________________________________________________
     bool SvgRenderer::load( QString filename )
     {
+
+        // ret
+        styleSheetIsUsed_ = false;
 
         #if WITH_ZLIB
 
@@ -95,7 +95,8 @@ namespace Svg
         }
 
         // update stylesheet
-        if( !styleSheet_.isEmpty() && content.contains( "current-color-scheme" ) )
+        styleSheetIsUsed_ = content.contains( "current-color-scheme" );
+        if( !styleSheet_.isEmpty() && styleSheetIsUsed_ )
         {
             QDomDocument document;
             document.setContent( content );

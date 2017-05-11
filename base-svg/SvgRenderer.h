@@ -65,6 +65,10 @@ namespace Svg
         bool isValid( void ) const
         { return isValid_; }
 
+        //* true if style sheet is used
+        bool styleSheetIsUsed( void ) const
+        { return styleSheetIsUsed_; }
+
         //* margins
         Base::Margins margins( void ) const;
 
@@ -75,7 +79,6 @@ namespace Svg
 
         //*@name modifiers
         //@{
-
 
         //* configuration
         bool updateConfiguration( void );
@@ -160,6 +163,9 @@ namespace Svg
 
         //* style sheet
         QString styleSheet_;
+
+        //* true if stylesheet was used
+        bool styleSheetIsUsed_ = false;
 
     };
 

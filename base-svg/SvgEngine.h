@@ -64,6 +64,9 @@ namespace Svg
         Base::Margins outerPadding( void ) const
         { return outerPadding_; }
 
+        //* true if reload is needed on palette change
+        bool needsReloadOnPaletteChange( void ) const;
+
         //@}
 
         //*@name modifiers

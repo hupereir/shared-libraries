@@ -23,6 +23,7 @@
 #include "File.h"
 
 #include <QObject>
+#include <QPalette>
 #include <QString>
 #include <QFileSystemWatcher>
 
@@ -40,6 +41,9 @@ namespace Svg
     //* constructor
     SvgPlasmaInterface( QObject* = nullptr );
 
+    //*@name accessors
+    //@{
+
     //* image path
     enum ImagePath
     {
@@ -47,9 +51,6 @@ namespace Svg
         WidgetBackground,
         WidgetTranslucentBackground
     };
-
-    //* image path
-    bool setImagePath( ImagePath );
 
     //* validity
     bool isValid( void ) const
@@ -59,6 +60,21 @@ namespace Svg
     QString fileName( void ) const
     { return filename_; }
 
+    //* theme palette
+    bool hasThemePalette( void ) const
+    { return !themePaletteFilename_.isEmpty() && themePaletteFilename_.exists(); }
+
+    //* theme palette
+    QPalette themePalette( void ) const;
+
+    //@}}
+
+    //*@name modifiers
+    //@{
+
+    //* image path
+    bool setImagePath( ImagePath );
+
     //* get default theme from configuration file
     /** returns true if changed */
     bool loadTheme( void );
@@ -66,6 +82,8 @@ namespace Svg
     //* load svg filename
     /** returns true if changed */
     bool loadFile( void );
+
+    //@}
 
     Q_SIGNALS:
 
@@ -91,21 +109,11 @@ namespace Svg
     bool _setTheme( const QString& );
 
     //* set path matching theme
-    bool _setPath( const File& path )
-    {
-      if( path_ == path ) return false;
-      path_ = path;
-      return true;
-    }
+    bool _setPath( const File& );
 
     //* set filename
     /** returns true when changed */
-    bool _setFileName( const File& file )
-    {
-      if( filename_ == file ) return false;
-      filename_ = file;
-      return true;
-    }
+    bool _setFileName( const File& );
 
     //* return image path matching id
     File _imagePath( ImagePath ) const;
@@ -116,12 +124,15 @@ namespace Svg
     //* validity
     bool valid_ = false;
 
+    //* type of svg to be loaded
+    ImagePath imagePath_ = WidgetBackground;
+
     //* path to file name
     /** loaded from plasma configuration */
     File path_;
 
-    //* path to image (relative to path_)
-    ImagePath imagePath_;
+    //* theme color file name
+    File themePaletteFilename_;
 
     //* filename
     File filename_;

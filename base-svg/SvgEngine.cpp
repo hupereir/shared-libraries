@@ -40,12 +40,28 @@ namespace Svg
     { connect( &thread_, SIGNAL(imageCacheAvailable(Svg::ImageCache)), this, SLOT(_processImageCache(Svg::ImageCache)) ); }
 
     //__________________________________________________________
+    bool SvgEngine::needsReloadOnPaletteChange( void ) const
+    { return ( renderer_.styleSheetIsUsed() && !(plasmaInterface_ && plasmaInterface_->hasThemePalette()) ); }
+
+    //__________________________________________________________
     bool SvgEngine::reload( bool forced )
     {
 
-        QPalette palette;
-        renderer_.createStyleSheet( palette );
-        thread_.createStyleSheet( palette );
+        if( plasmaInterface_ && plasmaInterface_->hasThemePalette() )
+        {
+
+            auto palette( plasmaInterface_->themePalette() );
+            renderer_.createStyleSheet( palette );
+            thread_.createStyleSheet( palette );
+
+        } else {
+
+            QPalette palette;
+            renderer_.createStyleSheet( palette );
+            thread_.createStyleSheet( palette );
+
+        }
+
         bool configurationChanged( renderer_.updateConfiguration() );
         bool fileChanged( _loadSvg( forced ) );
         if( !isValid() )

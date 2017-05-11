@@ -33,9 +33,38 @@ namespace Svg
 
     //_________________________________________________
     SvgPlasmaInterface::SvgPlasmaInterface( QObject* parent ):
-        QObject( parent ),
-        imagePath_( WidgetBackground )
+        QObject( parent )
     { installSvgSystemOptions(); }
+
+    //_________________________________________________
+    QPalette SvgPlasmaInterface::themePalette( void ) const
+    {
+
+        QPalette out;
+
+        QSettings settings( themePaletteFilename_, QSettings::IniFormat );
+        settings.sync();
+
+        auto updateColor = [&out,&settings](QPalette::ColorRole role, QString name)
+        {
+            if( settings.contains( name ) )
+            {
+                auto rgb( settings.value( name ).toStringList() );
+                if( rgb.size() == 3 )
+                { out.setColor( role, QColor( rgb[0].toInt(), rgb[1].toInt(), rgb[2].toInt() ) ); }
+            }
+        };
+
+        updateColor( QPalette::WindowText, "Colors:Window/ForegroundNormal" );
+        updateColor( QPalette::Window, "Colors:Window/BackgroundNormal" );
+        updateColor( QPalette::Highlight, "Colors:Selection/BackgroundNormal" );
+        updateColor( QPalette::Text, "Colors:View/ForegroundNormal" );
+        updateColor( QPalette::Base, "Colors:View/BackgroundNormal" );
+        updateColor( QPalette::ButtonText, "Colors:Button/ForegroundNormal" );
+        updateColor( QPalette::Button, "Colors:Button/BackgroundNormal" );
+        return out;
+
+    }
 
     //_________________________________________________
     bool SvgPlasmaInterface::setImagePath( ImagePath id )
@@ -54,10 +83,10 @@ namespace Svg
         {
 
             // get kde4 config command and retrieve output
-            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
+            const QString kdeConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
 
             CustomProcess process( this );
-            process.start( Command( kde4ConfigCommand ) << "--path" << "config" );
+            process.start( Command( kdeConfigCommand ) << "--path" << "config" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
@@ -108,6 +137,11 @@ namespace Svg
         }
 
         Debug::Throw() << "SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
+
+        // reset colorFilename
+        themePaletteFilename_.clear();
+
+        // assign theme
         return _setTheme( theme );
 
     }
@@ -155,10 +189,10 @@ namespace Svg
         {
 
             // get kde4 config command and retrieve output
-            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
+            const QString kdeConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
 
             CustomProcess process( this );
-            process.start( Command( kde4ConfigCommand ) << "--path" << "data" );
+            process.start( Command( kdeConfigCommand ) << "--path" << "data" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 const QStringList configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
@@ -178,11 +212,7 @@ namespace Svg
         if( themePathList.empty() )
         {
             // add local path
-            QStringList localPath;
-            localPath
-                << ".kde/share/apps/desktoptheme/"
-                << ".kde4/share/apps/desktoptheme/";
-
+            QStringList localPath = { ".kde/share/apps/desktoptheme/", ".kde4/share/apps/desktoptheme/" };
             for( const auto& pathName:localPath )
             { themePathList << File( theme ).addPath( File( pathName ).addPath( Util::home() ) ); }
 
@@ -193,8 +223,21 @@ namespace Svg
         for( const auto& themePath:themePathList )
         {
             Debug::Throw() << "SvgPlasmaInterface::_setTheme - checking " << themePath << endl;
-            if( themePath.exists() && !_findImage( themePath, WidgetBackground ).isEmpty() )
-            { return _setPath( themePath ); }
+            if( themePath.exists() )
+            {
+
+                // try load color palette
+                if( themePaletteFilename_.isEmpty() )
+                {
+                    File file = File( "colors" ).addPath( themePath );
+                    if( file.exists() ) themePaletteFilename_ = file;
+                }
+
+                if( !_findImage( themePath, WidgetBackground ).isEmpty() )
+                { return _setPath( themePath ); }
+
+            }
+
         }
 
         // try use default theme
@@ -208,6 +251,22 @@ namespace Svg
 
         } else return _setTheme( "default" );
 
+    }
+
+    //_________________________________________________
+    bool SvgPlasmaInterface::_setPath( const File& path )
+    {
+        if( path_ == path ) return false;
+        path_ = path;
+        return true;
+    }
+
+    //_________________________________________________
+    bool SvgPlasmaInterface::_setFileName( const File& file )
+    {
+        if( filename_ == file ) return false;
+        filename_ = file;
+        return true;
     }
 
     //_________________________________________________
@@ -231,11 +290,8 @@ namespace Svg
         if( !path.exists() ) return File();
 
         // build list of candidates
-        const File imagePath( _imagePath( id ) );
-        const File::List files = File::List()
-            << imagePath
-            << File( imagePath + ".svg" )
-            << File( imagePath + ".svgz" );
+        auto imagePath( _imagePath( id ) );
+        auto files = { imagePath, File( imagePath + ".svg" ), File( imagePath + ".svgz" ) };
         for( auto file:files )
         { if( (file = file.addPath( path ) ).exists() ) return file; }
 
