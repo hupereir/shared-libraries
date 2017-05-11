@@ -271,10 +271,6 @@ void BaseApplication::_updateConfiguration( void )
 {
     Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
 
-    // style
-    if( XmlOptions::get().get<bool>( "FORCE_PLASTIQUE_STYLE" ) )
-    { QApplication::setStyle( "plastique" ); }
-
     // application icon
     const QIcon icon( applicationIcon() );
     qApp->setWindowIcon( icon );

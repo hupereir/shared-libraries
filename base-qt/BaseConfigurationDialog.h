@@ -103,10 +103,6 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //* emitted when configuration is changed
     void configurationChanged();
 
-    public Q_SLOTS:
-
-    virtual void debugModification( void );
-
     protected Q_SLOTS:
 
     //* show pixmap path dialog
