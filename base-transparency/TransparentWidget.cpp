@@ -60,7 +60,7 @@ namespace Transparency
         _installActions();
 
         // configuration
-        // _updateConfiguration();
+        _updateConfiguration();
 
         if( Singleton::get().hasApplication() )
         { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
