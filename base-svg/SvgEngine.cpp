@@ -47,6 +47,7 @@ namespace Svg
     bool SvgEngine::reload( bool forced )
     {
 
+        Debug::Throw( "SvgEngine::reload.\n" );
         if( plasmaInterface_ && plasmaInterface_->hasThemePalette() )
         {
 
@@ -145,14 +146,14 @@ namespace Svg
 
             bool first( !_hasPlasmaInterface() );
             if( first ) _initializePlasmaInterface();
-            else if( forced ) changed |= _plasmaInterface().loadTheme();
+            else if( forced ) changed |= plasmaInterface_->loadTheme();
 
-            changed |= _plasmaInterface().setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) );
-            if( changed || first || forced )  _plasmaInterface().loadFile();
+            changed |= plasmaInterface_->setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) );
+            if( changed || first || forced )  plasmaInterface_->loadFile();
 
-            if( _plasmaInterface().isValid() )
+            if( plasmaInterface_->isValid() )
             {
-                QString file( _plasmaInterface().fileName() );
+                QString file( plasmaInterface_->fileName() );
                 renderer_.load( QString( file ) );
                 if( renderer_.isValid() )
                 {
@@ -192,7 +193,7 @@ namespace Svg
 
         Q_ASSERT( !_hasPlasmaInterface() );
         plasmaInterface_ = new SvgPlasmaInterface( this );
-        _plasmaInterface().loadTheme();
+        plasmaInterface_->loadTheme();
         connect( &_plasmaInterface(), SIGNAL(themeChanged()), SLOT(reload()) );
 
     }
