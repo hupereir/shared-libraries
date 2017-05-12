@@ -139,10 +139,14 @@ namespace Svg
         Debug::Throw() << "SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
 
         // reset colorFilename
+        auto oldThemePaletteFilename = themePaletteFilename_;
         themePaletteFilename_.clear();
 
         // assign theme
-        return _setTheme( theme );
+        bool modified = _setTheme( theme );
+
+        // return modified state
+        return modified || (themePaletteFilename_ != oldThemePaletteFilename);
 
     }
 
