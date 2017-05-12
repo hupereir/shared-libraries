@@ -47,24 +47,11 @@ namespace Svg
     bool SvgEngine::reload( bool forced )
     {
 
-        Debug::Throw( "SvgEngine::reload.\n" );
-        if( plasmaInterface_ && plasmaInterface_->hasThemePalette() )
-        {
-
-            auto palette( plasmaInterface_->themePalette() );
-            renderer_.createStyleSheet( palette );
-            thread_.createStyleSheet( palette );
-
-        } else {
-
-            QPalette palette;
-            renderer_.createStyleSheet( palette );
-            thread_.createStyleSheet( palette );
-
-        }
+        Debug::Throw(0) << "Svg::SvgEngine::reload - forced: " << forced << endl;
 
         bool configurationChanged( renderer_.updateConfiguration() );
-        bool fileChanged( _loadSvg( forced ) );
+        bool changed( _loadSvg( forced ) );
+
         if( !isValid() )
         {
             cache_.clear();
@@ -72,7 +59,7 @@ namespace Svg
         }
 
         // reload cache
-        if( configurationChanged || fileChanged )
+        if( changed || configurationChanged )
         {
 
             SvgId::List svgIdList;
@@ -101,6 +88,19 @@ namespace Svg
         if( ids.empty() ) return;
         if( !isValid() ) return;
         if( thread_.isRunning() ) return;
+
+        if( plasmaInterface_ && plasmaInterface_->hasThemePalette() )
+        {
+
+            auto palette( plasmaInterface_->themePalette() );
+            thread_.createStyleSheet( palette );
+
+        } else {
+
+            QPalette palette;
+            thread_.createStyleSheet( palette );
+
+        }
 
         thread_.setSvgFile( svgFile_ );
         thread_.setSvgIdList( ids );
@@ -137,6 +137,7 @@ namespace Svg
     bool SvgEngine::_loadSvg( bool forced )
     {
 
+        Debug::Throw(0) << "Svg::SvgEngine::_loadSvg - forced: " << forced << endl;
         bool changed( false );
 
         // try get from plasma interface if needed
@@ -144,9 +145,29 @@ namespace Svg
         if( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_INTERFACE" ) )
         {
 
-            bool first( !_hasPlasmaInterface() );
-            if( first ) _initializePlasmaInterface();
-            else if( forced ) changed |= plasmaInterface_->loadTheme();
+            bool first( !plasmaInterface_ );
+            if( first )
+            {
+
+                plasmaInterface_ = new SvgPlasmaInterface( this );
+                plasmaInterface_->loadTheme();
+                connect( plasmaInterface_, SIGNAL(themeChanged()), SLOT(reload()) );
+
+            } else if( forced ) changed |= plasmaInterface_->loadTheme();
+
+            if( plasmaInterface_->hasThemePalette() )
+            {
+
+                auto palette( plasmaInterface_->themePalette() );
+                renderer_.createStyleSheet( palette );
+
+            } else {
+
+                QPalette palette;
+                renderer_.createStyleSheet( palette );
+
+            }
+
 
             changed |= plasmaInterface_->setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) );
             if( changed || first || forced )  plasmaInterface_->loadFile();
@@ -181,20 +202,9 @@ namespace Svg
             }
         }
 
-        if( !found )  renderer_.load( QString() );
+        if( !found ) renderer_.load( QString() );
 
         return changed || forced;
-
-    }
-
-    //________________________________
-    void SvgEngine::_initializePlasmaInterface( void )
-    {
-
-        Q_ASSERT( !_hasPlasmaInterface() );
-        plasmaInterface_ = new SvgPlasmaInterface( this );
-        plasmaInterface_->loadTheme();
-        connect( &_plasmaInterface(), SIGNAL(themeChanged()), SLOT(reload()) );
 
     }
 

@@ -113,17 +113,6 @@ namespace Svg
 
         //@}
 
-        //* initialise plasma interface
-        void _initializePlasmaInterface( void );
-
-        //* plasma interface
-        bool _hasPlasmaInterface( void ) const
-        { return plasmaInterface_; }
-
-        //* plasma interface
-        SvgPlasmaInterface& _plasmaInterface( void ) const
-        { return *plasmaInterface_; }
-
         //* plasma interface
         SvgPlasmaInterface *plasmaInterface_ = nullptr;
 

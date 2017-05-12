@@ -78,6 +78,8 @@ namespace Svg
     bool SvgPlasmaInterface::loadTheme( void )
     {
 
+        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme" << endl;
+
         File::List configurationFiles;
         if( XmlOptions::get().contains( "KDE_CONFIG" ) )
         {
@@ -123,7 +125,7 @@ namespace Svg
         {
             if( !file.exists() ) continue;
 
-            Debug::Throw() << "SvgPlasmaInterface::loadTheme - checking: " << file << endl;
+            Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - checking: " << file << endl;
 
             // read group
             QSettings settings( file, QSettings::IniFormat );
@@ -136,7 +138,7 @@ namespace Svg
 
         }
 
-        Debug::Throw() << "SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
 
         // reset colorFilename
         auto oldThemePaletteFilename = themePaletteFilename_;
@@ -153,6 +155,8 @@ namespace Svg
     //_________________________________________________
     bool SvgPlasmaInterface::loadFile( void )
     {
+
+        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadFile" << endl;
 
         // check path
         if( !path_.exists() ) return _setValid( false );
@@ -174,7 +178,7 @@ namespace Svg
     void SvgPlasmaInterface::_configurationFileChanged( const QString& file )
     {
 
-        Debug::Throw() << "SvgPlasmaInterface::_configurationFileChanged - file: " << file << endl;
+        Debug::Throw(0) << "Svg::SvgPlasmaInterface::_configurationFileChanged - file: " << file << endl;
         if( loadTheme() )
         {
             loadFile();
@@ -186,7 +190,7 @@ namespace Svg
     bool SvgPlasmaInterface::_setTheme( const QString& theme )
     {
 
-        Debug::Throw() << "SvgPlasmaInterface::_setTheme - theme:" << theme << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - theme:" << theme << endl;
         File::List themePathList;
 
         if( XmlOptions::get().contains( "KDE_CONFIG" ) )
@@ -226,7 +230,7 @@ namespace Svg
         themePathList << File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) );
         for( const auto& themePath:themePathList )
         {
-            Debug::Throw() << "SvgPlasmaInterface::_setTheme - checking " << themePath << endl;
+            Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - checking " << themePath << endl;
             if( themePath.exists() )
             {
 
