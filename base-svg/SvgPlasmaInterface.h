@@ -90,11 +90,6 @@ namespace Svg
     //* emitted when svg file changed
     void themeChanged();
 
-    private Q_SLOTS:
-
-    //* connected to kde configuration file changed
-    void _configurationFileChanged( const QString& );
-
     private:
 
     //* validity

@@ -111,7 +111,7 @@ namespace Svg
         if( !fileSystemWatcher_ )
         {
             fileSystemWatcher_ = new QFileSystemWatcher( this );
-            connect( fileSystemWatcher_, SIGNAL(fileChanged(QString)), SLOT(_configurationFileChanged(QString)) );
+            connect( fileSystemWatcher_, SIGNAL(fileChanged(QString)), SIGNAL(themeChanged()) );
         }
 
         // add valid configuration files to watcher
@@ -138,7 +138,7 @@ namespace Svg
 
         }
 
-        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
+        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
 
         // reset colorFilename
         auto oldThemePaletteFilename = themePaletteFilename_;
@@ -146,9 +146,14 @@ namespace Svg
 
         // assign theme
         bool modified = _setTheme( theme );
+        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme - using color scheme: " << themePaletteFilename_ << endl;
+
+        // set as modified if themePaletteFile has changed
+        modified |= (themePaletteFilename_ != oldThemePaletteFilename);
+        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme - modified: " << modified << endl;
 
         // return modified state
-        return modified || (themePaletteFilename_ != oldThemePaletteFilename);
+        return modified;
 
     }
 
@@ -172,18 +177,6 @@ namespace Svg
         changed |= _setFileName( found ? filename:File() );
         return changed;
 
-    }
-
-    //_________________________________________________
-    void SvgPlasmaInterface::_configurationFileChanged( const QString& file )
-    {
-
-        Debug::Throw(0) << "Svg::SvgPlasmaInterface::_configurationFileChanged - file: " << file << endl;
-        if( loadTheme() )
-        {
-            loadFile();
-            emit themeChanged();
-        }
     }
 
     //_________________________________________________
