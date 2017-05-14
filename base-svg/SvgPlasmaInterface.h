@@ -90,6 +90,11 @@ namespace Svg
     //* emitted when svg file changed
     void themeChanged();
 
+    protected Q_SLOTS:
+
+    //* configuration file modified
+    void _configurationFileChanged( const QString& );
+
     private:
 
     //* validity
