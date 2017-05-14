@@ -96,10 +96,10 @@ namespace Svg
         //* process image cache generated from thread
         void _processImageCache( const Svg::ImageCache& );
 
-        private:
-
         //* load svg
-        bool _loadSvg( bool forced );
+        bool _loadSvg( bool forced = false );
+
+        private:
 
         //*@name non static methods are hidden
         //@{

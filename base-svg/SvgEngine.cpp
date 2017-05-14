@@ -150,27 +150,24 @@ namespace Svg
             {
 
                 plasmaInterface_ = new SvgPlasmaInterface( this );
-                plasmaInterface_->loadTheme();
                 connect( plasmaInterface_, SIGNAL(themeChanged()), SLOT(reload()) );
-
-            } else if( forced ) changed |= plasmaInterface_->loadTheme();
-
-            if( plasmaInterface_->hasThemePalette() )
-            {
-
-                auto palette( plasmaInterface_->themePalette() );
-                renderer_.createStyleSheet( palette );
-
-            } else {
-
-                QPalette palette;
-                renderer_.createStyleSheet( palette );
 
             }
 
+            if( plasmaInterface_->loadTheme() ) changed = true;
+            if( plasmaInterface_->hasThemePalette() )
+            {
 
-            changed |= plasmaInterface_->setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) );
-            if( changed || first || forced )  plasmaInterface_->loadFile();
+                renderer_.createStyleSheet( plasmaInterface_->themePalette() );
+
+            } else {
+
+                renderer_.createStyleSheet( QPalette() );
+
+            }
+
+            if( plasmaInterface_->setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) ) ) changed = true;
+            if( changed || first || forced ) plasmaInterface_->loadFile();
 
             if( plasmaInterface_->isValid() )
             {
@@ -179,7 +176,7 @@ namespace Svg
                 if( renderer_.isValid() )
                 {
 
-                    changed = ( svgFile_ != file );
+                    if( svgFile_ != file ) changed = true;
                     svgFile_ = file;
 
                     return changed || forced;
@@ -188,11 +185,16 @@ namespace Svg
         }
         #endif
 
+        // create style sheet
+        renderer_.createStyleSheet( QPalette() );
+
+        // find valid svg file
         bool found( false );
         for( const auto& option:XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) )
         {
+
             QString file( option.raw() );
-            renderer_.load( QString( file ) );
+            renderer_.load( file );
             if( renderer_.isValid() )
             {
                 changed = ( svgFile_ != file );
