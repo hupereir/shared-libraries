@@ -187,7 +187,20 @@ namespace Svg
     void SvgPlasmaInterface::_configurationFileChanged( const QString& file )
     {
         Debug::Throw(0) << "Svg::SvgPlasmaInterface::_configurationFileChanged - file: " << file << endl;
-        emit themeChanged();
+        if( !timer_.isActive() ) timer_.start( 100, this );
+    }
+
+    //_________________________________________________
+    void SvgPlasmaInterface::timerEvent( QTimerEvent* event )
+    {
+        if( event->timerId() == timer_.timerId() )
+        {
+
+            Debug::Throw(0, "Svg::SvgPlasmaInterface::timerEvent.\n" );
+            timer_.stop();
+            emit themeChanged();
+
+        } else return QObject::timerEvent( event );
     }
 
     //_________________________________________________

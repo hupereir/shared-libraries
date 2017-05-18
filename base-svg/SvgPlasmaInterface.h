@@ -22,10 +22,12 @@
 
 #include "File.h"
 
+#include <QBasicTimer>
+#include <QFileSystemWatcher>
 #include <QObject>
 #include <QPalette>
 #include <QString>
-#include <QFileSystemWatcher>
+#include <QTimerEvent>
 
 namespace Svg
 {
@@ -95,6 +97,11 @@ namespace Svg
     //* configuration file modified
     void _configurationFileChanged( const QString& );
 
+    protected:
+
+    //* timer event
+    void timerEvent( QTimerEvent* ) override;
+
     private:
 
     //* validity
@@ -140,6 +147,9 @@ namespace Svg
     //* file system watcher
     /** needed to track modifications of kde configuration file */
     QFileSystemWatcher* fileSystemWatcher_ = nullptr;
+
+    //* timer needed to prevent repeated calls to file change
+    QBasicTimer timer_;
 
   };
 };
