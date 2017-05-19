@@ -48,10 +48,10 @@ namespace Base
         {}
 
         //! merge argument color with intensity to this one
-        QColor merge( const QColor& , qreal = 0.5 ) const;
+        Color merge( const QColor& , qreal = 0.5 ) const;
 
         //! add alpha
-        QColor addAlpha( qreal = 0.5 ) const;
+        Color addAlpha( qreal = 0.5 ) const;
 
         //! less than operator
         bool operator < (const Color& ) const;
@@ -60,7 +60,7 @@ namespace Base
         using Set = QOrderedSet<Color>;
 
     };
-    
+
 }
 
 //! streamers

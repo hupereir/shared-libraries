@@ -84,14 +84,14 @@ class FileRecord: public Counter
     //@{
 
     //* flags
-    FileRecord& setFlags( unsigned int value )
+    FileRecord& setFlags( int value )
     {
         flags_ = value;
         return *this;
     }
 
     //* flags
-    FileRecord& setFlag( unsigned int flag, bool value = true )
+    FileRecord& setFlag( int flag, bool value = true )
     {
         if( value ) { flags_ |= flag; }
         else { flags_ &= (~flag); }
@@ -99,11 +99,11 @@ class FileRecord: public Counter
     }
 
     //* flags
-    const unsigned int& flags( void ) const
+    int flags( void ) const
     { return flags_; }
 
     //* flags
-    bool hasFlag( const unsigned int& flag ) const
+    bool hasFlag( int flag ) const
     { return flags_ & flag; }
 
     //* used to retrieve file records that match a given flag
@@ -113,7 +113,7 @@ class FileRecord: public Counter
         public:
 
         //* constructor
-        HasFlagFTor( const unsigned int& flag ):
+        HasFlagFTor( int flag ):
             flag_( flag )
          {}
 
@@ -124,7 +124,7 @@ class FileRecord: public Counter
         private:
 
         // predicted flag
-        unsigned int flag_;
+        int flag_;
 
     };
 
@@ -145,7 +145,7 @@ class FileRecord: public Counter
     //*@name properties
     //@{
 
-    //* map string to unsigned int property ID
+    //* map string to property ID
     class PropertyId
     {
 
@@ -348,7 +348,7 @@ class FileRecord: public Counter
     int time_ = 0;
 
     //* flags
-    unsigned int flags_ = 0;
+    int flags_ = 0;
 
     //* file validity (true if file exists)
     bool valid_ = false;

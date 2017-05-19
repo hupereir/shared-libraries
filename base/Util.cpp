@@ -43,7 +43,7 @@ QString Util::env( const QString& val, const QString& defaultValue )
         int position( entry.indexOf( "=" ) );
         if( position <= 0 ) continue;
 
-        QString var( entry.left( position ) );
+        auto var( entry.left( position ) );
         if( var == QString( val ) ) return entry.mid( position+1 );
     }
 
@@ -123,7 +123,7 @@ QString Util::host( bool shortName )
     // use system environment
     // it does not work for windows
     Debug::Throw( "Util::host.\n" );
-    QString out( QHostInfo::localHostName() );
+    auto out( QHostInfo::localHostName() );
     if( ! shortName ) return out;
     else {
 

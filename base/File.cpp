@@ -59,14 +59,14 @@ time_t File::lastAccessed( void ) const
 }
 
 //_____________________________________________________________________
-unsigned int File::userId( void ) const
+uint File::userId( void ) const
 {
     if( !exists() ) return 0;
     return QFileInfo( *this ).ownerId();
 }
 
 //_____________________________________________________________________
-unsigned int File::groupId( void ) const
+uint File::groupId( void ) const
 {
     if( !exists() ) return 0;
     return QFileInfo( *this ).groupId();

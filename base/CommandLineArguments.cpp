@@ -41,12 +41,11 @@ char** CommandLineArguments::argv( void ) const
 {
     char** out = new char*[argc()];
     int count(0);
-    for( QStringList::const_iterator iter = begin(); iter != end(); ++iter, count++ )
+    for( auto&& argument:*this )
     {
-        char* arg = new char[iter->size()+1];
-        sprintf( arg, "%s", qPrintable( *iter ) );
+        char* arg = new char[argument.size()+1];
+        sprintf( arg, "%s", qPrintable( argument ) );
         out[count] = arg;
     }
-
     return out;
 }

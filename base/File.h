@@ -69,10 +69,10 @@ class File: public QString
     virtual time_t lastAccessed( void ) const;
 
     //* user id
-    virtual unsigned int userId( void ) const;
+    virtual uint userId( void ) const;
 
     //* group id
-    virtual unsigned int groupId( void ) const;
+    virtual uint groupId( void ) const;
 
     //* user name
     virtual QString userName( void ) const;

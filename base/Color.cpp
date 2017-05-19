@@ -25,7 +25,7 @@ namespace Base
 {
 
     //__________________________________________________________
-    QColor Color::merge( const QColor& other, qreal intensity ) const
+    Color Color::merge( const QColor& other, qreal intensity ) const
     {
         if( !isValid() ) return other;
         if( !other.isValid() ) return *this;
@@ -40,9 +40,9 @@ namespace Base
     }
 
     //__________________________________________________________
-    QColor Color::addAlpha( qreal intensity ) const
+    Color Color::addAlpha( qreal intensity ) const
     {
-        QColor out( *this );
+        auto out( *this );
         out.setAlpha( intensity*alpha() );
         return out;
     }
