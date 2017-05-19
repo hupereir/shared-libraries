@@ -25,10 +25,7 @@
 //______________________________________________________
 FileThread::FileThread( QObject* parent ):
     QThread( parent ),
-    Counter( "FileThread" ),
-    flags_( File::None ),
-    totalSize_( 0 ),
-    error_( false )
+    Counter( "FileThread" )
 { qRegisterMetaType<File::List>( "File::List" ); }
 
 //______________________________________________________

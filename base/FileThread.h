@@ -41,6 +41,7 @@ class FileThread: public QThread, public Counter
     //! command
     enum Command
     {
+        None,
         List,
         ListRecursive,
         SizeRecursive,
@@ -135,10 +136,10 @@ class FileThread: public QThread, public Counter
     QMutex mutex_;
 
     //! command
-    Command command_;
+    Command command_ = None;
 
     //! flags
-    File::ListFlags flags_;
+    File::ListFlags flags_ = File::None;
 
     //! file
     File file_;
@@ -153,10 +154,10 @@ class FileThread: public QThread, public Counter
     File::List filesRecursive_;
 
     //! total size
-    qint64 totalSize_;
+    qint64 totalSize_ = 0;
 
     //! error
-    bool error_;
+    bool error_ = false;
 
     //! error string
     QString errorString_;
