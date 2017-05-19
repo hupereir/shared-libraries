@@ -41,15 +41,15 @@ void FileThread::run( void )
     switch( command_ )
     {
 
-        case List:
-        case ListRecursive:
-        case SizeRecursive:
+        case Command::List:
+        case Command::ListRecursive:
+        case Command::SizeRecursive:
         {
             _listFiles( file_ );
             break;
         }
 
-        case Copy:
+        case Command::Copy:
         {
             if( !file_.copy( destination_ ) )
             {
@@ -66,12 +66,12 @@ void FileThread::run( void )
     switch( command_ )
     {
 
-        case SizeRecursive:
+        case Command::SizeRecursive:
         _computeTotalSize();
         emit sizeAvailable( totalSize_ );
         break;
 
-        case List:
+        case Command::List:
         if( !files_.empty() )
         { emit filesAvailable( files_ ); }
         break;
@@ -91,7 +91,7 @@ void FileThread::_listFiles( const File& parent )
     File::ListFlags flags( File::None );
 
     // show hidden files flag
-    if( (flags_&File::ShowHiddenFiles) || command_ == SizeRecursive )
+    if( (flags_&File::ShowHiddenFiles) || command_ == Command::SizeRecursive )
     { flags |= File::ShowHiddenFiles; }
 
     // follow link flags, always on for first path
@@ -105,11 +105,11 @@ void FileThread::_listFiles( const File& parent )
     {
 
         files_ << file;
-        if( command_ == ListRecursive || command_ == SizeRecursive )
+        if( command_ == Command::ListRecursive || command_ == Command::SizeRecursive )
         {
 
             filesRecursive_ << file;
-            if( file.isDirectory() && ( !file.isLink() || (command_ == ListRecursive && (flags_&File::FollowLinks) ) ) )
+            if( file.isDirectory() && ( !file.isLink() || (command_ == Command::ListRecursive && (flags_&File::FollowLinks) ) ) )
             { directories << file; }
 
         }
@@ -117,15 +117,15 @@ void FileThread::_listFiles( const File& parent )
     }
 
     // emit files available
-    if( command_ == ListRecursive )
+    if( command_ == Command::ListRecursive )
     { emit filesAvailable( files_ ); }
 
     // emit total size update
-    if( command_ == SizeRecursive && _updateTotalSize() )
+    if( command_ == Command::SizeRecursive && _updateTotalSize() )
     { emit sizeAvailable( totalSize_ ); }
 
     // list sub-directories if needed
-    if( command_ == ListRecursive || command_ == SizeRecursive )
+    if( command_ == Command::ListRecursive || command_ == Command::SizeRecursive )
     {
         for( const auto& file:directories )
         { _listFiles( file ); }

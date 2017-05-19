@@ -39,7 +39,7 @@ class FileThread: public QThread, public Counter
     FileThread( QObject* = 0 );
 
     //! command
-    enum Command
+    enum class Command
     {
         None,
         List,
@@ -136,7 +136,7 @@ class FileThread: public QThread, public Counter
     QMutex mutex_;
 
     //! command
-    Command command_ = None;
+    Command command_ = Command::None;
 
     //! flags
     File::ListFlags flags_ = File::None;
