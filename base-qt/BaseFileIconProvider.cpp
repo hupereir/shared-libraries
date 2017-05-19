@@ -42,19 +42,19 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
     if( !( type&BaseFileInfo::Folder ) ) return invalid_;
 
     // check whether current map contains key
-    IconCache::const_iterator iter( icons_.find( Key( fileInfo.file(), type ) ) );
+    auto&& iter( icons_.find( Key( fileInfo.file(), type ) ) );
     if( iter != icons_.end() ) return iter.value();
 
     // insert new entry in map
-    const DefaultFolders::Type folderType( DefaultFolders::get().type( fileInfo.file() ) );
+    auto&& folderType( DefaultFolders::get().type( fileInfo.file() ) );
     if( folderType == DefaultFolders::Unknown ) return invalid_;
 
     // get icon name
-    const QString iconName( DefaultFolders::get().iconName( folderType ) );
+    auto&& iconName( DefaultFolders::get().iconName( folderType ) );
     if( iconName.isEmpty() ) return invalid_;
 
     // get corresponding icon from icon engine
-    const QIcon& base( IconEngine::get( iconName ) );
+    auto&& base( IconEngine::get( iconName ) );
     if( base.isNull() ) return invalid_;
 
     // insert in map and return
@@ -68,11 +68,11 @@ QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
 {
 
     if( source.isNull() ) return source;
-    QIcon linkOverlay( IconEngine::get( IconNames::SymbolicLink ) );
+    auto linkOverlay( IconEngine::get( IconNames::SymbolicLink ) );
     if( linkOverlay.isNull() ) return source;
 
     // get source size
-    const QSize size( source.size()/source.devicePixelRatio() );
+    auto size( source.size()/source.devicePixelRatio() );
 
     // decide overlay size
     QSize overlaySize;
@@ -84,9 +84,9 @@ QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
     else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
     else overlaySize = QSize( 64, 64 );
 
-    const CustomPixmap overlayPixmap( linkOverlay.pixmap( overlaySize ) );
+    auto&& overlayPixmap( linkOverlay.pixmap( overlaySize ) );
     return source.merged(
-        overlayPixmap.scaled( overlaySize*overlayPixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ), 
+        overlayPixmap.scaled( overlaySize*overlayPixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ),
         CustomPixmap::BOTTOM_RIGHT );
 
 }

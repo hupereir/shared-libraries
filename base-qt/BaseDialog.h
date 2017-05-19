@@ -93,9 +93,9 @@ class BaseDialog: public QDialog
     //* generic event
     virtual bool event( QEvent* );
 
-    //* maximize state prior to minimization
-    bool _wasMaximized( void ) const
-    { return wasMaximized_; }
+//     //* maximize state prior to minimization
+//     bool _wasMaximized( void ) const
+//     { return wasMaximized_; }
 
     //* maximize state prior to minimization
     void _setWasMaximized( bool value )

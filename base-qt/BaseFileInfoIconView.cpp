@@ -35,11 +35,11 @@ void BaseFileInfoIconView::_updateItem( IconViewItem& item, const QModelIndex& i
     IconView::_updateItem( item, index );
 
     // get pixmap
-    QPixmap pixmap( item.pixmap() );
+    auto pixmap( item.pixmap() );
     if( pixmap.isNull() ) return;
 
     // check type role and customize pixmap
-    QVariant fileTypeVariant( model()->data( index, Base::FileTypeRole ) );
+    auto&& fileTypeVariant( model()->data( index, Base::FileTypeRole ) );
     if( fileTypeVariant.canConvert( QVariant::Int ) )
     {
         const int type( fileTypeVariant.toInt() );

@@ -59,10 +59,10 @@ namespace Private
         mainLayout().addWidget( checkBox = new OptionCheckBox( tr( "Use custom icon theme" ), this, "USE_ICON_THEME" ) );
         addOptionWidget( checkBox );
 
-        QWidget* box = new QWidget( this );
+        auto box = new QWidget( this );
         mainLayout().addWidget( box );
 
-        GridLayout* gridLayout = new GridLayout();
+        auto gridLayout = new GridLayout();
         gridLayout->setMaxCount(2);
         gridLayout->setMargin(0);
         gridLayout->setSpacing(5);
@@ -94,7 +94,7 @@ namespace Private
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignCenter );
 
         box->setEnabled( false );
-        connect( checkBox, SIGNAL( toggled( bool ) ), box, SLOT( setEnabled( bool ) ) );
+        connect( checkBox, SIGNAL(toggled(bool)), box, SLOT(setEnabled(bool)) );
 
         read( XmlOptions::get() );
 
@@ -331,7 +331,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     OptionSpinBox* spinbox;
 
     // icon size in lists
-    GridLayout* gridLayout = new GridLayout();
+    auto gridLayout = new GridLayout();
     gridLayout->setMargin(0);
     gridLayout->setMaxCount(2);
     vLayout->addLayout( gridLayout );
@@ -499,7 +499,7 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
     if( !pixmapPathDialog_ )
     {
         pixmapPathDialog_ = new CustomDialog( this, CustomDialog::CloseButton );
-       auto listbox = new OptionListBox( pixmapPathDialog_, "PIXMAP_PATH" );
+        auto listbox = new OptionListBox( pixmapPathDialog_, "PIXMAP_PATH" );
         listbox->setBrowsable( true );
         listbox->setFileMode( QFileDialog::Directory );
         pixmapPathDialog_->mainLayout().addWidget( listbox );
@@ -580,7 +580,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
         }
 
         // loop over options in first list
-       auto&& options( second.specialOptions( firstIter.key() ) );
+        auto&& options( second.specialOptions( firstIter.key() ) );
         for( const auto& option:firstIter.value() )
         {
             // find in second list

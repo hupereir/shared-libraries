@@ -54,7 +54,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     pageLayout_->setSpacing(5);
     mainPage_->setLayout( pageLayout_ );
 
-    QHBoxLayout* hLayout = new QHBoxLayout();
+    auto hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
     hLayout->setSpacing(5);
     pageLayout_->addLayout( hLayout );
@@ -66,7 +66,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
     hLayout->addStretch();
 
-    QVBoxLayout* vLayout= new QVBoxLayout();
+    auto vLayout= new QVBoxLayout();
     vLayout->setMargin(0);
     vLayout->setSpacing(5);
     hLayout->addLayout( vLayout );
@@ -100,9 +100,9 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     // permissions tab
     QWidget* box;
-    QVBoxLayout* layout;
     tabWidget_->addTab( box = new QWidget(), tr( "Permissions" ) );
-    layout = new QVBoxLayout();
+
+    auto layout = new QVBoxLayout();
     layout->setMargin(5);
     layout->setSpacing( 5 );
     box->setLayout( layout );
@@ -112,7 +112,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     // user and group
     layout->addWidget( new QLabel( tr( "Ownership:" ), box ) );
 
-    GridLayout* gridLayout = new GridLayout();
+    auto gridLayout = new GridLayout();
     gridLayout->setMargin(0);
     gridLayout->setSpacing( 5 );
     gridLayout->setMaxCount( 2 );
@@ -194,7 +194,7 @@ int BaseFileInformationDialog::addRow( const QString& key, const QString& value,
 {
 
     // setup new item
-    GridLayoutItem* item = new GridLayoutItem( mainPage_, gridLayout_, flags );
+    auto item = new GridLayoutItem( mainPage_, gridLayout_, flags );
     item->setKey( key );
     item->setText( value );
 

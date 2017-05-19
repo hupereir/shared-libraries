@@ -50,14 +50,14 @@ BaseDialog& BaseDialog::setWindowTitle( const QString& title )
 //__________________________________________________
 QSize BaseDialog::minimumSizeHint( void ) const
 {
-    QSize out( monitor_.sizeHint() );
+    auto&& out( monitor_.sizeHint() );
     return out.isValid() ? out:QDialog::minimumSizeHint();
 }
 
 //__________________________________________________
 QSize BaseDialog::sizeHint( void ) const
 {
-    QSize out( monitor_.sizeHint() );
+    auto&& out( monitor_.sizeHint() );
     return out.isValid() ? out:QDialog::sizeHint();
 }
 
@@ -98,7 +98,7 @@ BaseDialog& BaseDialog::uniconify( void )
     if( isMinimized() )
     {
 
-        if( _wasMaximized() ) showMaximized();
+        if( wasMaximized_ ) showMaximized();
         else showNormal();
 
     } else if( isHidden() ) show();
@@ -145,10 +145,10 @@ bool BaseDialog::event( QEvent* event )
         case QEvent::WindowStateChange:
         {
             // cast
-            QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
+            QWindowStateChangeEvent *stateEvent( static_cast<QWindowStateChangeEvent*>(event) );
 
             if( windowState() & Qt::WindowMinimized )
-            { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+            { _setWasMaximized( stateEvent->oldState() & Qt::WindowMaximized ); }
 
         }
         break;
