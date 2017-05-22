@@ -30,18 +30,16 @@
 //_______________________________________________________
 DebugMenu::DebugMenu( QWidget* parent, Flags flags ):
     QMenu( parent ),
-    Counter( "DebugMenu" ),
-    counterDialog_( 0 ),
-    iconCacheDialog_( 0 )
+    Counter( "DebugMenu" )
 {
 
     setTitle( tr( "Debug" ) );
 
     Debug::Throw( "DebugMenu::DebugMenu.\n" );
-    if( flags&Counters ) addAction( tr("Object Counters"), this, SLOT(_showCounterDialog()) );
-    if( flags&Icons ) addAction( tr("Icon Cache"), this, SLOT(_showIconCacheDialog()) );
-    if( flags&System ) addAction( tr("System environment"), this, SLOT(_showSystemEnvironment()) );
-    if( flags&Options ) addAction( tr("Run-time options"), this, SLOT(_showOptions()) );
+    if( flags&Flag::Counters ) addAction( tr("Object Counters"), this, SLOT(_showCounterDialog()) );
+    if( flags&Flag::Icons ) addAction( tr("Icon Cache"), this, SLOT(_showIconCacheDialog()) );
+    if( flags&Flag::System ) addAction( tr("System environment"), this, SLOT(_showSystemEnvironment()) );
+    if( flags&Flag::Options ) addAction( tr("Run-time options"), this, SLOT(_showOptions()) );
 
     if( qobject_cast<QMenu*>( parent ) ) parent->installEventFilter( this );
 
@@ -131,7 +129,7 @@ void DebugMenu::_showSystemEnvironment( void )
 {
     Debug::Throw( "DebugMenu::_showSystemEnvironment.\n" );
 
-    SystemEnvironmentDialog* dialog = new SystemEnvironmentDialog( qApp->activeWindow() );
+    auto&& dialog = new SystemEnvironmentDialog( qApp->activeWindow() );
     dialog->centerOnWidget( qApp->activeWindow() );
     dialog->show();
     return;
@@ -143,7 +141,7 @@ void DebugMenu::_showOptions( void )
 {
     Debug::Throw( "DebugMenu::_showOptions.\n" );
 
-    OptionDialog* dialog = new OptionDialog( qApp->activeWindow() );
+    auto&& dialog = new OptionDialog( qApp->activeWindow() );
     dialog->centerOnWidget( qApp->activeWindow() );
     dialog->show();
     return;

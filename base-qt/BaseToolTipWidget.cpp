@@ -198,13 +198,13 @@ void BaseToolTipWidget::_adjustPosition( void )
     int top(0);
     int left(0);
     const int margin = 5;
-    if( preferredPosition_ == Top || preferredPosition_ == Bottom )
+    if( preferredPosition_ == Position::Top || preferredPosition_ == Position::Bottom )
     {
         left = followMouse_ ? QCursor::pos().x():rect_.left() + ( rect_.width() - size.width() )/2;
         left = qMax( left, desktopGeometry.left() );
         left = qMin( left, desktopGeometry.right() - size.width() );
 
-        if( preferredPosition_ == Bottom )
+        if( preferredPosition_ == Position::Bottom )
         {
 
             top = rect_.bottom() + margin;
@@ -223,7 +223,7 @@ void BaseToolTipWidget::_adjustPosition( void )
         top = qMax( top, desktopGeometry.top() );
         top = qMin( top, desktopGeometry.bottom() - size.height() );
 
-        if( preferredPosition_ == Right )
+        if( preferredPosition_ == Position::Right )
         {
 
             left = rect_.right()+margin;

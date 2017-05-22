@@ -39,7 +39,7 @@ class BusyWidget: public QWidget, public Counter
     public:
 
     //* position
-    enum Location
+    enum class Location
     {
         Center,
         TopLeft,
@@ -49,7 +49,7 @@ class BusyWidget: public QWidget, public Counter
     };
 
     //* constructor
-    BusyWidget( QWidget* = nullptr, Location = Center );
+    BusyWidget( QWidget* = nullptr, Location = Location::Center );
 
     //*@name accessors
     //@{
@@ -126,7 +126,7 @@ class BusyWidget: public QWidget, public Counter
     QPainterPath path_;
 
     //* location
-    Location location_ = Center;
+    Location location_ = Location::Center;
 
     //* delay
     int delay_ = 200;

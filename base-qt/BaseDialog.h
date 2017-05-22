@@ -33,16 +33,6 @@ class BaseDialog: public QDialog
 
     public:
 
-    //* dialog centering enumeration
-    enum Centering
-    {
-
-        CenterOnPointer,
-        CenterOnParent,
-        CenterOnDesktop
-
-    };
-
     //* constructor
     BaseDialog( QWidget* = nullptr, Qt::WindowFlags = 0);
 
@@ -92,10 +82,6 @@ class BaseDialog: public QDialog
 
     //* generic event
     virtual bool event( QEvent* );
-
-//     //* maximize state prior to minimization
-//     bool _wasMaximized( void ) const
-//     { return wasMaximized_; }
 
     //* maximize state prior to minimization
     void _setWasMaximized( bool value )

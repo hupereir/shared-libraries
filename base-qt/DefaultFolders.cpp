@@ -49,29 +49,29 @@ DefaultFolders::DefaultFolders( void )
 {
 
     // fill folder map
-    folders_.insert( Util::home(), Home );
+    folders_.insert( Util::home(), Type::Home );
 
     #if QT_VERSION >= 0x050000
-    _insert( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), Desktop );
-    _insert( QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation ), Documents );
-    _insert( QStandardPaths::writableLocation( QStandardPaths::MusicLocation ), Music );
-    _insert( QStandardPaths::writableLocation( QStandardPaths::PicturesLocation ), Pictures );
-    _insert( QStandardPaths::writableLocation( QStandardPaths::TempLocation ), Templates );
-    _insert( QStandardPaths::writableLocation( QStandardPaths::MoviesLocation ), Videos );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), Type::Desktop );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation ), Type::Documents );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::MusicLocation ), Type::Music );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::PicturesLocation ), Type::Pictures );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::TempLocation ), Type::Templates );
+    _insert( QStandardPaths::writableLocation( QStandardPaths::MoviesLocation ), Type::Videos );
     #else
-    _insert( QDesktopServices::storageLocation( QDesktopServices::DesktopLocation ), Desktop );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ), Documents );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::MusicLocation ), Music );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::PicturesLocation ), Pictures );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::TempLocation ), Templates );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::MoviesLocation ), Videos );
+    _insert( QDesktopServices::storageLocation( QDesktopServices::DesktopLocation ), Type::Desktop );
+    _insert( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ), Type::Documents );
+    _insert( QDesktopServices::storageLocation( QDesktopServices::MusicLocation ), Type::Music );
+    _insert( QDesktopServices::storageLocation( QDesktopServices::PicturesLocation ), Type::Pictures );
+    _insert( QDesktopServices::storageLocation( QDesktopServices::TempLocation ), Type::Templates );
+    _insert( QDesktopServices::storageLocation( QDesktopServices::MoviesLocation ), Type::Videos );
     #endif
 
     #if defined( Q_OS_LINUX )
     // use QSettings to get standard directories from XDG
     QSettings settings( QString( "%1/.config/user-dirs.dirs" ).arg( Util::home() ), QSettings::IniFormat );
     settings.sync();
-    _insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Downloads );
+    _insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Type::Downloads );
     #endif
 
 }
@@ -82,14 +82,14 @@ void DefaultFolders::initializeFolderNames( void )
     if( folderNamesInitialized_ ) return;
 
     // fill icons map
-    names_.insert( Home, tr( "Home" ) );
-    names_.insert( Desktop, tr( "Desktop" ) );
-    names_.insert( Documents, tr( "Documents" ) );
-    names_.insert( Downloads, tr( "Downloads" ) );
-    names_.insert( Music, tr( "Music" ) );
-    names_.insert( Pictures, tr( "Pictures" ) );
-    names_.insert( Templates, tr( "Templates" ) );
-    names_.insert( Videos, tr( "Video" ) );
+    names_.insert( Type::Home, tr( "Home" ) );
+    names_.insert( Type::Desktop, tr( "Desktop" ) );
+    names_.insert( Type::Documents, tr( "Documents" ) );
+    names_.insert( Type::Downloads, tr( "Downloads" ) );
+    names_.insert( Type::Music, tr( "Music" ) );
+    names_.insert( Type::Pictures, tr( "Pictures" ) );
+    names_.insert( Type::Templates, tr( "Templates" ) );
+    names_.insert( Type::Videos, tr( "Video" ) );
 
     folderNamesInitialized_ = true;
 }
@@ -100,21 +100,21 @@ void DefaultFolders::initializeIconNames( void )
     if( iconNamesInitialized_ ) return;
 
     // fill icons map
-    iconNames_.insert( Home, "user-home.png" );
-    iconNames_.insert( Desktop, "user-desktop" );
-    iconNames_.insert( Documents, "folder-documents" );
-    iconNames_.insert( Music, "folder-sound" );
+    iconNames_.insert( Type::Home, "user-home.png" );
+    iconNames_.insert( Type::Desktop, "user-desktop" );
+    iconNames_.insert( Type::Documents, "folder-documents" );
+    iconNames_.insert( Type::Music, "folder-sound" );
 
     // there are discrepencies for folder icon names between icon themes
     // try to deal with major ones
-    if( QIcon::hasThemeIcon( "folder-download" ) ) iconNames_.insert( Downloads, "folder-download" );
-    else iconNames_.insert( Downloads, "folder-downloads" );
+    if( QIcon::hasThemeIcon( "folder-download" ) ) iconNames_.insert( Type::Downloads, "folder-download" );
+    else iconNames_.insert( Type::Downloads, "folder-downloads" );
 
-    if( QIcon::hasThemeIcon( "folder-pictures" ) ) iconNames_.insert( Pictures, "folder-pictures" );
-    else iconNames_.insert( Pictures, "folder-image" );
+    if( QIcon::hasThemeIcon( "folder-pictures" ) ) iconNames_.insert( Type::Pictures, "folder-pictures" );
+    else iconNames_.insert( Type::Pictures, "folder-image" );
 
-    if( QIcon::hasThemeIcon( "folder-videos" ) ) iconNames_.insert( Videos, "folder-videos" );
-    else iconNames_.insert( Videos, "folder-video" );
+    if( QIcon::hasThemeIcon( "folder-videos" ) ) iconNames_.insert( Type::Videos, "folder-videos" );
+    else iconNames_.insert( Type::Videos, "folder-video" );
 
     iconNamesInitialized_ = true;
 }
@@ -122,8 +122,8 @@ void DefaultFolders::initializeIconNames( void )
 //__________________________________________________________________________
 DefaultFolders::Type DefaultFolders::type( const File& file ) const
 {
-    auto iter( allFolders_.find( file ) );
-    return iter == allFolders_.end() ? Unknown:iter.value();
+    auto&& iter( allFolders_.find( file ) );
+    return iter == allFolders_.end() ? Type::Unknown:iter.value();
 }
 
 //__________________________________________________________________________

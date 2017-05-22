@@ -98,7 +98,7 @@ class BaseFileInformationDialog: public CustomDialog
     void setGroup( const QString& );
 
     //* add a row
-    int addRow( const QString&, const QString& = QString(), GridLayoutItem::ItemFlags = GridLayoutItem::None );
+    int addRow( const QString&, const QString& = QString(), GridLayoutItem::Flags = GridLayoutItem::Flag::None );
 
     //* set custom value
     void setCustomKey( int, const QString& );

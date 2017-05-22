@@ -139,7 +139,7 @@ class FileThread: public QThread, public Counter
     Command command_ = Command::None;
 
     //! flags
-    File::ListFlags flags_ = File::None;
+    File::ListFlags flags_ = File::ListFlag::None;
 
     //! file
     File file_;

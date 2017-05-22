@@ -23,8 +23,7 @@
 //_________________________________________________________
 WidgetMonitor::WidgetMonitor( QWidget* parent ):
     QObject( parent ),
-    Counter( "WidgetMonitor" ),
-    mode_( Size )
+    Counter( "WidgetMonitor" )
 { parent->installEventFilter(this); }
 
 //_________________________________________________________
@@ -54,7 +53,7 @@ QSize WidgetMonitor::sizeHint( void ) const
 {
 
     // resize
-    if( _hasOptionName() && ( mode_&Size ) && XmlOptions::get().contains( widthOptionName_ ) && XmlOptions::get().contains( heightOptionName_ ) )
+    if( _hasOptionName() && ( mode_&Mode::Size ) && XmlOptions::get().contains( widthOptionName_ ) && XmlOptions::get().contains( heightOptionName_ ) )
     {
 
         QSize size(
@@ -78,7 +77,7 @@ QPoint WidgetMonitor::position( void ) const
 {
 
     // resize
-    if( _hasOptionName() && ( mode_&Position ) && XmlOptions::get().contains( xOptionName_ ) && XmlOptions::get().contains( yOptionName_ ) )
+    if( _hasOptionName() && ( mode_&Mode::Position ) && XmlOptions::get().contains( xOptionName_ ) && XmlOptions::get().contains( yOptionName_ ) )
     {
 
         QPoint position(
@@ -104,8 +103,8 @@ bool WidgetMonitor::eventFilter( QObject* target, QEvent* event )
     if( target != parent()  ) return false;
     if( !_hasOptionName() ) return false;
     if(
-        (event->type() == QEvent::Resize && ( mode_&Size )) ||
-        (event->type() == QEvent::Move && ( mode_&Position ) ) )
+        (event->type() == QEvent::Resize && ( mode_&Mode::Size )) ||
+        (event->type() == QEvent::Move && ( mode_&Mode::Position ) ) )
     { timer_.start( 200, this ); }
 
     return false;
@@ -123,8 +122,8 @@ void WidgetMonitor::timerEvent( QTimerEvent* event )
         timer_.stop();
 
         // save size
-        if( mode_&Size ) _saveWindowSize();
-        if( mode_&Position ) _saveWindowPosition();
+        if( mode_&Mode::Size ) _saveWindowSize();
+        if( mode_&Mode::Position ) _saveWindowPosition();
 
     } else return QObject::timerEvent( event );
 

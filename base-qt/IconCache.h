@@ -44,7 +44,7 @@ namespace Base
         {}
 
         //* flags
-        enum Flag
+        enum class Flag
         {
             None = 0,
             FromCache = 1<<0,
@@ -88,7 +88,7 @@ namespace Base
         private:
 
         //* flags
-        Flags flags_;
+        Flags flags_ = Flag::None;
 
         //* associated files
         QStringList files_;

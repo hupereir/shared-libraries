@@ -428,7 +428,7 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 
         }
 
-    } else if( boxSelection_.state() == BoxSelection::SelectionFinished ) {
+    } else if( boxSelection_.state() == BoxSelection::State::Finished ) {
 
         // process box selection
         // boxSelection_.setCharFormat( format );
@@ -705,7 +705,7 @@ void TextEditor::cut( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    if( boxSelection_.state() == BoxSelection::SelectionFinished )
+    if( boxSelection_.state() == BoxSelection::State::Finished )
     {
 
         boxSelection_.toClipboard( QClipboard::Clipboard );
@@ -723,7 +723,7 @@ void TextEditor::copy( void )
 {
 
     Debug::Throw( "TextEditor::copy.\n" );
-    if( boxSelection_.state() == BoxSelection::SelectionFinished ) boxSelection_.toClipboard( QClipboard::Clipboard );
+    if( boxSelection_.state() == BoxSelection::State::Finished ) boxSelection_.toClipboard( QClipboard::Clipboard );
     else BaseEditor::copy();
 
 }
@@ -738,7 +738,7 @@ void TextEditor::paste( void )
     // the shortcut still can be called
     if( isReadOnly() ) return;
 
-    if( boxSelection_.state() == BoxSelection::SelectionFinished )
+    if( boxSelection_.state() == BoxSelection::State::Finished )
     {
 
         boxSelection_.fromClipboard( QClipboard::Clipboard );
@@ -764,7 +764,7 @@ void TextEditor::upperCase( void )
         // process standard selection
         cursor.insertText( cursor.selectedText().toUpper() );
 
-    } else if( boxSelection_.state() == BoxSelection::SelectionFinished ) {
+    } else if( boxSelection_.state() == BoxSelection::State::Finished ) {
 
         // process box selection
         boxSelection_.toUpper();
@@ -793,7 +793,7 @@ void TextEditor::lowerCase( void )
         // process standard selection
         cursor.insertText( cursor.selectedText().toLower() );
 
-    } else if( boxSelection_.state() == BoxSelection::SelectionFinished ) {
+    } else if( boxSelection_.state() == BoxSelection::State::Finished ) {
 
         // process box selection
         boxSelection_.toLower();
@@ -914,20 +914,20 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 
     int counts(0);
 
-    if( boxSelection_.state() == BoxSelection::SelectionFinished )
+    if( boxSelection_.state() == BoxSelection::State::Finished )
     {
 
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
         auto cursors( boxSelection_.cursorList() );
         for( auto& cursor:cursors )
-        { counts += _replaceInRange( selection, cursor, MoveCursor ); }
+        { counts += _replaceInRange( selection, cursor, CursorMode::Move ); }
 
         boxSelection_.clear();
 
     } else {
         Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
         auto cursor = textCursor();
-        counts = _replaceInRange( selection, cursor, ExpandCursor );
+        counts = _replaceInRange( selection, cursor, CursorMode::Expand );
     }
 
     Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
@@ -952,7 +952,7 @@ int TextEditor::replaceInWindow( TextSelection selection, bool showDialog )
     auto cursor = textCursor();
     cursor.movePosition( QTextCursor::Start );
     cursor.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
-    auto counts = _replaceInRange( selection, cursor, ExpandCursor );
+    auto counts = _replaceInRange( selection, cursor, CursorMode::Expand );
 
     if( showDialog ) showReplacements( counts );
     return counts;
@@ -1130,7 +1130,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
                 // if single click in existing box selection, store drag position
                 if(
                     event->modifiers() == Qt::NoModifier &&
-                    boxSelection_.state() == BoxSelection::SelectionFinished &&
+                    boxSelection_.state() == BoxSelection::State::Finished &&
                     boxSelection_.rect().contains( fromViewport( event->pos() ) )
                     )
                 {
@@ -1140,7 +1140,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
                 }
 
                 // if single click outside of existing box selection, clear the selection
-                if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::SelectionFinished )
+                if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::State::Finished )
                 {
 
                     boxSelection_.clear();
@@ -1250,7 +1250,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     }
 
     // see if there is a box selection in progress
-    if( event->buttons() == Qt::LeftButton && boxSelection_.isEnabled() && boxSelection_.state() == BoxSelection::SelectionStarted )
+    if( event->buttons() == Qt::LeftButton && boxSelection_.isEnabled() && boxSelection_.state() == BoxSelection::State::Started )
     {
 
         boxSelection_.update( event->pos() );
@@ -1277,7 +1277,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
     }
 
     // see if dragging existing box selection
-    if( event->buttons() == Qt::LeftButton && boxSelection_.state() == BoxSelection::SelectionFinished && (event->pos() - dragStart_ ).manhattanLength() > QApplication::startDragDistance() )
+    if( event->buttons() == Qt::LeftButton && boxSelection_.state() == BoxSelection::State::Finished && (event->pos() - dragStart_ ).manhattanLength() > QApplication::startDragDistance() )
     {
         // start drag
         auto drag( new QDrag(this) );
@@ -1306,7 +1306,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
     autoScrollTimer_.stop();
 
     // no need to check for enability because there is no way for the box to start if disabled
-    if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::SelectionStarted )
+    if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::State::Started )
     {
 
         boxSelection_.finish( event->pos() );
@@ -1315,7 +1315,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 
     }
 
-    if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::SelectionFinished )
+    if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::State::Finished )
     {
 
         boxSelection_.clear();
@@ -1343,7 +1343,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
         return;
     }
 
-    if( event->button() == Qt::MidButton  && boxSelection_.state() == BoxSelection::SelectionFinished )
+    if( event->button() == Qt::MidButton  && boxSelection_.state() == BoxSelection::State::Finished )
     { boxSelection_.clear(); }
 
     // process event
@@ -1368,7 +1368,7 @@ void TextEditor::dropEvent( QDropEvent* event )
     if(
         event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
         boxSelection_.isEnabled() &&
-        boxSelection_.state() == BoxSelection::SelectionEmpty &&
+        boxSelection_.state() == BoxSelection::State::Empty &&
         !textCursor().hasSelection() )
     {
 
@@ -1393,7 +1393,7 @@ void TextEditor::dropEvent( QDropEvent* event )
     if(
         event->mimeData()->hasFormat( BoxSelection::mimeType ) &&
         boxSelection_.isEnabled() &&
-        boxSelection_.state() == BoxSelection::SelectionFinished &&
+        boxSelection_.state() == BoxSelection::State::Finished &&
         !toViewport( boxSelection_.rect() ).contains( event->pos() ) &&
         event->source() == this
         )
@@ -1438,7 +1438,7 @@ void TextEditor::dropEvent( QDropEvent* event )
     if(
         event->mimeData()->hasText() &&
         boxSelection_.isEnabled() &&
-        boxSelection_.state() == BoxSelection::SelectionFinished &&
+        boxSelection_.state() == BoxSelection::State::Finished &&
         toViewport( boxSelection_.rect() ).contains( event->pos() ) )
     {
 
@@ -1551,7 +1551,7 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     }
 
     // special key processing for box selection
-    if( boxSelection_.state() == BoxSelection::SelectionFinished )
+    if( boxSelection_.state() == BoxSelection::State::Finished )
     {
         if(
             (event->key() >= Qt::Key_Shift &&  event->key() <= Qt::Key_ScrollLock) ||
@@ -1621,8 +1621,8 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
     // check NumLock and CapsLock
     /** right now this works only on X11 */
     bool changed( false );
-    if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( ModifierCapsLock, !modifier( ModifierCapsLock ) );
-    else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( ModifierNumLock, !modifier( ModifierNumLock ) );
+    if( event->key() == Qt::Key_CapsLock ) changed = _setModifier( Modifier::CapsLock, !modifier( Modifier::CapsLock ) );
+    else if( event->key() == Qt::Key_NumLock ) changed = _setModifier( Modifier::NumLock, !modifier( Modifier::NumLock ) );
     if( changed ) { emit modifiersChanged( modifiers() ); }
 
     return;
@@ -1634,8 +1634,8 @@ void TextEditor::focusInEvent( QFocusEvent* event )
     Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
 
     if(
-        _setModifier( ModifierCapsLock, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::On ) ||
-        _setModifier( ModifierNumLock, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::On ) )
+        _setModifier( Modifier::CapsLock, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::State::On ) ||
+        _setModifier( Modifier::NumLock, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::State::On ) )
     { emit modifiersChanged( modifiers() );}
 
     emit hasFocus( this );
@@ -1727,7 +1727,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
     }
 
-    if( boxSelection_.state() == BoxSelection::SelectionStarted || boxSelection_.state() == BoxSelection::SelectionFinished )
+    if( boxSelection_.state() == BoxSelection::State::Started || boxSelection_.state() == BoxSelection::State::Finished )
     {
         painter.setPen( boxSelection_.color() );
         painter.setBrush( boxSelection_.brush() );
@@ -1777,24 +1777,24 @@ void TextEditor::_installActions( void )
     Debug::Throw( "TextEditor::_installActions.\n" );
 
     // create actions
-    addAction( undoAction_ = new StandardAction( StandardAction::Undo, this ) );
+    addAction( undoAction_ = new StandardAction( StandardAction::Type::Undo, this ) );
     undoAction_->setEnabled( document()->isUndoAvailable() && !isReadOnly() );
     connect( undoAction_, SIGNAL(triggered()), document(), SLOT(undo()) );
     connect( this, SIGNAL(undoAvailable(bool)), this, SLOT(_updateUndoRedoActions()) );
 
-    addAction( redoAction_ = new StandardAction( StandardAction::Redo, this ) );
+    addAction( redoAction_ = new StandardAction( StandardAction::Type::Redo, this ) );
     redoAction_->setEnabled( document()->isRedoAvailable() && !isReadOnly() );
     connect( redoAction_, SIGNAL(triggered()), document(), SLOT(redo()) );
     connect( this, SIGNAL(redoAvailable(bool)), this, SLOT(_updateUndoRedoActions()) );
 
-    addAction( cutAction_ = new StandardAction( StandardAction::Cut, this ) );
+    addAction( cutAction_ = new StandardAction( StandardAction::Type::Cut, this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
     connect( cutAction_, SIGNAL(triggered()), SLOT(cut()) );
 
-    addAction( copyAction_ = new StandardAction( StandardAction::Copy, this ) );
+    addAction( copyAction_ = new StandardAction( StandardAction::Type::Copy, this ) );
     connect( copyAction_, SIGNAL(triggered()), SLOT(copy()) );
 
-    addAction( pasteAction_ = new StandardAction( StandardAction::Paste, this ) );
+    addAction( pasteAction_ = new StandardAction( StandardAction::Type::Paste, this ) );
     connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
     connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );
     _updatePasteAction();
@@ -1881,7 +1881,7 @@ void TextEditor::_installActions( void )
     addAction( wrapModeAction_ = new QAction( tr( "Wrap Text" ), this ) );
     wrapModeAction_->setCheckable( true );
     wrapModeAction_->setChecked( lineWrapMode() == BaseEditor::WidgetWidth );
-    _setModifier( ModifierWrap, lineWrapMode() == BaseEditor::WidgetWidth );
+    _setModifier( Modifier::Wrap, lineWrapMode() == BaseEditor::WidgetWidth );
     wrapModeAction_->setShortcut( Qt::Key_F10 );
     wrapModeAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( wrapModeAction_, SIGNAL(toggled(bool)), SLOT(_toggleWrapMode(bool)) );
@@ -2271,12 +2271,12 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
         emit idle();
 
         // update cursor
-        if( mode == ExpandCursor )
+        if( mode == CursorMode::Expand )
         {
             cursor.setPosition( savedAnchor );
             cursor.setPosition( savedAnchor + selectedText.length(), QTextCursor::KeepAnchor );
 
-        } else if( mode == MoveCursor ) cursor.setPosition( currentPosition );
+        } else if( mode == CursorMode::Move ) cursor.setPosition( currentPosition );
 
     } else {
 
@@ -2308,11 +2308,11 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
 
         emit idle();
 
-        if( mode == ExpandCursor )
+        if( mode == CursorMode::Expand )
         {
             cursor.setPosition( savedAnchor );
             cursor.setPosition( savedPosition, QTextCursor::KeepAnchor );
-        } else if( mode == MoveCursor ) cursor.setPosition( currentPosition );
+        } else if( mode == CursorMode::Move ) cursor.setPosition( currentPosition );
 
     }
 
@@ -2353,7 +2353,7 @@ void TextEditor::_toggleOverwriteMode( void )
 
     Debug::Throw( "TextEditor::_toggleOverwriteMode.\n" );
     setOverwriteMode( !overwriteMode() );
-    if( _setModifier( ModifierInsert, overwriteMode() ) ) emit modifiersChanged( modifiers() );
+    if( _setModifier( Modifier::Insert, overwriteMode() ) ) emit modifiersChanged( modifiers() );
     return;
 
 }
@@ -2455,7 +2455,7 @@ void TextEditor::_updateConfiguration( void )
     // update box configuration
     // clear
     boxSelection_.updateConfiguration();
-    if( !boxSelection_.isEnabled() && boxSelection_.state() != BoxSelection::SelectionEmpty )
+    if( !boxSelection_.isEnabled() && boxSelection_.state() != BoxSelection::State::Empty )
     {
         boxSelection_.clear();
         _synchronizeBoxSelection();
@@ -2664,7 +2664,7 @@ bool TextEditor::_toggleWrapMode( bool state )
     if( mode == lineWrapMode() ) return false;
 
     setLineWrapMode( mode );
-    if( _setModifier( ModifierWrap, state ) ) emit modifiersChanged( modifiers() );
+    if( _setModifier( Modifier::Wrap, state ) ) emit modifiersChanged( modifiers() );
 
     // propagate to associated display
     if( isSynchronized() )

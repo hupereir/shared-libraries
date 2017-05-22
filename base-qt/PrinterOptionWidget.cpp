@@ -32,17 +32,14 @@
 //________________________________________________________________
 PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     QWidget( parent ),
-    Counter( "Print::PrinterOptionWidget" ),
-    helper_( 0 ),
-    orientation_( QPrinter::Portrait ),
-    pageMode_( BasePrintHelper::SinglePage )
+    Counter( "Print::PrinterOptionWidget" )
 {
 
     setWindowTitle( tr( "Pages" ) );
-    QVBoxLayout* layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout();
     setLayout( layout );
 
-    QHBoxLayout* hLayout = new QHBoxLayout();
+    auto hLayout = new QHBoxLayout();
     hLayout->setMargin(0);
     layout->addLayout( hLayout );
 
@@ -77,16 +74,16 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
         QRadioButton* radioButton;
         QButtonGroup* buttonGroup = new QButtonGroup( this );
         vLayout->addWidget( radioButton = new QRadioButton( tr( "One page per sheet" ), groupBox ) );
-        pageModeButtons_.insert( radioButton, BasePrintHelper::SinglePage );
+        pageModeButtons_.insert( radioButton, BasePrintHelper::PageMode::SinglePage );
         buttonGroup->addButton( radioButton );
         radioButton->setChecked( true );
 
         vLayout->addWidget( radioButton = new QRadioButton( tr( "Two pages per sheet" ), groupBox ) );
-        pageModeButtons_.insert( radioButton, BasePrintHelper::TwoPages );
+        pageModeButtons_.insert( radioButton, BasePrintHelper::PageMode::TwoPages );
         buttonGroup->addButton( radioButton );
 
         vLayout->addWidget( radioButton = new QRadioButton( tr( "Four pages per sheet" ), groupBox ) );
-        pageModeButtons_.insert( radioButton, BasePrintHelper::FourPages );
+        pageModeButtons_.insert( radioButton, BasePrintHelper::PageMode::FourPages );
         buttonGroup->addButton( radioButton );
 
         connect( buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_setPageMode(QAbstractButton*)) );
@@ -112,11 +109,11 @@ void PrinterOptionWidget::setHelper( BasePrintHelper* helper )
     previewButton_->setEnabled( helper_ );
 
     // update orientation
-    for( OrientationButtonMap::const_iterator iter = orientationButtons_.constBegin(); iter != orientationButtons_.constEnd(); ++iter )
+    for( auto&& iter = orientationButtons_.constBegin(); iter != orientationButtons_.constEnd(); ++iter )
     { if( iter.value() == helper_->orientation() ) iter.key()->setChecked( true ); }
 
     // update page mode
-    for( PageModeButtonMap::const_iterator iter = pageModeButtons_.constBegin(); iter != pageModeButtons_.constEnd(); ++iter )
+    for( auto&& iter = pageModeButtons_.constBegin(); iter != pageModeButtons_.constEnd(); ++iter )
     { if( iter.value() == helper_->pageMode() ) iter.key()->setChecked( true ); }
 
 }

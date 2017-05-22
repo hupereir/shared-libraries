@@ -24,9 +24,6 @@
 CursorMonitor::CursorMonitor( QWidget* parent ):
     QObject( parent ),
     Counter( "CursorMonitor" ),
-    enabled_( true ),
-    autoHideDelay_( 1000 ),
-    cursorState_( CursorVisible ),
     savedCursorShape_( parent->cursor().shape() )
 {
     parent->setMouseTracking( true );
@@ -44,7 +41,7 @@ bool CursorMonitor::eventFilter( QObject* o, QEvent* e )
         case QEvent::Leave:
         case QEvent::FocusOut:
         case QEvent::WindowDeactivate:
-        _setCursorState( CursorVisible );
+        _setCursorState( CursorState::Visible );
         break;
 
         case QEvent::Enter:
@@ -56,7 +53,7 @@ bool CursorMonitor::eventFilter( QObject* o, QEvent* e )
         case QEvent::Show:
         case QEvent::Hide:
         case QEvent::Wheel:
-        _setCursorState( CursorVisible );
+        _setCursorState( CursorState::Visible );
         if ( qobject_cast<QWidget*>( parent() )->hasFocus() )
         { autoHideTimer_.start( autoHideDelay_, this ); }
         break;
@@ -76,14 +73,14 @@ void CursorMonitor::timerEvent( QTimerEvent* e )
     {
 
         autoHideTimer_.stop();
-        _setCursorState( CursorHidden );
+        _setCursorState( CursorState::Hidden );
 
     } else QObject::timerEvent( e );
 
 }
 
 //_________________________________________________________
-void CursorMonitor::_setCursorState( const CursorMonitor::CursorState& state )
+void CursorMonitor::_setCursorState( CursorMonitor::CursorState state )
 {
     if( state == cursorState_ ) return;
 
@@ -92,18 +89,18 @@ void CursorMonitor::_setCursorState( const CursorMonitor::CursorState& state )
 
     switch( state )
     {
-        case CursorVisible:
+        case CursorState::Visible:
         {
             widget->setCursor( savedCursorShape_ );
-            cursorState_ = CursorVisible;
+            cursorState_ = CursorState::Visible;
             break;
         }
 
-        case CursorHidden:
+        case CursorState::Hidden:
         {
             savedCursorShape_ = widget->cursor().shape();
             widget->setCursor( Qt::BlankCursor );
-            cursorState_ = CursorHidden;
+            cursorState_ = CursorState::Hidden;
             break;
         }
 

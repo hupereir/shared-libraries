@@ -37,7 +37,7 @@ class GridLayoutItem: public QObject, public Counter
     public:
 
     //* flags
-    enum ItemFlag
+    enum class Flag
     {
         None = 0,
         Elide = 1<<0,
@@ -45,10 +45,10 @@ class GridLayoutItem: public QObject, public Counter
         All = Elide|Selectable
     };
 
-    Q_DECLARE_FLAGS( ItemFlags, ItemFlag );
+    Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    GridLayoutItem( QWidget*, GridLayout*, ItemFlags = None );
+    GridLayoutItem( QWidget*, GridLayout*, Flags = Flag::None );
 
     //*@name accessors
     //@{
@@ -105,14 +105,14 @@ class GridLayoutItem: public QObject, public Counter
 
     private:
 
-    ItemFlags flags_ = None;
-    QLabel* key_;
-    QLabel* value_;
+    Flags flags_ = Flag::None;
+    QLabel* key_ = nullptr;
+    QLabel* value_ = nullptr;
 
     bool visible_ = true;
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( GridLayoutItem::ItemFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( GridLayoutItem::Flags )
 
 #endif

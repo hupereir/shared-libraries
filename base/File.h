@@ -34,7 +34,7 @@ class File: public QString
     using List=QList<File>;
 
     //* return list of files in a directory
-    enum ListFlag
+    enum class ListFlag
     {
         None = 0,
         Recursive = 1<<0,

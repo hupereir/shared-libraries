@@ -31,7 +31,7 @@ class KeyModifier
   KeyModifier( const Qt::Key& );
 
   //! state
-  enum State
+  enum class State
   {
     Off,
     On,

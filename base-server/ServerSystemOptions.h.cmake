@@ -31,7 +31,7 @@
 void installServerSystemOptions( void )
 {
     XmlOptions::get().setAutoDefault( true );
-    XmlOptions::get().set( "KDE_CONFIG", Option( "@KDE_CONFIG@", Option::None ) );
+    XmlOptions::get().set( "KDE_CONFIG", Option( "@KDE_CONFIG@", Option::Flag::None ) );
     XmlOptions::get().setAutoDefault( false );
 }
 

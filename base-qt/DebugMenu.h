@@ -37,7 +37,7 @@ class DebugMenu: public QMenu, public Counter
     public:
 
     //* flags
-    enum Flag
+    enum class Flag
     {
         Counters = 1<<0,
         Icons = 1<<2,
@@ -49,7 +49,7 @@ class DebugMenu: public QMenu, public Counter
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    DebugMenu( QWidget*, Flags = Default );
+    DebugMenu( QWidget*, Flags = Flag::Default );
 
     //* needed to toggle visibility
     virtual bool eventFilter( QObject*, QEvent* );

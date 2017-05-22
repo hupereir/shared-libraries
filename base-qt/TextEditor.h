@@ -70,13 +70,13 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     public:
 
     //* modifiers
-    enum Modifier
+    enum class Modifier
     {
-        ModifierNone = 0,
-        ModifierCapsLock = 1<<0,
-        ModifierNumLock = 1<<1,
-        ModifierInsert = 1<<2,
-        ModifierWrap = 1<<3
+        None = 0,
+        CapsLock = 1<<0,
+        NumLock = 1<<1,
+        Insert = 1<<2,
+        Wrap = 1<<3
     };
 
     Q_DECLARE_FLAGS( Modifiers, Modifier );
@@ -241,7 +241,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //* clear box selection
     virtual void clearBoxSelection( void )
     {
-        if( boxSelection_.state() == BoxSelection::SelectionFinished )
+        if( boxSelection_.state() == BoxSelection::State::Finished )
         { boxSelection_.clear(); }
     }
 
@@ -600,10 +600,10 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     virtual bool _findBackward( const TextSelection& selection, bool rewind );
 
     //* define how cursor should be updated while replacing
-    enum CursorMode
+    enum class CursorMode
     {
-        ExpandCursor,
-        MoveCursor
+        Expand,
+        Move
     };
 
     //* replace selection in range refered to by cursor
@@ -712,7 +712,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     {
         if( modifier( key ) == value ) return false;
         if( value ) modifiers_ |= key;
-        else modifiers_ &= ~key;
+        else modifiers_ &= ~static_cast<Modifiers>(key);
         return true;
     }
 
@@ -978,7 +978,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
 
     //* keyboard modifiers
     /** this is a bitwise or of the Modifiers enumeration */
-    Modifiers modifiers_ = ModifierNone;
+    Modifiers modifiers_ = Modifier::None;
 
     friend class Container;
 

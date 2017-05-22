@@ -423,7 +423,7 @@ bool File::copy( const File& newFile, bool force ) const
         if( !newFile.createDirectory() ) return false;
 
         // list files, and copy, recursively
-        for( const auto& file:listFiles( ShowHiddenFiles ) )
+        for( const auto& file:listFiles( ListFlag::ShowHiddenFiles ) )
         { if( !file.copy( file.localName().addPath( newFile ) ) ) return false; }
 
         return true;
@@ -531,7 +531,7 @@ File::List File::listFiles( ListFlags flags ) const
 
     List out;
     File fullname( expand() );
-    if( !fullname.isDirectory() || (fullname.isLink() && !(flags&FollowLinks) ) ) return out;
+    if( !fullname.isDirectory() || (fullname.isLink() && !(flags&ListFlag::FollowLinks) ) ) return out;
     if( !fullname.endsWith( "/" ) ) fullname += "/";
 
     // open directory
@@ -541,7 +541,7 @@ File::List File::listFiles( ListFlags flags ) const
     #endif
 
     const QDir dir( fullname );
-    if( flags & ShowHiddenFiles ) filter |= QDir::Hidden;
+    if( flags & ListFlag::ShowHiddenFiles ) filter |= QDir::Hidden;
     for( const auto& value:dir.entryList( filter ) )
     {
 
@@ -553,7 +553,7 @@ File::List File::listFiles( ListFlags flags ) const
         out << file;
 
         // list subdirectory if recursive
-        if( flags & Recursive && file.isDirectory() )
+        if( flags & ListFlag::Recursive && file.isDirectory() )
         {
 
             // in case directory is a link

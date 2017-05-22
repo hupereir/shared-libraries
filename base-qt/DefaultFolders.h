@@ -40,7 +40,7 @@ class DefaultFolders: public QObject
     //@{
 
     //* folder type
-    enum Type
+    enum class Type:uint
     {
         Unknown,
         Home,
@@ -118,5 +118,7 @@ class DefaultFolders: public QObject
     IconMap iconNames_;
 
 };
+
+inline uint qHash( const DefaultFolders::Type& type ) { return static_cast<uint>(type); }
 
 #endif

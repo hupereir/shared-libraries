@@ -43,31 +43,31 @@ QString TimeStamp::toString( TimeStamp::Format format ) const
     switch (format)
     {
 
-        case Date:
+        case Format::Date:
         return toString( "dd/MM/yyyy" );
 
-        case DateUS:
+        case Format::DateUS:
         return toString( "yyyy/MM/dd" );
 
-        case Time:
+        case Format::Time:
         return toString( "hh:mm" );
 
-        case TimeLong:
+        case Format::TimeLong:
         return toString( "hh:mm:ss" );
 
-        case Short:
+        case Format::Short:
         return toString( "dd/MM/yyyy hh:mm" );
 
-        case ShortUS:
+        case Format::ShortUS:
         return toString( "yyyy/MM/dd hh:mm" );
 
-        case Long:
+        case Format::Long:
         return toString( "dd MMM yyyy hh::mm::ss (ddd)" );
 
-        case DateTag:
+        case Format::DateTag:
         return toString( "yyyyMMdd" );
 
-        case JobTag:
+        case Format::JobTag:
         return toString( "MMM dd hh:mm" );
 
         default: return TimeStampUnknown;

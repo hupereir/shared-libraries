@@ -60,7 +60,7 @@ class BaseToolTipWidget: public QWidget, public Counter
     { return rect_; }
 
     //* preferred position
-    enum Position
+    enum class Position
     {
         Left,
         Right,
@@ -153,7 +153,7 @@ class BaseToolTipWidget: public QWidget, public Counter
     int defaultDelay_ = 1000;
 
     //* prefered tooltip position with respect to index rect
-    Position preferredPosition_ = Bottom;
+    Position preferredPosition_ = Position::Bottom;
 
     //* index rect
     QRect rect_;

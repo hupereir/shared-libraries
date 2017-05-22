@@ -34,7 +34,7 @@ RoundedRegion::RoundedRegion( QRect rect, Corners corners ):
 {
 
   // top left
-  if( corners & TopLeft )
+  if( corners & Corner::TopLeft )
   {
     const QPoint& point( rect.topLeft() );
     *this -= QRegion(point.x(), point.y()+0, 5, 1);
@@ -44,7 +44,7 @@ RoundedRegion::RoundedRegion( QRect rect, Corners corners ):
   }
 
   // top right
-  if( corners & TopRight )
+  if( corners & Corner::TopRight )
   {
     const QPoint& point( rect.topRight() );
     *this -= QRegion(point.x()-4, point.y()+0, 5, 1);
@@ -54,7 +54,7 @@ RoundedRegion::RoundedRegion( QRect rect, Corners corners ):
   }
 
   // bottom left
-  if( corners & BottomLeft )
+  if( corners & Corner::BottomLeft )
   {
     const QPoint& point( rect.bottomLeft() );
     *this -= QRegion(point.x(), point.y()-0, 5, 1);
@@ -65,7 +65,7 @@ RoundedRegion::RoundedRegion( QRect rect, Corners corners ):
 
 
   // bottom right
-  if( corners & BottomRight )
+  if( corners & Corner::BottomRight )
   {
     const QPoint& point( rect.bottomRight() );
     *this -= QRegion(point.x()-4, point.y()-0, 5, 1);

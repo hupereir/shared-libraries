@@ -42,7 +42,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
 
     // setup container
     Private::MainWidget* main = new Private::MainWidget();
-    main->windowMonitor().setMode( WidgetMonitor::Size );
+    main->windowMonitor().setMode( WidgetMonitor::Mode::Size );
     main->windowMonitor().setOptionName( optionName );
     main->setLayout( new QVBoxLayout() );
     main->layout()->setMargin(0);

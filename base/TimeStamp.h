@@ -89,7 +89,7 @@ class TimeStamp:public Counter
     { return int( time_ ); }
 
     //* timestamp format enumeration
-    enum Format
+    enum class Format
     {
 
         //* DD/MM/YYYY
@@ -122,7 +122,7 @@ class TimeStamp:public Counter
     };
 
     //* if timestamp is valid returns formated string
-    virtual QString toString( Format = Short ) const;
+    virtual QString toString( Format = Format::Short ) const;
 
     //* if timestamp is valid, returns formated string
     virtual QString toString( Qt::DateFormat format ) const

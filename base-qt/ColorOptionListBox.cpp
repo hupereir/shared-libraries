@@ -112,10 +112,7 @@ void ColorOptionListBox::_edit( void )
 
     // retrieve selection
     QModelIndex current( list().selectionModel()->currentIndex() );
-    Q_ASSERT( current.isValid() );
-
     Options::Pair source( _model().get( current ) );
-    Q_ASSERT( source.second.hasFlag( Option::Recordable ) );
 
     // create dialog
     EditDialog dialog( this );

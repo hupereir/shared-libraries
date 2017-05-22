@@ -40,7 +40,7 @@ class Option:public Counter
     public:
 
     //* flags
-    enum Flag
+    enum class Flag
     {
         None = 0,
         Current = 1 << 0,
@@ -53,13 +53,13 @@ class Option:public Counter
     Option();
 
     //* constructor
-    Option( const char*, Flags = Recordable );
+    Option( const char*, Flags = Flag::Recordable );
 
     //* constructor
-    Option( const QByteArray&, Flags = Recordable );
+    Option( const QByteArray&, Flags = Flag::Recordable );
 
     //* constructor
-    Option( const QString&, Flags = Recordable );
+    Option( const QString&, Flags = Flag::Recordable );
 
     //* less than operator
     bool operator < (const Option& other ) const
@@ -91,7 +91,7 @@ class Option:public Counter
 
     //* current
     bool isCurrent( void ) const
-    { return hasFlag( Current ); }
+    { return hasFlag( Flag::Current ); }
 
     //* default
     bool isDefault( void ) const
@@ -99,7 +99,7 @@ class Option:public Counter
 
     //* recordable
     bool isRecordable( void ) const
-    { return hasFlag( Recordable ); }
+    { return hasFlag( Flag::Recordable ); }
 
     //* raw accessor
     const QByteArray& raw( void ) const
@@ -147,13 +147,13 @@ class Option:public Counter
     Option& setFlag( Flag flag, bool value = true )
     {
         if( value ) { flags_ |= flag; }
-        else { flags_ &= (~flag); }
+        else { flags_ &= ~static_cast<Flags>(flag); }
         return *this;
     }
 
     //* current
     Option& setCurrent( bool value )
-    { return setFlag( Current, value ); }
+    { return setFlag( Flag::Current, value ); }
 
     //* default
     Option& setDefault( void )
@@ -256,10 +256,10 @@ class Option:public Counter
     QByteArray defaultValue_;
 
     //* flags
-    Flags flags_ = Recordable;
+    Flags flags_ = Flag::Recordable;
 
     //* default flags
-    Flags defaultFlags_ = Recordable;
+    Flags defaultFlags_ = Flag::Recordable;
 
     //*@name serializer
     //@{

@@ -24,6 +24,7 @@
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
+#include "StandardAction.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -426,30 +427,23 @@ void LineEditor::_installActions( void )
     Debug::Throw( "LineEditor::_installActions.\n" );
 
     // create actions
-    addAction( undoAction_ = new QAction( IconEngine::get( IconNames::Undo ), tr( "Undo" ), this ) );
-    undoAction_->setShortcut( QKeySequence::Undo );
+    addAction( undoAction_ = new StandardAction( StandardAction::Type::Undo, this ) );
     undoAction_->setShortcutContext( Qt::WidgetShortcut );
-    undoAction_->setEnabled( isUndoAvailable() );
     connect( undoAction_, SIGNAL(triggered()), SLOT(undo()) );
 
-    addAction( redoAction_ = new QAction( IconEngine::get( IconNames::Redo ), tr( "Redo" ), this ) );
-    redoAction_->setShortcut( QKeySequence::Redo );
-    redoAction_->setEnabled( isRedoAvailable() );
+    addAction( redoAction_ = new StandardAction( StandardAction::Type::Redo, this ) );
     redoAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( redoAction_, SIGNAL(triggered()), SLOT(redo()) );
 
-    addAction( cutAction_ = new QAction( IconEngine::get( IconNames::Cut ), tr( "Cut" ), this ) );
-    cutAction_->setShortcut( QKeySequence::Cut );
+    addAction( cutAction_ = new StandardAction( StandardAction::Type::Cut, this ) );
     cutAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( cutAction_, SIGNAL(triggered()), SLOT(cut()) );
 
-    addAction( copyAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy" ), this ) );
-    copyAction_->setShortcut( QKeySequence::Copy );
+    addAction( copyAction_ = new StandardAction( StandardAction::Type::Copy, this ) );
     copyAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( copyAction_, SIGNAL(triggered()), SLOT(copy()) );
 
-    addAction( pasteAction_ = new QAction( IconEngine::get( IconNames::Paste ), tr( "Paste" ), this ) );
-    pasteAction_->setShortcut( QKeySequence::Paste );
+    addAction( pasteAction_ = new StandardAction( StandardAction::Type::Paste, this ) );
     pasteAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
     connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );

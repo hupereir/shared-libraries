@@ -218,7 +218,7 @@ void OptionListBox::read( const Options& options )
     Options::List values( options.specialOptions( optionName() ) );
 
     // check if one option is default, set first otherwise
-    if( !values.empty() && std::find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::Current ) ) == values.end() )
+    if( !values.empty() && std::find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::Flag::Current ) ) == values.end() )
     { values.front().setCurrent( true ); }
 
     // add to model.
@@ -252,8 +252,8 @@ void OptionListBox::_updateButtons( void )
     Debug::Throw( "OptionListBox::_updateButtons.\n" );
 
     QModelIndex current( list_->selectionModel()->currentIndex() );
-    edit_->setEnabled( current.isValid() && model_->get( current ).second.hasFlag( Option::Recordable ) );
-    editAction_->setEnabled( current.isValid() && model_->get( current ).second.hasFlag( Option::Recordable ) );
+    edit_->setEnabled( current.isValid() && model_->get( current ).second.hasFlag( Option::Flag::Recordable ) );
+    editAction_->setEnabled( current.isValid() && model_->get( current ).second.hasFlag( Option::Flag::Recordable ) );
 
     default_->setEnabled( current.isValid() );
     defaultAction_->setEnabled( current.isValid() );
@@ -261,7 +261,7 @@ void OptionListBox::_updateButtons( void )
     bool removeEnabled( false );
     for( const auto& optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
     {
-        if( optionPair.second.hasFlag( Option::Recordable ) )
+        if( optionPair.second.hasFlag( Option::Flag::Recordable ) )
         {
             removeEnabled = true;
             break;
@@ -318,10 +318,7 @@ void OptionListBox::_edit( void )
 
     // retrieve selection
     QModelIndex current( list_->selectionModel()->currentIndex() );
-    Q_ASSERT( current.isValid() );
-
     Options::Pair source( model_->get( current ) );
-    Q_ASSERT( source.second.hasFlag( Option::Recordable ) );
 
     // create dialog
     EditDialog dialog( this, browsable_, fileMode_ );
@@ -375,7 +372,7 @@ void OptionListBox::_remove( void )
     // retrieve selected items; retrieve only recordable options
     OptionModel::List removed;
     for( const auto& optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
-    { if( optionPair.second.hasFlag( Option::Recordable ) ) removed << optionPair; }
+    { if( optionPair.second.hasFlag( Option::Flag::Recordable ) ) removed << optionPair; }
 
     // remove
     model_->remove( removed );

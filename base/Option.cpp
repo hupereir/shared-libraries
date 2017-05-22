@@ -37,10 +37,7 @@ Option::Option():
 Option::Option( const char* value, Flags flags ):
     Counter( "Option" ),
     flags_( flags )
-{
-    Q_CHECK_PTR( value );
-    value_ = value;
-}
+{ value_ = value; }
 
 //________________________________________________________
 Option::Option( const QByteArray& value, Flags flags ):

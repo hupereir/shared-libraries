@@ -72,17 +72,17 @@ namespace Private
             action->setCheckable( true );
             action->setChecked( true );
             actionGroup->addAction( action );
-            pageModeActions_.insert( action, BasePrintHelper::SinglePage );
+            pageModeActions_.insert( action, BasePrintHelper::PageMode::SinglePage );
 
             action = menu->addAction( tr( "Two Pages Per Sheet" ) );
             action->setCheckable( true );
             actionGroup->addAction( action );
-            pageModeActions_.insert( action, BasePrintHelper::TwoPages );
+            pageModeActions_.insert( action, BasePrintHelper::PageMode::TwoPages );
 
             action = menu->addAction( tr( "Four Pages Per Sheet" ) );
             action->setCheckable( true );
             actionGroup->addAction( action );
-            pageModeActions_.insert( action, BasePrintHelper::FourPages );
+            pageModeActions_.insert( action, BasePrintHelper::PageMode::FourPages );
 
             connect( actionGroup, SIGNAL(triggered(QAction*)), SLOT(_setPageMode(QAction*)) );
        }

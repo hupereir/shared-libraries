@@ -88,15 +88,15 @@ void FileThread::run( void )
 void FileThread::_listFiles( const File& parent )
 {
 
-    File::ListFlags flags( File::None );
+    File::ListFlags flags( File::ListFlag::None );
 
     // show hidden files flag
-    if( (flags_&File::ShowHiddenFiles) || command_ == Command::SizeRecursive )
-    { flags |= File::ShowHiddenFiles; }
+    if( (flags_&File::ListFlag::ShowHiddenFiles) || command_ == Command::SizeRecursive )
+    { flags |= File::ListFlag::ShowHiddenFiles; }
 
     // follow link flags, always on for first path
     // it is decided again for listRecursive when storing subdirectories
-    flags |= File::FollowLinks;
+    flags |= File::ListFlag::FollowLinks;
 
     // clear current list of files
     files_.clear();
@@ -109,7 +109,7 @@ void FileThread::_listFiles( const File& parent )
         {
 
             filesRecursive_ << file;
-            if( file.isDirectory() && ( !file.isLink() || (command_ == Command::ListRecursive && (flags_&File::FollowLinks) ) ) )
+            if( file.isDirectory() && ( !file.isLink() || (command_ == Command::ListRecursive && (flags_&File::ListFlag::FollowLinks) ) ) )
             { directories << file; }
 
         }

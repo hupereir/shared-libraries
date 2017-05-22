@@ -169,13 +169,11 @@ void BusyWidget::_adjustPosition( void )
 
     switch( location_ )
     {
-
-        case Center: move( (parent->width()-width())/2, (parent->height()-height())/2 ); break;
-        case TopLeft: move( margin_, margin_ ); break;
-        case TopRight: move( parent->width()-width()-margin_, margin_ ); break;
-        case BottomLeft: move( margin_, parent->height()-height()-margin_ ); break;
-        case BottomRight: move( parent->width()-width()-margin_, parent->height()-height()-margin_ ); break;
-
+        case Location::Center: move( (parent->width()-width())/2, (parent->height()-height())/2 ); break;
+        case Location::TopLeft: move( margin_, margin_ ); break;
+        case Location::TopRight: move( parent->width()-width()-margin_, margin_ ); break;
+        case Location::BottomLeft: move( margin_, parent->height()-height()-margin_ ); break;
+        case Location::BottomRight: move( parent->width()-width()-margin_, parent->height()-height()-margin_ ); break;
     }
 
 }

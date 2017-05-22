@@ -191,7 +191,7 @@ void OpenWithDialog::_open( void )
     if( !optionName_.isEmpty() && XmlOptions::get().isSpecialOption( optionName_ ) )
     {
         for( const auto& command:comboBox_->newItems() )
-        { XmlOptions::get().add( optionName_, Option( command, Option::Recordable|Option::Current ) ); }
+        { XmlOptions::get().add( optionName_, Option( command, Option::Flag::Recordable|Option::Flag::Current ) ); }
     }
 
     // open

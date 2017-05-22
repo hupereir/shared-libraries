@@ -28,58 +28,58 @@
 #include <QCursor>
 #include <QWidget>
 
-//! used to automatically hide mouse cursor over a certain widget
+//* used to automatically hide mouse cursor over a certain widget
 class CursorMonitor: public QObject, public Counter
 {
 
     public:
 
-    //! constructor
+    //* constructor
     CursorMonitor( QWidget* );
 
-    //! event filter
+    //* event filter
     virtual bool eventFilter( QObject*, QEvent* );
 
-    //! auto hide delay_setCursorState
-    void setAutoHideDelay( const int& value )
+    //* auto hide delay_setCursorState
+    void setAutoHideDelay( int value )
     { autoHideDelay_ = value; }
 
-    //! enability
+    //* enability
     void setEnabled( bool value )
     {
         enabled_ = value;
-        if( !enabled_ ) _setCursorState( CursorVisible );
+        if( !enabled_ ) _setCursorState( CursorState::Visible );
     }
 
     protected:
 
-    //! timer event
+    //* timer event
     /* need to save updated window size */
     virtual void timerEvent( QTimerEvent* );
 
-    enum CursorState
+    enum class CursorState
     {
-        CursorVisible,
-        CursorHidden
+        Visible,
+        Hidden
     };
 
-    void _setCursorState( const CursorState& );
+    void _setCursorState( CursorState );
 
     private:
 
-    //! enability
-    bool enabled_;
+    //* enability
+    bool enabled_ = true;
 
-    //! auto hide delay
-    int autoHideDelay_;
+    //* auto hide delay
+    int autoHideDelay_ = 1000;
 
-    //! auto hide timer
+    //* auto hide timer
     QBasicTimer autoHideTimer_;
 
-    //! state
-    CursorState cursorState_;
+    //* state
+    CursorState cursorState_ = CursorState::Visible;
 
-    //! cursor shape
+    //* cursor shape
     Qt::CursorShape savedCursorShape_;
 
 };

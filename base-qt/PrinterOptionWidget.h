@@ -71,13 +71,13 @@ class PrinterOptionWidget: public QWidget, public Counter
     private:
 
     //* helper
-    BasePrintHelper* helper_;
+    BasePrintHelper* helper_ = nullptr;
 
     //* orientation
-    QPrinter::Orientation orientation_;
+    QPrinter::Orientation orientation_ = QPrinter::Portrait;
 
     //* page mode
-    BasePrintHelper::PageMode pageMode_;
+    BasePrintHelper::PageMode pageMode_ = BasePrintHelper::PageMode::SinglePage;
 
     //* preview button
     QPushButton* previewButton_;

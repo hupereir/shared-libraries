@@ -44,12 +44,17 @@ KeyModifier::State KeyModifier::state( void ) const
     Debug::Throw( "KeyModifier::state.\n" );
 
     #if defined(Q_OS_WIN)
-    if( key_ == Qt::Key_CapsLock ) return ( GetKeyState(VK_CAPITAL) ) ? On:Off;
-    else if( key_ == Qt::Key_NumLock ) return ( GetKeyState(VK_NUMLOCK) ) ? On:Off;
-    else return Unknown;
+    switch( key_ )
+    {
+        case Qt::Key_CapsLock: return ( GetKeyState(VK_CAPITAL) ) ? State::On:State::Off;
+        case Qt::Key_NumLock: return ( GetKeyState(VK_NUMLOCK) ) ? State::On:State::Off;
+        default: return State::Unknown;
+    }
+
     #endif
 
     #if HAVE_XCB
+
     // map Qt Key to X11
     int keySymbol(0);
     switch( key_ )
@@ -63,24 +68,24 @@ KeyModifier::State KeyModifier::state( void ) const
         break;
 
         default:
-        return Unknown;
+        return State::Unknown;
 
     }
 
     // get matching key code
-    xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
-    xcb_key_symbols_t *symbols( xcb_key_symbols_alloc( connection ) );
-    xcb_keycode_t* keyCodes( xcb_key_symbols_get_keycode( symbols, keySymbol ) );
+    auto&& connection( XcbUtil::get().connection<xcb_connection_t>() );
+    auto&& symbols( xcb_key_symbols_alloc( connection ) );
+    auto&& keyCodes( xcb_key_symbols_get_keycode( symbols, keySymbol ) );
 
     // convert key codes to bit mask
     int keyMask( 0 );
     {
-        xcb_get_modifier_mapping_cookie_t cookie( xcb_get_modifier_mapping( connection ) );
+        auto&& cookie( xcb_get_modifier_mapping( connection ) );
         XcbUtil::ScopedPointer<xcb_get_modifier_mapping_reply_t> reply( xcb_get_modifier_mapping_reply( connection, cookie, nullptr ) );
-        if( !reply ) return Unknown;
+        if( !reply ) return State::Unknown;
 
         // get modifiers
-        xcb_keycode_t *modifiers( xcb_get_modifier_mapping_keycodes( reply.get() ) );
+        auto&& modifiers( xcb_get_modifier_mapping_keycodes( reply.get() ) );
         const int count( xcb_get_modifier_mapping_keycodes_length( reply.get() ) );
 
         for( int i = 0; i<count; ++i )
@@ -95,13 +100,13 @@ KeyModifier::State KeyModifier::state( void ) const
 
     // get key bits
     {
-        xcb_query_pointer_cookie_t cookie( xcb_query_pointer( connection, XcbUtil::get().appRootWindow() ) );
+        auto&& cookie( xcb_query_pointer( connection, XcbUtil::get().appRootWindow() ) );
         XcbUtil::ScopedPointer<xcb_query_pointer_reply_t> reply( xcb_query_pointer_reply( connection, cookie, nullptr ) );
-        if( reply ) return ( reply->mask & keyMask ) ? On:Off;
+        if( reply ) return ( reply->mask & keyMask ) ? State::On : State::Off;
     }
 
     #endif
 
-    return Unknown;
+    return State::Unknown;
 
 }

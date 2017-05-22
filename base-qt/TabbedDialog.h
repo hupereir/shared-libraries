@@ -82,8 +82,7 @@ class TabbedDialog: public BaseDialog, public Counter
 
         //* constructor
         Item( void ):
-            Counter( "TabbedDialog::Item" ),
-            widget_( 0L )
+            Counter( "TabbedDialog::Item" )
         {}
 
         //* constructor
@@ -131,7 +130,7 @@ class TabbedDialog: public BaseDialog, public Counter
         QString name_;
 
         //* associated widget
-        QWidget* widget_;
+        QWidget* widget_ = nullptr;
 
         //* icon
         QIcon icon_;

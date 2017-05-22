@@ -30,7 +30,7 @@ class RoundedRegion: public QRegion
     public:
 
     //! corners
-    enum Corner
+    enum class Corner
     {
         None = 0,
         TopLeft = 1<<0,
@@ -47,7 +47,7 @@ class RoundedRegion: public QRegion
     Q_DECLARE_FLAGS( Corners, Corner );
 
     //! constructor
-    RoundedRegion( QRect, Corners = All );
+    RoundedRegion( QRect, Corners = Corner::All );
 
 };
 

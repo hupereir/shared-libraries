@@ -35,9 +35,15 @@ class IconEngine: public Counter
     //* retrieve singleton
     static IconEngine& get( void );
 
+    //* copy constructor
+    IconEngine( const IconEngine& ) = delete;
+
+    //* assignment operator
+    IconEngine& operator = (const IconEngine& ) = delete;
+
     //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    static const QIcon& get( const QString& file, Base::IconCacheItem::Flags flags = Base::IconCacheItem::Any )
+    static const QIcon& get( const QString& file, Base::IconCacheItem::Flags flags = Base::IconCacheItem::Flag::Any )
     { return get()._get( file, flags ); }
 
     //* return cache
@@ -60,7 +66,7 @@ class IconEngine: public Counter
 
     //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
-    const Base::IconCacheItem& _get( const QString&, Base::IconCacheItem::Flags = Base::IconCacheItem::Any );
+    const Base::IconCacheItem& _get( const QString&, Base::IconCacheItem::Flags = Base::IconCacheItem::Flag::Any );
 
     //@}
 

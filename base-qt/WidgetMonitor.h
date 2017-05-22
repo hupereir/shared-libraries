@@ -37,7 +37,7 @@ class WidgetMonitor: public QObject, public Counter
     WidgetMonitor( QWidget* );
 
     //* mode
-    enum Mode
+    enum class Mode
     {
         None = 0,
         Size = 1<<0,
@@ -85,7 +85,7 @@ class WidgetMonitor: public QObject, public Counter
     QBasicTimer timer_;
 
     //* mode
-    Modes mode_;
+    Modes mode_ = Mode::Size;
 
     //* window size option name
     QString widthOptionName_;

@@ -71,15 +71,15 @@ bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
 
         // clockwise rotations
         if(
-            ( rotation_ == CustomPixmap::None && value == CustomPixmap::CounterClockwise ) ||
-            ( rotation_ == CustomPixmap::Clockwise && value == CustomPixmap::None ) )
+            ( rotation_ == CustomPixmap::Rotation::None && value == CustomPixmap::Rotation::CounterClockwise ) ||
+            ( rotation_ == CustomPixmap::Rotation::Clockwise && value == CustomPixmap::Rotation::None ) )
         {
-            copy.addPixmap( pixmap.rotated( CustomPixmap::Clockwise ), mode, state );
+            copy.addPixmap( pixmap.rotated( CustomPixmap::Rotation::Clockwise ), mode, state );
         } else if(
-            ( rotation_ == CustomPixmap::None && value == CustomPixmap::Clockwise ) ||
-            ( rotation_ == CustomPixmap::CounterClockwise && value == CustomPixmap::None ) )
+            ( rotation_ == CustomPixmap::Rotation::None && value == CustomPixmap::Rotation::Clockwise ) ||
+            ( rotation_ == CustomPixmap::Rotation::CounterClockwise && value == CustomPixmap::Rotation::None ) )
         {
-            copy.addPixmap( pixmap.rotated( CustomPixmap::CounterClockwise ), mode, state );
+            copy.addPixmap( pixmap.rotated( CustomPixmap::Rotation::CounterClockwise ), mode, state );
         }
 
     }
@@ -93,7 +93,7 @@ bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
 QSize CustomToolButton::sizeHint( void ) const
 {
     QSize size( QToolButton::sizeHint() );
-    if( rotation_ != CustomPixmap::None ) size.transpose();
+    if( rotation_ != CustomPixmap::Rotation::None ) size.transpose();
     return size;
 }
 
@@ -102,7 +102,7 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
 {
 
     // default implementation if not rotated
-    if( rotation_ == CustomPixmap::None ) return QToolButton::paintEvent( event );
+    if( rotation_ == CustomPixmap::Rotation::None ) return QToolButton::paintEvent( event );
 
     // rotated paint
     QStylePainter painter(this);
@@ -120,7 +120,7 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
     option.rect.setSize( size );
 
     // rotate the painter
-    if( rotation_ == CustomPixmap::CounterClockwise )
+    if( rotation_ == CustomPixmap::Rotation::CounterClockwise )
     {
 
         painter.translate( 0, height() );

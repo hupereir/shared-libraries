@@ -42,7 +42,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     public:
 
     //* flag bitset for the Base configuration
-    enum ConfigurationFlag
+    enum class Flag
     {
 
         None = 0,
@@ -58,10 +58,10 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     };
 
-    Q_DECLARE_FLAGS( ConfigurationFlags, ConfigurationFlag );
+    Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    BaseConfigurationDialog( QWidget* = nullptr, ConfigurationFlags = None );
+    BaseConfigurationDialog( QWidget* = nullptr, Flags = Flag::None );
 
     // read
     using OptionWidgetList::read;
@@ -72,13 +72,13 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     }
 
     //* adds configuration box for base options used in all appications
-    QWidget* baseConfiguration( QWidget* = nullptr, ConfigurationFlags = Default );
+    QWidget* baseConfiguration( QWidget* = nullptr, Flags = Flag::Default );
 
     //* list configuration box
     QWidget* listConfiguration( QWidget* = nullptr );
 
     //* TextEdit configuration box
-    QWidget* textEditConfiguration( QWidget* = nullptr, ConfigurationFlags = AllTextEdition );
+    QWidget* textEditConfiguration( QWidget* = nullptr, Flags = Flag::AllTextEdition );
 
     Q_SIGNALS:
 
@@ -151,6 +151,6 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( BaseConfigurationDialog::ConfigurationFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( BaseConfigurationDialog::Flags )
 
 #endif

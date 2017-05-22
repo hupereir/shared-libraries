@@ -47,7 +47,7 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
 
     // insert new entry in map
     auto&& folderType( DefaultFolders::get().type( fileInfo.file() ) );
-    if( folderType == DefaultFolders::Unknown ) return invalid_;
+    if( folderType == DefaultFolders::Type::Unknown ) return invalid_;
 
     // get icon name
     auto&& iconName( DefaultFolders::get().iconName( folderType ) );
@@ -87,7 +87,7 @@ QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
     auto&& overlayPixmap( linkOverlay.pixmap( overlaySize ) );
     return source.merged(
         overlayPixmap.scaled( overlaySize*overlayPixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ),
-        CustomPixmap::BOTTOM_RIGHT );
+        CustomPixmap::Corner::BottomRight );
 
 }
 

@@ -34,18 +34,12 @@ class BasePrintHelper: public QObject
     Q_OBJECT
 
     public:
+
     //* constructor
-    BasePrintHelper( QObject* parent = nullptr ):
-        QObject( parent ),
-        orientation_( QPrinter::Portrait ),
-        pageMode_( SinglePage ),
-        pageNumber_(0),
-        sheetNumber_(0),
-        now_( TimeStamp::now() )
-    {}
+    BasePrintHelper( QObject* = nullptr );
 
     //* multipage mode
-    enum PageMode
+    enum class PageMode
     {
         SinglePage,
         TwoPages,
@@ -126,7 +120,7 @@ class BasePrintHelper: public QObject
     QPrinter::Orientation orientation_ = QPrinter::Portrait;
 
     //* page mode
-    PageMode pageMode_ = SinglePage;
+    PageMode pageMode_ = PageMode::SinglePage;
 
     //* rects
     QRect pageRect_;

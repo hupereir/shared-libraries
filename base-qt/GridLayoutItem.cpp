@@ -23,7 +23,7 @@
 #include "GridLayout.h"
 
 //____________________________________________________________________________
-GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags flags ):
+GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, Flags flags ):
     QObject( parent ),
     Counter( "GridLayoutItem" ),
     flags_( flags )
@@ -38,12 +38,12 @@ GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, ItemFlags f
     key_->setPalette( palette );
 
     // create correct value label
-    if( flags & Elide ) value_ = new ElidedLabel( parent );
+    if( flags & Flag::Elide ) value_ = new ElidedLabel( parent );
     else value_ = new QLabel( parent );
 
-    if( flags & Selectable )
+    if( flags & Flag::Selectable )
     {
-        const Qt::TextInteractionFlags defaultFlags( QLabel().textInteractionFlags() );
+        auto defaultFlags( QLabel().textInteractionFlags() );
         value_->setTextInteractionFlags( Qt::TextSelectableByMouse | defaultFlags );
     }
 

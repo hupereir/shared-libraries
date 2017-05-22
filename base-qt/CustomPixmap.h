@@ -30,11 +30,11 @@ class CustomPixmap: public QPixmap, public Counter
 
     public:
 
-    enum Flag
+    enum class Flag
     {
         Transparent = 0x1,
         HighDpi = 0x2,
-        AllFlags = 0x3
+        All = Transparent|HighDpi
     };
 
     Q_DECLARE_FLAGS( Flags, Flag )
@@ -65,7 +65,7 @@ class CustomPixmap: public QPixmap, public Counter
     virtual CustomPixmap find( const QString& );
 
     //* rotation
-    enum Rotation
+    enum class Rotation
     {
         None,
         Clockwise,
@@ -85,17 +85,17 @@ class CustomPixmap: public QPixmap, public Counter
     virtual CustomPixmap colorized( const QColor& ) const;
 
     //* corner enumeration for merging pixmap
-    enum Corner
+    enum class Corner
     {
-        TOP_LEFT,
-        TOP_RIGHT,
-        BOTTOM_LEFT,
-        BOTTOM_RIGHT,
-        CENTER
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight,
+        Center
     };
 
     //* merge pixmap, using the specified corner as an anchor
-    virtual CustomPixmap merged( const CustomPixmap&, Corner corner = TOP_LEFT ) const;
+    virtual CustomPixmap merged( const CustomPixmap&, Corner = Corner::TopLeft ) const;
 
     //* return highlighted pixmap
     virtual CustomPixmap highlighted( qreal opacity ) const;

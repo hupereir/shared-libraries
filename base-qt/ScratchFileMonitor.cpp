@@ -79,7 +79,7 @@ void ScratchFileMonitor::deleteScratchFiles( void )
 
         // get list of contained files
         bool empty( true );
-        for( const auto& child:file.listFiles( File::Recursive ) )
+        for( const auto& child:file.listFiles( File::ListFlag::Recursive ) )
         {
             if( child.isLink() || !child.isDirectory() )
             {

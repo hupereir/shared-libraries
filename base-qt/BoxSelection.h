@@ -41,11 +41,11 @@ class BoxSelection: public Counter
     static const QString mimeType;
 
     //* state
-    enum State
+    enum class State
     {
-        SelectionEmpty,
-        SelectionStarted,
-        SelectionFinished
+        Empty,
+        Started,
+        Finished
     };
 
     //* constructor
@@ -91,7 +91,7 @@ class BoxSelection: public Counter
     //@{
 
     //* synchronize two box selection
-    void synchronize( const BoxSelection& selection );
+    void synchronize( const BoxSelection& );
 
     //* configuration update
     void updateConfiguration( void );
@@ -215,7 +215,7 @@ class BoxSelection: public Counter
     //*@name current selection properties
 
     //* state
-    State state_ = SelectionEmpty;
+    State state_ = State::Empty;
 
     //* start point
     QPoint begin_;

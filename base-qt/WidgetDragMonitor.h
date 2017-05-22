@@ -41,7 +41,7 @@ class WidgetDragMonitor: public QObject, public Counter
     WidgetDragMonitor( QWidget* );
 
     //* mode
-    enum ModeFlag
+    enum class ModeFlag
     {
         DragMove = 1<<0,
         DragResize = 1<<1

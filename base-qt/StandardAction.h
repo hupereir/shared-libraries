@@ -32,7 +32,7 @@ class StandardAction: public QAction, public Counter
     public:
 
     //* action type
-    enum ActionType
+    enum class Type
     {
         New,
         Open,
@@ -54,7 +54,7 @@ class StandardAction: public QAction, public Counter
     };
 
     //* constructor
-    StandardAction( ActionType, QObject* );
+    StandardAction( Type, QObject* );
 
 };
 

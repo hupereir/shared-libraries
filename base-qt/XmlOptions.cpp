@@ -149,7 +149,7 @@ bool XmlOptions::write( void )
         for( const auto& option:iter.value() )
         {
 
-            if( option.hasFlag( Option::Recordable ) && option.isSet() )
+            if( option.hasFlag( Option::Flag::Recordable ) && option.isSet() )
             { top.appendChild( XmlOption( iter.key(), option ).domElement( document ) ); }
 
         }
@@ -160,7 +160,7 @@ bool XmlOptions::write( void )
     for( auto&& iter = singleton_.options_.options().begin(); iter != singleton_.options_.options().end(); ++iter )
     {
 
-        if( iter.value().hasFlag( Option::Recordable ) && iter.value().isSet() && !iter.value().isDefault() )
+        if( iter.value().hasFlag( Option::Flag::Recordable ) && iter.value().isSet() && !iter.value().isDefault() )
         { top.appendChild( XmlOption( iter.key(), iter.value() ).domElement( document ) ); }
 
     }

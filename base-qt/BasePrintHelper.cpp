@@ -27,6 +27,12 @@
 #include <QRadioButton>
 
 //__________________________________________________________________________
+BasePrintHelper::BasePrintHelper( QObject* parent ):
+    QObject( parent ),
+    now_( TimeStamp::now() )
+{}
+
+//__________________________________________________________________________
 void BasePrintHelper::setupPage( QPrinter* printer )
 {
 
@@ -40,10 +46,10 @@ void BasePrintHelper::setupPage( QPrinter* printer )
     printer->setOrientation( orientation_ );
 
     // get font
-    const QFont font( QTextDocument().defaultFont() );
+    auto&& font( QTextDocument().defaultFont() );
     const QFontMetrics metrics( font, printer );
-    const int leading( metrics.leading() );
-    const QRect printerRect( printer->pageRect() );
+    auto&& leading( metrics.leading() );
+    auto&& printerRect( printer->pageRect() );
     const int margin = 1.5*( metrics.height() + leading );
 
     QRect fullPageRect;
@@ -51,14 +57,14 @@ void BasePrintHelper::setupPage( QPrinter* printer )
     switch( pageMode_ )
     {
         default:
-        case SinglePage:
+        case PageMode::SinglePage:
         {
             scale = 1;
             fullPageRect = QRect( QPoint(0,0), printerRect.size() );
             break;
         }
 
-        case TwoPages:
+        case PageMode::TwoPages:
         {
             scale = qreal( printerRect.height() - margin )/(2*printerRect.width() );
             fullPageRect = QRect( 0, 0, printerRect.width(), printerRect.width()/scale );
@@ -72,7 +78,7 @@ void BasePrintHelper::setupPage( QPrinter* printer )
             break;
         }
 
-        case FourPages:
+        case PageMode::FourPages:
         {
             scale = qreal( printerRect.width() - margin )/(2*printerRect.width() );
             fullPageRect = QRect( 0, 0, printerRect.width(), qreal(printerRect.height()-margin)/(2*scale) );
@@ -112,18 +118,18 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
     {
 
         default:
-        case SinglePage:
+        case PageMode::SinglePage:
         if( pageNumber_ > 0 ) printer->newPage();
         sheetNumber_++;
         break;
 
-        case TwoPages:
+        case PageMode::TwoPages:
         if( pageNumber_ > 0 && pageNumber_%2 == 0 ) printer->newPage();
         if( pageNumber_%2 == 0 ) sheetNumber_++;
         painter->setViewport( pages_[pageNumber_%2] );
         break;
 
-        case FourPages:
+        case PageMode::FourPages:
         if( pageNumber_ > 0 && pageNumber_%4 == 0 ) printer->newPage();
         if( pageNumber_%4 == 0 ) sheetNumber_++;
         painter->setViewport( pages_[pageNumber_%4] );
@@ -139,7 +145,7 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
 
     // header
     painter->drawLine( headerRect_.bottomLeft()+QPoint(0,1), headerRect_.bottomRight()+QPoint(0,1) );
-    painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignLeft, TimeStamp::now().toString( TimeStamp::Date ) );
+    painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignLeft, TimeStamp::now().toString( TimeStamp::Format::Date ) );
     painter->drawText( headerRect_, Qt::AlignVCenter|Qt::AlignRight, QString::number( pageNumber_ ) );
 
     if( !file_.isEmpty() )

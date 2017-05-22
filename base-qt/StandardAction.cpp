@@ -23,7 +23,7 @@
 #include "IconEngine.h"
 
 //_________________________________________________________
-StandardAction::StandardAction( StandardAction::ActionType type, QObject* parent ):
+StandardAction::StandardAction( StandardAction::Type type, QObject* parent ):
     QAction( parent ),
     Counter( "StandardAction" )
 {
@@ -31,31 +31,31 @@ StandardAction::StandardAction( StandardAction::ActionType type, QObject* parent
     switch( type )
     {
 
-        case Undo:
+        case Type::Undo:
         setIcon( IconEngine::get( IconNames::Undo ) );
         setText( tr( "Undo" ) );
         setShortcut( QKeySequence::Undo );
         break;
 
-        case Redo:
+        case Type::Redo:
         setIcon( IconEngine::get( IconNames::Redo ) );
         setText( tr( "Redo" ) );
         setShortcut( QKeySequence::Redo );
         break;
 
-        case Cut:
+        case Type::Cut:
         setIcon( IconEngine::get( IconNames::Cut ) );
         setText( tr( "Cut" ) );
         setShortcut( QKeySequence::Cut );
         break;
 
-        case Copy:
+        case Type::Copy:
         setIcon( IconEngine::get( IconNames::Copy ) );
         setText( tr( "Copy" ) );
         setShortcut( QKeySequence::Copy );
         break;
 
-        case Paste:
+        case Type::Paste:
         setIcon( IconEngine::get( IconNames::Paste ) );
         setText( tr( "Paste" ) );
         setShortcut( QKeySequence::Paste );

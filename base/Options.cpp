@@ -40,10 +40,10 @@ void Options::installDefaultOptions( void )
     common to all applications
     */
     keep( "PIXMAP_PATH" );
-    add( "PIXMAP_PATH", Option( ":/icons/32x32", Option::Recordable|Option::Current ) );
-    add( "PIXMAP_PATH", Option( ":/icons/48x48", Option::Recordable ) );
-    add( "PIXMAP_PATH", Option( ":/icons/64x64", Option::Recordable ) );
-    add( "PIXMAP_PATH", Option( ":/icons/128x128", Option::Recordable ) );
+    add( "PIXMAP_PATH", Option( ":/icons/32x32", Option::Flag::Recordable|Option::Flag::Current ) );
+    add( "PIXMAP_PATH", Option( ":/icons/48x48", Option::Flag::Recordable ) );
+    add( "PIXMAP_PATH", Option( ":/icons/64x64", Option::Flag::Recordable ) );
+    add( "PIXMAP_PATH", Option( ":/icons/128x128", Option::Flag::Recordable ) );
 
     set<int>( "DEBUG_LEVEL", 0 );
     set<bool>( "SORT_FILES_BY_DATE", false );
@@ -166,7 +166,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
 
             // update flags otherwise and return true
             sameOptionIter->setFlags( option.flags() );
-            std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Current ) );
+            std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Flag::Current ) );
             return true;
 
         }
@@ -174,7 +174,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
     } else {
 
         iter.value() << option;
-        std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Current ) );
+        std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Flag::Current ) );
         return true;
 
     }
@@ -219,7 +219,7 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
         const Options::List& optionList( iter.value() );
         for( const auto& option:optionList )
         {
-            if( option.hasFlag( Option::Recordable ) && option.isSet() )
+            if( option.hasFlag( Option::Flag::Recordable ) && option.isSet() )
             { out << "  " << iter.key() << ":" << option << endl; }
         }
     }

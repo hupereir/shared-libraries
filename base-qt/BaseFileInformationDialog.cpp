@@ -84,8 +84,8 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     items.append(fileItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
     items.append(typeItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
-    items.append(pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Selectable|GridLayoutItem::Elide ) );
-    items.append(sizeItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Selectable ) );
+    items.append(pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable|GridLayoutItem::Flag::Elide ) );
+    items.append(sizeItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable ) );
     items.append(createdItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
     items.append(modifiedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
     items.append(accessedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
@@ -190,7 +190,7 @@ void BaseFileInformationDialog::setGroup( const QString& value )
 { groupItem_->setText( value ); }
 
 //_________________________________________________________
-int BaseFileInformationDialog::addRow( const QString& key, const QString& value, GridLayoutItem::ItemFlags flags )
+int BaseFileInformationDialog::addRow( const QString& key, const QString& value, GridLayoutItem::Flags flags )
 {
 
     // setup new item

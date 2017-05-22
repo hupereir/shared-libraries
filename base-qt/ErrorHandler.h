@@ -34,6 +34,12 @@ class ErrorHandler
 
     public:
 
+    //* copy constructor
+    ErrorHandler( const ErrorHandler& ) = delete;
+
+    //* equal to operator
+    ErrorHandler& operator = ( const ErrorHandler& ) = delete;
+
     //* singleton
     static ErrorHandler& get( void );
 
@@ -55,12 +61,6 @@ class ErrorHandler
 
     //* constructor
     ErrorHandler( void );
-
-    //* copy constructor
-    ErrorHandler( const ErrorHandler& ) = delete;
-
-    //* equal to operator
-    ErrorHandler& operator = ( const ErrorHandler& ) = delete;
 
     using MessageList = QStringList;
 

@@ -26,7 +26,7 @@
 WidgetDragMonitor::WidgetDragMonitor( QWidget* parent ):
     QObject( parent ),
     Counter( "WidgetDragMonitor" ),
-    mode_( DragMove ),
+    mode_( ModeFlag::DragMove ),
     enabled_( false ),
     clickCounter_( this, 2 ),
     button_( Qt::NoButton ),
@@ -59,12 +59,12 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
                 dragSize_ = widget->window()->size();
 
                 // check modifiers
-                if( ( mode_ & DragResize ) && enabled_ && mouseEvent->modifiers() & Qt::ShiftModifier )
+                if( ( mode_ & ModeFlag::DragResize ) && enabled_ && mouseEvent->modifiers() & Qt::ShiftModifier )
                 {
 
                     direction_ = _direction( widget, mouseEvent->pos() );
 
-                } else if( mode_ & DragMove ) {
+                } else if( mode_ & ModeFlag::DragMove ) {
 
                     direction_ = XcbDefines::_NET_WM_MOVERESIZE_MOVE;
                     timer_.start( QApplication::doubleClickInterval(), this );
@@ -109,7 +109,7 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
 
             if( !enabled_ )
             {
-                if( mode_ & DragMove )
+                if( mode_ & ModeFlag::DragMove )
                 {
 
                     emit stateChangeRequest();
@@ -125,7 +125,7 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
 
             } else {
 
-                if( (mode_ & DragMove) && direction_ == XcbDefines::_NET_WM_MOVERESIZE_MOVE )
+                if( (mode_ & ModeFlag::DragMove) && direction_ == XcbDefines::_NET_WM_MOVERESIZE_MOVE )
                 {
 
                     // drag
@@ -138,7 +138,7 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
                     event->accept();
                     return true;
 
-                } else if( mode_ & DragResize ) {
+                } else if( mode_ & ModeFlag::DragResize ) {
 
                     QRect newRect( target_->window()->geometry() );
                     const QPoint offset( mouseEvent->pos() - dragPosition_ );

@@ -33,17 +33,17 @@
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QSize& size, Flags flags ):
     #if QT_VERSION >= 0x050300
-    QPixmap( flags&HighDpi ? size*qApp->devicePixelRatio() : size ),
+    QPixmap( flags&Flag::HighDpi ? size*qApp->devicePixelRatio() : size ),
     #else
     QPixmap( size ),
     #endif
     Counter( "CustomPixmap" )
 {
     #if QT_VERSION >= 0x050300
-    if( flags&HighDpi ) setDevicePixelRatio( qApp->devicePixelRatio() );
+    if( flags&Flag::HighDpi ) setDevicePixelRatio( qApp->devicePixelRatio() );
     #endif
 
-    if( flags&Transparent ) fill( Qt::transparent );
+    if( flags&Flag::Transparent ) fill( Qt::transparent );
 
 }
 
@@ -89,16 +89,16 @@ CustomPixmap CustomPixmap::find( const QString& file )
 //_________________________________________________
 CustomPixmap CustomPixmap::rotated( const CustomPixmap::Rotation& rotation )
 {
-    if( rotation == None ) return *this;
+    if( rotation == Rotation::None ) return *this;
 
     const qreal dpiRatio( devicePixelRatio() );
 
-    CustomPixmap out( QSize( height(), width() ), Transparent );
+    CustomPixmap out( QSize( height(), width() ), Flag::Transparent );
     out.setDevicePixelRatio( dpiRatio );
     QPainter painter( &out );
 
     // rotate the painter
-    if( rotation == CounterClockwise )
+    if( rotation == Rotation::CounterClockwise )
     {
         painter.translate( 0, out.height()/dpiRatio );
         painter.rotate( -90 );
@@ -191,24 +191,23 @@ CustomPixmap CustomPixmap::merged( const CustomPixmap& pixmap, Corner corner ) c
     switch( corner )
     {
 
-        case TOP_RIGHT:
+        case Corner::TopRight:
         painter.drawPixmap( QPoint( size.width()-pixmapSize.width(), 0 ), pixmap );
         break;
 
-        case BOTTOM_LEFT:
+        case Corner::BottomLeft:
         painter.drawPixmap( QPoint( 0, size.height()-pixmapSize.height() ), pixmap );
         break;
 
-        case BOTTOM_RIGHT:
+        case Corner::BottomRight:
         painter.drawPixmap( QPoint( size.width()-pixmapSize.width(), size.height()-pixmapSize.height() ), pixmap );
         break;
 
-        case CENTER:
+        case Corner::Center:
         painter.drawPixmap(  QPoint( (size.width()-pixmapSize.width())/2, (size.height()-pixmapSize.height())/2 ), pixmap );
         break;
 
-        default:
-        case TOP_LEFT:
+        case Corner::TopLeft:
         painter.drawPixmap( QPoint( 0, 0 ), pixmap );
         break;
 

@@ -23,7 +23,7 @@
 #include <QTimerEvent>
 
 //__________________________________________________________
-static const TimeStamp::Format format( TimeStamp::JobTag );
+static const TimeStamp::Format format( TimeStamp::Format::JobTag );
 
 //__________________________________________________________
 ClockTimer::ClockTimer( QWidget *parent ):

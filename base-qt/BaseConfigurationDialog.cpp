@@ -103,7 +103,7 @@ namespace Private
 }
 
 //_________________________________________________________
-BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, ConfigurationFlags flags ):
+BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags ):
     TabbedDialog( parent ),
     OptionWidgetList(this),
     backupOptions_( XmlOptions::get() )
@@ -172,7 +172,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Configuration
 }
 
 //__________________________________________________
-QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, ConfigurationFlags flags )
+QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flags )
 {
 
     Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
@@ -184,7 +184,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
 
     // base
     QWidget* out( nullptr );
-    if( flags&Base )
+    if( flags&Flag::Base )
     {
 
         // base
@@ -277,10 +277,10 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Configurat
     }
 
     // list
-    if( flags&List ) { out = listConfiguration( parent ); }
+    if( flags&Flag::List ) { out = listConfiguration( parent ); }
 
     // edition
-    if( flags&TextEdition ) { out = textEditConfiguration( parent ); }
+    if( flags&Flag::TextEdition ) { out = textEditConfiguration( parent ); }
 
     return out;
 
@@ -367,7 +367,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 }
 
 //__________________________________________________
-QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, ConfigurationFlags flags )
+QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags flags )
 {
 
     Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
@@ -381,7 +381,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
     QWidget* out = nullptr;
 
     // tab emulation
-    if( flags&TabEmulation )
+    if( flags&Flag::TabEmulation )
     {
         auto box = new QGroupBox( tr( "Tab Emulation" ), parent );
         auto layout = new QVBoxLayout();
@@ -410,7 +410,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
     }
 
     // paragraph highlighting
-    if( flags&ParagraphHighlight )
+    if( flags&Flag::ParagraphHighlight )
     {
         auto box = new QGroupBox( tr( "Paragraph Highlighting" ), parent );
         auto layout = new QVBoxLayout();
@@ -427,7 +427,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
     }
 
     // box selection
-    if( flags&BoxSelection )
+    if( flags&Flag::BoxSelection )
     {
         auto box = new QGroupBox( tr( "Box Selection" ), parent );
         auto gridLayout = new GridLayout();
@@ -452,7 +452,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Config
         out = box;
     }
 
-    if( flags&TextEditionFlags )
+    if( flags&Flag::TextEditionFlags )
     {
 
         // misc
