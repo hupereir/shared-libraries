@@ -78,7 +78,7 @@ namespace Svg
     bool SvgPlasmaInterface::loadTheme( void )
     {
 
-        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme" << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme" << endl;
 
         File::List configurationFiles;
         if( XmlOptions::get().contains( "KDE_CONFIG" ) )
@@ -119,10 +119,6 @@ namespace Svg
         for( const auto& file:configurationFiles )
         { if( file.exists() && !oldFiles.contains( file ) ) fileSystemWatcher_->addPath( file ); }
 
-//         // print watched files
-//         for( const auto& file:fileSystemWatcher_->files() )
-//         {  Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme - watching " << file << endl; }
-
         // look for theme in selected configuration files
         QString theme( "default" );
         for( const auto& file:configurationFiles )
@@ -142,7 +138,7 @@ namespace Svg
 
         }
 
-        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
 
         // reset colorFilename
         auto oldThemePaletteFilename = themePaletteFilename_;
@@ -150,11 +146,11 @@ namespace Svg
 
         // assign theme
         bool modified = _setTheme( theme );
-        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme - using color scheme: " << themePaletteFilename_ << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using color scheme: " << themePaletteFilename_ << endl;
 
         // set as modified if themePaletteFile has changed
         modified |= (themePaletteFilename_ != oldThemePaletteFilename);
-        Debug::Throw(0) << "Svg::SvgPlasmaInterface::loadTheme - modified: " << modified << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - modified: " << modified << endl;
 
         // return modified state
         return modified;
@@ -165,7 +161,7 @@ namespace Svg
     bool SvgPlasmaInterface::loadFile( void )
     {
 
-        Debug::Throw(0, "Svg::SvgPlasmaInterface::loadFile.\n" );
+        Debug::Throw( "Svg::SvgPlasmaInterface::loadFile.\n" );
 
         // check path
         if( !path_.exists() ) return _setValid( false );

@@ -47,7 +47,7 @@ namespace Svg
     bool SvgEngine::reload( bool forced )
     {
 
-        Debug::Throw(0) << "Svg::SvgEngine::reload - forced: " << forced << endl;
+        Debug::Throw() << "Svg::SvgEngine::reload - forced: " << forced << endl;
 
         bool configurationChanged( renderer_.updateConfiguration() );
         bool changed( _loadSvg( forced ) );
@@ -137,7 +137,7 @@ namespace Svg
     bool SvgEngine::_loadSvg( bool forced )
     {
 
-        Debug::Throw(0) << "Svg::SvgEngine::_loadSvg - forced: " << forced << endl;
+        Debug::Throw() << "Svg::SvgEngine::_loadSvg - forced: " << forced << endl;
         bool changed( false );
 
         // try get from plasma interface if needed
