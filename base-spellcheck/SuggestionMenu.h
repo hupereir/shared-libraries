@@ -29,7 +29,7 @@
 namespace SpellCheck {
 
     //* customized popup menu to display spell checker suggestions
-    class SuggestionMenu: public QMenu, public Counter
+    class SuggestionMenu: public QMenu, private Base::Counter<SuggestionMenu>
     {
 
         //* Qt meta object declaration

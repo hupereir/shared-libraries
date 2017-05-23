@@ -34,7 +34,7 @@ namespace Private
 {
 
     //* handles page orientation and page mode
-    class OptionMenu: public QMenuBar, public Counter
+    class OptionMenu: public QMenuBar, private Base::Counter<OptionMenu>
     {
 
         Q_OBJECT
@@ -77,7 +77,7 @@ namespace Private
     };
 
     //* handles page navigation
-    class NavigationWidget: public QWidget, public Counter
+    class NavigationWidget: public QWidget, private Base::Counter<NavigationWidget>
     {
 
         Q_OBJECT

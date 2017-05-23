@@ -31,7 +31,7 @@
 #include <QPixmap>
 
 //* returns icon for a given FileInfo
-class BaseFileIconProvider: public QObject, public Counter
+class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconProvider>
 {
 
     public:

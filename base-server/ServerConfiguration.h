@@ -28,7 +28,7 @@ namespace Server
 {
 
   //! transparency common configuration
-  class ServerConfiguration: public QWidget, public OptionWidgetList, public Counter
+  class ServerConfiguration: public QWidget, public OptionWidgetList, private Base::Counter<ServerConfiguration>
   {
 
     Q_OBJECT

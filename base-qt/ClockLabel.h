@@ -28,7 +28,7 @@
 #include "TimeStamp.h"
 
 //* clock timer. Emit signal when current time is changed
-class ClockTimer: public QObject, public Counter
+class ClockTimer: public QObject, private Base::Counter<ClockTimer>
 {
 
     //* Qt meta object declaration

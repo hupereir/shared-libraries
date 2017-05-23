@@ -61,7 +61,7 @@ class OptionPair: public Options::Pair
 
 };
 
-class OptionModel: public TreeModel<OptionPair>, public Counter
+class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionModel>
 {
 
     Q_OBJECT

@@ -31,7 +31,7 @@ namespace Svg
 {
 
     //! SVG common configuration
-    class SvgConfiguration: public QWidget, public OptionWidgetList, public Counter
+    class SvgConfiguration: public QWidget, public OptionWidgetList, private Base::Counter<SvgConfiguration>
     {
 
         Q_OBJECT

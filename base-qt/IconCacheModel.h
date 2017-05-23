@@ -26,7 +26,7 @@
 #include "ListModel.h"
 
 //* qlistview for object IconCaches
-class IconCacheModel: public ListModel<Base::IconCache::Pair>, public Counter
+class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Counter<IconCacheModel>
 {
 
     Q_OBJECT

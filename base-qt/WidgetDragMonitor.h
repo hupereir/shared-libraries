@@ -30,7 +30,7 @@
 #include <QWidget>
 
 //* used to automatically save size of top level widgets
-class WidgetDragMonitor: public QObject, public Counter
+class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor>
 {
 
     Q_OBJECT

@@ -25,7 +25,7 @@
 #include "Counter.h"
 
 //* find dialog for text editor widgets
-class BaseFindDialog: public BaseDialog, public Counter
+class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
 {
 
     //* Qt meta object declaration

@@ -28,7 +28,7 @@
 #include <QLabel>
 
 //! readonly font name display and font dialog
-class FontEditor: public QWidget, public Counter
+class FontEditor: public QWidget, private Base::Counter<FontEditor>
 {
 
     //! Qt meta object declaration

@@ -26,7 +26,7 @@
 #include <QGridLayout>
 #include <QList>
 
-class GridLayout: public QGridLayout, public Counter
+class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
 {
 
     Q_OBJECT

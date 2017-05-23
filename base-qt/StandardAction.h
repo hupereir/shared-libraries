@@ -24,7 +24,7 @@
 
 #include <QAction>
 
-class StandardAction: public QAction, public Counter
+class StandardAction: public QAction, private Base::Counter<StandardAction>
 {
 
     Q_OBJECT

@@ -26,7 +26,7 @@ namespace Ssh
 {
 
     //* singleton, to handle ssh allocation and freeing
-    class Singleton: public Counter
+    class Singleton: private Base::Counter<Singleton>
     {
         public:
 

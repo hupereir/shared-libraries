@@ -39,7 +39,7 @@ namespace Private
 }
 
 //* Tab Child container
-class TabWidget: public QWidget, public Counter
+class TabWidget: public QWidget, private Base::Counter<TabWidget>
 {
 
     //* Qt meta object declaration

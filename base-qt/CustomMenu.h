@@ -30,7 +30,7 @@
 
 
 //* some basic runtime debuging
-class CustomMenu: public QMenu, public Counter
+class CustomMenu: public QMenu, private Base::Counter<CustomMenu>
 {
 
     //* Qt meta object declaration

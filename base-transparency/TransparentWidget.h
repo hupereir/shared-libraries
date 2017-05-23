@@ -33,7 +33,7 @@ namespace Transparency
 {
 
     //* transparent widget
-    class TransparentWidget: public QWidget, public Counter
+    class TransparentWidget: public QWidget, private Base::Counter<TransparentWidget>
     {
 
         //* Qt meta object declaration

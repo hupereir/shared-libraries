@@ -34,7 +34,7 @@ namespace Private
     class SystemNotificationsP;
 };
 
-class SystemNotifications: public QObject, public Counter
+class SystemNotifications: public QObject, private Base::Counter<SystemNotifications>
 {
 
     Q_OBJECT

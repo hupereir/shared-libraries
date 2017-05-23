@@ -26,7 +26,7 @@
 #include <QBasicTimer>
 #include <QSet>
 
-class UserSelectionFrame: public QWidget, public Counter
+class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFrame>
 {
 
     //! Qt meta object declaration

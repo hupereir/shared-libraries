@@ -20,56 +20,47 @@
 *
 *******************************************************************************/
 
-/*!
-\file HelpModel.h
-\brief model for help items
-\author Hugo Pereira
-\version $Revision$
-\date $Date$
-*/
-
-#include <string.h>
-
-
 #include "ListModel.h"
 #include "HelpItem.h"
 #include "Debug.h"
 
+#include <string.h>
+
 namespace Base
 {
 
-    //! model for help items
-    class HelpModel: public ListModel<HelpItem>, public Counter
+    //* model for help items
+    class HelpModel: public ListModel<HelpItem>, private Counter<HelpModel>
     {
 
-        //! Qt meta object declaration
+        //* Qt meta object declaration
         Q_OBJECT
 
         public:
 
-        //! number of columns
+        //* number of columns
         enum { nColumns = 1 };
 
-        //! constructor
+        //* constructor
         HelpModel( void ):
             Counter( "HelpModel" )
         {}
 
-        //!@name methods reimplemented from base class
+        //*@name methods reimplemented from base class
         //@{
 
-        //! flags
+        //* flags
         virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
 
         // return data for a given index
         virtual QVariant data(const QModelIndex &index, int role) const;
 
-        //! header data
+        //* header data
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
         { return QVariant(); }
 
-        //! number of columns for a given index
+        //* number of columns for a given index
         virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
         { return nColumns; }
 
@@ -77,7 +68,7 @@ namespace Base
 
         protected:
 
-        //! sorting
+        //* sorting
         virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
         {}
 

@@ -38,7 +38,7 @@
 class TextEditor;
 
 //* handles current block highlighting
-class BlockHighlight: public QObject, public Counter
+class BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
 {
 
   Q_OBJECT

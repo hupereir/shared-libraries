@@ -31,7 +31,7 @@
 namespace SpellCheck
 {
     //* spell checker interface
-    class SpellInterface: public Counter
+    class SpellInterface: private Base::Counter<SpellInterface>
     {
 
         public:

@@ -29,7 +29,7 @@
 #include <QPaintEvent>
 #include <QPainterPath>
 
-class BusyWidget: public QWidget, public Counter
+class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
 {
 
     Q_OBJECT

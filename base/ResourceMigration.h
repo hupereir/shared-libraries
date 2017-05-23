@@ -24,7 +24,7 @@
 #include "File.h"
 
 //* file manipulation utility
-class ResourceMigration: public Counter
+class ResourceMigration: private Base::Counter<ResourceMigration>
 {
 
     public:

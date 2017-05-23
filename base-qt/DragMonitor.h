@@ -26,7 +26,7 @@
 #include <QWidget>
 
 //* used to install
-class DragMonitor: public QObject, public Counter
+class DragMonitor: public QObject, private Base::Counter<DragMonitor>
 {
 
     Q_OBJECT

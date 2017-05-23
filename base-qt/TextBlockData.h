@@ -27,7 +27,7 @@
 #include <QTextBlockUserData>
 
 //* TextBlock data
-class TextBlockData: public QTextBlockUserData, public Counter
+class TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockData>
 {
 
     public:

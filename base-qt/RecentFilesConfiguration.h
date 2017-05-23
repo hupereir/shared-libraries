@@ -32,7 +32,7 @@ class FileList;
 class TreeView;
 
 //! configure files in recent files menu
-class RecentFilesConfiguration: public QWidget, public OptionWidgetList, public Counter
+class RecentFilesConfiguration: public QWidget, public OptionWidgetList, private Base::Counter<RecentFilesConfiguration>
 {
 
     Q_OBJECT

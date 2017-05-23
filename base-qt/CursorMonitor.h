@@ -29,7 +29,7 @@
 #include <QWidget>
 
 //* used to automatically hide mouse cursor over a certain widget
-class CursorMonitor: public QObject, public Counter
+class CursorMonitor: public QObject, private Base::Counter<CursorMonitor>
 {
 
     public:

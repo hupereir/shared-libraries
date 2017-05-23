@@ -28,7 +28,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 
-class XmlDocument: public QDomDocument, public Counter
+class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
 {
 
     public:

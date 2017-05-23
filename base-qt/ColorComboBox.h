@@ -28,7 +28,7 @@
 
 #include <QComboBox>
 
-class ColorComboBox: public QComboBox, public Counter
+class ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
 {
 
     //* Qt meta object declaration

@@ -27,7 +27,7 @@
 #include <QStringList>
 
 //* customized Icon factory to provide better looking disabled icons
-class IconEngine: public Counter
+class IconEngine: private Base::Counter<IconEngine>
 {
 
     public:

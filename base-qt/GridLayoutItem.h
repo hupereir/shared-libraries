@@ -29,7 +29,7 @@
 class GridLayout;
 
 //_______________________________________________________
-class GridLayoutItem: public QObject, public Counter
+class GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
 {
 
     Q_OBJECT

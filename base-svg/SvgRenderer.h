@@ -32,7 +32,7 @@
 //* construct pixmap of given size using Svg renderer
 namespace Svg
 {
-    class SvgRenderer: public QSvgRenderer, public Counter
+    class SvgRenderer: public QSvgRenderer, private Base::Counter<SvgRenderer>
     {
 
         public:

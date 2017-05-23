@@ -30,7 +30,7 @@
 #include <QLayout>
 
 //* customized QDialog
-class CustomDialog: public BaseDialog, public Counter
+class CustomDialog: public BaseDialog, private Base::Counter<CustomDialog>
 {
 
     Q_OBJECT

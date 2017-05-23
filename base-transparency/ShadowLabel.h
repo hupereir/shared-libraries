@@ -28,7 +28,7 @@
 
 namespace Transparency
 {
-    class ShadowLabel: public QLabel, public Counter
+    class ShadowLabel: public QLabel, private Base::Counter<ShadowLabel>
     {
 
         public:

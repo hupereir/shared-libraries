@@ -37,7 +37,7 @@ namespace Server
 
     //_________________________________________
     //* command to be send over the server
-    class ServerCommand:public Counter
+    class ServerCommand:private Base::Counter<ServerCommand>
     {
 
         public:

@@ -34,7 +34,7 @@ class BaseFindWidget;
 class ItemModel;
 
 //* customized tree view
-class TreeView: public QTreeView, public Counter
+class TreeView: public QTreeView, private Base::Counter<TreeView>
 {
 
     //* Qt meta object declaration
@@ -193,7 +193,7 @@ class TreeView: public QTreeView, public Counter
     //@}
 
     //* container class for embedded Find dialog
-    class Container: public QWidget, public Counter
+    class Container: public QWidget, private Base::Counter<Container>
     {
 
         public:

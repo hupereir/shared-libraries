@@ -30,7 +30,7 @@ class OptionComboBox;
 namespace SpellCheck
 {
     //* Spell common configuration
-    class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+    class SpellCheckConfiguration: public QGroupBox, public OptionWidgetList, private Base::Counter<SpellCheckConfiguration>
     {
 
         Q_OBJECT

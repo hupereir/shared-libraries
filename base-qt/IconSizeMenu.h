@@ -29,7 +29,7 @@
 #include <QHash>
 
 //! provides icon size selection menu
-class IconSizeMenu: public QMenu, public Counter
+class IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
 {
 
     Q_OBJECT

@@ -27,7 +27,7 @@
 #include <QMap>
 
 //* provides tool button style selection menu
-class ToolButtonStyleMenu: public QMenu, public Counter
+class ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMenu>
 {
 
     Q_OBJECT

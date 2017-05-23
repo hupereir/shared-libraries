@@ -28,7 +28,7 @@ class CounterDialog;
 class IconCacheDialog;
 
 //* some basic runtime debuging
-class DebugMenu: public QMenu, public Counter
+class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
 {
 
     //* Qt meta object declaration

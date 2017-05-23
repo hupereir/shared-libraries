@@ -32,7 +32,7 @@ namespace Ssh
     class Socket;
 
     //* tunnel
-    class Tunnel: public QObject, public Counter
+    class Tunnel: public QObject, private Base::Counter<Tunnel>
     {
 
         Q_OBJECT

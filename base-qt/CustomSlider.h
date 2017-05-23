@@ -28,7 +28,7 @@
 #include <QSpinBox>
 
 //* customized QSlider associated to a QSpinBox
-class CustomSlider: public QWidget, public Counter
+class CustomSlider: public QWidget, private Base::Counter<CustomSlider>
 {
 
     //* Qt meta object declaration

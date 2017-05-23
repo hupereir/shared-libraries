@@ -27,7 +27,7 @@
 #include <QStringList>
 
 //* Customized QCombobox to handle case sensitive auto completion
-class OpenWithComboBox: public QComboBox, public Counter
+class OpenWithComboBox: public QComboBox, private Base::Counter<OpenWithComboBox>
 {
 
     //* Qt meta object declaration

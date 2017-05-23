@@ -32,7 +32,7 @@ namespace SpellCheck
 {
 
     //! dictionary filter selection menu
-    class FilterMenu: public QMenu, public Counter
+    class FilterMenu: public QMenu, private Base::Counter<FilterMenu>
     {
 
         Q_OBJECT

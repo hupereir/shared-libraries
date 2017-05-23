@@ -24,7 +24,7 @@
 #include "LineEditor.h"
 
 //* used to display colors and a choose button
-class ColorDisplay: public QWidget, public Counter
+class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
 {
 
     //* Qt metaobject macro

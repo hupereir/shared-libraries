@@ -29,7 +29,7 @@
 namespace SpellCheck
 {
 
-    class SpellItemModel: public ListModel<QString>, public Counter
+    class SpellItemModel: public ListModel<QString>, private Base::Counter<SpellItemModel>
     {
 
         Q_OBJECT

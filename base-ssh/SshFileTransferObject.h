@@ -34,7 +34,7 @@ namespace Ssh
 
     class BaseSocket;
 
-    class FileTransferObject: public QObject, public Counter
+    class FileTransferObject: public QObject, private Base::Counter<FileTransferObject>
     {
 
         Q_OBJECT

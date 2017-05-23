@@ -25,7 +25,7 @@
 
 #include <QStringList>
 
-class CommandLineArguments: public QStringList, public Counter
+class CommandLineArguments: public QStringList, private Base::Counter<CommandLineArguments>
 {
 
     public:

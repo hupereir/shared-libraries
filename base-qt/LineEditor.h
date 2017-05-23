@@ -31,7 +31,7 @@
 
 class BaseContextMenu;
 
-class LineEditor: public QLineEdit, public Counter
+class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 {
 
     //* Qt meta object declaration

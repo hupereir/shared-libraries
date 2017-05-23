@@ -31,7 +31,7 @@
 #include <QMap>
 
 //* Color selection menu
-class ColorMenu: public QMenu, public Counter
+class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
 {
 
     //* Qt meta object declaration

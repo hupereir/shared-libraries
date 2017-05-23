@@ -29,7 +29,7 @@
 
 //* customized TextDocument to derive from Base::Key
 /** this is needed to easily handled multiple text editors that share the same document */
-class CustomTextDocument: public QTextDocument, public Base::Key, public Counter
+class CustomTextDocument: public QTextDocument, public Base::Key, private Base::Counter<CustomTextDocument>
 {
 
     Q_OBJECT

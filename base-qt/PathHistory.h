@@ -25,7 +25,7 @@
 
 #include <QList>
 
-class PathHistory:  public QObject, public Counter
+class PathHistory:  public QObject, private Base::Counter<PathHistory>
 {
 
     //* Qt meta object declaration

@@ -28,7 +28,7 @@
 #include <QStringList>
 #include <QTimerEvent>
 
-class FileSystemWatcher: public QFileSystemWatcher, public Counter
+class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSystemWatcher>
 {
     Q_OBJECT
 

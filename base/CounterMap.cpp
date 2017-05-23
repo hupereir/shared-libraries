@@ -19,9 +19,13 @@
 
 #include "CounterMap.h"
 
-//___________________________________________________
-CounterMap& CounterMap::get( void )
+namespace Base
 {
-    static CounterMap singleton;
-    return singleton;
+    //___________________________________________________
+    CounterMap& CounterMap::get( void )
+    {
+        static CounterMap singleton;
+        return singleton;
+    }
+
 }

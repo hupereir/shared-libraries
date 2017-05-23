@@ -37,7 +37,7 @@ namespace Format
     and convert them to absolute indexes in order to read old formats generated with Qt3.
     As a result parBegin and parEnd are still available but cannot be modified from outside of the class.
     */
-    class TextFormatBlock: public Counter
+    class TextFormatBlock: private Base::Counter<TextFormatBlock>
     {
 
         public:

@@ -20,59 +20,37 @@
 *
 *******************************************************************************/
 
-#include <QString>
-#include <QMutex>
-#include <QMutexLocker>
 #include <QHash>
+#include <QPair>
+#include <QString>
 
-//* thread-safe Object counter storage map
-class CounterMap: public QHash<QString, int>
+namespace Base
 {
 
-    public:
-
-    //* singleton
-    static CounterMap& get( void );
-
-    //*  get counter for a given name
-    /**
-    if the name is found, returns adress of the existing counter
-    creates new counter otherwise and returns adress
-    */
-    int* counter( const QString& name )
+    class CounterMap: public QHash<QString, int*>
     {
-        iterator iter = find( name );
-        if( iter == end() ) return &( insert( name, 0 ).value() );
-        else return &(iter.value());
-    }
 
-    //* increment
-    void increment( int& counter )
-    {
-        QMutexLocker locker( &mutex_ );
-        counter++;
-    }
+        public:
 
-    //* increment
-    void decrement( int& counter )
-    {
-        QMutexLocker locker( &mutex_ );
-        counter--;
-    }
+        //* singleton
+        static CounterMap& get( void );
 
-    //* mutex
-    QMutex& mutex( void )
-    { return mutex_; }
+        //* copy constructor is deleted
+        CounterMap( const CounterMap& ) = delete;
 
-    private:
+        //* assignment is deleted
+        CounterMap& operator = ( const CounterMap& ) = delete;
 
-    //* constructor
-    CounterMap( void )
-    {}
+        //* counter pair
+        using Pair=QPair<QString, int>;
 
-    //* mutex
-    QMutex mutex_;
+        private:
 
-};
+        //* default constructor
+        CounterMap() {}
+
+    };
+
+}
 
 #endif

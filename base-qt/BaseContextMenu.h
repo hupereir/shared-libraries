@@ -26,7 +26,7 @@
 #include <QMenu>
 
 // implements context menu, installable on widgets
-class BaseContextMenu: public QMenu, public Counter
+class BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
 {
 
     public:

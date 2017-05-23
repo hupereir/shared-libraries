@@ -39,7 +39,7 @@
 namespace Private
 {
 
-    class SystemNotificationsP: public QObject, public Counter
+    class SystemNotificationsP: public QObject, private Base::Counter<SystemNotificationsP>
     {
 
         Q_OBJECT

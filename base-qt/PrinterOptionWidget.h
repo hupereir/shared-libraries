@@ -28,7 +28,7 @@
 #include <QPushButton>
 #include <QWidget>
 
-class PrinterOptionWidget: public QWidget, public Counter
+class PrinterOptionWidget: public QWidget, private Base::Counter<PrinterOptionWidget>
 {
 
     Q_OBJECT

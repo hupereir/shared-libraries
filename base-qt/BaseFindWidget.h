@@ -34,7 +34,7 @@
 #include <QPalette>
 
 //* find dialog for text editor widgets
-class BaseFindWidget: public EmbeddedWidget, public Counter
+class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidget>
 {
 
     //* Qt meta object declaration

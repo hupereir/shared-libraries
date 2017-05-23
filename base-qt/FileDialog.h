@@ -28,7 +28,7 @@
 #include <QStringList>
 
 //* customized file selection dialog, to store last selected directory
-class FileDialog: public QObject, public Counter
+class FileDialog: public QObject, private Base::Counter<FileDialog>
 {
 
     public:

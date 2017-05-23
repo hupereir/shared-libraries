@@ -29,7 +29,7 @@
 #include <QHash>
 
 //_______________________________________________________________
-class ColumnSelectionMenu:public QMenu, public Counter
+class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMenu>
 {
 
     //! Qt meta object declaration

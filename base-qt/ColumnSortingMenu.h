@@ -31,7 +31,7 @@
 #include <QHash>
 
 //_______________________________________________________________
-class ColumnSortingMenu:public QMenu, public Counter
+class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
 {
 
     //! Qt meta object declaration

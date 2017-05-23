@@ -30,7 +30,7 @@
 class LineEditor;
 
 //* find_text dialog for text editor widgets
-class SelectLineWidget: public EmbeddedWidget, public Counter
+class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineWidget>
 {
 
     //* Qt meta object declaration

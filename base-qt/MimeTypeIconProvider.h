@@ -27,7 +27,7 @@
 #include <QIcon>
 
 //* FileInfo model. Stores file information for display in lists
-class MimeTypeIconProvider : public QObject, public Counter
+class MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconProvider>
 {
 
     public:

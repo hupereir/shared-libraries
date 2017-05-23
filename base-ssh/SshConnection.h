@@ -34,7 +34,7 @@
 namespace Ssh
 {
     //_________________________________________________________
-    class Connection: public QObject, public Counter
+    class Connection: public QObject, private Base::Counter<Connection>
     {
 
         Q_OBJECT

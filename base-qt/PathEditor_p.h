@@ -89,7 +89,7 @@ namespace Private
     };
 
     //* path item
-    class PathEditorItem: public PathEditorButton, public Counter
+    class PathEditorItem: public PathEditorButton, private Base::Counter<PathEditorItem>
     {
 
         Q_OBJECT
@@ -204,7 +204,7 @@ namespace Private
     };
 
     //* path editor menu button
-    class PathEditorMenuButton: public PathEditorButton, public Counter
+    class PathEditorMenuButton: public PathEditorButton, private Base::Counter<PathEditorMenuButton>
     {
 
         Q_OBJECT
@@ -232,7 +232,7 @@ namespace Private
     };
 
     //* path editor switch. Toggle path editor to combobox
-    class PathEditorSwitch: public PathEditorButton, public Counter
+    class PathEditorSwitch: public PathEditorButton, private Base::Counter<PathEditorSwitch>
     {
 
         Q_OBJECT

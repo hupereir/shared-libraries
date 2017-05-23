@@ -10,12 +10,10 @@ set(BASE_HELP_SOVERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR})
 if(USE_QT5)
 
   find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5Xml REQUIRED)
 
 else()
 
   find_package(Qt4 REQUIRED)
-  set(QT_USE_QTXML TRUE)
   include(${QT_USE_FILE})
   add_definitions(${QT_DEFINITIONS})
 
@@ -33,7 +31,6 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 ########### next target ###############
 set(base_help_SOURCES
   HelpDialog.cpp
-  HelpItem.cpp
   HelpManager.cpp
   HelpModel.cpp
  )
@@ -54,6 +51,6 @@ target_link_libraries(base-help ${QT_LIBRARIES} base base-qt)
 
 if(USE_QT5)
 
-  target_link_libraries(base-help Qt5::Widgets Qt5::Xml)
+  target_link_libraries(base-help Qt5::Widgets)
 
 endif()

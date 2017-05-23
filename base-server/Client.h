@@ -30,7 +30,7 @@ namespace Server
 {
 
     //* interprocess communication client
-    class Client : public BaseSocketInterface, public Counter
+    class Client : public BaseSocketInterface, private Base::Counter<Client>
     {
 
         //* Qt meta object macro

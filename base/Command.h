@@ -25,7 +25,7 @@
 #include <QString>
 #include <QStringList>
 
-class Command: public QStringList, public Counter
+class Command: public QStringList, private Base::Counter<Command>
 {
 
     public:

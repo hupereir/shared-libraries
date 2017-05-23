@@ -25,7 +25,7 @@
 #include "SelectLineWidget.h"
 
 //* find_text dialog for text editor widgets
-class SelectLineDialog: public BaseDialog, public Counter
+class SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialog>
 {
 
     //* Qt meta object declaration

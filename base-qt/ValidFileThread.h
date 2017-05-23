@@ -28,7 +28,7 @@
 #include <QThread>
 
 //* independent thread used to automatically save file
-class ValidFileThread: public QThread, public Counter
+class ValidFileThread: public QThread, private Base::Counter<ValidFileThread>
 {
 
     Q_OBJECT

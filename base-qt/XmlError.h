@@ -29,7 +29,7 @@
 #include <QTextStream>
 
 //* Xml parsing error container
-class XmlError: public Counter
+class XmlError: private Base::Counter<XmlError>
 {
 
     public:

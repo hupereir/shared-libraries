@@ -27,7 +27,7 @@
 #include <time.h>
 
 //* time manipulation object
-class TimeStamp:public Counter
+class TimeStamp:private Base::Counter<TimeStamp>
 {
 
     public:

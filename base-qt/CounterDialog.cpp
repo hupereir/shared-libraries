@@ -56,12 +56,14 @@ void CounterDialog::update( void )
     Debug::Throw( "CounterDialog::update.\n" );
 
     // retrieve counters
-    CounterMap& counters( CounterMap::get() );
-    QMutexLocker lock( &counters.mutex() );
+    auto&& counters( Base::CounterMap::get() );
 
     CounterModel::List counterList;
     for( auto&& iter = counters.begin(); iter != counters.end(); ++iter )
-    { counterList << qMakePair( iter.key(), iter.value() ); }
+    {
+        if( *iter.value() )
+        { counterList << qMakePair( iter.key(), *iter.value() ); }
+    }
 
     model_.add( counterList );
 

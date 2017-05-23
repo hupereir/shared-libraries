@@ -62,7 +62,7 @@ using BaseEditor = QTextEdit;
 #endif
 
 //* Customized QTextEdit object
-class TextEditor: public BaseEditor, public Base::Key, public Counter
+class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<TextEditor>
 {
 
     Q_OBJECT
@@ -403,7 +403,7 @@ class TextEditor: public BaseEditor, public Base::Key, public Counter
     //@}
 
     //* container class for embedded Find dialog
-    class Container: public QWidget, public Counter
+    class Container: public QWidget, private Base::Counter<Container>
     {
 
         public:

@@ -32,7 +32,7 @@
 class TextEditor;
 
 //* handles box selection
-class BoxSelection: public Counter
+class BoxSelection: private Base::Counter<BoxSelection>
 {
 
     public:
@@ -114,7 +114,7 @@ class BoxSelection: public Counter
     //@}
 
     //* store selection cursors and  selection columns
-    class CursorList: public  QList<QTextCursor>, public Counter
+    class CursorList: public  QList<QTextCursor>, private Base::Counter<CursorList>
     {
 
         public:

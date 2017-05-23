@@ -28,7 +28,7 @@
 
 class LineEditor;
 
-class BrowsedLineEditor: public QWidget, public Counter
+class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor>
 {
 
     //* Qt meta object declaration

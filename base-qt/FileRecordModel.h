@@ -30,7 +30,7 @@
 #include <QStringList>
 
 //* qlistview for object counters
-class FileRecordModel: public ListModel<FileRecord>, public Counter
+class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileRecordModel>
 {
 
     Q_OBJECT

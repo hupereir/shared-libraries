@@ -28,7 +28,7 @@
 #include <QWidget>
 
 //* used to automatically save size of top level widgets
-class WidgetMonitor: public QObject, public Counter
+class WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
 {
 
     public:

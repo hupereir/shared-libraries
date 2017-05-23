@@ -28,7 +28,7 @@
 #include <QKeyEvent>
 
 //* Customized QCombobox to handle case sensitive auto completion
-class CustomComboBox: public QComboBox, public Counter
+class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
 {
 
     //* Qt meta object declaration

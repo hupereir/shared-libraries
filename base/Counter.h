@@ -21,33 +21,47 @@
 *******************************************************************************/
 
 #include <QString>
-#include <QPair>
 
-//* Object counter
-class Counter {
+#include "CounterMap.h"
 
-    public:
+namespace Base
+{
+    template<typename T>
+    class Counter
+    {
 
-    //* counter name and counts pair
-    using Pair = QPair<QString, int>;
+        public:
 
-    //* constructor
-    Counter( const QString& name );
+        //* construtor
+        Counter( QString name )
+        {
+            if( !initialized )
+            {
+                initialized = true;
+                Base::CounterMap::get().insert( name, &count );
+            }
 
-    //* constructor
-    Counter( const Counter& counter );
+            count++;
+        }
 
-    //* destructor
-    virtual ~Counter( void );
+        //* copy constructor
+        Counter(const Counter& other )
+        { count++; }
 
-    //* retrieves counter count
-    int count( void ) const;
+        //* destructor
+        ~Counter()
+        { count--; }
 
-    private:
+        private:
 
-    //* pointer to integer counter
-    int* count_ = nullptr;
+        //* count
+        static bool initialized;
+        static int count;
+    };
 
-};
+}
+
+template <typename T> bool Base::Counter<T>::initialized( false );
+template <typename T> int Base::Counter<T>::count( 0 );
 
 #endif

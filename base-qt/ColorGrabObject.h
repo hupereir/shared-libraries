@@ -25,7 +25,7 @@
 #include <QEvent>
 #include <QWidget>
 
-class ColorGrabObject: public QObject, public Counter
+class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
 {
 
     Q_OBJECT

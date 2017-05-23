@@ -27,7 +27,7 @@
 
 class TreeView;
 class TextEncodingModel;
-class TextEncodingWidget: public QWidget, public Counter
+class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidget>
 {
 
 

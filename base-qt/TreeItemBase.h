@@ -23,7 +23,7 @@
 #include "Counter.h"
 
 //! used to wrap object T into tree structure
-class TreeItemBase: public Counter
+class TreeItemBase: private Base::Counter<TreeItemBase>
 {
 
     public:

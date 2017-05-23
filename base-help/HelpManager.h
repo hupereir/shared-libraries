@@ -32,7 +32,7 @@
 namespace Base
 {
 
-    class HelpManager:public QObject, public Counter
+    class HelpManager:public QObject, private Counter<HelpManager>
     {
 
         Q_OBJECT

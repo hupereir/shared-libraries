@@ -30,7 +30,7 @@
 
 class GridLayoutItem;
 
-class BaseToolTipWidget: public QWidget, public Counter
+class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget>
 {
 
     Q_OBJECT

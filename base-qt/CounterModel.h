@@ -21,13 +21,11 @@
 *******************************************************************************/
 
 #include "ListModel.h"
-#include "Counter.h"
+#include "CounterMap.h"
 #include "Debug.h"
 
-#include <QPair>
-
 //* counter pair
-class CounterPair: public QPair<QString, int>
+class CounterPair: public Base::CounterMap::Pair
 {
 
     public:
@@ -37,15 +35,13 @@ class CounterPair: public QPair<QString, int>
     {}
 
     //* constructor
-    CounterPair( const QPair<QString, int>& pair ):
-        QPair<QString, int>( pair )
+    CounterPair( const Base::CounterMap::Pair& other ):
+        Base::CounterMap::Pair( other )
     {}
 
     //* less than operator
     bool operator < ( const CounterPair& pair ) const
-    {
-        return first < pair.first;
-    }
+    { return first < pair.first; }
 
     //* equal to operator
     bool operator == (const CounterPair& pair ) const

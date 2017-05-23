@@ -29,7 +29,7 @@
 #include <QStyleOption>
 
 //* graphics item
-class IconViewItem: public Counter
+class IconViewItem: private Base::Counter<IconViewItem>
 {
 
     public:

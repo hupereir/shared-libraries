@@ -34,7 +34,7 @@
 class TextEditor;
 
 //* display line number of a text editor
-class LineNumberDisplay: public QObject, public Counter
+class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay>
 {
 
     //* Qt meta object

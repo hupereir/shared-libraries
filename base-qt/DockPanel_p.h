@@ -30,7 +30,7 @@
 //* local dock widget
 namespace Private
 {
-    class LocalDockWidget: public QWidget, public Counter
+    class LocalDockWidget: public QWidget, private Base::Counter<LocalDockWidget>
     {
         Q_OBJECT
 
@@ -59,7 +59,7 @@ namespace Private
 
 
     //* local widget
-    class LocalWidget: public QFrame, public Counter
+    class LocalWidget: public QFrame, private Base::Counter<LocalWidget>
     {
 
         Q_OBJECT

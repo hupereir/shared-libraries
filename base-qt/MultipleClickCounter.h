@@ -27,7 +27,7 @@
 #include "Debug.h"
 
 //* handles multiple clicks and timeout
-class MultipleClickCounter: public QObject, public Counter
+class MultipleClickCounter: public QObject, private Base::Counter<MultipleClickCounter>
 {
 
     Q_OBJECT

@@ -30,7 +30,7 @@ namespace Private
 {
 
     //* item delegate
-    class SimpleListViewDelegate : public QAbstractItemDelegate, public Counter
+    class SimpleListViewDelegate : public QAbstractItemDelegate, private Base::Counter<SimpleListViewDelegate>
     {
 
         public:

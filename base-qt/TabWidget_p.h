@@ -28,7 +28,7 @@
 //* local dock widget
 namespace Private
 {
-    class LocalTabWidget: public QWidget, public Counter
+    class LocalTabWidget: public QWidget, private Base::Counter<LocalTabWidget>
     {
         Q_OBJECT
 

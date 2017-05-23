@@ -32,7 +32,7 @@
 
 
 //* customized tool bar to handle position and visibility from Options
-class CustomToolBar: public QToolBar, public Counter
+class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
 {
 
     Q_OBJECT

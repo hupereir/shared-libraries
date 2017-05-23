@@ -30,7 +30,7 @@ namespace Ssh
 {
 
     //_________________________________________________________
-    class TunnelAttributes: public Counter
+    class TunnelAttributes: private Base::Counter<TunnelAttributes>
     {
         public:
 

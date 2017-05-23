@@ -57,7 +57,7 @@ class StatusBarLabel: public QLabel
 };
 
 //* custom status bar
-class BaseStatusBar: public QStatusBar, public Counter
+class BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
 {
 
     public:

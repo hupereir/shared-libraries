@@ -27,7 +27,7 @@
 #include <QObject>
 
 //* customized process to store stdout/stderr in full/flushed streams
-class CustomProcess: public QProcess, public Counter
+class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
 {
 
     Q_OBJECT

@@ -29,7 +29,7 @@ namespace Server
 {
 
     //* Stores application name and user to uniquely identify an application.
-    class ApplicationId:public Counter
+    class ApplicationId:private Base::Counter<ApplicationId>
     {
         public:
 

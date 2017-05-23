@@ -24,7 +24,7 @@
 #include <QToolButton>
 
 //* used to pick color from screen
-class ColorGrabButton : public QToolButton, public Counter
+class ColorGrabButton : public QToolButton, private Base::Counter<ColorGrabButton>
 {
 
     Q_OBJECT

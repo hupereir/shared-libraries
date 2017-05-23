@@ -26,7 +26,7 @@
 #include <QResizeEvent>
 
 //* label with automatically elided text
-class ElidedLabel: public QLabel, public Counter
+class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
 {
 
     Q_OBJECT

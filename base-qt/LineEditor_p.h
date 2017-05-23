@@ -31,7 +31,7 @@
 namespace Private
 {
 
-    class LineEditorStyle: public QProxyStyle, public Counter
+    class LineEditorStyle: public QProxyStyle, private Base::Counter<LineEditorStyle>
     {
 
         Q_OBJECT
@@ -49,7 +49,7 @@ namespace Private
 
     };
 
-    class LineEditorButton: public QAbstractButton, public Counter
+    class LineEditorButton: public QAbstractButton, private Base::Counter<LineEditorButton>
     {
 
         public:

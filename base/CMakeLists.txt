@@ -34,7 +34,6 @@ set(base_SOURCES
   Command.cpp
   CommandLineArguments.cpp
   CommandLineParser.cpp
-  Counter.cpp
   CounterMap.cpp
   CustomProcess.cpp
   Debug.cpp

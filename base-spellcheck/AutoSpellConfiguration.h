@@ -29,7 +29,7 @@ namespace SpellCheck
 {
 
     //! Spell common configuration
-    class AutoSpellConfiguration: public QGroupBox, public OptionWidgetList, public Counter
+    class AutoSpellConfiguration: public QGroupBox, public OptionWidgetList, private Base::Counter<AutoSpellConfiguration>
     {
 
         Q_OBJECT

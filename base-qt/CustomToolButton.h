@@ -27,7 +27,7 @@
 #include <QLabel>
 #include <QToolButton>
 
-class CustomToolButton: public QToolButton, public Counter
+class CustomToolButton: public QToolButton, private Base::Counter<CustomToolButton>
 {
 
     Q_OBJECT

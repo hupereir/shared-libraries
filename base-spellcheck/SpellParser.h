@@ -35,7 +35,7 @@ namespace SpellCheck
 {
 
   //* highlight text based on misspelled words
-  class SpellParser: public Counter
+  class SpellParser: private Base::Counter<SpellParser>
   {
 
     public:

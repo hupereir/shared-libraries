@@ -34,7 +34,7 @@ QTextStream& operator >> ( QTextStream& in, bool& value );
 \class   Option
 \brief   Option objects for string, int, bool and double options
 */
-class Option:public Counter
+class Option:private Base::Counter<Option>
 {
 
     public:

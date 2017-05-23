@@ -43,7 +43,7 @@ class BaseFindWidget;
 class ItemModel;
 
 //* icon view
-class IconView: public QAbstractItemView, public Counter
+class IconView: public QAbstractItemView, private Base::Counter<IconView>
 {
 
     Q_OBJECT
@@ -161,7 +161,7 @@ class IconView: public QAbstractItemView, public Counter
     //@}
 
     //* container class for embedded Find dialog
-    class Container: public QWidget, public Counter
+    class Container: public QWidget, private Base::Counter<Container>
     {
 
         public:

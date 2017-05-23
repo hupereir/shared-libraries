@@ -28,7 +28,7 @@ class ToolButtonStyleMenu;
 class IconSizeMenu;
 
 //* provides toolbar manipulation menu
-class ToolBarMenu: public QMenu, public Counter
+class ToolBarMenu: public QMenu, private Base::Counter<ToolBarMenu>
 {
 
     public:

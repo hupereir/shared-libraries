@@ -39,7 +39,7 @@ namespace Server
 {
 
     //* ensures only one instance of an application is running
-    class ApplicationManager: public QObject, public Counter
+    class ApplicationManager: public QObject, private Base::Counter<ApplicationManager>
     {
 
         //* Qt meta object macro

@@ -75,7 +75,7 @@ class ImageFileDialog: public QFileDialog
     //* current file
     QString currentPath_;
 
-    class Label: public QLabel, public Counter
+    class Label: public QLabel, private Base::Counter<Label>
     {
         public:
 

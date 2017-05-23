@@ -32,7 +32,7 @@ namespace Ssh
 {
 
     //* ssh socket
-    class BaseSocket: public QIODevice, public Counter
+    class BaseSocket: public QIODevice, private Base::Counter<BaseSocket>
     {
 
         Q_OBJECT

@@ -30,7 +30,7 @@
 class TextEditor;
 
 // margin widget
-class TextEditorMarginWidget: public QWidget, public Counter
+class TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMarginWidget>
 {
 
     Q_OBJECT

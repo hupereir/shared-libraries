@@ -27,7 +27,7 @@
 #include <QObject>
 
 //* used to automatically
-class ScratchFileMonitor: public QObject, public Counter
+class ScratchFileMonitor: public QObject, private Base::Counter<ScratchFileMonitor>
 {
 
     Q_OBJECT

@@ -31,7 +31,7 @@
 #include <QStringList>
 
 //* handles previously opened file and tags
-class FileRecord: public Counter
+class FileRecord: private Base::Counter<FileRecord>
 {
 
     public:

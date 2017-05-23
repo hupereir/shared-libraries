@@ -50,7 +50,7 @@ class BaseFileIconProvider;
 class IconSizeMenu;
 
 //* places widget
-class PlacesWidget: public QWidget, public Counter
+class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
 {
 
     Q_OBJECT

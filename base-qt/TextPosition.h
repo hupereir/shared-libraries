@@ -26,7 +26,7 @@
 #include <QTextDocument>
 
 //* stores paragraph and index (in paragraph) into unique structure
-class TextPosition: public Counter
+class TextPosition: private Base::Counter<TextPosition>
 {
     public:
 

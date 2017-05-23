@@ -26,7 +26,7 @@
 #include <QMap>
 #include <QMenu>
 
-class TextEncodingMenu: public QMenu, public Counter
+class TextEncodingMenu: public QMenu, private Base::Counter<TextEncodingMenu>
 {
 
     Q_OBJECT

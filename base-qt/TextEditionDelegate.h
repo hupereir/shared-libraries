@@ -23,7 +23,7 @@
 #include "Counter.h"
 #include "TreeViewItemDelegate.h"
 
-class TextEditionDelegate : public TreeViewItemDelegate, public Counter
+class TextEditionDelegate : public TreeViewItemDelegate, private Base::Counter<TextEditionDelegate>
 {
 
     Q_OBJECT

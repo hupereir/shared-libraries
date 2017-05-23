@@ -29,7 +29,7 @@
 #include <QMap>
 
 //* parse command line argument.
-class CommandLineParser: public Counter
+class CommandLineParser: private Base::Counter<CommandLineParser>
 {
 
     public:
@@ -45,7 +45,7 @@ class CommandLineParser: public Counter
     //@}
 
     //* used to register options/flags
-    class Tag: public Counter
+    class Tag: private Base::Counter<Tag>
     {
 
         public:
@@ -183,7 +183,7 @@ class CommandLineParser: public Counter
     bool _isTag( const QString& ) const;
 
     //* flag class
-    class Flag: public Counter
+    class Flag: private Base::Counter<Flag>
     {
 
         public:

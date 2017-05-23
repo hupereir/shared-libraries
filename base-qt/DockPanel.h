@@ -41,7 +41,7 @@ namespace Private
 }
 
 //* detachable generic panel
-class DockPanel: public QWidget, public Counter
+class DockPanel: public QWidget, private Base::Counter<DockPanel>
 {
 
     //* Qt meta object declaration

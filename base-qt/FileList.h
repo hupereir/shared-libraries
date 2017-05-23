@@ -30,7 +30,7 @@
 #include <QObject>
 
 //* handles list of files saved into resource file for later reopening
-class FileList: public QObject, public Counter
+class FileList: public QObject, private Base::Counter<FileList>
 {
 
     //* Qt meta object declaration

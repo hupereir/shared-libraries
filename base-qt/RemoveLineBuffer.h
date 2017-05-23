@@ -35,7 +35,7 @@
 #include "Debug.h"
 
 //! handles consecutive calls to remove line in a single Clipboard block
-class RemoveLineBuffer: public QObject, public Counter
+class RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
 {
 
   Q_OBJECT

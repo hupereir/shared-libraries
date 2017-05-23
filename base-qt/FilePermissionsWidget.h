@@ -27,7 +27,7 @@
 #include <QWidget>
 #include <QCheckBox>
 
-class FilePermissionsWidget: public QWidget, public Counter
+class FilePermissionsWidget: public QWidget, private Base::Counter<FilePermissionsWidget>
 {
 
     Q_OBJECT

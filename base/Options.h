@@ -31,7 +31,7 @@
 #include <QTextStream>
 
 //* Option file parser based on Xml
-class Options: public Counter
+class Options: private Base::Counter<Options>
 {
 
     public:

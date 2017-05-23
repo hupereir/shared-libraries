@@ -45,7 +45,7 @@ namespace Private
 class PathHistory;
 
 //* path editor
-class PathEditor: public QStackedWidget, public Counter
+class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
 {
 
     Q_OBJECT
