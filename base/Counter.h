@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include <QString>
-
 #include "CounterMap.h"
+
+#include <QString>
 
 namespace Base
 {
