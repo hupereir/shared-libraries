@@ -30,7 +30,7 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
 
     public:
 
-    enum class Flag
+    enum Flag
     {
         Transparent = 0x1,
         HighDpi = 0x2,

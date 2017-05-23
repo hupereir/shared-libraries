@@ -30,7 +30,7 @@ class RoundedRegion: public QRegion
     public:
 
     //! corners
-    enum class Corner
+    enum Corner
     {
         None = 0,
         TopLeft = 1<<0,

@@ -37,7 +37,7 @@ class GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
     public:
 
     //* flags
-    enum class Flag
+    enum Flag
     {
         None = 0,
         Elide = 1<<0,

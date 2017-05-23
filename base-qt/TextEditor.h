@@ -70,7 +70,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     public:
 
     //* modifiers
-    enum class Modifier
+    enum Modifier
     {
         None = 0,
         CapsLock = 1<<0,

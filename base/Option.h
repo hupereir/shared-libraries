@@ -40,7 +40,7 @@ class Option:private Base::Counter<Option>
     public:
 
     //* flags
-    enum class Flag
+    enum Flag
     {
         None = 0,
         Current = 1 << 0,

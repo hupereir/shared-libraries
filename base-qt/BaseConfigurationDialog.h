@@ -42,7 +42,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     public:
 
     //* flag bitset for the Base configuration
-    enum class Flag
+    enum Flag
     {
 
         None = 0,

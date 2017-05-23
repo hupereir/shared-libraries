@@ -20,6 +20,8 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+
 #include <QString>
 #include <QStringList>
 #include <QHash>
@@ -29,22 +31,24 @@
 namespace Base
 {
     //* cache item
-    class IconCacheItem: public QIcon
+    class IconCacheItem: public QIcon, private Counter<IconCacheItem>
     {
 
         public:
 
         //* constructor
-        IconCacheItem( void )
+        IconCacheItem( void ):
+            Counter( "Base::IconCacheItem" )
         {}
 
         //* copy constructor
         IconCacheItem( const QIcon& other ):
-            QIcon( other )
+            QIcon( other ),
+            Counter( "Base::IconCacheItem" )
         {}
 
         //* flags
-        enum class Flag
+        enum Flag
         {
             None = 0,
             FromCache = 1<<0,

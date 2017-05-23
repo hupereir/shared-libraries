@@ -37,7 +37,7 @@ class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
     public:
 
     //* flags
-    enum class Flag
+    enum Flag
     {
         Counters = 1<<0,
         Icons = 1<<2,

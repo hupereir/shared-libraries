@@ -37,7 +37,7 @@ class WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
     WidgetMonitor( QWidget* );
 
     //* mode
-    enum class Mode
+    enum Mode
     {
         None = 0,
         Size = 1<<0,

@@ -84,7 +84,7 @@ QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
     else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
     else overlaySize = QSize( 64, 64 );
 
-    auto&& overlayPixmap( linkOverlay.pixmap( overlaySize ) );
+    CustomPixmap overlayPixmap( linkOverlay.pixmap( overlaySize ) );
     return source.merged(
         overlayPixmap.scaled( overlaySize*overlayPixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ),
         CustomPixmap::Corner::BottomRight );
