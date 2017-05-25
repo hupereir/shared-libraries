@@ -45,6 +45,7 @@ set(base_notifications_SOURCES
   ImageData.cpp
   SystemNotifications.cpp
   SystemNotifications_p.cpp
+  TaskBarProgressNotifications.cpp
 )
 
 if(ENABLE_SHARED)

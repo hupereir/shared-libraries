@@ -132,5 +132,6 @@ ErrorHandler::ErrorHandler( void )
     disableMessage( "void QWindow::setTransientParent" );
     disableMessage( "QBackingStore::flush() called with non-exposed window" );
     disableMessage( "QXcbClipboard: SelectionRequest too old" );
+    disableMessage( "QXcbConnection: XCB error: 8 (BadMatch)" );
 
 }
