@@ -67,6 +67,12 @@ class TaskBarProgressNotifications : public QObject, private Base::Counter<TaskB
     //*@name modifiers
     //@{
 
+    void setApplicationName( const QString& value )
+    {
+        path_ = QString( "/org/%1/UnityLauncher" ).arg( value );
+        launcherId_ = QString( "%1.desktop" ).arg( value );
+    }
+
     void setPath( const QString& value )
     { path_ = value; }
 
@@ -95,6 +101,9 @@ class TaskBarProgressNotifications : public QObject, private Base::Counter<TaskB
 
     //* launcher id
     QString launcherId_;
+
+    //* true for the first time progressVisible is set to true
+    bool first_ = true;
 
     //* true if progress is visible
     bool progressVisible_ = false;

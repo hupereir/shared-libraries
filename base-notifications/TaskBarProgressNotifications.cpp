@@ -35,6 +35,11 @@ void TaskBarProgressNotifications::setProgressVisible(bool progressVisible)
     if( progressVisible_ != progressVisible )
     {
         progressVisible_ = progressVisible;
+        if( progressVisible_ && first_ )
+        {
+            _update({ {QStringLiteral("progress"), 0} });
+            first_ = false;
+        }
         _update({ {QStringLiteral("progress-visible"), progressVisible} });
     }
 
@@ -65,8 +70,9 @@ void TaskBarProgressNotifications::setMaximum(int maximum)
 //____________________________________________________________
 void TaskBarProgressNotifications::setValue(int value)
 {
-    if( value_ != value && maximum_ > 0 )
+    if( (value_ != value || first_ ) && maximum_ > 0 )
     {
+        first_ = false;
         value_ = value;
         _update({ {QStringLiteral("progress"), value/qreal(maximum_ )} });
     }
