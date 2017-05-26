@@ -26,7 +26,7 @@ namespace Base
     //* convert an strong type enum to integral type
     template<typename T>
     constexpr typename std::underlying_type<T>::type
-    enumType(T value) noexcept
+    toIntegralType(T value) noexcept
     { return static_cast<typename std::underlying_type<T>::type>(value);}
 
 }
