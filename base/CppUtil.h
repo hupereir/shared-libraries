@@ -27,7 +27,7 @@ namespace Base
     template<typename T>
     constexpr typename std::underlying_type<T>::type
     enumType(T value) noexcept
-    { return static_cast<typename std::underlying_type<T>::type>(value);v}
+    { return static_cast<typename std::underlying_type<T>::type>(value);}
 
 }
 
