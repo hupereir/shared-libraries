@@ -30,18 +30,19 @@ class Command: public QStringList, private Base::Counter<Command>
 
     public:
 
-    //! constructor
-    Command():
-        Counter( "Command" )
-     {}
-
-    //! constructor
-    Command( const QStringList& other ):
+    //* constructor
+    Command( const QStringList& other = QStringList() ):
         QStringList( other ),
         Counter( "Command" )
     {}
 
-    //! constructor
+    //* constructor
+    Command( QStringList&& other ):
+        QStringList( std::move( other ) ),
+        Counter( "Command" )
+    {}
+
+    //* constructor
     Command( const QString& in ):
         QStringList( _parse( in ) ),
         Counter( "Command" )
@@ -66,7 +67,7 @@ class Command: public QStringList, private Base::Counter<Command>
 
     private:
 
-    //! parse command
+    //* parse command
     /*!
     parse command so that first string in the list
     is the command name and following strings are all arguments

@@ -396,6 +396,16 @@ class BaseFileInfo
             QList<T>( other )
         {}
 
+        //* constructor
+        BaseList( QList<T>&& other ):
+            QList<T>( std::move( other ) )
+        {}
+
+        //* constructor
+        BaseList( std::initializer_list<T>&& other ):
+            QList<T>( std::move(other) )
+        {}
+
         //* destructor
         virtual ~BaseList( void )
         {}
