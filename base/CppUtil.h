@@ -23,12 +23,21 @@
 namespace Base
 {
 
+    template<typename T>
+        using underlying_type_t = typename std::underlying_type<T>::type;
+
     //* convert an strong type enum to integral type
     template<typename T>
     constexpr typename std::underlying_type<T>::type
     toIntegralType(T value) noexcept
-    { return static_cast<typename std::underlying_type<T>::type>(value);}
+    { return static_cast<underlying_type_t<T>>(value);}
 
 }
+
+//* fancy qhash for all enum types
+template<typename T,
+    typename = typename std::enable_if<std::is_enum<T>::value>::type>
+    uint qHash( const T& value )
+{ return qHash(Base::toIntegralType(value)); }
 
 #endif

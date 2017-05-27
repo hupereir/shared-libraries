@@ -22,6 +22,8 @@
 
 #include "File.h"
 
+#include "CppUtil.h"
+
 #include <QHash>
 #include <QMap>
 #include <QObject>
@@ -118,7 +120,5 @@ class DefaultFolders: public QObject
     IconMap iconNames_;
 
 };
-
-inline uint qHash( const DefaultFolders::Type& type ) { return static_cast<uint>(type); }
 
 #endif
