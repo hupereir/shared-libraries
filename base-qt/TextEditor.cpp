@@ -2334,7 +2334,7 @@ void TextEditor::_synchronizeBoxSelection( void ) const
 }
 
 //_____________________________________________________________
-bool TextEditor::_setLeftMargin( const int& margin )
+bool TextEditor::_setLeftMargin( int margin )
 {
 
     Debug::Throw() << "TextEditor::_setLeftMargin - margin: " << margin << endl;
@@ -2359,7 +2359,7 @@ void TextEditor::_toggleOverwriteMode( void )
 }
 
 //________________________________________________
-bool TextEditor::_setTabSize( const int& tabSize )
+bool TextEditor::_setTabSize( int tabSize )
 {
 
     Debug::Throw() << "TextEditor::_setTabSize - " << tabSize << endl;

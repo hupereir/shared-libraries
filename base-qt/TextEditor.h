@@ -635,7 +635,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     { return leftMargin_; }
 
     //* left margin
-    bool _setLeftMargin( const int& margin );
+    bool _setLeftMargin( int margin );
 
     //@}
 
@@ -647,7 +647,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
 
     //* set tab character size
     /** returns true if changed */
-    virtual bool _setTabSize( const int& size );
+    virtual bool _setTabSize( int size );
 
     //* tab emulation
     virtual bool _hasTabEmulation( void ) const

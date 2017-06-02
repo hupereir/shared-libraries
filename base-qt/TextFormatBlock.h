@@ -120,7 +120,7 @@ namespace Format
             public:
 
             //* constructor
-            SamePositionBeginFTor( const int& position ):
+            SamePositionBeginFTor( int position ):
                 position_( position )
             {}
 
@@ -142,7 +142,7 @@ namespace Format
             public:
 
             //* constructor
-            SamePositionEndFTor( const int& position ):
+            SamePositionEndFTor( int position ):
                 position_( position )
             {}
 
@@ -164,7 +164,7 @@ namespace Format
             public:
 
             //* constructor
-            ContainsFTor( const int& position ):
+            ContainsFTor( int position ):
                 position_( position )
             {}
 

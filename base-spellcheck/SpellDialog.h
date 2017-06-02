@@ -174,11 +174,6 @@ namespace SpellCheck
 
             //@}
 
-            protected:
-
-            virtual void _sort(int, Qt::SortOrder)
-            { return; }
-
         };
 
         //* update text editor selection

@@ -120,7 +120,7 @@ class BoxSelection: private Base::Counter<BoxSelection>
         public:
 
         //* constructor
-        CursorList( const int& firstColumn = 0, const int& columns = 0 ):
+        CursorList( int firstColumn = 0, int columns = 0 ):
             Counter( "CursorList" ),
             firstColumn_( firstColumn ),
             columns_( columns )
@@ -128,11 +128,11 @@ class BoxSelection: private Base::Counter<BoxSelection>
 
         //* first column
         /*! it is used for lines that are entirely outside of the existing blocks */
-        const int& firstColumn( void ) const
+        int firstColumn( void ) const
         { return firstColumn_; }
 
         //* number of columns in the selection
-        const int& columnCount( void ) const
+        int columnCount( void ) const
         { return columns_; }
 
         private:

@@ -64,7 +64,7 @@ void LineNumberDisplay::synchronize( LineNumberDisplay* display )
 }
 
 //__________________________________________
-bool LineNumberDisplay::updateWidth( const int& count )
+bool LineNumberDisplay::updateWidth( int count )
 {
     Debug::Throw( "LineNumberDisplay::updateWidth.\n" );
 

@@ -100,7 +100,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     virtual Qt::ItemFlags flags( const QModelIndex& ) const;
 
     // return data for a given index
-    virtual QVariant data( const QModelIndex&, int ) const;
+    QVariant data( const QModelIndex&, int ) const override;
 
     // modify data
     virtual bool setData( const QModelIndex&, const QVariant&, int = Qt::EditRole );
@@ -109,7 +109,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     virtual QVariant headerData( int, Qt::Orientation, int role = Qt::DisplayRole ) const;
 
     //* number of columns for a given index
-    virtual int columnCount( const QModelIndex& = QModelIndex() ) const
+    int columnCount( const QModelIndex& = QModelIndex() ) const override
     { return nColumns; }
 
     //@}
@@ -125,7 +125,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     protected:
 
     //* sorting
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    void _sort( int column, Qt::SortOrder order ) override
     { _root().sort( SortFTor( column, order ) ); }
 
     private:
@@ -137,7 +137,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
         public:
 
         //* constructor
-        SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+        SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
         {}
 

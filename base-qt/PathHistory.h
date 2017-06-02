@@ -106,7 +106,7 @@ class PathHistory:  public QObject, private Base::Counter<PathHistory>
     virtual void _setMaxSize( int );
 
     //* maximum size
-    virtual const int& _maxSize( void ) const
+    virtual int _maxSize( void ) const
     { return maxSize_; }
 
     //* truncate list if larger than maxSize_

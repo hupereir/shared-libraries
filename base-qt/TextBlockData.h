@@ -40,19 +40,19 @@ class TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockD
     {}
 
     //* flags
-    const int& flags( void ) const
+    int flags( void ) const
     { return flags_; }
 
     //* flags
-    void setFlags( const int& flags )
+    void setFlags( int flags )
     { flags_ = flags; }
 
     //* flags
-    bool hasFlag( const int& flag ) const
+    bool hasFlag( int flag ) const
     { return flags_ & flag; }
 
     //* flags
-    void setFlag( const int& flag, bool value )
+    void setFlag( int flag, bool value )
     {
         if( value ) flags_ |= flag;
         else flags_ &= (~flag);

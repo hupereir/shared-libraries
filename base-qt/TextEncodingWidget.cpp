@@ -83,7 +83,7 @@ class TextEncodingModel: public ListModel<TextEncodingString>
         public:
 
         //! constructor
-        SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+        SortFTor( int type, Qt::SortOrder order = Qt::AscendingOrder ):
             ItemModel::SortFTor( type, order )
             {}
 

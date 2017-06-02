@@ -66,7 +66,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
     protected:
 
     //* sort
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    void _sort( int column, Qt::SortOrder order ) override
     { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
     //* get sizes from icon pair
@@ -81,7 +81,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
         public:
 
         //* constructor
-        SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+        SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
         {}
 

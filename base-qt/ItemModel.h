@@ -32,7 +32,7 @@ class ItemModel : public QAbstractItemModel
     public:
 
     //* constructor
-    ItemModel(QObject *parent = nullptr);
+    ItemModel(QObject* = nullptr);
 
     //*@name accessors
     //@{
@@ -41,11 +41,11 @@ class ItemModel : public QAbstractItemModel
     QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
 
     //* current sorting column
-    const int& sortColumn( void ) const
+    int sortColumn( void ) const
     { return sortColumn_; }
 
     //* current sort order
-    const Qt::SortOrder& sortOrder( void ) const
+    Qt::SortOrder sortOrder( void ) const
     { return sortOrder_; }
 
     //* get list of internal selected items
@@ -72,7 +72,7 @@ class ItemModel : public QAbstractItemModel
     { sort( sortColumn(), sortOrder() ); }
 
     //* sort
-    virtual void sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+    virtual void sort( int column, Qt::SortOrder order );
 
     //* clear internal list selected items
     virtual void clearSelectedIndexes( void ) = 0;
@@ -110,7 +110,8 @@ class ItemModel : public QAbstractItemModel
     { _sort( sortColumn(), sortOrder() ); }
 
     //* private sort, with no signals emitted
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder ) = 0;
+    virtual void _sort( int column, Qt::SortOrder order )
+    {}
 
     //* used to sort items in list
     class SortFTor
@@ -119,7 +120,7 @@ class ItemModel : public QAbstractItemModel
         public:
 
         //* constructor
-        SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+        SortFTor( int type, Qt::SortOrder order ):
             type_( type ),
             order_( order )
         {}

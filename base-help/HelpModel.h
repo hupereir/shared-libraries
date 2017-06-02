@@ -66,12 +66,6 @@ namespace Base
 
         //@}
 
-        protected:
-
-        //* sorting
-        virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
-        {}
-
     };
 
 }

@@ -23,7 +23,7 @@
 #include <cmath>
 
 //______________________________________________________
-RoundedPath::RoundedPath( QPolygonF polygon, const int& border )
+RoundedPath::RoundedPath( QPolygonF polygon, int border )
 {
 
     enum Direction { HORIZONTAL, VERTICAL };

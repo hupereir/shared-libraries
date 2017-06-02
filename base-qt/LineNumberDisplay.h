@@ -49,10 +49,10 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     void synchronize( LineNumberDisplay* );
 
     //* width
-    virtual bool updateWidth( const int& );
+    virtual bool updateWidth( int );
 
     //* width
-    virtual const int& width( void ) const
+    virtual int width( void ) const
     { return width_; }
 
     //* clear everything
@@ -87,7 +87,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         using List = QList<LineNumberData>;
 
         //* constructor
-        LineNumberData( const unsigned int& id = 0, const unsigned int& line_number = 0, const int& cursor = 0):
+        LineNumberData( const unsigned int& id = 0, const unsigned int& line_number = 0, int cursor = 0):
             id_( id ),
             lineNumber_( line_number ),
             cursor_( cursor ),
@@ -108,18 +108,18 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         { return lineNumber_; }
 
         //* y
-        const int& cursor( void ) const
+        int cursor( void ) const
         { return cursor_; }
 
         //* position
-        void setPosition( const int& position )
+        void setPosition( int position )
         {
             valid_ = (position >= 0);
             position_ = position;
         }
 
         //* position
-        const int& position( void ) const
+        int position( void ) const
         { return position_; }
 
         //* validity

@@ -76,13 +76,13 @@ class BaseFileInfoModel : public ListModel<T>
     //@{
 
     // return data for a given index
-    virtual QVariant data( const QModelIndex&, int ) const;
+    QVariant data( const QModelIndex&, int ) const override;
 
     //* header data
-    virtual QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const;
+    QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const override;
 
     //* number of columns for a given index
-    virtual int columnCount( const QModelIndex& = QModelIndex() ) const
+    int columnCount( const QModelIndex& = QModelIndex() ) const override
     { return nColumns; }
 
     //@}
@@ -94,7 +94,7 @@ class BaseFileInfoModel : public ListModel<T>
         public:
 
         //* constructor
-        SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+        SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
             {}
 
@@ -106,7 +106,7 @@ class BaseFileInfoModel : public ListModel<T>
     protected:
 
     //* sort
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
+    void _sort( int column, Qt::SortOrder order ) override
     { std::sort( ListModel<T>::_get().begin(), ListModel<T>::_get().end(), SortFTor( (ColumnType) column, order ) ); }
 
     //* icon matching given id

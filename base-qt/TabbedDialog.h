@@ -175,10 +175,6 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
 
         protected:
 
-        //* sort
-        virtual void _sort( int, Qt::SortOrder = Qt::AscendingOrder )
-        {}
-
         //* list column names
         static const QString columnTitles_[nColumns];
 

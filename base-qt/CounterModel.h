@@ -69,13 +69,13 @@ class CounterModel: public ListModel<CounterPair>
     //@{
 
     // return data for a given index
-    virtual QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const override;
 
     //* header data
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     //* number of columns for a given index
-    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override
     { return nColumns; }
 
     //@}
@@ -83,7 +83,7 @@ class CounterModel: public ListModel<CounterPair>
     protected:
 
     //* sort
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+    void _sort( int, Qt::SortOrder ) override;
 
     private:
 
@@ -94,7 +94,7 @@ class CounterModel: public ListModel<CounterPair>
         public:
 
         //* constructor
-        SortFTor( const int& type, Qt::SortOrder order = Qt::AscendingOrder ):
+        SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
             {}
 

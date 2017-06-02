@@ -59,7 +59,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     //@{
 
     //* set columns
-    void setMaxCount( const int& maxCount )
+    void setMaxCount( int maxCount )
     {
         maxCount_ = maxCount;
         columnAlignments_.clear();
@@ -71,7 +71,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     }
 
     //* set column alignment
-    void setColumnAlignment( const int& column, const Qt::Alignment alignment )
+    void setColumnAlignment( int column, const Qt::Alignment alignment )
     { columnAlignments_[column] = alignment; }
 
     //* set orientation
@@ -149,7 +149,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     }
 
     //* set current position in grid
-    void setLocation( const int& row, const int& column )
+    void setLocation( int row, int column )
     { row_ = row; column_ = column; }
 
     //@}
@@ -157,7 +157,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     private:
 
     //* bound check
-    bool _boundCheck( const int& column ) const
+    bool _boundCheck( int column ) const
     { return column >= 0 && column < int( columnAlignments_.size() ); }
 
     //* orientation

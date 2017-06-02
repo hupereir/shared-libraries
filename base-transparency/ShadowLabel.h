@@ -75,7 +75,7 @@ namespace Transparency
         private:
 
         //! shadow offset
-        const int& _shadowOffset( void ) const
+        int _shadowOffset( void ) const
         { return shadowOffset_; }
 
         //! shadow color

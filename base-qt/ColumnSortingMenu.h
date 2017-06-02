@@ -34,43 +34,43 @@
 class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     ColumnSortingMenu( QWidget*, QTreeView*, const QString& = tr( "Sort By" ) );
 
-    //! constructor
+    //* constructor
     ColumnSortingMenu( QWidget*, QHeaderView*, const QString&  = tr( "Sort By" ) );
 
     private Q_SLOTS:
 
-    //! update actions
+    //* update actions
     void _updateActions( void );
 
-    //! revert order
+    //* revert order
     void _revertOrder( void );
 
-    //! update mask when triggering actions
+    //* update mask when triggering actions
     void _sort( QAction* action );
 
     private:
 
-    //! target
+    //* target
     QTreeView* target_;
 
-    //! header
+    //* header
     QHeaderView* header_;
 
-    //! action group
+    //* action group
     QActionGroup* group_;
 
-    //! map action to column index
+    //* map action to column index
     using ActionMap = QHash< QAction*, int >;
 
-    //! map action to column index
+    //* map action to column index
     ActionMap actions_;
 
 };

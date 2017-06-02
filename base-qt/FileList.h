@@ -128,7 +128,7 @@ class FileList: public QObject, private Base::Counter<FileList>
     protected:
 
     //* maximum size
-    virtual const int& _maxSize( void ) const
+    virtual int _maxSize( void ) const
     { return maxSize_; }
 
     //* add record to current list

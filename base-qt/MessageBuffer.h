@@ -47,7 +47,7 @@ class MessageBuffer
     { flush( position() ); }
 
     //* move to new position
-    void flush( const int& position )
+    void flush( int position )
     {
         text_ = text_.mid( position );
         position_ = 0;
@@ -62,7 +62,7 @@ class MessageBuffer
     { return text_; }
 
     //* position
-    const int& position( void ) const
+    int position( void ) const
     { return position_; }
 
     private:

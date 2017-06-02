@@ -62,10 +62,10 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     virtual QVariant data( const QModelIndex &, int ) const;
 
     //* header data
-    virtual QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const;
+    QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const override;
 
     //* number of columns for a given index
-    virtual int columnCount( const QModelIndex& = QModelIndex() ) const;
+    int columnCount( const QModelIndex& = QModelIndex() ) const override;
 
     //* column matching given name, if any
     virtual int findColumn( const QString& ) const;
@@ -105,7 +105,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     protected:
 
     //* sort
-    virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder );
+    void _sort( int, Qt::SortOrder ) override;
 
     //* add, without update
     virtual void _add( const ValueType& );
@@ -124,7 +124,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
         public:
 
         //* constructor
-        SortFTor( const int& type, Qt::SortOrder order, const QStringList& columnTitles ):
+        SortFTor( int type, Qt::SortOrder order, const QStringList& columnTitles ):
             ItemModel::SortFTor( type, order ),
             columnTitles_( columnTitles )
         {}

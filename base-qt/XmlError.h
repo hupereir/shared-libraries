@@ -56,11 +56,11 @@ class XmlError: private Base::Counter<XmlError>
     { return error_; }
 
     //* line
-    const int& line( void ) const
+    int line( void ) const
     { return line_; }
 
     //* column
-    const int& column( void ) const
+    int column( void ) const
     { return column_; }
 
     //* error

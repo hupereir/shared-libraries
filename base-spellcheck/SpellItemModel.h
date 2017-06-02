@@ -36,34 +36,34 @@ namespace SpellCheck
 
         public:
 
-        //! number of columns
+        //* number of columns
         enum { nColumns = 1 };
 
-        //! constructor
-        SpellItemModel( QObject* parent = 0 ):
+        //* constructor
+        SpellItemModel( QObject* parent = nullptr ):
             ListModel<QString>( parent ),
             Counter( "SpellItemModel" )
         {}
 
-        //!@name methods reimplemented from base class
+        //*@name methods reimplemented from base class
         //@{
 
         // return data for a given index
-        virtual QVariant data(const QModelIndex &index, int role) const;
+        virtual QVariant data(const QModelIndex &index, int role) const override;
 
-        //! header data
-        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+        //* header data
+        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-        //! number of columns for a given index
-        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+        //* number of columns for a given index
+        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override
         { return nColumns; }
 
         //@}
 
-        //! items
+        //* items
         using ItemSet = QSet<QString>;
 
-        //! set disabled items
+        //* set disabled items
         void setDisabledItems( const ItemSet& items )
         {
             emit layoutAboutToBeChanged();
@@ -71,22 +71,16 @@ namespace SpellCheck
             emit layoutChanged();
         }
 
-        //! disabled items
+        //* disabled items
         ItemSet disabledItems( void ) const
         { return disabledItems_; }
 
-        protected:
-
-        //! sorting
-        virtual void _sort( int column, Qt::SortOrder order = Qt::AscendingOrder )
-        {}
-
         private:
 
-        //! column titles
+        //* column titles
         static const QString columnTitles_[ nColumns ];
 
-        //! disabled items
+        //* disabled items
         ItemSet disabledItems_;
 
     };

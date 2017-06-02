@@ -35,7 +35,7 @@ namespace SpellCheck
         using Set = QSet<Word>;
 
         //! constructor
-        Word( const QString& word = QString(), const int& position = 0 ):
+        Word( const QString& word = QString(), int position = 0 ):
             QString( word ),
             position_( position )
         {}
@@ -49,11 +49,11 @@ namespace SpellCheck
         { return position_ < word.position_; }
 
         //! position
-        const int& position( void ) const
+        int position( void ) const
         { return position_; }
 
         //! true if given position is in the selected word
-        bool has( const int& position ) const
+        bool has( int position ) const
         {
             return
                 position >= position_ &&
@@ -67,7 +67,7 @@ namespace SpellCheck
             public:
 
             //! constructor
-            AtPositionFTor( const int& position ):
+            AtPositionFTor( int position ):
                 position_( position )
             {}
 

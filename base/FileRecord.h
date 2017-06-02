@@ -70,7 +70,7 @@ class FileRecord: private Base::Counter<FileRecord>
     }
 
     //* time stamp
-    const int& time( void ) const
+    int time( void ) const
     { return time_; }
 
     //* time stamp

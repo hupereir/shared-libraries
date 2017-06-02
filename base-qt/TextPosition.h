@@ -41,7 +41,7 @@ class TextPosition: private Base::Counter<TextPosition>
     TextPosition( QTextDocument*, int index );
 
     //* paragraph
-    const int& paragraph( void ) const
+    int paragraph( void ) const
     { return paragraph_; }
 
     //* paragraph
@@ -49,7 +49,7 @@ class TextPosition: private Base::Counter<TextPosition>
     { return paragraph_; }
 
     //* index
-    const int& index( void ) const
+    int index( void ) const
     { return index_; }
 
     //* index
