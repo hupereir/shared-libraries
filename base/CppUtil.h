@@ -36,6 +36,8 @@ namespace Base
 
 }
 
+#include <QHash>
+
 //* fancy qhash for all enum types
 template<typename T,
     typename = typename std::enable_if<std::is_enum<T>::value>::type>
