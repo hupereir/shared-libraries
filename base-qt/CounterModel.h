@@ -105,10 +105,10 @@ class CounterModel: public ListModel<CounterPair>
 
     //* column titles
     const std::array<QString, nColumns> columnTitles_ =
-    {
+    {{
         tr( "Name" ),
         tr( "Counts" )
-    };
+    }};
 
 };
 

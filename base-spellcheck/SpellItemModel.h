@@ -78,7 +78,7 @@ namespace SpellCheck
         private:
 
         //* column titles
-        const std::array<QString, nColumns> columnTitles_ = { tr( "Item" ) };
+        const std::array<QString, nColumns> columnTitles_ = {{ tr( "Item" ) }};
 
         //* disabled items
         ItemSet disabledItems_;

@@ -92,11 +92,11 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
 
     //* column titles
     const std::array<QString, nColumns> columnTitles_ =
-    {
+    {{
         tr( "Icon" ),
         tr( "Files" ),
         tr( "Sizes" )
-    };
+    }};
 
 };
 

@@ -155,13 +155,13 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
 
     //* column titles
     const std::array<QString, nColumns> columnTitles_ =
-    {
+    {{
         tr( "Name" ),
         "",
         tr( "Current Value" ),
         tr( "Default Value" ),
         tr( "Flags" )
-    };
+    }};
 
 };
 
