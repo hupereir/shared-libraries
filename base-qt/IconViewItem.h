@@ -100,7 +100,7 @@ class IconViewItem: private Base::Counter<IconViewItem>
     //@}
 
     //* item map
-    using Map = QHash<int, IconViewItem>;
+    using Map = QMap<int, IconViewItem>;
 
     //* item list
     using List = QList<IconViewItem>;
