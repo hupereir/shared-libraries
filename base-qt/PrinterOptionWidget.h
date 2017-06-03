@@ -22,7 +22,7 @@
 #include "Counter.h"
 #include "BasePrintHelper.h"
 
-#include <QMap>
+#include <QHash>
 #include <QAbstractButton>
 #include <QPrinter>
 #include <QPushButton>
@@ -83,11 +83,11 @@ class PrinterOptionWidget: public QWidget, private Base::Counter<PrinterOptionWi
     QPushButton* previewButton_;
 
     //* Buttons maps
-    using OrientationButtonMap = QMap<QAbstractButton*, QPrinter::Orientation>;
+    using OrientationButtonMap = QHash<QAbstractButton*, QPrinter::Orientation>;
     OrientationButtonMap orientationButtons_;
 
     //* Buttons map
-    using PageModeButtonMap = QMap<QAbstractButton*, BasePrintHelper::PageMode>;
+    using PageModeButtonMap = QHash<QAbstractButton*, BasePrintHelper::PageMode>;
     PageModeButtonMap pageModeButtons_;
 
 };

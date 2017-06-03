@@ -25,7 +25,7 @@
 
 #include <QWidget>
 #include <QCheckBox>
-#include <QMap>
+#include <QHash>
 
 class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
 {
@@ -56,7 +56,7 @@ class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
     private:
 
     //* map mask to checkboxes
-    using CheckBoxMap = QMap<BaseFileInfoToolTipWidget::Type, QCheckBox* >;
+    using CheckBoxMap = QHash<BaseFileInfoToolTipWidget::Type, QCheckBox* >;
     CheckBoxMap checkboxes_;
 
 };

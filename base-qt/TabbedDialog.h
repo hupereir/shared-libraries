@@ -176,7 +176,7 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
         protected:
 
         //* list column names
-        static const QString columnTitles_[nColumns];
+        const std::array<QString, nColumns> columnTitles_;
 
     };
 

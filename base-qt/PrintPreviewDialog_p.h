@@ -22,7 +22,7 @@
 #include "BasePrintHelper.h"
 #include "CustomDialog.h"
 
-#include <QMap>
+#include <QHash>
 #include <QIntValidator>
 #include <QLabel>
 #include <QLineEdit>
@@ -67,11 +67,11 @@ namespace Private
         private:
 
         //* actions maps
-        using OrientationActionMap = QMap<QAction*, QPrinter::Orientation>;
+        using OrientationActionMap = QHash<QAction*, QPrinter::Orientation>;
         OrientationActionMap orientationActions_;
 
         //* actions map
-        using PageModeActionMap = QMap<QAction*, BasePrintHelper::PageMode>;
+        using PageModeActionMap = QHash<QAction*, BasePrintHelper::PageMode>;
         PageModeActionMap pageModeActions_;
 
     };

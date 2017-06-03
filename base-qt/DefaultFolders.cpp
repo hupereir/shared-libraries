@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "DefaultFolders.h"
-
+#include "CppUtil.h"
 #include "Debug.h"
 #include "Util.h"
 
@@ -82,14 +82,17 @@ void DefaultFolders::initializeFolderNames( void )
     if( folderNamesInitialized_ ) return;
 
     // fill icons map
-    names_.insert( Type::Home, tr( "Home" ) );
-    names_.insert( Type::Desktop, tr( "Desktop" ) );
-    names_.insert( Type::Documents, tr( "Documents" ) );
-    names_.insert( Type::Downloads, tr( "Downloads" ) );
-    names_.insert( Type::Music, tr( "Music" ) );
-    names_.insert( Type::Pictures, tr( "Pictures" ) );
-    names_.insert( Type::Templates, tr( "Templates" ) );
-    names_.insert( Type::Videos, tr( "Video" ) );
+    names_ = Base::makeHash<Type,QString>(
+    {
+        { Type::Home, tr( "Home" ) },
+        { Type::Desktop, tr( "Desktop" ) },
+        { Type::Documents, tr( "Documents" ) },
+        { Type::Downloads, tr( "Downloads" ) },
+        { Type::Music, tr( "Music" ) },
+        { Type::Pictures, tr( "Pictures" ) },
+        { Type::Templates, tr( "Templates" ) },
+        { Type::Videos, tr( "Video" ) }
+    });
 
     folderNamesInitialized_ = true;
 }
@@ -100,10 +103,13 @@ void DefaultFolders::initializeIconNames( void )
     if( iconNamesInitialized_ ) return;
 
     // fill icons map
-    iconNames_.insert( Type::Home, "user-home.png" );
-    iconNames_.insert( Type::Desktop, "user-desktop" );
-    iconNames_.insert( Type::Documents, "folder-documents" );
-    iconNames_.insert( Type::Music, "folder-sound" );
+    iconNames_ = Base::makeHash<Type, QString>(
+    {
+        { Type::Home, "user-home.png" },
+        { Type::Desktop, "user-desktop" },
+        { Type::Documents, "folder-documents" },
+        { Type::Music, "folder-sound" }
+    });
 
     // there are discrepencies for folder icon names between icon themes
     // try to deal with major ones

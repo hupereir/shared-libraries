@@ -42,7 +42,7 @@ class DefaultFolders: public QObject
     //@{
 
     //* folder type
-    enum class Type:uint
+    enum class Type
     {
         Unknown,
         Home,

@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "XcbUtil.h"
+#include "CppUtil.h"
 
 #include <QList>
 
@@ -106,23 +107,25 @@ class XcbUtil::Private
 XcbUtil::Private::Private( void )
 {
 
-    atomNames_[WM_STATE] = "WM_STATE";
-
-    atomNames_[_NET_SUPPORTED] = "_NET_SUPPORTED";
-    atomNames_[_NET_CURRENT_DESKTOP] = "_NET_CURRENT_DESKTOP";
-    atomNames_[_NET_WM_DESKTOP] = "_NET_WM_DESKTOP";
-    atomNames_[_NET_WM_STATE] = "_NET_WM_STATE";
-    atomNames_[_NET_WM_STATE_STICKY] = "_NET_WM_STATE_STICKY";
-    atomNames_[_NET_WM_STATE_STAYS_ON_TOP] = "_NET_WM_STATE_STAYS_ON_TOP";
-    atomNames_[_NET_WM_STATE_ABOVE] = "_NET_WM_STATE_ABOVE";
-    atomNames_[_NET_WM_STATE_SKIP_TASKBAR] = "_NET_WM_STATE_SKIP_TASKBAR";
-    atomNames_[_NET_WM_STATE_SKIP_PAGER] = "_NET_WM_STATE_SKIP_PAGER";
-    atomNames_[_NET_WM_MOVERESIZE] = "_NET_WM_MOVERESIZE";
-    atomNames_[_NET_WM_CM] = "_NET_WM_CM";
-    atomNames_[_NET_WM_PID] = "_NET_WM_PID";
-    atomNames_[_NET_WM_ICON] = "_NET_WM_ICON";
-    atomNames_[_NET_WM_NAME] = "_NET_WM_NAME";
-    atomNames_[_KDE_NET_WM_BLUR_BEHIND_REGION] = "_KDE_NET_WM_BLUR_BEHIND_REGION";
+    atomNames_ = Base::makeHash<AtomId,QString>(
+    {
+        { AtomId::WM_STATE, "WM_STATE" },
+        { AtomId::_NET_SUPPORTED, "_NET_SUPPORTED" },
+        { AtomId::_NET_CURRENT_DESKTOP, "_NET_CURRENT_DESKTOP" },
+        { AtomId::_NET_WM_DESKTOP, "_NET_WM_DESKTOP" },
+        { AtomId::_NET_WM_STATE, "_NET_WM_STATE" },
+        { AtomId::_NET_WM_STATE_STICKY, "_NET_WM_STATE_STICKY" },
+        { AtomId::_NET_WM_STATE_STAYS_ON_TOP, "_NET_WM_STATE_STAYS_ON_TOP" },
+        { AtomId::_NET_WM_STATE_ABOVE, "_NET_WM_STATE_ABOVE" },
+        { AtomId::_NET_WM_STATE_SKIP_TASKBAR, "_NET_WM_STATE_SKIP_TASKBAR" },
+        { AtomId::_NET_WM_STATE_SKIP_PAGER, "_NET_WM_STATE_SKIP_PAGER" },
+        { AtomId::_NET_WM_MOVERESIZE, "_NET_WM_MOVERESIZE" },
+        { AtomId::_NET_WM_CM, "_NET_WM_CM" },
+        { AtomId::_NET_WM_PID, "_NET_WM_PID" },
+        { AtomId::_NET_WM_ICON, "_NET_WM_ICON" },
+        { AtomId::_NET_WM_NAME, "_NET_WM_NAME" },
+        { AtomId::_KDE_NET_WM_BLUR_BEHIND_REGION, "_KDE_NET_WM_BLUR_BEHIND_REGION" }
+    });
 
 }
 
@@ -212,8 +215,7 @@ xcb_atom_t* XcbUtil::Private::atom( AtomId atom )
     if( iter != atoms_.end() ) return &iter.value();
 
     // create atom if not found
-    xcb_intern_atom_cookie_t cookie( xcb_intern_atom( connection(), false, atomNames_[atom].size(), qPrintable( atomNames_[atom] ) ) );
-    ScopedPointer<xcb_intern_atom_reply_t> reply( xcb_intern_atom_reply( connection(), cookie, nullptr ) );
+    xcb_intern_atom_cookie_t cookie( xcb_intern_atom( connection(), false, atomNames_[atom].size(), qPrintable( atomNames_[atom] ) ) );    ScopedPointer<xcb_intern_atom_reply_t> reply( xcb_intern_atom_reply( connection(), cookie, nullptr ) );
     xcb_atom_t out = reply ? reply->atom:0;
     return &(atoms_[atom] = out);
 

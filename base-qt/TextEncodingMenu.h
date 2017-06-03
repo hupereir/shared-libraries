@@ -23,7 +23,7 @@
 #include "Counter.h"
 
 #include <QAction>
-#include <QMap>
+#include <QHash>
 #include <QMenu>
 
 class TextEncodingMenu: public QMenu, private Base::Counter<TextEncodingMenu>
@@ -52,7 +52,7 @@ class TextEncodingMenu: public QMenu, private Base::Counter<TextEncodingMenu>
     private:
 
     //! map action to encoding
-    using ActionMap = QMap<QAction*, QByteArray>;
+    using ActionMap = QHash<QAction*, QByteArray>;
     ActionMap actions_;
 
 };

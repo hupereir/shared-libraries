@@ -18,90 +18,91 @@
 *******************************************************************************/
 
 #include "MimeTypeIconProvider.h"
+#include "CppUtil.h"
 #include "IconEngine.h"
 
 //__________________________________________________________________
 MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     QObject( parent ),
-    Counter( "MimeTypeIconProvider" )
-{
+    Counter( "MimeTypeIconProvider" ),
+    iconNames_( Base::makeHash<QString,QString>(
+    {
+        // source code
+        { "C", "text-x-csrc" },
+        { "cxx", "text-x-c++src" },
+        { "cpp", "text-x-c++src" },
+        { "h", "text-x-chdr" },
 
-    // source code
-    iconNames_.insert( "C", "text-x-csrc" );
-    iconNames_.insert( "cxx", "text-x-c++src" );
-    iconNames_.insert( "cpp", "text-x-c++src" );
-    iconNames_.insert( "h", "text-x-chdr" );
+        // shell scripts
+        { "sh", "application-x-shellscript" },
+        { "csh", "application-x-shellscript" },
+        { "tcsh", "application-x-shellscript" },
+        { "bash", "application-x-shellscript" },
+        { "zsh", "application-x-shellscript" },
+        { "pl", "application-x-perl" },
 
-    // shell scripts
-    iconNames_.insert( "sh", "application-x-shellscript" );
-    iconNames_.insert( "csh", "application-x-shellscript" );
-    iconNames_.insert( "tcsh", "application-x-shellscript" );
-    iconNames_.insert( "bash", "application-x-shellscript" );
-    iconNames_.insert( "zsh", "application-x-shellscript" );
-    iconNames_.insert( "pl", "application-x-perl" );
+        // double check
+        { "la", "application-x-perl" },
 
-    // double check
-    iconNames_.insert( "la", "application-x-perl" );
+        // latex
+        { "tex", "text-x-tex" },
+        { "sty", "text-x-tex" },
+        { "bib", "text-x-bibtex" },
+        { "aux", "text-plain" },
+        { "eps", "image-x-eps" },
+        { "ps", "application-postscript" },
+        { "pdf", "application-pdf" },
+        { "fig", "image-x-xfig" },
 
-    // latex
-    iconNames_.insert( "tex", "text-x-tex" );
-    iconNames_.insert( "sty", "text-x-tex" );
-    iconNames_.insert( "bib", "text-x-bibtex" );
-    iconNames_.insert( "aux", "text-plain" );
-    iconNames_.insert( "eps", "image-x-eps" );
-    iconNames_.insert( "ps", "application-postscript" );
-    iconNames_.insert( "pdf", "application-pdf" );
-    iconNames_.insert( "fig", "image-x-xfig" );
+        // images
+        { "png", "image-x-generic" },
+        { "ico", "image-x-generic" },
+        { "jpg", "image-x-generic" },
+        { "jpeg", "image-x-generic" },
+        { "gif", "image-x-generic" },
 
-    // images
-    iconNames_.insert( "png", "image-x-generic" );
-    iconNames_.insert( "ico", "image-x-generic" );
-    iconNames_.insert( "jpg", "image-x-generic" );
-    iconNames_.insert( "jpeg", "image-x-generic" );
-    iconNames_.insert( "gif", "image-x-generic" );
+        { "svg", "image-svg+xml" },
+        { "svgz", "image-svg+xml-compressed" },
 
-    iconNames_.insert( "svg", "image-svg+xml" );
-    iconNames_.insert( "svgz", "image-svg+xml-compressed" );
+        // videos
+        { "avi", "video-x-generic" },
+        { "mp4", "video-x-generic" },
+        { "mkv", "video-x-generic" },
 
-    // videos
-    iconNames_.insert( "avi", "video-x-generic" );
-    iconNames_.insert( "mp4", "video-x-generic" );
-    iconNames_.insert( "mkv", "video-x-generic" );
+        // music
+        { "mp3", "audio-x-generic" },
+        { "flac", "audio-x-generic" },
+        { "wav", "audio-x-generic" },
+        { "ogg", "audio-x-generic" },
 
-    // music
-    iconNames_.insert( "mp3", "audio-x-generic" );
-    iconNames_.insert( "flac", "audio-x-generic" );
-    iconNames_.insert( "wav", "audio-x-generic" );
-    iconNames_.insert( "ogg", "audio-x-generic" );
+        // text formats
+        { "txt", "text-plain" },
+        { "qrc", "text-plain" },
+        { "log", "text-plain" },
+        { "xml", "text-xml" },
+        { "html", "text-html" },
+        { "css", "text-css" },
+        { "php", "application-x-php" },
 
-    // text formats
-    iconNames_.insert( "txt", "text-plain" );
-    iconNames_.insert( "qrc", "text-plain" );
-    iconNames_.insert( "log", "text-plain" );
-    iconNames_.insert( "xml", "text-xml" );
-    iconNames_.insert( "html", "text-html" );
-    iconNames_.insert( "css", "text-css" );
-    iconNames_.insert( "php", "application-x-php" );
+        // cmake
+        { "cmake", "text-x-cmake" },
 
-    // cmake
-    iconNames_.insert( "cmake", "text-x-cmake" );
+        // archives
+        { "gz", "application-x-archive" },
+        { "xz", "application-x-archive" },
+        { "bz2", "application-x-archive" },
+        { "tgz", "application-x-archive" },
+        { "zip", "application-x-archive" },
 
-    // archives
-    iconNames_.insert( "gz", "application-x-archive" );
-    iconNames_.insert( "xz", "application-x-archive" );
-    iconNames_.insert( "bz2", "application-x-archive" );
-    iconNames_.insert( "tgz", "application-x-archive" );
-    iconNames_.insert( "zip", "application-x-archive" );
-
-    // misc
-    iconNames_.insert( "root", "application-x-object" );
-    iconNames_.insert( "o", "application-x-object" );
-    iconNames_.insert( "obj", "application-x-object" );
-    iconNames_.insert( "so", "application-x-object" );
-    iconNames_.insert( "a", "application-x-archive" );
-    iconNames_.insert( "exe", "application-x-ms-dos-executable" );
-
-}
+        // misc
+        { "root", "application-x-object" },
+        { "o", "application-x-object" },
+        { "obj", "application-x-object" },
+        { "so", "application-x-object" },
+        { "a", "application-x-archive" },
+        { "exe", "application-x-ms-dos-executable" }
+    } ) )
+{}
 
 //__________________________________________________________________
 const QIcon& MimeTypeIconProvider::icon( const QString& extension )
@@ -109,17 +110,17 @@ const QIcon& MimeTypeIconProvider::icon( const QString& extension )
 
     {
         // find match in cache
-        IconCache::const_iterator iter( icons_.find( extension ) );
+        auto&& iter( icons_.find( extension ) );
         if( iter != icons_.end() ) return iter.value();
     }
 
     {
         // find match in icon names
-        IconNameCache::const_iterator iter( iconNames_.find( extension ) );
+        auto&& iter( iconNames_.find( extension ) );
         if( iter == iconNames_.end() ) return empty_;
 
         // lookup matching icon using engine
-        QIcon icon( IconEngine::get( iter.value() ) );
+        auto icon( IconEngine::get( iter.value() ) );
         return icons_.insert( iter.key(), icon ).value();
     }
 

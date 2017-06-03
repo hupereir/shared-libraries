@@ -23,10 +23,6 @@
 namespace SpellCheck
 {
 
-    //_______________________________________________
-    const QString SpellItemModel::columnTitles_[ SpellItemModel::nColumns ] =
-    { tr( "Item" ) };
-
     //__________________________________________________________________
     QVariant SpellItemModel::data( const QModelIndex& index, int role ) const
     {

@@ -149,11 +149,6 @@ void TabbedDialog::_display( const QModelIndex& index )
     stackedWidget_->setCurrentWidget( _model().get( index ).widget() );
 }
 
-//_______________________________________________
-const QString TabbedDialog::Model::columnTitles_[ TabbedDialog::Model::nColumns ] =
-{ "" };
-
-
 //_______________________________________________________________________________________
 QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
 {

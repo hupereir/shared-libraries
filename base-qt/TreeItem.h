@@ -23,7 +23,7 @@
 #include "TreeItemBase.h"
 
 #include <QList>
-#include <QMap>
+#include <QHash>
 #include <algorithm>
 
 //* used to wrap object T into tree structure
@@ -51,7 +51,7 @@ template<class T> class TreeItem: public TreeItemBase
     using List = QList<TreeItem>;
 
     //* map items to internal id
-    using Map = QMap<int, TreeItem*>;
+    using Map = QHash<int, TreeItem*>;
 
     //* root constructor
     TreeItem( Map& itemMap ):

@@ -222,7 +222,7 @@ namespace SpellCheck
         DictionarySet dictionaries_;
 
         //* set of available filters
-        using FilterMap = QMap<QString, QString>;
+        using FilterMap = QHash<QString, QString>;
         static FilterMap filterMap_;
 
         //* set of available filters

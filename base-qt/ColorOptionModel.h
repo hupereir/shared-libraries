@@ -24,7 +24,7 @@
 
 #include "Color.h"
 #include <QIcon>
-#include <QMap>
+#include <QHash>
 
 //* Color option model. Stores Color option information for display in lists
 class ColorOptionModel: public OptionModel

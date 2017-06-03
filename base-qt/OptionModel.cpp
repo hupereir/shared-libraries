@@ -26,17 +26,6 @@
 #include <QPalette>
 
 //_______________________________________________
-const QString OptionModel::columnTitles_[ OptionModel::nColumns ] =
-{
-    tr( "Name" ),
-    "",
-    tr( "Current Value" ),
-    tr( "Default Value" ),
-    tr( "Flags" )
-};
-
-
-//_______________________________________________
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid()) return 0;

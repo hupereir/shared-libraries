@@ -69,7 +69,7 @@ namespace Base
         using Type = quint32;
 
         //* retrieve key
-        virtual const Type& key( void ) const
+        virtual Type key( void ) const
         { return key_; }
 
         //* shortcut for set of Key
@@ -113,7 +113,7 @@ namespace Base
             public:
 
             //* constructor
-            SameKeyFTor( const Type& key ):
+            SameKeyFTor( Type key ):
                 key_( key )
             {}
 

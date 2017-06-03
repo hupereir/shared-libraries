@@ -24,7 +24,7 @@
 #include "Debug.h"
 
 #include <QMenu>
-#include <QMap>
+#include <QHash>
 
 //* provides tool button style selection menu
 class ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMenu>
@@ -56,7 +56,7 @@ class ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMe
     private:
 
     //* action map
-    using ActionMap = QMap< QAction*, int >;
+    using ActionMap = QHash< QAction*, int >;
 
     //* toolbar text action map
     ActionMap actions_;

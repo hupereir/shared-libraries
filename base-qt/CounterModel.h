@@ -104,7 +104,11 @@ class CounterModel: public ListModel<CounterPair>
     };
 
     //* column titles
-    static const QString columnTitles_[ nColumns ];
+    const std::array<QString, nColumns> columnTitles_ =
+    {
+        tr( "Name" ),
+        tr( "Counts" )
+    };
 
 };
 

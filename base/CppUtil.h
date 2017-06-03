@@ -20,7 +20,16 @@
 *
 *******************************************************************************/
 
+#include <QtGlobal>
+
+#if QT_VERSION >= 0x050100
+#include <QHashFunctions>
+#else
 #include <QHash>
+#endif
+
+#include <initializer_list>
+#include <utility>
 
 namespace Base
 {
@@ -34,9 +43,22 @@ namespace Base
     toIntegralType(T value) noexcept
     { return static_cast<underlying_type_t<T>>(value);}
 
-}
+    template<typename Key, typename T>
+    #if QT_VERSION >= 0x050100
+    // for new Qt versoins, QHash can be constructed from initializer_list. So just move the arguments
+    std::initializer_list<std::pair<Key,T>> makeHash( std::initializer_list<std::pair<Key,T>>&& reference )
+    { return std::move( reference ); }
+    #else
+    // for old QT versions there is no QHash constructor from initializer_list
+    QHash<Key,T> makeHash( std::initializer_list<std::pair<Key,T>>&& reference )
+    {
+        QHash<Key,T> out;
+        for( auto&& pair:reference ) { out.insert( pair.first, pair.second ); }
+        return out;
+    }
+    #endif
 
-#include <QHash>
+}
 
 //* fancy qhash for all enum types
 template<typename T,

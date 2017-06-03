@@ -154,7 +154,14 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     bool readOnly_ = true;
 
     //* column titles
-    static const QString columnTitles_[ nColumns ];
+    const std::array<QString, nColumns> columnTitles_ =
+    {
+        tr( "Name" ),
+        "",
+        tr( "Current Value" ),
+        tr( "Default Value" ),
+        tr( "Flags" )
+    };
 
 };
 

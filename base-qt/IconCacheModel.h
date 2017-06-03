@@ -91,7 +91,12 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
     };
 
     //* column titles
-    static const QString columnTitles_[ nColumns ];
+    const std::array<QString, nColumns> columnTitles_ =
+    {
+        tr( "Icon" ),
+        tr( "Files" ),
+        tr( "Sizes" )
+    };
 
 };
 

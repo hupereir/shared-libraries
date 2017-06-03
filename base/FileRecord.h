@@ -27,7 +27,7 @@
 #include "TimeStamp.h"
 
 #include <QList>
-#include <QMap>
+#include <QHash>
 #include <QStringList>
 
 //* handles previously opened file and tags
@@ -167,7 +167,7 @@ class FileRecord: private Base::Counter<FileRecord>
         static Id& _counter( void );
 
         //* id map
-        using IdMap = QMap< QString, Id >;
+        using IdMap = QHash< QString, Id >;
 
         //* id map
         static IdMap& _idMap();
@@ -196,7 +196,7 @@ class FileRecord: private Base::Counter<FileRecord>
     { return properties_.find( id ) != properties_.end(); }
 
     //* additional property map
-    using PropertyMap = QMap< PropertyId::Id, QString >;
+    using PropertyMap = QHash< PropertyId::Id, QString >;
 
     //* property map
     const PropertyMap& properties( void ) const

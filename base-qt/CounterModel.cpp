@@ -19,13 +19,6 @@
 
 #include "CounterModel.h"
 
-//_______________________________________________
-const QString CounterModel::columnTitles_[ CounterModel::nColumns ] =
-{
-    tr( "Name" ),
-    tr( "Counts" )
-};
-
 //__________________________________________________________________
 QVariant CounterModel::data( const QModelIndex& index, int role ) const
 {
