@@ -77,7 +77,7 @@ class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFra
     private:
 
     //! delay for userChanged signal emission
-    unsigned int delay_;
+    int delay_;
 
     //! user changed timer
     QBasicTimer timer_;

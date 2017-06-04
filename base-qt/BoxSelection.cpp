@@ -24,7 +24,7 @@
 #include <QApplication>
 #include <QMimeData>
 
-static const unsigned int debugLevel = 1;
+static const int debugLevel = 1;
 
 //________________________________________________________________________
 const QString BoxSelection::mimeType = "text/boxSelection";

@@ -105,7 +105,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
                 const QString localName( useLocalNames_ ? record.file().localName(): record.file() );
 
                 // loop over previous rows to find a match and increment version number
-                unsigned int version( 0 );
+                int version( 0 );
                 for( int row = 0; row < index.row(); row++ )
                 {
                     const QString rowName( useLocalNames_ ?

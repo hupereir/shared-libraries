@@ -177,7 +177,7 @@ namespace SpellCheck
         };
 
         //* update text editor selection
-        void _updateSelection( const unsigned int&, const unsigned int& );
+        void _updateSelection( int, int );
 
         //* replace text editor selection
         void _replaceSelection( const QString& );

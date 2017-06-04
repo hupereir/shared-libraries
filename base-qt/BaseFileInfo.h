@@ -419,7 +419,7 @@ class BaseFileInfo
             Detail = 1<<2
         };
 
-        QString description( unsigned int = 0 ) const;
+        QString description( int = 0 ) const;
 
     };
 
@@ -476,7 +476,7 @@ class BaseFileInfo
 
 //________________________________________________________________
 template <typename T>
-QString BaseFileInfo::BaseList<T>::description( unsigned int flags ) const
+QString BaseFileInfo::BaseList<T>::description( int flags ) const
 {
     Debug::Throw( "BaseFileInfo::BaseList::description.\n" );
 

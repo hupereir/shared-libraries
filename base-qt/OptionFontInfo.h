@@ -40,11 +40,11 @@ class OptionFontInfo: public FontInfo, public OptionWidget
 
     //! read value from option
     void read( const Options& options )
-    { setFormat( (Format::TextFormatFlags) options.get<unsigned int>( optionName() ) ); }
+    { setFormat( (Format::TextFormatFlags) options.get<int>( optionName() ) ); }
 
     //! write value to option
     void write( Options& options ) const
-    { options.set<unsigned int>( optionName(), format() ); }
+    { options.set<int>( optionName(), format() ); }
 
 };
 #endif

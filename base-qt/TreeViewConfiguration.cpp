@@ -75,7 +75,7 @@ void TreeViewConfiguration::read( const Options& options )
     Debug::Throw( "TreeViewConfiguration::read.\n" );
 
     // set check button state according to the backup mask
-    unsigned int mask( options.get<unsigned int>( optionName() ) );
+    int mask( options.get<int>( optionName() ) );
     for( int index = 0; index < checkbox_.size(); index++ )
     {
         checkbox_[index]->setChecked( mask & (1<<index) );
@@ -94,11 +94,11 @@ void TreeViewConfiguration::write( Options& options ) const
 {
     Debug::Throw( "TreeViewConfiguration::write.\n" );
 
-    unsigned int mask(0);
+    int mask(0);
     for( int index = 0; index < checkbox_.size(); index++ )
     { mask |= (checkbox_[index]->isChecked() << index); }
 
-    options.set<unsigned int>( optionName(), mask );
+    options.set<int>( optionName(), mask );
 
     return;
 

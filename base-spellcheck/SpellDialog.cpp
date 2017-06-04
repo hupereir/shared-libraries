@@ -186,8 +186,8 @@ namespace SpellCheck
 
         // set text
         // check Editor seletion
-        unsigned int indexBegin( 0 );
-        unsigned int indexEnd( editor_->toPlainText().length() );
+        int indexBegin( 0 );
+        int indexEnd( editor_->toPlainText().length() );
         if( editor_->textCursor().hasSelection() )
         {
             indexBegin = editor_->textCursor().anchor();
@@ -570,7 +570,7 @@ namespace SpellCheck
     { editor_->setReadOnly( readOnlyEditor_ ); }
 
     //_________________________________________________________________
-    void SpellDialog::_updateSelection( const unsigned int& index, const unsigned int& length )
+    void SpellDialog::_updateSelection( int index, int length )
     {
         Debug::Throw() << "SpellCheck::SpellDialog::_updateSelection - index=" << index << endl;
         QTextCursor cursor( editor_->textCursor() );

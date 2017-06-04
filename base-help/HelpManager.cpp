@@ -60,7 +60,7 @@ namespace Base
         if( clear ) HelpManager::clear();
 
         //! loop over help text
-        for( unsigned int i=0; !text[i].isNull(); i++ ) {
+        for( int i=0; !text[i].isNull(); i++ ) {
 
             QString label( text[i] );
             i++;

@@ -179,6 +179,6 @@ void FileRecordToolTipWidget::setRecord( const FileRecord& record, const QIcon& 
 void FileRecordToolTipWidget::_updateConfiguration( void )
 {
     Debug::Throw( "FileRecordToolTipWidget::_updateConfiguration.\n" );
-    if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<unsigned int>( "TOOLTIPS_PIXMAP_SIZE" ) );
-    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( XmlOptions::get().get<unsigned int>( "TOOLTIPS_MASK" ) );
+    if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<int>( "TOOLTIPS_PIXMAP_SIZE" ) );
+    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( XmlOptions::get().get<int>( "TOOLTIPS_MASK" ) );
 }

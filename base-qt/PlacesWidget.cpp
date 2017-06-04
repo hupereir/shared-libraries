@@ -482,8 +482,8 @@ namespace Private
     void PlacesToolTipWidget::_updateConfiguration( void )
     {
         Debug::Throw( "PlacesToolTipWidget::_updateConfiguration.\n" );
-        if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<unsigned int>( "TOOLTIPS_PIXMAP_SIZE" ) );
-        if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( Types(XmlOptions::get().get<unsigned int>( "TOOLTIPS_MASK" )) );
+        if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<int>( "TOOLTIPS_PIXMAP_SIZE" ) );
+        if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( Types(XmlOptions::get().get<int>( "TOOLTIPS_MASK" )) );
     }
 
 }

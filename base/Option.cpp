@@ -22,7 +22,7 @@
 //________________________________________________________
 QTextStream& operator >> ( QTextStream& in, bool& value )
 {
-    short unsigned int local;
+    int local;
     in >> local;
     value = (bool)( local );
     return in;

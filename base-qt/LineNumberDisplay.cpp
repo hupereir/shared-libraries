@@ -107,7 +107,7 @@ void LineNumberDisplay::paint( QPainter& painter )
 
     // loop over data
     QTextBlock block( editor_->document()->begin() );
-    unsigned int id( 0 );
+    int id( 0 );
 
     for( auto& data:lineNumberData_ )
     {
@@ -164,8 +164,8 @@ void LineNumberDisplay::_updateLineNumberData( void )
     lineNumberData_.clear();
 
     // get document
-    unsigned int id( 0 );
-    unsigned int block_count( 1 );
+    int id( 0 );
+    int block_count( 1 );
     QTextDocument &document( *editor_->document() );
     for( auto&& block = document.begin(); block.isValid(); block = block.next(), id++ )
     {
@@ -183,7 +183,7 @@ void LineNumberDisplay::_updateLineNumberData( void )
 }
 
 //________________________________________________________
-void LineNumberDisplay::_updateLineNumberData( QTextBlock& block, unsigned int& id, LineNumberDisplay::LineNumberData& data ) const
+void LineNumberDisplay::_updateLineNumberData( QTextBlock& block, int& id, LineNumberDisplay::LineNumberData& data ) const
 {
     Q_ASSERT( !data.isValid() );
 

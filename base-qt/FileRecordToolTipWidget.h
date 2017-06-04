@@ -65,7 +65,7 @@ class FileRecordToolTipWidget: public BaseToolTipWidget
     Q_DECLARE_FLAGS(Types, Type)
 
     //* mask
-    void setMask( unsigned int value )
+    void setMask( int value )
     {
         if( mask_ == value ) return;
         mask_ = value;
@@ -89,7 +89,7 @@ class FileRecordToolTipWidget: public BaseToolTipWidget
     int pixmapSize_;
 
     //* information mask
-    unsigned int mask_;
+    int mask_;
 
     //* local icon copy
     QIcon icon_;

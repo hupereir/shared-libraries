@@ -87,9 +87,9 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         using List = QList<LineNumberData>;
 
         //* constructor
-        LineNumberData( const unsigned int& id = 0, const unsigned int& line_number = 0, int cursor = 0):
+        LineNumberData( int id = 0, int lineNumber = 0, int cursor = 0):
             id_( id ),
-            lineNumber_( line_number ),
+            lineNumber_( lineNumber ),
             cursor_( cursor ),
             position_( -1 ),
             valid_( false )
@@ -100,11 +100,11 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         { return id() == data.id(); }
 
         //* id
-        const unsigned int& id( void ) const
+        int id( void ) const
         { return id_; }
 
         //* line number
-        const unsigned int& lineNumber( void ) const
+        int lineNumber( void ) const
         { return lineNumber_; }
 
         //* y
@@ -129,10 +129,10 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         private:
 
         //* block id
-        unsigned int id_;
+        int id_;
 
         //* line number
-        unsigned int lineNumber_;
+        int lineNumber_;
 
         //* position
         int cursor_;
@@ -149,7 +149,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     void _updateLineNumberData( void );
 
     //* update invalid data
-    void _updateLineNumberData( QTextBlock&, unsigned int&, LineNumberData& ) const;
+    void _updateLineNumberData( QTextBlock&, int&, LineNumberData& ) const;
 
     //* associated editor
     TextEditor* editor_ = nullptr;

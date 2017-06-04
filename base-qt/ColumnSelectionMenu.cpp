@@ -59,7 +59,7 @@ void ColumnSelectionMenu::_updateActions( void )
     TreeView* treeView( qobject_cast<TreeView*>( target_ ) );
 
     // loop over columns in header
-    unsigned int visibleColumns(0);
+    int visibleColumns(0);
     for( int index=0; index < header->count(); index++ )
     {
 
