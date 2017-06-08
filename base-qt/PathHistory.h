@@ -34,7 +34,7 @@ class PathHistory:  public QObject, private Base::Counter<PathHistory>
     public:
 
     //* constructor
-    PathHistory( QObject* );
+    explicit PathHistory( QObject* );
 
     //*@name accessors
     //@{

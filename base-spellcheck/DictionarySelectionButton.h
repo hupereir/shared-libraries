@@ -35,7 +35,7 @@ namespace SpellCheck
         public:
 
         //* constructor
-        DictionarySelectionButton( QWidget* );
+        explicit DictionarySelectionButton( QWidget* );
 
         //* retrieve value
         QString value( void ) const

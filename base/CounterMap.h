@@ -36,7 +36,7 @@ namespace Base
         static CounterMap& get( void );
 
         //* copy constructor is deleted
-        CounterMap( const CounterMap& ) = delete;
+        explicit CounterMap( const CounterMap& ) = delete;
 
         //* assignment is deleted
         CounterMap& operator = ( const CounterMap& ) = delete;
@@ -47,7 +47,7 @@ namespace Base
         private:
 
         //* default constructor
-        CounterMap() {}
+        explicit CounterMap() {}
 
     };
 

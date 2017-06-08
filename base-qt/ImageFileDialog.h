@@ -37,10 +37,10 @@ class ImageFileDialog: public QFileDialog
     public:
 
     //* creator
-    ImageFileDialog( QWidget* );
+    explicit ImageFileDialog( QWidget* );
 
     //* select file
-    void selectFile( const QString& filename )
+    void selectFile( const File& filename )
     {
         emit _currentChanged( filename );
         QFileDialog::selectFile( filename );
@@ -73,14 +73,14 @@ class ImageFileDialog: public QFileDialog
     QCheckBox* automaticPreview_ = nullptr;
 
     //* current file
-    QString currentPath_;
+    File currentPath_;
 
     class Label: public QLabel, private Base::Counter<Label>
     {
         public:
 
         //* constructor
-        Label( QWidget* parent );
+        explicit Label( QWidget* parent );
 
         protected:
 

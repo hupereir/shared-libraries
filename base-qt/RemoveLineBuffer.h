@@ -43,7 +43,7 @@ class RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
   public:
 
   //! constructor
-  RemoveLineBuffer( QObject* parent ):
+  explicit RemoveLineBuffer( QObject* parent ):
     QObject( parent ),
     Counter( "RemoveLineBuffer" )
   { Debug::Throw( "RemoveLineBuffer::RemoveLineBuffer.\n" ); }

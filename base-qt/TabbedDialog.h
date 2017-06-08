@@ -44,7 +44,7 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     public:
 
     //* creator
-    TabbedDialog( QWidget* );
+    explicit TabbedDialog( QWidget* );
 
     //* adds a new Item, returns associated Box
     virtual QWidget& addPage( const QString& title, const QString& tooltip = QString(), bool expand = false )
@@ -81,12 +81,12 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
         public:
 
         //* constructor
-        Item( void ):
+        explicit Item( void ):
             Counter( "TabbedDialog::Item" )
         {}
 
         //* constructor
-        Item( const QString& name, QWidget* widget ):
+        explicit Item( const QString& name, QWidget* widget ):
             Counter( "TabbedDialog::Item" ),
             name_( name ),
             widget_( widget )

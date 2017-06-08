@@ -66,7 +66,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 
         // resize pixmap
         if( pixmap.size() != IconSize( IconSize::Huge ) )
-            pixmap = pixmap.scaled( IconSize( IconSize::Huge ), Qt::KeepAspectRatio, Qt::SmoothTransformation );
+        { pixmap = CustomPixmap( pixmap.scaled( IconSize( IconSize::Huge ), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
 
         setIcon( pixmap );
         return true;
@@ -103,7 +103,7 @@ void BrowseIconButton::_browse( void )
         // warning: inneficient
         File path( File( file_ ).path() );
         if( path.exists() && path.isDirectory() ) dialog.setDirectory( path );
-        dialog.selectFile( file_ );
+        dialog.selectFile( File( file_ ) );
 
     }
 

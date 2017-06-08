@@ -170,7 +170,7 @@ FileRecord& FileList::_add(
         Debug::Throw() << "FileList::_add - updating: " << record.file() << endl;
         if( updateTimeStamp && iter->time() != record.time() )
         {
-            iter->setTime( qMax( iter->time(), record.time() ) );
+            iter->setTime( TimeStamp(qMax( iter->time(), record.time() ) ) );
             if( emitSignal ) emit contentsChanged();
         }
 

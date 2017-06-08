@@ -42,7 +42,7 @@ namespace Ssh
         public:
 
         //* constructor
-        Connection( QObject* );
+        explicit Connection( QObject* );
 
         //* destructor
         virtual ~Connection( void );

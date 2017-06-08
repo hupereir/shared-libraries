@@ -35,7 +35,7 @@ class ContextMenu: public BaseContextMenu
     public:
 
     //* contructor
-    ContextMenu( QWidget* );
+    explicit ContextMenu( QWidget* );
 
     protected Q_SLOTS:
 

@@ -54,7 +54,7 @@ class StandardAction: public QAction, private Base::Counter<StandardAction>
     };
 
     //* constructor
-    StandardAction( Type, QObject* );
+    explicit StandardAction( Type, QObject* );
 
 };
 

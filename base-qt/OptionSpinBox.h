@@ -36,7 +36,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
     public:
 
     //* constructor
-    OptionSpinBox( QWidget* parent, const QString& optionName, bool addStretch = true ):
+    explicit OptionSpinBox( QWidget* parent, const QString& optionName, bool addStretch = true ):
         QWidget( parent ),
         OptionWidget( optionName, this )
     {

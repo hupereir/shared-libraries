@@ -36,7 +36,7 @@ class BrowseIconButton: public CustomToolButton
     public:
 
     //* creator
-    BrowseIconButton( QWidget*, const QString& = QString() );
+    explicit BrowseIconButton( QWidget*, const QString& = QString() );
 
     //* iconFile
     virtual const QString& file( void ) const

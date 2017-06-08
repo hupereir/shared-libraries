@@ -33,7 +33,7 @@ class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
     public:
 
     //* constructor
-    ColorDisplay( QWidget* parent );
+    explicit ColorDisplay( QWidget* parent );
 
     //* color
     QColor color( void ) const
@@ -62,7 +62,7 @@ class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
         public:
 
         //* constructor
-        Editor( QWidget *parent ):
+        explicit Editor( QWidget *parent ):
             LineEditor( parent )
         {}
 

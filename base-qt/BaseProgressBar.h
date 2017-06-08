@@ -33,7 +33,7 @@ class BaseProgressBar:public QProgressBar
     public:
 
     //* constructor
-    BaseProgressBar( QWidget* parent = nullptr ):
+    explicit BaseProgressBar( QWidget* parent = nullptr ):
         QProgressBar( parent )
     { setTextVisible( true ); }
 

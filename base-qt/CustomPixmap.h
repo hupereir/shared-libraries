@@ -40,26 +40,33 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     Q_DECLARE_FLAGS( Flags, Flag )
 
     //* constructor
-    CustomPixmap( const QSize&, Flags flags = 0 );
+    explicit CustomPixmap( const QSize&, Flags flags = 0 );
 
     //* constructor
-    CustomPixmap( const QPixmap& pixmap ):
+    explicit CustomPixmap( const QPixmap& pixmap ):
         QPixmap( pixmap ),
         Counter( "CustomPixmap" )
     {}
 
     //* constructor
-    CustomPixmap( const QImage& image ):
-        Counter( "CustomPixmap" )
-    { *this = fromImage( image ); }
-
-    //* constructor
-    CustomPixmap( void ):
+    explicit CustomPixmap( QPixmap&& pixmap ):
+        QPixmap( std::move(pixmap) ),
         Counter( "CustomPixmap" )
     {}
 
     //* constructor
-    CustomPixmap( const QString& );
+    explicit CustomPixmap( const QImage& image ):
+        QPixmap( fromImage(image) ),
+        Counter( "CustomPixmap" )
+    {}
+
+    //* constructor
+    explicit CustomPixmap( void ):
+        Counter( "CustomPixmap" )
+    {}
+
+    //* constructor
+    explicit CustomPixmap( const QString& );
 
     //* find first file matching name in list of path
     virtual CustomPixmap find( const QString& );
@@ -95,7 +102,7 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     };
 
     //* merge pixmap, using the specified corner as an anchor
-    virtual CustomPixmap merged( const CustomPixmap&, Corner = Corner::TopLeft ) const;
+    virtual CustomPixmap merged( const QPixmap&, Corner = Corner::TopLeft ) const;
 
     //* return highlighted pixmap
     virtual CustomPixmap highlighted( qreal opacity ) const;

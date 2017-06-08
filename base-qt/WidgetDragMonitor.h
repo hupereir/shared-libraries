@@ -38,7 +38,7 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     public:
 
     //* constructor
-    WidgetDragMonitor( QWidget* );
+    explicit WidgetDragMonitor( QWidget* );
 
     //* mode
     enum ModeFlag

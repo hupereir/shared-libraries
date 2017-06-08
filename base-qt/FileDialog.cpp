@@ -23,9 +23,9 @@
 #include "Util.h"
 
 //_______________________________________________________
-QString& FileDialog::_workingDirectory( void )
+File& FileDialog::_workingDirectory( void )
 {
-    static QString workingDirectory = Util::workingDirectory();
+    static File workingDirectory = Util::workingDirectory();
     return workingDirectory;
 }
 
@@ -37,61 +37,58 @@ FileDialog::FileDialog( QWidget* parent ):
 { Debug::Throw( "FileDialog::FileDialog.\n" ); }
 
 //_______________________________________________________
-FileDialog& FileDialog::selectFile( const QString& file )
+FileDialog& FileDialog::selectFile( const File& file )
 {
     selectedFile_ = file;
-    _workingDirectory() = QFileInfo( file ).isDir() ? file: File( file ).path();
+    _workingDirectory() = QFileInfo( file ).isDir() ? File( file ): File( file ).path();
     return *this;
 }
 
 //_______________________________________________________
-QString FileDialog::getFile( void )
+File FileDialog::getFile( void )
 {
     Debug::Throw( "FileDialog::getFile.\n" );
-    QString out;
+    File out;
     if( acceptMode_ == QFileDialog::AcceptOpen )
     {
         if( fileMode_ == QFileDialog::DirectoryOnly || fileMode_ == QFileDialog::Directory )
         {
 
             options_ |= QFileDialog::ShowDirsOnly;
-            out = QFileDialog::getExistingDirectory( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), options_ );
+            out = File( QFileDialog::getExistingDirectory( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), options_ ) );
 
         } else {
 
-            Debug::Throw() << "FileDialog::getFile - parent: " << qobject_cast<QWidget*>( parent() ) << endl;
-            Debug::Throw() << "FileDialog::getFile - caption: " << _caption() << endl;
-            Debug::Throw() << "FileDialog::getFile - selection: " << _selectedFile() << endl;
-            Debug::Throw() << "FileDialog::getFile - filter: " << _filter() << endl;
-            Debug::Throw() << "FileDialog::getFile - options: " << options_ << endl;
-
-            out = QFileDialog::getOpenFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, options_ );
+            out = File( QFileDialog::getOpenFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, options_ ) );
 
         }
 
     } else {
 
         Debug::Throw( "FileDialog::getFile - getSaveFileName.\n" );
-        out = QFileDialog::getSaveFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, options_ );
+        out = File( QFileDialog::getSaveFileName( qobject_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, options_ ) );
 
     }
 
     Debug::Throw( "FileDialog::getFile. Done.\n" );
 
     // store working directory
-    if( !out.isNull() ) _workingDirectory() = QFileInfo( out ).path();
+    if( !out.isEmpty() ) _workingDirectory() = File( QFileInfo( out ).path() );
     return out;
 
 }
 
 //_______________________________________________________
-QStringList FileDialog::getFiles( void )
+File::List FileDialog::getFiles( void )
 {
 
     Debug::Throw( "FileDialog::getFiles.\n" );
     Q_ASSERT( acceptMode_ == QFileDialog::AcceptOpen );
     Q_ASSERT( fileMode_ == QFileDialog::ExistingFiles );
-    QStringList out( QFileDialog::getOpenFileNames( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, options_ ) );
-    if( !(out.empty() || out.front().isNull() ) ) _workingDirectory() = QFileInfo( out.front() ).path();
+    auto files( QFileDialog::getOpenFileNames( static_cast<QWidget*>( parent() ), _caption(), _selectedFile(), _filter(), 0, options_ ) );
+    if( !(files.empty() || files.front().isEmpty() ) ) _workingDirectory() = File( QFileInfo( files.front() ).path() );
+
+    File::List out;
+    for( auto&& file:files ) { out.append( File( file ) ); }
     return out;
 }

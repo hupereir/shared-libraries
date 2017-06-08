@@ -34,7 +34,7 @@ class ToolBarMenu: public QMenu, private Base::Counter<ToolBarMenu>
     public:
 
     //* constructor
-    ToolBarMenu( QWidget* = nullptr );
+    explicit ToolBarMenu( QWidget* = nullptr );
 
     //* tool button style menu
     ToolButtonStyleMenu &toolButtonStyleMenu( void ) const

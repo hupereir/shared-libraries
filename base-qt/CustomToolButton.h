@@ -35,7 +35,7 @@ class CustomToolButton: public QToolButton, private Base::Counter<CustomToolButt
     public:
 
     //* default constructor
-    CustomToolButton( QWidget* = nullptr );
+    explicit CustomToolButton( QWidget* = nullptr );
 
     //* update configuration from options
     void setUpdateFromOptions( bool value )

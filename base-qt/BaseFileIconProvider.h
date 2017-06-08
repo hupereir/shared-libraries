@@ -28,7 +28,6 @@
 #include <QHash>
 #include <QIcon>
 #include <QObject>
-#include <QPixmap>
 
 //* returns icon for a given FileInfo
 class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconProvider>
@@ -37,7 +36,7 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
     public:
 
     //* constructor
-    BaseFileIconProvider( QObject* = nullptr );
+    explicit BaseFileIconProvider( QObject* = nullptr );
 
     //* icon matching given file info
     virtual const QIcon& icon( const BaseFileInfo& fileInfo )
@@ -56,11 +55,11 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
         public:
 
         //* constructor
-        Key( void )
+        explicit Key( void )
         {}
 
         //* constructor
-        Key( const QString& file, int type ):
+        explicit Key( const QString& file, int type ):
             file_( file ),
             type_( type )
         {}
@@ -78,13 +77,13 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
     //@{
 
     //* add link overlay icon
-    static QPixmap linked( const CustomPixmap& );
+    static CustomPixmap linked( const CustomPixmap& );
 
     //* add hidden effect
-    static QPixmap hidden( const CustomPixmap& );
+    static CustomPixmap hidden( const CustomPixmap& );
 
     //* add clipped effect
-    static QPixmap clipped( const CustomPixmap& );
+    static CustomPixmap clipped( const CustomPixmap& );
 
     //@}
 

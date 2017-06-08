@@ -39,7 +39,7 @@ namespace Ssh
         public:
 
         //* constructor
-        Socket( QObject* );
+        explicit Socket( QObject* );
 
         //*@name modifiers
         //@{

@@ -36,7 +36,7 @@ namespace Private
         public:
 
         //* constructor
-        SimpleListViewDelegate( QObject* = nullptr );
+        explicit SimpleListViewDelegate( QObject* = nullptr );
 
         //* paint
         virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;

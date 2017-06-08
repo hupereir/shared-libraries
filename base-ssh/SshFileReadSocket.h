@@ -43,7 +43,7 @@ namespace Ssh
         public:
 
         //* constructor
-        FileReadSocket( QObject* );
+        explicit FileReadSocket( QObject* );
 
         //*@name modifiers
         //@{

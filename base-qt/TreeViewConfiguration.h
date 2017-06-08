@@ -36,7 +36,7 @@ class TreeViewConfiguration: public QGroupBox, public OptionWidget
     public:
 
     //* constructor
-    TreeViewConfiguration( QWidget*, QTreeView*, const QString&  );
+    explicit TreeViewConfiguration( QWidget*, QTreeView*, const QString&  );
 
     //* read value from option
     void read( const Options& );

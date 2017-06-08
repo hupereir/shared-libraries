@@ -36,7 +36,7 @@ namespace Base
         public:
 
         //* constructor
-        HelpItem( const QString& label = QString(), const QString& text = QString() ):
+        explicit HelpItem( const QString& label = QString(), const QString& text = QString() ):
             Counter( "HelpItem" ),
             label_( label ),
             text_( text )

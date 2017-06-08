@@ -34,7 +34,7 @@ class TextEncodingMenu: public QMenu, private Base::Counter<TextEncodingMenu>
     public:
 
     //! constructor
-    TextEncodingMenu( QWidget* = 0 );
+    explicit TextEncodingMenu( QWidget* = 0 );
 
     //! select
     void select( const QByteArray& );

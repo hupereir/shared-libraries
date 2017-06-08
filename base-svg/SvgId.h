@@ -34,12 +34,12 @@ namespace Svg
         using List = QList<SvgId>;
 
         //! constructor
-        SvgId( QSize size ):
+        explicit SvgId( QSize size ):
             size_( size )
         {}
 
         //! constructor
-        SvgId( QString name, QSize size ):
+        explicit SvgId( QString name, QSize size ):
             id_( name ),
             size_( size )
         {}

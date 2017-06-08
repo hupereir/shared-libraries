@@ -35,7 +35,7 @@ class WinUtil
     public:
 
     //* constructor
-    WinUtil( QWidget* );
+    explicit WinUtil( QWidget* );
 
     //* destructor
     virtual ~WinUtil( void );

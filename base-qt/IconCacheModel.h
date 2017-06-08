@@ -43,7 +43,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
     };
 
     //* constructor
-    IconCacheModel( QObject* parent = 0 ):
+    explicit IconCacheModel( QObject* parent = 0 ):
         ListModel<Base::IconCache::Pair>( parent ),
         Counter( "IconCacheModel" )
     {}
@@ -81,7 +81,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
         public:
 
         //* constructor
-        SortFTor( int type, Qt::SortOrder order ):
+        explicit SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
         {}
 

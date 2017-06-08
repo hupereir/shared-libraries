@@ -26,7 +26,7 @@
 #include <QDomElement>
 #include <QString>
 
-//! some specific Xml definitions
+//* some specific Xml definitions
 namespace Base
 {
     namespace Xml
@@ -36,21 +36,26 @@ namespace Base
     }
 }
 
-//! xml implementation of the color object
+//* xml implementation of the color object
 class XmlColor: public Base::Color
 {
 
     public:
 
-    //! copy constructor
-    XmlColor( const Base::Color& other ):
+    //* copy constructor
+    explicit XmlColor( const Base::Color& other ):
         Base::Color( other )
     {}
 
-    //! constructor from DOM
-    XmlColor( const QDomElement& );
+    //* copy constructor
+    explicit XmlColor( const QColor& other ):
+        Base::Color( other )
+    {}
 
-    //! create dom element
+    //* constructor from DOM
+    explicit XmlColor( const QDomElement& );
+
+    //* create dom element
     QDomElement domElement( QDomDocument& parent ) const;
 
 };

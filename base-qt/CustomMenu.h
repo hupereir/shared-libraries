@@ -39,10 +39,10 @@ class CustomMenu: public QMenu, private Base::Counter<CustomMenu>
     public:
 
     //* constructor
-    CustomMenu( QWidget* = nullptr );
+    explicit CustomMenu( QWidget* = nullptr );
 
     //* constructor
-    CustomMenu( const QString&, QWidget* = nullptr );
+    explicit CustomMenu( const QString&, QWidget* = nullptr );
 
     //*@name modifiers
     //@{

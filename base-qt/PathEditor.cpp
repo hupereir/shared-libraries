@@ -95,7 +95,7 @@ namespace Private
 
             // get local name
             File localName( path.localName() );
-            if( localName.endsWith( "/" ) ) localName = localName.left( localName.size()-1 );
+            if( localName.endsWith( "/" ) ) localName = File( localName.left( localName.size()-1 ) );
             Q_ASSERT( !localName.isEmpty() );
 
             setText( localName );
@@ -422,7 +422,7 @@ File PathEditor::path( void ) const
         { path = path.mid( prefix.size() ); }
     }
 
-    return path;
+    return File( path );
 }
 
 //____________________________________________________________________________
@@ -534,7 +534,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
             {
                 // store root file and truncate
                 root = file;
-                path = path.mid( root.size() );
+                path = File( path.mid( root.size() ) );
                 break;
             }
         }
@@ -597,8 +597,8 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
             }
 
-            if( hasHome && section == home_ ) item->setPath( section, "Home" );
-            else item->setPath( section );
+            if( hasHome && section == home_ ) item->setPath( File( section ), "Home" );
+            else item->setPath( File( section ) );
             index++;
         }
 

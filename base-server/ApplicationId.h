@@ -34,7 +34,7 @@ namespace Server
         public:
 
         //* constructor
-        ApplicationId( const QString& = QString(), QString = QString(), QString = QString() );
+        explicit ApplicationId( const QString& = QString(), QString = QString(), QString = QString() );
 
         //* equal to operator
         bool operator == (const ApplicationId& app ) const

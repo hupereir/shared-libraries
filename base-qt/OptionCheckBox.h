@@ -33,7 +33,7 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
     public:
 
     //! constructor
-    OptionCheckBox( const QString& label, QWidget* parent, const QString& optionName ):
+    explicit OptionCheckBox( const QString& label, QWidget* parent, const QString& optionName ):
         QCheckBox( label, parent ),
         OptionWidget( optionName, this ),
         negative_( false )

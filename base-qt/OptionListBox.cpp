@@ -286,7 +286,7 @@ void OptionListBox::_add( void )
     if( dialog.editor().text().isEmpty() ) return;
 
     // create new item
-    const Options::Pair option( optionName(), dialog.editor().text() );
+    OptionPair option( optionName(), Option(dialog.editor().text()) );
     model_->add( option );
 
     // make sure item is selected
@@ -318,7 +318,7 @@ void OptionListBox::_edit( void )
 
     // retrieve selection
     QModelIndex current( list_->selectionModel()->currentIndex() );
-    Options::Pair source( model_->get( current ) );
+    auto source( model_->get( current ) );
 
     // create dialog
     EditDialog dialog( this, browsable_, fileMode_ );
@@ -334,7 +334,7 @@ void OptionListBox::_edit( void )
     if( dialog.editor().text().isEmpty() ) return;
 
     // modify value
-    Options::Pair destination( source );
+    auto destination( source );
     destination.second.setRaw( dialog.editor().text() );
 
     // re-add to model
@@ -392,7 +392,7 @@ void OptionListBox::_setDefault( void )
     Q_ASSERT( current.isValid() );
 
     // get matching option
-    Options::Pair currentOption( model_->get( current ) );
+    auto currentOption( model_->get( current ) );
 
     OptionModel::List options( model_->children() );
     for( auto& option:options ) option.second.setCurrent( false );

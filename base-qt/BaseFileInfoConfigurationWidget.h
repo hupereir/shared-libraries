@@ -35,7 +35,7 @@ class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
     public:
 
     //* constructor
-    BaseFileInfoConfigurationWidget( QWidget* );
+    explicit BaseFileInfoConfigurationWidget( QWidget* );
 
     //* set widget value from option value
     virtual void read( const Options& );

@@ -22,9 +22,8 @@
 
 #include "Counter.h"
 #include "Debug.h"
+#include "File.h"
 #include "IconCache.h"
-
-#include <QStringList>
 
 //* customized Icon factory to provide better looking disabled icons
 class IconEngine: private Base::Counter<IconEngine>
@@ -36,7 +35,7 @@ class IconEngine: private Base::Counter<IconEngine>
     static IconEngine& get( void );
 
     //* copy constructor
-    IconEngine( const IconEngine& ) = delete;
+    explicit IconEngine( const IconEngine& ) = delete;
 
     //* assignment operator
     IconEngine& operator = (const IconEngine& ) = delete;
@@ -62,7 +61,7 @@ class IconEngine: private Base::Counter<IconEngine>
     //@{
 
     //* constructor
-    IconEngine( void );
+    explicit IconEngine( void );
 
     //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
@@ -71,7 +70,7 @@ class IconEngine: private Base::Counter<IconEngine>
     //@}
 
     //* pixmap path
-    QStringList pixmapPath_;
+    File::List pixmapPath_;
 
     //* map files and QIcon
     Base::IconCache cache_;

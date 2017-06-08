@@ -31,16 +31,16 @@ class OptionPair: public Options::Pair
     public:
 
     //* constructor
-    OptionPair( void )
+    explicit OptionPair( void )
     {}
 
     //* constructor
-    OptionPair( const Options::Pair& option ):
+    explicit OptionPair( const Options::Pair& option ):
         Options::Pair( option )
      {}
 
     //* constructor
-    OptionPair( const QString& name, const Option& option ):
+    explicit OptionPair( const QString& name, const Option& option ):
         Options::Pair( name, option )
     {}
 
@@ -80,7 +80,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     };
 
     //* constructor
-    OptionModel( QObject* parent = nullptr ):
+    explicit OptionModel( QObject* parent = nullptr ):
         TreeModel<OptionPair>( parent ),
         Counter( "OptionModel" )
     {}
@@ -137,7 +137,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
         public:
 
         //* constructor
-        SortFTor( int type, Qt::SortOrder order ):
+        explicit SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
         {}
 

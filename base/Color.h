@@ -34,26 +34,23 @@ namespace Base
 
         public:
 
-        //! constructor
-        Color( void )
+        //* constructor
+        explicit Color( void )
         {}
 
-        //! constructor
-        Color( const QString& value )
-        { setNamedColor( value ); }
-
-        //! constructor
-        Color( const QColor& color ):
-            QColor( color )
+        //* construct a color objects from any argument out of which you could make a qcolor
+        template< typename... Args >
+            explicit Color( Args&&... args ):
+            QColor( std::forward<Args>(args)... )
         {}
 
-        //! merge argument color with intensity to this one
+        //* merge argument color with intensity to this one
         Color merge( const QColor& , qreal = 0.5 ) const;
 
-        //! add alpha
+        //* add alpha
         Color addAlpha( qreal = 0.5 ) const;
 
-        //! less than operator
+        //* less than operator
         bool operator < (const Color& ) const;
 
         //* sorted set of colors
@@ -63,7 +60,7 @@ namespace Base
 
 }
 
-//! streamers
+//* streamers
 QTextStream& operator << ( QTextStream&, const Base::Color& );
 QTextStream& operator >> ( QTextStream&, Base::Color& );
 

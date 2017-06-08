@@ -42,7 +42,7 @@ class SystemNotifications: public QObject, private Base::Counter<SystemNotificat
     public:
 
     //* constructor
-    SystemNotifications( QObject* = nullptr, const QString& = QString(), const QIcon& = QIcon() );
+    explicit SystemNotifications( QObject* = nullptr, const QString& = QString(), const QIcon& = QIcon() );
 
     //* destructor
     virtual ~SystemNotifications( void );

@@ -70,7 +70,7 @@ class Singleton
     private:
 
     //* constructor
-    Singleton( void )
+    explicit Singleton( void )
     {}
 
     QObject* application_ = nullptr;

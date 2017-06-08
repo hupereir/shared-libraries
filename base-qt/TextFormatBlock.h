@@ -43,7 +43,7 @@ namespace Format
         public:
 
         //* constructor
-        TextFormatBlock( int begin = 0, int end = 0, TextFormatFlags format = 0, const QColor& color = QColor() ):
+        explicit TextFormatBlock( int begin = 0, int end = 0, TextFormatFlags format = 0, const QColor& color = QColor() ):
             Counter( "TextFormatBlock" ),
             begin_( begin ),
             end_( end ),
@@ -120,7 +120,7 @@ namespace Format
             public:
 
             //* constructor
-            SamePositionBeginFTor( int position ):
+            explicit SamePositionBeginFTor( int position ):
                 position_( position )
             {}
 
@@ -142,7 +142,7 @@ namespace Format
             public:
 
             //* constructor
-            SamePositionEndFTor( int position ):
+            explicit SamePositionEndFTor( int position ):
                 position_( position )
             {}
 
@@ -164,7 +164,7 @@ namespace Format
             public:
 
             //* constructor
-            ContainsFTor( int position ):
+            explicit ContainsFTor( int position ):
                 position_( position )
             {}
 

@@ -43,7 +43,7 @@ class OptionListBox: public QWidget, public OptionWidget
     public:
 
     //* constructor
-    OptionListBox( QWidget*, const QString& );
+    explicit OptionListBox( QWidget*, const QString& );
 
     //* list
     TreeView& list( void ) const

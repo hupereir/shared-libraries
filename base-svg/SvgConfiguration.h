@@ -39,7 +39,7 @@ namespace Svg
         public:
 
         //! constructor
-        SvgConfiguration( QWidget* parent );
+        explicit SvgConfiguration( QWidget* parent );
 
         Q_SIGNALS:
 

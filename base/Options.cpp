@@ -73,7 +73,7 @@ void Options::installDefaultOptions( void )
     set<int>( "AUTOHIDE_CURSOR_DELAY", 5 );
 
     set<bool>( "HIGHLIGHT_PARAGRAPH", true );
-    set<Base::Color>( "HIGHLIGHT_COLOR", QColor( "#fffdd4" ) );
+    set( "HIGHLIGHT_COLOR", Base::Color( "#fffdd4" ) );
 
     // help dialog
     set<int>( "HELP_DIALOG_WIDTH", 750 );

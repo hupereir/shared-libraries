@@ -38,7 +38,7 @@ namespace SpellCheck {
         public:
 
         //* constructor
-        SuggestionMenu( QWidget*, const QString&, bool = false );
+        explicit SuggestionMenu( QWidget*, const QString&, bool = false );
 
         //*@name accessors
         //@{

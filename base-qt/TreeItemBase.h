@@ -39,7 +39,7 @@ class TreeItemBase: private Base::Counter<TreeItemBase>
 
     //! constructor
     /*! used to insert T in the tree structure */
-    TreeItemBase( const Id& id ):
+    explicit TreeItemBase( const Id& id ):
         Counter( "TreeItemBase" ),
         id_( id )
     {}

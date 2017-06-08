@@ -49,7 +49,7 @@ class BoxSelection: private Base::Counter<BoxSelection>
     };
 
     //* constructor
-    BoxSelection( TextEditor* parent );
+    explicit BoxSelection( TextEditor* parent );
 
     //*@ accessors
     //@{
@@ -120,7 +120,7 @@ class BoxSelection: private Base::Counter<BoxSelection>
         public:
 
         //* constructor
-        CursorList( int firstColumn = 0, int columns = 0 ):
+        explicit CursorList( int firstColumn = 0, int columns = 0 ):
             Counter( "CursorList" ),
             firstColumn_( firstColumn ),
             columns_( columns )

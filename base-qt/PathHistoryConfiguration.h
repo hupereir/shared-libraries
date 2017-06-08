@@ -34,7 +34,7 @@ class PathHistoryConfiguration: public QWidget, public OptionWidgetList, private
     public:
 
     //! constructor
-    PathHistoryConfiguration( QWidget* );
+    explicit PathHistoryConfiguration( QWidget* );
 
     Q_SIGNALS:
 

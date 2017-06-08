@@ -38,7 +38,7 @@ namespace Ssh
         public:
 
         //* constructor
-        LoginDialog( QWidget* );
+        explicit LoginDialog( QWidget* );
 
         //*@name accessors
         //@{

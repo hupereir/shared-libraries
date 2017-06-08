@@ -82,7 +82,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     Q_DECLARE_FLAGS( Modifiers, Modifier );
 
     //* constructor
-    TextEditor( QWidget* = nullptr );
+    explicit TextEditor( QWidget* = nullptr );
 
     //* destrutor
     virtual ~TextEditor( void );
@@ -412,7 +412,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
         explicit Container( QWidget* = nullptr );
 
         //* constructor
-        Container( QWidget*, TextEditor* );
+        explicit Container( QWidget*, TextEditor* );
 
         //*@name accessors
         TextEditor& editor( void ) const

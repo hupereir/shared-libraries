@@ -117,7 +117,7 @@ CustomPixmap CustomPixmap::transparent( qreal intensity ) const
 {
     if( isNull() ) return *this;
 
-    QPixmap out( *this );
+    CustomPixmap out( *this );
     QPainter painter( &out );
 
     QColor color( Qt::black );
@@ -179,12 +179,17 @@ CustomPixmap CustomPixmap::colorized( const QColor& color ) const
 
 
 //_________________________________________________
-CustomPixmap CustomPixmap::merged( const CustomPixmap& pixmap, Corner corner ) const
+CustomPixmap CustomPixmap::merged( const QPixmap& pixmap, Corner corner ) const
 {
     if( isNull() ) return *this;
 
     QSize size( this->size()/devicePixelRatio() );
+
+    #if QT_VERSION >= 0x050300
     QSize pixmapSize( pixmap.size()/pixmap.devicePixelRatio() );
+    #else
+    QSize pixmapSize( pixmap.size() );
+    #endif
 
     QImage source( toImage() );
     QPainter painter( &source );
@@ -214,7 +219,7 @@ CustomPixmap CustomPixmap::merged( const CustomPixmap& pixmap, Corner corner ) c
     }
 
     painter.end();
-    return CustomPixmap().fromImage( source );
+    return CustomPixmap( fromImage( source ) );
 }
 
 //_________________________________________________
@@ -226,7 +231,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
     opacity = qMin<qreal>( opacity, 1.0 );
 
     // compute mask
-    QPixmap mask( *this );
+    CustomPixmap mask( *this );
     {
         QPainter painter( &mask );
 
@@ -246,7 +251,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
     if( opacity == 1.0 ) return mask;
 
     // apply highlight
-    QPixmap out( *this );
+    CustomPixmap out( *this );
     {
         QPainter painter( &out );
         painter.drawPixmap( QPoint(0,0), mask );

@@ -22,6 +22,7 @@
 
 #include "Debug.h"
 #include "File.h"
+#include "TimeStamp.h"
 
 #include <QString>
 #include <QTextStream>
@@ -88,7 +89,7 @@ class BaseFileInfo
     {}
 
     //* constructor from DOM element
-    BaseFileInfo( const QDomElement& );
+    explicit BaseFileInfo( const QDomElement& );
 
     //* dump to dom element
     virtual QDomElement domElement( QDomDocument& ) const;
@@ -176,11 +177,11 @@ class BaseFileInfo
     { return size_; }
 
     //* return true if lastModified_ is valid and smaller than argument
-    virtual bool isOlder( const time_t& time ) const
-    { return ( lastModified_ >= 0 && lastModified_ < time ); }
+    virtual bool isOlder( const TimeStamp& time ) const
+    { return ( lastModified_.isValid() && lastModified_ < time ); }
 
     //* file last modification
-    virtual time_t lastModified( void ) const
+    virtual const TimeStamp& lastModified( void ) const
     { return lastModified_; }
 
     //* user
@@ -274,7 +275,7 @@ class BaseFileInfo
     { size_ = size; }
 
     //* file last modification
-    virtual void setLastModified( const time_t& time )
+    virtual void setLastModified( const TimeStamp& time )
     { lastModified_ = time; }
 
     //* user
@@ -306,7 +307,7 @@ class BaseFileInfo
         public:
 
         //* constructor
-        SameTypeFTor( TypeFlags type ):
+        explicit SameTypeFTor( TypeFlags type ):
             type_( type )
         {}
 
@@ -360,12 +361,12 @@ class BaseFileInfo
         public:
 
         //* constructor
-        SameFileFTor( const BaseFileInfo& info ):
+        explicit SameFileFTor( const BaseFileInfo& info ):
             file_( info.file() )
         {}
 
         //* constructor
-        SameFileFTor( const File& file ):
+        explicit SameFileFTor( const File& file ):
             file_( file )
         {}
 
@@ -388,27 +389,26 @@ class BaseFileInfo
         public:
 
         //* constructor
-        BaseList( void )
+        explicit BaseList( void )
         {}
 
         //* constructor
-        BaseList( const QList<T>& other ):
+        explicit BaseList( const QList<T>& other ):
             QList<T>( other )
         {}
 
         //* constructor
-        BaseList( QList<T>&& other ):
+        explicit BaseList( QList<T>&& other ):
             QList<T>( std::move( other ) )
         {}
 
         //* constructor
-        BaseList( std::initializer_list<T>&& other ):
+        explicit BaseList( std::initializer_list<T>&& other ):
             QList<T>( std::move(other) )
         {}
 
         //* destructor
-        virtual ~BaseList( void )
-        {}
+        virtual ~BaseList( void ) = default;
 
         //* description
         enum Flag
@@ -438,7 +438,7 @@ class BaseFileInfo
     qint64 size_;
 
     //* last modification
-    time_t lastModified_;
+    TimeStamp lastModified_;
 
     //* user name
     QString user_;

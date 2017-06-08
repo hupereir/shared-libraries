@@ -32,7 +32,7 @@ class ItemModel : public QAbstractItemModel
     public:
 
     //* constructor
-    ItemModel(QObject* = nullptr);
+    explicit ItemModel(QObject* = nullptr);
 
     //*@name accessors
     //@{
@@ -120,7 +120,7 @@ class ItemModel : public QAbstractItemModel
         public:
 
         //* constructor
-        SortFTor( int type, Qt::SortOrder order ):
+        explicit SortFTor( int type, Qt::SortOrder order ):
             type_( type ),
             order_( order )
         {}

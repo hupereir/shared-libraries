@@ -33,7 +33,7 @@ class TextEncodingDialog: public CustomDialog
 
 
     //* constructor
-    TextEncodingDialog( QWidget* = nullptr );
+    explicit TextEncodingDialog( QWidget* = nullptr );
 
     //*@name accessors
     //@{

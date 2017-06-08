@@ -31,10 +31,10 @@ class CommandLineArguments: public QStringList, private Base::Counter<CommandLin
     public:
 
     //* constructor
-    CommandLineArguments( int argc = 0, char* argv[] = nullptr );
+    explicit CommandLineArguments( int argc = 0, char* argv[] = nullptr );
 
     //* constructor
-    CommandLineArguments( const QStringList& );
+    explicit CommandLineArguments( const QStringList& );
 
     //* return arg counts
     int argc( void ) const

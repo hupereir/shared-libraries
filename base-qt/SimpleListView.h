@@ -30,7 +30,7 @@ class SimpleListView: public QListView
     public:
 
     //* constructor
-    SimpleListView( QWidget* = nullptr );
+    explicit SimpleListView( QWidget* = nullptr );
 
     //* orientation
     void setOrientation( Qt::Orientation );

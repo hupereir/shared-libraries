@@ -41,7 +41,7 @@ namespace Svg
         public:
 
         //* constructor
-        SvgThread( QObject* );
+        explicit SvgThread( QObject* );
 
         //* create style sheet
         void createStyleSheet( QPalette palette )

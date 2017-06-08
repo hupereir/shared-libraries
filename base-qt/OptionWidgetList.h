@@ -32,7 +32,7 @@ class OptionWidgetList: public OptionWidget
     public:
 
     //* constructor
-    OptionWidgetList( QObject* buddy = nullptr ):
+    explicit OptionWidgetList( QObject* buddy = nullptr ):
         OptionWidget( "generic", buddy )
     {}
 

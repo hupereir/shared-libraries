@@ -34,7 +34,7 @@ class SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialo
     public:
 
     //* constructor
-    SelectLineDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
+    explicit SelectLineDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
 
     //*@name accessors
     //@{

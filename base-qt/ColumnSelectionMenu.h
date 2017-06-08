@@ -38,7 +38,7 @@ class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMen
     public:
 
     //! constructor
-    ColumnSelectionMenu( QWidget*, QTreeView*, const QString& = tr( "Select Columns" ) );
+    explicit ColumnSelectionMenu( QWidget*, QTreeView*, const QString& = tr( "Select Columns" ) );
 
     private Q_SLOTS:
 

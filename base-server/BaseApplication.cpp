@@ -320,7 +320,7 @@ void BaseApplication::_updateFonts( void )
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
                 for( const auto& path:configurationPath )
-                { configurationFiles << File( "kdeglobals" ).addPath( path ); }
+                { configurationFiles << File( "kdeglobals" ).addPath( File( path ) ); }
 
             }
 

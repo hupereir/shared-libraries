@@ -51,7 +51,7 @@ Base::Color::Set ColorComboBox::colors( void ) const
         const QVariant data( itemData( index ) );
         QColor color;
         if( data.canConvert<QColor>() ) color = data.value<QColor>();
-        if( color.isValid() ) out.insert( color );
+        if( color.isValid() ) out.insert( Base::Color(color) );
 
     }
 

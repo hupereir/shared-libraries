@@ -35,7 +35,7 @@ class XmlError: private Base::Counter<XmlError>
     public:
 
     //* constructor
-    XmlError( const File& file = File() ):
+    explicit XmlError( const File& file = File() ):
         Counter( "XmlError" ),
         file_ ( file )
     {}
@@ -113,11 +113,11 @@ class XmlError: private Base::Counter<XmlError>
         public:
 
         //* constructor
-        List( void )
+        explicit List( void )
         {}
 
         //* constructor
-        List( const QList<XmlError>& other ):
+        explicit List( const QList<XmlError>& other ):
             QList<XmlError>( other )
         {}
 

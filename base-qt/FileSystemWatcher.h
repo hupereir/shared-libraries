@@ -35,7 +35,7 @@ class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSy
     public:
 
     //* constructor
-    FileSystemWatcher( QObject* parent = nullptr ):
+    explicit FileSystemWatcher( QObject* parent = nullptr ):
         QFileSystemWatcher( parent ),
         Counter( "FileSystemWatcher" )
     {

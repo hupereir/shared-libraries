@@ -35,7 +35,7 @@ class OpenWithDialog: public CustomDialog
     public:
 
     //* constructor
-    OpenWithDialog( QWidget* );
+    explicit OpenWithDialog( QWidget* );
 
     //*@name accessors
     //@{

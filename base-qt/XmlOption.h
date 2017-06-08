@@ -48,17 +48,17 @@ class XmlOption:public Option
     public:
 
     //* constructor
-    XmlOption( void )
+    explicit XmlOption( void )
     {}
 
     //* constructor
-    XmlOption( const QString& name, const Option& option ):
+    explicit XmlOption( const QString& name, const Option& option ):
         Option( option ),
         name_( name )
     {}
 
     //* constructor from DOM node
-    XmlOption( const QDomElement& );
+    explicit XmlOption( const QDomElement& );
 
     //* create dom element
     QDomElement domElement( QDomDocument& ) const;

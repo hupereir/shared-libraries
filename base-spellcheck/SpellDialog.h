@@ -47,7 +47,7 @@ namespace SpellCheck
         public:
 
         //* constructor
-        SpellDialog( TextEditor*, bool = false );
+        explicit SpellDialog( TextEditor*, bool = false );
 
         //* set read-only (enable/disable modification buttons)
 

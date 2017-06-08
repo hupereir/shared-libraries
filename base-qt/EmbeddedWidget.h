@@ -29,7 +29,7 @@ class EmbeddedWidget: public QWidget
     public:
 
     //* constructor
-    EmbeddedWidget( QWidget* parent = nullptr ):
+    explicit EmbeddedWidget( QWidget* parent = nullptr ):
         QWidget( parent )
     {}
 

@@ -65,7 +65,7 @@ namespace Server
         using List = QList<ServerCommand>;
 
         //* constructor
-        ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
+        explicit ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
 
         //* equal-to operator
         bool operator == ( const ServerCommand& command ) const

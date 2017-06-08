@@ -870,8 +870,8 @@ void IconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const
 
     // update pixmap
     QVariant decorationVariant( model()->data( index, Qt::DecorationRole ) );
-    if( decorationVariant.canConvert( QVariant::Icon ) ) item.setPixmap( decorationVariant.value<QIcon>().pixmap( iconSize() ) );
-    else if( decorationVariant.canConvert( QVariant::Pixmap ) ) item.setPixmap( decorationVariant.value<QPixmap>() );
+    if( decorationVariant.canConvert( QVariant::Icon ) ) item.setPixmap( CustomPixmap( decorationVariant.value<QIcon>().pixmap( iconSize() ) ) );
+    else if( decorationVariant.canConvert( QVariant::Pixmap ) ) item.setPixmap( CustomPixmap( decorationVariant.value<QPixmap>() ) );
 
 }
 

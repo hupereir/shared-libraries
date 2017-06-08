@@ -40,10 +40,10 @@ class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
     public:
 
     //* constructor
-    ColumnSortingMenu( QWidget*, QTreeView*, const QString& = tr( "Sort By" ) );
+    explicit ColumnSortingMenu( QWidget*, QTreeView*, const QString& = tr( "Sort By" ) );
 
     //* constructor
-    ColumnSortingMenu( QWidget*, QHeaderView*, const QString&  = tr( "Sort By" ) );
+    explicit ColumnSortingMenu( QWidget*, QHeaderView*, const QString&  = tr( "Sort By" ) );
 
     private Q_SLOTS:
 

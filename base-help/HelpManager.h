@@ -40,7 +40,7 @@ namespace Base
         public:
 
         //* constructor
-        HelpManager( QObject* parent );
+        explicit HelpManager( QObject* parent );
 
         //* destructor
         virtual ~HelpManager( void )

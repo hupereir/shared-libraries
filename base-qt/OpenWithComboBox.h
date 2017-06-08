@@ -36,7 +36,7 @@ class OpenWithComboBox: public QComboBox, private Base::Counter<OpenWithComboBox
     public:
 
     //* constructor
-    OpenWithComboBox( QWidget* = nullptr );
+    explicit OpenWithComboBox( QWidget* = nullptr );
 
     //*@name accessors
     //@{

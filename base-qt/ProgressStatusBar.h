@@ -35,7 +35,7 @@ class ProgressStatusBar: public BaseStatusBar
     public:
 
     //* constructor
-    ProgressStatusBar( QWidget* );
+    explicit ProgressStatusBar( QWidget* );
 
     //* progress bar
     QProgressBar& progressBar( void ) const

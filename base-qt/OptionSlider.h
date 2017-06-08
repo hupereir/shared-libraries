@@ -34,7 +34,7 @@ class OptionSlider: public CustomSlider, public OptionWidget
     public:
 
     //* constructor
-    OptionSlider( QWidget* parent, const QString& optionName ):
+    explicit OptionSlider( QWidget* parent, const QString& optionName ):
         CustomSlider( parent ),
         OptionWidget( optionName, this )
     {}

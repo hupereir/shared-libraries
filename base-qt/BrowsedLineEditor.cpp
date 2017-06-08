@@ -105,7 +105,7 @@ void BrowsedLineEditor::_browse( void )
     FileDialog dialog( this );
     dialog.setAcceptMode( acceptMode_ );
     dialog.setFileMode( fileMode_ );
-    if( !editor().text().isNull() ) dialog.selectFile( editor().text() );
+    if( !editor().text().isNull() ) dialog.selectFile( File( editor().text() ) );
 
     QString file( dialog.getFile() );
     if( !file.isNull() ) setFile( file );
@@ -132,15 +132,15 @@ void BrowsedLineEditor::_findTargetApplication( void )
     // split
     File::List pathList;
     auto list = path.split(":", QString::SkipEmptyParts);
-    for( const auto& item:list ) pathList.append( item );
+    for( const auto& item:list ) pathList.append( File( item ) );
     if( pathList.empty() ) return;
 
     // find
-    File found = targetApplication_.find( pathList );
+    File found( targetApplication_.find( pathList ) );
 
     #else
 
-    File found = QStandardPaths::findExecutable( targetApplication_ );
+    File found( QStandardPaths::findExecutable( targetApplication_ ) );
 
     #endif
 

@@ -1012,7 +1012,7 @@ void PlacesWidget::_editItem( void )
     // file
     const File file( dialog.file() );
     const bool fileChanged( fileInfo.file() != file );
-    if( fileChanged ) fileInfo.setFile( dialog.file() );
+    if( fileChanged ) fileInfo.setFile( File( dialog.file() ) );
 
     // check
     if( locationChanged || fileChanged )

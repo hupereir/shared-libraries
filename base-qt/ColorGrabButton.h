@@ -32,7 +32,7 @@ class ColorGrabButton : public QToolButton, private Base::Counter<ColorGrabButto
     public:
 
     //* constructor
-    ColorGrabButton( QWidget* );
+    explicit ColorGrabButton( QWidget* );
 
     Q_SIGNALS:
 

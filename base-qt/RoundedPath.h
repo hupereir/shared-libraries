@@ -38,7 +38,7 @@ class RoundedPath: public QPainterPath
   public:
 
   //! constructor
-  RoundedPath( QPolygonF, int border = 5 );
+  explicit RoundedPath( QPolygonF, int border = 5 );
 
 };
 

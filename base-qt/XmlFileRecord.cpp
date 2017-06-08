@@ -47,8 +47,8 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() || attribute.name().isEmpty() ) continue;
-        if( attribute.name() == Base::Xml::File ) setFile( XmlString( attribute.value() ) );
-        else if( attribute.name() == Base::Xml::Time ) setTime( attribute.value().toInt() );
+        if( attribute.name() == Base::Xml::File ) setFile( File( XmlString( attribute.value() ) ) );
+        else if( attribute.name() == Base::Xml::Time ) setTime( TimeStamp(attribute.value().toInt()) );
         else if( attribute.name() == Base::Xml::Flags ) setFlags( attribute.value().toUInt() );
         else if( attribute.name() == Base::Xml::Valid ) setValid( attribute.value().toInt() );
         else addProperty( attribute.name(), attribute.value() );
@@ -94,7 +94,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
     Debug::Throw( "XmlFileRecord::domElement.\n" );
     QDomElement out( parent.createElement( Base::Xml::Record ) );
     out.setAttribute( Base::Xml::File, file() );
-    out.setAttribute( Base::Xml::Time, QString::number( XmlFileRecord::time() ) );
+    out.setAttribute( Base::Xml::Time, QString::number( XmlFileRecord::time().unixTime() ) );
     out.setAttribute( Base::Xml::Valid, QString::number( isValid() ) );
 
     if( flags() ) out.setAttribute( Base::Xml::Flags, QString::number( flags() ) );

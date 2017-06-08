@@ -51,7 +51,7 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
         else if( attribute.name() == Xml::Alias || attribute.name() == Xml::Name ) setAlias( XmlString( attribute.value() ) );
         else if( attribute.name() == Xml::Type ) setType( TypeFlags( attribute.value().toInt() ) );
         else if( attribute.name() == Xml::Size ) setSize( attribute.value().toInt() );
-        else if( attribute.name() == Xml::LastModified ) setLastModified( attribute.value().toInt() );
+        else if( attribute.name() == Xml::LastModified ) setLastModified( TimeStamp( attribute.value().toInt() ) );
         else if( attribute.name() == Xml::User ) setUser( attribute.value() );
         else if( attribute.name() == Xml::Group ) setGroup( attribute.value() );
         else if( attribute.name() == Xml::Permissions ) setPermissions( (QFile::Permissions) attribute.value().toUInt() );
@@ -70,7 +70,7 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
     out.setAttribute( Xml::Type, QString::number( type() ) );
     out.setAttribute( Xml::Size, QString::number( size() ) );
     out.setAttribute( Xml::Permissions, QString::number( permissions() ) );
-    out.setAttribute( Xml::LastModified, QString::number( lastModified() ) );
+    out.setAttribute( Xml::LastModified, QString::number( lastModified().unixTime() ) );
 
     if( !alias_.isEmpty() ) out.setAttribute( Xml::Alias, alias() );
     if( !user_.isEmpty() ) out.setAttribute( Xml::User, user_ );

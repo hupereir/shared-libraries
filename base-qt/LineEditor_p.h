@@ -39,7 +39,7 @@ namespace Private
         public:
 
         //* constructor
-        LineEditorStyle( QStyle* = nullptr );
+        explicit LineEditorStyle( QStyle* = nullptr );
 
         //* returns rect corresponding to one widget's subcontrol
         virtual QRect subElementRect( SubElement, const QStyleOption*, const QWidget* ) const;
@@ -55,7 +55,7 @@ namespace Private
         public:
 
         //* constructor
-        LineEditorButton( QWidget* parent );
+        explicit LineEditorButton( QWidget* parent );
 
         protected:
 

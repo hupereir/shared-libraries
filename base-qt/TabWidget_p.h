@@ -35,7 +35,7 @@ namespace Private
         public:
 
         //* constructor
-        LocalTabWidget( QWidget* );
+        explicit LocalTabWidget( QWidget* );
 
         //* main widget
         QWidget* mainWidget( void )

@@ -50,7 +50,7 @@ class CustomDialog: public BaseDialog, private Base::Counter<CustomDialog>
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    CustomDialog(
+    explicit CustomDialog(
         QWidget* = nullptr,
         Flags = Flags( OkButton | CancelButton ),
         Qt::WindowFlags = 0);

@@ -35,7 +35,7 @@ class MultipleClickCounter: public QObject, private Base::Counter<MultipleClickC
     public:
 
     //* constructor
-    MultipleClickCounter( QObject*, int maxCount );
+    explicit MultipleClickCounter( QObject*, int maxCount );
 
     //* increment counter and return current value
     void increment( int = 0 );

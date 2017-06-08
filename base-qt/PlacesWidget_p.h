@@ -55,16 +55,16 @@ namespace Private
         Q_DECLARE_FLAGS( Flags, Flag );
 
         //* default constructor
-        LocalFileInfo( void )
+        explicit LocalFileInfo( void )
         {}
 
         //* copy constructor
-        LocalFileInfo( const BaseFileInfo& other ):
+        explicit LocalFileInfo( const BaseFileInfo& other ):
             BaseFileInfo( other )
         {}
 
         //* constructor from DOM element
-        LocalFileInfo( const QDomElement& );
+        explicit LocalFileInfo( const QDomElement& );
 
         //* equal to operator
         bool operator == (const LocalFileInfo& other ) const
@@ -112,11 +112,11 @@ namespace Private
             public:
 
             //* constructor
-            List( void )
+            explicit List( void )
             {}
 
             //* constructor from DOM element
-            List( const QDomElement& );
+            explicit List( const QDomElement& );
 
             //* dump to dom element
             virtual QDomElement domElement( QDomDocument& ) const;
@@ -143,7 +143,7 @@ namespace Private
         static const QString MimeType;
 
         //* constructor
-        PlacesWidgetItem( QWidget* = nullptr );
+        explicit PlacesWidgetItem( QWidget* = nullptr );
 
         //*@name accessors
         //@{
@@ -296,7 +296,7 @@ namespace Private
         public:
 
         //* constructor
-        PlacesWidgetItemDialog( QWidget* = nullptr );
+        explicit PlacesWidgetItemDialog( QWidget* = nullptr );
 
         //* accessors
         //@{
@@ -353,7 +353,7 @@ namespace Private
         public:
 
         //* constructor
-        PlacesToolTipWidget( QWidget* );
+        explicit PlacesToolTipWidget( QWidget* );
 
         //* set data
         void setFileInfo( const QString&, const BaseFileInfo&, const QIcon& = QIcon() );

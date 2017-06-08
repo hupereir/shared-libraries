@@ -38,7 +38,7 @@ namespace Svg
         public:
 
         //* constructor
-        SvgRenderer( void );
+        explicit SvgRenderer( void );
 
         // svg element enumeration
         enum SvgElement

@@ -35,7 +35,7 @@ class IconViewItem: private Base::Counter<IconViewItem>
     public:
 
     //* constructor
-    IconViewItem( void ):
+    explicit IconViewItem( void ):
         Counter( "IconView::Item" )
     {}
 

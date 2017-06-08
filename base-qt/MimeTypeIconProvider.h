@@ -33,7 +33,7 @@ class MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconP
     public:
 
     //* constructor
-    MimeTypeIconProvider( QObject* = nullptr );
+    explicit MimeTypeIconProvider( QObject* = nullptr );
 
     //*@name accessors
     //@{

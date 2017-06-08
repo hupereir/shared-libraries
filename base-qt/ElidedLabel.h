@@ -34,10 +34,10 @@ class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
     public:
 
     //* constructor
-    ElidedLabel( QWidget* = nullptr );
+    explicit ElidedLabel( QWidget* = nullptr );
 
     //* constructor
-    ElidedLabel( const QString&, QWidget* = nullptr);
+    explicit ElidedLabel( const QString&, QWidget* = nullptr);
 
     //*@name accessors
     //@{

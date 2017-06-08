@@ -64,7 +64,7 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
 
 
 //____________________________________________________
-QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
+CustomPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
 {
 
     if( source.isNull() ) return source;
@@ -92,9 +92,9 @@ QPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
 }
 
 //____________________________________________________
-QPixmap BaseFileIconProvider::hidden( const CustomPixmap& source )
+CustomPixmap BaseFileIconProvider::hidden( const CustomPixmap& source )
 { return source.transparent( 0.6 ); }
 
 //____________________________________________________
-QPixmap BaseFileIconProvider::clipped( const CustomPixmap& source )
+CustomPixmap BaseFileIconProvider::clipped( const CustomPixmap& source )
 { return source.desaturated().transparent( 0.6 ); }

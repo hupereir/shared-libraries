@@ -35,7 +35,7 @@ class ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMe
     public:
 
     //* constructor
-    ToolButtonStyleMenu( QWidget* = nullptr );
+    explicit ToolButtonStyleMenu( QWidget* = nullptr );
 
     //* select size
     void select( int );

@@ -34,7 +34,7 @@ namespace Base
         public:
 
         //* constructor
-        Key( void ):
+        explicit Key( void ):
             key_( _counter()++ )
         {}
 
@@ -45,7 +45,7 @@ namespace Base
         The new key gets a new unique id. It gets associated to all objects
         in the list
         */
-        Key( const Key& key ):
+        explicit Key( const Key& key ):
             key_( _counter()++ ),
             associatedKeys_( key.associatedKeys_ )
         {
@@ -113,7 +113,7 @@ namespace Base
             public:
 
             //* constructor
-            SameKeyFTor( Type key ):
+            explicit SameKeyFTor( Type key ):
                 key_( key )
             {}
 
@@ -135,7 +135,7 @@ namespace Base
             public:
 
             //* constructor
-            IsAssociatedFTor( const Key* key ):
+            explicit IsAssociatedFTor( const Key* key ):
                 key_( key )
             {}
 
@@ -228,14 +228,14 @@ namespace Base
         public:
 
         //* default constructor
-        KeySet( void )
+        explicit KeySet( void )
         {}
 
         /**
         \brief constructor
         fill the set with all objects of type T associated with the key
         */
-        KeySet( const Key* key )
+        explicit KeySet( const Key* key )
         {
 
             for( const auto& associate:key->getAssociated() )
@@ -250,7 +250,7 @@ namespace Base
         \brief constructor
         fill the set with all objects of type T associated with the key
         */
-        KeySet( const Key& key )
+        explicit KeySet( const Key& key )
         {
 
             for( const auto& associate:key.getAssociated() )
@@ -281,7 +281,7 @@ namespace Base
         public:
 
         //* constructor
-        KeySetIterator( KeySet<T> keySet ):
+        explicit KeySetIterator( KeySet<T> keySet ):
             QSetIterator<T*>( keySet )
         {}
     };

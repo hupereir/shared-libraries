@@ -34,7 +34,7 @@ class LogWidget: public TextEditor
     public:
 
     //* constructor
-    LogWidget( QWidget* = nullptr );
+    explicit LogWidget( QWidget* = nullptr );
 
     //* option name
     void setOptionName( const QString& );

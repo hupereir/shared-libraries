@@ -21,9 +21,8 @@
 *******************************************************************************/
 #include "Counter.h"
 #include "Debug.h"
+#include "File.h"
 #include "PixmapCache.h"
-
-#include <QStringList>
 
 //! customized Icon factory to provide better looking disabled icons
 class PixmapEngine: private Base::Counter<PixmapEngine>
@@ -52,7 +51,7 @@ class PixmapEngine: private Base::Counter<PixmapEngine>
     //@{
 
     //! constructor
-    PixmapEngine( void );
+    explicit PixmapEngine( void );
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
@@ -61,7 +60,7 @@ class PixmapEngine: private Base::Counter<PixmapEngine>
     //@}
 
     //! pixmap path
-    QStringList pixmapPath_;
+    File::List pixmapPath_;
 
     //! map files and QPixmap
     Base::PixmapCache cache_;

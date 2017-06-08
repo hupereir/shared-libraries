@@ -34,7 +34,7 @@ class BaseDialog: public QDialog
     public:
 
     //* constructor
-    BaseDialog( QWidget* = nullptr, Qt::WindowFlags = 0);
+    explicit BaseDialog( QWidget* = nullptr, Qt::WindowFlags = 0);
 
     //* window title
     virtual BaseDialog& setWindowTitle( const QString& );

@@ -31,19 +31,19 @@ class Command: public QStringList, private Base::Counter<Command>
     public:
 
     //* constructor
-    Command( const QStringList& other = QStringList() ):
+    explicit Command( const QStringList& other = QStringList() ):
         QStringList( other ),
         Counter( "Command" )
     {}
 
     //* constructor
-    Command( QStringList&& other ):
+    explicit Command( QStringList&& other ):
         QStringList( std::move( other ) ),
         Counter( "Command" )
     {}
 
     //* constructor
-    Command( const QString& in ):
+    explicit Command( const QString& in ):
         QStringList( _parse( in ) ),
         Counter( "Command" )
     {}

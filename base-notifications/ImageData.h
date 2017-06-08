@@ -31,11 +31,11 @@ namespace Notifications
         public:
 
         //* constructor
-        ImageData( void )
+        explicit ImageData( void )
         {}
 
         //* constructor
-        ImageData( QImage image );
+        explicit ImageData( QImage image );
 
         //* validity
         bool isValid( void ) const

@@ -47,7 +47,7 @@ class ListModel : public ItemModel
     using MutableListIterator = QMutableListIterator<ValueType>;
 
     //* constructor
-    ListModel(QObject* parent = nullptr ):
+    explicit ListModel(QObject* parent = nullptr ):
         ItemModel( parent )
     {}
 

@@ -50,7 +50,7 @@ class TextSeparator
     private:
 
     //! constructor
-    TextSeparator( void );
+    explicit TextSeparator( void );
 
     //! base separators (space, tab, end of line)
     SeparatorSet baseSeparators_;

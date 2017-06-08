@@ -38,7 +38,7 @@ class XmlPathHistory: public PathHistory
     public:
 
     //* constuctor
-    XmlPathHistory( QObject* parent = nullptr );
+    explicit XmlPathHistory( QObject* parent = nullptr );
 
     // set tag name
     void setTagName( const QString& );

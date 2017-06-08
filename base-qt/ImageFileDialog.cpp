@@ -116,7 +116,7 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
             else {
 
                 dialog.setDirectory( fileInfo.path() );
-                dialog.selectFile( fileInfo.fileName() );
+                dialog.selectFile( File( fileInfo.fileName() ) );
                 if( dialog.automaticPreview_ && dialog.automaticPreview_->isChecked() )
                 { dialog._currentChanged( fileInfo.filePath() ); }
 
@@ -132,14 +132,14 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 void ImageFileDialog::_saveWorkingDirectory( QString directory )
 {
     Debug::Throw() << "ImageFileDialog::_saveWorkingDirectory - directory: " << directory << endl;
-    FileDialog::_workingDirectory() = QFileInfo( directory ).absolutePath();
+    FileDialog::_workingDirectory() = File( QFileInfo( directory ).absolutePath() );
 }
 
 //______________________________________________________________________
 void ImageFileDialog::_currentChanged( const QString& value )
 {
     Debug::Throw( "ImageFileDialog::_currentChanged.\n" );
-    currentPath_ = value;
+    currentPath_ = File( value );
     if( automaticPreview_ && automaticPreview_->isChecked() ) _preview();
 }
 
@@ -151,7 +151,7 @@ void ImageFileDialog::_preview( void )
 
     // nothing if no preview
     if( !preview_ ) return;
-    
+
     // try load svg
     CustomPixmap pixmap;
 
@@ -159,16 +159,16 @@ void ImageFileDialog::_preview( void )
     {
 
         QSize size( 0.8*preview_->width(), 0.8*preview_->height() );
-        pixmap = QIcon( currentPath_ ).pixmap( size );
+        pixmap = CustomPixmap( QIcon( currentPath_ ).pixmap( size ) );
 
-    } else pixmap = CustomPixmap ( currentPath_ );
+    } else pixmap = CustomPixmap( currentPath_ );
 
     // check and scale
     if( pixmap.isNull() ) preview_->setPixmap( QPixmap() );
     else {
 
         if( pixmap.width() > preview_->width()*0.8 || pixmap.height() > preview_->height()*0.8 )
-        { pixmap = pixmap.scaled( int(preview_->width()*0.8), int(preview_->height()*0.8), Qt::KeepAspectRatio, Qt::SmoothTransformation ); }
+        { pixmap = CustomPixmap( pixmap.scaled( int(preview_->width()*0.8), int(preview_->height()*0.8), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
         preview_->setPixmap( pixmap );
 
     }

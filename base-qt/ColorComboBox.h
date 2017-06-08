@@ -38,7 +38,7 @@ class ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
 
 
     //* constructor
-    ColorComboBox( QWidget* );
+    explicit ColorComboBox( QWidget* );
 
     //*@name accessors
     //@{

@@ -40,7 +40,7 @@ namespace Ssh
         public:
 
         //* constructor
-        Tunnel( QObject*, QTcpSocket* );
+        explicit Tunnel( QObject*, QTcpSocket* );
 
         //*@name accessors
         //@{

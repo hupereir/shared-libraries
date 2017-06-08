@@ -37,7 +37,7 @@ namespace SpellCheck
         public:
 
         //! constructor
-        AutoSpellConfiguration( QWidget* parent );
+        explicit AutoSpellConfiguration( QWidget* parent );
 
         Q_SIGNALS:
 

@@ -50,7 +50,7 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     public:
 
     //* constructor
-    DockPanel( QWidget* parent );
+    explicit DockPanel( QWidget* parent );
 
     //* destructor
     virtual ~DockPanel();

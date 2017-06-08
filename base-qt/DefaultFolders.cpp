@@ -158,8 +158,8 @@ QString DefaultFolders::iconName( Type type ) const
 //__________________________________________________________________________
 void DefaultFolders::_insert( const QStringList& keys, Type value )
 {
-    for( const auto& key:keys ) allFolders_.insert( key, value );
-    if( !keys.isEmpty() ) folders_.insert( keys.front(), value );
+    for( const auto& key:keys ) allFolders_.insert( File( key ), value );
+    if( !keys.isEmpty() ) folders_.insert( File( keys.front() ), value );
 }
 
 //__________________________________________________________________________
@@ -167,7 +167,7 @@ void DefaultFolders::_insert( const QString& key, Type value )
 {
     if( !key.isEmpty() )
     {
-        allFolders_.insert( key, value );
-        folders_.insert( key, value );
+        allFolders_.insert( File( key ), value );
+        folders_.insert( File( key ), value );
     }
 }

@@ -41,7 +41,7 @@ namespace Ssh
         using ListIterator = QListIterator<ConnectionAttributes>;
 
         //* constructor
-        ConnectionAttributes( void ):
+        explicit ConnectionAttributes( void ):
             Counter( "Ssh::ConnectionAttributes" )
         {}
 
@@ -141,7 +141,7 @@ namespace Ssh
             public:
 
             //* constructor
-            SameNameFTor( const QString& name ):
+            explicit SameNameFTor( const QString& name ):
                 name_( name )
             {}
 

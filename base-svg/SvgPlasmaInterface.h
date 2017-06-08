@@ -41,7 +41,7 @@ namespace Svg
     public:
 
     //* constructor
-    SvgPlasmaInterface( QObject* = nullptr );
+    explicit SvgPlasmaInterface( QObject* = nullptr );
 
     //*@name accessors
     //@{

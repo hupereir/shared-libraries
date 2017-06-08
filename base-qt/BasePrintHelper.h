@@ -36,7 +36,7 @@ class BasePrintHelper: public QObject
     public:
 
     //* constructor
-    BasePrintHelper( QObject* = nullptr );
+    explicit BasePrintHelper( QObject* = nullptr );
 
     //* multipage mode
     enum class PageMode

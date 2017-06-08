@@ -50,7 +50,7 @@ void BaseFileInfoItemDelegate::initStyleOption( QStyleOptionViewItem* option, co
         const int type( fileTypeVariant.toInt() );
 
         // get pixmap
-        QPixmap pixmap( optionV4->icon.pixmap( optionV4->decorationSize ) );
+        CustomPixmap pixmap( optionV4->icon.pixmap( optionV4->decorationSize ) );
         if( type & BaseFileInfo::Link ) pixmap = BaseFileIconProvider::linked( pixmap );
         if( type & BaseFileInfo::Hidden ) pixmap = BaseFileIconProvider::hidden( pixmap );
         if( type & BaseFileInfo::Clipped ) pixmap = BaseFileIconProvider::clipped( pixmap );

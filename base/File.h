@@ -20,6 +20,8 @@
 *
 *******************************************************************************/
 
+#include "TimeStamp.h"
+
 #include <QFileInfo>
 #include <QList>
 #include <QString>
@@ -45,11 +47,16 @@ class File: public QString
     Q_DECLARE_FLAGS(ListFlags, ListFlag)
 
     //* constructor
-    File( void )
+    explicit File( void )
     {}
 
     //* constructor
-    File( const QString& value ):
+    explicit File( QString&& value ):
+        QString( std::move(value) )
+    {}
+
+    //* constructor
+    explicit File( const QString& value ):
         QString( value )
     {}
 
@@ -60,13 +67,13 @@ class File: public QString
     bool isAbsolute( void ) const;
 
     //* time of file creation
-    virtual time_t created( void ) const;
+    virtual TimeStamp created( void ) const;
 
     //* time of file last modification
-    virtual time_t lastModified( void ) const;
+    virtual TimeStamp lastModified( void ) const;
 
     //* time of file last access
-    virtual time_t lastAccessed( void ) const;
+    virtual TimeStamp lastAccessed( void ) const;
 
     //* user id
     virtual uint userId( void ) const;
@@ -218,7 +225,7 @@ class File: public QString
         public:
 
         //* constructor
-        SameLinkFTor( const File& file ):
+        explicit SameLinkFTor( const File& file ):
             file_( file.readLink() )
         {}
 

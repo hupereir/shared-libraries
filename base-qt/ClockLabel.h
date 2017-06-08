@@ -37,7 +37,7 @@ class ClockTimer: public QObject, private Base::Counter<ClockTimer>
     public:
 
     //* constructor
-    ClockTimer( QWidget *parent );
+    explicit ClockTimer( QWidget *parent );
 
     Q_SIGNALS:
 
@@ -55,7 +55,7 @@ class ClockTimer: public QObject, private Base::Counter<ClockTimer>
 
     //* get interval (seconds) prior to next update
     int interval( void ) const
-    { return 60 - (TimeStamp::now() % 60); }
+    { return 60 - (TimeStamp::now().unixTime() % 60); }
 
     //* timer
     QBasicTimer timer_;
@@ -72,7 +72,7 @@ class ClockLabel:public QLabel
     public:
 
     //* constructor
-    ClockLabel( QWidget* parent );
+    explicit ClockLabel( QWidget* parent );
 
     //* retrieve timer
     ClockTimer& timer( void )

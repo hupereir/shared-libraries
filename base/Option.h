@@ -49,17 +49,17 @@ class Option:private Base::Counter<Option>
 
     Q_DECLARE_FLAGS(Flags, Flag)
 
-    //* constructor
-    Option();
+    //* default constructor
+    explicit Option();
 
     //* constructor
-    Option( const char*, Flags = Flag::Recordable );
+    explicit Option( const char*, Flags = Flag::Recordable );
 
     //* constructor
-    Option( const QByteArray&, Flags = Flag::Recordable );
+    explicit Option( const QByteArray&, Flags = Flag::Recordable );
 
     //* constructor
-    Option( const QString&, Flags = Flag::Recordable );
+    explicit Option( const QString&, Flags = Flag::Recordable );
 
     //* less than operator
     bool operator < (const Option& other ) const
@@ -206,7 +206,7 @@ class Option:private Base::Counter<Option>
         public:
 
         //* constructor
-        HasFlagFTor( Option::Flags flags ):
+        explicit HasFlagFTor( Option::Flags flags ):
             flags_( flags )
         {}
 
@@ -232,7 +232,7 @@ class Option:private Base::Counter<Option>
         public:
 
         //* constructor
-        SameValueFTor( const Option& option ):
+        explicit SameValueFTor( const Option& option ):
             value_( option.value_ )
             {}
 

@@ -37,7 +37,7 @@ class BaseApplication: public BaseCoreApplication
     public:
 
     //* constructor
-    BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
+    explicit BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
     //* initialize application manager
     virtual bool initApplicationManager( void );

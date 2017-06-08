@@ -36,7 +36,7 @@ class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidg
     public:
 
     //* constructor
-    TextEncodingWidget( QWidget* = nullptr );
+    explicit TextEncodingWidget( QWidget* = nullptr );
 
     //*@name accessors
     //@{

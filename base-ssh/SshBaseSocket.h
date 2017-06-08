@@ -40,7 +40,7 @@ namespace Ssh
         public:
 
         //* constructor
-        BaseSocket( QObject* );
+        explicit BaseSocket( QObject* );
 
         //* destructor
         virtual ~BaseSocket( void );

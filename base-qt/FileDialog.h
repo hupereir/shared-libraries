@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "File.h"
 
 #include <QFileDialog>
 #include <QObject>
@@ -34,7 +35,7 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     public:
 
     //* creator
-    FileDialog( QWidget* parent );
+    explicit FileDialog( QWidget* parent );
 
     //* open mode
     virtual FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
@@ -59,7 +60,7 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
 
     //* default file/directory
     /** it is used as a starting selection when file dialog is opened */
-    virtual FileDialog& selectFile( const QString& file );
+    virtual FileDialog& selectFile( const File& file );
 
     //* filter
     virtual FileDialog& setFilter( const QString& filter )
@@ -76,19 +77,19 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     }
 
     //* get file
-    virtual QString getFile( void );
+    virtual File getFile( void );
 
     //* get list of files
-    virtual QStringList getFiles( void );
+    virtual File::List getFiles( void );
 
     //* reference to statically scoped working directory
-    virtual const QString& workingDirectory() const
+    virtual const File& workingDirectory() const
     { return _workingDirectory(); }
 
     protected:
 
     //* reference to statically scoped working directory
-    static QString& _workingDirectory();
+    static File& _workingDirectory();
 
     //* accept mode
     virtual QFileDialog::AcceptMode _acceptMode( void ) const
@@ -104,7 +105,7 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
 
     //* selected file
     /** it is used as a starting selection when file dialog is opened */
-    virtual const QString& _selectedFile( void ) const
+    virtual const File& _selectedFile( void ) const
     { return selectedFile_; }
 
     //* filter
@@ -127,7 +128,7 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     QString caption_;
 
     //* default file
-    QString selectedFile_;
+    File selectedFile_;
 
     //* filter
     QString filter_;

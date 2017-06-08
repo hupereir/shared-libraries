@@ -46,7 +46,7 @@ namespace SpellCheck
         public:
 
         //! constructor
-        DictionaryMenu( QWidget* );
+        explicit DictionaryMenu( QWidget* );
 
         //! select dictionary manualy
         void select( const QString& );

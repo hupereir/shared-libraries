@@ -34,7 +34,7 @@ class InterruptionHandler
     private:
 
     //* constructor
-    InterruptionHandler( void );
+    explicit InterruptionHandler( void );
 
     //* interruption handler
     static void _handleInterruption( int );

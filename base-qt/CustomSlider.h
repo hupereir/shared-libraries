@@ -37,7 +37,7 @@ class CustomSlider: public QWidget, private Base::Counter<CustomSlider>
     public:
 
     //* creator
-    CustomSlider( QWidget* parent );
+    explicit CustomSlider( QWidget* parent );
 
     //*@name accessors
     //@{

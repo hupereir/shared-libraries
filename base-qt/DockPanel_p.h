@@ -37,7 +37,7 @@ namespace Private
         public:
 
         //* constructor
-        LocalDockWidget( QWidget* );
+        explicit LocalDockWidget( QWidget* );
 
         Q_SIGNALS:
 
@@ -67,7 +67,7 @@ namespace Private
         public:
 
         //* constructor
-        LocalWidget( QWidget* );
+        explicit LocalWidget( QWidget* );
 
         //*@name accessors
         //@{

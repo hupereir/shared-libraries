@@ -38,7 +38,7 @@ class TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMa
     public:
 
     //* constructor
-    TextEditorMarginWidget( TextEditor* );
+    explicit TextEditorMarginWidget( TextEditor* );
 
     //*@name accessors
     //@{

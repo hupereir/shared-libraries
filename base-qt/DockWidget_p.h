@@ -38,7 +38,7 @@ namespace Private
         public:
 
         //* constructor
-        MainWidget( QWidget* parent = nullptr ):
+        explicit MainWidget( QWidget* parent = nullptr ):
             QWidget( parent ),
             monitor_( this )
         {}
@@ -87,7 +87,7 @@ namespace Private
 
         public:
 
-        ContainerWidget( QWidget* parent = nullptr ):
+        explicit ContainerWidget( QWidget* parent = nullptr ):
             QWidget( parent )
         {
             setLayout( new QVBoxLayout() );
@@ -105,7 +105,7 @@ namespace Private
 
         public:
 
-        ContainerScrollArea( QWidget* parent ):
+        explicit ContainerScrollArea( QWidget* parent ):
             QScrollArea( parent )
         {
             setWidgetResizable ( true );

@@ -41,7 +41,7 @@ namespace SpellCheck
     public:
 
     //* constructor
-    SpellParser();
+    explicit SpellParser();
 
     //* highlight paragraph
     virtual Word::Set parse( const QString& text );

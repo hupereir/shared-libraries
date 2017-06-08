@@ -35,7 +35,7 @@ namespace SpellCheck
         public:
 
         //! constructor
-        TexString( const QString& value ):
+        explicit TexString( const QString& value ):
             QString( value )
         {}
 

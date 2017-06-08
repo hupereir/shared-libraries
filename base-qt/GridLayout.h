@@ -34,7 +34,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     public:
 
     //* constructor
-    GridLayout( void ):
+    explicit GridLayout( void ):
         QGridLayout(),
         Counter( "GridLayout" )
     {}

@@ -35,7 +35,7 @@ namespace SpellCheck
         public:
 
         //* constructor
-        FilterSelectionButton( QWidget* );
+        explicit FilterSelectionButton( QWidget* );
 
         //* retrieve value
         QString value( void ) const

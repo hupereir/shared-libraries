@@ -93,7 +93,7 @@ namespace Svg
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
                 for( const auto& path:configurationPath )
-                { configurationFiles << File( "plasmarc" ).addPath( path ); }
+                { configurationFiles.append( File( "plasmarc" ).addPath( File( path ) ) ); }
 
             }
 
@@ -220,10 +220,10 @@ namespace Svg
 
                 #if QT_VERSION >= 0x050000
                 for( const auto& path:configurationPath )
-                { themePathList << File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( path ) ); }
+                { themePathList.append( File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( File( path ) ) ) ); }
                 #else
                 for( const auto& path:configurationPath )
-                { themePathList << File( theme ).addPath( File( "desktoptheme/" ).addPath( path ) ); }
+                { themePathList << File( theme ).addPath( File( "desktoptheme/" ).addPath( File( path ) ) ); }
                 #endif
 
             }
@@ -266,7 +266,7 @@ namespace Svg
         {
 
             bool changed( false );
-            changed |= _setPath( QString() );
+            changed |= _setPath( File() );
             changed |= _setValid( false );
             return changed;
 

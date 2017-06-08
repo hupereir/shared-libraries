@@ -105,7 +105,7 @@ namespace Svg
         //@{
 
         //* constructor
-        SvgEngine( void );
+        explicit SvgEngine( void );
 
         //* create icon
         /** the file is stored into a cache to avoid all pixmaps manipulations */

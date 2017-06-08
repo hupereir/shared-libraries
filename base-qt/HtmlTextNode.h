@@ -41,7 +41,7 @@ class HtmlTextNode
   public:
 
   //! constructor
-  HtmlTextNode( const QString& source, QDomElement& parent, QDomDocument& document );
+  explicit HtmlTextNode( const QString& source, QDomElement& parent, QDomDocument& document );
 
 };
 

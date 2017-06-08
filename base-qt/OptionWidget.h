@@ -30,7 +30,7 @@ class OptionWidget
     public:
 
     //* constructor
-    OptionWidget( const QString& name, QObject* budy = nullptr ):
+    explicit OptionWidget( const QString& name, QObject* budy = nullptr ):
         optionName_( name ),
         buddy_( budy )
     {}

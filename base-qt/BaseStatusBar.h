@@ -38,7 +38,7 @@ class StatusBarLabel: public QLabel
     public:
 
     //* constructor
-    StatusBarLabel( QWidget* parent = nullptr ):
+    explicit StatusBarLabel( QWidget* parent = nullptr ):
         QLabel( parent )
     {}
 
@@ -63,7 +63,7 @@ class BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
     public:
 
     //* constructor
-    BaseStatusBar( QWidget* );
+    explicit BaseStatusBar( QWidget* );
 
     //* add clock
     void addClock( void );

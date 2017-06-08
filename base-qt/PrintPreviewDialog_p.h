@@ -42,7 +42,7 @@ namespace Private
         public:
 
         //* constructor
-        OptionMenu( QWidget* );
+        explicit OptionMenu( QWidget* );
 
         //* set orientation
         void setOrientation( QPrinter::Orientation ) const;
@@ -85,7 +85,7 @@ namespace Private
         public:
 
         //* constructor
-        NavigationWidget( QWidget* );
+        explicit NavigationWidget( QWidget* );
 
         int pages( void )
         { return pages_; }

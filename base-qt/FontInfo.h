@@ -34,7 +34,7 @@ class FontInfo: public QWidget
     public:
 
     //! constructor
-    FontInfo( QWidget* parent );
+    explicit FontInfo( QWidget* parent );
 
     //! set checkboxes from from
     void setFormat( Format::TextFormatFlags format );

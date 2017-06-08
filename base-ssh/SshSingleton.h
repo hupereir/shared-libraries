@@ -46,7 +46,7 @@ namespace Ssh
         private:
 
         //* constructor
-        Singleton( void );
+        explicit Singleton( void );
 
         //* true if initalized
         bool initialized_ = false;

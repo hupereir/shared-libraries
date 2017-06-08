@@ -42,7 +42,7 @@ namespace Server
         using List = QList<Client*>;
 
         //* constructor
-        Client( QObject*, QTcpSocket* = nullptr );
+        explicit Client( QObject*, QTcpSocket* = nullptr );
 
         //* id
         quint32 id( void ) const
@@ -58,7 +58,7 @@ namespace Server
             public:
 
             //* constructor
-            SameIdFTor( quint32 id ):
+            explicit SameIdFTor( quint32 id ):
                 id_( id )
             {}
 

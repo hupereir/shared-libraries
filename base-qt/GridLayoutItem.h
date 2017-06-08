@@ -48,7 +48,7 @@ class GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    GridLayoutItem( QWidget*, GridLayout*, Flags = Flag::None );
+    explicit GridLayoutItem( QWidget*, GridLayout*, Flags = Flag::None );
 
     //*@name accessors
     //@{

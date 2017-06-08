@@ -46,7 +46,7 @@ class BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
   public:
 
   //* constructor
-  BlockHighlight( TextEditor* parent );
+  explicit BlockHighlight( TextEditor* parent );
 
   //* enable/disable
   void setEnabled( bool value )

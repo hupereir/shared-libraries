@@ -33,7 +33,7 @@ namespace Private
         public:
 
         //* constructor
-        LocalEditor( QWidget* = nullptr );
+        explicit LocalEditor( QWidget* = nullptr );
 
         //* true if edition is valid
         bool isEditionValid( void ) const

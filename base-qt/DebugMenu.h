@@ -49,7 +49,7 @@ class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    DebugMenu( QWidget*, Flags = Flag::Default );
+    explicit DebugMenu( QWidget*, Flags = Flag::Default );
 
     //* needed to toggle visibility
     virtual bool eventFilter( QObject*, QEvent* );

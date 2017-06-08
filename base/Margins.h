@@ -32,7 +32,7 @@ namespace Base
         public:
 
         //! constructor
-        Margins( int margin = 0 ):
+        explicit Margins( int margin = 0 ):
             left_(margin),
             top_(margin),
             right_(margin),

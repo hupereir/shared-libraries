@@ -42,7 +42,7 @@ class PrintPreviewDialog: public CustomDialog
     public:
 
     //* constructor
-    PrintPreviewDialog( QWidget* = nullptr, CustomDialog::Flags = 0 );
+    explicit PrintPreviewDialog( QWidget* = nullptr, CustomDialog::Flags = 0 );
 
     //* set print helper
     void setHelper( QObject* );

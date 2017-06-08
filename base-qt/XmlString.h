@@ -31,7 +31,7 @@ class XmlString: public QString
     public:
 
     //! constructor
-    XmlString( const QString& );
+    explicit XmlString( const QString& );
 
     private:
 

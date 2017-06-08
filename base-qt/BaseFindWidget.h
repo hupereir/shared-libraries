@@ -43,7 +43,7 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     public:
 
     //* constructor
-    BaseFindWidget( QWidget* = nullptr, bool compact = true );
+    explicit BaseFindWidget( QWidget* = nullptr, bool compact = true );
 
     //*@name accessors
     //@{

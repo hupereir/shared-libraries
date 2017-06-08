@@ -32,7 +32,7 @@ class SystemEnvironmentDialog: public CustomDialog
     public:
 
     //* constructor
-    SystemEnvironmentDialog( QWidget* parent );
+    explicit SystemEnvironmentDialog( QWidget* parent );
 
     private:
 

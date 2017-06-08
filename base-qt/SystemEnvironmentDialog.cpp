@@ -57,7 +57,7 @@ CustomDialog( parent, CloseButton )
     #if QT_VERSION >= 0x040800
     auto environment = QProcessEnvironment::systemEnvironment();
     for( const auto& key:environment.keys() )
-    { options << OptionPair( key, environment.value( key ) ); }
+    { options << OptionPair( key, Option(environment.value( key )) ); }
     #else
     for( const auto& line:QProcess::systemEnvironment())
     {

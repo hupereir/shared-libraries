@@ -40,7 +40,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     public:
 
     //* constructor
-    CustomToolBar( const QString& = QString(), QWidget* = nullptr, const QString& = QString() );
+    explicit CustomToolBar( const QString& = QString(), QWidget* = nullptr, const QString& = QString() );
 
     // map toolbar area and name
     using AreaMap = QHash< QString, Qt::ToolBarArea>;
@@ -126,7 +126,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
         public:
 
         //* constructor
-        LocationComboBox( QWidget* parent, const QString& option ):
+        explicit LocationComboBox( QWidget* parent, const QString& option ):
             OptionComboBox( parent, option )
         {
             addItem( CustomToolBar::areaToName( Qt::TopToolBarArea ) );

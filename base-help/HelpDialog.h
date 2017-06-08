@@ -44,7 +44,7 @@ namespace Base
         public:
 
         //* constructor
-        HelpDialog( HelpManager& manager, QWidget *parent = nullptr );
+        explicit HelpDialog( HelpManager& manager, QWidget *parent = nullptr );
 
         //* clear items
         void clear( void )

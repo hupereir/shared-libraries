@@ -20,6 +20,8 @@
 *
 *******************************************************************************/
 
+#include "File.h"
+
 #include <QStringList>
 
 //* some utilities used everywhere
@@ -42,13 +44,13 @@ class Util
     static QString domain( void );
 
     //* user home directory
-    static QString home( void );
+    static File home( void );
 
     //* temporary directory ("/tmp")
-    static QString tmp( void );
+    static File tmp( void );
 
     //* user config path
-    static QString config( void );
+    static File config( void );
 
     /** returns the host name.
     \par short_name if true returns only the string located before the first '.'
@@ -62,7 +64,7 @@ class Util
     static int pid( void );
 
     //* returns the work directory
-    static QString workingDirectory( void );
+    static File workingDirectory( void );
 
 };
 

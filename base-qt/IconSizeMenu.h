@@ -37,7 +37,7 @@ class IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
     public:
 
     //! constructor
-    IconSizeMenu( QWidget* parent = 0, bool custom = false );
+    explicit IconSizeMenu( QWidget* parent = 0, bool custom = false );
 
     //! select size
     void select( IconSize::Size );

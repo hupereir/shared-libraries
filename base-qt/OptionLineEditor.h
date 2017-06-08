@@ -32,7 +32,7 @@ class OptionLineEditor: public LineEditor, public OptionWidget
     public:
 
     //* constructor
-    OptionLineEditor( QWidget* parent, const QString& optionName ):
+    explicit OptionLineEditor( QWidget* parent, const QString& optionName ):
         LineEditor( parent ),
         OptionWidget( optionName, this )
     {}

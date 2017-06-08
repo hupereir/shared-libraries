@@ -40,7 +40,7 @@ namespace SpellCheck
         enum { nColumns = 1 };
 
         //* constructor
-        SpellItemModel( QObject* parent = nullptr ):
+        explicit SpellItemModel( QObject* parent = nullptr ):
             ListModel<QString>( parent ),
             Counter( "SpellItemModel" )
         {}

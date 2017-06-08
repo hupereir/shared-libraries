@@ -43,7 +43,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     public:
 
     //* constructor
-    LineNumberDisplay(TextEditor*);
+    explicit LineNumberDisplay(TextEditor*);
 
     //* synchronization
     void synchronize( LineNumberDisplay* );
@@ -87,7 +87,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         using List = QList<LineNumberData>;
 
         //* constructor
-        LineNumberData( int id = 0, int lineNumber = 0, int cursor = 0):
+        explicit LineNumberData( int id = 0, int lineNumber = 0, int cursor = 0):
             id_( id ),
             lineNumber_( lineNumber ),
             cursor_( cursor ),

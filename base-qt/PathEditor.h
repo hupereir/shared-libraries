@@ -56,7 +56,7 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     static const QString MimeType;
 
     //* constructor
-    PathEditor( QWidget* );
+    explicit PathEditor( QWidget* );
 
     //*@name accessors
     //@{

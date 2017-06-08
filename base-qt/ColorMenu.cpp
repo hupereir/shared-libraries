@@ -51,8 +51,8 @@ Base::Color::Set ColorMenu::colors( void ) const
 void ColorMenu::add( QColor color )
 {
 
-    if( color.isValid() && !colors_.contains( color ) )
-    { colors_.insert( color, QBrush() ); }
+    if( color.isValid() && !colors_.contains( Base::Color(color) ) )
+    { colors_.insert( Base::Color(color), QBrush() ); }
 
     return;
 }
@@ -76,7 +76,7 @@ void ColorMenu::paintEvent( QPaintEvent* event )
         QRect action_rect( actionGeometry( iter.key() ) );
         if( !event->rect().intersects( action_rect ) ) continue;
         action_rect.adjust( 2*margin, margin+1, -2*margin-1, -margin );
-        painter.setBrush( colors_[iter.value().name()] );
+        painter.setBrush( colors_[Base::Color(iter.value())] );
         painter.setRenderHints(QPainter::Antialiasing );
         painter.drawRoundedRect( action_rect, 4, 4 );
     }

@@ -42,7 +42,7 @@ namespace Ssh
         public:
 
         //* constructor
-        FileTransferObject( QObject*, QString );
+        explicit FileTransferObject( QObject*, QString );
 
         //*@name modifiers
         //@{

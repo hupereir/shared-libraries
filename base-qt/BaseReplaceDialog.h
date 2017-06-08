@@ -33,7 +33,7 @@ class BaseReplaceDialog: public BaseFindDialog
     public:
 
     //* constructor
-    BaseReplaceDialog( QWidget* = nullptr, Qt::WindowFlags = 0 );
+    explicit BaseReplaceDialog( QWidget* = nullptr, Qt::WindowFlags = 0 );
 
     //*@name accessors
     //@{

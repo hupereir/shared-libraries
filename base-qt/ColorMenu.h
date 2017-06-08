@@ -40,7 +40,7 @@ class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
     public:
 
     //* constructor
-    ColorMenu( QWidget* );
+    explicit ColorMenu( QWidget* );
 
     //*@name accessors
     //@{

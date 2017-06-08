@@ -33,7 +33,7 @@ class TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockD
     public:
 
     //* constructor
-    TextBlockData():
+    explicit TextBlockData():
         QTextBlockUserData(),
         Counter( "TextBlockData" ),
         flags_( TextBlock::None )

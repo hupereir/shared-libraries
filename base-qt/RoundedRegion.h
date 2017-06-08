@@ -47,7 +47,7 @@ class RoundedRegion: public QRegion
     Q_DECLARE_FLAGS( Corners, Corner );
 
     //! constructor
-    RoundedRegion( QRect, Corners = Corner::All );
+    explicit RoundedRegion( QRect, Corners = Corner::All );
 
 };
 

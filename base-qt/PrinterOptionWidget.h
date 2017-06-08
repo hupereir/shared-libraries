@@ -36,7 +36,7 @@ class PrinterOptionWidget: public QWidget, private Base::Counter<PrinterOptionWi
     public:
 
     //* constructor
-    PrinterOptionWidget( QWidget* = nullptr );
+    explicit PrinterOptionWidget( QWidget* = nullptr );
 
     //* orientation
     QPrinter::Orientation orientation( void ) const

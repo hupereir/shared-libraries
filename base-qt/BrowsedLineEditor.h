@@ -39,7 +39,7 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     using Editor = LineEditor;
 
     //* constructor;
-    BrowsedLineEditor( QWidget* parent );
+    explicit BrowsedLineEditor( QWidget* parent );
 
     //*@name accessors
     //@{

@@ -28,7 +28,7 @@ class MessageBuffer
     public:
 
     //* constructor
-    MessageBuffer( void )
+    explicit MessageBuffer( void )
     {}
 
     //* clear

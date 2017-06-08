@@ -101,7 +101,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
     {
 
         // get pixmap
-        QPixmap pixmap( icon.pixmap( QSize( pixmapSize_, pixmapSize_ ) ) );
+        CustomPixmap pixmap( icon.pixmap( QSize( pixmapSize_, pixmapSize_ ) ) );
 
         // add effects
         const int type( fileInfo.type() );

@@ -33,14 +33,14 @@ class XmlCommandLineArguments:public CommandLineArguments
     public:
 
     //! empty creator
-    XmlCommandLineArguments( void )
+    explicit XmlCommandLineArguments( void )
     {}
 
     //! creator from DOM
-    XmlCommandLineArguments( const QDomElement& );
+    explicit XmlCommandLineArguments( const QDomElement& );
 
     //! create from CommandLineArguments
-    XmlCommandLineArguments( const CommandLineArguments& stamp ):
+    explicit XmlCommandLineArguments( const CommandLineArguments& stamp ):
         CommandLineArguments( stamp )
     {}
 

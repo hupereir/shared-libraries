@@ -40,7 +40,7 @@ namespace SpellCheck
         public:
 
         //! constructor
-        FilterMenu( QWidget* parent );
+        explicit FilterMenu( QWidget* parent );
 
         //! select filter manualy
         void select( const QString& filter );

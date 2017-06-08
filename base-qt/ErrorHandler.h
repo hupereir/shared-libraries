@@ -35,7 +35,7 @@ class ErrorHandler
     public:
 
     //* copy constructor
-    ErrorHandler( const ErrorHandler& ) = delete;
+    explicit ErrorHandler( const ErrorHandler& ) = delete;
 
     //* equal to operator
     ErrorHandler& operator = ( const ErrorHandler& ) = delete;
@@ -60,7 +60,7 @@ class ErrorHandler
     protected:
 
     //* constructor
-    ErrorHandler( void );
+    explicit ErrorHandler( void );
 
     using MessageList = QStringList;
 

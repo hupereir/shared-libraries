@@ -51,7 +51,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     public:
 
     //* constructor
-    IconView( QWidget* = nullptr );
+    explicit IconView( QWidget* = nullptr );
 
     //*@name accessors
     //@{
@@ -167,10 +167,10 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
         public:
 
         //* constructor
-        Container( QWidget* = nullptr );
+        explicit Container( QWidget* = nullptr );
 
         //* constructor
-        Container( QWidget*, IconView* );
+        explicit Container( QWidget*, IconView* );
 
         //*@name accessors
         IconView& iconView( void ) const

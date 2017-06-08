@@ -40,7 +40,7 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, private
     public:
 
     //! constructor
-    RecentFilesConfiguration( QWidget*, FileList& );
+    explicit RecentFilesConfiguration( QWidget*, FileList& );
 
     // parent class implementation
     using OptionWidgetList::read;

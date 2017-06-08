@@ -34,7 +34,7 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     public:
 
     //* constructor
-    BaseFindDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
+    explicit BaseFindDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
 
     //*@name accessors
     //@{

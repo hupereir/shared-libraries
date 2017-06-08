@@ -40,7 +40,7 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
     public:
 
     //* constructor
-    RecentFilesMenu( QWidget*, FileList& );
+    explicit RecentFilesMenu( QWidget*, FileList& );
 
     //* check if a file is in database, removes it if yes
     virtual void remove( const QString& file )

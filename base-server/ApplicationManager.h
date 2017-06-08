@@ -48,7 +48,7 @@ namespace Server
         public:
 
         //* constructor
-        ApplicationManager( QObject* );
+        explicit ApplicationManager( QObject* );
 
         //* destructor
         virtual ~ApplicationManager( void );
@@ -118,7 +118,7 @@ namespace Server
             public:
 
             //* constructor
-            SameStateFTor( QAbstractSocket::SocketState state ):
+            explicit SameStateFTor( QAbstractSocket::SocketState state ):
                 Client::SameStateFTor( state )
             {}
 
@@ -138,7 +138,7 @@ namespace Server
             public:
 
             //* constructor
-            SameClientFTor( Client* client ):
+            explicit SameClientFTor( Client* client ):
                 client_( client )
                 {}
 

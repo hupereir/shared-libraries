@@ -42,7 +42,7 @@ class BaseFileInformationDialog: public CustomDialog
     public:
 
     //* constructor
-    BaseFileInformationDialog( QWidget* );
+    explicit BaseFileInformationDialog( QWidget* );
 
     //*@name accessors
     //@{

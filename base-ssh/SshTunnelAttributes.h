@@ -38,7 +38,7 @@ namespace Ssh
         using List = QList<TunnelAttributes>;
 
         //* constructor
-        TunnelAttributes( void ):
+        explicit TunnelAttributes( void ):
             Counter( "Ssh::TunnelAttributes" )
         {}
 

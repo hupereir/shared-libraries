@@ -49,7 +49,7 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     };
 
     //* constructor
-    BusyWidget( QWidget* = nullptr, Location = Location::Center );
+    explicit BusyWidget( QWidget* = nullptr, Location = Location::Center );
 
     //*@name accessors
     //@{

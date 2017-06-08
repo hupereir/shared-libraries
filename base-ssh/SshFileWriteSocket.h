@@ -42,7 +42,7 @@ namespace Ssh
         public:
 
         //* constructor
-        FileWriteSocket( QObject* );
+        explicit FileWriteSocket( QObject* );
 
         //*@name modifiers
         //@{

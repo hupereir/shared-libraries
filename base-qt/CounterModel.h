@@ -31,11 +31,11 @@ class CounterPair: public Base::CounterMap::Pair
     public:
 
     //* constructor
-    CounterPair( void )
+    explicit CounterPair( void )
     {}
 
     //* constructor
-    CounterPair( const Base::CounterMap::Pair& other ):
+    explicit CounterPair( const Base::CounterMap::Pair& other ):
         Base::CounterMap::Pair( other )
     {}
 
@@ -94,7 +94,7 @@ class CounterModel: public ListModel<CounterPair>
         public:
 
         //* constructor
-        SortFTor( int type, Qt::SortOrder order ):
+        explicit SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
             {}
 

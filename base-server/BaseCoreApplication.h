@@ -36,7 +36,7 @@ class BaseCoreApplication: public QObject
     public:
 
     //* constructor
-    BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
+    explicit BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
     //* destructor
     virtual ~BaseCoreApplication( void );

@@ -46,7 +46,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     };
 
     //* constructor
-    FileRecordModel( QObject* = nullptr );
+    explicit FileRecordModel( QObject* = nullptr );
 
     //*@name accessors
     //@{
@@ -124,7 +124,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
         public:
 
         //* constructor
-        SortFTor( int type, Qt::SortOrder order, const QStringList& columnTitles ):
+        explicit SortFTor( int type, Qt::SortOrder order, const QStringList& columnTitles ):
             ItemModel::SortFTor( type, order ),
             columnTitles_( columnTitles )
         {}

@@ -37,7 +37,7 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
     public:
 
     //! constructor
-    FontEditor( QWidget *parent );
+    explicit FontEditor( QWidget *parent );
 
     //! display font
     virtual void setFont( const QFont& font )

@@ -35,7 +35,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     public:
 
     //* constructor
-    CommandLineParser( void );
+    explicit CommandLineParser( void );
 
     //*@name default group names
     //@{
@@ -189,7 +189,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
         public:
 
         //* constructor
-        Flag( QString helpText = QString() ):
+        explicit Flag( QString helpText = QString() ):
             Counter( "CommandLineParser::Flag" ),
             helpText_( helpText )
         {}
@@ -209,7 +209,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
         public:
 
         //* constructor
-        Option( QString type = QString(), QString helpText = QString() ):
+        explicit Option( QString type = QString(), QString helpText = QString() ):
             Flag( helpText ),
             type_( type )
         {}
@@ -253,7 +253,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
         public:
 
         //* constructor
-        SameTagFTor( const QString& tag ):
+        explicit SameTagFTor( const QString& tag ):
             tag_( tag )
             {}
 

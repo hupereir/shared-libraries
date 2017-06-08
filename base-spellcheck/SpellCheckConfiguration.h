@@ -49,7 +49,7 @@ namespace SpellCheck
         Q_DECLARE_FLAGS( Flags, Flag );
 
         //* constructor
-        SpellCheckConfiguration( QWidget*, Flags = All );
+        explicit SpellCheckConfiguration( QWidget*, Flags = All );
 
         Q_SIGNALS:
 

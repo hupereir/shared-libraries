@@ -30,7 +30,7 @@ class Notification
     public:
 
     //* default constructor
-    Notification( const QString& summary = QString(), const QString& body = QString() ):
+    explicit Notification( const QString& summary = QString(), const QString& body = QString() ):
         summary_( summary ),
         body_( body )
     {}

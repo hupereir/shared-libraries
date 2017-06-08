@@ -29,17 +29,17 @@ void installTransparencyOptions( void )
 {
 
     // foreground
-    XmlOptions::get().set<Base::Color>( "TRANSPARENCY_FOREGROUND_COLOR", QColor( Qt::white ) );
+    XmlOptions::get().set( "TRANSPARENCY_FOREGROUND_COLOR", Base::Color( Qt::white ) );
     XmlOptions::get().set<int>( "TRANSPARENCY_FOREGROUND_INTENSITY", 255 );
 
     // shadow
-    XmlOptions::get().set<Base::Color>( "TRANSPARENCY_SHADOW_COLOR", QColor( Qt::black ) );
+    XmlOptions::get().set( "TRANSPARENCY_SHADOW_COLOR", Base::Color( Qt::black ) );
     XmlOptions::get().set<int>( "TRANSPARENCY_SHADOW_OFFSET", 1 );
     XmlOptions::get().set<bool>( "TRANSPARENCY_INVERSE_COLORS", false );
     XmlOptions::get().set<bool>( "TRANSPARENCY_USE_GRADIENT", true );
 
     // tint
-    XmlOptions::get().set<Base::Color>( "TRANSPARENCY_TINT_COLOR", QColor( Qt::white ) );
+    XmlOptions::get().set( "TRANSPARENCY_TINT_COLOR", Base::Color( Qt::white ) );
     XmlOptions::get().set<double>( "TRANSPARENCY_TINT_INTENSITY", 0 );
 
 }

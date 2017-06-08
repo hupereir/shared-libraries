@@ -38,10 +38,10 @@ namespace Format
         public:
 
         //* constructor
-        XmlTextFormatBlock( const QDomElement& );
+        explicit XmlTextFormatBlock( const QDomElement& );
 
         //* constructor
-        XmlTextFormatBlock( const TextFormatBlock& format ):
+        explicit XmlTextFormatBlock( const TextFormatBlock& format ):
             TextFormatBlock( format )
         {}
 

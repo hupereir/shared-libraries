@@ -35,7 +35,7 @@ class CounterDialog: public CustomDialog
     public:
 
     // constructor
-    CounterDialog( QWidget* );
+    explicit CounterDialog( QWidget* );
 
     public Q_SLOTS:
 

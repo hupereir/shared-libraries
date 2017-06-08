@@ -45,12 +45,12 @@ class XmlFileRecord: public FileRecord
     public:
 
     //* constructor
-    XmlFileRecord( const FileRecord& file ):
+    explicit XmlFileRecord( const FileRecord& file ):
         FileRecord( file )
     {}
 
     //* constructor
-    XmlFileRecord( const QDomElement& );
+    explicit XmlFileRecord( const QDomElement& );
 
     //* write to dom
     QDomElement domElement( QDomDocument& ) const;
@@ -60,12 +60,12 @@ class XmlFileRecord: public FileRecord
         public:
 
         //* constructor
-        List( void ):
+        explicit List( void ):
             QList<XmlFileRecord>()
         {}
 
         //* constructor
-        List( const QDomElement& );
+        explicit List( const QDomElement& );
 
         //* write to dom
         QDomElement domElement( QDomDocument& ) const;

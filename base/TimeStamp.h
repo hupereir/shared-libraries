@@ -36,12 +36,12 @@ class TimeStamp:private Base::Counter<TimeStamp>
     static const QString TimeStampUnknown;
 
     //* empty creator
-    TimeStamp( void ):
+    explicit TimeStamp( void ):
         Counter( "TimeStamp" )
     {}
 
     //* time_t creator
-    TimeStamp( time_t time ):
+    explicit TimeStamp( time_t time ):
         Counter( "TimeStamp" )
     { setTime( time ); }
 
@@ -66,16 +66,24 @@ class TimeStamp:private Base::Counter<TimeStamp>
     { return( time_ < stamp.time_ ); }
 
     //* inferior to operator
-    virtual bool operator >= (const TimeStamp& stamp ) const
-    { return( time_ >= stamp.time_ ); }
+    virtual bool operator <= (const TimeStamp& stamp ) const
+    { return( time_ <= stamp.time_ ); }
 
     //* inferior to operator
     virtual bool operator > (const TimeStamp& stamp ) const
     { return( time_ > stamp.time_ ); }
 
     //* inferior to operator
+    virtual bool operator >= (const TimeStamp& stamp ) const
+    { return( time_ >= stamp.time_ ); }
+
+    //* equal to operator
     virtual bool operator == (const TimeStamp& stamp ) const
     { return( time_ == stamp.time_ ); }
+
+    //* different from operator
+    virtual bool operator != (const TimeStamp& stamp ) const
+    { return( time_ != stamp.time_ ); }
 
     //*@name accessors
     //@{
@@ -83,10 +91,6 @@ class TimeStamp:private Base::Counter<TimeStamp>
     //* checks if timestamp is valid or not
     virtual bool isValid( void ) const
     { return valid_; }
-
-    //* used to have fast access to the integer value
-    virtual operator int (void) const
-    { return int( time_ ); }
 
     //* timestamp format enumeration
     enum class Format

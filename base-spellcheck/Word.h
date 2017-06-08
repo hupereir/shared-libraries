@@ -35,7 +35,7 @@ namespace SpellCheck
         using Set = QSet<Word>;
 
         //! constructor
-        Word( const QString& word = QString(), int position = 0 ):
+        explicit Word( const QString& word = QString(), int position = 0 ):
             QString( word ),
             position_( position )
         {}
@@ -67,7 +67,7 @@ namespace SpellCheck
             public:
 
             //! constructor
-            AtPositionFTor( int position ):
+            explicit AtPositionFTor( int position ):
                 position_( position )
             {}
 

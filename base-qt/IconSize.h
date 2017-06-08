@@ -44,7 +44,7 @@ class IconSize: public QSize
     };
 
     //* constructor
-    IconSize( Size size );
+    explicit IconSize( Size size );
 
     //* map text to icon size
     using Map = QMap<Size, QString>;

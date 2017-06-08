@@ -34,7 +34,7 @@ class InformationDialog: public DetailsDialog
     public:
 
     //* constructor
-    InformationDialog( QWidget*, const QString& = QString() );
+    explicit InformationDialog( QWidget*, const QString& = QString() );
 
     //* set text
     void setText( const QString& );

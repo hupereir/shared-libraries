@@ -35,7 +35,7 @@ class ScratchFileMonitor: public QObject, private Base::Counter<ScratchFileMonit
     public:
 
     //* constructor
-    ScratchFileMonitor( QObject* parent = nullptr ):
+    explicit ScratchFileMonitor( QObject* parent = nullptr ):
         QObject( parent ),
         Counter( "ScratchFileMonitor" )
     {}

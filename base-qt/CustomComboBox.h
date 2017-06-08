@@ -37,7 +37,7 @@ class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
     public:
 
     //* constructor
-    CustomComboBox( QWidget* = nullptr );
+    explicit CustomComboBox( QWidget* = nullptr );
 
     //* editability
     void setEditable( bool value );

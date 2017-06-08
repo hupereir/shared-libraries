@@ -151,7 +151,7 @@ void TextEncodingWidget::setEncoding( const QByteArray& constValue )
     // get 'standard name'
     QByteArray value( codec->name() );
 
-    QModelIndex index( model_->index( value ) );
+    QModelIndex index( model_->index( TextEncodingString( value ) ) );
     list_->selectionModel()->select( index,  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
     list_->selectionModel()->setCurrentIndex( index,  QItemSelectionModel::Current|QItemSelectionModel::Rows );
     editor_->setText( value );
@@ -167,7 +167,7 @@ void TextEncodingWidget::_loadTextCodecs( void )
     for( const auto& codecId:QTextCodec::availableMibs() )
     {
         QTextCodec* codec( QTextCodec::codecForMib( codecId ) );
-        if( codec ) codecStrings.append( codec->name() );
+        if( codec ) codecStrings.append( TextEncodingString( codec->name() ) );
     }
 
     model_->set( codecStrings );

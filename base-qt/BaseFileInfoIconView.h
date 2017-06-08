@@ -30,7 +30,7 @@ class BaseFileInfoIconView: public IconView
     public:
 
     //* constructor
-    BaseFileInfoIconView( QWidget* = nullptr );
+    explicit BaseFileInfoIconView( QWidget* = nullptr );
 
     protected:
 

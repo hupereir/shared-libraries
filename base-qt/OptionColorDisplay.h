@@ -33,7 +33,7 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
     public:
 
     //! constructor
-    OptionColorDisplay( QWidget* parent, const QString& optionName ):
+    explicit OptionColorDisplay( QWidget* parent, const QString& optionName ):
         ColorDisplay( parent ),
         OptionWidget( optionName, this )
     {}
@@ -52,7 +52,7 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
 
     //! write value to option
     void write( Options& options ) const
-    { options.set<Base::Color>( optionName(), color() ); }
+    { options.set<Base::Color>( optionName(), Base::Color(color()) ); }
 
     Q_SIGNALS:
 

@@ -39,7 +39,7 @@ class HtmlDialog: public CustomDialog
     public:
 
     //* constructor
-    HtmlDialog( QWidget* parent );
+    explicit HtmlDialog( QWidget* parent );
 
     //* set command manually
     void setCommand( QString command )
@@ -59,7 +59,7 @@ class HtmlDialog: public CustomDialog
 
     //* file
     File file( void ) const
-    { return destinationEditor_->editor().text(); }
+    { return File( destinationEditor_->editor().text() ); }
 
     // options
     void setOptionWidgets( QList<QWidget*> );

@@ -33,7 +33,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
     public:
 
     //* constructor
-    ColorGrabObject( QWidget* );
+    explicit ColorGrabObject( QWidget* );
 
     //* event filter
     virtual bool eventFilter( QObject*, QEvent* );

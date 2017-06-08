@@ -34,7 +34,7 @@ class QuestionDialog: public DetailsDialog
     public:
 
     //* constructor
-    QuestionDialog( QWidget*, const QString& = QString() );
+    explicit QuestionDialog( QWidget*, const QString& = QString() );
 
     //*@name modifiers
     //@{

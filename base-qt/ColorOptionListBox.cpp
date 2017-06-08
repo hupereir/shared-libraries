@@ -88,7 +88,7 @@ void ColorOptionListBox::_add( void )
     if( !dialog.editor().color().isValid() ) return;
 
     // create new item
-    const Options::Pair option( optionName(), Option().set<Base::Color>( dialog.editor().color() ) );
+    OptionPair option( optionName(), Option().set<Base::Color>( Base::Color(dialog.editor().color()) ) );
     _model().add( option );
 
     // make sure item is selected
@@ -112,7 +112,7 @@ void ColorOptionListBox::_edit( void )
 
     // retrieve selection
     QModelIndex current( list().selectionModel()->currentIndex() );
-    Options::Pair source( _model().get( current ) );
+    auto source( _model().get( current ) );
 
     // create dialog
     EditDialog dialog( this );
@@ -128,8 +128,8 @@ void ColorOptionListBox::_edit( void )
     if( !dialog.editor().color().isValid() ) return;
 
     // modify value
-    Options::Pair destination( source );
-    destination.second.set<Base::Color>( dialog.editor().color() );
+    auto destination( source );
+    destination.second.set<Base::Color>( Base::Color(dialog.editor().color()) );
 
     // re-add to model
     _model().replace( source, destination );

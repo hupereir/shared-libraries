@@ -32,7 +32,7 @@ class BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
     public:
 
     //* contructor
-    BaseContextMenu( QWidget* );
+    explicit BaseContextMenu( QWidget* );
 
     //*@name accessors
     //@{

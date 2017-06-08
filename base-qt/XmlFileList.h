@@ -38,7 +38,7 @@ class XmlFileList: public FileList
     public:
 
     //* constuctor
-    XmlFileList( QObject* parent = nullptr );
+    explicit XmlFileList( QObject* parent = nullptr );
 
     //*@name modifiers
     //@{

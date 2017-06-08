@@ -37,13 +37,19 @@ namespace Base
         public:
 
         //* constructor
-        IconCacheItem( void ):
+        explicit IconCacheItem( void ):
             Counter( "Base::IconCacheItem" )
         {}
 
         //* copy constructor
-        IconCacheItem( const QIcon& other ):
+        explicit IconCacheItem( const QIcon& other ):
             QIcon( other ),
+            Counter( "Base::IconCacheItem" )
+        {}
+
+        //* copy constructor
+        explicit IconCacheItem( QIcon&& other ):
+            QIcon( std::move( other ) ),
             Counter( "Base::IconCacheItem" )
         {}
 
@@ -106,7 +112,7 @@ namespace Base
         public:
 
         //* constructor
-        IconCache( void )
+        explicit IconCache( void )
         {}
 
         //* destructor
@@ -119,16 +125,16 @@ namespace Base
             public:
 
             //* constructor
-            Pair( void )
+            explicit Pair( void )
             {}
 
             //* constructor
-            Pair( const QString& name, const IconCacheItem& icon ):
+            explicit Pair( const QString& name, const IconCacheItem& icon ):
                 QPair<QString, IconCacheItem >( name, icon )
             {}
 
             //* constructor
-            Pair( const QPair<QString, IconCacheItem >& other ):
+            explicit Pair( const QPair<QString, IconCacheItem >& other ):
                 QPair<QString, IconCacheItem >( other )
             {}
 

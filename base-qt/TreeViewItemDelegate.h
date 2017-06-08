@@ -30,7 +30,7 @@ class TreeViewItemDelegate: public QStyledItemDelegate
     public:
 
     //* constructor
-    TreeViewItemDelegate( QObject* = nullptr );
+    explicit TreeViewItemDelegate( QObject* = nullptr );
 
     //* set item margin
     virtual void setItemMargin( int );

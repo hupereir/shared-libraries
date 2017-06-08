@@ -41,7 +41,7 @@ namespace Private
         public:
 
         //* constructor
-        IconThemeDialog( QWidget* = nullptr );
+        explicit IconThemeDialog( QWidget* = nullptr );
 
         Q_SIGNALS:
 

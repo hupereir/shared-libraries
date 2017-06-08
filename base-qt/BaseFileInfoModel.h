@@ -47,7 +47,7 @@ class BaseFileInfoModel : public ListModel<T>
     public:
 
     //* constructor
-    BaseFileInfoModel( QObject* parent = nullptr ):
+    explicit BaseFileInfoModel( QObject* parent = nullptr ):
         ListModel<T>( parent )
     {}
 
@@ -94,7 +94,7 @@ class BaseFileInfoModel : public ListModel<T>
         public:
 
         //* constructor
-        SortFTor( int type, Qt::SortOrder order ):
+        explicit SortFTor( int type, Qt::SortOrder order ):
             ItemModel::SortFTor( type, order )
             {}
 
@@ -147,7 +147,7 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
                 case User: return fileInfo.user();
                 case Group: return fileInfo.group();
                 case Permissions: return (fileInfo.type() & BaseFileInfo::Navigator) ? QString():fileInfo.permissionsString();
-                case Modified: return QString( fileInfo.lastModified() ? TimeStamp( fileInfo.lastModified() ).toString() : "" );
+                case Modified: return QString( fileInfo.lastModified().isValid() ? fileInfo.lastModified().toString() : QString() );
 
                 default:
                 return QVariant();

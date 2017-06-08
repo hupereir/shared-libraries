@@ -30,7 +30,7 @@ class BaseSocketInterface: public QObject
     public:
 
     //* constructor
-    BaseSocketInterface( QObject*, QTcpSocket* = nullptr );
+    explicit BaseSocketInterface( QObject*, QTcpSocket* = nullptr );
 
     //* socket
     QTcpSocket& socket( void )
@@ -46,7 +46,7 @@ class BaseSocketInterface: public QObject
         public:
 
         //* constructor
-        SameStateFTor( QAbstractSocket::SocketState state ):
+        explicit SameStateFTor( QAbstractSocket::SocketState state ):
             state_( state )
         {}
 

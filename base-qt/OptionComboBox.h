@@ -32,7 +32,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     public:
 
     //! constructor
-    OptionComboBox( QWidget* parent, const QString& optionName ):
+    explicit OptionComboBox( QWidget* parent, const QString& optionName ):
         CustomComboBox( parent ),
         OptionWidget( optionName, this )
     {}

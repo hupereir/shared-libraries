@@ -33,7 +33,7 @@ bool XmlDocument::setContent( QFile* file, XmlError& error )
 {
     Q_ASSERT( file );
     error.clear();
-    error.setFile( file->fileName() );
+    error.setFile( File( file->fileName() ) );
     return QDomDocument::setContent( file, &error.error(), &error.line(), &error.column() );
 }
 

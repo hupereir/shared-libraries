@@ -107,7 +107,7 @@ void OptionDialog::_reload( void )
     const Options::SpecialMap specialOptions( backupOptions_.specialOptions() );
     for( auto&& iter = specialOptions.begin(); iter != specialOptions.end(); ++iter )
     {
-        model_.add( OptionPair( iter.key(), "" ) );
+        model_.add( OptionPair( iter.key(), Option() ) );
         OptionModel::List options;
         for( const auto& option:iter.value() )
         { model_.add( OptionPair( iter.key(), option ) ); }
@@ -153,7 +153,7 @@ void OptionDialog::_specialOptionModified( OptionPair option )
     Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first << endl;
 
     // find all matching options from model
-    QModelIndex index( model_.index( OptionPair( option.first, "" ) ) );
+    QModelIndex index( model_.index( OptionPair( option.first, Option() ) ) );
     Q_ASSERT( index.isValid() );
 
     OptionModel::List values( model_.children( index ) );

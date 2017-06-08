@@ -36,7 +36,7 @@ class FileThread: public QThread, private Base::Counter<FileThread>
     public:
 
     //! constructor
-    FileThread( QObject* = 0 );
+    explicit FileThread( QObject* = 0 );
 
     //! command
     enum class Command

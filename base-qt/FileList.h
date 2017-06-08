@@ -39,7 +39,7 @@ class FileList: public QObject, private Base::Counter<FileList>
     public:
 
     //* constructor
-    FileList( QObject* );
+    explicit FileList( QObject* );
 
     //*@name accessors
     //@{

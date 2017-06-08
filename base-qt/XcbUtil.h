@@ -142,7 +142,7 @@ class XcbUtil: private XcbDefines
     bool _requestCardinalChange( QWidget*, AtomId, uint32_t ) const;
 
     //* constructor
-    XcbUtil( void );
+    explicit XcbUtil( void );
 
     //* private pointer
     class Private;

@@ -28,7 +28,7 @@ class KeyModifier
   public:
 
   //! constructor
-  KeyModifier( const Qt::Key& );
+  explicit KeyModifier( const Qt::Key& );
 
   //! state
   enum class State

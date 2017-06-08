@@ -58,7 +58,7 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     public:
 
     //* constructor
-    PlacesWidget( QWidget* = nullptr );
+    explicit PlacesWidget( QWidget* = nullptr );
 
     //* set icon provider
     void setIconProvider( BaseFileIconProvider* );

@@ -61,7 +61,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    BaseConfigurationDialog( QWidget* = nullptr, Flags = Flag::None );
+    explicit BaseConfigurationDialog( QWidget* = nullptr, Flags = Flag::None );
 
     // read
     using OptionWidgetList::read;

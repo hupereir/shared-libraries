@@ -31,14 +31,14 @@ class TextPosition: private Base::Counter<TextPosition>
     public:
 
     //* default constructor
-    TextPosition( int paragraph = 0, int index = 0 ):
+    explicit TextPosition( int paragraph = 0, int index = 0 ):
         Counter( "TextPosition" ),
         paragraph_( paragraph ),
         index_( index )
     {}
 
     //* construct from document and absolute index
-    TextPosition( QTextDocument*, int index );
+    explicit TextPosition( QTextDocument*, int index );
 
     //* paragraph
     int paragraph( void ) const

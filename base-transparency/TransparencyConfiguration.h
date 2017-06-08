@@ -46,7 +46,7 @@ namespace Transparency
         Q_DECLARE_FLAGS( Flags, Flag );
 
         //! constructor
-        TransparencyConfiguration( QWidget* parent, Flags = Foreground );
+        explicit TransparencyConfiguration( QWidget* parent, Flags = Foreground );
 
         Q_SIGNALS:
 

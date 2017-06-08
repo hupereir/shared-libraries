@@ -39,7 +39,7 @@ class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineW
     public:
 
     //* constructor
-    SelectLineWidget( QWidget* = nullptr, bool compact = true );
+    explicit SelectLineWidget( QWidget* = nullptr, bool compact = true );
 
     //* retrieve editor
     LineEditor& editor( void ) const

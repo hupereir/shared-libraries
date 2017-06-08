@@ -37,7 +37,7 @@ namespace SpellCheck
         public:
 
         //* constructor
-        SpellInterface( void );
+        explicit SpellInterface( void );
 
         //* destructor
         ~SpellInterface( void );

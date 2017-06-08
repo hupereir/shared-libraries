@@ -36,7 +36,7 @@ class IconCacheDialog: public CustomDialog
     public:
 
     // constructor
-    IconCacheDialog( QWidget* );
+    explicit IconCacheDialog( QWidget* );
 
     public Q_SLOTS:
 

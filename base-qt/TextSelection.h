@@ -44,7 +44,7 @@ class TextSelection
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* default constructor
-    TextSelection(
+    explicit TextSelection(
         const QString& text = QString(),
         const QString& replaceText = QString(),
         Flags flags = None ):

@@ -31,7 +31,7 @@ class TextEditionDelegate : public TreeViewItemDelegate, private Base::Counter<T
     public:
 
     //* constructor
-    TextEditionDelegate( QObject* = nullptr );
+    explicit TextEditionDelegate( QObject* = nullptr );
 
     //* create editor
     QWidget *createEditor( QWidget*, const QStyleOptionViewItem&, const QModelIndex& ) const;

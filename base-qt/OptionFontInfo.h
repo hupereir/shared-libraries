@@ -33,7 +33,7 @@ class OptionFontInfo: public FontInfo, public OptionWidget
     public:
 
     //! constructor
-    OptionFontInfo( QWidget* parent, const QString& optionName ):
+    explicit OptionFontInfo( QWidget* parent, const QString& optionName ):
         FontInfo( parent ),
         OptionWidget( optionName, this )
     {}

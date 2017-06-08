@@ -27,7 +27,7 @@ namespace Base
     //__________________________________________________________
     Color Color::merge( const QColor& other, qreal intensity ) const
     {
-        if( !isValid() ) return other;
+        if( !isValid() ) return Color(other);
         if( !other.isValid() ) return *this;
         if( other == *this ) return *this;
 
@@ -36,7 +36,7 @@ namespace Base
         double blue = intensity*Color::blue() + (1.0-intensity )*other.blue();
         double alpha = intensity*Color::alpha() + (1.0-intensity )*other.alpha();
 
-        return QColor( int( red ), int( green ), int( blue ), int( alpha ) );
+        return Color( int( red ), int( green ), int( blue ), int( alpha ) );
     }
 
     //__________________________________________________________

@@ -26,25 +26,30 @@
 #include <QDomElement>
 #include <QString>
 
-//! Xml interface to time manipulation object
+//* Xml interface to time manipulation object
 class XmlTimeStamp:public TimeStamp
 {
 
     public:
 
-    //! empty constructor
-    XmlTimeStamp( void )
+    //* empty constructor
+    explicit XmlTimeStamp( void )
     {}
 
-    //! constructor from DOM
-    XmlTimeStamp( const QDomElement& );
+    //* constructor from DOM
+    explicit XmlTimeStamp( const QDomElement& );
 
-    //! create from timestamp
-    XmlTimeStamp( const TimeStamp& stamp ):
+    //* create from timestamp
+    explicit XmlTimeStamp( const TimeStamp& stamp ):
         TimeStamp( stamp )
     {}
 
-    //! get DOM element
+    //* time_t creator
+    explicit XmlTimeStamp( time_t time ):
+        TimeStamp( time )
+    {}
+
+    //* get DOM element
     QDomElement domElement( const QString&, QDomDocument& ) const;
 
 };

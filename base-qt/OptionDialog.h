@@ -36,7 +36,7 @@ class OptionDialog: public CustomDialog
     public:
 
     //* constructor
-    OptionDialog( QWidget* );
+    explicit OptionDialog( QWidget* );
 
     Q_SIGNALS:
 

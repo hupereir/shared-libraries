@@ -98,7 +98,7 @@ class DefaultFolders: public QObject
     private:
 
     //* constructor
-    DefaultFolders( void );
+    explicit DefaultFolders( void );
 
     //* map folder and type
     /* this list keeps only one folder per type */

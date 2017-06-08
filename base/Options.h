@@ -49,7 +49,7 @@ class Options: private Base::Counter<Options>
     using SpecialMap = QMap<QString,List>;
 
     //* constructor
-    Options( void );
+    explicit Options( void );
 
     //* equality operator
     bool operator == ( const Options& other ) const
@@ -121,6 +121,15 @@ class Options: private Base::Counter<Options>
 
     //*@name modifiers
     //@{
+
+    //* option value modifier
+    template <typename T>
+    void add( const QString& name, const T& value, bool isDefault = false )
+    {
+        Option option;
+        option.set<T>( value );
+        add( name, option, isDefault );
+    }
 
     //* adds a new special option. Return true if option is added
     virtual bool add( const QString&, const Option&, bool isDefault = false );

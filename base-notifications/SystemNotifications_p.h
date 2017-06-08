@@ -47,7 +47,7 @@ namespace Private
         public:
 
         //* constructor
-        SystemNotificationsP( QObject* = nullptr );
+        explicit SystemNotificationsP( QObject* = nullptr );
 
         //* destructor
         virtual ~SystemNotificationsP( void );

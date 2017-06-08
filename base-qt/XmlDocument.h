@@ -34,7 +34,7 @@ class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
     public:
 
     //* constructor
-    XmlDocument( void );
+    explicit XmlDocument( void );
 
     //*@name accessors
     //@{

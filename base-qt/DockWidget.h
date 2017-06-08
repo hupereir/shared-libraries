@@ -33,7 +33,7 @@ class DockWidget: public QDockWidget
     public:
 
     //* constructor
-    DockWidget( const QString&, QWidget* = nullptr, const QString& = QString() );
+    explicit DockWidget( const QString&, QWidget* = nullptr, const QString& = QString() );
 
     //*@name accessors
     //@{

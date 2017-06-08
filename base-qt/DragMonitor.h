@@ -34,7 +34,7 @@ class DragMonitor: public QObject, private Base::Counter<DragMonitor>
     public:
 
     //* constructor
-    DragMonitor( QWidget* );
+    explicit DragMonitor( QWidget* );
 
     //*@name accessors
     //@{

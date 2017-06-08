@@ -33,7 +33,7 @@ class ColorOptionModel: public OptionModel
     public:
 
     //* constructor
-    ColorOptionModel( QObject* parent = nullptr ):
+    explicit ColorOptionModel( QObject* parent = nullptr ):
         OptionModel( parent )
     {}
 

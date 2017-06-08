@@ -42,7 +42,7 @@ namespace Transparency
         public:
 
         //* constructor
-        TransparentWidget( QWidget* = nullptr, Qt::WindowFlags flags = 0 );
+        explicit TransparentWidget( QWidget* = nullptr, Qt::WindowFlags flags = 0 );
 
         //*@name actions
         //@{

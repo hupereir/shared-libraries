@@ -45,7 +45,7 @@ namespace Private
         public:
 
         //* constructor
-        PathEditorButton( QWidget* parent ):
+        explicit PathEditorButton( QWidget* parent ):
         QAbstractButton( parent )
         {
             Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
@@ -97,7 +97,7 @@ namespace Private
         public:
 
         //* constructor
-        PathEditorItem( QWidget* );
+        explicit PathEditorItem( QWidget* );
 
         //*@name accessors
         //@{
@@ -212,7 +212,7 @@ namespace Private
         public:
 
         //* constructor
-        PathEditorMenuButton( QWidget* parent ):
+        explicit PathEditorMenuButton( QWidget* parent ):
             PathEditorButton( parent ),
             Counter( "PathEditorMenuButton" )
         {
@@ -240,7 +240,7 @@ namespace Private
         public:
 
         //* constructor
-        PathEditorSwitch( QWidget* parent ):
+        explicit PathEditorSwitch( QWidget* parent ):
             PathEditorButton( parent ),
             Counter( "PathEditorSwitch" )
         {

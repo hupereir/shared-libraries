@@ -33,7 +33,7 @@ namespace Private
         public:
 
         //* constructor
-        XmlOptionsSingleton( void )
+        explicit XmlOptionsSingleton( void )
         { options_.installDefaultOptions(); }
 
         //* file

@@ -45,9 +45,17 @@ class FileRecord: private Base::Counter<FileRecord>
     static const QString MimeType;
 
     //* constructor
-    FileRecord( const File& file = File(""), const TimeStamp& time = TimeStamp::now() ):
+    explicit FileRecord( const File& file = File(), const TimeStamp& time = TimeStamp::now() ):
         Counter( "FileRecord" ),
         file_( file ),
+        time_( time ),
+        valid_( true )
+    {}
+
+    //* constructor
+    explicit FileRecord( File&& file, const TimeStamp& time = TimeStamp::now() ):
+        Counter( "FileRecord" ),
+        file_( std::move(file) ),
         time_( time ),
         valid_( true )
     {}
@@ -63,14 +71,14 @@ class FileRecord: private Base::Counter<FileRecord>
     { return file_; }
 
     //* file
-    FileRecord& setFile( const QString& file )
+    FileRecord& setFile( const File& file )
     {
         file_ = file;
         return *this;
     }
 
     //* time stamp
-    int time( void ) const
+    const TimeStamp& time( void ) const
     { return time_; }
 
     //* time stamp
@@ -113,7 +121,7 @@ class FileRecord: private Base::Counter<FileRecord>
         public:
 
         //* constructor
-        HasFlagFTor( int flag ):
+        explicit HasFlagFTor( int flag ):
             flag_( flag )
          {}
 
@@ -234,12 +242,12 @@ class FileRecord: private Base::Counter<FileRecord>
         public:
 
         //* constructor
-        SameFileFTor( const File& file = File("") ):
+        explicit SameFileFTor( const File& file = File("") ):
             file_( file )
         {}
 
         //* constructor
-        SameFileFTor( const FileRecord& record ):
+        explicit SameFileFTor( const FileRecord& record ):
             file_( record.file() )
         {}
 
@@ -278,12 +286,12 @@ class FileRecord: private Base::Counter<FileRecord>
         public:
 
         //* constructor
-        SameCanonicalFileFTor( const File& file = File("") ):
+        explicit SameCanonicalFileFTor( const File& file = File("") ):
             file_( file.canonicalName() )
         {}
 
         //* constructor
-        SameCanonicalFileFTor( const FileRecord& record ):
+        explicit SameCanonicalFileFTor( const FileRecord& record ):
             file_( record.file().canonicalName() )
         {}
 
@@ -345,7 +353,7 @@ class FileRecord: private Base::Counter<FileRecord>
     PropertyMap properties_;
 
     //* time
-    int time_ = 0;
+    TimeStamp time_;
 
     //* flags
     int flags_ = 0;

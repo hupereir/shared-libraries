@@ -35,7 +35,7 @@ class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFra
     public:
 
     //! constructor
-    UserSelectionFrame( QWidget* parent );
+    explicit UserSelectionFrame( QWidget* parent );
 
     //! set user
     void setUser( const QString& user );

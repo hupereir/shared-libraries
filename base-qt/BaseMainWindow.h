@@ -47,7 +47,7 @@ class BaseMainWindow: public QMainWindow
     public:
 
     //* constructor
-    BaseMainWindow( QWidget*, Qt::WindowFlags = 0);
+    explicit BaseMainWindow( QWidget*, Qt::WindowFlags = 0);
 
     //* restore window size
     virtual QSize minimumSizeHint( void ) const;

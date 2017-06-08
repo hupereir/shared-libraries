@@ -33,7 +33,7 @@ namespace Base
         public:
 
         //* construtor
-        Counter( QString name )
+        explicit Counter( QString name )
         {
             if( !initialized )
             {
@@ -45,7 +45,7 @@ namespace Base
         }
 
         //* copy constructor
-        Counter(const Counter& other )
+        explicit Counter(const Counter& other )
         { count++; }
 
         //* destructor

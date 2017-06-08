@@ -40,7 +40,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     public:
 
     //* constructor
-    LineEditor( QWidget* parent );
+    explicit LineEditor( QWidget* parent );
 
     //* destructor
     virtual ~LineEditor( void )

@@ -38,24 +38,24 @@ bool File::isAbsolute( void ) const
 { return QFileInfo( *this ).isAbsolute(); }
 
 //_____________________________________________________________________
-time_t File::created( void ) const
+TimeStamp File::created( void ) const
 {
-    if( !exists() ) return -1;
-    return QFileInfo( *this ).created().toTime_t();
+    if( !exists() ) return TimeStamp();
+    return TimeStamp(QFileInfo( *this ).created().toTime_t());
 }
 
 //_____________________________________________________________________
-time_t File::lastModified( void ) const
+TimeStamp File::lastModified( void ) const
 {
-    if( !exists() ) return -1;
-    return QFileInfo( *this ).lastModified().toTime_t();
+    if( !exists() ) return TimeStamp();
+    return TimeStamp( QFileInfo( *this ).lastModified().toTime_t() );
 }
 
 //_____________________________________________________________________
-time_t File::lastAccessed( void ) const
+TimeStamp File::lastAccessed( void ) const
 {
-    if( !exists() ) return -1;
-    return QFileInfo( *this ).lastRead().toTime_t();
+    if( !exists() ) return TimeStamp();
+    return TimeStamp( QFileInfo( *this ).lastRead().toTime_t() );
 }
 
 //_____________________________________________________________________
@@ -230,12 +230,12 @@ bool File::isEqual( const File& other ) const
 { return expand() == other.expand(); }
 
 //_____________________________________________________________________
-File File::path( bool use_absolute ) const
+File File::path( bool useAbsolute ) const
 {
 
     if( isEmpty() ) return File();
-    if( use_absolute ) return QFileInfo(*this).absolutePath();
-    else return QFileInfo(*this).path();
+    if( useAbsolute ) return File( QFileInfo(*this).absolutePath() );
+    else return File( QFileInfo(*this).path() );
 
 }
 
@@ -277,7 +277,7 @@ File File::truncatedName( void ) const
 
     if( dotpos < 0 ) return *this;
     if( slashpos < 0 ) return File( dotpos >= 0 ? left(dotpos):"");
-    if( slashpos < dotpos ) return left(dotpos);
+    if( slashpos < dotpos ) return File( left(dotpos) );
 
     return *this;
 
@@ -334,7 +334,7 @@ File File::backup( void ) const
     // open this file
     QFile in( expand );
     in.copy( backup );
-    return backup;
+    return File( backup );
 
 }
 
@@ -438,7 +438,7 @@ bool File::copy( const File& newFile, bool force ) const
 }
 
 //____________________________________________
-File File::addPath( const File& path, bool use_absolute ) const
+File File::addPath( const File& path, bool useAbsolute ) const
 {
 
     // returns 0 if either path nor file are given
@@ -451,11 +451,11 @@ File File::addPath( const File& path, bool use_absolute ) const
     if( isAbsolute() ) return *this;
 
     // returns file if it is relative but path is not given
-    if( !path.size() ) return QString("./")+(*this);
+    if( !path.size() ) return File( QString("./")+(*this) );
 
     QFileInfo info;
     info.setFile( QDir( path ), *this );
-    return use_absolute ? info.absoluteFilePath(): info.filePath();
+    return File( useAbsolute ? info.absoluteFilePath():info.filePath() );
 
 }
 

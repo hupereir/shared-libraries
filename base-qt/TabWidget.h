@@ -48,7 +48,7 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     public:
 
     //* constructor
-    TabWidget( QTabWidget* parent );
+    explicit TabWidget( QTabWidget* parent );
 
     //* destructor
     virtual ~TabWidget( void );

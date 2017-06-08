@@ -39,7 +39,7 @@ class ScratchFileRemoveDialog: public CustomDialog
     public:
 
     //* constructor
-    ScratchFileRemoveDialog( QWidget*, const FileRecordModel::List& files = FileRecordModel::List() );
+    explicit ScratchFileRemoveDialog( QWidget*, const FileRecordModel::List& files = FileRecordModel::List() );
 
     // return selected files
     FileRecordModel::List selectedFiles( void ) const;

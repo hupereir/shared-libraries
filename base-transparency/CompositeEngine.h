@@ -49,7 +49,7 @@ namespace Transparency
         private:
 
         //! constructor
-        CompositeEngine( void );
+        explicit CompositeEngine( void );
 
         //! validity
         bool available_;

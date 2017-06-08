@@ -41,7 +41,7 @@ bool IconEngine::reload( void )
     Debug::Throw( "IconEngine::reload.\n" );
 
     // load path from options
-    QStringList pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
+    auto pathList( XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" ) );
     if( pathList == pixmapPath_ ) return false;
 
     pixmapPath_ = pathList;
@@ -93,7 +93,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
         if( (flags&Base::IconCacheItem::Flag::FromTheme) && QIcon::hasThemeIcon( truncatedName ) )
         {
 
-            out = QIcon::fromTheme( truncatedName );
+            out = Base::IconCacheItem( QIcon::fromTheme( truncatedName ) );
             out.addFile( QObject::tr( "from theme" ) );
 
         } else
@@ -101,7 +101,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
         {
 
             // make sure pixmap path is initialized
-            if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" );
+            if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" );
 
             // store list of loaded sizes
             QList<QSize> sizes;
@@ -116,7 +116,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
 
                 // see if path is internal resource path
                 if( path.startsWith( ':' ) ) pixmapFile = File( file ).addPath( path );
-                else pixmapFile = File( path ).find( file );
+                else pixmapFile = File( path ).find( File( file ) );
 
                 // load pixmap
                 if( pixmapFile.isEmpty() ) continue;

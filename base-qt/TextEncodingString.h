@@ -23,21 +23,26 @@
 #include <QList>
 #include <QString>
 
-//! model content
+//* model content
 class TextEncodingString: public QString
 {
     public:
 
-    //! constructor
-    TextEncodingString( void )
+    //* constructor
+    explicit TextEncodingString( void )
     {}
 
-    //! constructor
-    TextEncodingString( const QByteArray& other ):
+    //* constructor
+    explicit TextEncodingString( const QByteArray& other ):
         QString( other )
-        { parse(); }
+    { parse(); }
 
-    //! parse string into two lists of digits and text chunks
+    //* constructor
+    explicit TextEncodingString( QByteArray&& other ):
+        QString( std::move( other ) )
+    { parse(); }
+
+    //* parse string into two lists of digits and text chunks
     void parse( void )
     {
         textSegments_.clear();
@@ -55,7 +60,7 @@ class TextEncodingString: public QString
         textSegments_.append( mid( lastPosition ) );
     }
 
-    //! less than operator
+    //* less than operator
     bool operator < (const TextEncodingString& other ) const
     {
         int textIndex(0);

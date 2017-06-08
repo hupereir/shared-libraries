@@ -38,7 +38,7 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     public:
 
     //* constructor
-    BaseToolTipWidget( QWidget* );
+    explicit BaseToolTipWidget( QWidget* );
 
     //*@name accessors
     //@{

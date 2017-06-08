@@ -43,7 +43,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     public:
 
     //* constructor
-    TreeView( QWidget* = nullptr );
+    explicit TreeView( QWidget* = nullptr );
 
     //*@name accessors
     //@{
@@ -199,10 +199,10 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
         public:
 
         //* constructor
-        Container( QWidget* = nullptr );
+        explicit Container( QWidget* = nullptr );
 
         //* constructor
-        Container( QWidget*, TreeView* );
+        explicit Container( QWidget*, TreeView* );
 
         //*@name accessors
         TreeView& treeView( void ) const

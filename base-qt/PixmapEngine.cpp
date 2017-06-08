@@ -42,7 +42,7 @@ bool PixmapEngine::reload( void )
     Debug::Throw( "PixmapEngine::reload.\n" );
 
     // load path from options
-    QStringList pathList( XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" ) );
+    auto pathList( XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" ) );
     if( pathList == pixmapPath_ ) return false;
 
     pixmapPath_ = pathList;
@@ -69,7 +69,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool fromCache )
     if( QFileInfo( file ).isAbsolute() ) { out = QPixmap( file ); }
     else {
 
-        if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<QString>( "PIXMAP_PATH" );
+        if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" );
         for( const auto& path:pixmapPath_ )
         {
 
@@ -81,7 +81,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool fromCache )
 
             // see if path is internal resource path
             if( path.startsWith( ':' ) ) pixmapFile = File( file ).addPath( path );
-            else pixmapFile = File( path ).find( file );
+            else pixmapFile = File( path ).find( File( file ) );
 
             // load pixmap
             if( !pixmapFile.isEmpty() )

@@ -35,7 +35,7 @@ class CursorMonitor: public QObject, private Base::Counter<CursorMonitor>
     public:
 
     //* constructor
-    CursorMonitor( QWidget* );
+    explicit CursorMonitor( QWidget* );
 
     //* event filter
     virtual bool eventFilter( QObject*, QEvent* );

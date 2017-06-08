@@ -37,7 +37,7 @@ class BaseFileInfoToolTipWidget: public BaseToolTipWidget
     public:
 
     //* constructor
-    BaseFileInfoToolTipWidget( QWidget* = nullptr );
+    explicit BaseFileInfoToolTipWidget( QWidget* = nullptr );
 
     //* set data
     void setFileInfo( const BaseFileInfo&, const QIcon& = QIcon() );

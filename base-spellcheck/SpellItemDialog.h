@@ -40,7 +40,7 @@ namespace SpellCheck
         public:
 
         //* constructor
-        SpellItemDialog( QWidget* );
+        explicit SpellItemDialog( QWidget* );
 
         //* set items
         void setItems( const QOrderedSet<QString>& );

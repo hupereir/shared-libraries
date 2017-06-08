@@ -30,7 +30,7 @@ class ResourceMigration: private Base::Counter<ResourceMigration>
     public:
 
     //* constructor
-    ResourceMigration( File );
+    explicit ResourceMigration( File );
 
     //* perform migration
     bool migrate( File ) const;

@@ -97,19 +97,19 @@ QString Util::windowTitle( const QString& title )
 }
 
 //______________________________________________________________________
-QString Util::home( void )
-{ return QDir::homePath(); }
+File Util::home( void )
+{ return File( QDir::homePath() ); }
 
 //______________________________________________________________________
-QString Util::tmp( void )
-{ return QDir::tempPath(); }
+File Util::tmp( void )
+{ return File( QDir::tempPath() ); }
 
 //______________________________________________________________________
-QString Util::config( void )
+File Util::config( void )
 {
 
     #if QT_VERSION >= 0x050000
-    return QStandardPaths::writableLocation( QStandardPaths::ConfigLocation );
+    return File( QStandardPaths::writableLocation( QStandardPaths::ConfigLocation ) );
     #else
     return File( ".config/" ).addPath( home() );
     #endif
@@ -139,5 +139,5 @@ int Util::pid( void )
 { return getpid(); }
 
 //______________________________________________________________________
-QString Util::workingDirectory( void )
-{ return QDir::currentPath(); }
+File Util::workingDirectory( void )
+{ return File( QDir::currentPath() ); }
