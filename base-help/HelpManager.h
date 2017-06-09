@@ -42,10 +42,6 @@ namespace Base
         //* constructor
         explicit HelpManager( QObject* parent );
 
-        //* destructor
-        virtual ~HelpManager( void )
-        { Debug::Throw( "HelpManager::~HelpManager.\n" ); }
-
         //*@name accessors
         //@{
 

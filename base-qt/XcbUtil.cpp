@@ -237,10 +237,6 @@ XcbUtil::XcbUtil( void ):
     {}
 
 //________________________________________________________________________
-XcbUtil::~XcbUtil( void )
-{}
-
-//________________________________________________________________________
 int XcbUtil::defaultScreenNumber( void ) const
 {
     #if HAVE_XCB

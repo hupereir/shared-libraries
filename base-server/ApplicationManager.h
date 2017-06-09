@@ -51,7 +51,7 @@ namespace Server
         explicit ApplicationManager( QObject* );
 
         //* destructor
-        virtual ~ApplicationManager( void );
+        ~ApplicationManager( void ) override;
 
         //* application name
         virtual void setApplicationName( const QString& name );

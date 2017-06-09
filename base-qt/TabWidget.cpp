@@ -46,11 +46,11 @@ TabWidget::TabWidget( QTabWidget* parent ):
     Debug::Throw( "TabWidget::TabWidget.\n" );
 
     // dock
-    dock_ = new Private::LocalTabWidget(nullptr);
+    dock_.reset( new Private::LocalTabWidget(nullptr) );
     dock_->setWindowIcon( windowIcon() );
     dock_->mainLayout()->setMargin(0);
     dock_->mainLayout()->setSpacing(0);
-    dock_->mainLayout()->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
+    dock_->mainLayout()->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
 
     {
         dockTitleLabel_->setMargin(5);
@@ -67,7 +67,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
     dock_->installEventFilter( &widgetDragMonitor_ );
 
     // connections
-    connect( dock_, SIGNAL(closeEventRequest()), detachAction_, SLOT(trigger()) );
+    connect( dock_.get(), SIGNAL(closeEventRequest()), detachAction_, SLOT(trigger()) );
     connect( &widgetDragMonitor_, SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
 
     // context menu
@@ -77,13 +77,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
 }
 
 //___________________________________________________________
-TabWidget::~TabWidget( void )
-{
-
-    Debug::Throw( "DockPanel::~DockPanel.\n" );
-    dock_->deleteLater();
-
-}
+TabWidget::~TabWidget( void ) = default;
 
 //___________________________________________________________
 void TabWidget::setTitle( QString title )

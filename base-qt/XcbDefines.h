@@ -27,6 +27,9 @@ class XcbDefines
 
     public:
 
+    //* destructor
+    virtual ~XcbDefines() = default;
+
     //* used to access properties
     static const uint32_t MAX_PROP_SIZE = 100000;
 

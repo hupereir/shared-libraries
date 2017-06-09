@@ -169,7 +169,7 @@ namespace Ssh
         Debug::Throw( "FileWriteSocket::_tryConnect.\n" );
 
         #if HAVE_SSH
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
+        const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {
             setErrorString( tr( "invalid session" ) );
@@ -177,7 +177,7 @@ namespace Ssh
             return true;
         }
 
-        auto channel = libssh2_scp_send64( session, qPrintable( path_ ), mode_&0777, (libssh2_uint64_t) size_, 0, 0 );
+        const auto channel = libssh2_scp_send64( session, qPrintable( path_ ), mode_&0777, (libssh2_uint64_t) size_, 0, 0 );
         if( channel )
         {
 
@@ -209,7 +209,7 @@ namespace Ssh
         Debug::Throw( "FileWriteSocket::_trySendEof.\n" );
 
         #if HAVE_SSH
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
+        const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {
             setErrorString( tr( "invalid session" ) );
@@ -217,7 +217,7 @@ namespace Ssh
             return true;
         }
 
-        auto channel( static_cast<LIBSSH2_CHANNEL*>(_channel() ) );
+        const auto channel( static_cast<LIBSSH2_CHANNEL*>(_channel() ) );
         int result = libssh2_channel_send_eof( channel );
 
         if( result == 0 ) return true;
@@ -246,7 +246,7 @@ namespace Ssh
         Debug::Throw( "FileWriteSocket::_tryWaitEof.\n" );
 
         #if HAVE_SSH
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
+        const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {
             setErrorString( tr( "invalid session" ) );
@@ -254,7 +254,7 @@ namespace Ssh
             return true;
         }
 
-        auto channel( static_cast<LIBSSH2_CHANNEL*>(_channel() ) );
+        const auto channel( static_cast<LIBSSH2_CHANNEL*>(_channel() ) );
         int result = libssh2_channel_wait_eof( channel );
         if( result == 0 ) return true;
         else if( result == LIBSSH2_ERROR_EAGAIN ) return false;
@@ -282,7 +282,7 @@ namespace Ssh
         Debug::Throw( "FileWriteSocket::_tryClose.\n" );
 
         #if HAVE_SSH
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
+        const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {
             setErrorString( tr( "invalid session" ) );
@@ -290,7 +290,7 @@ namespace Ssh
             return true;
         }
 
-        auto channel( static_cast<LIBSSH2_CHANNEL*>(_channel() ) );
+        const auto channel( static_cast<LIBSSH2_CHANNEL*>(_channel() ) );
         int result = libssh2_channel_wait_closed( channel );
         if( result == 0 ) return true;
         else if( result == LIBSSH2_ERROR_EAGAIN ) return false;

@@ -41,9 +41,6 @@ class XcbUtil: private XcbDefines
     //* singleton
     static XcbUtil& get( void );
 
-    //* destructor
-    virtual ~XcbUtil( void );
-
     //*@name accessors
     //@{
 

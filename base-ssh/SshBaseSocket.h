@@ -43,7 +43,7 @@ namespace Ssh
         explicit BaseSocket( QObject* );
 
         //* destructor
-        virtual ~BaseSocket( void );
+        ~BaseSocket( void ) override;
 
         //*@name accessors
         //@{

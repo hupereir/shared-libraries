@@ -31,7 +31,7 @@ namespace Ssh
         public:
 
         //* destructor
-        ~Singleton( void );
+        ~Singleton( void ) override;
 
         //* accessor
         static Singleton& get( void );

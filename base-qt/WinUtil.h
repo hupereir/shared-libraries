@@ -37,8 +37,8 @@ class WinUtil
     //* constructor
     explicit WinUtil( QWidget* );
 
-    //* destructor
-    virtual ~WinUtil( void );
+    //* destructor (needed due to std::unique_ptr)
+    ~WinUtil( void );
 
     //* update layered widget using pixmap
     void update( const QPixmap&, double = 1.0 ) const;

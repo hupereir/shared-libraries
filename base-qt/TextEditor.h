@@ -85,7 +85,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     explicit TextEditor( QWidget* = nullptr );
 
     //* destrutor
-    virtual ~TextEditor( void );
+    ~TextEditor( void ) override;
 
     //*@name accessors
     //@{

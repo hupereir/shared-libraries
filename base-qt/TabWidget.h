@@ -32,6 +32,8 @@
 #include <QSizeGrip>
 #include <QTabWidget>
 
+#include <memory>
+
 // forward declaration
 namespace Private
 {
@@ -50,8 +52,8 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     //* constructor
     explicit TabWidget( QTabWidget* parent );
 
-    //* destructor
-    virtual ~TabWidget( void );
+    //* destructor (needed because of std::unique_ptr
+    ~TabWidget( void ) override;
 
     //*@name accessors
     //@{
@@ -133,7 +135,7 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     QLabel* dockTitleLabel_ = nullptr;
 
     //* dock
-    Private::LocalTabWidget* dock_ = nullptr;
+    std::unique_ptr<Private::LocalTabWidget> dock_;
 
     //* index in parent tab
     int index_ = 0;

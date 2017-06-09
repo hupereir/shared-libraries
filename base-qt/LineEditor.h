@@ -43,7 +43,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     explicit LineEditor( QWidget* parent );
 
     //* destructor
-    virtual ~LineEditor( void )
+    ~LineEditor( void ) override
     { delete proxyStyle_.data(); }
 
     //@!name accessors

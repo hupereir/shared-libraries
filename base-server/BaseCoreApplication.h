@@ -39,7 +39,7 @@ class BaseCoreApplication: public QObject
     explicit BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
     //* destructor
-    virtual ~BaseCoreApplication( void );
+    ~BaseCoreApplication( void ) override;
 
     //* initialize application manager
     virtual bool initApplicationManager( void );

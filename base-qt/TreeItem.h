@@ -100,7 +100,7 @@ template<class T> class TreeItem: public TreeItemBase
     }
 
     //* destructor
-    virtual ~TreeItem( void )
+    ~TreeItem( void ) override
     { _eraseFromMap(); }
 
     //* less than operator

@@ -49,7 +49,7 @@ namespace Base
         { count++; }
 
         //* destructor
-        ~Counter()
+        virtual ~Counter()
         { count--; }
 
         private:

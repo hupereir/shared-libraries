@@ -33,6 +33,8 @@
 #include <QLayout>
 #include <QPixmap>
 
+#include <memory>
+
 // forward declaration
 namespace Private
 {
@@ -52,8 +54,8 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     //* constructor
     explicit DockPanel( QWidget* parent );
 
-    //* destructor
-    virtual ~DockPanel();
+    //* destructor (needed because of unique_ptr member
+    ~DockPanel( void ) override;
 
     //*@name accessors
     //@{
@@ -102,7 +104,7 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     QLabel* dockTitleLabel_ = nullptr;
 
     //* dock
-    Private::LocalDockWidget* dock_ = nullptr;
+    std::unique_ptr<Private::LocalDockWidget> dock_;
 
     //* contents panel
     Private::LocalWidget* panel_ = nullptr;

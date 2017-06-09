@@ -45,7 +45,7 @@ namespace Ssh
         explicit Connection( QObject* );
 
         //* destructor
-        virtual ~Connection( void );
+        ~Connection( void ) override;
 
         //*@name accessors
         //@{

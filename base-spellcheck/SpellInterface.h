@@ -40,7 +40,7 @@ namespace SpellCheck
         explicit SpellInterface( void );
 
         //* destructor
-        ~SpellInterface( void );
+        ~SpellInterface( void ) override;
 
         //* no filter
         static const QString FilterNone;

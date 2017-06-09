@@ -50,7 +50,7 @@ namespace Private
         explicit SystemNotificationsP( QObject* = nullptr );
 
         //* destructor
-        virtual ~SystemNotificationsP( void );
+        virtual ~SystemNotificationsP( void ) override;
 
         //* @name modifiers
         //@{

@@ -62,10 +62,6 @@ namespace Server
                 id_( id )
             {}
 
-            //* destructor
-            virtual ~SameIdFTor( void )
-            {}
-
             //* predicate
             virtual bool operator() ( const Client* client ) const
             { return client->id() == id_; }

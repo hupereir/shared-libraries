@@ -45,12 +45,12 @@ DockPanel::DockPanel( QWidget* parent ):
     Debug::Throw( "DockPanel::DockPanel.\n" );
 
     // dock
-    dock_ = new Private::LocalDockWidget(nullptr);
+    dock_.reset( new Private::LocalDockWidget(nullptr) );
     dock_->setWindowIcon( windowIcon() );
     QVBoxLayout* vLayout( new QVBoxLayout() );
     vLayout->setMargin(0);
     vLayout->setSpacing(0);
-    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_ ) );
+    vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
     dock_->setLayout( vLayout );
 
     {
@@ -73,7 +73,7 @@ DockPanel::DockPanel( QWidget* parent ):
     dock_->installEventFilter( &panel_->widgetDragMonitor() );
 
     // and connect close event request
-    connect( dock_, SIGNAL(closeEventRequest()), &panel_->detachAction(), SLOT(trigger()) );
+    connect( dock_.get(), SIGNAL(closeEventRequest()), &panel_->detachAction(), SLOT(trigger()) );
 
     panel_->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
     connect( &panel_->detachAction(), SIGNAL(triggered()), SLOT(_toggleDock()) );
@@ -88,13 +88,7 @@ DockPanel::DockPanel( QWidget* parent ):
 }
 
 //___________________________________________________________
-DockPanel::~DockPanel( void )
-{
-
-    Debug::Throw( "DockPanel::~DockPanel.\n" );
-    dock_->deleteLater();
-
-}
+DockPanel::~DockPanel( void ) = default;
 
 //___________________________________________________________
 QWidget& DockPanel::panel( void )
@@ -144,7 +138,7 @@ void DockPanel::_toggleDock( void )
 
         // change parent
         const QPoint position( panel_->mapToGlobal( QPoint( 0, 0 ) ) );
-        panel_->setParent( dock_ );
+        panel_->setParent( dock_.get() );
         dock_->layout()->addWidget( panel_ );
         panel_->show();
 

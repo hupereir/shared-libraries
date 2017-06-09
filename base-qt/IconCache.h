@@ -115,32 +115,16 @@ namespace Base
         explicit IconCache( void )
         {}
 
-        //* destructor
-        virtual ~IconCache( void )
-        {}
-
         //* pair
         class Pair: public QPair<QString, IconCacheItem >
         {
             public:
 
-            //* constructor
-            explicit Pair( void )
-            {}
-
-            //* constructor
-            explicit Pair( const QString& name, const IconCacheItem& icon ):
-                QPair<QString, IconCacheItem >( name, icon )
-            {}
-
-            //* constructor
-            explicit Pair( const QPair<QString, IconCacheItem >& other ):
-                QPair<QString, IconCacheItem >( other )
-            {}
-
-            //* destructor
-            virtual ~Pair( void )
-            {}
+            //* construct from any argument out of which you could make a QPair
+            template< typename... Args >
+            explicit Pair( Args&&... args ):
+                QPair<QString, IconCacheItem>( std::forward<Args>(args)... )
+                {}
 
             //* equal to operator
             bool operator == ( const Pair& other ) const
