@@ -134,7 +134,7 @@ void Options::set( const QString& name, const Option& constOption, bool isDefaul
 bool Options::add( const QString& name, const Option& constOption, bool isDefault )
 {
 
-    Debug::Throw() << "Options::add - name: " << name << endl;
+    Debug::Throw() << "Options::add - name: " << name << " value: \"" << constOption.raw() << "\"" << endl;
 
     // store option as special if requested
     SpecialMap::iterator iter( specialOptions_.find( name ) );
