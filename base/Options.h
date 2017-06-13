@@ -126,7 +126,10 @@ class Options: private Base::Counter<Options>
     virtual bool add( const QString&, const Option&, bool isDefault = false );
 
     //* option value modifier
-    template < typename T >
+    template <
+        typename T,
+        typename = typename std::enable_if<!std::is_base_of<Option, typename std::decay<T>::type>::value>::type
+        >
     void add( const QString& name, const T& value, bool isDefault = false )
     {
         Option option;
@@ -141,7 +144,10 @@ class Options: private Base::Counter<Options>
     void set( const QString&, const Option&, bool isDefault = false );
 
     //* option value modifier
-    template <typename T>
+    template <
+        typename T,
+        typename = typename std::enable_if<!std::is_base_of<Option, typename std::decay<T>::type>::value>::type
+        >
     void set( const QString& name, const T& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
