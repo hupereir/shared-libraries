@@ -203,8 +203,14 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
         } else if( element.tagName() == Base::Xml::Option ) {
 
             XmlOption option( element );
-            if( options.isSpecialOption( option.name() ) ) options.add( option.name(), option );
-            else options.set( option.name(), (Option) option );
+            if( options.isSpecialOption( option.name() ) )
+            {
+
+                static QRegExp invalidOptionRegExp( "\\(0b\\d+\\)$" );
+                if( invalidOptionRegExp.indexIn( option.raw() ) < 0 )
+                { options.add( option.name(), (Option) option ); }
+
+            } else options.set( option.name(), (Option) option );
 
         }
     }
