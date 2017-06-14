@@ -58,7 +58,7 @@ namespace Base
 
         setOptionName( "HELP_DIALOG" );
 
-        QHBoxLayout *layout = new QHBoxLayout();
+        QHBoxLayout *layout = new QHBoxLayout;
         layout->setMargin(0);
         layout->setSpacing(2);
         mainLayout().addLayout( layout );
@@ -76,7 +76,7 @@ namespace Base
         layout->addWidget( htmlFrame_ = new QWidget( this ) );
 
         // vbox layout for editor and button
-        QVBoxLayout *vLayout = new QVBoxLayout();
+        QVBoxLayout *vLayout = new QVBoxLayout;
         vLayout->setMargin(0);
         htmlFrame_->setLayout( vLayout );
 

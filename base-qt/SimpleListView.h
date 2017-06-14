@@ -33,10 +33,10 @@ class SimpleListView: public QListView
     explicit SimpleListView( QWidget* = nullptr );
 
     //* orientation
-    void setOrientation( Qt::Orientation );
+    virtual void setOrientation( Qt::Orientation );
 
     //* model
-    virtual void setModel( QAbstractItemModel* );
+    void setModel( QAbstractItemModel* ) override;
 
     Q_SIGNALS:
 
@@ -59,13 +59,13 @@ class SimpleListView: public QListView
     protected:
 
     //* generic event
-    virtual bool event( QEvent* );
-
+    bool event( QEvent* ) override;
+    
     //* mouse move event
-    virtual void mouseMoveEvent( QMouseEvent* );
+    void mouseMoveEvent( QMouseEvent* ) override;
 
     //* mouse press event
-    virtual void mousePressEvent( QMouseEvent* );
+    void mousePressEvent( QMouseEvent* ) override;
 
     //* hover index
     virtual void _setHoverIndex( const QModelIndex& );

@@ -38,7 +38,7 @@ class CursorMonitor: public QObject, private Base::Counter<CursorMonitor>
     explicit CursorMonitor( QWidget* );
 
     //* event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     //* auto hide delay_setCursorState
     void setAutoHideDelay( int value )
@@ -55,8 +55,9 @@ class CursorMonitor: public QObject, private Base::Counter<CursorMonitor>
 
     //* timer event
     /* need to save updated window size */
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
+    //* cursor state
     enum class CursorState
     {
         Visible,

@@ -140,7 +140,7 @@ TextEditor::~TextEditor( void )
 
     // need to reset Text document
     // to avoid deletion while deleting this editor
-    setDocument( new QTextDocument() );
+    setDocument( new QTextDocument );
 
     // keep reference to first associate
     TextEditor &editor( **editors.begin() );
@@ -666,7 +666,7 @@ void TextEditor::setBackground( QTextBlock block, const QColor& color )
 
     // try retrieve data or create
     auto data( static_cast<TextBlockData*>( block.userData() ) );
-    if( !data ) block.setUserData( data = new TextBlockData() );
+    if( !data ) block.setUserData( data = new TextBlockData );
 
     // try assign color
     if( data->setBackground( color ) && updatesEnabled() )
@@ -1284,7 +1284,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
 
         // store data
         auto text( boxSelection_.toString() );
-        auto data = new QMimeData();
+        auto data = new QMimeData;
         data->setText( text );
         data->setData( BoxSelection::mimeType, qPrintable( text ) );
         drag->setMimeData( data );
@@ -1359,7 +1359,7 @@ void TextEditor::dropEvent( QDropEvent* event )
 
     // static empty mimeData used to pass to base class
     // so that drop events are finished properly even when actually doing nothing
-    static auto emptyData( new QMimeData() );
+    static auto emptyData( new QMimeData );
     QDropEvent dropEvent( event->pos(), event->possibleActions(), emptyData, Qt::NoButton, Qt::NoModifier );
 
     // if mimeData is block selection, block selection is enabled here
@@ -2869,7 +2869,7 @@ void TextEditor::_selectLineFromDialog( void )
 TextEditor::Container::Container( QWidget* parent ):
     QWidget( parent ),
     Counter( "TextEditor::Container" ),
-    editor_( new TextEditor() )
+    editor_( new TextEditor )
 { _initialize(); }
 
 //_________________________________________________________
@@ -2885,7 +2885,7 @@ void TextEditor::Container::_initialize( void )
     Debug::Throw( "TextEditor::Container::_initialize.\n" );
     editor_->setParent( this );
 
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(2);
     setLayout( vLayout );

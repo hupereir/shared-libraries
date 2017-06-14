@@ -56,7 +56,7 @@ class ImageFileDialog: public QFileDialog
 
     protected:
 
-    virtual void showEvent( QShowEvent* e )
+    void showEvent( QShowEvent* e ) override
     {
         QFileDialog::showEvent(e);
         _preview();
@@ -85,10 +85,10 @@ class ImageFileDialog: public QFileDialog
         protected:
 
         //* drag enter event
-        virtual void dragEnterEvent( QDragEnterEvent* );
+        void dragEnterEvent( QDragEnterEvent* ) override;
 
         //* drop event
-        virtual void dropEvent( QDropEvent* );
+        void dropEvent( QDropEvent* ) override;
 
     };
 

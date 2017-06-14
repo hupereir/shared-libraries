@@ -33,7 +33,7 @@ WarningDialog::WarningDialog( QWidget* parent, const QString& text ):
     Debug::Throw( "WarningDialog::WarningDialog\n" );
 
     //! try load Question icon
-    QHBoxLayout *hLayout( new QHBoxLayout() );
+    QHBoxLayout *hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);
     mainLayout().addLayout( hLayout );

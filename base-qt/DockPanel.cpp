@@ -47,7 +47,7 @@ DockPanel::DockPanel( QWidget* parent ):
     // dock
     dock_.reset( new Private::LocalDockWidget(nullptr) );
     dock_->setWindowIcon( windowIcon() );
-    QVBoxLayout* vLayout( new QVBoxLayout() );
+    QVBoxLayout* vLayout( new QVBoxLayout );
     vLayout->setMargin(0);
     vLayout->setSpacing(0);
     vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
@@ -62,7 +62,7 @@ DockPanel::DockPanel( QWidget* parent ):
     dock_->hide();
 
     // this layout
-    setLayout( new QVBoxLayout() );
+    setLayout( new QVBoxLayout );
     layout()->setMargin(0);
     layout()->setSpacing(0);
 
@@ -80,7 +80,7 @@ DockPanel::DockPanel( QWidget* parent ):
     connect( &panel_->widgetDragMonitor(), SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
 
     // vertical layout for children
-    mainLayout_ = new QVBoxLayout();
+    mainLayout_ = new QVBoxLayout;
     mainLayout_->setMargin( 5 );
     mainLayout_->setSpacing( 5 );
     panel_->setLayout( mainLayout_ );

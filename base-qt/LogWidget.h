@@ -73,10 +73,10 @@ class LogWidget: public TextEditor
     protected:
 
     //* keypress event
-    virtual void keyPressEvent( QKeyEvent* );
+    void keyPressEvent( QKeyEvent* ) override;
 
     //* wheel events
-    virtual void 	wheelEvent( QWheelEvent* );
+    void wheelEvent( QWheelEvent* ) override;
 
         //* wrap option name
     QString _wrapOptionName( void )

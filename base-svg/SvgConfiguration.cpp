@@ -44,7 +44,7 @@ namespace Svg
         public:
 
         //! constructor
-        StyleOptionWidget( QWidget* parent ):
+        explicit StyleOptionWidget( QWidget* parent ):
             CustomComboBox( parent ),
             OptionWidget( "DUMMY_OPTION", this )
         {
@@ -121,11 +121,11 @@ namespace Svg
 
         Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
 
-        QVBoxLayout* vLayout = new QVBoxLayout();
+        QVBoxLayout* vLayout = new QVBoxLayout;
         vLayout->setMargin(0);
         setLayout( vLayout );
 
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setMargin( 2 );
         vLayout->addLayout( hLayout );
 
@@ -146,7 +146,7 @@ namespace Svg
         // flat background configuration
         QWidget* box;
         stackedWidget->addWidget( box = new QGroupBox( tr( "Flat Background Settings" ) ) );
-        box->setLayout( vLayout = new QVBoxLayout() );
+        box->setLayout( vLayout = new QVBoxLayout );
 
         Transparency::TransparencyConfiguration* transparencyConfiguration;
         vLayout->addWidget( transparencyConfiguration = new Transparency::TransparencyConfiguration( box, Transparency::TransparencyConfiguration::Background ));
@@ -156,7 +156,7 @@ namespace Svg
 
         // svg
         stackedWidget->addWidget( box = new QGroupBox( tr( "Decorated Background Settings" ) ) );
-        box->setLayout( vLayout = new QVBoxLayout() );
+        box->setLayout( vLayout = new QVBoxLayout );
 
         // SVG file
         vLayout->addWidget( label = new QLabel( tr( "Svg files:" ), box ) );
@@ -171,13 +171,13 @@ namespace Svg
         // plasma interface
         #if defined(Q_OS_LINUX)
         stackedWidget->addWidget( box = new QGroupBox( tr( "System Background Settings" ) ) );
-        box->setLayout( vLayout = new QVBoxLayout() );
+        box->setLayout( vLayout = new QVBoxLayout );
 
-        hLayout = new QHBoxLayout();
+        hLayout = new QHBoxLayout;
         hLayout->setMargin(0);
         vLayout->addLayout( hLayout );
 
-        GridLayout* gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
@@ -211,6 +211,5 @@ namespace Svg
         connect( styleWidget, SIGNAL(currentIndexChanged(int)), stackedWidget, SLOT(setCurrentIndex(int)));
 
     }
-
 
 }

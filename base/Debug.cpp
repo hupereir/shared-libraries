@@ -31,7 +31,7 @@ class NullIODevice : public QIODevice
     public:
 
     //! constructor
-    NullIODevice()
+    explicit NullIODevice()
     { setOpenMode( WriteOnly ); }
 
     protected:

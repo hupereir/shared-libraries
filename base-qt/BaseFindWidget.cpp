@@ -48,12 +48,12 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
 
     // create vbox layout
     QVBoxLayout* vLayout;
-    setLayout( vLayout = new QVBoxLayout() );
+    setLayout( vLayout = new QVBoxLayout );
     vLayout->setMargin( compact ? 2:0 );
     vLayout->setSpacing( 5 );
 
     // edition layout
-    vLayout->addItem( editorLayout_ = new QGridLayout() );
+    vLayout->addItem( editorLayout_ = new QGridLayout );
     editorLayout_->setMargin( 0 );
     editorLayout_->setSpacing( 5 );
 
@@ -93,7 +93,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     editorLayout_->addWidget( label = new QLabel( tr( "Options:" ), this ), 3, 0, 1, 1 );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-    QHBoxLayout* hLayout( new QHBoxLayout() );
+    QHBoxLayout* hLayout( new QHBoxLayout );
     hLayout->setSpacing( 5 );
     hLayout->setMargin( 0 );
     editorLayout_->addLayout( hLayout, 3, 1, 1, 3 );
@@ -134,7 +134,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
 
     } else {
 
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setMargin( 0 );
         hLayout->setSpacing( 5 );
         vLayout->addItem( hLayout );

@@ -55,7 +55,7 @@ class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSy
     protected:
 
     //* timer event
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
     protected Q_SLOTS:
 

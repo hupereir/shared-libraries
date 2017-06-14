@@ -68,7 +68,7 @@ namespace Private
         protected:
 
         //* event
-        virtual bool event( QEvent* );
+        bool event( QEvent* ) override;
 
         //* item view
         QWidget* _itemView( void ) const
@@ -115,7 +115,7 @@ namespace Private
         { return path_; }
 
         //* size hint
-        virtual QSize sizeHint( void ) const
+        QSize sizeHint( void ) const override
         { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
 
         //* drag monitor
@@ -167,7 +167,7 @@ namespace Private
         protected:
 
         //* paint event
-        virtual void paintEvent( QPaintEvent* );
+        void paintEvent( QPaintEvent* ) override;
 
         //* paint
         void _paint( QPainter* );
@@ -227,7 +227,7 @@ namespace Private
         protected:
 
         //* paint event
-        virtual void paintEvent( QPaintEvent* );
+        void paintEvent( QPaintEvent* ) override;
 
     };
 
@@ -252,7 +252,7 @@ namespace Private
         protected:
 
         //* paint event
-        virtual void paintEvent( QPaintEvent* );
+        void paintEvent( QPaintEvent* ) override;
 
     };
 

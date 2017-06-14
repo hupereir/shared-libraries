@@ -106,7 +106,7 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     //@}
 
     // event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     public Q_SLOTS:
 
@@ -122,13 +122,13 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     protected:
 
     //* paint
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //* mouse press
-    virtual void mousePressEvent( QMouseEvent* );
+    void mousePressEvent( QMouseEvent* ) override;
 
     //* timer event
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
     //* check mouse position
     bool _checkMousePosition( void ) const;

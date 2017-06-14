@@ -41,7 +41,7 @@ FileRecordToolTipWidget::FileRecordToolTipWidget( QWidget* parent ):
     Debug::Throw( "FileRecordToolTipWidget::FileRecordToolTipWidget.\n" );
 
     // layout
-    QHBoxLayout* hLayout = new QHBoxLayout();
+    QHBoxLayout* hLayout = new QHBoxLayout;
     hLayout->setMargin( 10 );
     hLayout->setSpacing( 10 );
     setLayout( hLayout );
@@ -49,7 +49,7 @@ FileRecordToolTipWidget::FileRecordToolTipWidget( QWidget* parent ):
     hLayout->addWidget( iconLabel_ = new QLabel( this ) );
     iconLabel_->setAlignment( Qt::AlignHCenter|Qt::AlignTop );
 
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin( 0 );
     vLayout->setSpacing( 5 );
     hLayout->addLayout( vLayout );
@@ -65,7 +65,7 @@ FileRecordToolTipWidget::FileRecordToolTipWidget( QWidget* parent ):
     separator_->setFrameStyle( QFrame::HLine );
 
     // grid layout
-    GridLayout* gridLayout = new GridLayout();
+    GridLayout* gridLayout = new GridLayout;
     gridLayout->setMaxCount( 2 );
     gridLayout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
     gridLayout->setColumnAlignment( 1, Qt::AlignVCenter|Qt::AlignLeft );

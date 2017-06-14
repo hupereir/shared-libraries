@@ -46,10 +46,7 @@ class ClockTimer: public QObject, private Base::Counter<ClockTimer>
 
     protected:
 
-    virtual void timerEvent( QTimerEvent* );
-
-    //* check current time, generate time string if new; emit TimeChanged
-    //void _checkCurrentTime( void );
+    void timerEvent( QTimerEvent* ) override;
 
     private:
 

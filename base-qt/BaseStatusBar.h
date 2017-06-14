@@ -52,7 +52,7 @@ class StatusBarLabel: public QLabel
     }
 
     //* set label text and process events
-    void setTextAndUpdate( const QString& );
+    virtual void setTextAndUpdate( const QString& );
 
 };
 
@@ -69,7 +69,7 @@ class BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
     void addClock( void );
 
     //* add label
-    void addLabel( int = 0 );
+    void addLabel( int stretch = 0 );
 
     //* add labels
     void addLabels( int n, int stretch = 0 )
@@ -82,7 +82,7 @@ class BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
     protected:
 
     //* context menu
-    virtual void contextMenuEvent( QContextMenuEvent* );
+    void contextMenuEvent( QContextMenuEvent* ) override;
 
     private:
 

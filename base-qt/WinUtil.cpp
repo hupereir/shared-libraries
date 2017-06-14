@@ -46,7 +46,7 @@ class WinUtilPrivate
     public:
 
     //* constructor
-    WinUtilPrivate( void )
+    explicit WinUtilPrivate( void )
     {
         #if defined(Q_OS_WIN)
         // define function pointer and try resolve from library
@@ -164,7 +164,7 @@ void WinUtil::enableBlurBehind( const Base::Margins& margins )
     if(QSysInfo::WindowsVersion < QSysInfo::WV_6_0) return;
 
     // initialize private
-    if( !private_ ) private_.reset( new WinUtilPrivate() );
+    if( !private_ ) private_.reset( new WinUtilPrivate );
 
     // check function pointer
     if( !private_->blurBehindFunction_ ) return;

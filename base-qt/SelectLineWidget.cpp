@@ -44,13 +44,13 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     QBoxLayout* layout;
     if( compact )
     {
-        setLayout( layout = new QHBoxLayout() );
+        setLayout( layout = new QHBoxLayout );
         layout->setMargin(2);
         layout->setSpacing(2);
 
     } else {
 
-        setLayout( layout = new QVBoxLayout() );
+        setLayout( layout = new QVBoxLayout );
         layout->setMargin(0);
         layout->setSpacing(5);
 
@@ -94,7 +94,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
         layout->addWidget( frame, 0 );
 
         // insert hbox layout for buttons
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setSpacing(5);
         hLayout->setMargin(0);
         layout->addLayout( hLayout, 0 );

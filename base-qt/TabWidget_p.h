@@ -53,21 +53,21 @@ namespace Private
         protected:
 
         //* paint event
-        virtual void paintEvent( QPaintEvent* );
+        void paintEvent( QPaintEvent* ) override;
 
         //* closeEvent
-        virtual void closeEvent( QCloseEvent* event );
+        void closeEvent( QCloseEvent* event ) override;
 
         //* resize event
-        virtual void resizeEvent( QResizeEvent* );
+        void resizeEvent( QResizeEvent* ) override;
 
         private:
 
         //* main widget
-        QWidget* mainWidget_;
+        QWidget* mainWidget_ = nullptr;
 
         //* layout
-        QVBoxLayout* mainLayout_;
+        QVBoxLayout* mainLayout_ = nullptr;
 
     };
 

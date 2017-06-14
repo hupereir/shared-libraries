@@ -76,13 +76,13 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     { return sortOrderOptionName_; }
 
     //* return index at a given position
-    virtual QModelIndex indexAt( const QPoint& ) const;
+    QModelIndex indexAt( const QPoint& ) const override;
 
     //* visual rect for given index
-    virtual QRect visualRect( const QModelIndex& ) const;
+    QRect visualRect( const QModelIndex& ) const override;
 
     //* minimum size hind
-    virtual QSize minimumSizeHint( void ) const;
+    QSize minimumSizeHint( void ) const override;
 
     //@}
 
@@ -90,7 +90,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //@{
 
     //* set model
-    virtual void setModel( QAbstractItemModel* );
+    void setModel( QAbstractItemModel* ) override;
 
     //* enable list finding
     void setFindEnabled( bool value );
@@ -135,7 +135,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     virtual bool setOptionName( const QString& );
 
     //* scroll to given index
-    virtual void scrollTo( const QModelIndex&, ScrollHint );
+    void scrollTo( const QModelIndex&, ScrollHint ) override;
 
     //@}
 
@@ -242,61 +242,61 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     virtual bool isIndexHidden( const QModelIndex& ) const;
 
     //* move curesor
-    virtual QModelIndex moveCursor( CursorAction, Qt::KeyboardModifiers );
+    QModelIndex moveCursor( CursorAction, Qt::KeyboardModifiers ) override;
 
     //* selection
-    virtual void setSelection( const QRect&, QItemSelectionModel::SelectionFlags );
+    void setSelection( const QRect&, QItemSelectionModel::SelectionFlags ) override;
 
     //* start drag
-    virtual void startDrag( Qt::DropActions );
+    void startDrag( Qt::DropActions ) override;
 
     //* contents scroll
-    virtual void scrollContentsBy( int, int );
+    void scrollContentsBy( int, int ) override;
 
     //* horizontal offset
-    virtual int horizontalOffset( void ) const;
+    int horizontalOffset( void ) const override;
 
     //* vertical offset
-    virtual int verticalOffset( void ) const;
+    int verticalOffset( void ) const override;
 
     //* region for given selection
-    virtual QRegion visualRegionForSelection( const QItemSelection& ) const;
+    QRegion visualRegionForSelection( const QItemSelection& ) const override;
 
     //* event
-    virtual bool event( QEvent* );
+    bool event( QEvent* ) override;
 
     //* paint event
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //* resize event
-    virtual void resizeEvent( QResizeEvent* );
+    void resizeEvent( QResizeEvent* ) override;
 
     //* keypress event
-    virtual void keyPressEvent( QKeyEvent* );
+    void keyPressEvent( QKeyEvent* ) override;
 
     //* mouse press
-    virtual void mousePressEvent( QMouseEvent* );
+    void mousePressEvent( QMouseEvent* ) override;
 
     //* mouse move
-    virtual void mouseMoveEvent( QMouseEvent* );
+    void mouseMoveEvent( QMouseEvent* ) override;
 
     //* mouse release
-    virtual void mouseReleaseEvent( QMouseEvent* );
+    void mouseReleaseEvent( QMouseEvent* ) override;
 
     //* drag enter
-    virtual void dragEnterEvent( QDragEnterEvent* );
+    void dragEnterEvent( QDragEnterEvent* ) override;
 
     //* drag move
-    virtual void dragMoveEvent( QDragMoveEvent* );
+    void dragMoveEvent( QDragMoveEvent* ) override;
 
     //* drag leave
-    virtual void dragLeaveEvent( QDragLeaveEvent* );
+    void dragLeaveEvent( QDragLeaveEvent* ) override;
 
     //* drag enter
-    virtual void dropEvent( QDropEvent* );
+    void dropEvent( QDropEvent* ) override;
 
     //* timer event
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
     //* selection
     QModelIndexList _selectedIndexes( const QRect& ) const;

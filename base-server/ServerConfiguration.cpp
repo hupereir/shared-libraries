@@ -37,7 +37,7 @@ namespace Server
     {
         Debug::Throw( "ServerConfiguration::ServerConfiguration.\n" );
 
-        setLayout( new QVBoxLayout() );
+        setLayout( new QVBoxLayout );
         layout()->setSpacing(5);
         layout()->setMargin(0);
 
@@ -50,7 +50,7 @@ namespace Server
         if( title.isEmpty() ) layout()->addWidget( box = new QWidget( this ) );
         else layout()->addWidget( box = new QGroupBox( title, this ) );
 
-        GridLayout* gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
         gridLayout->setMargin(5);
         gridLayout->setMaxCount( 2 );

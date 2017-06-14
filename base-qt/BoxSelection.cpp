@@ -297,7 +297,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
     if( selection.isEmpty() ) return false;
 
     // store text into MimeData
-    QMimeData *data( new QMimeData() );
+    QMimeData *data( new QMimeData );
     data->setText( selection );
     data->setData( mimeType, qPrintable( selection ) );
 

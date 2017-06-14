@@ -107,25 +107,6 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //* changes selection to uppercase
     void upperCase( void );
 
-    protected:
-
-    //*@name event handlers
-    //@{
-
-    //* generic event
-    bool event( QEvent* ) override;
-
-    //* context menu (overloaded)
-    void contextMenuEvent( QContextMenuEvent* ) override;
-
-    //* overloaded key press event
-    void keyPressEvent( QKeyEvent* ) override;
-
-    //@}
-
-    //* toggle clear button
-    virtual void _updateClearButton( void ) const;
-
     protected Q_SLOTS:
 
     //* update modification state
@@ -143,8 +124,25 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 
     protected:
 
+    //*@name event handlers
+    //@{
+
+    //* generic event
+    bool event( QEvent* ) override;
+
+    //* context menu (overloaded)
+    void contextMenuEvent( QContextMenuEvent* ) override;
+
+    //* overloaded key press event
+    void keyPressEvent( QKeyEvent* ) override;
+
     //* paint event
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
+
+    //@}
+
+    //* toggle clear button
+    virtual void _updateClearButton( void ) const;
 
     private:
 

@@ -36,7 +36,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
     explicit ColorGrabObject( QWidget* );
 
     //* event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     Q_SIGNALS:
 

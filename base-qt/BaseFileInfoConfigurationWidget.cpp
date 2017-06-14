@@ -32,7 +32,7 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
 
     Debug::Throw( "BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget.\n" );
 
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(5);
     setLayout( vLayout );

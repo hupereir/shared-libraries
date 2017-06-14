@@ -41,7 +41,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     setOptionName( "HTML_DIALOG" );
 
     // file
-    GridLayout *gridLayout = new GridLayout();
+    GridLayout *gridLayout = new GridLayout;
     gridLayout->setMargin(0);
     gridLayout->setSpacing(2);
     gridLayout->setMaxCount( 2 );
@@ -55,7 +55,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
 
     gridLayout->addWidget( new QLabel( tr( "Command:" ), this ) );
 
-    QHBoxLayout* hLayout = new QHBoxLayout();
+    QHBoxLayout* hLayout = new QHBoxLayout;
     hLayout->setSpacing(2);
     hLayout->setMargin(0);
     gridLayout->addLayout( hLayout );

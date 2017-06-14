@@ -45,12 +45,16 @@ class CustomToolButton: public QToolButton, private Base::Counter<CustomToolButt
     bool rotate( const CustomPixmap::Rotation& );
 
     //* size hint
-    virtual QSize sizeHint( void ) const;
+    QSize sizeHint( void ) const override;
+
+    //* size hint
+    QSize minimumSizeHint( void ) const override
+    { return sizeHint(); }
 
     protected:
 
     //* painting
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     private Q_SLOTS:
 

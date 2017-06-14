@@ -28,8 +28,8 @@ ProgressStatusBar::ProgressStatusBar( QWidget* parent ):
     Debug::Throw( "ProgressStatusBar::ProgressStatusBar.\n" );
 
     addPermanentWidget( stack_ = new QStackedWidget( this ), 1 );
-    stack_->addWidget( label_ = new StatusBarLabel() );
-    stack_->addWidget( progress_ = new QProgressBar() );
+    stack_->addWidget( label_ = new StatusBarLabel );
+    stack_->addWidget( progress_ = new QProgressBar );
 
 }
 

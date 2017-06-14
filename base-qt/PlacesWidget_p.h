@@ -165,7 +165,7 @@ namespace Private
         { return hasFocus_; }
 
         //* size hint
-        virtual QSize sizeHint( void ) const
+        QSize sizeHint( void ) const override
         { return minimumSize(); }
 
         //* flags
@@ -244,10 +244,10 @@ namespace Private
         protected:
 
         //* event
-        virtual bool event( QEvent* );
+        bool event( QEvent* ) override;
 
         //* paint event
-        virtual void paintEvent( QPaintEvent* );
+        void paintEvent( QPaintEvent* ) override;
 
         //* paint
         virtual void _paint( QPainter* );

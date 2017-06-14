@@ -74,7 +74,7 @@ class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
     protected:
 
     //* paint event (overloaded)
-    void paintEvent( QPaintEvent* event );
+    void paintEvent( QPaintEvent* event ) override;
 
     private Q_SLOTS:
 
@@ -92,9 +92,6 @@ class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
     void _selected( QAction* );
 
     private:
-
-    //* add a color
-    void add( QString );
 
     //* map colors to display pixmap
     using ColorMap = QMap<Base::Color, QBrush>;

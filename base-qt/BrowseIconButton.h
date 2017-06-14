@@ -48,10 +48,10 @@ class BrowseIconButton: public CustomToolButton
     protected:
 
     //* drag enter event
-    virtual void dragEnterEvent( QDragEnterEvent* );
+    void dragEnterEvent( QDragEnterEvent* ) override;
 
     //* drop event
-    virtual void dropEvent( QDropEvent* );
+    void dropEvent( QDropEvent* ) override;
 
     protected Q_SLOTS:
 

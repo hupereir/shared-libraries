@@ -54,20 +54,20 @@ class WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
     virtual void setOptionName( const QString& );
 
     //* size hint
-    /*! an invalid size is returned when option name is not set */
+    /** an invalid size is returned when option name is not set */
     QSize sizeHint( void ) const;
 
     //* position
     QPoint position( void ) const;
 
     //* event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     protected:
 
     //* timer event
-    /* need to save updated window size */
-    virtual void timerEvent( QTimerEvent* );
+    /** need to save updated window size */
+    void timerEvent( QTimerEvent* ) override;
 
     private:
 

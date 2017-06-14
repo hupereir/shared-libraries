@@ -45,11 +45,15 @@ void ColumnSelectionMenu::_updateActions( void )
     // clear existing actions
     for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     { delete iter.key(); }
+
+    delete currentColumnAction_;
+    currentColumnAction_ = nullptr;
+
     actions_.clear();
 
     // check if the menu already has actions.
     QList<QAction*> actions( ColumnSelectionMenu::actions() );
-    QAction *firstAction( actions.isEmpty() ? 0:actions.front() );
+    QAction *firstAction( actions.isEmpty() ? nullptr:actions.front() );
 
     // retrieve parent header.
     QHeaderView* header( target_->header() );
@@ -57,6 +61,24 @@ void ColumnSelectionMenu::_updateActions( void )
 
     // try cast to treeview
     TreeView* treeView( qobject_cast<TreeView*>( target_ ) );
+
+    if( currentColumn_ >= 0 )
+    {
+
+        // retrieve column name
+        QString columnName( header->model()->headerData( currentColumn_, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        if( columnName.isNull() || columnName.isEmpty() ) columnName = QString( tr("Column %1") ).arg( currentColumn_+1 );
+
+        // disable/hide action for locked columns
+        if( !( treeView && treeView->isColumnVisibilityLocked( currentColumn_ ) ) )
+        {
+            currentColumnAction_ = new QAction( tr( "Hide Column '%1'" ).arg( columnName ), this );
+            connect( currentColumnAction_, SIGNAL(triggered()), SLOT(_hideCurrentColumn()) );
+            insertAction( firstAction, currentColumnAction_ );
+            insertSeparator( firstAction );
+        }
+
+    }
 
     // loop over columns in header
     int visibleColumns(0);
@@ -95,18 +117,33 @@ void ColumnSelectionMenu::_updateActions( void )
 }
 
 //______________________________________________________________________________
+void ColumnSelectionMenu::_hideCurrentColumn( void )
+{
+    Debug::Throw( "ColumnSelectionMenu::_hideCurrentColumn.\n" );
+
+    // update current column visibility
+    if( currentColumn_ >= 0 )
+    { target_->setColumnHidden( currentColumn_, true ); }
+
+    // save
+    if( TreeView* treeView = qobject_cast<TreeView*>( target_ ) )
+    { treeView->saveMask(); }
+
+}
+
+//______________________________________________________________________________
 void ColumnSelectionMenu::_updateSelectedColumns( QAction* action )
 {
     Debug::Throw( "ColumnSelectionMenu::_updateSelectedColumns.\n" );
 
     // retrieve index
-    ActionMap::const_iterator iter = actions_.find( action );
+    auto&& iter = actions_.find( action );
     if( iter == actions_.end() ) return;
 
     // set column visibility
     target_->setColumnHidden( iter.value(), !iter.key()->isChecked() );
 
-    if( TreeView* treeView = qobject_cast<TreeView*>( target_ ) )
+    if( auto treeView = qobject_cast<TreeView*>( target_ ) )
     { treeView->saveMask(); }
 
 }

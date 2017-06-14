@@ -40,7 +40,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
 {
     Debug::Throw( "ColorDisplay::ColorDisplay.\n" );
 
-    QHBoxLayout *layout = new QHBoxLayout();
+    QHBoxLayout *layout = new QHBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(2);
     setLayout( layout );

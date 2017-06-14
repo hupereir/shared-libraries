@@ -265,7 +265,7 @@ namespace Private
     {
         public:
 
-        SizeGrip( QWidget* parent ):
+        explicit SizeGrip( QWidget* parent ):
             QSizeGrip( parent )
         {}
 
@@ -290,15 +290,15 @@ namespace Private
         setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
         // grid layout to overlay main layout and invisible grip
-        QGridLayout *gridLayout( new QGridLayout() );
+        QGridLayout *gridLayout( new QGridLayout );
         gridLayout->setMargin(0);
         gridLayout->setSpacing(0);
         setLayout( gridLayout );
 
-        gridLayout->addWidget( mainWidget_ = new QWidget(), 0, 0, 1, 1 );
+        gridLayout->addWidget( mainWidget_ = new QWidget, 0, 0, 1, 1 );
         gridLayout->addWidget( new SizeGrip( this ), 0, 0, 1, 1, Qt::AlignBottom|Qt::AlignRight );
 
-        mainWidget_->setLayout( mainLayout_ = new QVBoxLayout() );
+        mainWidget_->setLayout( mainLayout_ = new QVBoxLayout );
 
     }
 

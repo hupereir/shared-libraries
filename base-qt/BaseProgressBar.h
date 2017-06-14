@@ -56,7 +56,7 @@ class BaseProgressBar:public QProgressBar
     protected:
 
     //* paint
-    void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     private:
 

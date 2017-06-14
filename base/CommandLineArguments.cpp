@@ -37,15 +37,7 @@ CommandLineArguments::CommandLineArguments( const QStringList& ref ):
 {}
 
 //_____________________________________________________________________
-char** CommandLineArguments::argv( void ) const
-{
-    char** out = new char*[argc()];
-    int count(0);
-    for( auto&& argument:*this )
-    {
-        char* arg = new char[argument.size()+1];
-        sprintf( arg, "%s", qPrintable( argument ) );
-        out[count] = arg;
-    }
-    return out;
-}
+CommandLineArguments::CommandLineArguments( QStringList&& ref ):
+    QStringList( std::move(ref) ),
+    Counter( "CommandLineArguments" )
+{}

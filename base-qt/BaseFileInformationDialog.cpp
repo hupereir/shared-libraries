@@ -48,13 +48,13 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     mainLayout().addWidget( tabWidget_ );
 
     // general information
-    tabWidget_->addTab( mainPage_ = new QWidget(), tr( "General" ) );
-    pageLayout_ = new QVBoxLayout();
+    tabWidget_->addTab( mainPage_ = new QWidget, tr( "General" ) );
+    pageLayout_ = new QVBoxLayout;
     pageLayout_->setMargin(5);
     pageLayout_->setSpacing(5);
     mainPage_->setLayout( pageLayout_ );
 
-    auto hLayout = new QHBoxLayout();
+    auto hLayout = new QHBoxLayout;
     hLayout->setMargin(0);
     hLayout->setSpacing(5);
     pageLayout_->addLayout( hLayout );
@@ -66,13 +66,13 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     hLayout->addWidget( iconLabel_, 0, Qt::AlignTop );
     hLayout->addStretch();
 
-    auto vLayout= new QVBoxLayout();
+    auto vLayout= new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(5);
     hLayout->addLayout( vLayout );
     hLayout->addStretch();
 
-    gridLayout_ = new GridLayout();
+    gridLayout_ = new GridLayout;
     gridLayout_->setSpacing( 5 );
     gridLayout_->setMaxCount( 2 );
     gridLayout_->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
@@ -100,9 +100,9 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     // permissions tab
     QWidget* box;
-    tabWidget_->addTab( box = new QWidget(), tr( "Permissions" ) );
+    tabWidget_->addTab( box = new QWidget, tr( "Permissions" ) );
 
-    auto layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout;
     layout->setMargin(5);
     layout->setSpacing( 5 );
     box->setLayout( layout );
@@ -112,7 +112,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     // user and group
     layout->addWidget( new QLabel( tr( "Ownership:" ), box ) );
 
-    auto gridLayout = new GridLayout();
+    auto gridLayout = new GridLayout;
     gridLayout->setMargin(0);
     gridLayout->setSpacing( 5 );
     gridLayout->setMaxCount( 2 );

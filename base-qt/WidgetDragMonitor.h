@@ -72,7 +72,7 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     //@}
 
     //* event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
 
     Q_SIGNALS:
@@ -96,7 +96,7 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     protected:
 
     //* timer event
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
     //* get corner from (relative) position
     XcbDefines::Direction _direction( QWidget* widget, const QPoint& ) const;

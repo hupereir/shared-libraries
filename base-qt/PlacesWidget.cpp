@@ -331,7 +331,7 @@ namespace Private
         CustomDialog( parent, OkButton|CancelButton|Separator )
     {
         // layout
-        GridLayout *layout = new GridLayout();
+        GridLayout *layout = new GridLayout;
         layout->setMargin(0);
         layout->setMaxCount(2);
         layout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
@@ -365,7 +365,7 @@ namespace Private
         Debug::Throw(  "PlacesToolTipWidget::PlacesToolTipWidget.\n" );
 
         // layout
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setMargin( 10 );
         hLayout->setSpacing( 10 );
         setLayout( hLayout );
@@ -373,7 +373,7 @@ namespace Private
         hLayout->addWidget( iconLabel_ = new QLabel( this ) );
         iconLabel_->setAlignment( Qt::AlignHCenter|Qt::AlignTop );
 
-        QVBoxLayout* vLayout = new QVBoxLayout();
+        QVBoxLayout* vLayout = new QVBoxLayout;
         vLayout->setMargin( 0 );
         vLayout->setSpacing( 5 );
         hLayout->addLayout( vLayout );
@@ -390,7 +390,7 @@ namespace Private
         separator_->setFrameStyle( QFrame::HLine );
 
         // grid layout
-        GridLayout* gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout;
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
         gridLayout->setColumnAlignment( 1, Qt::AlignVCenter|Qt::AlignLeft );
@@ -511,13 +511,13 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     _installActions();
 
     // main layout
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(2);
     vLayout->setSpacing(0);
     setLayout( vLayout );
 
     // button layout
-    buttonLayout_ = new QVBoxLayout();
+    buttonLayout_ = new QVBoxLayout;
     buttonLayout_->setMargin(0);
     buttonLayout_->setSpacing(0);
 

@@ -75,7 +75,7 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     _addDisabledButton( button );
     _editorLayout().addWidget( button, 1, 3, 1, 1 );
     button->setAutoDefault( false );
-    button->setMenu( replaceAllMenu_ = new QMenu() );
+    button->setMenu( replaceAllMenu_ = new QMenu );
     setTabOrder( previous, button );
 
     // replace in selection action

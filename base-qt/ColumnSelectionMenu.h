@@ -32,31 +32,44 @@
 class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMenu>
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     explicit ColumnSelectionMenu( QWidget*, QTreeView*, const QString& = tr( "Select Columns" ) );
+
+    //* set current index
+    void setCurrentColumn( int index )
+    { currentColumn_ = index; }
 
     private Q_SLOTS:
 
-    //! update actions
+    //* update actions
     void _updateActions( void );
 
-    //! update mask when triggering actions
+    //* hide current column
+    void _hideCurrentColumn( void );
+
+    //* update mask when triggering actions
     void _updateSelectedColumns( QAction* action );
 
     private:
 
-    //! target
-    QTreeView* target_;
+    //* target
+    QTreeView* target_ = nullptr;
 
-    //! map action to column index
+    //* current column
+    int currentColumn_ = -1;
+
+    //* current column action
+    QAction *currentColumnAction_ = nullptr;
+
+    //* map action to column index
     using ActionMap = QHash< QAction*, int >;
 
-    //! map action to column index
+    //* map action to column index
     ActionMap actions_;
 
 };

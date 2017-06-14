@@ -44,7 +44,7 @@ namespace Transparency
 
         if( (flags&Foreground) && (flags&Background) )
         {
-            setLayout( new QVBoxLayout() );
+            setLayout( new QVBoxLayout );
             layout()->setSpacing(5);
             layout()->setMargin(0);
         }
@@ -89,7 +89,7 @@ namespace Transparency
         OptionSpinBox* spinbox;
         OptionCheckBox* checkbox;
 
-        GridLayout* gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
         gridLayout->setMargin(5);
         gridLayout->setMaxCount( 2 );
@@ -142,7 +142,7 @@ namespace Transparency
         OptionColorDisplay* colorDisplay;
         OptionSlider* slider;
 
-        GridLayout* gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
         gridLayout->setMargin(5);
         gridLayout->setMaxCount( 2 );

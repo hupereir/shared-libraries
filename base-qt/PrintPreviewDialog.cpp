@@ -119,7 +119,7 @@ namespace Private
     {
         Debug::Throw( "NavigationWidget::NavigationWidget.\n" );
 
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setMargin(0);
         setLayout( hLayout );
 

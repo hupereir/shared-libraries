@@ -74,10 +74,10 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     bool hasNext( void ) const;
 
     //* minimum size hint
-    virtual QSize minimumSizeHint( void ) const;
+    QSize minimumSizeHint( void ) const override;
 
     //* size hint
-    virtual QSize sizeHint( void ) const
+    QSize sizeHint( void ) const override
     { return minimumSizeHint(); }
 
     //* previous path menu
@@ -138,7 +138,7 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     protected:
 
     //* resize events
-    virtual void resizeEvent( QResizeEvent* );
+    void resizeEvent( QResizeEvent* ) override;
 
     //* prefix
     void _setUsePrefix( bool value )

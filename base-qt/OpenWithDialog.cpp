@@ -64,7 +64,7 @@ void OpenWithDialog::realizeWidget( void )
     Q_ASSERT( !files_.isEmpty() );
 
     // try load Question icon
-    QHBoxLayout *hLayout( new QHBoxLayout() );
+    QHBoxLayout *hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
     hLayout->setMargin(0);
     mainLayout().addLayout( hLayout );
@@ -80,7 +80,7 @@ void OpenWithDialog::realizeWidget( void )
 
     {
         // vertical layout for question etc.
-        QVBoxLayout* vLayout = new QVBoxLayout();
+        QVBoxLayout* vLayout = new QVBoxLayout;
         vLayout->setMargin(0);
         hLayout->addLayout( vLayout, 1 );
 
@@ -129,7 +129,7 @@ void OpenWithDialog::realizeWidget( void )
         model->sort( FileInfoModel::Filename, Qt::DescendingOrder );
 
         // file list
-        TreeView* treeView = new TreeView();
+        TreeView* treeView = new TreeView;
         treeView->setSelectionMode( QAbstractItemView::NoSelection );
         mainLayout().addWidget( treeView );
 
@@ -152,7 +152,7 @@ void OpenWithDialog::realizeWidget( void )
 
     {
         // horizontal layout for combobox
-        QHBoxLayout *hLayout( new QHBoxLayout() );
+        QHBoxLayout *hLayout( new QHBoxLayout );
         hLayout->setMargin(0);
         mainLayout().addLayout( hLayout );
 

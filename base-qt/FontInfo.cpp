@@ -29,7 +29,7 @@ QWidget( parent )
     Debug::Throw( "FontInfo::FontInfo.\n" );
 
     // create checkboxes
-    setLayout( new QVBoxLayout() );
+    setLayout( new QVBoxLayout );
     layout()->addWidget( checkBoxes_.insert( Format::Bold, new QCheckBox( tr( "Bold" ), this ) ).value() );
     layout()->addWidget( checkBoxes_.insert( Format::Italic, new QCheckBox( tr( "Italic" ), this ) ).value() );
     layout()->addWidget( checkBoxes_.insert( Format::Underline, new QCheckBox( tr( "Underline" ), this ) ).value() );

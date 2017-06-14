@@ -321,10 +321,10 @@ PathEditor::PathEditor( QWidget* parent ):
         itemView_ = new QListView( this );
         itemView_->hide();
 
-        browserContainer_ = new QWidget();
+        browserContainer_ = new QWidget;
         browserContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
         hLayout->setMargin(0);
         browserContainer_->setLayout( hLayout );
@@ -342,7 +342,7 @@ PathEditor::PathEditor( QWidget* parent ):
         connect( menuButton_, SIGNAL(clicked()), SLOT(_menuButtonClicked()) );
 
         // button layout
-        hLayout->addLayout( buttonLayout_ = new QHBoxLayout() );
+        hLayout->addLayout( buttonLayout_ = new QHBoxLayout );
         buttonLayout_->setSpacing(0);
         buttonLayout_->setMargin(0);
 
@@ -361,10 +361,10 @@ PathEditor::PathEditor( QWidget* parent ):
 
     {
         // editor
-        editorContainer_ = new QWidget();
+        editorContainer_ = new QWidget;
         editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
         hLayout->setMargin(0);
         editorContainer_->setLayout( hLayout );

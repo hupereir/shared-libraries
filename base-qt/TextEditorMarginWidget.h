@@ -63,7 +63,7 @@ class TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMa
     protected:
 
     //* paint event
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //* parent editor
     TextEditor& _editor( void ) const

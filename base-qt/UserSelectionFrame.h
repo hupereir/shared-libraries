@@ -29,63 +29,63 @@
 class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFrame>
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
-    explicit UserSelectionFrame( QWidget* parent );
+    //* constructor
+    explicit UserSelectionFrame( QWidget* );
 
-    //! set user
-    void setUser( const QString& user );
+    //* set user
+    void setUser( const QString& );
 
-    //! users
+    //* users
     QStringList users( void ) const;
 
-    //! selected user
+    //* selected user
     QString user( void ) const;
 
-    //! editor
+    //* editor
     CustomComboBox& comboBox( void ) const
     { return *comboBox_; }
 
     Q_SIGNALS:
 
-    //! emitted when user is changed
+    //* emitted when user is changed
     void userChanged( QString );
 
     public Q_SLOTS:
 
-    //! update user list
+    //* update user list
     void updateUsers( QStringList );
 
     protected:
 
-    //! timer event
-    virtual void timerEvent( QTimerEvent* );
+    //* timer event
+    void timerEvent( QTimerEvent* ) override;
 
     private Q_SLOTS:
 
-    //! selected user changed
+    //* selected user changed
     void _userChanged( void );
 
-    //! selected user changed
+    //* selected user changed
     void _delayedUserChanged( void )
     { timer_.start( delay_, this ); }
 
     private:
 
-    //! delay for userChanged signal emission
+    //* delay for userChanged signal emission
     int delay_;
 
-    //! user changed timer
+    //* user changed timer
     QBasicTimer timer_;
 
-    //! user line_edit
+    //* user line_edit
     CustomComboBox* comboBox_;
 
-    //! current user
+    //* current user
     /*! it is used to avoid emitting signal when user was changed but fall back to the current one*/
     QString user_;
 

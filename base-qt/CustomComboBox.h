@@ -52,7 +52,7 @@ class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
     protected:
 
     //* key press event
-    virtual void keyPressEvent( QKeyEvent* );
+    void keyPressEvent( QKeyEvent* ) override;
 
     private:
 

@@ -39,7 +39,7 @@ class TextEncodingModel: public ListModel<TextEncodingString>
     public:
 
     //! constructor
-    TextEncodingModel( QObject* parent ):
+    explicit TextEncodingModel( QObject* parent ):
         ListModel<TextEncodingString>( parent )
         {}
 
@@ -83,7 +83,7 @@ class TextEncodingModel: public ListModel<TextEncodingString>
         public:
 
         //! constructor
-        SortFTor( int type, Qt::SortOrder order = Qt::AscendingOrder ):
+        explicit SortFTor( int type, Qt::SortOrder order = Qt::AscendingOrder ):
             ItemModel::SortFTor( type, order )
             {}
 
@@ -117,7 +117,7 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
     model_( new TextEncodingModel( this ) )
 {
     // layout
-    QVBoxLayout* layout( new QVBoxLayout() );
+    QVBoxLayout* layout( new QVBoxLayout );
     layout->setMargin( 0 );
     setLayout( layout );
 

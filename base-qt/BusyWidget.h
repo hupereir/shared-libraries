@@ -63,11 +63,11 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     { return opacity_; }
 
     //* size
-    virtual QSize minimumSizeHint( void ) const
+    QSize minimumSizeHint( void ) const override
     { return QSize( 2*radius_+border_, 2*radius_+border_ ); }
 
     //* size
-    virtual QSize sizeHint( void ) const
+    QSize sizeHint( void ) const override
     { return minimumSizeHint(); }
 
     //@}
@@ -106,10 +106,10 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     protected:
 
     //* paint event
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //* timer event
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
     //* adjust position based on parent
     void _adjustPosition( void );

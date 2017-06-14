@@ -37,7 +37,7 @@ class EmbeddedWidget: public QWidget
 
     //* show event
     /** used to automatically hide other embedded widgets when this one is shown */
-    virtual void showEvent( QShowEvent* );
+    void showEvent( QShowEvent* ) override;
 
 };
 

@@ -20,14 +20,6 @@
 *
 *******************************************************************************/
 
-/**
-  \file BlockHighlight.h
-  \brief handles current block highlighting
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include <QApplication>
 #include <QBasicTimer>
 #include <QTimerEvent>
@@ -67,7 +59,7 @@ class BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
   protected:
 
   //* delayed highlighting
-  virtual void timerEvent( QTimerEvent* event );
+  void timerEvent( QTimerEvent* event ) override;
 
   //* highlight
   void _highlight( void );

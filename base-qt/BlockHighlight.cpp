@@ -95,7 +95,7 @@ void BlockHighlight::_highlight( void )
     TextBlockData* data = static_cast<TextBlockData*>( block.userData() );
     if( !data )
     {
-        data = new TextBlockData();
+        data = new TextBlockData;
         block.setUserData( data );
     } else if( data->hasFlag( TextBlock::CurrentBlock ) ) return;
 

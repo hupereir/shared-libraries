@@ -30,7 +30,7 @@ CustomSlider::CustomSlider( QWidget* parent ):
 {
     Debug::Throw( "CustomSlider::CustomSlider.\n" );
 
-    setLayout( new QHBoxLayout() );
+    setLayout( new QHBoxLayout );
     layout()->setMargin(0);
     layout()->setSpacing(5);
 

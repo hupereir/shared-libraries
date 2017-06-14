@@ -52,19 +52,19 @@ namespace SpellCheck
         setOptionName( "SPELL_DIALOG" );
 
         // horizontal layout for suggestions and buttons
-        QHBoxLayout* hLayout = new QHBoxLayout();
+        QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setMargin(0);
         hLayout->setSpacing(10);
         mainLayout().addLayout( hLayout, 1 );
 
         // insert left vertical box
-        QVBoxLayout *vLayout = new QVBoxLayout();
+        QVBoxLayout *vLayout = new QVBoxLayout;
         vLayout->setMargin( 0 );
         vLayout->setSpacing(5);
         hLayout->addLayout( vLayout );
 
         // grid for text editors
-        GridLayout *gridLayout = new GridLayout();
+        GridLayout *gridLayout = new GridLayout;
         gridLayout->setMargin( 0 );
         gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 2 );
@@ -89,7 +89,7 @@ namespace SpellCheck
         list_->header()->hide();
 
         // grid layout for dictionary and filter
-        gridLayout = new GridLayout();
+        gridLayout = new GridLayout;
         gridLayout->setMargin( 0 );
         gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 3 );
@@ -129,7 +129,7 @@ namespace SpellCheck
         gridLayout->setColumnStretch( 1, 1 );
 
         // right vbox
-        vLayout = new QVBoxLayout();
+        vLayout = new QVBoxLayout;
         vLayout->setMargin( 0 );
         vLayout->setSpacing(5);
         hLayout->addLayout( vLayout );

@@ -43,7 +43,7 @@ namespace SpellCheck
     {
         Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
 
-        GridLayout* gridLayout( new GridLayout() );
+        GridLayout* gridLayout( new GridLayout );
         gridLayout->setSpacing( 5 );
         gridLayout->setMargin( 5 );
         gridLayout->setMaxCount( 3 );

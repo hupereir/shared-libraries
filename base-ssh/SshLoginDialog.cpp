@@ -34,7 +34,7 @@ namespace Ssh
         Debug::Throw( "LoginDialog::LoginDialog.\n" );
         setOptionName( "SSH_LOGIN_DIALOG" );
         setWindowTitle( tr( "SSH login - Homechat" ) );
-        GridLayout* gridLayout = new GridLayout();
+        GridLayout* gridLayout = new GridLayout;
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );

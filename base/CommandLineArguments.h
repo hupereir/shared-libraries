@@ -36,12 +36,8 @@ class CommandLineArguments: public QStringList, private Base::Counter<CommandLin
     //* constructor
     explicit CommandLineArguments( const QStringList& );
 
-    //* return arg counts
-    int argc( void ) const
-    { return size(); }
-
-    //* return argv
-    char** argv( void ) const;
+    //* constructor
+    explicit CommandLineArguments( QStringList&& );
 
 };
 

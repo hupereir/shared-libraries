@@ -36,17 +36,17 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
 {
 
     setWindowTitle( tr( "Pages" ) );
-    auto layout = new QVBoxLayout();
+    auto layout = new QVBoxLayout;
     setLayout( layout );
 
-    auto hLayout = new QHBoxLayout();
+    auto hLayout = new QHBoxLayout;
     hLayout->setMargin(0);
     layout->addLayout( hLayout );
 
     QGroupBox* groupBox;
     {
         hLayout->addWidget( groupBox = new QGroupBox( tr( "Orientation" ), this ) );
-        QVBoxLayout* vLayout = new QVBoxLayout();
+        QVBoxLayout* vLayout = new QVBoxLayout;
         groupBox->setLayout( vLayout );
 
         QRadioButton* radioButton;
@@ -68,7 +68,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
 
     {
         hLayout->addWidget( groupBox = new QGroupBox( tr( "Pages Per Sheet" ), this ) );
-        QVBoxLayout* vLayout = new QVBoxLayout();
+        QVBoxLayout* vLayout = new QVBoxLayout;
         groupBox->setLayout( vLayout );
 
         QRadioButton* radioButton;
@@ -91,7 +91,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
         vLayout->addStretch();
     }
 
-    hLayout = new QHBoxLayout();
+    hLayout = new QHBoxLayout;
     hLayout->setMargin(0);
     layout->addLayout( hLayout );
     hLayout->addStretch( 1 );

@@ -55,9 +55,9 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     QSplitter* splitter = findChild<QSplitter*>( "splitter" );
     if( splitter )
     {
-        QWidget *main( new QWidget() );
+        QWidget *main( new QWidget );
         splitter->addWidget( main );
-        QVBoxLayout *vLayout = new QVBoxLayout();
+        QVBoxLayout *vLayout = new QVBoxLayout;
         main->setLayout( vLayout );
         vLayout->setSpacing(5);
         vLayout->setMargin(0);
@@ -65,7 +65,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
         preview_->setAlignment( Qt::AlignCenter );
         preview_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
 
-        QHBoxLayout *hLayout = new QHBoxLayout();
+        QHBoxLayout *hLayout = new QHBoxLayout;
         hLayout->setSpacing(5);
         hLayout->setMargin(0);
         vLayout->addLayout( hLayout );

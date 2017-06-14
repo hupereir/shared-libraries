@@ -60,7 +60,7 @@ namespace Private
         protected:
 
         //* paint
-        virtual void paintEvent( QPaintEvent* );
+        void paintEvent( QPaintEvent* ) override;
 
     };
 

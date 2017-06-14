@@ -41,7 +41,7 @@ class EditDialog: public CustomDialog
     public:
 
     //! constructor
-    EditDialog( QWidget*, bool, QFileDialog::FileMode );
+    explicit EditDialog( QWidget*, bool, QFileDialog::FileMode );
 
     //! editor
     BrowsedLineEditor::Editor& editor( void ) const
@@ -67,7 +67,7 @@ EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode m
 {
 
     setOptionName( "OPTIONLISTBOX_EDIT" );
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(5);
     mainLayout().addLayout( vLayout );
@@ -102,7 +102,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 
     Debug::Throw( "OptionListBox::OptionListBox.\n" );
 
-    QHBoxLayout* layout( new QHBoxLayout() );
+    QHBoxLayout* layout( new QHBoxLayout );
     layout->setSpacing(5);
     layout->setMargin(0);
     setLayout( layout );
@@ -127,7 +127,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     list_->setIconSize( IconSize( IconSize::Small ) );
     layout->addWidget( list_, 1 );
 
-    QVBoxLayout* buttonLayout = new QVBoxLayout();
+    QVBoxLayout* buttonLayout = new QVBoxLayout;
     buttonLayout->setMargin(0);
     buttonLayout->setSpacing( 5 );
     layout->addLayout( buttonLayout, 0 );

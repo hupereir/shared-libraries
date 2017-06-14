@@ -39,7 +39,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     Q_CHECK_PTR( target );
 
     // create vbox layout
-    setLayout( new QVBoxLayout() );
+    setLayout( new QVBoxLayout );
     layout()->setMargin(5);
     layout()->setSpacing( 2 );
 

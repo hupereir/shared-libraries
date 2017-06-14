@@ -47,7 +47,7 @@ class MultipleClickCounter: public QObject, private Base::Counter<MultipleClickC
     protected:
 
     //* timerEvent
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
     private:
 

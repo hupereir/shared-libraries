@@ -895,6 +895,7 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
 
     // create menu and raise.
     ColumnSelectionMenu menu( this, this );
+    menu.setCurrentColumn( header()->logicalIndexAt( pos ) );
     if( isSortingEnabled() )
     {
         menu.addSeparator();
@@ -902,7 +903,7 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
     }
 
     menu.adjustSize();
-    menu.exec( QCursor::pos() );
+    menu.exec( header()->mapToGlobal( pos ) );
 
     // save mask after menu execution,
     // to keep visible columns in sync with option
@@ -1097,7 +1098,7 @@ QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 TreeView::Container::Container( QWidget* parent ):
     QWidget( parent ),
     Counter( "TreeView::Container" ),
-    treeView_( new TreeView() )
+    treeView_( new TreeView )
 { _initialize(); }
 
 //_________________________________________________________
@@ -1114,7 +1115,7 @@ void TreeView::Container::_initialize( void )
     treeView_->setParent( this );
 
     // setup layout
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(2);
     setLayout( vLayout );

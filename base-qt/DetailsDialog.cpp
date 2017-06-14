@@ -30,7 +30,7 @@ void DetailsDialog::setDetails( const QString& details )
     if( details.isEmpty() ) return;
 
     // create text editor assign text and set as details
-    TextEditor* editor = new TextEditor();
+    TextEditor* editor = new TextEditor;
     editor->setReadOnly( true );
     editor->setWrapFromOptions( false );
     editor->setLineWrapMode( TextEditor::WidgetWidth );

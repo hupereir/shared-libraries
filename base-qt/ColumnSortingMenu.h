@@ -59,13 +59,13 @@ class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
     private:
 
     //* target
-    QTreeView* target_;
+    QTreeView* target_ = nullptr;
 
     //* header
-    QHeaderView* header_;
+    QHeaderView* header_ = nullptr;
 
     //* action group
-    QActionGroup* group_;
+    QActionGroup* group_ = nullptr;
 
     //* map action to column index
     using ActionMap = QHash< QAction*, int >;

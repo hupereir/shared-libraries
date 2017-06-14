@@ -31,7 +31,7 @@ class EditDialog: public CustomDialog
     public:
 
     //* constructor
-    EditDialog( QWidget* );
+    explicit EditDialog( QWidget* );
 
     //* editor
     ColorDisplay& editor( void ) const
@@ -57,7 +57,7 @@ EditDialog::EditDialog( QWidget* parent ):
 {
 
     setOptionName( "OPTIONLISTBOX_EDIT" );
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(5);
     mainLayout().addLayout( vLayout );

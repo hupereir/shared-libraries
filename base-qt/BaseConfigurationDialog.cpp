@@ -62,7 +62,7 @@ namespace Private
         auto box = new QWidget( this );
         mainLayout().addWidget( box );
 
-        auto gridLayout = new GridLayout();
+        auto gridLayout = new GridLayout;
         gridLayout->setMaxCount(2);
         gridLayout->setMargin(0);
         gridLayout->setSpacing(5);
@@ -192,7 +192,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
         parent->layout()->addWidget( box );
 
         {
-            auto gridLayout = new QGridLayout();
+            auto gridLayout = new QGridLayout;
             box->setLayout( gridLayout );
 
             // widget style
@@ -238,14 +238,14 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
         parent->layout()->addWidget( box );
 
         // icon pixmap
-        auto vLayout = new QVBoxLayout();
+        auto vLayout = new QVBoxLayout;
         box->setLayout( vLayout );
 
         auto checkbox( new OptionCheckBox( tr( "Use system font" ), box, "USE_SYSTEM_FONT" ) );
         vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
-        auto gridLayout = new GridLayout();
+        auto gridLayout = new GridLayout;
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         vLayout->addLayout( gridLayout );
@@ -307,7 +307,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
         box = new QGroupBox( tr( "Lists" ), parent );
     }
 
-    auto vLayout = new QVBoxLayout();
+    auto vLayout = new QVBoxLayout;
     box->setLayout( vLayout );
     parent->layout()->addWidget( box );
 
@@ -331,7 +331,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     OptionSpinBox* spinbox;
 
     // icon size in lists
-    auto gridLayout = new GridLayout();
+    auto gridLayout = new GridLayout;
     gridLayout->setMargin(0);
     gridLayout->setMaxCount(2);
     vLayout->addLayout( gridLayout );
@@ -384,11 +384,11 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
     if( flags&Flag::TabEmulation )
     {
         auto box = new QGroupBox( tr( "Tab Emulation" ), parent );
-        auto layout = new QVBoxLayout();
+        auto layout = new QVBoxLayout;
         box->setLayout( layout );
         parent->layout()->addWidget( box );
 
-        auto hLayout = new QHBoxLayout();
+        auto hLayout = new QHBoxLayout;
         hLayout->setMargin(0);
         layout->addLayout( hLayout );
 
@@ -413,7 +413,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
     if( flags&Flag::ParagraphHighlight )
     {
         auto box = new QGroupBox( tr( "Paragraph Highlighting" ), parent );
-        auto layout = new QVBoxLayout();
+        auto layout = new QVBoxLayout;
         box->setLayout( layout );
         parent->layout()->addWidget( box );
 
@@ -430,7 +430,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
     if( flags&Flag::BoxSelection )
     {
         auto box = new QGroupBox( tr( "Box Selection" ), parent );
-        auto gridLayout = new GridLayout();
+        auto gridLayout = new GridLayout;
         gridLayout->setMaxCount(2);
         box->setLayout( gridLayout );
         parent->layout()->addWidget( box );
@@ -458,7 +458,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         // misc
         QGroupBox* box;
         parent->layout()->addWidget( box = new QGroupBox( tr( "Options" ), parent ) );
-        auto layout = new QVBoxLayout();
+        auto layout = new QVBoxLayout;
         box->setLayout( layout );
 
         auto checkbox = new OptionCheckBox( tr( "Wrap text " ), box, "WRAP_TEXT" );
@@ -471,7 +471,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
 
         QLabel* label;
         OptionSpinBox* spinbox;
-        auto hLayout = new QHBoxLayout();
+        auto hLayout = new QHBoxLayout;
         layout->addLayout( hLayout );
         hLayout->setMargin(0);
         hLayout->addWidget( label = new QLabel( tr( "Automatically hide mouse cursor after: " ), box ) );

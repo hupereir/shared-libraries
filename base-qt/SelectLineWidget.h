@@ -69,7 +69,7 @@ class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineW
     protected:
 
     //* change event
-    virtual void changeEvent( QEvent* );
+    void changeEvent( QEvent* ) override;
 
     private Q_SLOTS:
 

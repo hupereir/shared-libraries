@@ -1445,7 +1445,7 @@ QModelIndex IconView::_indexBefore( const QModelIndex& current ) const
 IconView::Container::Container( QWidget* parent ):
     QWidget( parent ),
     Counter( "IconView::Container" ),
-    iconView_( new IconView() )
+    iconView_( new IconView )
 { _initialize(); }
 
 //_________________________________________________________
@@ -1462,7 +1462,7 @@ void IconView::Container::_initialize( void )
     iconView_->setParent( this );
 
     // setup layout
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(2);
     setLayout( vLayout );

@@ -50,7 +50,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     //* get area from name
     static Qt::ToolBarArea nameToArea( const QString& name )
     {
-        AreaMap::iterator iter = _toolbarAreas().find( name );
+        auto&& iter( _toolbarAreas().find( name ) );
         return iter == _toolbarAreas().end() ? (Qt::ToolBarArea) 0 :iter.value();
     }
 
@@ -58,10 +58,10 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     static QString areaToName( const Qt::ToolBarArea& value )
     {
 
-        for( AreaMap::iterator iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )
+        for( auto&& iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )
         { if( iter.value() == value ) return iter.key(); }
 
-        return "";
+        return QString();
 
     }
     //@}
@@ -140,16 +140,16 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     protected:
 
     //* paint events
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //* show event
-    virtual void showEvent( QShowEvent* );
+    void showEvent( QShowEvent* ) override;
 
     //* hide event
-    virtual void hideEvent( QHideEvent* );
+    void hideEvent( QHideEvent* ) override;
 
     //* move event
-    virtual void moveEvent( QMoveEvent* );
+    void moveEvent( QMoveEvent* ) override;
 
     protected Q_SLOTS:
 

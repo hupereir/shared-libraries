@@ -49,7 +49,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     // set model editable
     model_.setReadOnly( false );
 
-    QHBoxLayout* layout = new QHBoxLayout();
+    QHBoxLayout* layout = new QHBoxLayout;
     layout->setSpacing(20);
     layout->setMargin(5);
     mainLayout().addLayout( layout );

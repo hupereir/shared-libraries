@@ -136,7 +136,7 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     protected:
 
     //* change event
-    virtual void changeEvent( QEvent* );
+    void changeEvent( QEvent* ) override;
 
     //* "entire word" checkbox
     QCheckBox& _entireWordCheckBox( void ) const

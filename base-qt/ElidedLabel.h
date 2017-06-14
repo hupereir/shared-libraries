@@ -71,18 +71,18 @@ class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
     //@}
 
     //* minimum size hint
-    virtual QSize minimumSizeHint( void ) const;
+    QSize minimumSizeHint( void ) const override;
 
     //* size hint
-    virtual QSize sizeHint( void ) const;
+    QSize sizeHint( void ) const override;
 
     protected:
 
     //* mouse release
-    void mouseReleaseEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *) override;
 
     //* resize event
-    virtual void resizeEvent( QResizeEvent* );
+    void resizeEvent( QResizeEvent* ) override;
 
     //* update text based on object size
     void updateElidedText( void );
