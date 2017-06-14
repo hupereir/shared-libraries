@@ -32,13 +32,6 @@ namespace Svg
 {
 
     //________________________________________________
-    SvgRenderer::SvgRenderer( void ):
-        QSvgRenderer(),
-        Counter( "Svg::SvgRendered" )
-    {}
-
-
-    //________________________________________________
     bool SvgRenderer::updateConfiguration( void )
     {
         bool drawOverlay( XmlOptions::get().get<bool>( "SVG_DRAW_OVERLAY" ) );
@@ -48,93 +41,11 @@ namespace Svg
     }
 
     //________________________________________________
-    void SvgRenderer::createStyleSheet( QPalette palette )
+    bool SvgRenderer::load( const QString& filename )
     {
-        palette.setCurrentColorGroup( QPalette::Active );
-        styleSheet_.clear();
-
-        auto addColor = [](QString name, QColor color )
-        { return QString( ".ColorScheme-%1 {\n  color:%2;\n  stop-color:%2;\n}\n" ).arg( name, color.name()); };
-
-        styleSheet_ += addColor( "Text", palette.color( QPalette::WindowText ) );
-        styleSheet_ += addColor( "Background", palette.color( QPalette::Window ) );
-        styleSheet_ += addColor( "Highlight", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ViewText", palette.color( QPalette::Text ) );
-        styleSheet_ += addColor( "ViewBackground", palette.color( QPalette::Base ) );
-        styleSheet_ += addColor( "ViewHover", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ViewFocus", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ButtonText", palette.color( QPalette::ButtonText ) );
-        styleSheet_ += addColor( "ButtonBackground", palette.color( QPalette::Button ) );
-        styleSheet_ += addColor( "ButtonHover", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ButtonFocus", palette.color( QPalette::Highlight ) );
-    }
-
-    //________________________________________________
-    bool SvgRenderer::load( QString filename )
-    {
-
-        // ret
-        styleSheetIsUsed_ = false;
-
-        #if WITH_ZLIB
-
-        // open file
-        QFile in( filename );
-        in.open( QIODevice::ReadOnly );
-        if( !( in.isOpen() && in.isReadable() ) ) return false;
-
-        // when zlib is available we try to uncompress the file manually before passing to QSvgRenderer
-        // this will allow to alter the file and in particular to change colors using current palette.
-        auto content = _tryUncompress( in );
-        if( content.isEmpty() )
-        {
-
-            in.seek(0);
-            content = in.readAll();
-
-        }
-
-        // update stylesheet
-        styleSheetIsUsed_ = content.contains( "current-color-scheme" );
-        if( !styleSheet_.isEmpty() && styleSheetIsUsed_ )
-        {
-            QDomDocument document;
-            document.setContent( content );
-
-            // create new style element
-            QDomElement element = document.createElement( QLatin1String( "style" ) );
-            element.setAttribute( QLatin1String( "type" ), QLatin1String( "text/css" ) );
-            element.setAttribute( QLatin1String( "id" ), QLatin1String( "current-color-scheme" ) );
-            element.appendChild( document.createTextNode( styleSheet_ ) );
-
-            // find child in document
-            auto&& children( document.elementsByTagName( element.tagName() ) );
-            bool replaced( false );
-            for( int i = 0; i < children.size() && !replaced; ++i )
-            {
-
-                auto&& child( children.at(i) );
-                if( child.toElement().attribute( QLatin1String( "id" ) ) == QLatin1String( "current-color-scheme" ) )
-                {
-                    auto parent( child.parentNode() );
-                    parent.replaceChild( element, child );
-                    replaced = true;
-                    break;
-                }
-            }
-
-            if( replaced ) content = document.toByteArray();
-
-        }
-
-        bool loaded( QSvgRenderer::load( content ) );
-
-        #else
 
         // load filename directly
-        bool loaded( QSvgRenderer::load( filename ) );
-
-        #endif
+        bool loaded( BaseSvgRenderer::load( filename ) );
 
         if( loaded )
         {
@@ -175,7 +86,7 @@ namespace Svg
     }
 
     //________________________________________________
-    void SvgRenderer::render( QPaintDevice& device, QString id )
+    void SvgRenderer::render( QPaintDevice& device, const QString& id )
     {
 
         // check device size
@@ -189,7 +100,7 @@ namespace Svg
             double height = device.height();
 
             QPainter painter( &device );
-            QSvgRenderer::render( &painter, id, QRectF( QPointF( 0, 0 ), QSizeF( width, height ) ) );
+            BaseSvgRenderer::render( &painter, id, QRectF( QPointF( 0, 0 ), QSizeF( width, height ) ) );
 
         } else {
 
@@ -228,93 +139,13 @@ namespace Svg
     }
 
     //________________________________________________
-    QByteArray SvgRenderer::_tryUncompress( QIODevice& in ) const
-    {
-
-        QByteArray out;
-        if( !( in.isOpen() && in.isReadable() ) ) return out;
-
-        #if WITH_ZLIB
-
-        // initialize zlib stream
-        z_stream stream;
-        stream.zalloc = nullptr;
-        stream.zfree = nullptr;
-        stream.opaque = nullptr;
-        stream.avail_in = 0;
-        stream.next_in = nullptr;
-
-        if( inflateInit2(&stream, MAX_WBITS + 16) != Z_OK) return out;
-
-        // read chunks of max size chunksize from input source
-        const int chunkSize = 16384;
-        forever
-        {
-
-            // read chunk from input and store in stream
-            auto source = in.read( chunkSize );
-            if( source.isEmpty() )
-            {
-                out.chop(stream.avail_out);
-                break;
-            }
-
-            stream.avail_in = source.size();
-            stream.next_in = reinterpret_cast<Bytef*>(source.data());
-
-            // uncompress chunk and append to output stream
-            int result = Z_OK;
-            do
-            {
-
-                // prepare destination buffer
-                auto size = out.size();
-                out.resize( size+chunkSize );
-                stream.avail_out = chunkSize;
-                stream.next_out = reinterpret_cast<Bytef*>(out.data() + size);
-
-                result = inflate(&stream, Z_NO_FLUSH);
-                switch( result )
-                {
-                    case Z_NEED_DICT:
-                    case Z_DATA_ERROR:
-                    case Z_STREAM_ERROR:
-                    case Z_MEM_ERROR:
-                    {
-                        inflateEnd( &stream );
-                        out.chop(stream.avail_out);
-                        return out;
-                    }
-                }
-
-
-            } while( stream.avail_out == 0 );
-
-            // Chop off trailing space in the buffer
-            out.chop(stream.avail_out);
-
-            if( result == Z_STREAM_END )
-            {
-                // Make sure there are no more members to process before exiting
-                if( !(stream.avail_in && inflateReset(&stream) == Z_OK ) ) break;
-            }
-
-        }
-
-        inflateEnd(&stream);
-        #endif
-        return out;
-
-    }
-
-    //________________________________________________
     bool SvgRenderer::_hasPrefix( QString prefix, SvgElements mask ) const
     {
 
         if( !prefix.isEmpty() ) prefix+="-";
 
         // check base class
-        if( !QSvgRenderer::isValid() ) return false;
+        if( !BaseSvgRenderer::isValid() ) return false;
 
         // make sure needed elements are present
         if( (mask & TopLeft) && !elementExists( prefix+Svg::TopLeft ) ) return false;
@@ -340,7 +171,7 @@ namespace Svg
         if( !prefix.isEmpty() ) prefix+="-";
 
         // check base class
-        if( !QSvgRenderer::isValid() ) return false;
+        if( !BaseSvgRenderer::isValid() ) return false;
 
         // make sure needed elements are present
         if( (mask & Top) && !elementExists( prefix + Svg::MarginTop ) ) return false;
@@ -423,7 +254,7 @@ namespace Svg
             if( overlayHints_ & OverlayPosRight ) overlayPainter.translate( device.width() - overlayRect.width(), 0 );
             if( overlayHints_ & OverlayPosBottom ) overlayPainter.translate( 0, device.height() - overlayRect.height() );
 
-            QSvgRenderer::render( &overlayPainter, Svg::Overlay, overlayRect );
+            BaseSvgRenderer::render( &overlayPainter, Svg::Overlay, overlayRect );
             overlayPainter.end();
 
             // draw on main painter
@@ -495,7 +326,7 @@ namespace Svg
 
         // center
         if( centerRect.isValid() && elements & Center )
-        { QSvgRenderer::render( &painter, prefix+Svg::Center, centerRect ); }
+        { BaseSvgRenderer::render( &painter, prefix+Svg::Center, centerRect ); }
 
         if( padding )
         {
@@ -504,14 +335,14 @@ namespace Svg
             {
                 // topLeft corner
                 painter.setClipRect( QRect( targetRect.topLeft(), targetRect.center() ) );
-                QSvgRenderer::render( &painter, prefix+Svg::TopLeft, QRectF( QPointF( 0, 0 ), boundsOnElement( prefix+Svg::TopLeft ).size() ) );
+                BaseSvgRenderer::render( &painter, prefix+Svg::TopLeft, QRectF( QPointF( 0, 0 ), boundsOnElement( prefix+Svg::TopLeft ).size() ) );
             }
 
             if( elements & TopRight )
             {
                 // topRight corner
                 painter.setClipRect( QRect( QPoint(  targetRect.center().x()+1, targetRect.top() ), QPoint( targetRect.right(), targetRect.center().y() ) ) );
-                QSvgRenderer::render( &painter, prefix+Svg::TopRight, QRectF( QPointF( centerRect.right(), 0 ), boundsOnElement( prefix+Svg::TopRight ).size() ) );
+                BaseSvgRenderer::render( &painter, prefix+Svg::TopRight, QRectF( QPointF( centerRect.right(), 0 ), boundsOnElement( prefix+Svg::TopRight ).size() ) );
             }
 
             if( elements & BottomLeft )
@@ -519,14 +350,14 @@ namespace Svg
 
                 // topRight corner
                 painter.setClipRect( QRect( QPoint(  targetRect.left(), targetRect.center().y()+1 ), QPoint( targetRect.center().x(), targetRect.bottom() ) ) );
-                QSvgRenderer::render( &painter, prefix+Svg::BottomLeft, QRectF( QPointF( 0, centerRect.bottom() ), boundsOnElement( prefix+Svg::BottomRight ).size() ) );
+                BaseSvgRenderer::render( &painter, prefix+Svg::BottomLeft, QRectF( QPointF( 0, centerRect.bottom() ), boundsOnElement( prefix+Svg::BottomRight ).size() ) );
             }
 
             if( elements & BottomRight )
             {
                 // bottomRight corner
                 painter.setClipRect( QRect( targetRect.center()+QPoint( 1, 1 ), targetRect.bottomRight() ) );
-                QSvgRenderer::render( &painter, prefix+Svg::BottomRight, QRectF( centerRect.bottomRight(), boundsOnElement( prefix+Svg::BottomRight ).size() ) );
+                BaseSvgRenderer::render( &painter, prefix+Svg::BottomRight, QRectF( centerRect.bottomRight(), boundsOnElement( prefix+Svg::BottomRight ).size() ) );
             }
 
             if( centerRect.width() > 0 )
@@ -536,14 +367,14 @@ namespace Svg
                 {
                     // top size
                     painter.setClipRect( QRect( targetRect.topLeft(), QPoint( targetRect.right(), targetRect.center().y() ) ) );
-                    QSvgRenderer::render( &painter, prefix+Svg::Top, QRectF( QPointF( centerRect.left(), 0 ), QSizeF( centerRect.width(), boundsOnElement( prefix+Svg::Top ).height() ) ) );
+                    BaseSvgRenderer::render( &painter, prefix+Svg::Top, QRectF( QPointF( centerRect.left(), 0 ), QSizeF( centerRect.width(), boundsOnElement( prefix+Svg::Top ).height() ) ) );
                 }
 
                 if( elements & Bottom )
                 {
                     // bottom size
                     painter.setClipRect( QRect( QPoint( targetRect.left(), targetRect.center().y()+1 ), targetRect.bottomRight() ) );
-                    QSvgRenderer::render( &painter, prefix+Svg::Bottom, QRectF( centerRect.bottomLeft(), QSizeF( centerRect.width(), boundsOnElement( prefix+Svg::Bottom ).height() ) ) );
+                    BaseSvgRenderer::render( &painter, prefix+Svg::Bottom, QRectF( centerRect.bottomLeft(), QSizeF( centerRect.width(), boundsOnElement( prefix+Svg::Bottom ).height() ) ) );
                 }
 
             }
@@ -555,13 +386,13 @@ namespace Svg
                 {
                     // left side
                     painter.setClipRect( QRect( targetRect.topLeft(), QPoint( targetRect.center().x(), targetRect.bottom() ) ) );
-                    QSvgRenderer::render( &painter, prefix+Svg::Left, QRectF( QPointF( 0, centerRect.top() ), QSizeF( boundsOnElement( prefix+Svg::Left ).width(), centerRect.height() ) ) );
+                    BaseSvgRenderer::render( &painter, prefix+Svg::Left, QRectF( QPointF( 0, centerRect.top() ), QSizeF( boundsOnElement( prefix+Svg::Left ).width(), centerRect.height() ) ) );
                 }
 
                 if( elements & Right )
                 {
                     painter.setClipRect( QRect( QPoint( targetRect.center().x()+1, targetRect.top() ), targetRect.bottomRight() ) );
-                    QSvgRenderer::render( &painter, prefix+Svg::Right, QRectF( centerRect.topRight(), QSizeF( boundsOnElement( prefix+Svg::Right ).width(), centerRect.height() ) ) );
+                    BaseSvgRenderer::render( &painter, prefix+Svg::Right, QRectF( centerRect.topRight(), QSizeF( boundsOnElement( prefix+Svg::Right ).width(), centerRect.height() ) ) );
                 }
 
             }

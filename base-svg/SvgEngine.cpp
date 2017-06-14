@@ -155,16 +155,10 @@ namespace Svg
             }
 
             if( plasmaInterface_->loadTheme() ) changed = true;
-            if( plasmaInterface_->hasThemePalette() )
-            {
-
-                renderer_.createStyleSheet( plasmaInterface_->themePalette() );
-
-            } else {
-
-                renderer_.createStyleSheet( QPalette() );
-
-            }
+            renderer_.createStyleSheet(
+                plasmaInterface_->hasThemePalette() ?
+                plasmaInterface_->themePalette():
+                QPalette() );
 
             if( plasmaInterface_->setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) ) ) changed = true;
             if( changed || first || forced ) plasmaInterface_->loadFile();

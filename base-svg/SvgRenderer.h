@@ -20,25 +20,25 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
+#include "BaseSvgRenderer.h"
 #include "Margins.h"
 
 #include <QByteArray>
 #include <QIODevice>
 #include <QPaintDevice>
 #include <QPalette>
-#include <QSvgRenderer>
 
 //* construct pixmap of given size using Svg renderer
 namespace Svg
 {
-    class SvgRenderer: public QSvgRenderer, private Base::Counter<SvgRenderer>
+    class SvgRenderer: public BaseSvgRenderer
     {
 
         public:
 
         //* constructor
-        explicit SvgRenderer( void );
+        explicit SvgRenderer( void )
+        {}
 
         // svg element enumeration
         enum SvgElement
@@ -65,10 +65,6 @@ namespace Svg
         bool isValid( void ) const
         { return isValid_; }
 
-        //* true if style sheet is used
-        bool styleSheetIsUsed( void ) const
-        { return styleSheetIsUsed_; }
-
         //* margins
         Base::Margins margins( void ) const;
 
@@ -83,21 +79,15 @@ namespace Svg
         //* configuration
         bool updateConfiguration( void );
 
-        //* generate style sheet
-        void createStyleSheet( QPalette );
-
         //* load file
-        bool load( QString );
+        bool load( const QString& ) override;
 
         //* render
-        void render( QPaintDevice&, QString id = QString() );
+        void render( QPaintDevice&, const QString& id = QString() );
 
         //@}
 
         protected:
-
-        //* uncompress (gzip) input
-        QByteArray _tryUncompress( QIODevice& ) const;
 
         //* true if svg has all elements matching prefix
         bool _hasPrefix( QString prefix = QString(), SvgElements = All ) const;
@@ -160,12 +150,6 @@ namespace Svg
 
         //* prefix for loading mask
         QString maskPrefix_;
-
-        //* style sheet
-        QString styleSheet_;
-
-        //* true if stylesheet was used
-        bool styleSheetIsUsed_ = false;
 
     };
 

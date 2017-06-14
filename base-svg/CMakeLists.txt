@@ -60,6 +60,7 @@ include_directories(${CMAKE_SOURCE_DIR}/base-transparency)
 
 ########### next target ###############
 set(base_svg_SOURCES
+  BaseSvgRenderer.cpp
   SvgConfiguration.cpp
   SvgEngine.cpp
   SvgPlasmaInterface.cpp
