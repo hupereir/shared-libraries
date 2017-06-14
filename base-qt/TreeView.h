@@ -300,16 +300,16 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     protected:
 
     //* generic event
-    virtual bool event( QEvent* );
+    bool event( QEvent* ) override;
 
     //* mouse move event
-    virtual void mouseMoveEvent( QMouseEvent* );
+    void mouseMoveEvent( QMouseEvent* ) override;
 
     //* mouse press event
-    virtual void mousePressEvent( QMouseEvent* );
+    void mousePressEvent( QMouseEvent* ) override;
 
     //* paint event
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //* find dialog
     virtual void _createFindDialog( void );

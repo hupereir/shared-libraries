@@ -72,7 +72,7 @@ class ItemModel : public QAbstractItemModel
     { sort( sortColumn(), sortOrder() ); }
 
     //* sort
-    virtual void sort( int column, Qt::SortOrder order );
+    void sort( int column, Qt::SortOrder order ) override;
 
     //* clear internal list selected items
     virtual void clearSelectedIndexes( void ) = 0;

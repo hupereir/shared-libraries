@@ -55,14 +55,14 @@ class ListModel : public ItemModel
     //@{
 
     //* flags
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const
+    Qt::ItemFlags flags(const QModelIndex &index) const override
     {
         if (!index.isValid()) Qt::ItemFlags();
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
     //* unique index for given row, column and parent index
-    virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override
     {
 
         // check if index is valid
@@ -77,15 +77,15 @@ class ListModel : public ItemModel
     }
 
     //* index of parent
-    virtual QModelIndex parent(const QModelIndex &) const
+    QModelIndex parent(const QModelIndex &) const override
     { return QModelIndex(); }
 
     //* number of rows below given index
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override
     { return parent.isValid() ? 0:values_.size(); }
 
     //* get list of internal selected items
-    virtual QModelIndexList selectedIndexes( void ) const
+    QModelIndexList selectedIndexes( void ) const override
     {
 
         QModelIndexList out;
@@ -99,7 +99,7 @@ class ListModel : public ItemModel
     }
 
     //* restore currentIndex
-    virtual QModelIndex currentIndex( void ) const
+    QModelIndex currentIndex( void ) const override
     { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
     //* return all values
@@ -137,11 +137,11 @@ class ListModel : public ItemModel
     //@{
 
     //* clear internal list selected items
-    virtual void clearSelectedIndexes( void )
+    void clearSelectedIndexes( void ) override
     { selectedItems_.clear(); }
 
     //* set selected indexes
-    virtual void setSelectedIndexes( const QModelIndexList& indexes )
+    void setSelectedIndexes( const QModelIndexList& indexes ) override
     {
         selectedItems_.clear();
         for( const auto& index:indexes )
@@ -149,7 +149,7 @@ class ListModel : public ItemModel
     }
 
     //* store index internal selection state
-    virtual void setIndexSelected( const QModelIndex& index, bool value )
+    void setIndexSelected( const QModelIndex& index, bool value ) override
     {
         if( !contains( index ) ) return;
         if( value ) selectedItems_ << values_[index.row()];
@@ -157,11 +157,11 @@ class ListModel : public ItemModel
     }
 
     //* current index;
-    virtual void clearCurrentIndex( void )
+    void clearCurrentIndex( void ) override
     { hasCurrentItem_ = false; }
 
     //* store current index
-    virtual void setCurrentIndex( const QModelIndex& index )
+    void setCurrentIndex( const QModelIndex& index ) override
     {
         if( contains( index ) )
         {

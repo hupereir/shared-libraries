@@ -525,13 +525,13 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //@{
 
     //* generic event
-    virtual bool event( QEvent* );
+    bool event( QEvent* ) override;
 
     //* enter event handler
-    virtual void enterEvent( QEvent *event );
+    void enterEvent( QEvent *event ) override;
 
     //* mouse release event [overloaded]
-    virtual void mousePressEvent( QMouseEvent* );
+    void mousePressEvent( QMouseEvent* ) override;
 
     //* mouse double click event [overloaded]
     /**
@@ -539,40 +539,40 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     essentially like single click events, because the number of clicks
     is handled independently by the MultipleClickCounter object
     */
-    virtual void mouseDoubleClickEvent( QMouseEvent* );
+    void mouseDoubleClickEvent( QMouseEvent* ) override;
 
     //* mouse press event [overloaded]
-    virtual void mouseMoveEvent( QMouseEvent* );
+    void mouseMoveEvent( QMouseEvent* ) override;
 
     //* mouse press event [overloaded]
-    virtual void mouseReleaseEvent( QMouseEvent* );
+    void mouseReleaseEvent( QMouseEvent* ) override;
 
     //* drop event
-    virtual void dropEvent( QDropEvent* event );
+    void dropEvent( QDropEvent* event ) override;
 
     //* keypress event
-    virtual void keyPressEvent( QKeyEvent* );
+    void keyPressEvent( QKeyEvent* ) override;
 
     //* focus event [overloaded]
-    virtual void focusInEvent( QFocusEvent* );
+    void focusInEvent( QFocusEvent* ) override;
 
     //* context menu event [overloaded]
-    virtual void contextMenuEvent( QContextMenuEvent* );
+    void contextMenuEvent( QContextMenuEvent* ) override;
 
     //* resize event
     /* need to update LineNumberWidget, when wrap is enabled */
-    virtual void resizeEvent( QResizeEvent* );
+    void resizeEvent( QResizeEvent* ) override;
 
     //* repaint event
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //* timer event
-    virtual void timerEvent( QTimerEvent* event );
+    void timerEvent( QTimerEvent* event ) override;
 
     //@}
 
     //* scroll
-    virtual void scrollContentsBy( int dx, int dy );
+    void scrollContentsBy( int dx, int dy ) override;
 
     //* context menu position
     const QPoint& _contextMenuPosition( void ) const

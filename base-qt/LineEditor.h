@@ -113,13 +113,13 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //@{
 
     //* generic event
-    virtual bool event( QEvent* );
+    bool event( QEvent* ) override;
 
     //* context menu (overloaded)
-    virtual void contextMenuEvent( QContextMenuEvent* );
+    void contextMenuEvent( QContextMenuEvent* ) override;
 
     //* overloaded key press event
-    virtual void keyPressEvent( QKeyEvent* );
+    void keyPressEvent( QKeyEvent* ) override;
 
     //@}
 

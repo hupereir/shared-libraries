@@ -74,7 +74,7 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     bool setItemIsValid( const BaseFileInfo&, bool );
 
     //* event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     Q_SIGNALS:
 
@@ -151,22 +151,22 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //@{
 
     //* drag enter event
-    virtual void dragEnterEvent( QDragEnterEvent* );
+    void dragEnterEvent( QDragEnterEvent* ) override;
 
     //* drag move
-    virtual void dragMoveEvent( QDragMoveEvent* );
+    void dragMoveEvent( QDragMoveEvent* ) override;
 
     //* drag leave
-    virtual void dragLeaveEvent( QDragLeaveEvent* );
+    void dragLeaveEvent( QDragLeaveEvent* ) override;
 
     //* drop
-    virtual void dropEvent( QDropEvent* );
+    void dropEvent( QDropEvent* ) override;
 
     //* mouse press
-    virtual void mousePressEvent( QMouseEvent* );
+    void mousePressEvent( QMouseEvent* ) override;
 
     //* paint event
-    virtual void paintEvent( QPaintEvent* );
+    void paintEvent( QPaintEvent* ) override;
 
     //@}
 
