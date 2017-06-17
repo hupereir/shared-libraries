@@ -31,7 +31,7 @@
 class FileList;
 class TreeView;
 
-//! configure files in recent files menu
+//* configure files in recent files menu
 class RecentFilesConfiguration: public QWidget, public OptionWidgetList, private Base::Counter<RecentFilesConfiguration>
 {
 
@@ -39,19 +39,19 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, private
 
     public:
 
-    //! constructor
+    //* constructor
     explicit RecentFilesConfiguration( QWidget*, FileList& );
 
     // parent class implementation
     using OptionWidgetList::read;
     using OptionWidgetList::write;
 
-    //! read files
-    virtual void read( void );
+    //* read files
+    void read( void );
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified( void );
 
     public Q_SLOTS:
@@ -59,50 +59,50 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, private
     // write files
     void write( void );
 
-    //! reload
+    //* reload
     void reload( void );
 
     private Q_SLOTS:
 
-    //! update actions
+    //* update actions
     void _updateButtons( void );
 
-    //! clean
+    //* clean
     void _clean( void );
 
-    //! remove
+    //* remove
     void _remove( void );
 
     private:
 
-    //! file list
+    //* file list
     FileList* recentFiles_;
 
-    //! file record model
+    //* file record model
     FileRecordModel model_;
 
-    //! file record list
+    //* file record list
     TreeView* list_;
 
-    //! clean
+    //* clean
     QPushButton *cleanButton_;
 
-    //! remove
+    //* remove
     QPushButton *removeButton_;
 
-    //! reload
+    //* reload
     QPushButton *reloadButton_;
 
-    //!@name actions
+    //*@name actions
     //@{
 
-    //! clean action
+    //* clean action
     QAction* cleanAction_;
 
-    //! remove action
+    //* remove action
     QAction* removeAction_;
 
-    //! remove action
+    //* remove action
     QAction* reloadAction_;
 
     //@}

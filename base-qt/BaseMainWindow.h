@@ -50,10 +50,10 @@ class BaseMainWindow: public QMainWindow
     explicit BaseMainWindow( QWidget*, Qt::WindowFlags = 0);
 
     //* restore window size
-    virtual QSize minimumSizeHint( void ) const;
+    QSize minimumSizeHint( void ) const override;
 
     //* restore window size
-    virtual QSize sizeHint( void ) const;
+    QSize sizeHint( void ) const override;
 
     //* center widget on argument widget
     void centerOnDesktop( void );
@@ -91,7 +91,7 @@ class BaseMainWindow: public QMainWindow
     { return *showStatusBarAction_; }
 
     //* create context menu (overloaded)
-    virtual QMenu* createPopupMenu( void );
+    QMenu* createPopupMenu( void ) override;
 
     //* toolbar menu
     virtual ToolBarMenu& toolBarMenu( QWidget* = nullptr );
@@ -132,7 +132,7 @@ class BaseMainWindow: public QMainWindow
     protected:
 
     //* generic event
-    virtual bool event( QEvent* );
+    bool event( QEvent* ) override;
 
     //* true if main window has menu
     virtual bool _hasMenuBar( void ) const;

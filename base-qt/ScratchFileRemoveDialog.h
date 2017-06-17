@@ -47,10 +47,10 @@ class ScratchFileRemoveDialog: public CustomDialog
     protected Q_SLOTS:
 
     //* update button states
-    virtual void _updateActions( void );
+    void _updateActions( void );
 
     //* context menu
-    virtual void _updateContextMenu( const QPoint& );
+    void _updateContextMenu( const QPoint& );
 
     private:
 

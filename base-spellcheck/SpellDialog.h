@@ -52,10 +52,10 @@ namespace SpellCheck
         //* set read-only (enable/disable modification buttons)
 
         //* toggle filter combo box visibility
-        virtual void showFilter( bool value );
+        void showFilter( bool value );
 
         //* spell interface
-        virtual SpellInterface& interface( void )
+        SpellInterface& interface( void )
         { return interface_; }
 
         //* editor
@@ -102,51 +102,51 @@ namespace SpellCheck
         void _updateFilters( void );
 
         //* select suggestion, update replaceEditor_
-        virtual void _selectSuggestion( const QModelIndex& );
+        void _selectSuggestion( const QModelIndex& );
 
         //* select suggestion, update replaceEditor_
-        virtual void _addWord( void );
+        void _addWord( void );
 
         //* check word in Replace Editor
-        virtual void _checkWord( void );
+        void _checkWord( void );
 
         //* select dictionary
-        virtual void _selectDictionary( const QString& dict );
+        void _selectDictionary( const QString& dict );
 
         //* select dictionary
-        virtual void _selectFilter( const QString& filter );
+        void _selectFilter( const QString& filter );
 
         //* recheck text from start
         /** initial begin/end are reset to the full text */
-        virtual void _restart( void );
+        void _restart( void );
 
         //* ignore
-        virtual void _ignore( void );
+        void _ignore( void );
 
         //* ignore all
-        virtual void _ignoreAll( void );
+        void _ignoreAll( void );
 
         //* replace
-        virtual void _replace( const QModelIndex& index = QModelIndex() );
+        void _replace( const QModelIndex& index = QModelIndex() );
 
         //* replace All
-        virtual void _replaceAll( void );
+        void _replaceAll( void );
 
         //* update buttons
-        virtual void _updateButtons( void );
+        void _updateButtons( void );
 
         protected:
 
         //* close
-        virtual void closeEvent( QCloseEvent *e );
+        void closeEvent( QCloseEvent* ) override;
 
         protected Q_SLOTS:
 
         //* save word list
-        virtual void _saveWordList( void );
+        void _saveWordList( void );
 
         //* restore read only state
-        virtual void _restoreReadOnly( void );
+        void _restoreReadOnly( void );
 
         private:
 
@@ -163,13 +163,13 @@ namespace SpellCheck
             //@{
 
             // return data for a given index
-            virtual QVariant data(const QModelIndex &index, int role) const;
+            QVariant data(const QModelIndex &index, int role) const override;
 
             //* header data
-            virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+            QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
             //* number of columns for a given index
-            virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+            int columnCount(const QModelIndex &parent = QModelIndex()) const override
             { return nColumns; }
 
             //@}

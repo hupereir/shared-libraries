@@ -47,22 +47,22 @@ class XmlFileList: public FileList
     void setTagName( const QString& );
 
     //* set db file
-    virtual bool setDBFile( const File& );
+    bool setDBFile( const File& );
 
     //@}
 
     public Q_SLOTS:
 
     //* Read fileList from file
-    virtual bool read( File = File() );
+    bool read( File = File() );
 
     //* write fileList to file
-    virtual bool write( File = File() );
+    bool write( File = File() );
 
     protected:
 
     //* read
-    virtual bool _read( const XmlDocument& );
+    bool _read( const XmlDocument& );
 
     private:
 

@@ -38,7 +38,7 @@ class ColorOptionModel: public OptionModel
     {}
 
     // return job for a given index
-    virtual QVariant data( const QModelIndex&, int ) const;
+    QVariant data( const QModelIndex&, int ) const override;
 
     private:
 

@@ -209,11 +209,11 @@ namespace SpellCheck
 
         //* reset Aspell spell/document checker
         /** returns false on error */
-        virtual bool _reset( void );
+        bool _reset( void );
 
         //* reset Aspell spell checker
         /** returns false on error */
-        virtual bool _resetSpellChecker( void );
+        bool _resetSpellChecker( void );
 
         private:
 

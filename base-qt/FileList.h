@@ -45,18 +45,18 @@ class FileList: public QObject, private Base::Counter<FileList>
     //@{
 
     //* returns true if file is found in list
-    virtual bool contains( const File& ) const;
+    bool contains( const File& ) const;
 
     //* empty
-    virtual bool isEmpty( void ) const
+    bool isEmpty( void ) const
     { return records_.isEmpty(); }
 
     //* file list size
-    virtual int size( void ) const
+    int size( void ) const
     { return records_.size(); }
 
     //* file list max size
-    virtual int maxSize( void ) const
+    int maxSize( void ) const
     { return maxSize_; }
 
     //* all records
@@ -67,11 +67,11 @@ class FileList: public QObject, private Base::Counter<FileList>
     File::List files( void ) const;
 
     //* returns true if file list can be cleaned
-    virtual bool cleanEnabled( void ) const
+    bool cleanEnabled( void ) const
     { return (check()) ? cleanEnabled_ : !isEmpty(); }
 
     //* check flag
-    virtual bool check( void ) const
+    bool check( void ) const
     { return check_; }
 
     //@}
@@ -80,31 +80,31 @@ class FileList: public QObject, private Base::Counter<FileList>
     //@{
 
     //* remove file from database
-    virtual void remove( const File& );
+    void remove( const File& );
 
     //* get filerecord associated to a name
     /** creates new fileRecord if not found */
-    virtual FileRecord& get( const File& file )
+    FileRecord& get( const File& file )
     { return _add( FileRecord( file ), false ); }
 
     //* set record
-    virtual void set( const FileRecord::List& );
+    void set( const FileRecord::List& );
 
     //* get last valid file
-    virtual FileRecord lastValidFile( void );
+    FileRecord lastValidFile( void );
 
     //* clean files. Remove either invalid or all files, depending on check_
-    virtual void clean( void );
+    void clean( void );
 
     //* clear files. Remove all
-    virtual void clear( void );
+    void clear( void );
 
     //* check_ flag
-    virtual void setCheck( bool value )
+    void setCheck( bool value )
     { check_ = value; }
 
     //* maximum Size
-    virtual void setMaxSize( int );
+    void setMaxSize( int );
 
     //@}
 
@@ -119,7 +119,7 @@ class FileList: public QObject, private Base::Counter<FileList>
     public Q_SLOTS:
 
     //* add file.
-    virtual FileRecord& add( const File& file )
+    FileRecord& add( const File& file )
     { return _add( FileRecord( file ) ); }
 
     //* run thread to check file validity
@@ -128,24 +128,24 @@ class FileList: public QObject, private Base::Counter<FileList>
     protected:
 
     //* maximum size
-    virtual int _maxSize( void ) const
+    int _maxSize( void ) const
     { return maxSize_; }
 
     //* add record to current list
-    virtual FileRecord& _add(
+    FileRecord& _add(
         const FileRecord&,
         bool = true,
         bool = true );
 
     //* truncate list if larger than maxSize_
-    virtual FileRecord::List _truncatedList( FileRecord::List ) const;
+    FileRecord::List _truncatedList( FileRecord::List ) const;
 
     //* list of files records
-    virtual const FileRecord::List& _records( void ) const
+    const FileRecord::List& _records( void ) const
     { return records_; }
 
     //* list of files records
-    virtual FileRecord::List& _records( void )
+    FileRecord::List& _records( void )
     { return records_; }
 
     protected Q_SLOTS:

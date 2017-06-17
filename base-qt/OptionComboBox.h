@@ -42,7 +42,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     { useValue_ = value; }
 
     //! read value from option
-    void read( const Options& options )
+    void read( const Options& options ) override
     {
         if( useValue_ )
         {
@@ -67,7 +67,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     }
 
     //! write value to option
-    void write( Options& options ) const
+    void write( Options& options ) const override
     {
         if( useValue_ ) options.setRaw( optionName(), currentText() );
         else options.set<int>( optionName(), currentIndex() );

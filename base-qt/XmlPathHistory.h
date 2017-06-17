@@ -44,18 +44,18 @@ class XmlPathHistory: public PathHistory
     void setTagName( const QString& );
 
     //* Read fileList from file
-    virtual bool read( File = File() );
+    bool read( File = File() );
 
     //* write fileList to file
-    virtual bool write( File = File() );
+    bool write( File = File() );
 
     protected:
 
     //* set db file
-    virtual bool _setDBFile( const File& );
+    bool _setDBFile( const File& );
 
     //* read
-    virtual bool _read( const XmlDocument& );
+    bool _read( const XmlDocument& );
 
     private Q_SLOTS:
 

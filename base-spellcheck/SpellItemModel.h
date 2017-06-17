@@ -49,13 +49,13 @@ namespace SpellCheck
         //@{
 
         // return data for a given index
-        virtual QVariant data(const QModelIndex &index, int role) const override;
+        QVariant data(const QModelIndex &index, int role) const override;
 
         //* header data
-        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
         //* number of columns for a given index
-        virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override
+        int columnCount(const QModelIndex &parent = QModelIndex()) const override
         { return nColumns; }
 
         //@}

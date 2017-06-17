@@ -38,7 +38,7 @@ class OptionLineEditor: public LineEditor, public OptionWidget
     {}
 
     //* read value from option
-    void read( const Options& options )
+    void read( const Options& options ) override
     {
         setText( options.raw( optionName() ) );
         if( !_connected() )
@@ -49,7 +49,7 @@ class OptionLineEditor: public LineEditor, public OptionWidget
     }
 
     //* write value to option
-    void write( Options& options ) const
+    void write( Options& options ) const override
     { options.setRaw( optionName(), text() ); }
 
     Q_SIGNALS:

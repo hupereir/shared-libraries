@@ -39,7 +39,7 @@ class MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconP
     //@{
 
     //* icon matching given model index
-    virtual const QIcon& icon( const QString& );
+    const QIcon& icon( const QString& );
 
     //@}
 
@@ -47,11 +47,11 @@ class MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconP
     //@{
 
     //* insert item in map
-    virtual void insert( const QString& key, const QString& value )
+    void insert( const QString& key, const QString& value )
     { iconNames_.insert( key, value ); }
 
     //* clear
-    virtual void clear( void )
+    void clear( void )
     { icons_.clear(); }
 
     //@}

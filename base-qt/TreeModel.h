@@ -59,18 +59,18 @@ template<class T> class TreeModel : public ItemModel
         root_( map_ )
     {}
 
-    //*@name methods reimplemented from base class
+    //*@name accessors
     //@{
 
     //* flags
-    virtual Qt::ItemFlags flags(const QModelIndex &index) const
+    Qt::ItemFlags flags(const QModelIndex &index) const override
     {
         if (!index.isValid()) return 0;
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
     //* unique index for given row, column and parent index
-    virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override
     {
 
         // check if index is valid
@@ -87,7 +87,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* index of parent
-    virtual QModelIndex parent(const QModelIndex &index) const
+    QModelIndex parent(const QModelIndex &index) const override
     {
 
         // check index validity
@@ -114,7 +114,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* number of rows below given index
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
 
         // check column
@@ -126,13 +126,8 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //@}
-
-    //*@name value to index matching
-    //@{
-
     //* return index associated to a given value, starting from parent [recursive]
-    virtual QModelIndex index( ConstReference value, const QModelIndex& parent = QModelIndex() ) const
+    QModelIndex index( ConstReference value, const QModelIndex& parent = QModelIndex() ) const
     {
 
         // return parent index if job match
@@ -152,7 +147,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* return all values [recursive]
-    virtual List children( const QModelIndex& parent = QModelIndex() ) const
+    List children( const QModelIndex& parent = QModelIndex() ) const
     {
 
         // retrieve parent item
@@ -162,7 +157,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* return all values [recursive]
-    virtual List children( ConstReference value ) const
+    List children( ConstReference value ) const
     {
 
         const QModelIndex& index( this->index( value ) );
@@ -170,7 +165,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* return value associated to given model index
-    virtual ValueType get( const QModelIndex& index ) const
+    ValueType get( const QModelIndex& index ) const
     {
         if( !index.isValid() ) return ValueType();
         else return _find( index.internalId() ).get();
@@ -185,33 +180,8 @@ template<class T> class TreeModel : public ItemModel
         return out;
     }
 
-    //@}
-
-    //*@name selection
-    //@{
-
-    //* clear internal list selected items
-    virtual void clearSelectedIndexes( void )
-    { selectedItems_.clear(); }
-
-    //* set selected indexes
-    virtual void setSelectedIndexes( const QModelIndexList& indexes )
-    {
-        selectedItems_.clear();
-        for( const auto& index:indexes )
-        { if( index.isValid() ) selectedItems_ << get( index ); }
-    }
-
-    //* store index internal selection state
-    virtual void setIndexSelected( const QModelIndex& index, bool value )
-    {
-        if( !index.isValid() ) return;
-        if( value ) selectedItems_ << get( index );
-        else { selectedItems_.removeAll( get( index ) ); }
-    }
-
     //* get list of internal selected items
-    virtual QModelIndexList selectedIndexes( void ) const
+    QModelIndexList selectedIndexes( void ) const override
     {
         QModelIndexList out;
         for( const auto& value:selectedItems_ )
@@ -222,62 +192,16 @@ template<class T> class TreeModel : public ItemModel
         return out;
     }
 
-    //@}
-
-    //*@name current index
-    //@{
-
-    //* current index;
-    virtual void clearCurrentIndex( void )
-    { hasCurrentItem_ = false; }
-
-    //* store current index
-    virtual void setCurrentIndex( const QModelIndex& index )
-    {
-        if( index.isValid() )
-        {
-
-            hasCurrentItem_ = true;
-            currentItem_ = get( index );
-
-        } else hasCurrentItem_ = false;
-    }
-
     //* restore currentIndex
-    virtual QModelIndex currentIndex( void ) const
+    QModelIndex currentIndex( void ) const override
     { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
-    //@}
-
-    //*@name expansion
-    //@{
-
     //* true if expended indexes are supported
-    virtual bool supportsExpandedIndexes( void ) const
+    bool supportsExpandedIndexes( void ) const override
     { return true; }
 
-    //* clear internal list of expanded items
-    virtual void clearExpandedIndexes( void )
-    { expandedItems_.clear(); }
-
-    //* set selected indexes
-    virtual void setExpandedIndexes( const QModelIndexList& indexes )
-    {
-        expandedItems_.clear();
-        for( const auto& index:indexes )
-        { if( index.isValid() ) expandedItems_ << get( index ); }
-    }
-
-    //* store index internal selection state
-    virtual void setIndexExpanded( const QModelIndex& index, bool value )
-    {
-        if( !index.isValid() ) return;
-        if( value ) expandedItems_ << get( index );
-        else { expandedItems_.removeAll( get( index ) ); }
-    }
-
     //* get list of internal selected items
-    virtual QModelIndexList expandedIndexes( void ) const
+    QModelIndexList expandedIndexes( void ) const override
     {
         QModelIndexList out;
         for( const auto& value:expandedItems_ )
@@ -288,7 +212,70 @@ template<class T> class TreeModel : public ItemModel
         return out;
     }
 
+    //* root item
+    const Item& root( void ) const
+    { return root_; }
+
     //@}
+
+    //*@name modifiers
+    //@{
+
+    //* clear internal list selected items
+    void clearSelectedIndexes( void ) override
+    { selectedItems_.clear(); }
+
+    //* set selected indexes
+    void setSelectedIndexes( const QModelIndexList& indexes ) override
+    {
+        selectedItems_.clear();
+        for( const auto& index:indexes )
+        { if( index.isValid() ) selectedItems_ << get( index ); }
+    }
+
+    //* store index internal selection state
+    void setIndexSelected( const QModelIndex& index, bool value ) override
+    {
+        if( !index.isValid() ) return;
+        if( value ) selectedItems_ << get( index );
+        else { selectedItems_.removeAll( get( index ) ); }
+    }
+
+    //* current index;
+    void clearCurrentIndex( void ) override
+    { hasCurrentItem_ = false; }
+
+    //* store current index
+    void setCurrentIndex( const QModelIndex& index ) override
+    {
+        if( index.isValid() )
+        {
+
+            hasCurrentItem_ = true;
+            currentItem_ = get( index );
+
+        } else hasCurrentItem_ = false;
+    }
+
+    //* clear internal list of expanded items
+    void clearExpandedIndexes( void ) override
+    { expandedItems_.clear(); }
+
+    //* set selected indexes
+    void setExpandedIndexes( const QModelIndexList& indexes ) override
+    {
+        expandedItems_.clear();
+        for( const auto& index:indexes )
+        { if( index.isValid() ) expandedItems_ << get( index ); }
+    }
+
+    //* store index internal selection state
+    void setIndexExpanded( const QModelIndex& index, bool value ) override
+    {
+        if( !index.isValid() ) return;
+        if( value ) expandedItems_ << get( index );
+        else { expandedItems_.removeAll( get( index ) ); }
+    }
 
     //* add values
     void add( ConstReference value )
@@ -383,16 +370,12 @@ template<class T> class TreeModel : public ItemModel
         emit layoutChanged();
     }
 
-    //* root item
-    const Item& root( void ) const
-    { return root_; }
-
     //* remove
-    virtual void remove( ConstReference value )
+    void remove( ConstReference value )
     { remove( List() << value ); }
 
     //* remove
-    virtual void remove( List values )
+    void remove( List values )
     {
 
         // check if not empty
@@ -430,6 +413,8 @@ template<class T> class TreeModel : public ItemModel
     //* sort values
     void setSortValues( bool value )
     { sortValues_ = value; }
+
+    //@}
 
     protected:
 

@@ -65,7 +65,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     // read
     using OptionWidgetList::read;
-    virtual void read( void )
+    void read( void )
     {
         OptionWidgetList::read( XmlOptions::get() );
         _checkModified();

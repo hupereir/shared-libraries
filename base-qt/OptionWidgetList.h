@@ -37,20 +37,20 @@ class OptionWidgetList: public OptionWidget
     {}
 
     //* add option widget
-    virtual void addOptionWidget( OptionWidget* );
+    void addOptionWidget( OptionWidget* );
 
     //* clear option widgets
-    virtual void clearOptionWidgets( void )
+    void clearOptionWidgets( void )
     {
         Debug::Throw( "OptionWidgetList::clearOptionWidgets.\n" );
         optionWidgets_.clear();
     }
 
     //* read options
-    virtual void read( const Options& );
+    void read( const Options& ) override;
 
     //* read options
-    virtual void write( Options& ) const;
+    void write( Options& ) const override;
 
     protected:
 

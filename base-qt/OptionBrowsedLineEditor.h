@@ -42,7 +42,7 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
     //@{
 
     //* write value to option
-    void write( Options& options ) const
+    void write( Options& options ) const override
     { options.setRaw( optionName(), editor().text() ); }
 
     //@}
@@ -51,7 +51,7 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
     //@{
 
     //* read value from option
-    void read( const Options& options )
+    void read( const Options& options ) override
     {
         setFile( options.raw( optionName() ) );
         if( !_connected() )

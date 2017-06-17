@@ -66,7 +66,7 @@ class DragMonitor: public QObject, private Base::Counter<DragMonitor>
     //@}
 
     //* event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     Q_SIGNALS:
 

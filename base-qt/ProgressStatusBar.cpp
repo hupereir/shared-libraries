@@ -39,7 +39,7 @@ void ProgressStatusBar::setProgressBar( QProgressBar* value )
     if( progress_ )
     {
         progress_->hide();
-        progress_->setParent( 0 );
+        progress_->setParent( nullptr );
         progress_->deleteLater();
     }
 

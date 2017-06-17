@@ -55,33 +55,33 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     bool isVisible( const QModelIndex& index ) const;
 
     //* number of visible columns
-    virtual int visibleColumnCount( void ) const;
+    int visibleColumnCount( void ) const;
 
     //* option name
-    virtual bool hasOptionName( void ) const
+    bool hasOptionName( void ) const
     { return !maskOptionName().isEmpty(); }
 
     //* option name
-    virtual const QString& maskOptionName( void ) const
+    const QString& maskOptionName( void ) const
     { return maskOptionName_; }
 
     //* sort column option name
-    virtual const QString& sortColumnOptionName( void ) const
+    const QString& sortColumnOptionName( void ) const
     { return sortColumnOptionName_; }
 
     //* sort order option name
-    virtual const QString& sortOrderOptionName( void ) const
+    const QString& sortOrderOptionName( void ) const
     { return sortOrderOptionName_; }
 
     //* sort order option name
-    virtual const QString& showHeaderOptionName( void ) const
+    const QString& showHeaderOptionName( void ) const
     { return showHeaderOptionName_; }
 
     //* get mask
-    virtual int mask( void ) const;
+    int mask( void ) const;
 
     //* item margin
-    virtual int itemMargin( void ) const
+    int itemMargin( void ) const
     { return itemMargin_; }
 
     //@}
@@ -90,19 +90,19 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //@{
 
     //* model
-    virtual void setModel( QAbstractItemModel* );
+    void setModel( QAbstractItemModel* ) override;
 
     //* delegate
-    virtual void setItemDelegate( QAbstractItemDelegate* );
+    void setItemDelegate( QAbstractItemDelegate* );
 
     //* delegate
-    virtual void setItemDelegateForColumn( int, QAbstractItemDelegate* );
+    void setItemDelegateForColumn( int, QAbstractItemDelegate* );
 
     //* enable list finding
     void setFindEnabled( bool value );
 
     //* option name
-    virtual bool setOptionName( const QString& );
+    bool setOptionName( const QString& );
 
     //* lock column
     void lockColumnVisibility( int index )
@@ -135,7 +135,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     }
 
     //* set item margins
-    virtual void setItemMargin( int );
+    void setItemMargin( int );
 
     //* set icon size manually and disable option
     void setIconSize( const QSize& size )
@@ -162,7 +162,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     void restoreScrollBarPosition( void );
 
     //* set mask manually
-    virtual void setMask( int );
+    void setMask( int );
 
     //@}
 
@@ -242,48 +242,48 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     public Q_SLOTS:
 
     //* resize all visible columns to match contents
-    virtual void resizeColumns()
+    void resizeColumns()
     { resizeColumns( mask() ); }
 
     //* resize all visible columns to match contents
-    virtual void resizeColumns( int mask );
+    void resizeColumns( int mask );
 
     //* toggle show header
-    virtual void toggleShowHeader( bool value );
+    void toggleShowHeader( bool value );
 
     //*@name column mask
     //@{
 
     //* update column mask from option, if any
-    virtual void updateMask( void );
+    void updateMask( void );
 
     //* save column mask to option, if any
-    virtual void saveMask( void );
+    void saveMask( void );
 
     //@}
 
     //* sort order
-    virtual void updateSortOrder( void );
+    void updateSortOrder( void );
 
     //* sort order
-    virtual void saveSortOrder( void );
+    void saveSortOrder( void );
 
     //* find next occurence of TextSelection
-    virtual void find( TextSelection selection );
+    void find( TextSelection selection );
 
     //* find current selection forward
-    virtual void findSelectionForward( void )
+    void findSelectionForward( void )
     { _findForward( selection(), true ); }
 
     //* find current selection backward
-    virtual void findSelectionBackward( void )
+    void findSelectionBackward( void )
     { _findBackward( selection(), true ); }
 
     //* find last search forward
-    virtual void findAgainForward( void );
+    void findAgainForward( void );
 
     //* find last search forward
-    virtual void findAgainBackward( void );
+    void findAgainBackward( void );
 
     //* store selected indexes in model
     void storeSelectedIndexes( void );
@@ -312,33 +312,33 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     void paintEvent( QPaintEvent* ) override;
 
     //* find dialog
-    virtual void _createFindDialog( void );
+    void _createFindDialog( void );
 
     //* find widget
-    virtual void _createFindWidget( bool compact );
+    void _createFindWidget( bool compact );
 
     //* find selection in forward direction
-    virtual bool _findForward( const TextSelection& selection, bool rewind );
+    bool _findForward( const TextSelection& selection, bool rewind );
 
     //* find selection in backward direction
-    virtual bool _findBackward( const TextSelection& selection, bool rewind );
+    bool _findBackward( const TextSelection& selection, bool rewind );
 
     //* set item margin
-    virtual void _setItemMargin( int );
+    void _setItemMargin( int );
 
     //* hover index
-    virtual void _setHoverIndex( const QModelIndex& );
+    void _setHoverIndex( const QModelIndex& );
 
     protected Q_SLOTS:
 
     //* header menu
-    virtual void _raiseHeaderMenu( const QPoint& );
+    void _raiseHeaderMenu( const QPoint& );
 
     //* find text from dialog
-    virtual void _findFromDialog( void );
+    void _findFromDialog( void );
 
     //* hover index
-    virtual void _indexEntered( const QModelIndex& );
+    void _indexEntered( const QModelIndex& );
 
     private Q_SLOTS:
 
@@ -348,7 +348,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     private:
 
     //* install actions
-    virtual void _installActions( void );
+    void _installActions( void );
 
     //* return first index
     QModelIndex _firstIndex() const;

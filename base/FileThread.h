@@ -27,7 +27,7 @@
 #include <QMutexLocker>
 #include <QThread>
 
-//! independent thread used to automatically save file
+//* independent thread used to automatically save file
 class FileThread: public QThread, private Base::Counter<FileThread>
 {
 
@@ -35,10 +35,10 @@ class FileThread: public QThread, private Base::Counter<FileThread>
 
     public:
 
-    //! constructor
+    //* constructor
     explicit FileThread( QObject* = 0 );
 
-    //! command
+    //* command
     enum class Command
     {
         None,
@@ -49,57 +49,57 @@ class FileThread: public QThread, private Base::Counter<FileThread>
         Copy
     };
 
-    //!@name accessors
+    //*@name accessors
     //@{
 
-    //! command
+    //* command
     Command command( void ) const
     { return command_; }
 
-    //! file
+    //* file
     File file( void ) const
     { return file_; }
 
-    //! destination
+    //* destination
     File destination( void ) const
     { return destination_; }
 
-    //!flags
+    //*flags
     File::ListFlags flags( void )
     { return flags_; }
 
-    //! error state
+    //* error state
     bool hasError( void ) const
     { return error_; }
 
-    //! error string
+    //* error string
     QString errorString( void )
     { return errorString_; }
 
     //@}
 
-    //!@name modifiers
+    //*@name modifiers
     //@{
 
-    //! command
+    //* command
     void setCommand( Command command )
     {
         QMutexLocker lock( &mutex_ );
         command_ = command;
     }
 
-    //! flags
+    //* flags
     void setFlags( File::ListFlags flags )
     { flags_ = flags; }
 
-    //! file
+    //* file
     void setFile( const File& file )
     {
         QMutexLocker lock( &mutex_ );
         file_ = file;
     }
 
-    //! destination
+    //* destination
     void setDestination( const File& destination )
     {
         QMutexLocker lock( &mutex_ );
@@ -110,56 +110,56 @@ class FileThread: public QThread, private Base::Counter<FileThread>
 
     Q_SIGNALS:
 
-    //! files are available
+    //* files are available
     void filesAvailable( const File::List& );
 
-    //! size available
+    //* size available
     void sizeAvailable( qint64 );
 
     protected:
 
-    //! Check files validity. Post a ValidFileEvent when finished
-    virtual void run( void );
+    //* Check files validity. Post a ValidFileEvent when finished
+    void run( void ) override;
 
-    //! list files
+    //* list files
     void _listFiles( const File& );
 
-    //! update total size
+    //* update total size
     bool _updateTotalSize( void );
 
-    //! compute total size
+    //* compute total size
     void _computeTotalSize( void );
 
     private:
 
-    //! mutex
+    //* mutex
     QMutex mutex_;
 
-    //! command
+    //* command
     Command command_ = Command::None;
 
-    //! flags
+    //* flags
     File::ListFlags flags_ = File::ListFlag::None;
 
-    //! file
+    //* file
     File file_;
 
-    //! destination
+    //* destination
     File destination_;
 
-    //! current list of files
+    //* current list of files
     File::List files_;
 
-    //! full list of files
+    //* full list of files
     File::List filesRecursive_;
 
-    //! total size
+    //* total size
     qint64 totalSize_ = 0;
 
-    //! error
+    //* error
     bool error_ = false;
 
-    //! error string
+    //* error string
     QString errorString_;
 
 };

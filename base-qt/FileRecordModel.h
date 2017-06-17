@@ -56,10 +56,10 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     { return showIcons_; }
 
     //* flags
-    virtual Qt::ItemFlags flags( const QModelIndex& ) const;
+    Qt::ItemFlags flags( const QModelIndex& ) const override;
 
     // return data for a given index
-    virtual QVariant data( const QModelIndex &, int ) const;
+    QVariant data( const QModelIndex &, int ) const override;
 
     //* header data
     QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const override;
@@ -71,7 +71,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     virtual int findColumn( const QString& ) const;
 
     //* mime data
-    virtual QMimeData* mimeData(const QModelIndexList& ) const;
+    QMimeData* mimeData(const QModelIndexList& ) const override;
 
     //@}
 
@@ -108,7 +108,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     void _sort( int, Qt::SortOrder ) override;
 
     //* add, without update
-    virtual void _add( const ValueType& );
+    void _add( const ValueType& ) override;
 
     private Q_SLOTS:
 

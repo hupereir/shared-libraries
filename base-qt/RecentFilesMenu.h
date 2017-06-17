@@ -43,11 +43,11 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
     explicit RecentFilesMenu( QWidget*, FileList& );
 
     //* check if a file is in database, removes it if yes
-    virtual void remove( const QString& file )
+    void remove( const QString& file )
     { fileList_->remove( File( file ).expand() ); }
 
     //* check if a file is in database, adds it if not, select the file
-    virtual void select( const QString& file )
+    void select( const QString& file )
     {
         File newFile( File( file ).expand() );
         emit fileSelected( fileList_->add( newFile ) );
@@ -75,11 +75,11 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
     { currentFile_ = file; }
 
     //* check if a file is in database, adds it if not
-    virtual FileRecord& add( const QString& file )
+    FileRecord& add( const QString& file )
     { return fileList_->add( File( file ) ); }
 
     //* check if a file is in database, adds it if not
-    virtual FileRecord& add( File file )
+    FileRecord& add( File file )
     { return fileList_->add( file.expand() ); }
 
     private Q_SLOTS:

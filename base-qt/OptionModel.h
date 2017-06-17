@@ -97,16 +97,16 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     //@{
 
     //* flags
-    virtual Qt::ItemFlags flags( const QModelIndex& ) const;
+    Qt::ItemFlags flags( const QModelIndex& ) const override;
 
     // return data for a given index
     QVariant data( const QModelIndex&, int ) const override;
 
     // modify data
-    virtual bool setData( const QModelIndex&, const QVariant&, int = Qt::EditRole );
+    bool setData( const QModelIndex&, const QVariant&, int = Qt::EditRole ) override;
 
     //* header data
-    virtual QVariant headerData( int, Qt::Orientation, int role = Qt::DisplayRole ) const;
+    QVariant headerData( int, Qt::Orientation, int role = Qt::DisplayRole ) const override;
 
     //* number of columns for a given index
     int columnCount( const QModelIndex& = QModelIndex() ) const override

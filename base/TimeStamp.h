@@ -46,7 +46,7 @@ class TimeStamp:private Base::Counter<TimeStamp>
     { setTime( time ); }
 
     //* set time
-    virtual bool setTime( time_t time )
+    bool setTime( time_t time )
     {
         valid_ = time >= 0;
         time_ = time;
@@ -55,41 +55,41 @@ class TimeStamp:private Base::Counter<TimeStamp>
     }
 
     //* convert tm_ into time_
-    virtual bool makeTime( void )
+    bool makeTime( void )
     {
         valid_ = (time_ = mktime( &tm_ ) ) >= 0;
         return valid_;
     }
 
     //* inferior to operator
-    virtual bool operator < (const TimeStamp& stamp ) const
+    bool operator < (const TimeStamp& stamp ) const
     { return( time_ < stamp.time_ ); }
 
     //* inferior to operator
-    virtual bool operator <= (const TimeStamp& stamp ) const
+    bool operator <= (const TimeStamp& stamp ) const
     { return( time_ <= stamp.time_ ); }
 
     //* inferior to operator
-    virtual bool operator > (const TimeStamp& stamp ) const
+    bool operator > (const TimeStamp& stamp ) const
     { return( time_ > stamp.time_ ); }
 
     //* inferior to operator
-    virtual bool operator >= (const TimeStamp& stamp ) const
+    bool operator >= (const TimeStamp& stamp ) const
     { return( time_ >= stamp.time_ ); }
 
     //* equal to operator
-    virtual bool operator == (const TimeStamp& stamp ) const
+    bool operator == (const TimeStamp& stamp ) const
     { return( time_ == stamp.time_ ); }
 
     //* different from operator
-    virtual bool operator != (const TimeStamp& stamp ) const
+    bool operator != (const TimeStamp& stamp ) const
     { return( time_ != stamp.time_ ); }
 
     //*@name accessors
     //@{
 
     //* checks if timestamp is valid or not
-    virtual bool isValid( void ) const
+    bool isValid( void ) const
     { return valid_; }
 
     //* timestamp format enumeration
@@ -126,45 +126,45 @@ class TimeStamp:private Base::Counter<TimeStamp>
     };
 
     //* if timestamp is valid returns formated string
-    virtual QString toString( Format = Format::Short ) const;
+    QString toString( Format = Format::Short ) const;
 
     //* if timestamp is valid, returns formated string
-    virtual QString toString( Qt::DateFormat format ) const
+    QString toString( Qt::DateFormat format ) const
     { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : TimeStampUnknown; }
 
     //* if timestamp is valid, returns formated string
-    virtual QString toString( const QString& format ) const
+    QString toString( const QString& format ) const
     { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : TimeStampUnknown; }
 
     //* returns time in second
-    virtual time_t unixTime( void ) const
+    time_t unixTime( void ) const
     { return time_; }
 
     //* returns TimeStamp corresponding to _now_
     static TimeStamp now( void );
 
     //* retrieve seconds (between 0 and 59)
-    virtual int seconds( void ) const
+    int seconds( void ) const
     { return (valid_) ? tm_.tm_sec:0; }
 
     //* retrieve minutes (between 0 and 59)
-    virtual int minutes( void ) const
+    int minutes( void ) const
     { return (valid_) ? tm_.tm_min:0; }
 
     //* retrieve hour (between 0 and 23)
-    virtual int hours( void ) const
+    int hours( void ) const
     { return (valid_) ? tm_.tm_hour:0; }
 
     //* retrieves day (between 1 and 31)
-    virtual int day( void ) const
+    int day( void ) const
     { return (valid_) ? tm_.tm_mday:0; }
 
     //* retrieves month (between 1 and 12)
-    virtual int month( void ) const
+    int month( void ) const
     { return (valid_) ? tm_.tm_mon+1:0; }
 
     //* retrieves year (between 1 and 12)
-    virtual int year( void ) const
+    int year( void ) const
     { return (valid_) ? tm_.tm_year+1900:0; }
 
     //* true if same day
@@ -186,52 +186,52 @@ class TimeStamp:private Base::Counter<TimeStamp>
     //@{
 
     //* seconds (between 0 and 59)
-    virtual TimeStamp& setSeconds( int value )
+    TimeStamp& setSeconds( int value )
     {
         tm_.tm_sec = value;
         return *this;
     }
 
     //* minutes (between 0 and 59)
-    virtual TimeStamp& setMinutes( int value )
+    TimeStamp& setMinutes( int value )
     {
         tm_.tm_min = value;
         return *this;
     }
 
     //* hour (between 0 and 23)
-    virtual TimeStamp& setHours( int value )
+    TimeStamp& setHours( int value )
     {
         tm_.tm_hour = value;
         return *this;
     }
 
     //* retrieves day (between 1 and 31)
-    virtual TimeStamp& setDay( int value )
+    TimeStamp& setDay( int value )
     {
         tm_.tm_mday = value;
         return *this;
     }
 
     //* retrieves month (between 1 and 12)
-    virtual TimeStamp& setMonth( int value )
+    TimeStamp& setMonth( int value )
     {
         tm_.tm_mon = value - 1;
         return *this;
     }
 
     //* retrieves month (from string)
-    virtual TimeStamp& setMonth( const QString& );
+    TimeStamp& setMonth( const QString& );
 
     //* retrieves year (between 1 and 12)
-    virtual TimeStamp& setYear( int value )
+    TimeStamp& setYear( int value )
     {
         tm_.tm_year = value - 1900;
         return *this;
     }
 
     //* tells if timestamp is valid or not
-    virtual TimeStamp& setValid( bool value )
+    TimeStamp& setValid( bool value )
     {
         valid_ = value;
         return *this;

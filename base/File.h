@@ -67,41 +67,41 @@ class File: public QString
     bool isAbsolute( void ) const;
 
     //* time of file creation
-    virtual TimeStamp created( void ) const;
+    TimeStamp created( void ) const;
 
     //* time of file last modification
-    virtual TimeStamp lastModified( void ) const;
+    TimeStamp lastModified( void ) const;
 
     //* time of file last access
-    virtual TimeStamp lastAccessed( void ) const;
+    TimeStamp lastAccessed( void ) const;
 
     //* user id
-    virtual uint userId( void ) const;
+    uint userId( void ) const;
 
     //* group id
-    virtual uint groupId( void ) const;
+    uint groupId( void ) const;
 
     //* user name
-    virtual QString userName( void ) const;
+    QString userName( void ) const;
 
     //* group name
-    virtual QString groupName( void ) const;
+    QString groupName( void ) const;
 
     //* permissions
-    virtual QFile::Permissions permissions( void ) const;
+    QFile::Permissions permissions( void ) const;
 
     //* permission string
-    virtual QString permissionsString( void ) const
+    QString permissionsString( void ) const
     { return permissionsString( permissions() ); }
 
     //* permission string
     QString permissionsString( const QFile::Permissions& ) const;
 
     //* file size
-    virtual qint64 fileSize( void ) const;
+    qint64 fileSize( void ) const;
 
     //* file size (string version)
-    virtual QString sizeString( void ) const
+    QString sizeString( void ) const
     { return sizeString( fileSize() ); }
 
     //* file size (string version)
@@ -111,61 +111,61 @@ class File: public QString
     static QString rawSizeString( qint64 );
 
     //* tells if a file exists
-    virtual bool exists( void ) const;
+    bool exists( void ) const;
 
     //* tells if a file exists and can be written into
-    virtual bool isWritable( void ) const;
+    bool isWritable( void ) const;
 
     //* tells if a file exists and can be written into
-    virtual bool isReadOnly( void ) const
+    bool isReadOnly( void ) const
     { return !isWritable(); }
 
     //* tells if a file exists and is a directory
-    virtual bool isDirectory( void ) const;
+    bool isDirectory( void ) const;
 
     //* tells if a file is hidden
-    virtual bool isHidden( void ) const;
+    bool isHidden( void ) const;
 
     //* tells if a file is a symbolic link
-    virtual bool isLink( void ) const;
+    bool isLink( void ) const;
 
     //* tells if a file is a broken symbolic link
-    virtual bool isBrokenLink( void ) const;
+    bool isBrokenLink( void ) const;
 
     //* returns true if two file differs
-    virtual bool diff( const File& ) const;
+    bool diff( const File& ) const;
 
     //* returns true if file is the same as argument
     /*
     this is a literal string comparison for files.
     for pathnames, the trailing backslash is ignored
     */
-    virtual bool isEqual( const File& ) const;
+    bool isEqual( const File& ) const;
 
     //* get path associated to full name
-    virtual File path( bool absolute = true ) const;
+    File path( bool absolute = true ) const;
 
     //* remove path from full name
-    virtual File localName( void ) const;
+    File localName( void ) const;
 
     //* return canonical name (follow links and remove ".." and ".")
-    virtual File canonicalName( void ) const;
+    File canonicalName( void ) const;
 
     //* get file extension
-    virtual File extension( void ) const;
+    File extension( void ) const;
 
     //* get truncated file (no extension)
-    virtual File truncatedName( void ) const;
+    File truncatedName( void ) const;
 
     //* return first file with matching short name, or empty string if not found
     /** search recursively in this directory and subdirectories */
-    virtual File find( const File& file, bool = true ) const;
+    File find( const File& file, bool = true ) const;
 
     //* find file matching this (assuming short name) in list of directries or empty if not found
-    virtual File find( const List& ) const;
+    File find( const List& ) const;
 
     //* return list of files in a directory
-    virtual List listFiles( ListFlags flags ) const;
+    List listFiles( ListFlags flags ) const;
 
 
     //@}
@@ -180,41 +180,41 @@ class File: public QString
     bool createDirectory( const File& = File(".") ) const;
 
     //* set file as hidden (WIN32 only)
-    virtual void setHidden( void ) const;
+    void setHidden( void ) const;
 
     //* returns a versioned filename
     /** (add _i at the end with i the first integer for which file is not found) */
-    virtual File version( void ) const;
+    File version( void ) const;
 
     //* make a backup copy (terminated by ~) of a file, returns backup file
-    virtual File backup( void ) const;
+    File backup( void ) const;
 
     //* return link destination file
-    virtual File readLink( void ) const;
+    File readLink( void ) const;
 
     //* removes file from disk
     /**
     returns true if the file does not exists
     or was successfully removed
     */
-    virtual bool remove( void ) const;
+    bool remove( void ) const;
 
     //* removes directory from disk, recursively
-    virtual bool removeRecursive( void ) const;
+    bool removeRecursive( void ) const;
 
     //* rename file
     /** returns true if the file exists and was renamed */
-    virtual bool rename( const File& ) const;
+    bool rename( const File& ) const;
 
     //* copy
-    virtual bool copy( const File&, bool = false ) const;
+    bool copy( const File&, bool = false ) const;
 
     //* adds path to a file
     /** note: the file is taken raw. No truncation/expension performed.*/
-    virtual File addPath( const File&, bool absolute = false ) const;
+    File addPath( const File&, bool absolute = false ) const;
 
     //* expand a file name replacing .. or ~ to full path
-    virtual File expand( void ) const;
+    File expand( void ) const;
 
     //@}
 

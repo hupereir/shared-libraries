@@ -66,21 +66,21 @@ class Options: private Base::Counter<Options>
     { return !( *this == other ); }
 
     //* install defaults
-    virtual void installDefaultOptions( void );
+    void installDefaultOptions( void );
 
     //*@name accessors
     //@{
 
     //* retrieve Option map
-    virtual const Map& options( void ) const
+    const Map& options( void ) const
     { return options_; }
 
     //* retrieve special Option map
-    virtual const SpecialMap& specialOptions( void ) const
+    const SpecialMap& specialOptions( void ) const
     { return specialOptions_; }
 
     //* returns true if option name is special
-    virtual bool isSpecialOption( const QString& name ) const;
+    bool isSpecialOption( const QString& name ) const;
 
     //* retrieve list of special (i.e. kept) options matching a given name
     template <typename T> QList<T> specialOptions( const QString& name ) const
@@ -94,7 +94,7 @@ class Options: private Base::Counter<Options>
     }
 
     //* retrieve list of special (i.e. kept) options matching a given name
-    virtual const List& specialOptions( const QString& name ) const
+    const List& specialOptions( const QString& name ) const
     {
         SpecialMap::const_iterator iter( specialOptions_.find( name ) );
         Q_ASSERT( iter != specialOptions_.end() );
@@ -102,11 +102,11 @@ class Options: private Base::Counter<Options>
     }
 
     //* returns true if option with matching name is found
-    virtual bool contains( const QString& name ) const
+    bool contains( const QString& name ) const
     { return options_.find( name ) != options_.end(); }
 
     //* option matching given name
-    virtual const Option& option( const QString& name ) const
+    const Option& option( const QString& name ) const
     { return options_.find( name ).value(); }
 
     //* option value accessor
@@ -114,7 +114,7 @@ class Options: private Base::Counter<Options>
     { return _find( name ).value().get<T>(); }
 
     //* option raw value accessor
-    virtual QByteArray raw( const QString& name ) const
+    QByteArray raw( const QString& name ) const
     { return _find( name ).value().raw(); }
 
     //@}
@@ -123,7 +123,7 @@ class Options: private Base::Counter<Options>
     //@{
 
     //* adds a new special option. Return true if option is added
-    virtual bool add( const QString&, const Option&, bool isDefault = false );
+    bool add( const QString&, const Option&, bool isDefault = false );
 
     //* option value modifier
     template <
@@ -138,7 +138,7 @@ class Options: private Base::Counter<Options>
     }
 
     //* clear list of special (i.e. kept) options matching a given name
-    virtual void clearSpecialOptions( const QString& name );
+    void clearSpecialOptions( const QString& name );
 
     //* assign an option to given name
     void set( const QString&, const Option&, bool isDefault = false );
@@ -158,7 +158,7 @@ class Options: private Base::Counter<Options>
     }
 
     //* option raw value modifier
-    virtual void setRaw( const QString& name, const QByteArray& value, bool isDefault = false )
+    void setRaw( const QString& name, const QByteArray& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
@@ -167,7 +167,7 @@ class Options: private Base::Counter<Options>
     }
 
     //* option raw value modifier
-    virtual void setRaw( const QString& name, const QString& value, bool isDefault = false )
+    void setRaw( const QString& name, const QString& value, bool isDefault = false )
     {
         Q_ASSERT( !isSpecialOption( name ) );
         Option &option( options_[name] );
@@ -182,7 +182,7 @@ class Options: private Base::Counter<Options>
     takes more time with respect to the "standard" options, which are stored
     in a map.
     */
-    virtual void keep( const QString& name )
+    void keep( const QString& name )
     {
         if( specialOptions_.find( name ) == specialOptions_.end() )
         { specialOptions_.insert( name, List() ); }

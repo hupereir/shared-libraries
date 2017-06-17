@@ -34,10 +34,6 @@ namespace Base
 
         public:
 
-        //* constructor
-        explicit Color( void )
-        {}
-
         //* construct a color objects from any argument out of which you could make a qcolor
         template< typename... Args >
             explicit Color( Args&&... args ):

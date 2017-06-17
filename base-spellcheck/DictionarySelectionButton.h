@@ -42,14 +42,14 @@ namespace SpellCheck
         { return value_; }
 
         //* read value from option
-        virtual void read( const Options& options )
+        void read( const Options& options ) override
         {
             value_ = options.raw( optionName() );
             _setConnected();
         }
 
         //* write value to option
-        virtual void write( Options& options ) const
+        void write( Options& options ) const override
         { options.set( optionName(), value_ ); }
 
         Q_SIGNALS:

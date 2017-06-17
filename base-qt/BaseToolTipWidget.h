@@ -110,11 +110,8 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
 
     public Q_SLOTS:
 
-    //* hide
-    virtual void hide( void );
-
-    //* show
-    virtual void show( void );
+    //* change visibility
+    void setVisible( bool ) override;
 
     //* show delayed
     void showDelayed( int = -1 );

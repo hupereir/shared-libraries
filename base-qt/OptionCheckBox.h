@@ -44,7 +44,7 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
     { negative_ = value; }
 
     //! read value from option
-    virtual void read( const Options& options )
+    void read( const Options& options ) override
     {
         if( negative_ ) setChecked( !options.get<bool>( optionName() ) );
         else setChecked( options.get<bool>( optionName() ) );
@@ -57,7 +57,7 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
     }
 
     //! write value to option
-    virtual void write( Options& options ) const
+    void write( Options& options ) const override
     {
         if( negative_ ) options.set<bool>( optionName(), !isChecked() );
         else options.set<bool>( optionName(), isChecked() );

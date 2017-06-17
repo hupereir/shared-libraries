@@ -53,14 +53,14 @@ namespace Ssh
         { return channel_; }
 
         //* true if channel is closed
-        virtual bool atEnd( void ) const;
+        bool atEnd( void ) const override;
 
         //* sequencial mode
-        virtual bool isSequential( void ) const
+        bool isSequential( void ) const override
         { return true; }
 
         //* bytes available
-        virtual qint64 bytesAvailable( void ) const
+        qint64 bytesAvailable( void ) const override
         { return bytesAvailable_; }
 
         //@}
@@ -85,25 +85,26 @@ namespace Ssh
         public Q_SLOTS:
 
         //* close
-        void close( void );
+        void close( void ) override;
 
         protected:
 
         //* read
-        virtual qint64 readData( char*, qint64 maxSize );
+        qint64 readData( char*, qint64 maxSize ) override;
 
         //* write
-        virtual qint64 writeData( const char*, qint64 maxSize );
+        qint64 writeData( const char*, qint64 maxSize ) override;
 
         //* timer event
-        void timerEvent( QTimerEvent* );
+        void timerEvent( QTimerEvent* ) override;
 
         //* get socket latency
         int _latency( void ) const
         { return latency_; }
 
         //* channel
-        void* _channel( void ) { return channel_; }
+        void* _channel( void )
+        { return channel_; }
 
         //* channel
         void _setChannel( void*, QIODevice::OpenMode );

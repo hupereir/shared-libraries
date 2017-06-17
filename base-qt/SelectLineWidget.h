@@ -61,10 +61,10 @@ class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineW
     public Q_SLOTS:
 
     //* take action when at least one match is found
-    virtual void matchFound( void );
+    void matchFound( void );
 
     //* take action when no match is found
-    virtual void noMatchFound( void );
+    void noMatchFound( void );
 
     protected:
 

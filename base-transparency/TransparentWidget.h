@@ -126,13 +126,13 @@ namespace Transparency
         //@{
 
         //* resize
-        virtual void resizeEvent( QResizeEvent* );
+        void resizeEvent( QResizeEvent* ) override;
 
         //* show
-        virtual void showEvent( QShowEvent* );
+        void showEvent( QShowEvent* ) override;
 
         //* paint
-        virtual void paintEvent( QPaintEvent* );
+        void paintEvent( QPaintEvent* ) override;
 
         //@}
 
@@ -183,7 +183,7 @@ namespace Transparency
         //* paint main widget on devide
         /*! this must be re-implemented by derived classes */
         virtual void _paint( QPaintDevice&, const QRect& )
-        { return; }
+        {}
 
         //* update input shape (to prevent input events in outerPadding region)
         virtual void _updateInputShape( void );

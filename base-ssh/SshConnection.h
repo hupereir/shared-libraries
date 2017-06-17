@@ -161,7 +161,7 @@ namespace Ssh
         protected:
 
         //* timer event
-        virtual void timerEvent( QTimerEvent* );
+        void timerEvent( QTimerEvent* ) override;
 
         protected Q_SLOTS:
 

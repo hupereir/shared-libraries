@@ -52,13 +52,13 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
     //@{
 
     // return data for a given index
-    virtual QVariant data(const QModelIndex &index, int role) const;
+    QVariant data(const QModelIndex &index, int role) const override;
 
     //* header data
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     //* number of columns for a given index
-    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override
     { return nColumns; }
 
     //@}

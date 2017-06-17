@@ -52,7 +52,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
     { scale_ = scale; }
 
     //* read value from option
-    void read( const Options& options )
+    void read( const Options& options ) override
     {
         setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
         if( !_connected() )
@@ -63,7 +63,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
     }
 
     //* write value to option
-    void write( Options& options ) const
+    void write( Options& options ) const override
     { options.set<double>( optionName(), static_cast<double>(value())/scale_ ); }
 
     //* special value text

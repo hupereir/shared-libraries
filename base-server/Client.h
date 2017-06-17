@@ -63,7 +63,7 @@ namespace Server
             {}
 
             //* predicate
-            virtual bool operator() ( const Client* client ) const
+            bool operator() ( const Client* client ) const
             { return client->id() == id_; }
 
             protected:
@@ -81,7 +81,7 @@ namespace Server
         private Q_SLOTS:
 
         //* process buffer
-        virtual void _parseBuffer( qint32, QByteArray );
+        void _parseBuffer( qint32, QByteArray );
 
         private:
 

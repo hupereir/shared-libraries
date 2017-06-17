@@ -54,7 +54,7 @@ namespace SpellCheck
         protected Q_SLOTS:
 
         //* select item
-        virtual void _selectItem( const QModelIndex& );
+        void _selectItem( const QModelIndex& );
 
         private:
 

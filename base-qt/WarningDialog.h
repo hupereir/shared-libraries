@@ -37,7 +37,7 @@ class WarningDialog: public DetailsDialog
     explicit WarningDialog( QWidget* parent, const QString& = QString() );
 
     //* set text
-    virtual void setText( const QString& );
+    void setText( const QString& );
 
     protected:
 

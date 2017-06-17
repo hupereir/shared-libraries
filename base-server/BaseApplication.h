@@ -40,10 +40,10 @@ class BaseApplication: public BaseCoreApplication
     explicit BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
     //* initialize application manager
-    virtual bool initApplicationManager( void );
+    bool initApplicationManager( void ) override;
 
     //* create all widgets
-    virtual bool realizeWidget( void );
+    bool realizeWidget( void ) override;
 
     //* true if fixed fonts are used
     virtual void setUseFixedFonts( bool value )
@@ -82,7 +82,7 @@ class BaseApplication: public BaseCoreApplication
     //@{
 
     //* command line parser
-    virtual CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const;
+    CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const override;
 
     // application icon
     virtual QIcon applicationIcon( void ) const = 0;

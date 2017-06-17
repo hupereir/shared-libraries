@@ -52,7 +52,7 @@ class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
     explicit DebugMenu( QWidget*, Flags = Flag::Default );
 
     //* needed to toggle visibility
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     private Q_SLOTS:
 

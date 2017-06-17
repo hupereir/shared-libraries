@@ -50,10 +50,10 @@ class OptionListBox: public QWidget, public OptionWidget
     { return *list_; }
 
     //* read value from option
-    void read( const Options& options );
+    void read( const Options& options ) override;
 
     //* write value to option
-    void write( Options& options ) const;
+    void write( Options& options ) const override;
 
     //* browsability
     void setBrowsable( bool value )
@@ -71,19 +71,19 @@ class OptionListBox: public QWidget, public OptionWidget
     protected Q_SLOTS:
 
     //* update buttons
-    virtual void _updateButtons( void );
+    void _updateButtons( void );
 
     //* add a value
-    virtual void _add( void );
+    void _add( void );
 
     //* add a value
-    virtual void _edit( void );
+    void _edit( void );
 
     //* remove a value
-    virtual void _remove();
+    void _remove();
 
     //* set value as default
-    virtual void _setDefault();
+    void _setDefault();
 
     protected:
 

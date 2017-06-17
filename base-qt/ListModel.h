@@ -291,15 +291,15 @@ class ListModel : public ItemModel
         List removedValues;
 
         // update values that are common to both lists
-        for( typename List::iterator iter = values_.begin(); iter != values_.end(); ++iter )
+        for( auto&& iter = values_.begin(); iter != values_.end(); ++iter )
         {
 
             // see if iterator is in list
-            typename List::iterator found_iter( std::find_if( values.begin(), values.end(), std::bind2nd( EqualTo(), *iter ) ) );
-            if( found_iter == values.end() ) removedValues << *iter;
+            auto foundIter( std::find_if( values.begin(), values.end(), std::bind2nd( EqualTo(), *iter ) ) );
+            if( foundIter == values.end() ) removedValues << *iter;
             else {
-                *iter = *found_iter;
-                values.erase( found_iter );
+                *iter = *foundIter;
+                values.erase( foundIter );
             }
 
         }
@@ -338,7 +338,7 @@ class ListModel : public ItemModel
     //* add, without update
     virtual void _add( const ValueType& value )
     {
-        typename List::iterator iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
+        auto iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
         if( iter == values_.end() ) values_ << value;
         else *iter = value;
     }
@@ -348,7 +348,7 @@ class ListModel : public ItemModel
     {
         if( !index.isValid() ) add( value );
         int row = 0;
-        typename List::iterator iter( values_.begin() );
+        auto iter( values_.begin() );
         for( ;iter != values_.end() && row != index.row(); ++iter, ++row ){}
         values_.insert( iter, value );
     }

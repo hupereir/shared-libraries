@@ -44,22 +44,22 @@ namespace SpellCheck
     explicit SpellParser();
 
     //* highlight paragraph
-    virtual Word::Set parse( const QString& text );
+    Word::Set parse( const QString& text );
 
     //* highlight color
     /* returns true if changed */
-    virtual bool setColor( const QColor& color );
+    bool setColor( const QColor& color );
 
     //* color
-    virtual const QColor& color( void ) const
+    const QColor& color( void ) const
     { return color_; }
 
     //* font format
     /* returns true if changed */
-    virtual bool setFontFormat( Format::TextFormatFlags );
+    bool setFontFormat( Format::TextFormatFlags );
 
     //* font format
-    virtual Format::TextFormatFlags fontFormat( void ) const
+    Format::TextFormatFlags fontFormat( void ) const
     { return fontFormat_; }
 
     //* enabled. Returns true if changed.
@@ -75,11 +75,11 @@ namespace SpellCheck
     { return enabled_; }
 
     //* spell interface
-    virtual const SpellInterface& interface( void ) const
+    const SpellInterface& interface( void ) const
     { return interface_; }
 
     //* spell interface
-    virtual SpellInterface& interface( void )
+    SpellInterface& interface( void )
     { return interface_; }
 
     private:

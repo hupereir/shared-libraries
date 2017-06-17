@@ -53,19 +53,17 @@ class LogWidget: public TextEditor
     virtual void append( const QString&, Format::TextFormatFlags = Format::Default, const QColor& = QColor(), int = 0 );
 
     //* clear
-    virtual void clear( void )
-    {
-        /*
-        need to bypass TextEditor::clear,
-        which is disabled in read-only mode
-        */
-        BaseEditor::clear();
-    }
+    /*
+    need to bypass TextEditor::clear,
+    which is disabled in read-only mode
+    */
+    void clear( void ) override
+    { BaseEditor::clear(); }
 
     protected Q_SLOTS:
 
     //* toggle wrap mode
-    virtual bool _toggleWrapMode( bool );
+    bool _toggleWrapMode( bool ) override;
 
     //* slider
     void _verticalScrollBarMoved( int );
@@ -78,7 +76,7 @@ class LogWidget: public TextEditor
     //* wheel events
     void wheelEvent( QWheelEvent* ) override;
 
-        //* wrap option name
+    //* wrap option name
     QString _wrapOptionName( void )
     { return optionName_ + "_WRAP"; }
 

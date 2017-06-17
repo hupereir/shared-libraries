@@ -39,7 +39,7 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
     {}
 
     //! read value from option
-    void read( const Options& options )
+    void read( const Options& options ) override
     {
         setChecked( options.get<bool>( optionName() ) );
         if( !_connected() )
@@ -51,7 +51,7 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
     }
 
     //! write value to option
-    void write( Options& options ) const
+    void write( Options& options ) const override
     { options.set<bool>( optionName(), isChecked() ); }
 
     Q_SIGNALS:

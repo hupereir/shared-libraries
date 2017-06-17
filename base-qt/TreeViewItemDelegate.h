@@ -33,10 +33,10 @@ class TreeViewItemDelegate: public QStyledItemDelegate
     explicit TreeViewItemDelegate( QObject* = nullptr );
 
     //* set item margin
-    virtual void setItemMargin( int );
+    void setItemMargin( int );
 
     //* size hint for index
-    virtual QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const;
+    QSize sizeHint( const QStyleOptionViewItem&, const QModelIndex& ) const override;
 
     private:
 

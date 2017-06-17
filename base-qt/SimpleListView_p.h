@@ -39,10 +39,10 @@ namespace Private
         explicit SimpleListViewDelegate( QObject* = nullptr );
 
         //* paint
-        virtual void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const;
+        void paint( QPainter*, const QStyleOptionViewItem&, const QModelIndex& ) const override;
 
         //* size
-        virtual QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+        QSize sizeHint( const QStyleOptionViewItem &option, const QModelIndex &index ) const override;
 
         private:
 

@@ -90,30 +90,28 @@ bool BaseToolTipWidget::eventFilter( QObject* object, QEvent* event )
 }
 
 //_______________________________________________________
-void BaseToolTipWidget::hide( void )
+void BaseToolTipWidget::setVisible( bool visible )
 {
     Debug::Throw( "BaseToolTipWidget::hide.\n" );
     timer_.stop();
-    if( isVisible() )
-    { hiddenTimer_.start( 200, this ); }
-    QWidget::hide();
-}
 
-//_______________________________________________________
-void BaseToolTipWidget::show( void )
-{
+    if( !visible )
+    {
 
-    Debug::Throw( "BaseToolTipWidget::show.\n" );
+        if( isVisible() )
+        { hiddenTimer_.start( 200, this ); }
 
-    // stop timer
-    timer_.stop();
+    } else {
 
-    // check mouse is still in relevant rect
-    if( !_checkMousePosition() ) return;
+        // check mouse is still in relevant rect
+        if( !_checkMousePosition() ) return;
 
-    // adjust position and show
-    _adjustPosition();
-    QWidget::show();
+        // adjust position and show
+        _adjustPosition();
+
+    }
+
+    QWidget::setVisible( visible );
 }
 
 //_______________________________________________________

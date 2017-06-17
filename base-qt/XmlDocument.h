@@ -49,28 +49,28 @@ class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
     //@{
 
     //* set content
-    virtual bool setContent( QFile* file )
+    bool setContent( QFile* file )
     { return setContent( file, error_ ); }
 
     //* set content
-    virtual bool setContent( const QString& content )
+    bool setContent( const QString& content )
     { return setContent( content, error_ ); }
 
     //* set content
-    virtual bool setContent( const QByteArray& content )
+    bool setContent( const QByteArray& content )
     { return setContent( content, error_ ); }
 
     //* set content
-    virtual bool setContent( QFile*, XmlError& );
+    bool setContent( QFile*, XmlError& );
 
     //* set content
-    virtual bool setContent( QIODevice*, XmlError& );
+    bool setContent( QIODevice*, XmlError& );
 
     //* set content
-    virtual bool setContent( const QByteArray&, XmlError& );
+    bool setContent( const QByteArray&, XmlError& );
 
     //* set content
-    virtual bool setContent( const QString&, XmlError& );
+    bool setContent( const QString&, XmlError& );
 
     //* replace child
     void replaceChild( QDomElement& );

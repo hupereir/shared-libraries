@@ -79,7 +79,7 @@ namespace Private
         //@{
 
         //* dump to dom element
-        virtual QDomElement domElement( QDomDocument& ) const;
+        QDomElement domElement( QDomDocument& ) const;
 
         //* flags
         Flags flags( void ) const
@@ -119,7 +119,7 @@ namespace Private
             explicit List( const QDomElement& );
 
             //* dump to dom element
-            virtual QDomElement domElement( QDomDocument& ) const;
+            QDomElement domElement( QDomDocument& ) const;
 
         };
 
@@ -250,7 +250,7 @@ namespace Private
         void paintEvent( QPaintEvent* ) override;
 
         //* paint
-        virtual void _paint( QPainter* );
+        void _paint( QPainter* );
 
         protected Q_SLOTS:
 
@@ -391,7 +391,7 @@ namespace Private
         protected:
 
         //* reload
-        virtual void _reload( void )
+        void _reload( void )
         { setFileInfo( name_, fileInfo_, icon_ ); }
 
         private Q_SLOTS:

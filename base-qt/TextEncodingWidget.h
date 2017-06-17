@@ -57,7 +57,7 @@ class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidg
     protected:
 
     //* load text codecs
-    virtual void _loadTextCodecs( void );
+    void _loadTextCodecs( void );
 
     protected Q_SLOTS:
 

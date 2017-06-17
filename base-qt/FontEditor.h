@@ -27,44 +27,44 @@
 #include <QFontDialog>
 #include <QLabel>
 
-//! readonly font name display and font dialog
+//* readonly font name display and font dialog
 class FontEditor: public QWidget, private Base::Counter<FontEditor>
 {
 
-    //! Qt meta object declaration
+    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //! constructor
+    //* constructor
     explicit FontEditor( QWidget *parent );
 
-    //! display font
+    //* display font
     virtual void setFont( const QFont& font )
     {
         font_ = font;
         _updateLabel();
     }
 
-    //! display font
+    //* display font
     virtual void setFont( const QString& font )
     {
         font_.fromString( font );
         _updateLabel();
     }
 
-    //! retrieve font
+    //* retrieve font
     virtual const QFont& font( void ) const
     { return font_; }
 
     Q_SIGNALS:
 
-    //! font changed
+    //* font changed
     void fontChanged( const QFont& );
 
     protected Q_SLOTS:
 
-    //! select font from dialog
+    //* select font from dialog
     virtual void _selectFont( void )
     {
         bool ok( false );
@@ -79,16 +79,16 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
 
     protected:
 
-    //! update label
+    //* update label
     virtual void _updateLabel( void )
     { label_->setText( QString( tr( "%1, %2pt" ) ).arg( font().family() ).arg( font().pointSize() ) ); }
 
     private:
 
-    //! font name
+    //* font name
     QLabel* label_;
 
-    //! selected font
+    //* selected font
     QFont font_;
 
 };

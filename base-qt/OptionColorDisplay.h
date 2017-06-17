@@ -39,7 +39,7 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
     {}
 
     //! read value from option
-    void read( const Options& options )
+    void read( const Options& options ) override
     {
         setColor( options.get<Base::Color>( optionName() ) );
         if( !_connected() )
@@ -51,7 +51,7 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
     }
 
     //! write value to option
-    void write( Options& options ) const
+    void write( Options& options ) const override
     { options.set<Base::Color>( optionName(), Base::Color(color()) ); }
 
     Q_SIGNALS:

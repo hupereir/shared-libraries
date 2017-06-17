@@ -93,7 +93,7 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     //@}
 
     //* event filter
-    virtual bool eventFilter( QObject*, QEvent* );
+    bool eventFilter( QObject*, QEvent* ) override;
 
     public Q_SLOTS:
 

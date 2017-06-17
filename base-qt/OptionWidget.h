@@ -56,7 +56,7 @@ class OptionWidget
     protected:
 
     //* set buddy
-    virtual void _setBuddy( QObject* buddy )
+    void _setBuddy( QObject* buddy )
     { buddy_ = buddy; }
 
     //* true when connected

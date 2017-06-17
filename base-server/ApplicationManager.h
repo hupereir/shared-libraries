@@ -54,7 +54,7 @@ namespace Server
         ~ApplicationManager( void ) override;
 
         //* application name
-        virtual void setApplicationName( const QString& name );
+        void setApplicationName( const QString& );
 
         //* commandLine parser
         static CommandLineParser commandLineParser( CommandLineArguments = CommandLineArguments(), bool ignoreWarnings = true );
@@ -70,7 +70,7 @@ namespace Server
         };
 
         //* changes application state, emit signal if changed
-        virtual bool setState( const State& state )
+        bool setState( const State& state )
         {
             if( state == state_ ) return false;
             state_ = state;
@@ -78,17 +78,17 @@ namespace Server
         }
 
         //* reference to "this" client
-        virtual Client& client( void ) const
+        Client& client( void ) const
         { return *client_; }
 
         //* retrieve Application ID
-        virtual const ApplicationId& id( void ) const
+        const ApplicationId& id( void ) const
         { return id_; }
 
         public Q_SLOTS:
 
         //* (re)initialize server/client connections
-        virtual void initialize( CommandLineArguments args = CommandLineArguments() );
+        void initialize( CommandLineArguments args = CommandLineArguments() );
 
         Q_SIGNALS:
 
@@ -101,7 +101,7 @@ namespace Server
         protected:
 
         //* timer event
-        virtual void timerEvent( QTimerEvent* );
+        void timerEvent( QTimerEvent* ) override;
 
         //* pair of application id and client
         using ClientPair = QPair< ApplicationId, Client* >;
@@ -159,30 +159,30 @@ namespace Server
         /** \brief register a client, returns true if application is new.
         if forced is set to true, the old cliend, if any, is replaced
         */
-        virtual ClientMap::iterator _register( const ApplicationId& id, Client* client, bool forced = false );
+        ClientMap::iterator _register( const ApplicationId& id, Client* client, bool forced = false );
 
         //* redirect message
-        virtual void _redirect( ServerCommand, Client* );
+        void _redirect( ServerCommand, Client* );
 
         //* broadcast a message to all registered clients but the sender (if valid)
-        virtual void _broadcast( ServerCommand, Client* sender = 0 );
+        void _broadcast( ServerCommand, Client* sender = 0 );
 
         protected Q_SLOTS:
 
         //* a new connection is granted
-        virtual void _newConnection( void );
+        void _newConnection( void );
 
         //* a connection was closed
-        virtual void _serverConnectionClosed( void );
+        void _serverConnectionClosed( void );
 
         //* a connection was closed
-        virtual void _clientConnectionClosed( void );
+        void _clientConnectionClosed( void );
 
         //* client recieves errors
-        virtual void _error( QAbstractSocket::SocketError );
+        void _error( QAbstractSocket::SocketError );
 
         //* redistribute message when a connected client sends one
-        virtual void _redirect( Server::ServerCommand );
+        void _redirect( Server::ServerCommand );
 
         //* reads signal from server
         void _process( Server::ServerCommand );

@@ -109,13 +109,13 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     protected Q_SLOTS:
 
     //* toggle dock
-    virtual void _toggleDock( void );
+    void _toggleDock( void );
 
     //* stays on top
-    virtual void _toggleStaysOnTop( bool );
+    void _toggleStaysOnTop( bool );
 
     //* toggle window stickyness
-    virtual void _toggleSticky( bool );
+    void _toggleSticky( bool );
 
     //* update context menu
     void _updateContextMenu( const QPoint& );

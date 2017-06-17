@@ -38,7 +38,7 @@ class OptionFontEditor: public FontEditor, public OptionWidget
     {}
 
     //! read value from option
-    void read( const Options& options )
+    void read( const Options& options ) override
     {
         setFont( options.raw( optionName() ) );
         if( !_connected() )
@@ -50,7 +50,7 @@ class OptionFontEditor: public FontEditor, public OptionWidget
     }
 
     //! write value to option
-    void write( Options& options ) const
+    void write( Options& options ) const override
     { options.setRaw( optionName(), font().toString() ); }
 
     Q_SIGNALS:

@@ -61,11 +61,11 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     protected:
 
     //* retrieve list
-    virtual SimpleListView& _list( void )
+    SimpleListView& _list( void )
     { return *list_; }
 
     //* retrieve stack
-    virtual QStackedWidget& _stackedWidget( void )
+    QStackedWidget& _stackedWidget( void )
     { return *stackedWidget_; }
 
     //* button box
@@ -150,33 +150,21 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
         //@{
 
         //* flags
-        virtual Qt::ItemFlags flags(const QModelIndex& ) const
+        Qt::ItemFlags flags(const QModelIndex& ) const override
         { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
 
         //* return data
-        virtual QVariant data(const QModelIndex &index, int role) const;
+        QVariant data(const QModelIndex &index, int role) const override;
 
         //* header data
-        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const
-        {
-            if( orientation == Qt::Horizontal && role == Qt::DisplayRole && section >= 0 && section < nColumns )
-            { return columnTitles_[section]; }
-
-            // return empty
-            return QVariant();
-
-        }
+        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override
+        { return QVariant(); }
 
         //* number of columns for a given index
-        virtual int columnCount(const QModelIndex& = QModelIndex()) const
+        int columnCount(const QModelIndex& = QModelIndex()) const override
         { return nColumns; }
 
         //@}
-
-        protected:
-
-        //* list column names
-        const std::array<QString, nColumns> columnTitles_;
 
     };
 

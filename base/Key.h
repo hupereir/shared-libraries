@@ -69,7 +69,7 @@ namespace Base
         using Type = quint32;
 
         //* retrieve key
-        virtual Type key( void ) const
+        Type key( void ) const
         { return key_; }
 
         //* shortcut for set of Key

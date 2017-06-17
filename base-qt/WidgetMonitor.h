@@ -51,7 +51,7 @@ class WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
     { mode_ = value; }
 
     //* size option name
-    virtual void setOptionName( const QString& );
+    void setOptionName( const QString& );
 
     //* size hint
     /** an invalid size is returned when option name is not set */

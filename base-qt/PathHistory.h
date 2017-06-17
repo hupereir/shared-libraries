@@ -103,18 +103,18 @@ class PathHistory:  public QObject, private Base::Counter<PathHistory>
     protected:
 
     //* maximum Size
-    virtual void _setMaxSize( int );
+    void _setMaxSize( int );
 
     //* maximum size
-    virtual int _maxSize( void ) const
+    int _maxSize( void ) const
     { return maxSize_; }
 
     //* truncate list if larger than maxSize_
-    virtual FileRecord::List _truncatedList( void ) const
+    FileRecord::List _truncatedList( void ) const
     { return _truncatedList( pathList_ ); }
 
     //* truncate list if larger than maxSize_
-    virtual FileRecord::List _truncatedList( FileRecord::List ) const;
+    FileRecord::List _truncatedList( FileRecord::List ) const;
 
     private:
 

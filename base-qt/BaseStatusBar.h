@@ -45,14 +45,14 @@ class StatusBarLabel: public QLabel
     public Q_SLOTS:
 
     //* set text
-    virtual void setText( const QString& message, bool alsoUpdate = true )
+    void setText( const QString& message, bool alsoUpdate = true )
     {
         if( alsoUpdate ) setTextAndUpdate( message );
         else QLabel::setText( message );
     }
 
     //* set label text and process events
-    virtual void setTextAndUpdate( const QString& );
+    void setTextAndUpdate( const QString& );
 
 };
 
