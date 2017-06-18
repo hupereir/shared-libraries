@@ -63,7 +63,7 @@ class IconViewItem: private Base::Counter<IconViewItem>
     { return column_; }
 
     //* bounding rect
-    virtual QRect boundingRect( void ) const;
+    QRect boundingRect( void ) const;
 
     //@}
 
@@ -106,7 +106,7 @@ class IconViewItem: private Base::Counter<IconViewItem>
     using List = QList<IconViewItem>;
 
     //* paint
-    virtual void paint( QPainter*, const QStyleOption*, QWidget* ) const;
+    void paint( QPainter*, const QStyleOption*, QWidget* ) const;
 
     //* margin
     static int margin;

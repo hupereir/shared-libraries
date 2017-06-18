@@ -50,7 +50,7 @@ namespace Private
         explicit SystemNotificationsP( QObject* = nullptr );
 
         //* destructor
-        virtual ~SystemNotificationsP( void ) override;
+        ~SystemNotificationsP( void ) override;
 
         //* @name modifiers
         //@{
@@ -65,7 +65,7 @@ namespace Private
         void setApplicationIcon( const QIcon& );
 
         //* process message
-        virtual void send( Notification );
+        void send( Notification );
 
         //@}
 

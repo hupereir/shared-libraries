@@ -42,10 +42,10 @@ namespace Private
         explicit LineEditorStyle( QStyle* = nullptr );
 
         //* returns rect corresponding to one widget's subcontrol
-        virtual QRect subElementRect( SubElement, const QStyleOption*, const QWidget* ) const;
+        QRect subElementRect( SubElement, const QStyleOption*, const QWidget* ) const override;
 
         //* returns size matching contents
-        virtual QSize sizeFromContents( ContentsType, const QStyleOption*, const QSize&, const QWidget* ) const;
+        QSize sizeFromContents( ContentsType, const QStyleOption*, const QSize&, const QWidget* ) const override;
 
     };
 

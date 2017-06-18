@@ -60,11 +60,11 @@ class SystemNotifications: public QObject, private Base::Counter<SystemNotificat
     void setApplicationIcon( const QIcon& );
 
     //* process message
-    virtual void send( const QString& summary, const QString& body )
+    void send( const QString& summary, const QString& body )
     { sendNotification( Notification( summary, body ) ); }
 
     //* process notification
-    virtual void sendNotification( const Notification& );
+    void sendNotification( const Notification& );
 
     //@}
 
@@ -84,7 +84,7 @@ class SystemNotifications: public QObject, private Base::Counter<SystemNotificat
     protected:
 
     //* event handler
-    virtual void timerEvent( QTimerEvent* );
+    void timerEvent( QTimerEvent* ) override;
 
     //* process message queue
     void _sendPendingNotification( void );

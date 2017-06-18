@@ -106,28 +106,28 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     protected Q_SLOTS:
 
     //* show pixmap path dialog
-    virtual void _editPixmapPathList( void );
+    void _editPixmapPathList( void );
 
     //* show icon path dialog
-    virtual void _editIconTheme( void );
+    void _editIconTheme( void );
 
     //* check options changed
     bool _checkModified( void );
 
     //* update configuration
-    virtual void _apply();
+    void _apply();
 
     //* save configuration from options
-    virtual void _save();
+    void _save();
 
     //* restore configuration
-    virtual void _cancel();
+    void _cancel();
 
     //* reset
-    virtual void _reset( void );
+    void _reset( void );
 
     //* restore default options
-    virtual void _restoreDefaults( void );
+    void _restoreDefaults( void );
 
     protected:
 

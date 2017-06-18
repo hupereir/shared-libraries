@@ -38,7 +38,7 @@ class FilePermissionsWidget: public QWidget, private Base::Counter<FilePermissio
     explicit FilePermissionsWidget( QWidget*, QFile::Permissions = QFile::Permissions() );
 
     //* set permissions
-    virtual void setPermissions( QFile::Permissions );
+    void setPermissions( QFile::Permissions );
 
     private:
 

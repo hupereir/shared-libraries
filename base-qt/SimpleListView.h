@@ -33,7 +33,7 @@ class SimpleListView: public QListView
     explicit SimpleListView( QWidget* = nullptr );
 
     //* orientation
-    virtual void setOrientation( Qt::Orientation );
+    void setOrientation( Qt::Orientation );
 
     //* model
     void setModel( QAbstractItemModel* ) override;
@@ -54,13 +54,13 @@ class SimpleListView: public QListView
     void _adjustSize( void );
 
     //* hover index
-    virtual void _indexEntered( const QModelIndex& );
+    void _indexEntered( const QModelIndex& );
 
     protected:
 
     //* generic event
     bool event( QEvent* ) override;
-    
+
     //* mouse move event
     void mouseMoveEvent( QMouseEvent* ) override;
 
@@ -68,7 +68,7 @@ class SimpleListView: public QListView
     void mousePressEvent( QMouseEvent* ) override;
 
     //* hover index
-    virtual void _setHoverIndex( const QModelIndex& );
+    void _setHoverIndex( const QModelIndex& );
 
     private:
 

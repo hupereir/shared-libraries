@@ -48,11 +48,15 @@ namespace Private
         { return monitor_; }
 
         //* size hint
-        virtual QSize sizeHint( void ) const
+        QSize sizeHint( void ) const override
         {
             const QSize size( monitor_.sizeHint() );
             return size.isValid() ? size:QWidget::sizeHint();
         }
+
+        //* size hint
+        QSize minimumSizeHint( void ) const override
+        { return sizeHint(); }
 
         private:
 
@@ -70,11 +74,11 @@ namespace Private
         public:
 
         //* minimum size hint
-        virtual QSize minimumSizeHint( void ) const
+        QSize minimumSizeHint( void ) const override
         { return QSize( 1, 2 ); }
 
         //* minimum size hint
-        virtual QSize sizeHint( void ) const
+        QSize sizeHint( void ) const override
         { return minimumSizeHint(); }
 
     };

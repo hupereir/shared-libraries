@@ -96,7 +96,7 @@ class BaseFileInfo
 
     //* equal to operator
     virtual bool operator == (const BaseFileInfo& other) const
-    { return file() == other.file() && type() == other.type(); }
+    { return file_ == other.file_ && type() == other.type(); }
 
     //* equal to operator
     virtual bool operator != (const BaseFileInfo& other) const
@@ -105,7 +105,7 @@ class BaseFileInfo
     //* less than operator
     virtual bool operator < (const BaseFileInfo& other) const
     {
-        if( file() != other.file() ) return file() < other.file();
+        if( file_ != other.file_ ) return file_ < other.file_;
         return type() < other.type();
     }
 
@@ -362,7 +362,7 @@ class BaseFileInfo
 
         //* constructor
         explicit SameFileFTor( const BaseFileInfo& info ):
-            file_( info.file() )
+            file_( info.file_ )
         {}
 
         //* constructor
@@ -372,7 +372,7 @@ class BaseFileInfo
 
         //* predicate
         bool operator() (const BaseFileInfo& info ) const
-        { return info.file() == file_; }
+        { return info.file_ == file_; }
 
         private:
 
@@ -452,7 +452,7 @@ class BaseFileInfo
     //* streamer
     friend QTextStream& operator << ( QTextStream& out, const BaseFileInfo& file )
     {
-        out << file.file() << " (";
+        out << file.file_ << " (";
 
         if( file.isNavigator() ) out << "navigator";
         else if( file.isFolder() ) out << "folder";

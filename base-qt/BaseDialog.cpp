@@ -19,6 +19,7 @@
 
 #include "BaseDialog.h"
 #include "Debug.h"
+#include "IconSize.h"
 #include "QtUtil.h"
 #include "Util.h"
 #include "XmlOptions.h"
@@ -31,20 +32,10 @@
 BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):
     QDialog( parent, flags ),
     monitor_( this ),
-    iconSize_( 64, 64 )
+    iconSize_( IconSize( IconSize::VeryHuge ) )
 {
     Debug::Throw( "BaseDialog::BaseDialog.\n" );
     setSizeGripEnabled(false);
-}
-
-//__________________________________________________
-BaseDialog& BaseDialog::setWindowTitle( const QString& title )
-{
-
-    Debug::Throw( "BaseDialog::setWindowTitle.\n" );
-    QDialog::setWindowTitle( Util::windowTitle( title ) );
-    return *this;
-
 }
 
 //__________________________________________________
@@ -59,6 +50,16 @@ QSize BaseDialog::sizeHint( void ) const
 {
     auto&& out( monitor_.sizeHint() );
     return out.isValid() ? out:QDialog::sizeHint();
+}
+
+//__________________________________________________
+BaseDialog& BaseDialog::setWindowTitle( const QString& title )
+{
+
+    Debug::Throw( "BaseDialog::setWindowTitle.\n" );
+    QDialog::setWindowTitle( Util::windowTitle( title ) );
+    return *this;
+
 }
 
 //________________________________________________________________
@@ -110,7 +111,7 @@ BaseDialog& BaseDialog::uniconify( void )
 }
 
 //__________________________________________________________
-void BaseDialog::toggleSticky( bool state )
+BaseDialog& BaseDialog::toggleSticky( bool state )
 {
 
     Debug::Throw( "BaseDialog::toggleSticky.\n" );
@@ -130,8 +131,7 @@ void BaseDialog::toggleSticky( bool state )
 
     #endif
 
-    return;
-
+    return *this;
 }
 
 //_______________________________________________________

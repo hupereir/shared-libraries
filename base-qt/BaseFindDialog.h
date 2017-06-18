@@ -40,7 +40,7 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     //@{
 
     //* string to find
-    virtual QString text( void ) const
+    QString text( void ) const
     { return baseFindWidget_->text(); }
 
     //* get selection
@@ -52,7 +52,7 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     { return *baseFindWidget_; }
 
     //* retrieve editor
-    virtual CustomComboBox& editor( void ) const
+    CustomComboBox& editor( void ) const
     { return baseFindWidget_->editor(); }
 
     //@}
@@ -61,7 +61,7 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     //@{
 
     //* string to find
-    virtual void setText( const QString& text )
+    void setText( const QString& text )
     { baseFindWidget_->setText( text ); }
 
     //* synchronize searched strings and ComboBox
@@ -89,11 +89,11 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     public Q_SLOTS:
 
     //* take action when at least one match is found
-    virtual void matchFound( void )
+    void matchFound( void )
     { baseFindWidget_->matchFound(); }
 
     //* take action when no match is found
-    virtual void noMatchFound( void )
+    void noMatchFound( void )
     { baseFindWidget_->noMatchFound(); }
 
     private:

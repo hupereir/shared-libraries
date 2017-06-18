@@ -41,10 +41,10 @@ class DetailsDialog: public CustomDialog
     {}
 
     //* set text details
-    virtual void setDetails( const QString& );
+    void setDetails( const QString& );
 
     //* set details widget
-    virtual void setDetails( QWidget* );
+    void setDetails( QWidget* );
 
     public Q_SLOTS:
 

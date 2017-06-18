@@ -75,7 +75,7 @@ class BaseFileInfoToolTipWidget: public BaseToolTipWidget
     protected:
 
     //* reload
-    virtual void _reload( void )
+    void _reload( void )
     { setFileInfo( fileInfo_, icon_ ); }
 
     private Q_SLOTS:

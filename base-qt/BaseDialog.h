@@ -36,14 +36,26 @@ class BaseDialog: public QDialog
     //* constructor
     explicit BaseDialog( QWidget* = nullptr, Qt::WindowFlags = 0);
 
+    //*@name accessors
+    //@{
+
+    //* restore window size
+    QSize minimumSizeHint( void ) const override;
+
+    //* restore window size
+    QSize sizeHint( void ) const override;
+
+    //* iconsize
+    QSize iconSize( void ) const
+    { return iconSize_; }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
     //* window title
-    virtual BaseDialog& setWindowTitle( const QString& );
-
-    //* restore window size
-    virtual QSize minimumSizeHint( void ) const;
-
-    //* restore window size
-    virtual QSize sizeHint( void ) const;
+    BaseDialog& setWindowTitle( const QString& );
 
     //* center widget on pointer
     BaseDialog& centerOnPointer( void );
@@ -59,16 +71,14 @@ class BaseDialog: public QDialog
     BaseDialog& centerOnWidget( QWidget* );
 
     //* size option name
-    virtual void setOptionName( const QString& name )
+    void setOptionName( const QString& name )
     { monitor_.setOptionName( name ); }
 
     //* set icon size
-    virtual void setIconSize( const QSize& size )
+    void setIconSize( const QSize& size )
     { iconSize_ = size; }
 
-    //* iconsize
-    virtual QSize iconSize( void ) const
-    { return iconSize_; }
+    //@}
 
     public Q_SLOTS:
 
@@ -76,12 +86,12 @@ class BaseDialog: public QDialog
     BaseDialog& uniconify( void );
 
     //* stickyness
-    void toggleSticky( bool );
+    BaseDialog& toggleSticky( bool );
 
     protected:
 
     //* generic event
-    virtual bool event( QEvent* );
+    bool event( QEvent* ) override;
 
     //* maximize state prior to minimization
     void _setWasMaximized( bool value )

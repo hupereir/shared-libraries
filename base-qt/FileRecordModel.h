@@ -52,7 +52,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     //@{
 
     //* show icons
-    virtual bool showIcons( void ) const
+    bool showIcons( void ) const
     { return showIcons_; }
 
     //* flags
@@ -68,7 +68,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     int columnCount( const QModelIndex& = QModelIndex() ) const override;
 
     //* column matching given name, if any
-    virtual int findColumn( const QString& ) const;
+    int findColumn( const QString& ) const;
 
     //* mime data
     QMimeData* mimeData(const QModelIndexList& ) const override;

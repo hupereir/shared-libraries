@@ -37,7 +37,7 @@ class BaseSocketInterface: public QObject
     { return *socket_; }
 
     //* associated socket
-    virtual const QTcpSocket& socket( void ) const
+    const QTcpSocket& socket( void ) const
     { return *socket_; }
 
     //* used to retrieve all readers for a given state
@@ -74,10 +74,10 @@ class BaseSocketInterface: public QObject
     protected Q_SLOTS:
 
     //* send pending buffers
-    virtual void _sendPendingBuffers( void );
+    void _sendPendingBuffers( void );
 
     //* read message from socket
-    virtual void _read( void );
+    void _read( void );
 
     private:
 

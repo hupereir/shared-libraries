@@ -56,7 +56,7 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     virtual TextSelection selection( bool ) const;
 
     //* retrieve editor
-    virtual CustomComboBox& editor( void ) const
+    CustomComboBox& editor( void ) const
     { return *editor_; }
 
     //* close button
@@ -64,7 +64,7 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     { return *closeButton_; }
 
     //* list of disabled buttons
-    virtual QList<QAbstractButton*>& disabledButtons( void )
+    QList<QAbstractButton*>& disabledButtons( void )
     { return buttons_; }
 
     //@}
@@ -94,44 +94,44 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     public Q_SLOTS:
 
     //* take action when at least one match is found
-    virtual void matchFound( void );
+    void matchFound( void );
 
     //* take action when no match is found
-    virtual void noMatchFound( void );
+    void noMatchFound( void );
 
     protected Q_SLOTS:
 
     //* update combo box with current text
-    virtual void _updateFindComboBox( void )
+    void _updateFindComboBox( void )
     { _addSearchedString( editor_->currentText() ); }
 
     //* create Selection object when find button is pressed
-    virtual void _find( void )
+    void _find( void )
     { emit find( selection( false ) ); }
 
     //* create Selection object when find button is pressed
-    virtual void _findPrevious( void )
+    void _findPrevious( void )
     {
         findBackward_ = true;
         emit find( selection( false ) );
     }
 
     //* create Selection object when find button is pressed
-    virtual void _findNext( void )
+    void _findNext( void )
     {
         findBackward_ = false;
         emit find( selection( false ) );
     }
 
     //* create Selection object when find button is pressed
-    virtual void _findNoIncrement( void )
+    void _findNoIncrement( void )
     { if( !regexpCheckbox_->isChecked() ) emit find( selection( true ) ); }
 
     //* update button state when regexp checkbox is checked
-    virtual void _regExpChecked( bool );
+    void _regExpChecked( bool );
 
     //* update button state depending on the string to find
-    virtual void _updateButtons( const QString& text = QString() );
+    void _updateButtons( const QString& text = QString() );
 
     protected:
 
@@ -155,10 +155,10 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     { return *findPreviousButton_; }
 
     //* add button to disabled button list
-    virtual void _addDisabledButton( QAbstractButton* );
+    void _addDisabledButton( QAbstractButton* );
 
     //* add string to both combo box and static set
-    virtual void _addSearchedString( const QString& );
+    void _addSearchedString( const QString& );
 
     private:
 

@@ -107,11 +107,11 @@ class ListModel : public ItemModel
     { return values_; }
 
     //* return true if model contains given index
-    virtual bool contains( const QModelIndex& index ) const
+    bool contains( const QModelIndex& index ) const
     { return index.isValid() && index.row() < values_.size(); }
 
     //* return value for given index
-    virtual ValueType get( const QModelIndex& index ) const
+    ValueType get( const QModelIndex& index ) const
     { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
 
     //* return all values
@@ -124,7 +124,7 @@ class ListModel : public ItemModel
     }
 
     //* return index associated to a given value
-    virtual QModelIndex index( const ValueType& value, int column = 0 ) const
+    QModelIndex index( const ValueType& value, int column = 0 ) const
     {
         for( int row=0; row<values_.size(); ++row )
         { if( EqualTo()(value, values_[row]) ) return index( row, column ); }
@@ -173,7 +173,7 @@ class ListModel : public ItemModel
     }
 
     //* add value
-    virtual void add( const ValueType& value )
+    void add( const ValueType& value )
     {
 
         emit layoutAboutToBeChanged();
@@ -184,7 +184,7 @@ class ListModel : public ItemModel
     }
 
     //* add values
-    virtual void add( const List& values )
+    void add( const List& values )
     {
 
         // check if not empty
@@ -199,7 +199,7 @@ class ListModel : public ItemModel
     }
 
     //* insert values
-    virtual void insert( const QModelIndex& index, const ValueType& value )
+    void insert( const QModelIndex& index, const ValueType& value )
     {
         emit layoutAboutToBeChanged();
         _insert( index, value );
@@ -207,7 +207,7 @@ class ListModel : public ItemModel
     }
 
     //* insert values
-    virtual void insert( const QModelIndex& index, const List& values )
+    void insert( const QModelIndex& index, const List& values )
     {
         emit layoutAboutToBeChanged();
 
@@ -221,7 +221,7 @@ class ListModel : public ItemModel
     }
 
     //* insert values
-    virtual void replace( const QModelIndex& index, const ValueType& value )
+    void replace( const QModelIndex& index, const ValueType& value )
     {
         if( !contains( index ) ) add( value );
         else {
@@ -247,7 +247,7 @@ class ListModel : public ItemModel
     }
 
     //* remove
-    virtual void remove( const ValueType& value )
+    void remove( const ValueType& value )
     {
 
         emit layoutAboutToBeChanged();
@@ -258,7 +258,7 @@ class ListModel : public ItemModel
     }
 
     //* remove
-    virtual void remove( const List& values )
+    void remove( const List& values )
     {
 
         // check if not empty
@@ -273,7 +273,7 @@ class ListModel : public ItemModel
     }
 
     //* clear
-    virtual void clear( void )
+    void clear( void )
     { set( List() ); }
 
     //* update values from list
@@ -282,7 +282,7 @@ class ListModel : public ItemModel
     new values are set to the end.
     This is slower than the "set" method, but the selection is not cleared in the process
     */
-    virtual void update( List values )
+    void update( List values )
     {
 
         emit layoutAboutToBeChanged();
@@ -316,7 +316,7 @@ class ListModel : public ItemModel
     }
 
     //* set all values
-    virtual void set( const List& values )
+    void set( const List& values )
     {
 
         emit layoutAboutToBeChanged();

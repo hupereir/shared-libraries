@@ -38,10 +38,10 @@ class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
     explicit BaseFileInfoConfigurationWidget( QWidget* );
 
     //* set widget value from option value
-    virtual void read( const Options& );
+    void read( const Options& ) override;
 
     //* set option value from widget value
-    virtual void write( Options& ) const;
+    void write( Options& ) const override;
 
     Q_SIGNALS:
 

@@ -33,7 +33,7 @@ class BaseFileInfoItemDelegate: public TreeViewItemDelegate
     explicit BaseFileInfoItemDelegate( QObject* = nullptr );
 
     protected:
-    virtual void initStyleOption( QStyleOptionViewItem*, const QModelIndex& ) const;
+    void initStyleOption( QStyleOptionViewItem*, const QModelIndex& ) const override;
 
 
 };

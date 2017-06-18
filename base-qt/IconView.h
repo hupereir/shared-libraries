@@ -64,15 +64,15 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     { return header_; }
 
     //* option name
-    virtual bool hasOptionName( void ) const
+    bool hasOptionName( void ) const
     { return !sortColumnOptionName().isEmpty(); }
 
     //* sort column option name
-    virtual const QString& sortColumnOptionName( void ) const
+    const QString& sortColumnOptionName( void ) const
     { return sortColumnOptionName_; }
 
     //* sort order option name
-    virtual const QString& sortOrderOptionName( void ) const
+    const QString& sortOrderOptionName( void ) const
     { return sortOrderOptionName_; }
 
     //* return index at a given position
@@ -132,7 +132,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     }
 
     //* option name
-    virtual bool setOptionName( const QString& );
+    bool setOptionName( const QString& );
 
     //* scroll to given index
     void scrollTo( const QModelIndex&, ScrollHint ) override;
@@ -205,30 +205,30 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     public Q_SLOTS:
 
     //* sort order
-    virtual void updateSortOrder( void );
+    void updateSortOrder( void );
 
     //* sort order
-    virtual void saveSortOrder( void );
+    void saveSortOrder( void );
 
     // items layout
-    virtual void doItemsLayout();
+    void doItemsLayout();
 
     //* find next occurence of TextSelection
-    virtual void find( TextSelection selection );
+    void find( TextSelection selection );
 
     //* find current selection forward
-    virtual void findSelectionForward( void )
+    void findSelectionForward( void )
     { _findForward( selection(), true ); }
 
     //* find current selection backward
-    virtual void findSelectionBackward( void )
+    void findSelectionBackward( void )
     { _findBackward( selection(), true ); }
 
     //* find last search forward
-    virtual void findAgainForward( void );
+    void findAgainForward( void );
 
     //* find last search forward
-    virtual void findAgainBackward( void );
+    void findAgainBackward( void );
 
     //* store selected indexes in model
     void storeSelectedIndexes( void );
@@ -238,8 +238,8 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     protected:
 
-    // true if index is hidden
-    virtual bool isIndexHidden( const QModelIndex& ) const;
+    //* true if index is hidden
+    bool isIndexHidden( const QModelIndex& ) const override;
 
     //* move curesor
     QModelIndex moveCursor( CursorAction, Qt::KeyboardModifiers ) override;
@@ -302,11 +302,11 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     QModelIndexList _selectedIndexes( const QRect& ) const;
 
     //* hover index
-    virtual const QModelIndex& _hoverIndex( void ) const
+    const QModelIndex& _hoverIndex( void ) const
     { return hoverIndex_; }
 
     //* hover index
-    virtual void _setHoverIndex( const QModelIndex& );
+    void _setHoverIndex( const QModelIndex& );
 
     //* update item from index
     virtual void _updateItem( IconViewItem&, const QModelIndex& ) const;
@@ -326,33 +326,33 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     QPixmap _pixmap( const QModelIndexList&, QRect& );
 
     //* find dialog
-    virtual void _createFindDialog( void );
+    void _createFindDialog( void );
 
     //* find widget
-    virtual void _createFindWidget( bool compact );
+    void _createFindWidget( bool compact );
 
     //* find selection in forward direction
-    virtual bool _findForward( const TextSelection& selection, bool rewind );
+    bool _findForward( const TextSelection& selection, bool rewind );
 
     //* find selection in backward direction
-    virtual bool _findBackward( const TextSelection& selection, bool rewind );
+    bool _findBackward( const TextSelection& selection, bool rewind );
 
     //* get view options matching a given index
-    virtual QStyleOptionViewItemV4 _viewOptions( const QModelIndex& ) const;
+    QStyleOptionViewItemV4 _viewOptions( const QModelIndex& ) const;
 
     protected Q_SLOTS:
 
     //* update geometries
-    virtual void updateGeometries( void );
+    void updateGeometries( void );
 
     //* sort order
     void sortByColumn( int, Qt::SortOrder );
 
     //* find text from dialog
-    virtual void _findFromDialog( void );
+    void _findFromDialog( void );
 
     //* update hover index
-    virtual void _updateHoverIndex( void );
+    void _updateHoverIndex( void );
 
     private Q_SLOTS:
 
@@ -362,7 +362,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     private:
 
     //* install actions
-    virtual void _installActions( void );
+    void _installActions( void );
 
     //* return first index
     QModelIndex _firstIndex() const;

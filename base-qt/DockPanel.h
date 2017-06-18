@@ -61,7 +61,7 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     //@{
 
     //* get panel (to add contents)
-    virtual QWidget& panel( void );
+    QWidget& panel( void );
 
     //* true if detached
     bool isDetached( void ) const;
@@ -93,7 +93,7 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     protected Q_SLOTS:
 
     //* toggle dock
-    virtual void _toggleDock( void );
+    void _toggleDock( void );
 
     private:
 

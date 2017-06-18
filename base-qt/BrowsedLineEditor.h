@@ -45,7 +45,7 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     //@{
 
     //* retrieve line editor
-    virtual Editor& editor( void ) const
+    Editor& editor( void ) const
     { return *lineEditor_; }
 
     //*}
@@ -59,11 +59,11 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     void setTargetApplication( File );
 
     //* open mode
-    virtual void setAcceptMode( const QFileDialog::AcceptMode mode )
+    void setAcceptMode( const QFileDialog::AcceptMode mode )
     { acceptMode_ = mode; }
 
     //* file mode
-    virtual void setFileMode( const QFileDialog::FileMode& mode )
+    void setFileMode( const QFileDialog::FileMode& mode )
     { fileMode_ = mode; }
 
     //@}
@@ -71,16 +71,16 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     public Q_SLOTS:
 
     //* set lineEditor_file
-    virtual void setFile( const QString& file );
+    void setFile( const QString& file );
 
     protected:
 
     //* accept mode
-    virtual QFileDialog::AcceptMode _acceptMode( void ) const
+    QFileDialog::AcceptMode _acceptMode( void ) const
     { return acceptMode_; }
 
     //* file mode
-    virtual QFileDialog::FileMode _fileMode( void ) const
+    QFileDialog::FileMode _fileMode( void ) const
     { return fileMode_; }
 
     protected Q_SLOTS:

@@ -49,7 +49,7 @@ namespace Ssh
         //@{
 
         //* true if connected
-        virtual bool isConnected( void ) const
+        bool isConnected( void ) const
         { return channel_; }
 
         //* true if channel is closed
@@ -69,7 +69,7 @@ namespace Ssh
         //@{
 
         //* change latency
-        virtual void setLatency( int latency )
+        void setLatency( int latency )
         { latency_ = latency; }
 
         //@}

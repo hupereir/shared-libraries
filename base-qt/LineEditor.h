@@ -110,17 +110,17 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     protected Q_SLOTS:
 
     //* update modification state
-    virtual void _modified( const QString& text );
+    void _modified( const QString& text );
 
     //* update action status
-    virtual void _updateSelectionActions( void );
+    void _updateSelectionActions( void );
 
     //* update paste action
     /** depends on clipboard status and editability */
-    virtual void _updatePasteAction( void );
+    void _updatePasteAction( void );
 
     //* update undo/redo actions
-    virtual void _updateUndoRedoActions( void );
+    void _updateUndoRedoActions( void );
 
     protected:
 
@@ -142,7 +142,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //@}
 
     //* toggle clear button
-    virtual void _updateClearButton( void ) const;
+    void _updateClearButton( void ) const;
 
     private:
 

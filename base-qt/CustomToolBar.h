@@ -154,7 +154,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     protected Q_SLOTS:
 
     //* toggle visibility
-    virtual void _toggleVisibility( bool );
+    void _toggleVisibility( bool );
 
     private Q_SLOTS:
 

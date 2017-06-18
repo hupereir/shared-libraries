@@ -44,7 +44,7 @@ class BaseReplaceWidget: public BaseFindWidget
     { return replaceEditor_->currentText(); }
 
     //* retrieve text selection from dialog
-    virtual TextSelection selection( bool ) const;
+    TextSelection selection( bool ) const override;
 
     //@}
 
@@ -60,7 +60,7 @@ class BaseReplaceWidget: public BaseFindWidget
     { replaceEditor_->setEditText( text ); }
 
     //* synchronize searched strings and ComboBox
-    virtual void synchronize( void );
+    void synchronize( void ) override;
 
     //@}
 
@@ -100,15 +100,15 @@ class BaseReplaceWidget: public BaseFindWidget
     protected:
 
     //* replace editor
-    virtual CustomComboBox& _replaceEditor( void ) const
+    CustomComboBox& _replaceEditor( void ) const
     { return *replaceEditor_; }
 
     //* replace all menu
-    virtual QMenu& _replaceAllMenu( void ) const
+    QMenu& _replaceAllMenu( void ) const
     { return *replaceAllMenu_; }
 
     //* add string to both combo box and static set
-    virtual void _addReplacedString( const QString& );
+    void _addReplacedString( const QString& );
 
     private:
 

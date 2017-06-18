@@ -40,21 +40,21 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
     explicit FontEditor( QWidget *parent );
 
     //* display font
-    virtual void setFont( const QFont& font )
+    void setFont( const QFont& font )
     {
         font_ = font;
         _updateLabel();
     }
 
     //* display font
-    virtual void setFont( const QString& font )
+    void setFont( const QString& font )
     {
         font_.fromString( font );
         _updateLabel();
     }
 
     //* retrieve font
-    virtual const QFont& font( void ) const
+    const QFont& font( void ) const
     { return font_; }
 
     Q_SIGNALS:
@@ -65,7 +65,7 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
     protected Q_SLOTS:
 
     //* select font from dialog
-    virtual void _selectFont( void )
+    void _selectFont( void )
     {
         bool ok( false );
         QFont font = QFontDialog::getFont( &ok, this->font(), this );
@@ -80,7 +80,7 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
     protected:
 
     //* update label
-    virtual void _updateLabel( void )
+    void _updateLabel( void )
     { label_->setText( QString( tr( "%1, %2pt" ) ).arg( font().family() ).arg( font().pointSize() ) ); }
 
     private:

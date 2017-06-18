@@ -35,7 +35,7 @@ class BaseFileInfoIconView: public IconView
     protected:
 
     //* update item from index
-    virtual void _updateItem( IconViewItem&, const QModelIndex& ) const;
+    void _updateItem( IconViewItem&, const QModelIndex& ) const override;
 
 };
 

@@ -39,7 +39,7 @@ class DockWidget: public QDockWidget
     //@{
 
     //* lock
-    virtual bool isLocked( void ) const
+    bool isLocked( void ) const
     { return locked_; }
 
     //* visibility action
@@ -55,7 +55,7 @@ class DockWidget: public QDockWidget
     void setUseScrollArea( bool );
 
     //* lock
-    virtual void setLocked( bool );
+    void setLocked( bool );
 
     //* set main widget
     void setMainWidget( QWidget* );
@@ -68,10 +68,10 @@ class DockWidget: public QDockWidget
     protected Q_SLOTS:
 
     //* toggle visibility
-    virtual void _toggleVisibility( bool );
+    void _toggleVisibility( bool );
 
     //* update title bar
-    virtual void _updateTitleBarWidget( void );
+    void _updateTitleBarWidget( void );
 
     private Q_SLOTS:
 

@@ -49,17 +49,17 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     void synchronize( LineNumberDisplay* );
 
     //* width
-    virtual bool updateWidth( int );
+    bool updateWidth( int );
 
     //* width
-    virtual int width( void ) const
+    int width( void ) const
     { return width_; }
 
     //* clear everything
     void clear();
 
     //* paint
-    virtual void paint( QPainter& );
+    void paint( QPainter& );
 
     public Q_SLOTS:
 

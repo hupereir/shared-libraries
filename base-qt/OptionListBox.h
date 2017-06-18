@@ -71,19 +71,19 @@ class OptionListBox: public QWidget, public OptionWidget
     protected Q_SLOTS:
 
     //* update buttons
-    void _updateButtons( void );
+    virtual void _updateButtons( void );
 
     //* add a value
-    void _add( void );
+    virtual void _add( void );
 
     //* add a value
-    void _edit( void );
+    virtual void _edit( void );
 
     //* remove a value
-    void _remove();
+    virtual void _remove();
 
     //* set value as default
-    void _setDefault();
+    virtual void _setDefault();
 
     protected:
 

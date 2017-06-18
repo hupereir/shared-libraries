@@ -55,7 +55,7 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     //@{
 
     //* angle
-    virtual qreal angle( void ) const
+    qreal angle( void ) const
     { return angle_; }
 
     //* opacity
@@ -76,11 +76,11 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     //@{
 
     //* delay
-    virtual void setDelay( int value )
+    void setDelay( int value )
     { delay_ = value; }
 
     //* angle
-    virtual void setAngle( qreal value )
+    void setAngle( qreal value )
     {
         if( angle_ == value ) return;
         angle_ = value;
@@ -88,7 +88,7 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     }
 
     //* opacity
-    virtual void setOpacity( int );
+    void setOpacity( int );
 
     //@}
 
@@ -98,10 +98,10 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     public Q_SLOTS:
 
     //* start
-    virtual void start( void );
+    void start( void );
 
     //* stop
-    virtual void stop( void );
+    void stop( void );
 
     protected:
 

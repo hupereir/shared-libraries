@@ -46,7 +46,7 @@ class BaseApplication: public BaseCoreApplication
     bool realizeWidget( void ) override;
 
     //* true if fixed fonts are used
-    virtual void setUseFixedFonts( bool value )
+    void setUseFixedFonts( bool value )
     {
         if( useFixedFonts_ == value ) return;
         useFixedFonts_ = value;
@@ -54,7 +54,7 @@ class BaseApplication: public BaseCoreApplication
     }
 
     //* true if fixed fonts are used
-    virtual bool useFixedFonts( void ) const
+    bool useFixedFonts( void ) const
     { return useFixedFonts_; }
 
     //*@name actions
@@ -92,15 +92,15 @@ class BaseApplication: public BaseCoreApplication
     public Q_SLOTS:
 
     //* set application busy
-    virtual void busy( void );
+    void busy( void );
 
     //* set application idle
-    virtual void idle( void );
+    void idle( void );
 
     protected Q_SLOTS:
 
     //* process request from application manager
-    virtual void _aboutQt( void );
+    void _aboutQt( void );
 
     //* configuration
     virtual void _configuration( void ) = 0;

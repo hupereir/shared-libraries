@@ -69,7 +69,7 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     explicit CustomPixmap( const QString& );
 
     //* find first file matching name in list of path
-    virtual CustomPixmap find( const QString& );
+    CustomPixmap find( const QString& );
 
     //* rotation
     enum class Rotation
@@ -83,13 +83,13 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     CustomPixmap rotated( const Rotation& value );
 
     //* returns a transparent pixmap
-    virtual CustomPixmap transparent( qreal ) const;
+    CustomPixmap transparent( qreal ) const;
 
     //* returns a desaturated pixmap
-    virtual CustomPixmap desaturated( void ) const;
+    CustomPixmap desaturated( void ) const;
 
     //* colorize
-    virtual CustomPixmap colorized( const QColor& ) const;
+    CustomPixmap colorized( const QColor& ) const;
 
     //* corner enumeration for merging pixmap
     enum class Corner
@@ -102,13 +102,13 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     };
 
     //* merge pixmap, using the specified corner as an anchor
-    virtual CustomPixmap merged( const QPixmap&, Corner = Corner::TopLeft ) const;
+    CustomPixmap merged( const QPixmap&, Corner = Corner::TopLeft ) const;
 
     //* return highlighted pixmap
-    virtual CustomPixmap highlighted( qreal opacity ) const;
+    CustomPixmap highlighted( qreal opacity ) const;
 
     //* return highlighted (active) pixmap, build from the current
-    virtual CustomPixmap active( void ) const
+    CustomPixmap active( void ) const
     { return highlighted( 0.2 ); }
 
     //* device pixel ratio

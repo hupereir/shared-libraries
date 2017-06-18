@@ -38,21 +38,21 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     explicit FileDialog( QWidget* parent );
 
     //* open mode
-    virtual FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
+    FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
     {
         acceptMode_ = mode;
         return *this;
     }
 
     //* file mode
-    virtual FileDialog& setFileMode( const QFileDialog::FileMode mode )
+    FileDialog& setFileMode( const QFileDialog::FileMode mode )
     {
         fileMode_ = mode;
         return *this;
     }
 
     //* caption
-    virtual FileDialog& setCaption( const QString& caption )
+    FileDialog& setCaption( const QString& caption )
     {
         caption_ = caption;
         return *this;
@@ -60,30 +60,30 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
 
     //* default file/directory
     /** it is used as a starting selection when file dialog is opened */
-    virtual FileDialog& selectFile( const File& file );
+    FileDialog& selectFile( const File& file );
 
     //* filter
-    virtual FileDialog& setFilter( const QString& filter )
+    FileDialog& setFilter( const QString& filter )
     {
         filter_ = filter;
         return *this;
     }
 
     //* options
-    virtual FileDialog& setOptions( const QFileDialog::Options& options )
+    FileDialog& setOptions( const QFileDialog::Options& options )
     {
         options_ = options;
         return *this;
     }
 
     //* get file
-    virtual File getFile( void );
+    File getFile( void );
 
     //* get list of files
-    virtual File::List getFiles( void );
+    File::List getFiles( void );
 
     //* reference to statically scoped working directory
-    virtual const File& workingDirectory() const
+    const File& workingDirectory() const
     { return _workingDirectory(); }
 
     protected:
@@ -92,28 +92,28 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     static File& _workingDirectory();
 
     //* accept mode
-    virtual QFileDialog::AcceptMode _acceptMode( void ) const
+    QFileDialog::AcceptMode _acceptMode( void ) const
     { return acceptMode_; }
 
     //* file mode
-    virtual QFileDialog::FileMode _fileMode( void ) const
+    QFileDialog::FileMode _fileMode( void ) const
     { return fileMode_; }
 
     //* caption
-    virtual const QString& _caption( void ) const
+    const QString& _caption( void ) const
     { return caption_; }
 
     //* selected file
     /** it is used as a starting selection when file dialog is opened */
-    virtual const File& _selectedFile( void ) const
+    const File& _selectedFile( void ) const
     { return selectedFile_; }
 
     //* filter
-    virtual const QString& _filter( void ) const
+    const QString& _filter( void ) const
     { return filter_; }
 
     //* options
-    virtual QFileDialog::Options _options( void ) const
+    QFileDialog::Options _options( void ) const
     { return options_; }
 
     private:

@@ -94,10 +94,10 @@ class BaseMainWindow: public QMainWindow
     QMenu* createPopupMenu( void ) override;
 
     //* toolbar menu
-    virtual ToolBarMenu& toolBarMenu( QWidget* = nullptr );
+    ToolBarMenu& toolBarMenu( QWidget* = nullptr );
 
     //* option name
-    virtual void setOptionName( const QString& name );
+    void setOptionName( const QString& name );
 
     //* menu option name
     bool hasOptionName( void ) const
@@ -135,19 +135,19 @@ class BaseMainWindow: public QMainWindow
     bool event( QEvent* ) override;
 
     //* true if main window has menu
-    virtual bool _hasMenuBar( void ) const;
+    bool _hasMenuBar( void ) const;
 
     //* true if main window has menu
-    virtual bool _hasStatusBar( void ) const;
+    bool _hasStatusBar( void ) const;
 
     //* true if main window has toolbars
-    virtual bool _hasToolBars( void ) const;
+    bool _hasToolBars( void ) const;
 
     //* returns true if lockable toolbars are found
-    virtual bool _hasLockableToolBars( void ) const;
+    bool _hasLockableToolBars( void ) const;
 
     //* true if main window has dock widgets
-    virtual bool _hasPanels( void ) const;
+    bool _hasPanels( void ) const;
 
     //* action list
     using ActionList = QVector<QAction*>;
