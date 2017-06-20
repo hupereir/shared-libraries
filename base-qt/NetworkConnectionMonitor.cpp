@@ -24,10 +24,42 @@
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+#include <unistd.h>
 
 //____________________________________________________________
 namespace Network
 {
+    //________________________________________________
+    class EncapsulatedSocket
+    {
+        public:
+
+        //* constructor
+        EncapsulatedSocket( int fileDescriptor ):
+            fileDescriptor_( fileDescriptor )
+        {}
+
+        //* copy constructor
+        EncapsulatedSocket( const EncapsulatedSocket& other ) = delete;
+
+        //* assignment operator
+        EncapsulatedSocket& operator = ( const EncapsulatedSocket& other ) = delete;
+
+        //* destructor
+        ~EncapsulatedSocket( void )
+        { if( fileDescriptor_ >= 0 ) ::close( fileDescriptor_ ); }
+
+        int fileDescriptor( void ) const
+        { return fileDescriptor_; }
+
+        bool isValid( void ) const
+        { return fileDescriptor_ >= 0; }
+
+        private:
+
+        int fileDescriptor_;
+
+    };
 
     //________________________________________________
     ConnectionMonitor::ConnectionMonitor( QObject* parent ):
@@ -60,20 +92,20 @@ namespace Network
     //________________________________________________
     ConnectionMonitor::DeviceSet ConnectionMonitor::devices( ConnectionMonitor::DeviceType type )
     {
-        Debug::Throw( "ConnectionMonitor::_connectedDevices.\n" );
+        Debug::Throw( 0, "Network::ConnectionMonitor::devices.\n" );
         DeviceSet out;
         for( int index = 1;;++index )
         {
 
-            int fd = socket(AF_INET, SOCK_DGRAM, 0);
-            if(fd == -1) break;
+            EncapsulatedSocket socket( ::socket(AF_INET, SOCK_DGRAM, 0) );
+            if( !socket.isValid() ) break;
 
             struct ifreq ifr;
             ifr.ifr_ifindex = index;
-            if( ioctl( fd, SIOCGIFNAME, &ifr, sizeof(ifr) ) )
+            if( ioctl( socket.fileDescriptor(), SIOCGIFNAME, &ifr, sizeof(ifr) ) )
             { break; }
 
-            if( ioctl( fd, SIOCGIFFLAGS, &ifr, sizeof(ifr) ) )
+            if( ioctl( socket.fileDescriptor(), SIOCGIFFLAGS, &ifr, sizeof(ifr) ) )
             { break; }
 
             // skip loopback
@@ -82,8 +114,9 @@ namespace Network
             // check status
             if( type == DeviceType::Connected && !( ifr.ifr_flags & IFF_RUNNING ) ) continue;
 
-            out.insert( ifr.ifr_name );
-
+            QString device( ifr.ifr_name );
+            Debug::Throw(0) << "Network::ConnectionMonitor::devices - adding " << device << " flags: " << ifr.ifr_flags << endl;
+            out.insert( device );
         }
 
         return out;
