@@ -79,7 +79,7 @@ namespace Private
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
         dragMonitor_ = new DragMonitor( this );
         dragMonitor_->setDragEnabled( false );
-        connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), this, SLOT(_startDrag(QPoint)));
+        connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), SLOT(_startDrag(QPoint)));
     }
 
     //____________________________________________________________________________

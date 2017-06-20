@@ -30,7 +30,7 @@ FileList::FileList( QObject* parent ):
     thread_( this )
 {
     // thread connection
-    connect( &thread_, SIGNAL(recordsAvailable(const FileRecord::List&,bool)), this, SLOT(_processRecords(const FileRecord::List&,bool)) );
+    connect( &thread_, SIGNAL(recordsAvailable(const FileRecord::List&,bool)), SLOT(_processRecords(const FileRecord::List&,bool)) );
 }
 
 //_______________________________________________

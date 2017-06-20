@@ -184,7 +184,7 @@ namespace Private
             notification.timeout() );
 
         QDBusPendingCallWatcher* watcher = new QDBusPendingCallWatcher( pendingCall, this );
-        connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), this, SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
+        connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
 
         #endif
 

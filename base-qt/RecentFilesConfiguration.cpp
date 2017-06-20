@@ -33,7 +33,6 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QLayout>
-#include <QShortcut>
 
 //___________________________________________
 RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recentFiles ):

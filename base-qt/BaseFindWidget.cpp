@@ -67,25 +67,25 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     editor_->setAutoCompletion( true, Qt::CaseSensitive );
     editor_->setNavigationEnabled( false );
 
-    connect( editor_->lineEdit(), SIGNAL(cleared()), this, SLOT(matchFound()) );
-    connect( editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_find()) );
-    connect( editor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateFindComboBox()) );
-    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_updateButtons(QString)) );
-    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_findNoIncrement()) );
+    connect( editor_->lineEdit(), SIGNAL(cleared()), SLOT(matchFound()) );
+    connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_find()) );
+    connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
+    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_updateButtons(QString)) );
+    connect( editor_->lineEdit(), SIGNAL(textChanged(QString)), SLOT(_findNoIncrement()) );
 
     // Find next button
     findNextButton_ = new QPushButton( IconEngine::get( IconNames::FindNext ), tr( "Next" ), this );
     editorLayout_->addWidget( findNextButton_, 0, 2, 1, 1 );
-    connect( findNextButton_, SIGNAL(clicked()), this, SLOT(_findNext()) );
-    connect( findNextButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    connect( findNextButton_, SIGNAL(clicked()), SLOT(_findNext()) );
+    connect( findNextButton_, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
     _addDisabledButton( findNextButton_ );
     static_cast<QPushButton*>(findNextButton_)->setAutoDefault( false );
 
     // Find previous button
     findPreviousButton_ = new QPushButton( IconEngine::get( IconNames::FindPrevious ), tr( "Previous" ), this );
     editorLayout_->addWidget( findPreviousButton_, 0, 3, 1, 1 );
-    connect( findPreviousButton_, SIGNAL(clicked()), this, SLOT(_findPrevious()) );
-    connect( findPreviousButton_, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
+    connect( findPreviousButton_, SIGNAL(clicked()), SLOT(_findPrevious()) );
+    connect( findPreviousButton_, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
     _addDisabledButton( findPreviousButton_ );
     static_cast<QPushButton*>(findPreviousButton_)->setAutoDefault( false );
 
@@ -103,7 +103,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     hLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
     hLayout->addStretch(1);
 
-    connect( regexpCheckbox_, SIGNAL(toggled(bool)), this, SLOT(_regExpChecked(bool)) );
+    connect( regexpCheckbox_, SIGNAL(toggled(bool)), SLOT(_regExpChecked(bool)) );
 
     // tooltips
     // backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );

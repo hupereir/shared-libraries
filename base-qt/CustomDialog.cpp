@@ -64,7 +64,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     if( hasOkButton() ) okButton().setIcon( hasCancelButton() ? IconEngine::get( IconNames::DialogOk ) : IconEngine::get( IconNames::DialogClose ) );
     #endif
 
-    connect( buttonBox_, SIGNAL(accepted()), this, SLOT(accept()) );
-    connect( buttonBox_, SIGNAL(rejected()), this, SLOT(reject()) );
+    connect( buttonBox_, SIGNAL(accepted()), SLOT(accept()) );
+    connect( buttonBox_, SIGNAL(rejected()), SLOT(reject()) );
 
 }

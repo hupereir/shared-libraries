@@ -34,12 +34,12 @@ namespace Ssh
         Debug::Throw( "Ssh::Tunnel::Tunnel.\n" );
 
         buffer_.resize(maxSize_ );
-        connect( tcpSocket_, SIGNAL(readyRead()), this, SLOT(_readFromTcpSocket()) );
-        connect( tcpSocket_, SIGNAL(disconnected()), this, SLOT(close()) );
+        connect( tcpSocket_, SIGNAL(readyRead()), SLOT(_readFromTcpSocket()) );
+        connect( tcpSocket_, SIGNAL(disconnected()), SLOT(close()) );
 
-        connect( sshSocket_, SIGNAL(connected()), this, SLOT(_readFromTcpSocket()) );
-        connect( sshSocket_, SIGNAL(readyRead()), this, SLOT(_readFromSshSocket()) );
-        connect( sshSocket_, SIGNAL(readChannelFinished()), this, SLOT(close()) );
+        connect( sshSocket_, SIGNAL(connected()), SLOT(_readFromTcpSocket()) );
+        connect( sshSocket_, SIGNAL(readyRead()), SLOT(_readFromSshSocket()) );
+        connect( sshSocket_, SIGNAL(readChannelFinished()), SLOT(close()) );
 
     }
 

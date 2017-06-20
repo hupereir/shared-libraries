@@ -76,10 +76,7 @@ namespace SpellCheck
         if( !suggestions.isEmpty() )
         { addSeparator(); }
 
-        // add word action
         addAction( tr( "Add Word to Dictionary" ), this, SLOT(_addWord()) );
-
-        // ignore word action
         addAction( tr( "Ignore Word" ), this, SLOT(_ignoreWord()) );
 
     }

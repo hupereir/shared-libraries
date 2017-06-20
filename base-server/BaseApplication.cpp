@@ -150,7 +150,7 @@ bool BaseApplication::realizeWidget( void )
     connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
 
     aboutQtAction_ = new QAction( IconEngine::get( IconNames::AboutQt, Base::IconCacheItem::Flag::FromCache|Base::IconCacheItem::Flag::FromResource ), tr( "About Qt" ), this );
-    connect( aboutQtAction_, SIGNAL(triggered()), this, SLOT(_aboutQt()) );
+    connect( aboutQtAction_, SIGNAL(triggered()), SLOT(_aboutQt()) );
 
     closeAction_ = new QAction( IconEngine::get( IconNames::Exit ), tr( "Exit" ), this );
     closeAction_->setShortcut( QKeySequence::Quit );

@@ -143,6 +143,7 @@ set(base_qt_SOURCES
   LogWidget.cpp
   MimeTypeIconProvider.cpp
   MultipleClickCounter.cpp
+  NetworkConnectionMonitor.cpp
   OpenWithComboBox.cpp
   OpenWithDialog.cpp
   OptionBrowsedLineEditor.cpp

@@ -1780,12 +1780,12 @@ void TextEditor::_installActions( void )
     addAction( undoAction_ = new StandardAction( StandardAction::Type::Undo, this ) );
     undoAction_->setEnabled( document()->isUndoAvailable() && !isReadOnly() );
     connect( undoAction_, SIGNAL(triggered()), document(), SLOT(undo()) );
-    connect( this, SIGNAL(undoAvailable(bool)), this, SLOT(_updateUndoRedoActions()) );
+    connect( this, SIGNAL(undoAvailable(bool)), SLOT(_updateUndoRedoActions()) );
 
     addAction( redoAction_ = new StandardAction( StandardAction::Type::Redo, this ) );
     redoAction_->setEnabled( document()->isRedoAvailable() && !isReadOnly() );
     connect( redoAction_, SIGNAL(triggered()), document(), SLOT(redo()) );
-    connect( this, SIGNAL(redoAvailable(bool)), this, SLOT(_updateUndoRedoActions()) );
+    connect( this, SIGNAL(redoAvailable(bool)), SLOT(_updateUndoRedoActions()) );
 
     addAction( cutAction_ = new StandardAction( StandardAction::Type::Cut, this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
@@ -1902,7 +1902,7 @@ void TextEditor::_installActions( void )
 
     // copy link
     addAction( copyLinkAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy Link Location" ), this ) );
-    connect( copyLinkAction_, SIGNAL(triggered()), this, SLOT(_copyLinkLocation()) );
+    connect( copyLinkAction_, SIGNAL(triggered()), SLOT(_copyLinkLocation()) );
 
     // update actions that depend on the presence of a selection
     _updateSelectionActions( textCursor().hasSelection() );

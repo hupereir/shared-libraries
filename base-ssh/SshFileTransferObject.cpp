@@ -49,16 +49,16 @@ namespace Ssh
 
             // connect to remote file and start reading
             sshSocket_ = new FileReadSocket( this );
-            connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT( _processError(QAbstractSocket::SocketError)) );
-            connect( sshSocket_, SIGNAL(connected()), this, SLOT(_setConnected()) );
+            connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), SLOT( _processError(QAbstractSocket::SocketError)) );
+            connect( sshSocket_, SIGNAL(connected()), SLOT(_setConnected()) );
             qobject_cast<FileReadSocket*>(sshSocket_)->connectToFile( session, remoteFilename_ );
             return true;
 
         } else if( mode == QIODevice::WriteOnly ) {
 
             sshSocket_ = new FileWriteSocket( this );
-            connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT( _processError(QAbstractSocket::SocketError)) );
-            connect( sshSocket_, SIGNAL(connected()), this, SLOT(_setConnected()) );
+            connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), SLOT( _processError(QAbstractSocket::SocketError)) );
+            connect( sshSocket_, SIGNAL(connected()), SLOT(_setConnected()) );
             qobject_cast<FileWriteSocket*>(sshSocket_)->connectToFile( session, remoteFilename_, fileSize_ );
             return true;
 
@@ -109,11 +109,11 @@ namespace Ssh
         }
 
         if( sshSocket_->isConnected() ) _prepareReading();
-        else connect( sshSocket_, SIGNAL(connected()), this, SLOT(_prepareReading()) );
+        else connect( sshSocket_, SIGNAL(connected()), SLOT(_prepareReading()) );
 
-        connect( sshSocket_, SIGNAL(readyRead()), this, SLOT(_readFromSocket()) );
-        connect( sshSocket_, SIGNAL(readChannelFinished()), this, SLOT(_closeSourceFile()) );
-        connect( sshSocket_, SIGNAL(readChannelFinished()), this, SLOT(_closeSocket()) );
+        connect( sshSocket_, SIGNAL(readyRead()), SLOT(_readFromSocket()) );
+        connect( sshSocket_, SIGNAL(readChannelFinished()), SLOT(_closeSourceFile()) );
+        connect( sshSocket_, SIGNAL(readChannelFinished()), SLOT(_closeSocket()) );
 
         _readFromSocket();
 
@@ -165,7 +165,7 @@ namespace Ssh
         }
 
         if( sshSocket_->isConnected() ) _writeToSocket();
-        else connect( sshSocket_, SIGNAL(connected()), this, SLOT(_writeToSocket()) );
+        else connect( sshSocket_, SIGNAL(connected()), SLOT(_writeToSocket()) );
 
         return true;
 

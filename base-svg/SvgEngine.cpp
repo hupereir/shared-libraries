@@ -37,7 +37,7 @@ namespace Svg
     //__________________________________________________________
     SvgEngine::SvgEngine( void ):
         thread_( this )
-    { connect( &thread_, SIGNAL(imageCacheAvailable(Svg::ImageCache)), this, SLOT(_processImageCache(Svg::ImageCache)) ); }
+    { connect( &thread_, SIGNAL(imageCacheAvailable(Svg::ImageCache)), SLOT(_processImageCache(Svg::ImageCache)) ); }
 
     //__________________________________________________________
     bool SvgEngine::needsReloadOnPaletteChange( void ) const

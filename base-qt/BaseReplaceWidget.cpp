@@ -51,18 +51,18 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     replaceEditor_->setAutoCompletion( true, Qt::CaseSensitive );
     replaceEditor_->setNavigationEnabled( false );
 
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_replace()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateFindComboBox()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), this, SLOT(_updateReplaceComboBox()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_replace()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
+    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateReplaceComboBox()) );
     connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), this, SIGNAL(replaceTextChanged(QString)) );
 
     setTabOrder( &editor(), replaceEditor_ );
 
     // replace buttons
     QPushButton* button = new QPushButton( tr( "Replace" ), this );
-    connect( button, SIGNAL(clicked()), this, SLOT(_replace()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(_updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), this, SLOT(_updateReplaceComboBox()) );
+    connect( button, SIGNAL(clicked()), SLOT(_replace()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
+    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
     _addDisabledButton( button );
     _editorLayout().addWidget( button, 1, 2, 1, 1 );
     button->setAutoDefault( false );
@@ -81,16 +81,16 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     // replace in selection action
     QAction* action;
     replaceAllMenu_->addAction( action = new QAction( tr( "Selection" ), this ) );
-    connect( action, SIGNAL(triggered()), this, SLOT(_replaceInSelection()) );
-    connect( action, SIGNAL(triggered()), this, SLOT(_updateFindComboBox()) );
-    connect( action, SIGNAL(triggered()), this, SLOT(_updateReplaceComboBox()) );
+    connect( action, SIGNAL(triggered()), SLOT(_replaceInSelection()) );
+    connect( action, SIGNAL(triggered()), SLOT(_updateFindComboBox()) );
+    connect( action, SIGNAL(triggered()), SLOT(_updateReplaceComboBox()) );
     replaceInSelectionAction_ = action;
 
     // replace in window action
     replaceAllMenu_->addAction( action = new QAction( tr( "Window" ), this ) );
-    connect( action, SIGNAL(triggered()), this, SLOT(_replaceInWindow()) );
-    connect( action, SIGNAL(triggered()), this, SLOT(_updateFindComboBox()) );
-    connect( action, SIGNAL(triggered()), this, SLOT(_updateReplaceComboBox()) );
+    connect( action, SIGNAL(triggered()), SLOT(_replaceInWindow()) );
+    connect( action, SIGNAL(triggered()), SLOT(_updateFindComboBox()) );
+    connect( action, SIGNAL(triggered()), SLOT(_updateReplaceComboBox()) );
 
     connect( replaceAllMenu_, SIGNAL(aboutToShow()), SIGNAL(menuAboutToShow()) );
 

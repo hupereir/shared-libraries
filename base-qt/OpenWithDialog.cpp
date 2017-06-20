@@ -178,7 +178,7 @@ void OpenWithDialog::realizeWidget( void )
     comboBox_->setCurrentIndex( 0 );
 
     // connection
-    connect( &okButton(), SIGNAL(clicked()), this, SLOT(_open()) );
+    connect( &okButton(), SIGNAL(clicked()), SLOT(_open()) );
 
 }
 

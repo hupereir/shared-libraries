@@ -123,7 +123,7 @@ namespace Private
         // drag
         dragMonitor_ = new DragMonitor( this );
         dragMonitor_->setDragEnabled( false );
-        connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), this, SLOT(_startDrag(QPoint)) );
+        connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), SLOT(_startDrag(QPoint)) );
 
         // configuration
         connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
