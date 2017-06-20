@@ -49,6 +49,9 @@ namespace Network
         //* time out
         void setTimeOut( int );
 
+        //* check whether current device is active and select one if not
+        void checkDevice( void );
+
         //@}
 
         Q_SIGNALS:
@@ -67,9 +70,6 @@ namespace Network
         using DeviceSet = QSet<QString>;
         DeviceSet _connectedDevices( void ) const;
 
-        //* check whether current device is active and select one if not
-        void _checkDevice( void );
-
         //* enabled state
         bool enabled_ = false;
 
@@ -78,9 +78,6 @@ namespace Network
 
         //* device timer
         QBasicTimer deviceTimer_;
-
-        //* route file name, used to get devices list
-        QString routeFileName_;
 
         //* connected device
         QString device_;

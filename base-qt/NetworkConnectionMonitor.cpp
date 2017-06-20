@@ -21,46 +21,18 @@
 
 #include "Debug.h"
 
-#include <QFile>
-#include <QTextStream>
+#include <net/if.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 
 //____________________________________________________________
 namespace Network
 {
-    class Route
-    {
-        public:
-
-        //* device
-        QString device_;
-
-        //* network
-        QString network_;
-
-        //* gateway
-        QString gateway_;
-
-        //* metric
-        int metric_;
-
-        //* validity
-        bool valid_;
-
-        // streamer
-        friend QTextStream& operator >> ( QTextStream& in, Route& route )
-        {
-            int dummy;
-            in >> route.device_ >> route.network_ >> route.gateway_ >> dummy >> dummy >> dummy >> route.metric_;
-            route.valid_ = (in.status() == QTextStream::Ok );
-            return in;
-        }
-    };
 
     //________________________________________________
     ConnectionMonitor::ConnectionMonitor( QObject* parent ):
         QObject( parent ),
-        Counter( "Network::ConnectionMonitor" ),
-        routeFileName_( "/proc/net/route" )
+        Counter( "Network::ConnectionMonitor" )
     {}
 
     //______________________________________________________________________
@@ -85,57 +57,11 @@ namespace Network
         if( timeOut_ >= 0 ) deviceTimer_.start( 1000*timeOut_, this );
     }
 
-    //______________________________________________________________________
-    void ConnectionMonitor::timerEvent( QTimerEvent* event )
-    {
-
-        if( event->timerId() == deviceTimer_.timerId() ) _checkDevice();
-        else return QObject::timerEvent( event );
-
-    }
-
     //________________________________________________
-    ConnectionMonitor::DeviceSet ConnectionMonitor::_connectedDevices( void ) const
-    {
-        Debug::Throw( "ConnectionMonitor::_connectedDevices.\n" );
-
-        DeviceSet out;
-
-        // parse routes
-        QFile in( routeFileName_ );
-        if( !in.open( QIODevice::ReadOnly ) ) return out;
-
-        QStringList lines( QString( in.readAll() ).split( "\n" ) );
-        for( auto line:lines )
-        {
-
-            QTextStream stream( &line );
-            Route route;
-            stream >> route;
-            if( !route.valid_ ) continue;
-            Debug::Throw() << "ConnectionMonitor::_connectedDevices - "
-                << route.device_ << " "
-                << route.network_ << " "
-                << route.gateway_ << " "
-                << route.metric_
-                << endl;
-
-            if( route.device_ == "lo" ) continue;
-
-            // should put more checks
-            out.insert( route.device_ );
-
-        }
-
-        return out;
-
-    }
-
-    //________________________________________________
-    void ConnectionMonitor::_checkDevice( void )
+    void ConnectionMonitor::checkDevice( void )
     {
 
-        Debug::Throw( "ConnectionMonitor::_checkDevice.\n" );
+        Debug::Throw( "ConnectionMonitor::checkDevice.\n" );
 
         // get connected devices
         auto devices( _connectedDevices() );
@@ -155,6 +81,47 @@ namespace Network
         device_ = *devices.begin();
         emit deviceConnected( device_ );
 
+    }
+
+    //______________________________________________________________________
+    void ConnectionMonitor::timerEvent( QTimerEvent* event )
+    {
+
+        if( event->timerId() == deviceTimer_.timerId() ) checkDevice();
+        else return QObject::timerEvent( event );
+
+    }
+
+    //________________________________________________
+    ConnectionMonitor::DeviceSet ConnectionMonitor::_connectedDevices( void ) const
+    {
+        Debug::Throw( "ConnectionMonitor::_connectedDevices.\n" );
+        DeviceSet out;
+        for( int index = 1;;++index )
+        {
+
+            int fd = socket(AF_INET, SOCK_DGRAM, 0);
+            if(fd == -1) break;
+
+            struct ifreq ifr;
+            ifr.ifr_ifindex = index;
+            if( ioctl( fd, SIOCGIFNAME, &ifr, sizeof(ifr) ) )
+            { break; }
+
+            if( ioctl( fd, SIOCGIFFLAGS, &ifr, sizeof(ifr) ) )
+            { break; }
+
+            // skip loopback
+            if( ifr.ifr_flags & IFF_LOOPBACK ) continue;
+
+            // check status
+            if( !( ifr.ifr_flags & IFF_RUNNING ) ) continue;
+
+            out.insert( ifr.ifr_name );
+
+        }
+
+        return out;
     }
 
 }
