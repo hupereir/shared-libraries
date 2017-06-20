@@ -58,13 +58,45 @@ namespace Network
     }
 
     //________________________________________________
+    ConnectionMonitor::DeviceSet ConnectionMonitor::devices( ConnectionMonitor::DeviceType type )
+    {
+        Debug::Throw( "ConnectionMonitor::_connectedDevices.\n" );
+        DeviceSet out;
+        for( int index = 1;;++index )
+        {
+
+            int fd = socket(AF_INET, SOCK_DGRAM, 0);
+            if(fd == -1) break;
+
+            struct ifreq ifr;
+            ifr.ifr_ifindex = index;
+            if( ioctl( fd, SIOCGIFNAME, &ifr, sizeof(ifr) ) )
+            { break; }
+
+            if( ioctl( fd, SIOCGIFFLAGS, &ifr, sizeof(ifr) ) )
+            { break; }
+
+            // skip loopback
+            if( ifr.ifr_flags & IFF_LOOPBACK ) continue;
+
+            // check status
+            if( type == DeviceType::Connected && !( ifr.ifr_flags & IFF_RUNNING ) ) continue;
+
+            out.insert( ifr.ifr_name );
+
+        }
+
+        return out;
+    }
+
+    //________________________________________________
     void ConnectionMonitor::checkDevice( void )
     {
 
         Debug::Throw( "ConnectionMonitor::checkDevice.\n" );
 
         // get connected devices
-        auto devices( _connectedDevices() );
+        auto devices( connectedDevices() );
 
         // if no connected devices is found, clear current
         if( devices.isEmpty() )
@@ -90,38 +122,6 @@ namespace Network
         if( event->timerId() == deviceTimer_.timerId() ) checkDevice();
         else return QObject::timerEvent( event );
 
-    }
-
-    //________________________________________________
-    ConnectionMonitor::DeviceSet ConnectionMonitor::_connectedDevices( void ) const
-    {
-        Debug::Throw( "ConnectionMonitor::_connectedDevices.\n" );
-        DeviceSet out;
-        for( int index = 1;;++index )
-        {
-
-            int fd = socket(AF_INET, SOCK_DGRAM, 0);
-            if(fd == -1) break;
-
-            struct ifreq ifr;
-            ifr.ifr_ifindex = index;
-            if( ioctl( fd, SIOCGIFNAME, &ifr, sizeof(ifr) ) )
-            { break; }
-
-            if( ioctl( fd, SIOCGIFFLAGS, &ifr, sizeof(ifr) ) )
-            { break; }
-
-            // skip loopback
-            if( ifr.ifr_flags & IFF_LOOPBACK ) continue;
-
-            // check status
-            if( !( ifr.ifr_flags & IFF_RUNNING ) ) continue;
-
-            out.insert( ifr.ifr_name );
-
-        }
-
-        return out;
     }
 
 }

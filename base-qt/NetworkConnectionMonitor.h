@@ -40,6 +40,25 @@ namespace Network
         //* constructor
         explicit ConnectionMonitor( QObject* = nullptr );
 
+        //*@name accessors
+        //@{
+
+        enum class DeviceType
+        {
+            All,
+            Connected
+        };
+
+        //* list of connected devices
+        using DeviceSet = QSet<QString>;
+        static DeviceSet connectedDevices( void )
+        { return devices( DeviceType::Connected ); }
+
+        //* list of devices
+        static DeviceSet devices( DeviceType = DeviceType::All );
+
+        //@}
+
         //*@name modifiers
         //@{
 
@@ -65,10 +84,6 @@ namespace Network
         void timerEvent( QTimerEvent* ) override;
 
         private:
-
-        //* list of connected devices
-        using DeviceSet = QSet<QString>;
-        DeviceSet _connectedDevices( void ) const;
 
         //* enabled state
         bool enabled_ = false;
