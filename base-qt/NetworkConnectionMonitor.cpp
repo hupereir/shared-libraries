@@ -92,7 +92,7 @@ namespace Network
     //________________________________________________
     ConnectionMonitor::DeviceSet ConnectionMonitor::devices( ConnectionMonitor::DeviceType type )
     {
-        Debug::Throw( 0, "Network::ConnectionMonitor::devices.\n" );
+        Debug::Throw( "Network::ConnectionMonitor::devices.\n" );
         DeviceSet out;
         for( int index = 1;;++index )
         {
@@ -102,20 +102,26 @@ namespace Network
 
             struct ifreq ifr;
             ifr.ifr_ifindex = index;
-            if( ioctl( socket.fileDescriptor(), SIOCGIFNAME, &ifr, sizeof(ifr) ) )
-            { break; }
-
-            if( ioctl( socket.fileDescriptor(), SIOCGIFFLAGS, &ifr, sizeof(ifr) ) )
-            { break; }
+            if( ioctl( socket.fileDescriptor(), SIOCGIFNAME, &ifr, sizeof(ifr) ) ) break;
+            if( ioctl( socket.fileDescriptor(), SIOCGIFFLAGS, &ifr, sizeof(ifr) ) ) break;
 
             // skip loopback
             if( ifr.ifr_flags & IFF_LOOPBACK ) continue;
 
             // check status
-            if( type == DeviceType::Connected && !( ifr.ifr_flags & IFF_RUNNING ) ) continue;
+            if( type == DeviceType::Connected )
+            {
+
+                // check running status
+                if( !( ifr.ifr_flags & IFF_RUNNING ) ) continue;
+
+                // check bound address
+                if( ioctl( socket.fileDescriptor(), SIOCGIFADDR, &ifr, sizeof(ifr) ) ) continue;
+
+            }
 
             QString device( ifr.ifr_name );
-            Debug::Throw(0) << "Network::ConnectionMonitor::devices - adding " << device << " flags: " << ifr.ifr_flags << endl;
+            Debug::Throw() << "Network::ConnectionMonitor::devices - adding " << device << endl;
             out.insert( device );
         }
 
