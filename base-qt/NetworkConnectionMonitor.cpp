@@ -21,9 +21,12 @@
 
 #include "Debug.h"
 
+#if !defined(Q_OS_WIN)
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
+#endif
+
 #include <unistd.h>
 
 //____________________________________________________________
@@ -70,11 +73,13 @@ namespace Network
     //______________________________________________________________________
     void ConnectionMonitor::setEnabled( bool enabled )
     {
+        #if !defined(Q_OS_WIN)
         if( enabled == enabled_ ) return;
         enabled_ = enabled;
 
         if( deviceTimer_.isActive() ) deviceTimer_.stop();
         if( enabled_ && timeOut_ >= 0 ) deviceTimer_.start( 1000*timeOut_, this );
+        #endif
     }
 
     //______________________________________________________________________
@@ -93,6 +98,9 @@ namespace Network
     ConnectionMonitor::DeviceSet ConnectionMonitor::devices( ConnectionMonitor::DeviceType type )
     {
         Debug::Throw( "Network::ConnectionMonitor::devices.\n" );
+        #if defined(Q_OS_WIN)
+        return DeviceSet();
+        #else
         DeviceSet out;
         for( int index = 1;;++index )
         {
@@ -126,6 +134,7 @@ namespace Network
         }
 
         return out;
+        #endif
     }
 
     //________________________________________________
