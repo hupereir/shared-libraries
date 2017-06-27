@@ -26,6 +26,8 @@
 #include <QSet>
 #include <QString>
 
+#include <array>
+
 namespace SpellCheck
 {
 

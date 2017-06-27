@@ -25,6 +25,8 @@
 #include "Options.h"
 #include "TreeModel.h"
 
+#include <array>
+
 class OptionPair: public Options::Pair
 {
 

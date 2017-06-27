@@ -24,6 +24,8 @@
 #include "CounterMap.h"
 #include "Debug.h"
 
+#include <array>
+
 //* counter pair
 class CounterPair: public Base::CounterMap::Pair
 {
