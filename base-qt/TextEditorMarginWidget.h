@@ -44,21 +44,21 @@ class TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMa
     //@{
 
     //* vertical line
-    bool drawVerticalLine( void ) const
+    bool drawVerticalLine() const
     { return true; }
 
     //* background color
-    QColor backgroundColor( void ) const;
+    QColor backgroundColor() const;
 
     //* foreground color
-    QColor foregroundColor( void ) const;
+    QColor foregroundColor() const;
 
     //@}
 
     public Q_SLOTS:
 
     //* dirty
-    void setDirty( void );
+    void setDirty();
 
     protected:
 
@@ -66,7 +66,7 @@ class TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMa
     void paintEvent( QPaintEvent* ) override;
 
     //* parent editor
-    TextEditor& _editor( void ) const
+    TextEditor& _editor() const
     { return *editor_; }
 
     private:

@@ -491,7 +491,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_editPixmapPathList( void )
+void BaseConfigurationDialog::_editPixmapPathList()
 {
 
     Debug::Throw( "BaseConfigurationDialog::_editPixmapPathList.\n" );
@@ -519,7 +519,7 @@ void BaseConfigurationDialog::_editPixmapPathList( void )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_editIconTheme( void )
+void BaseConfigurationDialog::_editIconTheme()
 {
     Debug::Throw( "BaseConfigurationDialog::_editIconTheme.\n" );
     if( !iconThemeDialog_ )
@@ -534,7 +534,7 @@ void BaseConfigurationDialog::_editIconTheme( void )
 }
 
 //__________________________________________________
-bool BaseConfigurationDialog::_checkModified( void )
+bool BaseConfigurationDialog::_checkModified()
 {
     // make a copy of current options
     auto modifiedOptions( XmlOptions::get() );
@@ -624,7 +624,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_apply( void )
+void BaseConfigurationDialog::_apply()
 {
     Debug::Throw( "BaseConfigurationDialog::_apply.\n" );
     if( _checkModified() )
@@ -645,7 +645,7 @@ void BaseConfigurationDialog::_apply( void )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_save( void )
+void BaseConfigurationDialog::_save()
 {
     Debug::Throw( "BaseConfigurationDialog::_save.\n" );
     _apply();
@@ -656,7 +656,7 @@ void BaseConfigurationDialog::_save( void )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_cancel( void )
+void BaseConfigurationDialog::_cancel()
 {
     Debug::Throw( "BaseConfigurationDialog::_cancel.\n" );
     if( XmlOptions::get() == backupOptions_ ) return;
@@ -672,7 +672,7 @@ void BaseConfigurationDialog::_cancel( void )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_reset( void )
+void BaseConfigurationDialog::_reset()
 {
     Debug::Throw( "BaseConfigurationDialog::_reset.\n" );
 
@@ -682,7 +682,7 @@ void BaseConfigurationDialog::_reset( void )
 }
 
 //__________________________________________________
-void BaseConfigurationDialog::_restoreDefaults( void )
+void BaseConfigurationDialog::_restoreDefaults()
 {
     Debug::Throw( "BaseConfigurationDialog::_restoreDefaults.\n" );
 

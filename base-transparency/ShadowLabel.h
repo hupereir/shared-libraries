@@ -63,11 +63,11 @@ namespace Transparency
         private:
 
         //* shadow offset
-        int _shadowOffset( void ) const
+        int _shadowOffset() const
         { return shadowOffset_; }
 
         //* shadow color
-        const QColor& _shadowColor( void ) const
+        const QColor& _shadowColor() const
         { return shadowColor_; }
 
         //* shadow offset

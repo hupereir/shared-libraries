@@ -39,19 +39,19 @@ class XcbUtil: private XcbDefines
     template <typename T> using ScopedPointer = std::unique_ptr<T,pod_delete>;
 
     //* singleton
-    static XcbUtil& get( void );
+    static XcbUtil& get();
 
     //*@name accessors
     //@{
 
     //* connection
-    template <typename T> T* connection( void ) const;
+    template <typename T> T* connection() const;
 
     //* default screen number
-    int defaultScreenNumber( void ) const;
+    int defaultScreenNumber() const;
 
     //* application root window
-    WId appRootWindow( void ) const;
+    WId appRootWindow() const;
 
     //* atom
     template <typename T> T* atom( const QString& ) const;
@@ -116,7 +116,7 @@ class XcbUtil: private XcbDefines
     protected:
 
     //* connection
-    Qt::HANDLE _connection( void ) const;
+    Qt::HANDLE _connection() const;
 
     //* atom
     Qt::HANDLE _atom( const QString& ) const;
@@ -139,7 +139,7 @@ class XcbUtil: private XcbDefines
     bool _requestCardinalChange( QWidget*, AtomId, uint32_t ) const;
 
     //* constructor
-    explicit XcbUtil( void );
+    explicit XcbUtil();
 
     //* private pointer
     class Private;
@@ -148,7 +148,7 @@ class XcbUtil: private XcbDefines
 };
 
 //________________________________________________________________________
-template <typename T> T* XcbUtil::connection( void ) const
+template <typename T> T* XcbUtil::connection() const
 { return reinterpret_cast<T*>( _connection() ); }
 
 //________________________________________________________________________

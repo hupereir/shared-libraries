@@ -102,7 +102,7 @@ void HtmlDialog::setOptionWidgets( QList<QWidget*> widgets )
 }
 
 //__________________________________________________
-void HtmlDialog::_browseCommand( void )
+void HtmlDialog::_browseCommand()
 {
 
     Debug::Throw( "HtmlDialog::_browseCommand.\n" );
@@ -120,7 +120,7 @@ void HtmlDialog::_browseCommand( void )
 }
 
 //__________________________________________________
-void HtmlDialog::_saveCommands( void )
+void HtmlDialog::_saveCommands()
 {
     Debug::Throw( "HtmlDialog::_saveCommands.\n" );
     XmlOptions::get().add( "HTML_COMMAND", Option( command(), Option::Flag::Recordable|Option::Flag::Current ) );

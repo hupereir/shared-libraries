@@ -32,7 +32,7 @@ Counter( "CustomProcess" )
 {}
 
 //____________________________________________________
-CustomProcess::~CustomProcess( void )
+CustomProcess::~CustomProcess()
 { if( state() != QProcess::NotRunning ) kill(); }
 
 //____________________________________________________
@@ -55,7 +55,7 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
 }
 
 //______________________________________________________________
-void CustomProcess::setAutoDelete( void )
+void CustomProcess::setAutoDelete()
 { connect( this, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(deleteLater()) ); }
 
 //______________________________________________________________

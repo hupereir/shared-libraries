@@ -80,7 +80,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
     void setValue( int value )
     { spinBox_->setValue( value ); }
 
-    int value( void ) const
+    int value() const
     { return spinBox_->value(); }
 
     void setMinimum( int value )
@@ -97,7 +97,7 @@ class OptionSpinBox: public QWidget, public OptionWidget
     Q_SIGNALS:
 
     //* modified
-    void modified( void );
+    void modified();
 
     private:
 

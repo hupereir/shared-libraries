@@ -41,9 +41,11 @@ namespace Ssh
         using ListIterator = QListIterator<ConnectionAttributes>;
 
         //* constructor
-        explicit ConnectionAttributes( void ):
+        explicit ConnectionAttributes():
             Counter( "Ssh::ConnectionAttributes" )
         {}
+
+        virtual ~ConnectionAttributes() = default;
 
         //* equal to operator
         bool operator == (const ConnectionAttributes& other) const;
@@ -60,39 +62,39 @@ namespace Ssh
         //@{
 
         //* name
-        const QString& name( void ) const
+        const QString& name() const
         { return name_; }
 
         //* host
-        const QString& host( void ) const
+        const QString& host() const
         { return host_; }
 
         //* user name
-        const QString& userName( void ) const
+        const QString& userName() const
         { return userName_; }
 
         //* password
-        const QString& password( void ) const
+        const QString& password() const
         { return password_; }
 
         //* true if password is to be remembered
-        bool rememberPassword( void ) const
+        bool rememberPassword() const
         { return rememberPassword_; }
 
         //* true if auto connect
-        bool autoConnect( void ) const
+        bool autoConnect() const
         { return autoConnect_; }
 
         //* port
-        int port( void ) const
+        int port() const
         { return port_; }
 
         //* tunnels
-        TunnelAttributes::Set tunnels( void ) const
+        TunnelAttributes::Set tunnels() const
         { return tunnels_; }
 
         //* validity
-        bool isValid( void ) const;
+        bool isValid() const;
 
         //@}
 

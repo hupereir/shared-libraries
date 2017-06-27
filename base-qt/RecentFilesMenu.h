@@ -54,10 +54,10 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
     }
 
     //* open last valid file, returns true if any
-    bool openLastValidFile( void );
+    bool openLastValidFile();
 
     //* current file
-    const FileRecord& currentFile( void ) const
+    const FileRecord& currentFile() const
     { return currentFile_; }
 
     Q_SIGNALS:
@@ -86,16 +86,16 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
 
     //* update actions
     /** this is trigger by the fileList valid file check completion */
-    void _updateActions( void );
+    void _updateActions();
 
     //* remove unfound files from file list
-    void _clean( void );
+    void _clean();
 
     //* open file
     void _open( QAction* );
 
     //* display files from internal list
-    void _loadFiles( void );
+    void _loadFiles();
 
     private:
 

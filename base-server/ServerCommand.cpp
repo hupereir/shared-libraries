@@ -26,14 +26,14 @@ namespace Server
 {
 
     //__________________________________________________________________
-    ServerCommand::CommandMap& ServerCommand::_commandNames( void )
+    ServerCommand::CommandMap& ServerCommand::_commandNames()
     {
         static CommandMap names;
         return names;
     }
 
     //_________________________________________
-    void ServerCommand::_initializeCommandNames( void ) const
+    void ServerCommand::_initializeCommandNames() const
     {
         if( !_commandNames().empty() ) return;
         _commandNames().insert( None, "" );

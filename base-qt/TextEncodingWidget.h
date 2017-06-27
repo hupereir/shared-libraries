@@ -41,7 +41,7 @@ class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidg
     //*@name accessors
     //@{
 
-    QByteArray encoding( void ) const
+    QByteArray encoding() const
     { return qPrintable( editor_->text() ); }
 
     //@}
@@ -57,12 +57,12 @@ class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidg
     protected:
 
     //* load text codecs
-    void _loadTextCodecs( void );
+    void _loadTextCodecs();
 
     protected Q_SLOTS:
 
     //* update selection
-    void _updateSelection( void );
+    void _updateSelection();
 
     //* find
     void _find(QString);

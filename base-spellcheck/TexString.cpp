@@ -24,7 +24,7 @@ namespace SpellCheck
 {
 
     //________________________________________________________
-    QString TexString::toLatexAccents( void ) const
+    QString TexString::toLatexAccents() const
     {
         QString out( *this );
         for( const auto& conversion:conversions() )
@@ -33,7 +33,7 @@ namespace SpellCheck
     }
 
     //________________________________________________________
-    QString TexString::toTextAccents( void ) const
+    QString TexString::toTextAccents() const
     {
         QString out( *this );
         for( const auto& conversion:conversions() )
@@ -42,7 +42,7 @@ namespace SpellCheck
     }
 
     //________________________________________________________
-    const TexString::ConversionList& TexString::conversions( void )
+    const TexString::ConversionList& TexString::conversions()
     {
         static ConversionList conversions_;
 

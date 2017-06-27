@@ -46,7 +46,7 @@ class OptionListBox: public QWidget, public OptionWidget
     explicit OptionListBox( QWidget*, const QString& );
 
     //* list
-    TreeView& list( void ) const
+    TreeView& list() const
     { return *list_; }
 
     //* read value from option
@@ -66,18 +66,18 @@ class OptionListBox: public QWidget, public OptionWidget
     Q_SIGNALS:
 
     //* modified
-    void modified( void );
+    void modified();
 
     protected Q_SLOTS:
 
     //* update buttons
-    virtual void _updateButtons( void );
+    virtual void _updateButtons();
 
     //* add a value
-    virtual void _add( void );
+    virtual void _add();
 
     //* add a value
-    virtual void _edit( void );
+    virtual void _edit();
 
     //* remove a value
     virtual void _remove();
@@ -88,7 +88,7 @@ class OptionListBox: public QWidget, public OptionWidget
     protected:
 
     //* model
-    OptionModel& _model( void ) const
+    OptionModel& _model() const
     { return *model_; }
 
     //* set model

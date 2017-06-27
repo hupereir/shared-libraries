@@ -40,12 +40,12 @@ class FontInfo: public QWidget
     void setFormat( Format::TextFormatFlags format );
 
     //! get format
-    Format::TextFormatFlags format( void ) const;
+    Format::TextFormatFlags format() const;
 
     Q_SIGNALS:
 
     //! modified
-    void modified( void );
+    void modified();
 
     private:
 

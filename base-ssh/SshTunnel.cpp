@@ -44,7 +44,7 @@ namespace Ssh
     }
 
     //______________________________________________________
-    void Tunnel::close( void )
+    void Tunnel::close()
     {
         Debug::Throw( "Ssh::Tunnel::close.\n" );
         tcpSocket_->close();
@@ -52,7 +52,7 @@ namespace Ssh
     }
 
     //______________________________________________________
-    void Tunnel::_readFromTcpSocket( void )
+    void Tunnel::_readFromTcpSocket()
     {
         Debug::Throw( "Ssh::Tunnel::_readFromTcpSocket.\n" );
 
@@ -95,7 +95,7 @@ namespace Ssh
     }
 
     //______________________________________________________
-    void Tunnel::_readFromSshSocket( void )
+    void Tunnel::_readFromSshSocket()
     {
         Debug::Throw( "Ssh::Tunnel::_readFromSshSocket.\n" );
 

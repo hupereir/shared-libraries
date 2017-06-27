@@ -61,6 +61,9 @@ class Option:private Base::Counter<Option>
     //* constructor
     explicit Option( const QString&, Flags = Flag::Recordable );
 
+    //* destructor
+    virtual ~Option() = default;
+
     //* less than operator
     bool operator < (const Option& other ) const
     {
@@ -82,7 +85,7 @@ class Option:private Base::Counter<Option>
     //@{
 
     //* flags
-    Flags flags( void ) const
+    Flags flags() const
     { return flags_; }
 
     //* flags
@@ -90,28 +93,28 @@ class Option:private Base::Counter<Option>
     { return flags_ & flag; }
 
     //* current
-    bool isCurrent( void ) const
+    bool isCurrent() const
     { return hasFlag( Flag::Current ); }
 
     //* default
-    bool isDefault( void ) const
+    bool isDefault() const
     { return defaultValue_ == value_ && defaultFlags_ == flags_; }
 
     //* recordable
-    bool isRecordable( void ) const
+    bool isRecordable() const
     { return hasFlag( Flag::Recordable ); }
 
     //* raw accessor
-    const QByteArray& raw( void ) const
+    const QByteArray& raw() const
     { return value_; }
 
     //* default value
-    const QByteArray& defaultValue( void ) const
+    const QByteArray& defaultValue() const
     { return defaultValue_; }
 
     //* generic accessor
     template < typename T >
-        T get( void ) const
+        T get() const
     {
 
         // check if option is set
@@ -128,7 +131,7 @@ class Option:private Base::Counter<Option>
     }
 
     //* check status
-    bool isSet( void ) const
+    bool isSet() const
     {return !value_.isEmpty();}
 
     //@}
@@ -156,7 +159,7 @@ class Option:private Base::Counter<Option>
     { return setFlag( Flag::Current, value ); }
 
     //* default
-    Option& setDefault( void )
+    Option& setDefault()
     {
         defaultValue_ = value_;
         defaultFlags_ = flags_;

@@ -66,7 +66,7 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
     Q_SIGNALS:
 
     //* modified signal
-    void modified( void );
+    void modified();
 
 };
 #endif

@@ -39,7 +39,7 @@ class BaseReplaceDialog: public BaseFindDialog
     //@{
 
     //* string to replace
-    QString replaceText( void ) const
+    QString replaceText() const
     { return static_cast<BaseReplaceWidget*>(&baseFindWidget())->replaceText(); }
 
     //* get selection

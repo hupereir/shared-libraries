@@ -59,11 +59,11 @@ namespace Svg
         }
 
         //! id
-        const QString& id( void ) const
+        const QString& id() const
         { return id_; }
 
         //! size
-        const QSize& size( void ) const
+        const QSize& size() const
         { return size_; }
 
         private:

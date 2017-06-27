@@ -49,22 +49,22 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     //@{
 
     //* string to find
-    virtual QString text( void ) const
+    virtual QString text() const
     { return editor_->currentText(); }
 
     //* get selection
     virtual TextSelection selection( bool ) const;
 
     //* retrieve editor
-    CustomComboBox& editor( void ) const
+    CustomComboBox& editor() const
     { return *editor_; }
 
     //* close button
-    QAbstractButton& closeButton( void ) const
+    QAbstractButton& closeButton() const
     { return *closeButton_; }
 
     //* list of disabled buttons
-    QList<QAbstractButton*>& disabledButtons( void )
+    QList<QAbstractButton*>& disabledButtons()
     { return buttons_; }
 
     //@}
@@ -82,7 +82,7 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     virtual void enableRegExp( bool );
 
     //* synchronize searched strings and ComboBox
-    virtual void synchronize( void );
+    virtual void synchronize();
 
     //@}
 
@@ -94,37 +94,37 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     public Q_SLOTS:
 
     //* take action when at least one match is found
-    void matchFound( void );
+    void matchFound();
 
     //* take action when no match is found
-    void noMatchFound( void );
+    void noMatchFound();
 
     protected Q_SLOTS:
 
     //* update combo box with current text
-    void _updateFindComboBox( void )
+    void _updateFindComboBox()
     { _addSearchedString( editor_->currentText() ); }
 
     //* create Selection object when find button is pressed
-    void _find( void )
+    void _find()
     { emit find( selection( false ) ); }
 
     //* create Selection object when find button is pressed
-    void _findPrevious( void )
+    void _findPrevious()
     {
         findBackward_ = true;
         emit find( selection( false ) );
     }
 
     //* create Selection object when find button is pressed
-    void _findNext( void )
+    void _findNext()
     {
         findBackward_ = false;
         emit find( selection( false ) );
     }
 
     //* create Selection object when find button is pressed
-    void _findNoIncrement( void )
+    void _findNoIncrement()
     { if( !regexpCheckbox_->isChecked() ) emit find( selection( true ) ); }
 
     //* update button state when regexp checkbox is checked
@@ -139,19 +139,19 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     void changeEvent( QEvent* ) override;
 
     //* "entire word" checkbox
-    QCheckBox& _entireWordCheckBox( void ) const
+    QCheckBox& _entireWordCheckBox() const
     { return *entireWordCheckbox_; }
 
     //* edition layout
-    QGridLayout& _editorLayout( void ) const
+    QGridLayout& _editorLayout() const
     { return *editorLayout_; }
 
     //* find next button
-    QAbstractButton& _findNextButton( void ) const
+    QAbstractButton& _findNextButton() const
     { return *findNextButton_; }
 
     //* find previous button
-    QAbstractButton& _findPreviousButton( void ) const
+    QAbstractButton& _findPreviousButton() const
     { return *findPreviousButton_; }
 
     //* add button to disabled button list
@@ -163,7 +163,7 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     private:
 
     //* create not found palette
-    void _updateNotFoundPalette( void );
+    void _updateNotFoundPalette();
 
     //* editor layout
     QGridLayout* editorLayout_ = nullptr;
@@ -198,7 +198,7 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     QPalette notFoundPalette_;
 
     //* set of previously searched strings
-    static QOrderedSet<QString>& _searchedStrings( void );
+    static QOrderedSet<QString>& _searchedStrings();
 
 };
 #endif

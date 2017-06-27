@@ -43,20 +43,20 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     explicit LineEditor( QWidget* parent );
 
     //* destructor
-    ~LineEditor( void ) override
+    ~LineEditor() override
     { delete proxyStyle_.data(); }
 
     //@!name accessors
     //@{
 
-    bool hasClearButton( void ) const
+    bool hasClearButton() const
     { return clearButton_ && clearButton_->isVisible(); }
 
     //* return clear button width
-    int clearButtonWidth( void ) const;
+    int clearButtonWidth() const;
 
     //* modification state
-    bool isModified( void ) const
+    bool isModified() const
     { return modified_; }
 
     //@}
@@ -87,7 +87,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     void modificationChanged( bool );
 
     //* emitted when clear button is pressed
-    void cleared( void );
+    void cleared();
 
     public Q_SLOTS:
 
@@ -98,14 +98,14 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 
     //* clear
     /** copy base class method to make it virtual */
-    virtual void clear( void )
+    virtual void clear()
     { QLineEdit::clear(); }
 
     //* changes selection to uppercase
-    void lowerCase( void );
+    void lowerCase();
 
     //* changes selection to uppercase
-    void upperCase( void );
+    void upperCase();
 
     protected Q_SLOTS:
 
@@ -113,14 +113,14 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     void _modified( const QString& text );
 
     //* update action status
-    void _updateSelectionActions( void );
+    void _updateSelectionActions();
 
     //* update paste action
     /** depends on clipboard status and editability */
-    void _updatePasteAction( void );
+    void _updatePasteAction();
 
     //* update undo/redo actions
-    void _updateUndoRedoActions( void );
+    void _updateUndoRedoActions();
 
     protected:
 
@@ -142,12 +142,12 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //@}
 
     //* toggle clear button
-    void _updateClearButton( void ) const;
+    void _updateClearButton() const;
 
     private:
 
     //* install actions
-    void _installActions( void );
+    void _installActions();
 
     //* modification state
     bool modified_ = false;

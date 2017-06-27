@@ -25,7 +25,7 @@
 
 //_____________________________________________________
 //* default options installer
-void installTransparencyOptions( void )
+void installTransparencyOptions()
 {
 
     // foreground

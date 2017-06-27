@@ -57,22 +57,22 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //@{
 
     //* TextSelection object from this selection, or clipboard
-    TextSelection selection( void ) const;
+    TextSelection selection() const;
 
     //* header
-    QHeaderView* header( void ) const
+    QHeaderView* header() const
     { return header_; }
 
     //* option name
-    bool hasOptionName( void ) const
+    bool hasOptionName() const
     { return !sortColumnOptionName().isEmpty(); }
 
     //* sort column option name
-    const QString& sortColumnOptionName( void ) const
+    const QString& sortColumnOptionName() const
     { return sortColumnOptionName_; }
 
     //* sort order option name
-    const QString& sortOrderOptionName( void ) const
+    const QString& sortOrderOptionName() const
     { return sortOrderOptionName_; }
 
     //* return index at a given position
@@ -82,7 +82,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     QRect visualRect( const QModelIndex& ) const override;
 
     //* minimum size hind
-    QSize minimumSizeHint( void ) const override;
+    QSize minimumSizeHint() const override;
 
     //@}
 
@@ -143,19 +143,19 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //@{
 
     //* select all
-    QAction& selectAllAction( void ) const
+    QAction& selectAllAction() const
     { return *selectAllAction_; }
 
     //* find from dialog
-    QAction& findAction( void ) const
+    QAction& findAction() const
     { return *findAction_; }
 
     //* find selection again
-    QAction& findSelectionAction( void ) const
+    QAction& findSelectionAction() const
     { return *findSelectionAction_; }
 
     //* find again
-    QAction& findAgainAction( void ) const
+    QAction& findAgainAction() const
     { return *findAgainAction_; }
 
     //@}
@@ -173,13 +173,13 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
         explicit Container( QWidget*, IconView* );
 
         //*@name accessors
-        IconView& iconView( void ) const
+        IconView& iconView() const
         { return *iconView_; }
 
         private:
 
         //* initialize
-        void _initialize( void );
+        void _initialize();
 
         //* contained iconView
         IconView* iconView_;
@@ -192,10 +192,10 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     void hovered( const QModelIndex& );
 
     //* emitted when selection could not be found
-    void noMatchFound( void );
+    void noMatchFound();
 
     //* emitted when selection could be found
-    void matchFound( void );
+    void matchFound();
 
     #if QT_VERSION < 0x050000
     //* icon size changed signal
@@ -205,10 +205,10 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     public Q_SLOTS:
 
     //* sort order
-    void updateSortOrder( void );
+    void updateSortOrder();
 
     //* sort order
-    void saveSortOrder( void );
+    void saveSortOrder();
 
     // items layout
     void doItemsLayout();
@@ -217,24 +217,24 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     void find( TextSelection selection );
 
     //* find current selection forward
-    void findSelectionForward( void )
+    void findSelectionForward()
     { _findForward( selection(), true ); }
 
     //* find current selection backward
-    void findSelectionBackward( void )
+    void findSelectionBackward()
     { _findBackward( selection(), true ); }
 
     //* find last search forward
-    void findAgainForward( void );
+    void findAgainForward();
 
     //* find last search forward
-    void findAgainBackward( void );
+    void findAgainBackward();
 
     //* store selected indexes in model
-    void storeSelectedIndexes( void );
+    void storeSelectedIndexes();
 
     //* restore selected indexes from model
-    void restoreSelectedIndexes( void );
+    void restoreSelectedIndexes();
 
     protected:
 
@@ -254,10 +254,10 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     void scrollContentsBy( int, int ) override;
 
     //* horizontal offset
-    int horizontalOffset( void ) const override;
+    int horizontalOffset() const override;
 
     //* vertical offset
-    int verticalOffset( void ) const override;
+    int verticalOffset() const override;
 
     //* region for given selection
     QRegion visualRegionForSelection( const QItemSelection& ) const override;
@@ -302,7 +302,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     QModelIndexList _selectedIndexes( const QRect& ) const;
 
     //* hover index
-    const QModelIndex& _hoverIndex( void ) const
+    const QModelIndex& _hoverIndex() const
     { return hoverIndex_; }
 
     //* hover index
@@ -312,10 +312,10 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     virtual void _updateItem( IconViewItem&, const QModelIndex& ) const;
 
     //* layout existing items
-    void _layoutItems( void );
+    void _layoutItems();
 
     //* scrollbar position
-    QPoint _scrollBarPosition( void ) const
+    QPoint _scrollBarPosition() const
     {
         return QPoint(
             horizontalScrollBar()->isVisible() ? horizontalScrollBar()->value():0,
@@ -326,7 +326,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     QPixmap _pixmap( const QModelIndexList&, QRect& );
 
     //* find dialog
-    void _createFindDialog( void );
+    void _createFindDialog();
 
     //* find widget
     void _createFindWidget( bool compact );
@@ -343,26 +343,26 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     protected Q_SLOTS:
 
     //* update geometries
-    void updateGeometries( void );
+    void updateGeometries();
 
     //* sort order
     void sortByColumn( int, Qt::SortOrder );
 
     //* find text from dialog
-    void _findFromDialog( void );
+    void _findFromDialog();
 
     //* update hover index
-    void _updateHoverIndex( void );
+    void _updateHoverIndex();
 
     private Q_SLOTS:
 
     //* update alternate item color
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 
     //* install actions
-    void _installActions( void );
+    void _installActions();
 
     //* return first index
     QModelIndex _firstIndex() const;

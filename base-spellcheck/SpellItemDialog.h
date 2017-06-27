@@ -49,7 +49,7 @@ namespace SpellCheck
         void setDisabledItems( const QString& );
 
         //* disabled items
-        QString disabledItems( void ) const;
+        QString disabledItems() const;
 
         protected Q_SLOTS:
 
@@ -59,7 +59,7 @@ namespace SpellCheck
         private:
 
         //* list
-        TreeView& _list( void ) const
+        TreeView& _list() const
         { return *list_; }
 
         //* model

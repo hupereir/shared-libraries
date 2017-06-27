@@ -39,7 +39,7 @@ ColorComboBox::ColorComboBox( QWidget* parent ):
 }
 
 //_________________________________________________________
-Base::Color::Set ColorComboBox::colors( void ) const
+Base::Color::Set ColorComboBox::colors() const
 {
 
     Debug::Throw( "ColorComboBox::colors.\n" );
@@ -60,7 +60,7 @@ Base::Color::Set ColorComboBox::colors( void ) const
 }
 
 //_________________________________________________________
-QColor ColorComboBox::color( void ) const
+QColor ColorComboBox::color() const
 { return itemData( currentIndex() ).value<QColor>(); }
 
 //_________________________________________________________

@@ -133,7 +133,7 @@ void PrinterOptionWidget::_setPageMode( QAbstractButton* button )
 }
 
 //_________________________________________________________________
-void PrinterOptionWidget::_preview( void )
+void PrinterOptionWidget::_preview()
 {
 
     Debug::Throw( "PrinterOptionWidget::_preview" );

@@ -36,10 +36,10 @@ class ColorOptionListBox: public OptionListBox
     protected Q_SLOTS:
 
     //* add
-    void _add( void ) override;
+    void _add() override;
 
     //* edit
-    void _edit( void ) override;
+    void _edit() override;
 
 };
 

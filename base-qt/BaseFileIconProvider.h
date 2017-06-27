@@ -46,7 +46,7 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
     virtual const QIcon& icon( const BaseFileInfo&, int );
 
     //* clear
-    virtual void clear( void )
+    virtual void clear()
     { icons_.clear(); }
 
     //* key, used for hash
@@ -55,7 +55,7 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
         public:
 
         //* constructor
-        explicit Key( void )
+        explicit Key()
         {}
 
         //* constructor
@@ -91,7 +91,7 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
 
     //* icon cache
     using IconCache = QHash<Key, QIcon>;
-    IconCache& _icons( void )
+    IconCache& _icons()
     { return icons_; }
 
     private:

@@ -65,7 +65,7 @@ IconView::IconView( QWidget* parent ):
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 }
 
@@ -95,7 +95,7 @@ void IconView::setFindEnabled( bool value )
 }
 
 //______________________________________________________________________
-TextSelection IconView::selection( void ) const
+TextSelection IconView::selection() const
 {
 
     Debug::Throw( "IconView::selection.\n" );
@@ -218,7 +218,7 @@ QRect IconView::visualRect( const QModelIndex&  index ) const
 }
 
 //_____________________________________________________________________
-QSize IconView::minimumSizeHint( void ) const
+QSize IconView::minimumSizeHint() const
 {
     return QSize(
         2*margin_ + 2*IconViewItem::margin + qMax( IconViewItem::maxTextWidth, iconSize().width() ) + verticalScrollBar()->width(),
@@ -226,7 +226,7 @@ QSize IconView::minimumSizeHint( void ) const
 }
 
 //_____________________________________________________________________
-void IconView::updateSortOrder( void )
+void IconView::updateSortOrder()
 {
 
     Debug::Throw( "IconView::updateSortOrder.\n" );
@@ -245,7 +245,7 @@ void IconView::updateSortOrder( void )
 }
 
 //_____________________________________________________________________
-void IconView::saveSortOrder( void )
+void IconView::saveSortOrder()
 {
 
     Debug::Throw( "IconView::saveSortOrder.\n" );
@@ -258,7 +258,7 @@ void IconView::saveSortOrder( void )
 }
 
 //____________________________________________________________________
-void IconView::doItemsLayout( void )
+void IconView::doItemsLayout()
 {
 
     const int rowCount( model()->rowCount() );
@@ -302,15 +302,15 @@ void IconView::find( TextSelection selection )
 }
 
 //______________________________________________________________________
-void IconView::findAgainForward( void )
+void IconView::findAgainForward()
 { _findForward( TextEditor::lastSelection(), true ); }
 
 //______________________________________________________________________
-void IconView::findAgainBackward( void )
+void IconView::findAgainBackward()
 { _findBackward( TextEditor::lastSelection(), true ); }
 
 //__________________________________________________________
-void IconView::storeSelectedIndexes( void )
+void IconView::storeSelectedIndexes()
 {
     if( selectionModel() )
     {
@@ -320,7 +320,7 @@ void IconView::storeSelectedIndexes( void )
 }
 
 //__________________________________________________________
-void IconView::restoreSelectedIndexes( void )
+void IconView::restoreSelectedIndexes()
 {
 
     if( selectionModel() )
@@ -487,11 +487,11 @@ void IconView::scrollContentsBy( int dx, int dy )
 }
 
 //____________________________________________________________________
-int IconView::horizontalOffset( void ) const
+int IconView::horizontalOffset() const
 { return horizontalScrollBar()->value(); }
 
 //____________________________________________________________________
-int IconView::verticalOffset( void ) const
+int IconView::verticalOffset() const
 { return verticalScrollBar()->value(); }
 
 //____________________________________________________________________
@@ -876,7 +876,7 @@ void IconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const
 }
 
 //____________________________________________________________________
-void IconView::_layoutItems( void )
+void IconView::_layoutItems()
 {
 
     // get max width for items
@@ -1024,7 +1024,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 }
 
 //______________________________________________________________________
-void IconView::_createFindDialog( void )
+void IconView::_createFindDialog()
 {
 
     Debug::Throw( "IconView::_createFindDialog.\n" );
@@ -1295,7 +1295,7 @@ QStyleOptionViewItemV4 IconView::_viewOptions( const QModelIndex& index ) const
 }
 
 //____________________________________________________________________
-void IconView::updateGeometries( void )
+void IconView::updateGeometries()
 {
 
     // vertical scrollbar
@@ -1320,7 +1320,7 @@ void IconView::sortByColumn( int column, Qt::SortOrder order)
 }
 
 //_____________________________________________________________________
-void IconView::_findFromDialog( void )
+void IconView::_findFromDialog()
 {
     Debug::Throw( "IconView::_findFromDialog.\n" );
 
@@ -1359,14 +1359,14 @@ void IconView::_findFromDialog( void )
 }
 
 //_____________________________________________________________________
-void IconView::_updateHoverIndex( void )
+void IconView::_updateHoverIndex()
 {
     Debug::Throw( "IconView::_updateHoverIndex.\n" );
     _setHoverIndex(  indexAt( viewport()->mapFromGlobal( QCursor::pos() ) ) );
 }
 
 //_____________________________________________________________________
-void IconView::_updateConfiguration( void )
+void IconView::_updateConfiguration()
 {
     Debug::Throw( "IconView::_updateConfiguration.\n" );
 
@@ -1388,7 +1388,7 @@ void IconView::_updateConfiguration( void )
 }
 
 //__________________________________________________________
-void IconView::_installActions( void )
+void IconView::_installActions()
 {
     Debug::Throw( "IconView::_installActions.\n" );
 
@@ -1426,11 +1426,11 @@ void IconView::_installActions( void )
 
 
 //_________________________________________________________
-QModelIndex IconView::_firstIndex( void ) const
+QModelIndex IconView::_firstIndex() const
 { return items_.empty() ? QModelIndex():model()->index( 0, 0 ); }
 
 //_________________________________________________________
-QModelIndex IconView::_lastIndex( void ) const
+QModelIndex IconView::_lastIndex() const
 { return items_.empty() ? QModelIndex():model()->index( 0, items_.size()-1 ); }
 
 //_________________________________________________________
@@ -1456,7 +1456,7 @@ IconView::Container::Container( QWidget* parent, IconView* iconView ):
 { _initialize(); }
 
 //_________________________________________________________
-void IconView::Container::_initialize( void )
+void IconView::Container::_initialize()
 {
     Debug::Throw( "IconView::Container::_initialize.\n" );
     iconView_->setParent( this );

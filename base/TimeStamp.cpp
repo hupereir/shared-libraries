@@ -27,7 +27,7 @@
 const QString TimeStamp::TimeStampUnknown( QObject::tr("Unknown") );
 
 //________________________________________________________________________________
-TimeStamp TimeStamp::now( void )
+TimeStamp TimeStamp::now()
 {
     TimeStamp out;
     out.time_ = time(0);

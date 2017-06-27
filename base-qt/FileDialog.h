@@ -77,10 +77,10 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     }
 
     //* get file
-    File getFile( void );
+    File getFile();
 
     //* get list of files
-    File::List getFiles( void );
+    File::List getFiles();
 
     //* reference to statically scoped working directory
     const File& workingDirectory() const
@@ -92,28 +92,28 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     static File& _workingDirectory();
 
     //* accept mode
-    QFileDialog::AcceptMode _acceptMode( void ) const
+    QFileDialog::AcceptMode _acceptMode() const
     { return acceptMode_; }
 
     //* file mode
-    QFileDialog::FileMode _fileMode( void ) const
+    QFileDialog::FileMode _fileMode() const
     { return fileMode_; }
 
     //* caption
-    const QString& _caption( void ) const
+    const QString& _caption() const
     { return caption_; }
 
     //* selected file
     /** it is used as a starting selection when file dialog is opened */
-    const File& _selectedFile( void ) const
+    const File& _selectedFile() const
     { return selectedFile_; }
 
     //* filter
-    const QString& _filter( void ) const
+    const QString& _filter() const
     { return filter_; }
 
     //* options
-    QFileDialog::Options _options( void ) const
+    QFileDialog::Options _options() const
     { return options_; }
 
     private:

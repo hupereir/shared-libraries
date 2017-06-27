@@ -25,13 +25,13 @@
 #include "PixmapCache.h"
 
 //! customized Icon factory to provide better looking disabled icons
-class PixmapEngine: private Base::Counter<PixmapEngine>
+class PixmapEngine final: private Base::Counter<PixmapEngine>
 {
 
     public:
 
     //! retrieve singleton
-    static PixmapEngine& get( void );
+    static PixmapEngine& get();
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
@@ -39,11 +39,11 @@ class PixmapEngine: private Base::Counter<PixmapEngine>
     { return get()._get( file, fromCache ); }
 
     //! return cache
-    static const Base::PixmapCache& cache( void )
+    static const Base::PixmapCache& cache()
     { return get().cache_; }
 
     //! reload all icons set in cache from new path list
-    bool reload( void );
+    bool reload();
 
     private:
 
@@ -51,7 +51,7 @@ class PixmapEngine: private Base::Counter<PixmapEngine>
     //@{
 
     //! constructor
-    explicit PixmapEngine( void );
+    explicit PixmapEngine();
 
     //! create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */

@@ -49,7 +49,7 @@ void WidgetMonitor::setOptionName( const QString& name )
 }
 
 //_________________________________________________________
-QSize WidgetMonitor::sizeHint( void ) const
+QSize WidgetMonitor::sizeHint() const
 {
 
     // resize
@@ -73,7 +73,7 @@ QSize WidgetMonitor::sizeHint( void ) const
 }
 
 //_______________________________________________________
-QPoint WidgetMonitor::position( void ) const
+QPoint WidgetMonitor::position() const
 {
 
     // resize
@@ -130,7 +130,7 @@ void WidgetMonitor::timerEvent( QTimerEvent* event )
 }
 
 //____________________________________________________________
-void WidgetMonitor::_saveWindowSize( void ) const
+void WidgetMonitor::_saveWindowSize() const
 {
 
     QSize size( static_cast<QWidget*>(parent())->size() );
@@ -146,7 +146,7 @@ void WidgetMonitor::_saveWindowSize( void ) const
 }
 
 //____________________________________________________________
-void WidgetMonitor::_saveWindowPosition( void ) const
+void WidgetMonitor::_saveWindowPosition() const
 {
 
     QPoint position( static_cast<QWidget*>(parent())->pos() );

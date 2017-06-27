@@ -55,16 +55,16 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     explicit DockPanel( QWidget* parent );
 
     //* destructor (needed because of unique_ptr member
-    ~DockPanel( void ) override;
+    ~DockPanel() override;
 
     //*@name accessors
     //@{
 
     //* get panel (to add contents)
-    QWidget& panel( void );
+    QWidget& panel();
 
     //* true if detached
-    bool isDetached( void ) const;
+    bool isDetached() const;
 
     //@}
 
@@ -85,15 +85,15 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     void attached( bool state );
 
     //* emitted when panel is attached
-    void attached( void );
+    void attached();
 
     //* emitted when panel is detached
-    void detached( void );
+    void detached();
 
     protected Q_SLOTS:
 
     //* toggle dock
-    void _toggleDock( void );
+    void _toggleDock();
 
     private:
 

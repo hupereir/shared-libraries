@@ -36,14 +36,14 @@ namespace Server
     }
 
     //____________________________________________________
-    QString ApplicationId::userName( void ) const
+    QString ApplicationId::userName() const
     {
         int position( user_.indexOf( "@" ) );
         return (position < 0 ) ? user_ : user_.left(position);
     }
 
     //______________________________________________________
-    QString ApplicationId::display( void ) const
+    QString ApplicationId::display() const
     {
         int position( user_.indexOf( "@" ) );
         return (position < 0 ) ? "" : user_.mid(position+1 );

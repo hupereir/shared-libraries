@@ -42,7 +42,7 @@ class InformationDialog: public DetailsDialog
     protected:
 
     //* label
-    QLabel& _label( void ) const
+    QLabel& _label() const
     { return *label_; }
 
     private:

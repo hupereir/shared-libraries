@@ -44,7 +44,7 @@ namespace SpellCheck {
         //@{
 
         //* spell interface
-        SpellInterface& interface( void )
+        SpellInterface& interface()
         { return interface_; }
 
         //@}
@@ -60,16 +60,16 @@ namespace SpellCheck {
         private Q_SLOTS:
 
         //* load suggestions before showing the menu
-        void _aboutToShow( void );
+        void _aboutToShow();
 
         //* select word from action
         void _select( QAction* );
 
         //* add word to dictionary
-        void _addWord( void );
+        void _addWord();
 
         //* ignore word
-        void _ignoreWord( void )
+        void _ignoreWord()
         {
             if( word_.isEmpty() ) return;
             emit ignoreWord( word_ );

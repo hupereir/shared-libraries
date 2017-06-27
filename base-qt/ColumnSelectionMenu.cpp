@@ -37,7 +37,7 @@ ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, co
 }
 
 //_____________________________________________________
-void ColumnSelectionMenu::_updateActions( void )
+void ColumnSelectionMenu::_updateActions()
 {
 
     Debug::Throw( "ColumnSelectionMenu::_updateActions.\n" );
@@ -117,7 +117,7 @@ void ColumnSelectionMenu::_updateActions( void )
 }
 
 //______________________________________________________________________________
-void ColumnSelectionMenu::_hideCurrentColumn( void )
+void ColumnSelectionMenu::_hideCurrentColumn()
 {
     Debug::Throw( "ColumnSelectionMenu::_hideCurrentColumn.\n" );
 

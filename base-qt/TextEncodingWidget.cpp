@@ -88,7 +88,7 @@ class TextEncodingModel: public ListModel<TextEncodingString>
             {}
 
         //! destructor
-        virtual ~SortFTor( void )
+        virtual ~SortFTor()
         {}
 
         //! prediction
@@ -159,7 +159,7 @@ void TextEncodingWidget::setEncoding( const QByteArray& constValue )
 }
 
 //______________________________________________________________________
-void TextEncodingWidget::_loadTextCodecs( void )
+void TextEncodingWidget::_loadTextCodecs()
 {
 
     // use MIBs to get rid of aliases
@@ -175,7 +175,7 @@ void TextEncodingWidget::_loadTextCodecs( void )
 }
 
 //______________________________________________________________________
-void TextEncodingWidget::_updateSelection( void )
+void TextEncodingWidget::_updateSelection()
 {
 
     // do nothing if locked

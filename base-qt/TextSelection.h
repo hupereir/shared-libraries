@@ -54,7 +54,7 @@ class TextSelection
     {}
 
     //* text
-    const QString& text( void ) const
+    const QString& text() const
     { return text_; }
 
     //* test
@@ -62,7 +62,7 @@ class TextSelection
     { text_ = text; }
 
     //* replace text
-    const QString& replaceText( void ) const
+    const QString& replaceText() const
     { return replaceText_; }
 
     //* replace text
@@ -70,7 +70,7 @@ class TextSelection
     { replaceText_ = text; }
 
     //* flags
-    Flags flags( void ) const
+    Flags flags() const
     { return flags_; }
 
     //* flags

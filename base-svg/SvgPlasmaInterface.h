@@ -55,19 +55,19 @@ namespace Svg
     };
 
     //* validity
-    bool isValid( void ) const
+    bool isValid() const
     { return valid_; }
 
     //* filename
-    QString fileName( void ) const
+    QString fileName() const
     { return filename_; }
 
     //* theme palette
-    bool hasThemePalette( void ) const
+    bool hasThemePalette() const
     { return !themePaletteFilename_.isEmpty() && themePaletteFilename_.exists(); }
 
     //* theme palette
-    QPalette themePalette( void ) const;
+    QPalette themePalette() const;
 
     //@}}
 
@@ -79,11 +79,11 @@ namespace Svg
 
     //* get default theme from configuration file
     /** returns true if changed */
-    bool loadTheme( void );
+    bool loadTheme();
 
     //* load svg filename
     /** returns true if changed */
-    bool loadFile( void );
+    bool loadFile();
 
     //@}
 

@@ -23,21 +23,21 @@
 const QString FileRecord::MimeType( "internal/file-record-list" );
 
 //_______________________________________________
-FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap( void )
+FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap()
 {
     static FileRecord::PropertyId::IdMap idMap;
     return idMap;
 }
 
 //_______________________________________________
-FileRecord::PropertyId::NameMap& FileRecord::PropertyId::_nameMap( void )
+FileRecord::PropertyId::NameMap& FileRecord::PropertyId::_nameMap()
 {
     static FileRecord::PropertyId::NameMap nameMap;
     return nameMap;
 }
 
 //_______________________________________________
-FileRecord::PropertyId::Id& FileRecord::PropertyId::_counter( void )
+FileRecord::PropertyId::Id& FileRecord::PropertyId::_counter()
 {
     static Id counter(0);
     return counter;

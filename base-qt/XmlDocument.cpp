@@ -23,7 +23,7 @@
 #include "XmlError.h"
 
 //___________________________________________________________________
-XmlDocument::XmlDocument( void ):
+XmlDocument::XmlDocument():
     Counter( "XmlDocument" ),
     topNodeTagName_( "Resources" )
 {}

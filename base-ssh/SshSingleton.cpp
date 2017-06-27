@@ -33,14 +33,14 @@ namespace Ssh
 {
 
     //_______________________________________________
-    Singleton& Singleton::get( void )
+    Singleton& Singleton::get()
     {
         static Singleton singleton;
         return singleton;
     }
 
     //_______________________________________________
-    Singleton::Singleton( void ):
+    Singleton::Singleton():
         Counter( "Ssh::Singleton" )
     {
 
@@ -56,7 +56,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    Singleton::~Singleton( void )
+    Singleton::~Singleton()
     {
         #if HAVE_SSH
         if( initialized_ ) libssh2_exit();

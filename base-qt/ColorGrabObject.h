@@ -44,7 +44,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
 
     protected Q_SLOTS:
 
-    void _grabColor( void );
+    void _grabColor();
 
     private:
 
@@ -52,7 +52,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
     void _selectColorFromMouseEvent( QMouseEvent* );
 
     //* clear capture
-    void _clearCapture( void );
+    void _clearCapture();
 
     //* window grabber
     QDialog* captureWidget_ = nullptr;

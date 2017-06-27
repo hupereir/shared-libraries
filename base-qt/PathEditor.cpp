@@ -107,7 +107,7 @@ namespace Private
     }
 
     //____________________________________________________________________________
-    void PathEditorItem::updateMinimumSize( void )
+    void PathEditorItem::updateMinimumSize()
     {
         Debug::Throw( "PathEditorItem::updateMinimumSize.\n" );
         QFont adjustedFont(font());
@@ -267,7 +267,7 @@ namespace Private
     }
 
     //____________________________________________________________________________
-    void PathEditorMenuButton::updateMinimumSize( void )
+    void PathEditorMenuButton::updateMinimumSize()
     {
         Debug::Throw( "PathEditorMenuButton::updateMinimumSize.\n" );
         QFont adjustedFont(font());
@@ -405,13 +405,13 @@ PathEditor::PathEditor( QWidget* parent ):
     setCurrentWidget( browserContainer_ );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
 
 //____________________________________________________________________________
-File PathEditor::path( void ) const
+File PathEditor::path() const
 {
     Debug::Throw( "PathEditor::path.\n" );
     QString path( editor_->currentText() );
@@ -426,7 +426,7 @@ File PathEditor::path( void ) const
 }
 
 //____________________________________________________________________________
-bool PathEditor::hasParent( void ) const
+bool PathEditor::hasParent() const
 {
     if( items_.isEmpty() ) return false;
     else if( items_.back()->isSelectable() ) return items_.size() >= 2;
@@ -434,15 +434,15 @@ bool PathEditor::hasParent( void ) const
 }
 
 //____________________________________________________________________________
-bool PathEditor::hasPrevious( void ) const
+bool PathEditor::hasPrevious() const
 { return history_->previousAvailable(); }
 
 //____________________________________________________________________________
-bool PathEditor::hasNext( void ) const
+bool PathEditor::hasNext() const
 { return history_->nextAvailable(); }
 
 //____________________________________________________________________________
-QSize PathEditor::minimumSizeHint( void ) const
+QSize PathEditor::minimumSizeHint() const
 {
     int minWidth( 0 );
 
@@ -683,7 +683,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 }
 
 //____________________________________________________________________________
-void PathEditor::selectParent( void )
+void PathEditor::selectParent()
 {
     if( !hasParent() ) return;
     const File path( (items_.back()->isSelectable() ? items_[items_.size()-2]:items_[items_.size()-3])->path() );
@@ -692,7 +692,7 @@ void PathEditor::selectParent( void )
 }
 
 //____________________________________________________________________________
-void PathEditor::selectPrevious( void )
+void PathEditor::selectPrevious()
 {
     Debug::Throw( "PathEditor::selectPrevious.\n" );
     if( !hasPrevious() ) return;
@@ -702,7 +702,7 @@ void PathEditor::selectPrevious( void )
 }
 
 //____________________________________________________________________________
-void PathEditor::selectNext( void )
+void PathEditor::selectNext()
 {
     Debug::Throw( "PathEditor::selectNext.\n" );
     if( !hasNext() ) return;
@@ -732,7 +732,7 @@ void PathEditor::resizeEvent( QResizeEvent* event )
 }
 
 //____________________________________________________________________________
-void PathEditor::_updatePrefix( void )
+void PathEditor::_updatePrefix()
 {
 
     Debug::Throw( "PathEditor::_updatePrefix.\n" );
@@ -782,7 +782,7 @@ void PathEditor::_setUseTruncation( bool value )
 }
 
 //____________________________________________________________________________
-void PathEditor::_returnPressed( void )
+void PathEditor::_returnPressed()
 {
     const File path( this->path() );
     setPath( path );
@@ -790,7 +790,7 @@ void PathEditor::_returnPressed( void )
 }
 
 //____________________________________________________________________________
-void PathEditor::_menuButtonClicked( void )
+void PathEditor::_menuButtonClicked()
 {
 
     // get list of hidden buttons
@@ -873,7 +873,7 @@ void PathEditor::_buttonClicked( QAbstractButton* button )
 }
 
 //____________________________________________________________________________
-void PathEditor::_updateButtonVisibility( void )
+void PathEditor::_updateButtonVisibility()
 {
 
     Debug::Throw() << "PathEditor::_updateButtonVisibility - path: " << path() << endl;
@@ -960,7 +960,7 @@ void PathEditor::_updateButtonVisibility( void )
 }
 
 //____________________________________________________________________________
-void PathEditor::_updatePathMenus( void )
+void PathEditor::_updatePathMenus()
 {
     Debug::Throw( "PathEditor::_updatePathMenus.\n" );
 
@@ -987,7 +987,7 @@ void PathEditor::_updatePathMenus( void )
 }
 
 //____________________________________________________________________________
-void PathEditor::_updateConfiguration( void )
+void PathEditor::_updateConfiguration()
 {
     Debug::Throw( "PathEditor::_updateConfiguration.\n" );
 

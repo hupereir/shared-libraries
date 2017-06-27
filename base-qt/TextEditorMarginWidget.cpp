@@ -40,15 +40,15 @@ TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):
 }
 
 //________________________________________________________________
-QColor TextEditorMarginWidget::backgroundColor( void ) const
+QColor TextEditorMarginWidget::backgroundColor() const
 { return palette().color( QPalette::AlternateBase ); }
 
 //________________________________________________________________
-QColor TextEditorMarginWidget::foregroundColor( void ) const
+QColor TextEditorMarginWidget::foregroundColor() const
 { return Base::Color( palette().color( QPalette::Text ) ).merge( palette().color( QPalette::AlternateBase ), 0.6 ); }
 
 //________________________________________________________________
-void TextEditorMarginWidget::setDirty( void )
+void TextEditorMarginWidget::setDirty()
 {
     if( !dirty_ )
     {

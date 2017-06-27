@@ -39,7 +39,7 @@ BoxSelection::BoxSelection( TextEditor* parent ):
 }
 
 //________________________________________________________________________
-bool BoxSelection::empty( void ) const
+bool BoxSelection::empty() const
 {
     return
         !enabled_ ||
@@ -71,7 +71,7 @@ void BoxSelection::synchronize( const BoxSelection& box )
 
 
 //________________________________________________________________________
-void BoxSelection::updateConfiguration( void )
+void BoxSelection::updateConfiguration()
 {
 
     Debug::Throw( "BoxSelection::updateConfiguration.\n" );
@@ -90,7 +90,7 @@ void BoxSelection::updateConfiguration( void )
 }
 
 //________________________________________________________________________
-bool BoxSelection::checkEnabled( void )
+bool BoxSelection::checkEnabled()
 {
 
     Debug::Throw( debugLevel, "BoxSelection::checkEnabled.\n" );
@@ -172,7 +172,7 @@ bool BoxSelection::finish( QPoint point )
 }
 
 //________________________________________________________________________
-bool BoxSelection::clear( void )
+bool BoxSelection::clear()
 {
     Debug::Throw( debugLevel, "BoxSelection::clear.\n" );
     if( state_ != State::Finished ) return false;
@@ -193,7 +193,7 @@ bool BoxSelection::clear( void )
 
 
 //________________________________________________________________________
-QString BoxSelection::toString( void ) const
+QString BoxSelection::toString() const
 {
     Debug::Throw( debugLevel, "BoxSelection::toString.\n" );
 
@@ -331,7 +331,7 @@ bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
 }
 
 //________________________________________________________________________
-bool BoxSelection::removeSelectedText( void ) const
+bool BoxSelection::removeSelectedText() const
 {
     Debug::Throw( debugLevel, "BoxSelection::removeSelectedText.\n" );
 
@@ -366,7 +366,7 @@ bool BoxSelection::removeSelectedText( void ) const
 }
 
 //________________________________________________________________________
-bool BoxSelection::toUpper( void )
+bool BoxSelection::toUpper()
 {
     Debug::Throw( debugLevel, "BoxSelection::toUpper.\n" );
 
@@ -404,7 +404,7 @@ bool BoxSelection::toUpper( void )
 }
 
 //________________________________________________________________________
-bool BoxSelection::toLower( void )
+bool BoxSelection::toLower()
 {
     Debug::Throw( debugLevel, "BoxSelection::toLower.\n" );
 
@@ -486,7 +486,7 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
 }
 
 //________________________________________________________________________
-void BoxSelection::_updateRect( void )
+void BoxSelection::_updateRect()
 {
     Debug::Throw( debugLevel, "BoxSelection::_updateRect.\n" );
     int xMin( qMin( begin_.x(), end_.x() ) );
@@ -511,7 +511,7 @@ void BoxSelection::_updateRect( void )
 }
 
 //________________________________________________________________________
-void BoxSelection::_store( void )
+void BoxSelection::_store()
 {
     Debug::Throw( debugLevel, "BoxSelection::_store.\n" );
 

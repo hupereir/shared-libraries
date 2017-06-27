@@ -49,39 +49,39 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //@{
 
     //* TextSelection object from this selection, or clipboard
-    TextSelection selection( void ) const;
+    TextSelection selection() const;
 
     //* true if given index is visible
     bool isVisible( const QModelIndex& index ) const;
 
     //* number of visible columns
-    int visibleColumnCount( void ) const;
+    int visibleColumnCount() const;
 
     //* option name
-    bool hasOptionName( void ) const
+    bool hasOptionName() const
     { return !maskOptionName().isEmpty(); }
 
     //* option name
-    const QString& maskOptionName( void ) const
+    const QString& maskOptionName() const
     { return maskOptionName_; }
 
     //* sort column option name
-    const QString& sortColumnOptionName( void ) const
+    const QString& sortColumnOptionName() const
     { return sortColumnOptionName_; }
 
     //* sort order option name
-    const QString& sortOrderOptionName( void ) const
+    const QString& sortOrderOptionName() const
     { return sortOrderOptionName_; }
 
     //* sort order option name
-    const QString& showHeaderOptionName( void ) const
+    const QString& showHeaderOptionName() const
     { return showHeaderOptionName_; }
 
     //* get mask
-    int mask( void ) const;
+    int mask() const;
 
     //* item margin
-    int itemMargin( void ) const
+    int itemMargin() const
     { return itemMargin_; }
 
     //@}
@@ -128,7 +128,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     { iconSizeFromOptions_ = value; }
 
     //* force alternating row color
-    void forceAlternatingRowColors( void )
+    void forceAlternatingRowColors()
     {
         forceAlternatingRowColors_ = true;
         setAlternatingRowColors( true );
@@ -156,10 +156,10 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     }
 
     //* store scrollbar position
-    void storeScrollBarPosition( void );
+    void storeScrollBarPosition();
 
     //* restore scrollbar position
-    void restoreScrollBarPosition( void );
+    void restoreScrollBarPosition();
 
     //* set mask manually
     void setMask( int );
@@ -171,23 +171,23 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //@{
 
     //* select all
-    QAction& selectAllAction( void ) const
+    QAction& selectAllAction() const
     { return *selectAllAction_; }
 
     //* find from dialog
-    QAction& findAction( void ) const
+    QAction& findAction() const
     { return *findAction_; }
 
     //* find selection again
-    QAction& findSelectionAction( void ) const
+    QAction& findSelectionAction() const
     { return *findSelectionAction_; }
 
     //* find again
-    QAction& findAgainAction( void ) const
+    QAction& findAgainAction() const
     { return *findAgainAction_; }
 
     //* show header
-    QAction& showHeaderAction( void ) const
+    QAction& showHeaderAction() const
     { return *showHeaderAction_; }
 
     //@}
@@ -205,13 +205,13 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
         explicit Container( QWidget*, TreeView* );
 
         //*@name accessors
-        TreeView& treeView( void ) const
+        TreeView& treeView() const
         { return *treeView_; }
 
         private:
 
         //* initialize
-        void _initialize( void );
+        void _initialize();
 
         //* contained treeView
         TreeView* treeView_;
@@ -229,10 +229,10 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     void hovered( const QModelIndex& );
 
     //* emitted when selection could not be found
-    void noMatchFound( void );
+    void noMatchFound();
 
     //* emitted when selection could be found
-    void matchFound( void );
+    void matchFound();
 
     #if QT_VERSION < 0x050000
     //* icon size changed signal
@@ -255,47 +255,47 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //@{
 
     //* update column mask from option, if any
-    void updateMask( void );
+    void updateMask();
 
     //* save column mask to option, if any
-    void saveMask( void );
+    void saveMask();
 
     //@}
 
     //* sort order
-    void updateSortOrder( void );
+    void updateSortOrder();
 
     //* sort order
-    void saveSortOrder( void );
+    void saveSortOrder();
 
     //* find next occurence of TextSelection
     void find( TextSelection selection );
 
     //* find current selection forward
-    void findSelectionForward( void )
+    void findSelectionForward()
     { _findForward( selection(), true ); }
 
     //* find current selection backward
-    void findSelectionBackward( void )
+    void findSelectionBackward()
     { _findBackward( selection(), true ); }
 
     //* find last search forward
-    void findAgainForward( void );
+    void findAgainForward();
 
     //* find last search forward
-    void findAgainBackward( void );
+    void findAgainBackward();
 
     //* store selected indexes in model
-    void storeSelectedIndexes( void );
+    void storeSelectedIndexes();
 
     //* restore selected indexes from model
-    void restoreSelectedIndexes( void );
+    void restoreSelectedIndexes();
 
     //* store expanded indexes in model
-    void storeExpandedIndexes( void );
+    void storeExpandedIndexes();
 
     //* restore expanded indexes from model
-    void restoreExpandedIndexes( void );
+    void restoreExpandedIndexes();
 
     protected:
 
@@ -312,7 +312,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     void paintEvent( QPaintEvent* ) override;
 
     //* find dialog
-    void _createFindDialog( void );
+    void _createFindDialog();
 
     //* find widget
     void _createFindWidget( bool compact );
@@ -335,7 +335,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     void _raiseHeaderMenu( const QPoint& );
 
     //* find text from dialog
-    void _findFromDialog( void );
+    void _findFromDialog();
 
     //* hover index
     void _indexEntered( const QModelIndex& );
@@ -343,12 +343,12 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     private Q_SLOTS:
 
     //* update alternate item color
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 
     //* install actions
-    void _installActions( void );
+    void _installActions();
 
     //* return first index
     QModelIndex _firstIndex() const;

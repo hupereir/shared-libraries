@@ -46,7 +46,7 @@ class WinUtilPrivate
     public:
 
     //* constructor
-    explicit WinUtilPrivate( void )
+    explicit WinUtilPrivate()
     {
         #if defined(Q_OS_WIN)
         // define function pointer and try resolve from library
@@ -57,7 +57,7 @@ class WinUtilPrivate
     }
 
     //* destructor
-    virtual ~WinUtilPrivate( void )
+    virtual ~WinUtilPrivate()
     {
 
         #if defined(Q_OS_WIN)
@@ -104,7 +104,7 @@ WinUtil::WinUtil( QWidget* target ):
 {}
 
 //_______________________________________
-WinUtil::~WinUtil( void ) = default;
+WinUtil::~WinUtil() = default;
 
 //_______________________________________
 void WinUtil::update( const QPixmap& pixmap, double opacity ) const

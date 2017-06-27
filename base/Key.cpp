@@ -22,7 +22,7 @@
 namespace Base
 {
     //______________________________________________
-    Key::Type& Key::_counter( void )
+    Key::Type& Key::_counter()
     {
         static Type counter(0);
         return counter;

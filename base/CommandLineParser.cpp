@@ -29,7 +29,7 @@ const QString CommandLineParser::serverGroupName( QObject::tr( "Server Options:"
 const QString CommandLineParser::qtGroupName( QObject::tr( "Qt Options:" ) );
 
 //________________________________________________________
-CommandLineParser::CommandLineParser( void ):
+CommandLineParser::CommandLineParser():
     Counter( "CommandLineParser" )
 {
     // insert default groups
@@ -40,7 +40,7 @@ CommandLineParser::CommandLineParser( void ):
 }
 
 //________________________________________________________
-void CommandLineParser::usage( void ) const
+void CommandLineParser::usage() const
 {
 
     Debug::Throw( "CommandLineParser::usage.\n" );
@@ -106,7 +106,7 @@ void CommandLineParser::usage( void ) const
 }
 
 //_______________________________________________________
-CommandLineArguments CommandLineParser::arguments( void ) const
+CommandLineArguments CommandLineParser::arguments() const
 {
     Debug::Throw( "CommandLineParser::arguments.\n" );
 
@@ -353,7 +353,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 }
 
 //________________________________________________
-void CommandLineParser::clear( void )
+void CommandLineParser::clear()
 {
 
     Debug::Throw( "CommandLineParser::clear.\n" );
@@ -387,7 +387,7 @@ bool CommandLineParser::_isTag( const QString& tag ) const
 { return (!tag.isEmpty()) && tag.left(1) == "-"; }
 
 //_______________________________________________________
-CommandLineParser::Group::FlagMap CommandLineParser::_allFlags( void ) const
+CommandLineParser::Group::FlagMap CommandLineParser::_allFlags() const
 {
     Group::FlagMap out;
     for( auto&& iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
@@ -397,7 +397,7 @@ CommandLineParser::Group::FlagMap CommandLineParser::_allFlags( void ) const
 }
 
 //_______________________________________________________
-CommandLineParser::Group::OptionMap CommandLineParser::_allOptions( void ) const
+CommandLineParser::Group::OptionMap CommandLineParser::_allOptions() const
 {
     Group::OptionMap out;
     for( auto&& iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
@@ -463,7 +463,7 @@ CommandLineParser::Group::OptionMap::const_iterator CommandLineParser::_findTag(
 }
 
 //_______________________________________________________
-void CommandLineParser::Group::clear( void )
+void CommandLineParser::Group::clear()
 {
     // clear flags
     for( auto&& iter = flags_.begin(); iter != flags_.end(); ++iter )

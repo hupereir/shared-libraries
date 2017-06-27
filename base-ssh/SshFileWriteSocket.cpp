@@ -53,7 +53,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    void FileWriteSocket::sendEof( void )
+    void FileWriteSocket::sendEof()
     {
         _addCommand( SendEof );
         _addCommand( WaitForEof );
@@ -115,7 +115,7 @@ namespace Ssh
 
 
     //_______________________________________________
-    bool FileWriteSocket::_processCommands( void )
+    bool FileWriteSocket::_processCommands()
     {
 
         // check empty commands list
@@ -161,7 +161,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool FileWriteSocket::_tryConnect( void )
+    bool FileWriteSocket::_tryConnect()
     {
 
         if( isConnected() ) return true;
@@ -203,7 +203,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool FileWriteSocket::_trySendEof( void )
+    bool FileWriteSocket::_trySendEof()
     {
 
         Debug::Throw( "FileWriteSocket::_trySendEof.\n" );
@@ -240,7 +240,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool FileWriteSocket::_tryWaitEof( void )
+    bool FileWriteSocket::_tryWaitEof()
     {
 
         Debug::Throw( "FileWriteSocket::_tryWaitEof.\n" );
@@ -276,7 +276,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool FileWriteSocket::_tryClose( void )
+    bool FileWriteSocket::_tryClose()
     {
 
         Debug::Throw( "FileWriteSocket::_tryClose.\n" );

@@ -75,7 +75,7 @@ TreeView::TreeView( QWidget* parent ):
     connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -147,7 +147,7 @@ void TreeView::setFindEnabled( bool value )
 }
 
 //______________________________________________________________________
-TextSelection TreeView::selection( void ) const
+TextSelection TreeView::selection() const
 {
 
     Debug::Throw( "TreeView::selection.\n" );
@@ -201,7 +201,7 @@ bool TreeView::isVisible( const QModelIndex& index ) const
 }
 
 //_______________________________________________
-int TreeView::visibleColumnCount( void ) const
+int TreeView::visibleColumnCount() const
 {
     int out(0);
     for( int index=0; model() && index < model()->columnCount(); index++ )
@@ -277,7 +277,7 @@ bool TreeView::setOptionName( const QString& value )
 }
 
 //_______________________________________________
-int TreeView::mask( void ) const
+int TreeView::mask() const
 {
     Debug::Throw( "TreeView::mask.\n" );
     int mask = 0;
@@ -308,14 +308,14 @@ void TreeView::setMask( int mask )
 }
 
 //______________________________________________________
-void TreeView::storeScrollBarPosition( void )
+void TreeView::storeScrollBarPosition()
 {
     if( verticalScrollBar() ) vertical_ = verticalScrollBar()->value();
     if( horizontalScrollBar() ) horizontal_ = horizontalScrollBar()->value();
 }
 
 //______________________________________________________
-void TreeView::restoreScrollBarPosition( void )
+void TreeView::restoreScrollBarPosition()
 {
     if( verticalScrollBar() ) verticalScrollBar()->setValue( vertical_ );
     if( horizontalScrollBar() ) horizontalScrollBar()->setValue( horizontal_ );
@@ -342,7 +342,7 @@ void TreeView::toggleShowHeader( bool value )
 }
 
 //_______________________________________________
-void TreeView::updateMask( void )
+void TreeView::updateMask()
 {
 
     Debug::Throw( "TreeView::updateMask.\n" );
@@ -359,7 +359,7 @@ void TreeView::updateMask( void )
 }
 
 //_______________________________________________
-void TreeView::saveMask( void )
+void TreeView::saveMask()
 {
 
     Debug::Throw( "TreeView::saveMask.\n" );
@@ -369,7 +369,7 @@ void TreeView::saveMask( void )
 }
 
 //_____________________________________________________________________
-void TreeView::updateSortOrder( void )
+void TreeView::updateSortOrder()
 {
 
     Debug::Throw( "TreeView::updateSortOrder.\n" );
@@ -388,7 +388,7 @@ void TreeView::updateSortOrder( void )
 }
 
 //_____________________________________________________________________
-void TreeView::saveSortOrder( void )
+void TreeView::saveSortOrder()
 {
 
     Debug::Throw( "TreeView::saveSortOrder.\n" );
@@ -410,11 +410,11 @@ void TreeView::find( TextSelection selection )
 }
 
 //______________________________________________________________________
-void TreeView::findAgainForward( void )
+void TreeView::findAgainForward()
 { _findForward( TextEditor::lastSelection(), true ); }
 
 //______________________________________________________________________
-void TreeView::findAgainBackward( void )
+void TreeView::findAgainBackward()
 { _findBackward( TextEditor::lastSelection(), true ); }
 
 //__________________________________________________________
@@ -439,7 +439,7 @@ void TreeView::_setItemMargin( int value )
 }
 
 //__________________________________________________________
-void TreeView::storeSelectedIndexes( void )
+void TreeView::storeSelectedIndexes()
 {
     if( selectionModel() )
     {
@@ -449,7 +449,7 @@ void TreeView::storeSelectedIndexes( void )
 }
 
 //__________________________________________________________
-void TreeView::restoreSelectedIndexes( void )
+void TreeView::restoreSelectedIndexes()
 {
 
     if( selectionModel() )
@@ -470,7 +470,7 @@ void TreeView::restoreSelectedIndexes( void )
 
 
 //__________________________________________________________
-void TreeView::storeExpandedIndexes( void )
+void TreeView::storeExpandedIndexes()
 {
 
     // clear
@@ -485,7 +485,7 @@ void TreeView::storeExpandedIndexes( void )
 }
 
 //________________________________________
-void TreeView::restoreExpandedIndexes( void )
+void TreeView::restoreExpandedIndexes()
 {
 
     auto indexes( model_->expandedIndexes() );
@@ -583,7 +583,7 @@ void TreeView::paintEvent( QPaintEvent* event )
 }
 
 //______________________________________________________________________
-void TreeView::_createFindDialog( void )
+void TreeView::_createFindDialog()
 {
 
     Debug::Throw( "TreeView::_createFindDialog.\n" );
@@ -842,7 +842,7 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
 }
 
 //__________________________________________________________
-void TreeView::_installActions( void )
+void TreeView::_installActions()
 {
     Debug::Throw( "TreeView::_installActions.\n" );
 
@@ -912,7 +912,7 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
 }
 
 //_____________________________________________________________________
-void TreeView::_findFromDialog( void )
+void TreeView::_findFromDialog()
 {
     Debug::Throw( "TreeView::_findFromDialog.\n" );
 
@@ -966,7 +966,7 @@ void TreeView::_setHoverIndex( const QModelIndex& index )
 }
 
 //_____________________________________________________________________
-void TreeView::_updateConfiguration( void )
+void TreeView::_updateConfiguration()
 {
     Debug::Throw( "TreeView::_updateConfiguration.\n" );
 
@@ -1002,11 +1002,11 @@ void TreeView::_updateConfiguration( void )
 }
 
 //_________________________________________________________
-QModelIndex TreeView::_firstIndex( void ) const
+QModelIndex TreeView::_firstIndex() const
 { return model()->index( 0, 0 ); }
 
 //_________________________________________________________
-QModelIndex TreeView::_lastIndex( void ) const
+QModelIndex TreeView::_lastIndex() const
 {
 
     if( !model()->rowCount() ) return QModelIndex();
@@ -1109,7 +1109,7 @@ TreeView::Container::Container( QWidget* parent, TreeView* treeView ):
 { _initialize(); }
 
 //_________________________________________________________
-void TreeView::Container::_initialize( void )
+void TreeView::Container::_initialize()
 {
     Debug::Throw( "TreeView::Container::_initialize.\n" );
     treeView_->setParent( this );

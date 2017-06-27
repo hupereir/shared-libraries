@@ -38,7 +38,7 @@ class TextEncodingDialog: public CustomDialog
     //*@name accessors
     //@{
 
-    TextEncodingWidget& encodingWidget( void ) const
+    TextEncodingWidget& encodingWidget() const
     { return *textEncodingWidget_; }
 
     //@}

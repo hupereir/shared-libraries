@@ -40,7 +40,7 @@ void RemoveLineBuffer::append( const QString& value )
 }
 
 //________________________________________________________________
-void RemoveLineBuffer::clear( void )
+void RemoveLineBuffer::clear()
 {
 
   if( buffer_.isEmpty() ) return;

@@ -40,21 +40,21 @@ class PathHistory:  public QObject, private Base::Counter<PathHistory>
     //@{
 
     //* path list
-    const FileRecord::List& pathList( void ) const
+    const FileRecord::List& pathList() const
     { return pathList_; }
 
     //* get previous path list
-    FileRecord::List previousPathList( void ) const;
+    FileRecord::List previousPathList() const;
 
     //* next path list
-    FileRecord::List nextPathList( void ) const;
+    FileRecord::List nextPathList() const;
 
     //* true if previous path in history is valid
-    bool previousAvailable( void ) const
+    bool previousAvailable() const
     { return index_ > 0; }
 
     //* true if next path in history is valid
-    bool nextAvailable( void ) const
+    bool nextAvailable() const
     { return index_ + 1 < pathList_.size(); }
 
     //@}
@@ -80,14 +80,14 @@ class PathHistory:  public QObject, private Base::Counter<PathHistory>
     { add( FileRecord( file ) ); }
 
     //* clear
-    void clear( void );
+    void clear();
 
     //* retrieve next path in history
-    File next( void )
+    File next()
     { return pathList_[++index_].file(); }
 
     //* retrieve previous path in history
-    File previous( void )
+    File previous()
     { return pathList_[--index_].file(); }
 
     //* select path matching index in previous history
@@ -98,7 +98,7 @@ class PathHistory:  public QObject, private Base::Counter<PathHistory>
     Q_SIGNALS:
 
     //* emitted when contents is changed
-    void contentsChanged( void );
+    void contentsChanged();
 
     protected:
 
@@ -106,11 +106,11 @@ class PathHistory:  public QObject, private Base::Counter<PathHistory>
     void _setMaxSize( int );
 
     //* maximum size
-    int _maxSize( void ) const
+    int _maxSize() const
     { return maxSize_; }
 
     //* truncate list if larger than maxSize_
-    FileRecord::List _truncatedList( void ) const
+    FileRecord::List _truncatedList() const
     { return _truncatedList( pathList_ ); }
 
     //* truncate list if larger than maxSize_

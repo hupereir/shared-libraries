@@ -55,7 +55,7 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
 }
 
 //______________________________________
-bool RecentFilesMenu::openLastValidFile( void )
+bool RecentFilesMenu::openLastValidFile()
 {
     Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
     const FileRecord record( fileList_->lastValidFile() );
@@ -71,7 +71,7 @@ void RecentFilesMenu::setCurrentFile( const File& file )
 { if( !file.isEmpty() )  setCurrentFile( fileList_->add( file.expand() ) ); }
 
 //______________________________________
-void RecentFilesMenu::_updateActions( void )
+void RecentFilesMenu::_updateActions()
 {
 
     Debug::Throw( "RecentFilesMenu::_updateActions.\n" );
@@ -96,7 +96,7 @@ void RecentFilesMenu::_updateActions( void )
 }
 
 //______________________________________
-void RecentFilesMenu::_clean( void )
+void RecentFilesMenu::_clean()
 {
     if( !fileList_->check() && !QuestionDialog( this, tr( "Clear list ?" ) ).exec() ) return;
     else if( fileList_->check() && !QuestionDialog( this, tr( "Remove invalid or duplicated files from list ?" ) ).exec() ) return;
@@ -117,7 +117,7 @@ void RecentFilesMenu::_open( QAction* action )
 }
 
 //_______________________________________________
-void RecentFilesMenu::_loadFiles( void )
+void RecentFilesMenu::_loadFiles()
 {
     Debug::Throw( "RecentFilesMenu::_loadFiles.\n" );
 

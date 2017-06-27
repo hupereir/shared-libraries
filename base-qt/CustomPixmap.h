@@ -61,7 +61,7 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     {}
 
     //* constructor
-    explicit CustomPixmap( void ):
+    explicit CustomPixmap():
         Counter( "CustomPixmap" )
     {}
 
@@ -86,7 +86,7 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     CustomPixmap transparent( qreal ) const;
 
     //* returns a desaturated pixmap
-    CustomPixmap desaturated( void ) const;
+    CustomPixmap desaturated() const;
 
     //* colorize
     CustomPixmap colorized( const QColor& ) const;
@@ -108,11 +108,11 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     CustomPixmap highlighted( qreal opacity ) const;
 
     //* return highlighted (active) pixmap, build from the current
-    CustomPixmap active( void ) const
+    CustomPixmap active() const
     { return highlighted( 0.2 ); }
 
     //* device pixel ratio
-    qreal devicePixelRatio( void ) const;
+    qreal devicePixelRatio() const;
 
     //* device pixel ratio
     void setDevicePixelRatio( qreal );

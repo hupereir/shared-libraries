@@ -46,7 +46,7 @@ BaseStatusBar::BaseStatusBar( QWidget* parent ):
 
 
 //___________________________________________
-void BaseStatusBar::addClock( void )
+void BaseStatusBar::addClock()
 {
     Debug::Throw( "BaseStatusBar::addClock.\n" );
     ClockLabel* clock = new ClockLabel( this );

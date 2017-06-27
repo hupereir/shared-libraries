@@ -26,15 +26,15 @@ class InterruptionHandler
     public:
 
     //* singleton
-    static InterruptionHandler& get( void );
+    static InterruptionHandler& get();
 
     //* initialize
-    static void initialize( void );
+    static void initialize();
 
     private:
 
     //* constructor
-    explicit InterruptionHandler( void );
+    explicit InterruptionHandler();
 
     //* interruption handler
     static void _handleInterruption( int );

@@ -70,8 +70,8 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     showStatusBarAction_->setEnabled( false );
     connect( showStatusBarAction_, SIGNAL(toggled(bool)), SLOT(_toggleStatusBar(bool)) );
 
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
-    connect( this, SIGNAL(toolbarConfigurationChanged()), Singleton::get().application(), SIGNAL(configurationChanged()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( this, SIGNAL(toolbarConfigurationChanged()), Base::Singleton::get().application(), SIGNAL(configurationChanged()) );
 
     _updateConfiguration();
 
@@ -145,21 +145,21 @@ void BaseMainWindow::setStatusBar( QStatusBar* widget )
 }
 
 //__________________________________________________
-QSize BaseMainWindow::minimumSizeHint( void ) const
+QSize BaseMainWindow::minimumSizeHint() const
 {
     QSize out( monitor_.sizeHint() );
     return out.isValid() ? out:QMainWindow::minimumSizeHint();
 }
 
 //__________________________________________________
-QSize BaseMainWindow::sizeHint( void ) const
+QSize BaseMainWindow::sizeHint() const
 {
     QSize out( monitor_.sizeHint() );
     return out.isValid() ? out:QMainWindow::sizeHint();
 }
 
 //________________________________________________________________
-void BaseMainWindow::centerOnDesktop( void )
+void BaseMainWindow::centerOnDesktop()
 {
 
     Debug::Throw( "BaseMainWindow::centerOnDesktop.\n" );
@@ -177,7 +177,7 @@ void BaseMainWindow::centerOnWidget( QWidget* parent )
 }
 
 //________________________________________________________________
-QMenu* BaseMainWindow::createPopupMenu( void )
+QMenu* BaseMainWindow::createPopupMenu()
 {
     Debug::Throw( "BaseMainWindow::createPopupMenu.\n" );
     if( !_hasToolBars() )
@@ -237,7 +237,7 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
 }
 
 //________________________________________________________________
-void BaseMainWindow::uniconify( void )
+void BaseMainWindow::uniconify()
 {
 
     Debug::Throw( "BaseMainWindow::uniconify" );
@@ -281,21 +281,21 @@ bool BaseMainWindow::event( QEvent* event )
 }
 
 //________________________________________________________________
-bool BaseMainWindow::_hasMenuBar( void ) const
+bool BaseMainWindow::_hasMenuBar() const
 {
     Debug::Throw( "BaseMainWindow::_hasMenuBar.\n" );
     return (bool) findChild<QMenuBar*>();
 }
 
 //________________________________________________________________
-bool BaseMainWindow::_hasStatusBar( void ) const
+bool BaseMainWindow::_hasStatusBar() const
 {
     Debug::Throw( "BaseMainWindow::_hasStatusBar.\n" );
     return (bool) findChild<QStatusBar*>();
 }
 
 //________________________________________________________________
-bool BaseMainWindow::_hasToolBars( void ) const
+bool BaseMainWindow::_hasToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
     QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
@@ -320,7 +320,7 @@ bool BaseMainWindow::_hasToolBars( void ) const
 }
 
 //________________________________________________________________
-bool BaseMainWindow::_hasLockableToolBars( void ) const
+bool BaseMainWindow::_hasLockableToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasLockableToolBars.\n" );
 
@@ -347,7 +347,7 @@ bool BaseMainWindow::_hasLockableToolBars( void ) const
 }
 
 //________________________________________________________________
-bool BaseMainWindow::_hasPanels( void ) const
+bool BaseMainWindow::_hasPanels() const
 { return (bool) findChild<DockWidget*>(); }
 
 //________________________________________________________________
@@ -391,7 +391,7 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
 }
 
 //____________________________________________________________
-void BaseMainWindow::_updateConfiguration( void )
+void BaseMainWindow::_updateConfiguration()
 {
 
     Debug::Throw( "BaseMainWindow::_updateConfiguration.\n" );

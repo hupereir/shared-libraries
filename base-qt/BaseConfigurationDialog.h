@@ -65,7 +65,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 
     // read
     using OptionWidgetList::read;
-    void read( void )
+    void read()
     {
         OptionWidgetList::read( XmlOptions::get() );
         _checkModified();
@@ -83,22 +83,22 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     Q_SIGNALS:
 
     //* modified
-    void modified( void );
+    void modified();
 
     //* apply button pressed
-    void apply( void );
+    void apply();
 
     //* ok button pressed
-    void ok( void );
+    void ok();
 
     //* canceled button pressed
-    void cancel( void );
+    void cancel();
 
     //* reset button pressed
-    void reset( void );
+    void reset();
 
     //* restore defaults button pressed
-    void restoreDefaults( void );
+    void restoreDefaults();
 
     //* emitted when configuration is changed
     void configurationChanged();
@@ -106,13 +106,13 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     protected Q_SLOTS:
 
     //* show pixmap path dialog
-    void _editPixmapPathList( void );
+    void _editPixmapPathList();
 
     //* show icon path dialog
-    void _editIconTheme( void );
+    void _editIconTheme();
 
     //* check options changed
-    bool _checkModified( void );
+    bool _checkModified();
 
     //* update configuration
     void _apply();
@@ -124,10 +124,10 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     void _cancel();
 
     //* reset
-    void _reset( void );
+    void _reset();
 
     //* restore default options
-    void _restoreDefaults( void );
+    void _restoreDefaults();
 
     protected:
 

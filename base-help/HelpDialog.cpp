@@ -92,7 +92,7 @@ namespace Base
         new QShortcut( QKeySequence::Quit, this, SLOT(close()) );
 
 
-        connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+        connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
         _updateConfiguration();
 
     }
@@ -139,7 +139,7 @@ namespace Base
     }
 
     //_________________________________________________________
-    void HelpDialog::_updateConfiguration( void )
+    void HelpDialog::_updateConfiguration()
     {
         Debug::Throw( "HelpDialog::_updateConfiguration.\n" );
         htmlEditor_->setFont( qApp->font() );

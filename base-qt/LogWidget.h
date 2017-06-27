@@ -40,7 +40,7 @@ class LogWidget: public TextEditor
     void setOptionName( const QString& );
 
     //* verbosity
-    int verbosity( void ) const
+    int verbosity() const
     { return verbosity_; }
 
     //* verbosity
@@ -57,7 +57,7 @@ class LogWidget: public TextEditor
     need to bypass TextEditor::clear,
     which is disabled in read-only mode
     */
-    void clear( void ) override
+    void clear() override
     { BaseEditor::clear(); }
 
     protected Q_SLOTS:
@@ -77,15 +77,15 @@ class LogWidget: public TextEditor
     void wheelEvent( QWheelEvent* ) override;
 
     //* wrap option name
-    QString _wrapOptionName( void )
+    QString _wrapOptionName()
     { return optionName_ + "_WRAP"; }
 
     //* option name
-    bool _hasOptionName( void )
+    bool _hasOptionName()
     { return !optionName_.isEmpty(); }
 
     //* lock
-    bool _locked( void ) const
+    bool _locked() const
     { return locked_; }
 
     private:

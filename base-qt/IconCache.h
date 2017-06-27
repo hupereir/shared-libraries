@@ -37,7 +37,7 @@ namespace Base
         public:
 
         //* constructor
-        explicit IconCacheItem( void ):
+        explicit IconCacheItem():
             Counter( "Base::IconCacheItem" )
         {}
 
@@ -69,11 +69,11 @@ namespace Base
         //@{
 
         //* flags
-        Flags flags( void ) const
+        Flags flags() const
         { return flags_; }
 
         //* files
-        const QStringList& files( void ) const
+        const QStringList& files() const
         { return files_; }
 
         //@}
@@ -86,7 +86,7 @@ namespace Base
         { flags_ = value; }
 
         //* clear files
-        void clearFiles( void )
+        void clearFiles()
         { files_.clear(); }
 
         //* add file
@@ -112,7 +112,7 @@ namespace Base
         public:
 
         //* constructor
-        explicit IconCache( void )
+        explicit IconCache()
         {}
 
         //* pair

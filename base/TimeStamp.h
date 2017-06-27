@@ -36,7 +36,7 @@ class TimeStamp:private Base::Counter<TimeStamp>
     static const QString TimeStampUnknown;
 
     //* empty creator
-    explicit TimeStamp( void ):
+    explicit TimeStamp():
         Counter( "TimeStamp" )
     {}
 
@@ -45,6 +45,9 @@ class TimeStamp:private Base::Counter<TimeStamp>
         Counter( "TimeStamp" )
     { setTime( time ); }
 
+    //* destructor
+    virtual ~TimeStamp() = default;
+    
     //* set time
     bool setTime( time_t time )
     {
@@ -55,7 +58,7 @@ class TimeStamp:private Base::Counter<TimeStamp>
     }
 
     //* convert tm_ into time_
-    bool makeTime( void )
+    bool makeTime()
     {
         valid_ = (time_ = mktime( &tm_ ) ) >= 0;
         return valid_;
@@ -89,7 +92,7 @@ class TimeStamp:private Base::Counter<TimeStamp>
     //@{
 
     //* checks if timestamp is valid or not
-    bool isValid( void ) const
+    bool isValid() const
     { return valid_; }
 
     //* timestamp format enumeration
@@ -137,34 +140,34 @@ class TimeStamp:private Base::Counter<TimeStamp>
     { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : TimeStampUnknown; }
 
     //* returns time in second
-    time_t unixTime( void ) const
+    time_t unixTime() const
     { return time_; }
 
     //* returns TimeStamp corresponding to _now_
-    static TimeStamp now( void );
+    static TimeStamp now();
 
     //* retrieve seconds (between 0 and 59)
-    int seconds( void ) const
+    int seconds() const
     { return (valid_) ? tm_.tm_sec:0; }
 
     //* retrieve minutes (between 0 and 59)
-    int minutes( void ) const
+    int minutes() const
     { return (valid_) ? tm_.tm_min:0; }
 
     //* retrieve hour (between 0 and 23)
-    int hours( void ) const
+    int hours() const
     { return (valid_) ? tm_.tm_hour:0; }
 
     //* retrieves day (between 1 and 31)
-    int day( void ) const
+    int day() const
     { return (valid_) ? tm_.tm_mday:0; }
 
     //* retrieves month (between 1 and 12)
-    int month( void ) const
+    int month() const
     { return (valid_) ? tm_.tm_mon+1:0; }
 
     //* retrieves year (between 1 and 12)
-    int year( void ) const
+    int year() const
     { return (valid_) ? tm_.tm_year+1900:0; }
 
     //* true if same day

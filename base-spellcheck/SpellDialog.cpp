@@ -279,7 +279,7 @@ namespace SpellCheck
     }
 
     //___________________________________________
-    void SpellDialog::_updateDictionaries( void )
+    void SpellDialog::_updateDictionaries()
     {
         Debug::Throw( "SpellCheck::SpellDialog::_updateDictionaries.\n" );
 
@@ -302,7 +302,7 @@ namespace SpellCheck
     }
 
     //___________________________________________
-    void SpellDialog::_updateFilters( void )
+    void SpellDialog::_updateFilters()
     {
         Debug::Throw( "SpellCheck::SpellDialog::_updateFilters.\n" );
 
@@ -380,7 +380,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::_restart( void )
+    void SpellDialog::_restart()
     {
         Debug::Throw( "SpellCheck::SpellDialog::_restart.\n" );
 
@@ -395,7 +395,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::_addWord( void )
+    void SpellDialog::_addWord()
     {
         Debug::Throw( "SpellCheck::SpellDialog::_addWord.\n" );
 
@@ -414,7 +414,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::_checkWord( void )
+    void SpellDialog::_checkWord()
     {
         Debug::Throw( "SpellCheck::SpellDialog::_checkWord.\n" );
 
@@ -424,7 +424,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::_ignore( void )
+    void SpellDialog::_ignore()
     {
 
         Debug::Throw( "SpellCheck::SpellDialog::_ignore.\n" );
@@ -433,7 +433,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::_ignoreAll( void )
+    void SpellDialog::_ignoreAll()
     {
 
         Debug::Throw( "SpellCheck::SpellDialog::_ignoreAll.\n" );
@@ -460,7 +460,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::_replaceAll( void )
+    void SpellDialog::_replaceAll()
     {
 
         Debug::Throw( "SpellCheck::SpellDialog::_replaceAll.\n" );
@@ -472,7 +472,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::_updateButtons( void )
+    void SpellDialog::_updateButtons()
     {
         Debug::Throw( "SpellCheck::SpellDialog::_updateButtons.\n" );
         const bool hasSelection( list_->selectionModel()->hasSelection() );
@@ -486,7 +486,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellDialog::nextWord( void )
+    void SpellDialog::nextWord()
     {
 
         Debug::Throw( "SpellCheck::SpellDialog::nextWord.\n" );
@@ -562,11 +562,11 @@ namespace SpellCheck
     }
 
     //__________________________________________
-    void SpellDialog::_saveWordList( void )
+    void SpellDialog::_saveWordList()
     { interface().saveWordList(); }
 
     //__________________________________________
-    void SpellDialog::_restoreReadOnly( void )
+    void SpellDialog::_restoreReadOnly()
     { editor_->setReadOnly( readOnlyEditor_ ); }
 
     //_________________________________________________________________

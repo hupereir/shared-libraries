@@ -44,18 +44,18 @@ namespace Private
         {}
 
         // monitor
-        WidgetMonitor& windowMonitor( void )
+        WidgetMonitor& windowMonitor()
         { return monitor_; }
 
         //* size hint
-        QSize sizeHint( void ) const override
+        QSize sizeHint() const override
         {
             const QSize size( monitor_.sizeHint() );
             return size.isValid() ? size:QWidget::sizeHint();
         }
 
         //* size hint
-        QSize minimumSizeHint( void ) const override
+        QSize minimumSizeHint() const override
         { return sizeHint(); }
 
         private:
@@ -74,11 +74,11 @@ namespace Private
         public:
 
         //* minimum size hint
-        QSize minimumSizeHint( void ) const override
+        QSize minimumSizeHint() const override
         { return QSize( 1, 2 ); }
 
         //* minimum size hint
-        QSize sizeHint( void ) const override
+        QSize sizeHint() const override
         { return minimumSizeHint(); }
 
     };

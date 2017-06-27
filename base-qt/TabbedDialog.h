@@ -61,27 +61,27 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     protected:
 
     //* retrieve list
-    SimpleListView& _list( void )
+    SimpleListView& _list()
     { return *list_; }
 
     //* retrieve stack
-    QStackedWidget& _stackedWidget( void )
+    QStackedWidget& _stackedWidget()
     { return *stackedWidget_; }
 
     //* button box
-    QDialogButtonBox& _buttonBox( void ) const
+    QDialogButtonBox& _buttonBox() const
     { return *buttonBox_; }
 
     private:
 
     //* item model
-    class Item: private Base::Counter<Item>
+    class Item final: private Base::Counter<Item>
     {
 
         public:
 
         //* constructor
-        explicit Item( void ):
+        explicit Item():
             Counter( "TabbedDialog::Item" )
         {}
 
@@ -105,15 +105,15 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
         { icon_ = icon; }
 
         //* name
-        const QString& name( void ) const
+        const QString& name() const
         { return name_; }
 
         //* widget
-        QWidget* widget( void ) const
+        QWidget* widget() const
         { return widget_; }
 
         //* icon
-        const QIcon& icon( void ) const
+        const QIcon& icon() const
         { return icon_; }
 
         //* equal to operator
@@ -169,7 +169,7 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     };
 
     //* model
-    Model& _model( void )
+    Model& _model()
     { return model_; }
 
     //* model

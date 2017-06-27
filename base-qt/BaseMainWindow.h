@@ -50,16 +50,16 @@ class BaseMainWindow: public QMainWindow
     explicit BaseMainWindow( QWidget*, Qt::WindowFlags = 0);
 
     //* restore window size
-    QSize minimumSizeHint( void ) const override;
+    QSize minimumSizeHint() const override;
 
     //* restore window size
-    QSize sizeHint( void ) const override;
+    QSize sizeHint() const override;
 
     //* center widget on argument widget
-    void centerOnDesktop( void );
+    void centerOnDesktop();
 
     //* center on parent widget
-    void centerOnParent( void )
+    void centerOnParent()
     { centerOnWidget( parentWidget() ); }
 
     //* center widget on argument widget
@@ -75,23 +75,23 @@ class BaseMainWindow: public QMainWindow
     void setStatusBar( QStatusBar* );
 
     //* lock toolbars
-    QAction& lockToolBarsAction( void ) const
+    QAction& lockToolBarsAction() const
     { return *lockToolBarsAction_; }
 
     //* lock panels
-    QAction& lockPanelsAction( void ) const
+    QAction& lockPanelsAction() const
     { return *lockPanelsAction_; }
 
     //* show menubar
-    QAction& showMenuBarAction( void ) const
+    QAction& showMenuBarAction() const
     { return *showMenuBarAction_; }
 
     //* show status bar
-    QAction& showStatusBarAction( void ) const
+    QAction& showStatusBarAction() const
     { return *showStatusBarAction_; }
 
     //* create context menu (overloaded)
-    QMenu* createPopupMenu( void ) override;
+    QMenu* createPopupMenu() override;
 
     //* toolbar menu
     ToolBarMenu& toolBarMenu( QWidget* = nullptr );
@@ -100,34 +100,34 @@ class BaseMainWindow: public QMainWindow
     void setOptionName( const QString& name );
 
     //* menu option name
-    bool hasOptionName( void ) const
+    bool hasOptionName() const
     { return !lockToolBarsOptionName().isEmpty(); }
 
     //* lock toolbar option name
-    const QString& lockToolBarsOptionName( void ) const
+    const QString& lockToolBarsOptionName() const
     { return lockToolBarsOptionName_; }
 
     //* lock panels option name
-    const QString& lockPanelsOptionName( void ) const
+    const QString& lockPanelsOptionName() const
     { return lockPanelsOptionName_; }
 
     //* menu option name
-    const QString& showMenuBarOptionName( void ) const
+    const QString& showMenuBarOptionName() const
     { return showMenuBarOptionName_; }
 
     //* status bar option name
-    const QString& showStatusBarOptionName( void ) const
+    const QString& showStatusBarOptionName() const
     { return showStatusBarOptionName_; }
 
     Q_SIGNALS:
 
     //* toolbar configuration changed
-    void toolbarConfigurationChanged( void );
+    void toolbarConfigurationChanged();
 
     public Q_SLOTS:
 
     //* uniconify
-    void uniconify( void );
+    void uniconify();
 
     protected:
 
@@ -135,19 +135,19 @@ class BaseMainWindow: public QMainWindow
     bool event( QEvent* ) override;
 
     //* true if main window has menu
-    bool _hasMenuBar( void ) const;
+    bool _hasMenuBar() const;
 
     //* true if main window has menu
-    bool _hasStatusBar( void ) const;
+    bool _hasStatusBar() const;
 
     //* true if main window has toolbars
-    bool _hasToolBars( void ) const;
+    bool _hasToolBars() const;
 
     //* returns true if lockable toolbars are found
-    bool _hasLockableToolBars( void ) const;
+    bool _hasLockableToolBars() const;
 
     //* true if main window has dock widgets
-    bool _hasPanels( void ) const;
+    bool _hasPanels() const;
 
     //* action list
     using ActionList = QVector<QAction*>;
@@ -156,7 +156,7 @@ class BaseMainWindow: public QMainWindow
     ActionList _toolBarsActions( QMenu* );
 
     //* maximize state prior to minimization
-    bool _wasMaximized( void ) const
+    bool _wasMaximized() const
     { return wasMaximized_; }
 
     //* maximize state prior to minimization
@@ -166,7 +166,7 @@ class BaseMainWindow: public QMainWindow
     private Q_SLOTS:
 
     //* update configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     //* toolbar text position
     void _updateToolButtonStyle( int );

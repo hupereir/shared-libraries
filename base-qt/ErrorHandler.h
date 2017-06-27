@@ -41,31 +41,31 @@ class ErrorHandler
     ErrorHandler& operator = ( const ErrorHandler& ) = delete;
 
     //* singleton
-    static ErrorHandler& get( void );
+    static ErrorHandler& get();
 
     //* install context
-    static void initialize( void );
+    static void initialize();
 
     //* adds a disabled message in the list
     void disableMessage( QString message )
     { disabledMessages_ << message; }
 
     //* adds a disabled message in the list
-    void clearDisabledMessages( void )
+    void clearDisabledMessages()
     { disabledMessages_.clear(); }
 
     //* exit
-    void exit( void );
+    void exit();
 
     protected:
 
     //* constructor
-    explicit ErrorHandler( void );
+    explicit ErrorHandler();
 
     using MessageList = QStringList;
 
     //* disabled message
-    const MessageList& _disabledMessages( void ) const
+    const MessageList& _disabledMessages() const
     { return disabledMessages_; }
 
     //* check/display Qt error messages

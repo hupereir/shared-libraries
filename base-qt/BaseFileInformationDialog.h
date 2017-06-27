@@ -48,15 +48,15 @@ class BaseFileInformationDialog: public CustomDialog
     //@{
 
     //* tab widget
-    QTabWidget& tabWidget( void ) const
+    QTabWidget& tabWidget() const
     { return *tabWidget_; }
 
     //* main widget
-    QWidget& mainPage( void ) const
+    QWidget& mainPage() const
     { return *mainPage_; }
 
     //* main layout
-    QVBoxLayout& pageLayout( void ) const
+    QVBoxLayout& pageLayout() const
     { return *pageLayout_; }
 
     //@}

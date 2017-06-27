@@ -41,7 +41,7 @@ void BaseSocketInterface::sendBuffer( qint32 type, const QByteArray& buffer )
 }
 
 //_______________________________________________________
-void BaseSocketInterface::_sendPendingBuffers( void )
+void BaseSocketInterface::_sendPendingBuffers()
 {
 
     for( const auto& bufferPair:pendingBuffers_ )
@@ -62,7 +62,7 @@ void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 }
 
 //_______________________________________________________
-void BaseSocketInterface::_read( void )
+void BaseSocketInterface::_read()
 {
 
     if( !socket_->bytesAvailable() ) return;

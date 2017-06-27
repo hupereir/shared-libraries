@@ -77,7 +77,7 @@ int IconViewItem::spacing( 5 );
 int IconViewItem::maxTextWidth( 100 );
 
 //____________________________________________________________________
-QRect IconViewItem::boundingRect( void ) const
+QRect IconViewItem::boundingRect() const
 {
     if( dirty_ ) const_cast<IconViewItem*>( this )->_updateBoundingRect();
     return boundingRect_;
@@ -143,7 +143,7 @@ void IconViewItem::paint( QPainter* painter, const QStyleOption* option, QWidget
 }
 
 //____________________________________________________________________
-void IconViewItem::_updateBoundingRect( void )
+void IconViewItem::_updateBoundingRect()
 {
     boundingRect_ = QRect( 0, 0, 2*margin, 2*margin );
 

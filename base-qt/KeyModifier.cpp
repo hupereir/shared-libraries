@@ -38,7 +38,7 @@ key_( key )
 {}
 
 //_______________________________________
-KeyModifier::State KeyModifier::state( void ) const
+KeyModifier::State KeyModifier::state() const
 {
 
     Debug::Throw( "KeyModifier::state.\n" );

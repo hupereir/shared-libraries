@@ -40,15 +40,15 @@ class DragMonitor: public QObject, private Base::Counter<DragMonitor>
     //@{
 
     //* enabled
-    bool isDragEnabled( void ) const
+    bool isDragEnabled() const
     { return dragEnabled_; }
 
     //* in progress
-    bool isDragInProgress( void ) const
+    bool isDragInProgress() const
     { return dragInProgress_; }
 
     //* position
-    QPoint dragOrigin( void ) const
+    QPoint dragOrigin() const
     { return dragOrigin_; }
 
     //@}

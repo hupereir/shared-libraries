@@ -24,7 +24,7 @@
 #include <cstdlib>
 
 //_____________________________________________________________
-void ErrorHandler::initialize( void )
+void ErrorHandler::initialize()
 {
     #if QT_VERSION >= 0x050000
     qInstallMessageHandler( _throw );
@@ -35,14 +35,14 @@ void ErrorHandler::initialize( void )
 
 
 //_____________________________________________________________
-ErrorHandler& ErrorHandler::get( void )
+ErrorHandler& ErrorHandler::get()
 {
     static  ErrorHandler singleton;
     return singleton;
 }
 
 //_____________________________________________________________
-void ErrorHandler::exit( void )
+void ErrorHandler::exit()
 {
     #if QT_VERSION >= 0x050000
     qInstallMessageHandler( 0 );
@@ -108,7 +108,7 @@ void ErrorHandler::_throw( QtMsgType type, const char* message )
 }
 
 //_______________________________________________________________
-ErrorHandler::ErrorHandler( void )
+ErrorHandler::ErrorHandler()
 {
 
     // install 'default' disabled messages

@@ -85,7 +85,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     // connections
     connect( &model_, SIGNAL(optionModified(OptionPair)), SLOT(_optionModified(OptionPair)) );
     connect( &model_, SIGNAL(specialOptionModified(OptionPair)), SLOT(_specialOptionModified(OptionPair)) );
-    connect( this, SIGNAL(configurationChanged()), Singleton::get().application(), SIGNAL(configurationChanged()) );
+    connect( this, SIGNAL(configurationChanged()), Base::Singleton::get().application(), SIGNAL(configurationChanged()) );
 
     // insert reload
     QPushButton *button;
@@ -96,7 +96,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 }
 
 //______________________________________________________________
-void OptionDialog::_reload( void )
+void OptionDialog::_reload()
 {
 
     Debug::Throw( "OptionDialog::_reload.\n" );

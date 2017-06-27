@@ -77,7 +77,7 @@ bool DebugMenu::eventFilter( QObject* object, QEvent* event )
 }
 
 //_______________________________________________
-void DebugMenu::_showCounterDialog( void )
+void DebugMenu::_showCounterDialog()
 {
     Debug::Throw( "DebugMenu::_ShowCounterDialog.\n" );
 
@@ -101,7 +101,7 @@ void DebugMenu::_showCounterDialog( void )
 }
 
 //_______________________________________________
-void DebugMenu::_showIconCacheDialog( void )
+void DebugMenu::_showIconCacheDialog()
 {
     Debug::Throw( "DebugMenu::_ShowIconCacheDialog.\n" );
 
@@ -125,7 +125,7 @@ void DebugMenu::_showIconCacheDialog( void )
 }
 
 //_______________________________________________
-void DebugMenu::_showSystemEnvironment( void )
+void DebugMenu::_showSystemEnvironment()
 {
     Debug::Throw( "DebugMenu::_showSystemEnvironment.\n" );
 
@@ -137,7 +137,7 @@ void DebugMenu::_showSystemEnvironment( void )
 }
 
 //_______________________________________________
-void DebugMenu::_showOptions( void )
+void DebugMenu::_showOptions()
 {
     Debug::Throw( "DebugMenu::_showOptions.\n" );
 

@@ -41,12 +41,12 @@ class OptionDialog: public CustomDialog
     Q_SIGNALS:
 
     //* emitted when options are modified
-    void configurationChanged( void );
+    void configurationChanged();
 
     protected Q_SLOTS:
 
     //* reload options from backup
-    void _reload( void );
+    void _reload();
 
     //* option modified
     void _optionModified( OptionPair );

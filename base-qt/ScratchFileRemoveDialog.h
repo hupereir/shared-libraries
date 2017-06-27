@@ -42,12 +42,12 @@ class ScratchFileRemoveDialog: public CustomDialog
     explicit ScratchFileRemoveDialog( QWidget*, const FileRecordModel::List& files = FileRecordModel::List() );
 
     // return selected files
-    FileRecordModel::List selectedFiles( void ) const;
+    FileRecordModel::List selectedFiles() const;
 
     protected Q_SLOTS:
 
     //* update button states
-    void _updateActions( void );
+    void _updateActions();
 
     //* context menu
     void _updateContextMenu( const QPoint& );
@@ -55,7 +55,7 @@ class ScratchFileRemoveDialog: public CustomDialog
     private:
 
     //* install actions
-    void _installActions( void );
+    void _installActions();
 
     //* list of files
     TreeView* list_ = nullptr;

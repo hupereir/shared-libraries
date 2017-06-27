@@ -82,7 +82,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     vLayout->addStretch( 1 );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -172,7 +172,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
 }
 
 //_____________________________________________
-void BaseFileInfoToolTipWidget::_updateConfiguration( void )
+void BaseFileInfoToolTipWidget::_updateConfiguration()
 {
     Debug::Throw( "BaseFileInfoToolTipWidget::_updateConfiguration.\n" );
     if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<int>( "TOOLTIPS_PIXMAP_SIZE" ) );

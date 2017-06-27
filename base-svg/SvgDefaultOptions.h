@@ -25,7 +25,7 @@
 
 //_____________________________________________________
 //* default options installer
-void installSvgOptions( void )
+void installSvgOptions()
 {
     XmlOptions::get().setAutoDefault( true );
     XmlOptions::get().keep( "SVG_BACKGROUND" );

@@ -48,7 +48,7 @@ class XmlOption:public Option
     public:
 
     //* constructor
-    explicit XmlOption( void )
+    explicit XmlOption()
     {}
 
     //* constructor
@@ -68,7 +68,7 @@ class XmlOption:public Option
     { name_ = value; }
 
     //* name
-    const QString& name( void ) const
+    const QString& name() const
     { return name_; }
 
     private:

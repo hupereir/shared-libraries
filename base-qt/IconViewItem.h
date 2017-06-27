@@ -29,13 +29,13 @@
 #include <QStyleOption>
 
 //* graphics item
-class IconViewItem: private Base::Counter<IconViewItem>
+class IconViewItem final: private Base::Counter<IconViewItem>
 {
 
     public:
 
     //* constructor
-    explicit IconViewItem( void ):
+    explicit IconViewItem():
         Counter( "IconView::Item" )
     {}
 
@@ -43,27 +43,27 @@ class IconViewItem: private Base::Counter<IconViewItem>
     //@{
 
     //* icon
-    const CustomPixmap& pixmap( void ) const
+    const CustomPixmap& pixmap() const
     { return pixmap_; }
 
     //* text
-    const QString& text( void ) const
+    const QString& text() const
     { return text_; }
 
     //* position
-    QPoint position( void ) const
+    QPoint position() const
     { return position_; }
 
     //* row
-    int row( void ) const
+    int row() const
     { return row_; }
 
     //* column
-    int column( void ) const
+    int column() const
     { return column_; }
 
     //* bounding rect
-    QRect boundingRect( void ) const;
+    QRect boundingRect() const;
 
     //@}
 
@@ -120,7 +120,7 @@ class IconViewItem: private Base::Counter<IconViewItem>
     protected:
 
     //* update bounding rect
-    void _updateBoundingRect( void );
+    void _updateBoundingRect();
 
     private:
 

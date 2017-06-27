@@ -81,7 +81,7 @@ namespace Base
     }
 
     //_____________________________________________________
-    void HelpManager::_display( void )
+    void HelpManager::_display()
     {
 
         Debug::Throw( "HelpManager::_display.\n" );

@@ -30,7 +30,7 @@ void ScratchFileMonitor::add( const File& file )
 }
 
 //_______________________________________________________________________________________
-void ScratchFileMonitor::deleteScratchFiles( void )
+void ScratchFileMonitor::deleteScratchFiles()
 {
     Debug::Throw( "ScratchFileMonitor::deleteScratchFiles.\n" );
 

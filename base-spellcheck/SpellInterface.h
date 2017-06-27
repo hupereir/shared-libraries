@@ -31,16 +31,16 @@
 namespace SpellCheck
 {
     //* spell checker interface
-    class SpellInterface: private Base::Counter<SpellInterface>
+    class SpellInterface final: private Base::Counter<SpellInterface>
     {
 
         public:
 
         //* constructor
-        explicit SpellInterface( void );
+        explicit SpellInterface();
 
         //* destructor
-        ~SpellInterface( void ) override;
+        ~SpellInterface();
 
         //* no filter
         static const QString FilterNone;
@@ -56,14 +56,14 @@ namespace SpellCheck
 
         //* get list of available dictionaries
         using DictionarySet = QOrderedSet<QString>;
-        const DictionarySet& dictionaries( void ) const
+        const DictionarySet& dictionaries() const
         { return dictionaries_; }
 
         //* list dictionaries
-        void listDictionaries( void ) const;
+        void listDictionaries() const;
 
         //* current dictionary
-        const QString dictionary( void ) const
+        const QString dictionary() const
         { return dictionary_; }
 
         //* true if dictionary is available
@@ -72,14 +72,14 @@ namespace SpellCheck
 
         //* get list of available filters
         using FilterSet = QOrderedSet<QString>;
-        const FilterSet& filters( void ) const
+        const FilterSet& filters() const
         { return filters_; }
 
         //* list dictionaries
-        void listFilters( void ) const;
+        void listFilters() const;
 
         //* current filter
-        const QString filter( void ) const
+        const QString filter() const
         { return filter_; }
 
         //* true if filter is available
@@ -91,36 +91,36 @@ namespace SpellCheck
         { return ignoredWords_.find( word ) != ignoredWords_.end(); }
 
         //* get list of ignored words
-        const QSet< QString > ignoredWords( void )
+        const QSet< QString > ignoredWords()
         { return ignoredWords_; }
 
         //* retrieve original text
-        const QString& text( void ) const
+        const QString& text() const
         { return text_; }
 
         //* retrieve checked text
-        const QString& checkedText( void ) const
+        const QString& checkedText() const
         { return checkedText_; }
 
         //* retrieve error
-        const QString& error( void ) const
+        const QString& error() const
         { return error_; }
 
 
         //* retrieve current word being checked
-        const QString& word( void ) const
+        const QString& word() const
         { return word_; }
 
         //* retrieve position of current word in original text
-        int position( void ) const
+        int position() const
         { return position_+begin_; }
 
         //* retrieve position offset between original text and checked text
-        int offset( void ) const
+        int offset() const
         { return offset_; }
 
         //* retrieve list of suggestions for current word
-        QStringList suggestions( const QString& word ) const;
+        QStringList suggestions( const QString& ) const;
 
         //@}
 
@@ -129,14 +129,14 @@ namespace SpellCheck
 
         //* select dictionary
         /** returns false in case of error */
-        bool setDictionary( const QString& dictionary );
+        bool setDictionary( const QString& );
 
         //* select filter
         /** returns false in case of error */
-        bool setFilter( const QString& filter );
+        bool setFilter( const QString& );
 
         //* clear filters
-        void clearFilters( void )
+        void clearFilters()
         {
             filters_.clear();
             filterMap_.clear();
@@ -147,15 +147,15 @@ namespace SpellCheck
         { ignoredWords_.insert( word ); }
 
         //* set list of ignored words
-        void setIgnoredWords( const QSet<QString> words )
+        void setIgnoredWords( const QSet<QString>& words )
         { ignoredWords_ = words; }
 
         //* merge list of ignored words
-        void mergeIgnoredWords( const QSet<QString> words )
+        void mergeIgnoredWords( const QSet<QString>& words )
         { ignoredWords_.unite( words ); }
 
         //* clear ignored words
-        void clearIgnoredWords( void )
+        void clearIgnoredWords()
         { ignoredWords_.clear(); }
 
         //* set text to be checked
@@ -177,7 +177,7 @@ namespace SpellCheck
 
         //* add current word to dictionary
         /** return false on error */
-        bool addWord( void )
+        bool addWord()
         { return addWord( word() ); }
 
         //* replace current word with argument in checked text
@@ -185,35 +185,35 @@ namespace SpellCheck
 
         //* retrieve next word to be checked
         /** return false when there is an error */
-        bool nextWord( void );
+        bool nextWord();
 
         //* save word list in personal dictionary
-        void saveWordList( void );
+        void saveWordList();
 
         //* restart checking
         /**
         initial begin/end are reset to the full text
         return false on error
         */
-        bool reset( void );
+        bool reset();
 
         //@}
 
         protected:
 
         //* load available dictionaries
-        void _loadDictionaries( void );
+        void _loadDictionaries();
 
         //* load available filters
-        void _loadFilters( void );
+        void _loadFilters();
 
         //* reset Aspell spell/document checker
         /** returns false on error */
-        bool _reset( void );
+        bool _reset();
 
         //* reset Aspell spell checker
         /** returns false on error */
-        bool _resetSpellChecker( void );
+        bool _resetSpellChecker();
 
         private:
 

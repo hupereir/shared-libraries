@@ -56,7 +56,7 @@ void FileList::set( const FileRecord::List& records )
 }
 
 //___________________________________________________
-File::List FileList::files( void ) const
+File::List FileList::files() const
 {
     Debug::Throw( "FileList::files.\n" );
 
@@ -69,7 +69,7 @@ File::List FileList::files( void ) const
 }
 
 //_______________________________________________
-FileRecord FileList::lastValidFile( void )
+FileRecord FileList::lastValidFile()
 {
 
     Debug::Throw( "FileList::lastValidFile.\n" );
@@ -89,7 +89,7 @@ FileRecord FileList::lastValidFile( void )
 }
 
 //_______________________________________________
-void FileList::checkValidFiles( void )
+void FileList::checkValidFiles()
 {
     Debug::Throw( "FileList::checkValidFiles.\n" );
     if( !check() ) return;
@@ -117,7 +117,7 @@ void FileList::_processRecords( const FileRecord::List& records, bool hasInvalid
 }
 
 //___________________________________________________
-void FileList::clean( void )
+void FileList::clean()
 {
     Debug::Throw( "FileList::clean" );
 
@@ -136,7 +136,7 @@ void FileList::clean( void )
 }
 
 //___________________________________________________
-void FileList::clear( void )
+void FileList::clear()
 {
     Debug::Throw( "FileList::clear" );
     records_.clear();

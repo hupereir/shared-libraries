@@ -48,21 +48,21 @@ class PrintPreviewDialog: public CustomDialog
     void setHelper( QObject* );
 
     //* return preview widget
-    QPrintPreviewWidget& previewWidget( void ) const
+    QPrintPreviewWidget& previewWidget() const
     { return *previewWidget_; }
 
     public Q_SLOTS:
 
     //* show/hide menu
-    void showMenu( void );
+    void showMenu();
 
     //* show/hide menu
-    void hideMenu( void );
+    void hideMenu();
 
     protected Q_SLOTS:
 
     //* update page
-    void _updatePage( void );
+    void _updatePage();
 
     private:
 

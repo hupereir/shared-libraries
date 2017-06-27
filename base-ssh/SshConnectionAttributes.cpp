@@ -37,7 +37,7 @@ namespace Ssh
     }
 
     //_____________________________________________________________
-    bool ConnectionAttributes::isValid( void ) const
+    bool ConnectionAttributes::isValid() const
     {
         if( host_.isEmpty() ) return false;
         for( const auto& tunnel:tunnels_ )

@@ -44,23 +44,23 @@ class TaskBarProgressNotifications : public QObject, private Base::Counter<TaskB
     //@{
 
     //* dbus path
-    QString path( void ) const
+    QString path() const
     { return path_; }
 
     //* launcher id
-    QString launcherId( void ) const
+    QString launcherId() const
     { return launcherId_; }
 
     //* true if progress is visible
-    bool progressVisible( void ) const
+    bool progressVisible() const
     { return progressVisible_; }
 
     //* max progress
-    int maximum( void ) const
+    int maximum() const
     { return maximum_; }
 
     //* current progress
-    int value( void ) const
+    int value() const
     { return value_; }
 
     //@}

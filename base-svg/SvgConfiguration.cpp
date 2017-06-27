@@ -63,7 +63,7 @@ namespace Svg
         }
 
         //! destructor
-        virtual ~StyleOptionWidget( void )
+        virtual ~StyleOptionWidget()
         {}
 
         //! read
@@ -100,7 +100,7 @@ namespace Svg
         Q_SIGNALS:
 
         //! modified
-        void modified( void );
+        void modified();
 
     };
 

@@ -141,7 +141,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 }
 
 //__________________________________________________________________________
-void RecentFilesConfiguration::read( void )
+void RecentFilesConfiguration::read()
 {
     Debug::Throw( "RecentFilesConfiguration::read.\n" );
     reload();
@@ -149,14 +149,14 @@ void RecentFilesConfiguration::read( void )
 }
 
 //__________________________________________________________________________
-void RecentFilesConfiguration::write( void )
+void RecentFilesConfiguration::write()
 {
     Debug::Throw( "RecentFilesConfiguration::write.\n" );
     recentFiles_->set( model_.get() );
 }
 
 //__________________________________________________________________________
-void RecentFilesConfiguration::reload( void )
+void RecentFilesConfiguration::reload()
 {
 
     Debug::Throw( "RecentFilesConfiguration::reload.\n" );
@@ -174,7 +174,7 @@ void RecentFilesConfiguration::reload( void )
 }
 
 //__________________________________________________________________________
-void RecentFilesConfiguration::_updateButtons( void )
+void RecentFilesConfiguration::_updateButtons()
 {
 
     Debug::Throw( "RecentFilesConfiguration::_updateButtons.\n" );
@@ -184,7 +184,7 @@ void RecentFilesConfiguration::_updateButtons( void )
 }
 
 //__________________________________________________________________________
-void RecentFilesConfiguration::_remove( void )
+void RecentFilesConfiguration::_remove()
 {
 
     Debug::Throw( "RecentFilesConfiguration::_remove.\n" );
@@ -206,7 +206,7 @@ void RecentFilesConfiguration::_remove( void )
 }
 
 //__________________________________________________________________________
-void RecentFilesConfiguration::_clean( void )
+void RecentFilesConfiguration::_clean()
 {
     Debug::Throw( "RecentFilesConfiguration::_clean.\n" );
 

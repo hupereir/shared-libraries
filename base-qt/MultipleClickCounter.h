@@ -41,7 +41,7 @@ class MultipleClickCounter: public QObject, private Base::Counter<MultipleClickC
     void increment( int = 0 );
 
     //* returns current counts
-    int counts( void ) const
+    int counts() const
     { return count_; }
 
     protected:

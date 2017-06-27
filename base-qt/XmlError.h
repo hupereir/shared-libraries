@@ -29,7 +29,7 @@
 #include <QTextStream>
 
 //* Xml parsing error container
-class XmlError: private Base::Counter<XmlError>
+class XmlError final: private Base::Counter<XmlError>
 {
 
     public:
@@ -44,27 +44,27 @@ class XmlError: private Base::Counter<XmlError>
     //@{
 
     //* cast to boolean
-    operator bool(void) const
+    operator bool() const
     { return error_.length() != 0; }
 
     //* File
-    const QString& file( void ) const
+    const QString& file() const
     { return file_; }
 
     //* error
-    const QString& error( void ) const
+    const QString& error() const
     { return error_; }
 
     //* line
-    int line( void ) const
+    int line() const
     { return line_; }
 
     //* column
-    int column( void ) const
+    int column() const
     { return column_; }
 
     //* error
-    QString toString( void ) const
+    QString toString() const
     {
 
         QString out;
@@ -80,7 +80,7 @@ class XmlError: private Base::Counter<XmlError>
     //@{
 
     //* clear
-    void clear( void )
+    void clear()
     {
         file_.clear();
         error_.clear();
@@ -93,15 +93,15 @@ class XmlError: private Base::Counter<XmlError>
     { file_ = file; }
 
         //* error
-    QString& error( void )
+    QString& error()
     { return error_; }
 
     //* line
-    int& line( void )
+    int& line()
     { return line_; }
 
     //* column
-    int& column( void )
+    int& column()
     { return column_; }
 
     //@}
@@ -113,7 +113,7 @@ class XmlError: private Base::Counter<XmlError>
         public:
 
         //* constructor
-        explicit List( void )
+        explicit List()
         {}
 
         //* constructor
@@ -122,7 +122,7 @@ class XmlError: private Base::Counter<XmlError>
         {}
 
         //* convert to string
-        QString toString( void ) const
+        QString toString() const
         {
             QStringList out;
             for( const auto& error:*this )

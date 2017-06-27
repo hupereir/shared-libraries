@@ -34,7 +34,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     public:
 
     //* constructor
-    explicit GridLayout( void ):
+    explicit GridLayout():
         QGridLayout(),
         Counter( "GridLayout" )
     {}
@@ -46,11 +46,11 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     //@{
 
     //* current row
-    int currentRow( void ) const
+    int currentRow() const
     { return row_; }
 
     //* current column
-    int currentColumn( void ) const
+    int currentColumn() const
     { return column_; }
 
     //@}

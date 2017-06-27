@@ -52,7 +52,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     bool updateWidth( int );
 
     //* width
-    int width( void ) const
+    int width() const
     { return width_; }
 
     //* clear everything
@@ -64,16 +64,16 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     public Q_SLOTS:
 
     //* need update
-    void needUpdate( void )
+    void needUpdate()
     { needsUpdate_ = true; }
 
     private Q_SLOTS:
 
     //* contents changed
-    void _contentsChanged( void );
+    void _contentsChanged();
 
     //* block count changed
-    void _blockCountChanged( void );
+    void _blockCountChanged();
 
     private:
 
@@ -100,15 +100,15 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         { return id() == data.id(); }
 
         //* id
-        int id( void ) const
+        int id() const
         { return id_; }
 
         //* line number
-        int lineNumber( void ) const
+        int lineNumber() const
         { return lineNumber_; }
 
         //* y
-        int cursor( void ) const
+        int cursor() const
         { return cursor_; }
 
         //* position
@@ -119,11 +119,11 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         }
 
         //* position
-        int position( void ) const
+        int position() const
         { return position_; }
 
         //* validity
-        bool isValid( void ) const
+        bool isValid() const
         { return valid_; }
 
         private:
@@ -146,7 +146,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     };
 
     //* update line number data
-    void _updateLineNumberData( void );
+    void _updateLineNumberData();
 
     //* update invalid data
     void _updateLineNumberData( QTextBlock&, int&, LineNumberData& ) const;

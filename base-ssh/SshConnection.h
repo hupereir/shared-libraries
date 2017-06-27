@@ -45,17 +45,17 @@ namespace Ssh
         explicit Connection( QObject* );
 
         //* destructor
-        ~Connection( void ) override;
+        ~Connection() override;
 
         //*@name accessors
         //@{
 
         //* connection attributes
-        const ConnectionAttributes& attributes( void ) const
+        const ConnectionAttributes& attributes() const
         { return attributes_; }
 
         //* session
-        void* session( void ) const
+        void* session() const
         { return session_; }
 
         //* connection state
@@ -69,23 +69,23 @@ namespace Ssh
 
         Q_DECLARE_FLAGS( StateMask, State );
 
-        StateMask state( void ) const
+        StateMask state() const
         { return state_; }
 
         //* true if connected
-        bool isConnected( void ) const
+        bool isConnected() const
         { return state_ & Connected; }
 
         //* true if disconnected
-        bool isDisconnected( void ) const
+        bool isDisconnected() const
         { return !(state_ & (TunnelCreated|SessionCreated|Connected)  ); }
 
         //* true if connecting
-        bool isConnecting( void ) const
+        bool isConnecting() const
         { return !(isDisconnected() || isConnected() ); }
 
         //* error string
-        QString errorString( void ) const
+        QString errorString() const
         { return error_; }
 
         //@}
@@ -100,10 +100,10 @@ namespace Ssh
         { attributes_ = attributes; }
 
         //* tunnels
-        bool createTunnels( void );
+        bool createTunnels();
 
         //* connect
-        bool connect( void );
+        bool connect();
 
         //* wait for connected
         /** warning, this method is blocking */
@@ -131,15 +131,15 @@ namespace Ssh
 
         //* abort commands
         /* warning, if happens while SshInterface is in timer event, this might cause crash */
-        void abortCommands( void );
+        void abortCommands();
 
         //* disconnect
-        void disconnect( void );
+        void disconnect();
 
         //@}
 
         //* true if ssh is supported
-        static bool isSupported( void );
+        static bool isSupported();
 
         Q_SIGNALS:
 
@@ -150,13 +150,13 @@ namespace Ssh
         void error( const QString& );
 
         //* attributes updated
-        void attributesChanged( void );
+        void attributesChanged();
 
         //* connected
-        void connected( void );
+        void connected();
 
         //* login failed
-        void loginFailed( void );
+        void loginFailed();
 
         protected:
 
@@ -169,13 +169,13 @@ namespace Ssh
         void _saveHost( QHostInfo );
 
         //* disconnect channels
-        void _disconnectChannels( void );
+        void _disconnectChannels();
 
         //* disconnect session
-        void _disconnectSession( void );
+        void _disconnectSession();
 
         //* disconnect tunnel
-        void _disconnectTunnels( void );
+        void _disconnectTunnels();
 
         //* message handling
         void _notifyMessage( QString );
@@ -187,7 +187,7 @@ namespace Ssh
         void _notifyDebug( QString );
 
         //* new tcp connection (from QTcpServer)
-        void _newConnection( void );
+        void _newConnection();
 
         private:
 
@@ -195,7 +195,7 @@ namespace Ssh
         QString _commandMessage( Command ) const;
 
         //* process pending commands
-        bool _processCommands( void );
+        bool _processCommands();
 
         //* abort all commands
         void _abortCommands( const QString& );

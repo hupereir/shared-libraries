@@ -44,7 +44,7 @@ namespace Ssh
         //@{
 
         //* connection attributes
-        ConnectionAttributes attributes( void ) const;
+        ConnectionAttributes attributes() const;
 
         //@}
 

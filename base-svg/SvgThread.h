@@ -72,7 +72,7 @@ namespace Svg
         protected:
 
         //* Check files validity. Post a SvgEvent when finished
-        void run( void ) override;
+        void run() override;
 
         private:
 

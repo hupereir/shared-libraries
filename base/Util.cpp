@@ -52,7 +52,7 @@ QString Util::env( const QString& val, const QString& defaultValue )
 }
 
 //______________________________________________________________________
-QString Util::user( void )
+QString Util::user()
 {
     Debug::Throw( "Util::user.\n" );
     #if defined(Q_OS_WIN)
@@ -66,7 +66,7 @@ QString Util::user( void )
 }
 
 //______________________________________________________________________
-QString Util::domain( void )
+QString Util::domain()
 {
     Debug::Throw( "Util::domain.\n" );
 
@@ -97,15 +97,15 @@ QString Util::windowTitle( const QString& title )
 }
 
 //______________________________________________________________________
-File Util::home( void )
+File Util::home()
 { return File( QDir::homePath() ); }
 
 //______________________________________________________________________
-File Util::tmp( void )
+File Util::tmp()
 { return File( QDir::tempPath() ); }
 
 //______________________________________________________________________
-File Util::config( void )
+File Util::config()
 {
 
     #if QT_VERSION >= 0x050000
@@ -135,9 +135,9 @@ QString Util::host( bool shortName )
 }
 
 //______________________________________________________________________
-int Util::pid( void )
+int Util::pid()
 { return getpid(); }
 
 //______________________________________________________________________
-File Util::workingDirectory( void )
+File Util::workingDirectory()
 { return File( QDir::currentPath() ); }

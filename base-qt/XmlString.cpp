@@ -20,7 +20,7 @@
 #include "XmlString.h"
 
 //__________________________________
-XmlString::ConversionList& XmlString::_conversions( void )
+XmlString::ConversionList& XmlString::_conversions()
 {
     static ConversionList conversions;
     return conversions;

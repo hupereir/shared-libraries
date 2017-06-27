@@ -44,19 +44,19 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     //@{
 
     //* enabled
-    bool isEnabled( void ) const
+    bool isEnabled() const
     { return enabled_; }
 
     //* follow mouse
-    bool followMouse( void ) const
+    bool followMouse() const
     { return followMouse_; }
 
     //* default delay
-    int defaultDelay( void ) const
+    int defaultDelay() const
     { return defaultDelay_; }
 
     //* index rect
-    const QRect& indexRect( void ) const
+    const QRect& indexRect() const
     { return rect_; }
 
     //* preferred position
@@ -69,7 +69,7 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     };
 
     //* preferred position
-    Position preferredPosition( void ) const
+    Position preferredPosition() const
     { return preferredPosition_; }
 
     //@}
@@ -128,15 +128,15 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     void timerEvent( QTimerEvent* ) override;
 
     //* check mouse position
-    bool _checkMousePosition( void ) const;
+    bool _checkMousePosition() const;
 
     //* adjust position
-    void _adjustPosition( void );
+    void _adjustPosition();
 
     private Q_SLOTS:
 
     //* update configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 

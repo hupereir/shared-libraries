@@ -46,7 +46,7 @@ class TreeViewConfiguration: public QGroupBox, public OptionWidget
 
     Q_SIGNALS:
 
-    void modified( void );
+    void modified();
 
     private:
 

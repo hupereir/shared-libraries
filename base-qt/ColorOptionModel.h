@@ -46,7 +46,7 @@ class ColorOptionModel: public OptionModel
     using IconCache = QMap<Base::Color, QIcon>;
 
     //* icon cache
-    static IconCache& _icons( void );
+    static IconCache& _icons();
 
     //* icon matching color
     static QIcon _icon( const Base::Color& );

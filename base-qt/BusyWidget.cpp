@@ -103,7 +103,7 @@ bool BusyWidget::eventFilter( QObject* object, QEvent* event )
 }
 
 //__________________________________________________________________________
-void BusyWidget::start( void )
+void BusyWidget::start()
 {
     Debug::Throw( "BusyWidget::start.\n" );
     if( timer_.isActive() ) return;
@@ -118,7 +118,7 @@ void BusyWidget::start( void )
 }
 
 //__________________________________________________________________________
-void BusyWidget::stop( void )
+void BusyWidget::stop()
 {
     Debug::Throw( "BusyWidget::stop.\n" );
     if( timer_.isActive() ) timer_.stop();
@@ -162,7 +162,7 @@ void BusyWidget::timerEvent( QTimerEvent* event )
 }
 
 //_____________________________________________________________
-void BusyWidget::_adjustPosition( void )
+void BusyWidget::_adjustPosition()
 {
     QWidget* parent( parentWidget() );
     if( !parent ) return;

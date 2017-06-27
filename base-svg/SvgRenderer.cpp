@@ -32,7 +32,7 @@ namespace Svg
 {
 
     //________________________________________________
-    bool SvgRenderer::updateConfiguration( void )
+    bool SvgRenderer::updateConfiguration()
     {
         bool drawOverlay( XmlOptions::get().get<bool>( "SVG_DRAW_OVERLAY" ) );
         if( drawOverlay == drawOverlay_ ) return false;
@@ -183,7 +183,7 @@ namespace Svg
     }
 
     //________________________________________________
-    Base::Margins SvgRenderer::margins( void ) const
+    Base::Margins SvgRenderer::margins() const
     {
         Base::Margins out;
         if( elementExists( Svg::MarginLeft ) ) out.setLeft( boundsOnElement( Svg::MarginLeft ).width() );
@@ -198,7 +198,7 @@ namespace Svg
     }
 
     //________________________________________________
-    Base::Margins SvgRenderer::outerPadding( void ) const
+    Base::Margins SvgRenderer::outerPadding() const
     {
         Base::Margins out;
         if( hasShadowMargins_ )

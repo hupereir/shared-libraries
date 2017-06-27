@@ -52,7 +52,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     //@{
 
     //* show icons
-    bool showIcons( void ) const
+    bool showIcons() const
     { return showIcons_; }
 
     //* flags
@@ -113,7 +113,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     private Q_SLOTS:
 
     //* configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 
@@ -159,7 +159,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     using IconCache = QHash<QString, QIcon>;
 
     //* type icon cache
-    static IconCache& _icons( void );
+    static IconCache& _icons();
 
     //* local names
     bool useLocalNames_ = true;

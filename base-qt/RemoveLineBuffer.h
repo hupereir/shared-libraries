@@ -54,7 +54,7 @@ class RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
   public Q_SLOTS:
 
   //! clear buffer to clipboard
-  void clear( void );
+  void clear();
 
   private:
 

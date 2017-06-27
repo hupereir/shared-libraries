@@ -40,13 +40,13 @@ class BaseDialog: public QDialog
     //@{
 
     //* restore window size
-    QSize minimumSizeHint( void ) const override;
+    QSize minimumSizeHint() const override;
 
     //* restore window size
-    QSize sizeHint( void ) const override;
+    QSize sizeHint() const override;
 
     //* iconsize
-    QSize iconSize( void ) const
+    QSize iconSize() const
     { return iconSize_; }
 
     //@}
@@ -58,13 +58,13 @@ class BaseDialog: public QDialog
     BaseDialog& setWindowTitle( const QString& );
 
     //* center widget on pointer
-    BaseDialog& centerOnPointer( void );
+    BaseDialog& centerOnPointer();
 
     //* center widget on argument widget
-    BaseDialog& centerOnDesktop( void );
+    BaseDialog& centerOnDesktop();
 
     //* center on parent widget
-    BaseDialog& centerOnParent( void )
+    BaseDialog& centerOnParent()
     { return centerOnWidget( parentWidget() ); }
 
     //* center widget on argument widget
@@ -83,7 +83,7 @@ class BaseDialog: public QDialog
     public Q_SLOTS:
 
     //* uniconify
-    BaseDialog& uniconify( void );
+    BaseDialog& uniconify();
 
     //* stickyness
     BaseDialog& toggleSticky( bool );

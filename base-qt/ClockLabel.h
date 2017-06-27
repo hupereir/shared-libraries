@@ -51,7 +51,7 @@ class ClockTimer: public QObject, private Base::Counter<ClockTimer>
     private:
 
     //* get interval (seconds) prior to next update
-    int interval( void ) const
+    int interval() const
     { return 60 - (TimeStamp::now().unixTime() % 60); }
 
     //* timer
@@ -72,7 +72,7 @@ class ClockLabel:public QLabel
     explicit ClockLabel( QWidget* parent );
 
     //* retrieve timer
-    ClockTimer& timer( void )
+    ClockTimer& timer()
     { return timer_; }
 
     private:

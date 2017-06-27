@@ -33,7 +33,7 @@ namespace Base
         public:
 
         //* singleton
-        static CounterMap& get( void );
+        static CounterMap& get();
 
         //* copy constructor is deleted
         explicit CounterMap( const CounterMap& ) = delete;

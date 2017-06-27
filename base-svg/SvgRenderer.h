@@ -37,7 +37,7 @@ namespace Svg
         public:
 
         //* constructor
-        explicit SvgRenderer( void )
+        explicit SvgRenderer()
         {}
 
         // svg element enumeration
@@ -62,14 +62,14 @@ namespace Svg
         //@{
 
         //* validity
-        bool isValid( void ) const
+        bool isValid() const
         { return isValid_; }
 
         //* margins
-        Base::Margins margins( void ) const;
+        Base::Margins margins() const;
 
         //* outer padding
-        Base::Margins outerPadding( void ) const;
+        Base::Margins outerPadding() const;
 
         //@}
 
@@ -77,7 +77,7 @@ namespace Svg
         //@{
 
         //* configuration
-        bool updateConfiguration( void );
+        bool updateConfiguration();
 
         //* load file
         bool load( const QString& ) override;

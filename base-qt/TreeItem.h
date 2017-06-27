@@ -100,7 +100,7 @@ template<class T> class TreeItem: public TreeItemBase
     }
 
     //* destructor
-    ~TreeItem( void ) override
+    ~TreeItem() override
     { _eraseFromMap(); }
 
     //* less than operator
@@ -112,11 +112,11 @@ template<class T> class TreeItem: public TreeItemBase
     { return get() == item.get(); }
 
     //* clear children
-    void clear( void )
+    void clear()
     { children_.clear(); }
 
     //* value
-    const ValueType& get( void ) const
+    const ValueType& get() const
     { return value_; }
 
     //* value
@@ -124,15 +124,15 @@ template<class T> class TreeItem: public TreeItemBase
     { value_ = value; }
 
     //* parent
-    bool hasParent( void ) const
+    bool hasParent() const
     { return parent_; }
 
     //* parent
-    const TreeItem& parent( void ) const
+    const TreeItem& parent() const
     { return *parent_; }
 
     //* child count
-    int childCount( void ) const
+    int childCount() const
     { return children_.size(); }
 
     //* get child at given row
@@ -163,7 +163,7 @@ template<class T> class TreeItem: public TreeItemBase
     }
 
     //* retrieve all children in list [recursive]
-    ValueList childValues( void ) const
+    ValueList childValues() const
     {
 
         ValueList out;
@@ -313,7 +313,7 @@ template<class T> class TreeItem: public TreeItemBase
     }
 
     //* sorting (recursive)
-    void sort( void )
+    void sort()
     {
         if( children_.empty() ) return;
         std::sort( children_.begin(), children_.end() );
@@ -350,11 +350,11 @@ template<class T> class TreeItem: public TreeItemBase
     { map_[id()] = this; }
 
     //* value
-    Reference _get( void )
+    Reference _get()
     { return value_; }
 
     //* erase from map
-    void _eraseFromMap( void )
+    void _eraseFromMap()
     {
         typename Map::iterator iter( map_.find( id() ) );
         if( iter != map_.end() && iter.value() == this )

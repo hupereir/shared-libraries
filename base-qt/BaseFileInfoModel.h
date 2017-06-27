@@ -56,7 +56,7 @@ class BaseFileInfoModel : public ListModel<T>
     { showIcons_ = value; }
 
     //* show icons
-    bool showIcons( void ) const
+    bool showIcons() const
     { return showIcons_; }
 
     //* column type enumeration

@@ -102,11 +102,11 @@ void XmlOptions::setFile( const File& file )
 }
 
 //____________________________________________________________________
-Options& XmlOptions::get( void )
+Options& XmlOptions::get()
 { return singleton_.options_; }
 
 //____________________________________________________________________
-bool XmlOptions::read( void )
+bool XmlOptions::read()
 {
 
     // check filename is valid
@@ -121,7 +121,7 @@ bool XmlOptions::read( void )
 }
 
 //________________________________________________
-bool XmlOptions::write( void )
+bool XmlOptions::write()
 {
 
     // check filename is valid

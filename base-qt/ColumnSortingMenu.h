@@ -48,10 +48,10 @@ class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
     private Q_SLOTS:
 
     //* update actions
-    void _updateActions( void );
+    void _updateActions();
 
     //* revert order
-    void _revertOrder( void );
+    void _revertOrder();
 
     //* update mask when triggering actions
     void _sort( QAction* action );

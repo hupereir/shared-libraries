@@ -107,7 +107,7 @@ TextSelection BaseReplaceWidget::selection( bool noIncrement ) const
 }
 
 //__________________________________________________
-void BaseReplaceWidget::synchronize( void )
+void BaseReplaceWidget::synchronize()
 {
     Debug::Throw( "BaseReplaceWidget::synchronize.\n" );
 
@@ -128,11 +128,11 @@ void BaseReplaceWidget::synchronize( void )
 }
 
 //__________________________________________________
-void BaseReplaceWidget::_replaceInWindow( void )
+void BaseReplaceWidget::_replaceInWindow()
 { emit replaceInWindow( selection( false ) ); }
 
 //__________________________________________________
-void BaseReplaceWidget::_replaceInSelection( void )
+void BaseReplaceWidget::_replaceInSelection()
 { emit replaceInSelection( selection( false ) ); }
 
 

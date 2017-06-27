@@ -28,19 +28,19 @@ namespace Svg
 {
 
     //__________________________________________________________
-    SvgEngine& SvgEngine::get( void )
+    SvgEngine& SvgEngine::get()
     {
         static SvgEngine singleton;
         return singleton;
     }
 
     //__________________________________________________________
-    SvgEngine::SvgEngine( void ):
+    SvgEngine::SvgEngine():
         thread_( this )
     { connect( &thread_, SIGNAL(imageCacheAvailable(Svg::ImageCache)), SLOT(_processImageCache(Svg::ImageCache)) ); }
 
     //__________________________________________________________
-    bool SvgEngine::needsReloadOnPaletteChange( void ) const
+    bool SvgEngine::needsReloadOnPaletteChange() const
     { return ( renderer_.styleSheetIsUsed() && !(plasmaInterface_ && plasmaInterface_->hasThemePalette()) ); }
 
     //__________________________________________________________

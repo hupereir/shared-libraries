@@ -38,7 +38,7 @@ namespace SpellCheck
         explicit DictionarySelectionButton( QWidget* );
 
         //* retrieve value
-        QString value( void ) const
+        QString value() const
         { return value_; }
 
         //* read value from option
@@ -55,12 +55,12 @@ namespace SpellCheck
         Q_SIGNALS:
 
         //* emitted when selection is modified
-        void modified( void );
+        void modified();
 
         protected Q_SLOTS:
 
         //* edit dictionaries
-        void _edit( void );
+        void _edit();
 
         private:
 

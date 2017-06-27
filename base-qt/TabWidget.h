@@ -53,33 +53,33 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     explicit TabWidget( QTabWidget* parent );
 
     //* destructor (needed because of std::unique_ptr
-    ~TabWidget( void ) override;
+    ~TabWidget() override;
 
     //*@name accessors
     //@{
 
     //* title
-    const QString& title( void ) const
+    const QString& title() const
     { return title_; }
 
     //* get parent TabWidget
-    QTabWidget& parentTabWidget( void )
+    QTabWidget& parentTabWidget()
     { return *parent_; }
 
     //* true if attached
-    bool isDetached( void ) const
+    bool isDetached() const
     { return widgetDragMonitor_.isEnabled(); }
 
     //* detach action
-    QAction& detachAction( void ) const
+    QAction& detachAction() const
     { return *detachAction_; }
 
     //* stay on top
-    QAction& staysOnTopAction( void ) const
+    QAction& staysOnTopAction() const
     { return *staysOnTopAction_; }
 
     //* widget is hidden from taskbar
-    QAction& stickyAction( void ) const
+    QAction& stickyAction() const
     { return *stickyAction_; }
 
     //@}
@@ -101,15 +101,15 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     void attached( bool state );
 
     //* emitted when box is detached
-    void detached( void );
+    void detached();
 
     //* emitted when box is attached
-    void attached( void );
+    void attached();
 
     protected Q_SLOTS:
 
     //* toggle dock
-    void _toggleDock( void );
+    void _toggleDock();
 
     //* stays on top
     void _toggleStaysOnTop( bool );
@@ -123,7 +123,7 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     private:
 
     //* actions
-    void _installActions( void );
+    void _installActions();
 
     //* parent TabWidget
     QTabWidget* parent_ = nullptr;

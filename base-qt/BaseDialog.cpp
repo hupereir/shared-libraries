@@ -39,14 +39,14 @@ BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):
 }
 
 //__________________________________________________
-QSize BaseDialog::minimumSizeHint( void ) const
+QSize BaseDialog::minimumSizeHint() const
 {
     auto&& out( monitor_.sizeHint() );
     return out.isValid() ? out:QDialog::minimumSizeHint();
 }
 
 //__________________________________________________
-QSize BaseDialog::sizeHint( void ) const
+QSize BaseDialog::sizeHint() const
 {
     auto&& out( monitor_.sizeHint() );
     return out.isValid() ? out:QDialog::sizeHint();
@@ -63,7 +63,7 @@ BaseDialog& BaseDialog::setWindowTitle( const QString& title )
 }
 
 //________________________________________________________________
-BaseDialog& BaseDialog::centerOnPointer( void )
+BaseDialog& BaseDialog::centerOnPointer()
 {
 
     Debug::Throw( "BaseDialog::centerOnPointer.\n" );
@@ -72,7 +72,7 @@ BaseDialog& BaseDialog::centerOnPointer( void )
 }
 
 //________________________________________________________________
-BaseDialog& BaseDialog::centerOnDesktop( void )
+BaseDialog& BaseDialog::centerOnDesktop()
 {
 
     Debug::Throw( "BaseDialog::centerOnDesktop.\n" );
@@ -92,7 +92,7 @@ BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 }
 
 //________________________________________________________________
-BaseDialog& BaseDialog::uniconify( void )
+BaseDialog& BaseDialog::uniconify()
 {
 
     Debug::Throw( "BaseDialog::uniconify.\n" );

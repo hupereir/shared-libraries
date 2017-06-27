@@ -55,19 +55,19 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     //@{
 
     //* angle
-    qreal angle( void ) const
+    qreal angle() const
     { return angle_; }
 
     //* opacity
-    int opacity( void ) const
+    int opacity() const
     { return opacity_; }
 
     //* size
-    QSize minimumSizeHint( void ) const override
+    QSize minimumSizeHint() const override
     { return QSize( 2*radius_+border_, 2*radius_+border_ ); }
 
     //* size
-    QSize sizeHint( void ) const override
+    QSize sizeHint() const override
     { return minimumSizeHint(); }
 
     //@}
@@ -98,10 +98,10 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     public Q_SLOTS:
 
     //* start
-    void start( void );
+    void start();
 
     //* stop
-    void stop( void );
+    void stop();
 
     protected:
 
@@ -112,7 +112,7 @@ class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
     void timerEvent( QTimerEvent* ) override;
 
     //* adjust position based on parent
-    void _adjustPosition( void );
+    void _adjustPosition();
 
     private:
 

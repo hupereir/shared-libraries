@@ -25,12 +25,12 @@
 #include <algorithm>
 
 //________________________________________________
-Options::Options( void ):
+Options::Options():
     Counter( "Options" )
 {}
 
 //________________________________________________
-void Options::installDefaultOptions( void )
+void Options::installDefaultOptions()
 {
 
     setAutoDefault( true );
@@ -181,7 +181,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
 }
 
 //________________________________________________
-void Options::restoreDefaults( void )
+void Options::restoreDefaults()
 {
 
     // restore standard options

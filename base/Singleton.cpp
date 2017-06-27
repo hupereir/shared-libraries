@@ -19,9 +19,12 @@
 
 #include "Singleton.h"
 
-//__________________________________________________
-Singleton& Singleton::get( void )
+namespace Base
 {
-    static Singleton singleton_;
-    return singleton_;
+    //__________________________________________________
+    Singleton& Base::Singleton::get()
+    {
+        static Singleton singleton_;
+        return singleton_;
+    }
 }

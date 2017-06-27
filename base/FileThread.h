@@ -53,27 +53,27 @@ class FileThread: public QThread, private Base::Counter<FileThread>
     //@{
 
     //* command
-    Command command( void ) const
+    Command command() const
     { return command_; }
 
     //* file
-    File file( void ) const
+    File file() const
     { return file_; }
 
     //* destination
-    File destination( void ) const
+    File destination() const
     { return destination_; }
 
     //*flags
-    File::ListFlags flags( void )
+    File::ListFlags flags()
     { return flags_; }
 
     //* error state
-    bool hasError( void ) const
+    bool hasError() const
     { return error_; }
 
     //* error string
-    QString errorString( void )
+    QString errorString()
     { return errorString_; }
 
     //@}
@@ -119,16 +119,16 @@ class FileThread: public QThread, private Base::Counter<FileThread>
     protected:
 
     //* Check files validity. Post a ValidFileEvent when finished
-    void run( void ) override;
+    void run() override;
 
     //* list files
     void _listFiles( const File& );
 
     //* update total size
-    bool _updateTotalSize( void );
+    bool _updateTotalSize();
 
     //* compute total size
-    void _computeTotalSize( void );
+    void _computeTotalSize();
 
     private:
 

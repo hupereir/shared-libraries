@@ -133,7 +133,7 @@ void ElidedLabel::resizeEvent( QResizeEvent* e )
 }
 
 //___________________________________________________
-void ElidedLabel::updateElidedText( void )
+void ElidedLabel::updateElidedText()
 {
     if( fullText_.isEmpty() ) return;
 

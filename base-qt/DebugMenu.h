@@ -57,16 +57,16 @@ class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
     private Q_SLOTS:
 
     //* print object counters
-    void _showCounterDialog( void );
+    void _showCounterDialog();
 
     //* icon cache dialog
-    void _showIconCacheDialog( void );
+    void _showIconCacheDialog();
 
     //* show system environment
-    void _showSystemEnvironment( void );
+    void _showSystemEnvironment();
 
     //* show options
-    void _showOptions( void );
+    void _showOptions();
 
     private:
 

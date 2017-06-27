@@ -47,7 +47,7 @@ class File: public QString
     Q_DECLARE_FLAGS(ListFlags, ListFlag)
 
     //* constructor
-    explicit File( void )
+    explicit File()
     {}
 
     //* constructor
@@ -64,44 +64,44 @@ class File: public QString
     //@{
 
     //* returns true if file has absolute pathname
-    bool isAbsolute( void ) const;
+    bool isAbsolute() const;
 
     //* time of file creation
-    TimeStamp created( void ) const;
+    TimeStamp created() const;
 
     //* time of file last modification
-    TimeStamp lastModified( void ) const;
+    TimeStamp lastModified() const;
 
     //* time of file last access
-    TimeStamp lastAccessed( void ) const;
+    TimeStamp lastAccessed() const;
 
     //* user id
-    uint userId( void ) const;
+    uint userId() const;
 
     //* group id
-    uint groupId( void ) const;
+    uint groupId() const;
 
     //* user name
-    QString userName( void ) const;
+    QString userName() const;
 
     //* group name
-    QString groupName( void ) const;
+    QString groupName() const;
 
     //* permissions
-    QFile::Permissions permissions( void ) const;
+    QFile::Permissions permissions() const;
 
     //* permission string
-    QString permissionsString( void ) const
+    QString permissionsString() const
     { return permissionsString( permissions() ); }
 
     //* permission string
     QString permissionsString( const QFile::Permissions& ) const;
 
     //* file size
-    qint64 fileSize( void ) const;
+    qint64 fileSize() const;
 
     //* file size (string version)
-    QString sizeString( void ) const
+    QString sizeString() const
     { return sizeString( fileSize() ); }
 
     //* file size (string version)
@@ -111,26 +111,26 @@ class File: public QString
     static QString rawSizeString( qint64 );
 
     //* tells if a file exists
-    bool exists( void ) const;
+    bool exists() const;
 
     //* tells if a file exists and can be written into
-    bool isWritable( void ) const;
+    bool isWritable() const;
 
     //* tells if a file exists and can be written into
-    bool isReadOnly( void ) const
+    bool isReadOnly() const
     { return !isWritable(); }
 
     //* tells if a file exists and is a directory
-    bool isDirectory( void ) const;
+    bool isDirectory() const;
 
     //* tells if a file is hidden
-    bool isHidden( void ) const;
+    bool isHidden() const;
 
     //* tells if a file is a symbolic link
-    bool isLink( void ) const;
+    bool isLink() const;
 
     //* tells if a file is a broken symbolic link
-    bool isBrokenLink( void ) const;
+    bool isBrokenLink() const;
 
     //* returns true if two file differs
     bool diff( const File& ) const;
@@ -146,16 +146,16 @@ class File: public QString
     File path( bool absolute = true ) const;
 
     //* remove path from full name
-    File localName( void ) const;
+    File localName() const;
 
     //* return canonical name (follow links and remove ".." and ".")
-    File canonicalName( void ) const;
+    File canonicalName() const;
 
     //* get file extension
-    File extension( void ) const;
+    File extension() const;
 
     //* get truncated file (no extension)
-    File truncatedName( void ) const;
+    File truncatedName() const;
 
     //* return first file with matching short name, or empty string if not found
     /** search recursively in this directory and subdirectories */
@@ -174,33 +174,33 @@ class File: public QString
     //@{
 
     //* try create
-    bool create( void ) const;
+    bool create() const;
 
     //* try create directory
     bool createDirectory( const File& = File(".") ) const;
 
     //* set file as hidden (WIN32 only)
-    void setHidden( void ) const;
+    void setHidden() const;
 
     //* returns a versioned filename
     /** (add _i at the end with i the first integer for which file is not found) */
-    File version( void ) const;
+    File version() const;
 
     //* make a backup copy (terminated by ~) of a file, returns backup file
-    File backup( void ) const;
+    File backup() const;
 
     //* return link destination file
-    File readLink( void ) const;
+    File readLink() const;
 
     //* removes file from disk
     /**
     returns true if the file does not exists
     or was successfully removed
     */
-    bool remove( void ) const;
+    bool remove() const;
 
     //* removes directory from disk, recursively
-    bool removeRecursive( void ) const;
+    bool removeRecursive() const;
 
     //* rename file
     /** returns true if the file exists and was renamed */
@@ -214,7 +214,7 @@ class File: public QString
     File addPath( const File&, bool absolute = false ) const;
 
     //* expand a file name replacing .. or ~ to full path
-    File expand( void ) const;
+    File expand() const;
 
     //@}
 

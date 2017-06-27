@@ -236,7 +236,7 @@ namespace Private
     }
 
     //_________________________________________________________________
-    void NavigationWidget::_updatePage( void )
+    void NavigationWidget::_updatePage()
     {
 
         Debug::Throw( "NavigationWidget::_updatePage.\n" );
@@ -249,7 +249,7 @@ namespace Private
 
 
     //_________________________________________________________________
-    void NavigationWidget::_previousPage( void )
+    void NavigationWidget::_previousPage()
     {
 
         Debug::Throw( "NavigationWidget::_previousPage.\n" );
@@ -261,7 +261,7 @@ namespace Private
     }
 
     //_________________________________________________________________
-    void NavigationWidget::_nextPage( void )
+    void NavigationWidget::_nextPage()
     {
 
         Debug::Throw( "NavigationWidget::_nextPage.\n" );
@@ -276,7 +276,7 @@ namespace Private
     }
 
     //_________________________________________________________________
-    void NavigationWidget::_updateButtons( void )
+    void NavigationWidget::_updateButtons()
     {
         previousPageButton_->setEnabled( editor_->text().toInt() > 1 );
         nextPageButton_->setEnabled( editor_->text().toInt() < pages_ );
@@ -347,13 +347,13 @@ void PrintPreviewDialog::setHelper( QObject* helper )
 }
 
 //_________________________________________________________________
-void PrintPreviewDialog::showMenu( void )
+void PrintPreviewDialog::showMenu()
 { if( optionMenu_ ) optionMenu_->show(); }
 
 //_________________________________________________________________
-void PrintPreviewDialog::hideMenu( void )
+void PrintPreviewDialog::hideMenu()
 { if( optionMenu_ ) optionMenu_->hide(); }
 
 //_________________________________________________________________
-void PrintPreviewDialog::_updatePage( void )
+void PrintPreviewDialog::_updatePage()
 { navigationWidget_->setPage( previewWidget_->currentPage() ); }

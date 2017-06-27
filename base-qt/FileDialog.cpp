@@ -23,7 +23,7 @@
 #include "Util.h"
 
 //_______________________________________________________
-File& FileDialog::_workingDirectory( void )
+File& FileDialog::_workingDirectory()
 {
     static File workingDirectory = Util::workingDirectory();
     return workingDirectory;
@@ -45,7 +45,7 @@ FileDialog& FileDialog::selectFile( const File& file )
 }
 
 //_______________________________________________________
-File FileDialog::getFile( void )
+File FileDialog::getFile()
 {
     Debug::Throw( "FileDialog::getFile.\n" );
     File out;
@@ -79,7 +79,7 @@ File FileDialog::getFile( void )
 }
 
 //_______________________________________________________
-File::List FileDialog::getFiles( void )
+File::List FileDialog::getFiles()
 {
 
     Debug::Throw( "FileDialog::getFiles.\n" );

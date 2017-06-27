@@ -41,7 +41,7 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
     setAutoRaise( true );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -90,7 +90,7 @@ bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
 }
 
 //______________________________________________________________________
-QSize CustomToolButton::sizeHint( void ) const
+QSize CustomToolButton::sizeHint() const
 {
     QSize size( QToolButton::sizeHint() );
     if( rotation_ != CustomPixmap::Rotation::None ) size.transpose();
@@ -143,7 +143,7 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
 }
 
 //_________________________________________________________________
-void CustomToolButton::_updateConfiguration( void )
+void CustomToolButton::_updateConfiguration()
 {
     Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
 

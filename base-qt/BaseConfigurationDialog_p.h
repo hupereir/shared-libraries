@@ -46,7 +46,7 @@ namespace Private
         Q_SIGNALS:
 
         //* modified
-        void modified( void );
+        void modified();
 
     };
 

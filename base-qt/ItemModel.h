@@ -41,25 +41,25 @@ class ItemModel : public QAbstractItemModel
     QModelIndexList indexes( int column = 0, const QModelIndex& parent = QModelIndex() ) const;
 
     //* current sorting column
-    int sortColumn( void ) const
+    int sortColumn() const
     { return sortColumn_; }
 
     //* current sort order
-    Qt::SortOrder sortOrder( void ) const
+    Qt::SortOrder sortOrder() const
     { return sortOrder_; }
 
     //* get list of internal selected items
-    virtual QModelIndexList selectedIndexes( void ) const = 0;
+    virtual QModelIndexList selectedIndexes() const = 0;
 
     //* restore currentIndex
-    virtual QModelIndex currentIndex( void ) const = 0;
+    virtual QModelIndex currentIndex() const = 0;
 
     //* true if expended indexes are supported
-    virtual bool supportsExpandedIndexes( void ) const
+    virtual bool supportsExpandedIndexes() const
     { return false; }
 
     //* get list of internal selected items
-    virtual QModelIndexList expandedIndexes( void ) const
+    virtual QModelIndexList expandedIndexes() const
     { return QModelIndexList(); }
 
     //@}
@@ -68,14 +68,14 @@ class ItemModel : public QAbstractItemModel
     //@{
 
     //* sort
-    virtual void sort( void )
+    virtual void sort()
     { sort( sortColumn(), sortOrder() ); }
 
     //* sort
     void sort( int column, Qt::SortOrder order ) override;
 
     //* clear internal list selected items
-    virtual void clearSelectedIndexes( void ) = 0;
+    virtual void clearSelectedIndexes() = 0;
 
     //* set selected indexes
     virtual void setSelectedIndexes( const QModelIndexList& ) = 0;
@@ -84,13 +84,13 @@ class ItemModel : public QAbstractItemModel
     virtual void setIndexSelected( const QModelIndex&, bool ) = 0;
 
     //* current index;
-    virtual void clearCurrentIndex( void ) = 0;
+    virtual void clearCurrentIndex() = 0;
 
     //* store current index
     virtual void setCurrentIndex( const QModelIndex& ) = 0;
 
     //* clear internal list of expanded items
-    virtual void clearExpandedIndexes( void )
+    virtual void clearExpandedIndexes()
     {}
 
     //* set selected indexes
@@ -106,7 +106,7 @@ class ItemModel : public QAbstractItemModel
     protected:
 
     //* this sort columns without calling the layout changed callbacks
-    virtual void _sort( void )
+    virtual void _sort()
     { _sort( sortColumn(), sortOrder() ); }
 
     //* private sort, with no signals emitted

@@ -30,7 +30,7 @@ namespace Transparency
 {
 
     //_______________________________________________________________
-    CompositeEngine& CompositeEngine::get( void )
+    CompositeEngine& CompositeEngine::get()
     {
 
         //! singleton
@@ -40,13 +40,13 @@ namespace Transparency
     }
 
     //_______________________________________________________________
-    CompositeEngine::CompositeEngine( void ):
+    CompositeEngine::CompositeEngine():
         available_( false ),
         initialized_( false )
     { Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); }
 
     //_______________________________________________________________
-    void CompositeEngine::_initialize( void )
+    void CompositeEngine::_initialize()
     {
 
         Debug::Throw( "CompositeEngine::initialize\n" );
@@ -58,7 +58,7 @@ namespace Transparency
     }
 
     //_______________________________________________________________
-    bool CompositeEngine::_compositingAvailable( void ) const
+    bool CompositeEngine::_compositingAvailable() const
     {
         Debug::Throw( "CompositeEngine::_compositingAvailable\n" );
 

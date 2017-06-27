@@ -33,11 +33,11 @@ class BaseSocketInterface: public QObject
     explicit BaseSocketInterface( QObject*, QTcpSocket* = nullptr );
 
     //* socket
-    QTcpSocket& socket( void )
+    QTcpSocket& socket()
     { return *socket_; }
 
     //* associated socket
-    const QTcpSocket& socket( void ) const
+    const QTcpSocket& socket() const
     { return *socket_; }
 
     //* used to retrieve all readers for a given state
@@ -74,10 +74,10 @@ class BaseSocketInterface: public QObject
     protected Q_SLOTS:
 
     //* send pending buffers
-    void _sendPendingBuffers( void );
+    void _sendPendingBuffers();
 
     //* read message from socket
-    void _read( void );
+    void _read();
 
     private:
 

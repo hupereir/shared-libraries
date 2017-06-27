@@ -33,11 +33,11 @@ namespace Private
         public:
 
         //* constructor
-        explicit XmlOptionsSingleton( void )
+        explicit XmlOptionsSingleton()
         { options_.installDefaultOptions(); }
 
         //* file
-        const File& file( void ) const
+        const File& file() const
         { return file_; }
 
         //* set file

@@ -126,13 +126,13 @@ namespace Private
         connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), SLOT(_startDrag(QPoint)) );
 
         // configuration
-        connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+        connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
         _updateConfiguration();
 
     }
 
     //___________________________________________________________________
-    void PlacesWidgetItem::updateMinimumSize( void )
+    void PlacesWidgetItem::updateMinimumSize()
     {
 
         // separators
@@ -310,7 +310,7 @@ namespace Private
     }
 
     //___________________________________________________________________
-    void PlacesWidgetItem::_updateConfiguration( void )
+    void PlacesWidgetItem::_updateConfiguration()
     {
 
         // icon size
@@ -409,7 +409,7 @@ namespace Private
         vLayout->addStretch( 1 );
 
         // configuration
-        connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+        connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
         _updateConfiguration();
 
     }
@@ -479,7 +479,7 @@ namespace Private
     }
 
     //_____________________________________________
-    void PlacesToolTipWidget::_updateConfiguration( void )
+    void PlacesToolTipWidget::_updateConfiguration()
     {
         Debug::Throw( "PlacesToolTipWidget::_updateConfiguration.\n" );
         if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<int>( "TOOLTIPS_PIXMAP_SIZE" ) );
@@ -545,7 +545,7 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     connect( qApp, SIGNAL(aboutToQuit()), SLOT(_saveConfiguration()) );
     _updateConfiguration();
 
@@ -570,7 +570,7 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 }
 
 //______________________________________________________________________
-QList<BaseFileInfo> PlacesWidget::items( void ) const
+QList<BaseFileInfo> PlacesWidget::items() const
 {
     Debug::Throw( "PlacesWidget::items.\n" );
     QList<BaseFileInfo> out;
@@ -637,7 +637,7 @@ bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
 }
 
 //______________________________________________________________________
-void PlacesWidget::clear( void )
+void PlacesWidget::clear()
 {
     // delete all items
     for( const auto& item:items_ )
@@ -873,7 +873,7 @@ void PlacesWidget::_updateIconSize( IconSize::Size size )
 }
 
 //______________________________________________________________________
-void PlacesWidget::_addItem( void )
+void PlacesWidget::_addItem()
 {
     Debug::Throw( "PlacesWidget::_addItem.\n" );
 
@@ -935,7 +935,7 @@ void PlacesWidget::_addItem( void )
 }
 
 //______________________________________________________________________
-void PlacesWidget::_addSeparator( void )
+void PlacesWidget::_addSeparator()
 {
     Debug::Throw( "PlacesWidget::_addSeparator.\n" );
 
@@ -954,7 +954,7 @@ void PlacesWidget::_addSeparator( void )
 }
 
 //______________________________________________________________________
-void PlacesWidget::_insertSeparator( void )
+void PlacesWidget::_insertSeparator()
 {
     Debug::Throw( "PlacesWidget::_insertSeparator.\n" );
 
@@ -986,7 +986,7 @@ void PlacesWidget::_insertSeparator( void )
 }
 
 //______________________________________________________________________
-void PlacesWidget::_editItem( void )
+void PlacesWidget::_editItem()
 {
     Debug::Throw( "PlacesWidget::_editItem.\n" );
     if( !focusItem_ ) return;
@@ -1067,7 +1067,7 @@ void PlacesWidget::_editItem( void )
 }
 
 //______________________________________________________________________
-void PlacesWidget::_removeItem( void )
+void PlacesWidget::_removeItem()
 {
     Debug::Throw( "PlacesWidget::_removeItem.\n" );
     if( !focusItem_ ) return;
@@ -1090,7 +1090,7 @@ void PlacesWidget::_removeItem( void )
 }
 
 //______________________________________________________________________
-void PlacesWidget::_updateItems( void )
+void PlacesWidget::_updateItems()
 {
     Debug::Throw( "PlacesWidget::_updateItems.\n" );
     bool changed( false );
@@ -1248,7 +1248,7 @@ void PlacesWidget::mousePressEvent( QMouseEvent* event )
 }
 
 //_________________________________________________________________________________
-void PlacesWidget::_updateDragState( void ) const
+void PlacesWidget::_updateDragState() const
 {
     for( const auto& item:items_ )
     { item->dragMonitor().setDragEnabled( items_.size()>1 ); }
@@ -1368,7 +1368,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
 }
 
 //_________________________________________________________________________________
-Private::PlacesWidgetItem* PlacesWidget::_focusItem( void ) const
+Private::PlacesWidgetItem* PlacesWidget::_focusItem() const
 {
     for( const auto& item:items_ )
     { if( item->hasFocus() ) return item; }
@@ -1392,7 +1392,7 @@ void PlacesWidget::paintEvent( QPaintEvent* event )
 }
 
 //______________________________________________________________________
-bool PlacesWidget::_read( void )
+bool PlacesWidget::_read()
 {
     Debug::Throw( "PlacesWidget::_read.\n" );
 
@@ -1444,7 +1444,7 @@ bool PlacesWidget::_read( void )
 }
 
 //______________________________________________________________________
-bool PlacesWidget::_write( void )
+bool PlacesWidget::_write()
 {
     Debug::Throw( "PlacesWidget::_write.\n" );
 
@@ -1496,7 +1496,7 @@ bool PlacesWidget::_write( void )
 }
 
 //_________________________________________________________________________________
-void PlacesWidget::_addDefaultPlaces( void )
+void PlacesWidget::_addDefaultPlaces()
 {
 
     Debug::Throw( "PlacesWidget::_addDefaultPlaces.\n" );
@@ -1574,7 +1574,7 @@ bool PlacesWidget::_setDBFile( const File& file )
 }
 
 //_________________________________________________________________________________
-void PlacesWidget::_updateConfiguration( void )
+void PlacesWidget::_updateConfiguration()
 {
     Debug::Throw( "PlacesWidget::_updateConfiguration.\n" );
 
@@ -1604,14 +1604,14 @@ void PlacesWidget::_updateConfiguration( void )
 }
 
 //_________________________________________________________________________________
-void PlacesWidget::_saveConfiguration( void )
+void PlacesWidget::_saveConfiguration()
 {
     Debug::Throw( "PlacesWidget::_saveConfiguration.\n" );
     _write();
 }
 
 //_________________________________________________________________________________
-void PlacesWidget::_installActions( void )
+void PlacesWidget::_installActions()
 {
     Debug::Throw( "PlacesWidget::_installActions.\n" );
 

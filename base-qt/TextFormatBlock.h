@@ -31,7 +31,7 @@
 namespace Format
 {
     //* text format
-    /*!
+    /**
     starting with Qt4, text blocks are no longer referenced by paragraph and index separately, but
     by an absolute index in document. However one must keep the possibility to handle paragraph id
     and convert them to absolute indexes in order to read old formats generated with Qt3.
@@ -51,6 +51,10 @@ namespace Format
             color_( color )
         {}
 
+        //* destructor
+        virtual ~TextFormatBlock() = default;
+
+
         //* less than operator (based on Begin position)
         bool operator < (const TextFormatBlock& format ) const
         { return begin_ < format.begin_; }
@@ -59,7 +63,7 @@ namespace Format
         //@{
 
         //* true if format info is empty
-        bool isEmpty( void ) const
+        bool isEmpty() const
         { return begin_ == end_; }
 
         //* begin position
@@ -104,7 +108,7 @@ namespace Format
         { color_ = value; }
 
         //* unset color (replace by invalid)
-        void unsetColor( void )
+        void unsetColor()
         { color_ = QColor(); }
 
         //* href

@@ -35,7 +35,7 @@ namespace SpellCheck
 {
 
   //* highlight text based on misspelled words
-  class SpellParser: private Base::Counter<SpellParser>
+  class SpellParser final: private Base::Counter<SpellParser>
   {
 
     public:
@@ -44,14 +44,14 @@ namespace SpellCheck
     explicit SpellParser();
 
     //* highlight paragraph
-    Word::Set parse( const QString& text );
+    Word::Set parse( const QString& );
 
     //* highlight color
     /* returns true if changed */
-    bool setColor( const QColor& color );
+    bool setColor( const QColor& );
 
     //* color
-    const QColor& color( void ) const
+    const QColor& color() const
     { return color_; }
 
     //* font format
@@ -59,7 +59,7 @@ namespace SpellCheck
     bool setFontFormat( Format::TextFormatFlags );
 
     //* font format
-    Format::TextFormatFlags fontFormat( void ) const
+    Format::TextFormatFlags fontFormat() const
     { return fontFormat_; }
 
     //* enabled. Returns true if changed.
@@ -71,15 +71,15 @@ namespace SpellCheck
     }
 
     //* enabled
-    bool isEnabled( void ) const
+    bool isEnabled() const
     { return enabled_; }
 
     //* spell interface
-    const SpellInterface& interface( void ) const
+    const SpellInterface& interface() const
     { return interface_; }
 
     //* spell interface
-    SpellInterface& interface( void )
+    SpellInterface& interface()
     { return interface_; }
 
     private:

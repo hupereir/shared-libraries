@@ -113,67 +113,67 @@ class BaseFileInfo
     //@{
 
     //* validity
-    bool isValid( void ) const
+    bool isValid() const
     { return !file_.isEmpty(); }
 
     //* file
-    virtual const File& file( void ) const
+    virtual const File& file() const
     { return file_; }
 
     //* alias
-    virtual bool hasAlias( void ) const
+    virtual bool hasAlias() const
     { return !alias_.isEmpty(); }
 
     //* alias
-    virtual const QString& alias( void ) const
+    virtual const QString& alias() const
     { return alias_; }
 
     //* file type
-    virtual int type( void ) const
+    virtual int type() const
     { return type_; }
 
     //* location
-    virtual TypeFlags location( void ) const
+    virtual TypeFlags location() const
     { return type_ & Remote; }
 
     //* file is local
-    virtual bool isLocal( void ) const
+    virtual bool isLocal() const
     { return !(type_&Remote); }
 
     //* file is remote
-    virtual bool isRemote( void ) const
+    virtual bool isRemote() const
     { return type_&Remote; }
 
     //* file is document
-    virtual bool isDocument( void ) const
+    virtual bool isDocument() const
     { return type_&Document; }
 
     //* file is directory
-    virtual bool isFolder( void ) const
+    virtual bool isFolder() const
     { return type_&Folder; }
 
     //* file is navigator (.|..)
-    virtual bool isNavigator( void ) const
+    virtual bool isNavigator() const
     { return type_&Navigator; }
 
     //* file is link
-    virtual bool isLink( void ) const
+    virtual bool isLink() const
     { return type_&Link; }
 
     //* file is broken link
-    virtual bool isBrokenLink( void ) const
+    virtual bool isBrokenLink() const
     { return (type_&Broken); }
 
     //* file is hidden
-    virtual bool isHidden( void ) const
+    virtual bool isHidden() const
     { return type_&Hidden; }
 
     //* file is clipped
-    virtual bool isClipped( void ) const
+    virtual bool isClipped() const
     { return type_&Clipped; }
 
     //* file size
-    virtual qint64 size( void ) const
+    virtual qint64 size() const
     { return size_; }
 
     //* return true if lastModified_ is valid and smaller than argument
@@ -181,26 +181,26 @@ class BaseFileInfo
     { return ( lastModified_.isValid() && lastModified_ < time ); }
 
     //* file last modification
-    virtual const TimeStamp& lastModified( void ) const
+    virtual const TimeStamp& lastModified() const
     { return lastModified_; }
 
     //* user
-    virtual const QString& user( void ) const
+    virtual const QString& user() const
     { return user_; }
 
     //* group
-    virtual const QString& group( void ) const
+    virtual const QString& group() const
     { return group_; }
 
     //* permissions
-    virtual QFile::Permissions permissions( void ) const
+    virtual QFile::Permissions permissions() const
     { return permissions_; }
 
     //* type string
-    virtual QString typeString( void ) const;
+    virtual QString typeString() const;
 
     //* permission string
-    virtual QString permissionsString( void ) const;
+    virtual QString permissionsString() const;
 
     //@}
 
@@ -220,15 +220,15 @@ class BaseFileInfo
     { type_ = type; }
 
     //* set file as local
-    virtual void setLocal( void )
+    virtual void setLocal()
     { type_ &= (~Remote); }
 
     //* set file as remote
-    virtual void setRemote( void )
+    virtual void setRemote()
     { type_ |= Remote; }
 
     //* set file as file
-    virtual void setIsDocument( void )
+    virtual void setIsDocument()
     {
         type_ &= (~Folder);
         type_ &= (~Navigator);
@@ -236,14 +236,14 @@ class BaseFileInfo
     }
 
     //* set file as directory
-    virtual void setIsFolder( void )
+    virtual void setIsFolder()
     {
         type_ &= (~Document);
         type_ |= Folder;
     }
 
     //* set file as file
-    virtual void setIsNavigator( void )
+    virtual void setIsNavigator()
     {
         type_ &= (~Document);
         type_ |= TypeFlags( Folder|Navigator );
@@ -294,7 +294,7 @@ class BaseFileInfo
     virtual void setPermissions( const QString& );
 
     //* update internal storage from file
-    virtual void update( void );
+    virtual void update();
 
     //* update internal storage from existing file info
     virtual void updateFrom( const BaseFileInfo& );
@@ -389,7 +389,7 @@ class BaseFileInfo
         public:
 
         //* constructor
-        explicit BaseList( void )
+        explicit BaseList()
         {}
 
         //* constructor
@@ -408,7 +408,7 @@ class BaseFileInfo
         {}
 
         //* destructor
-        virtual ~BaseList( void ) = default;
+        virtual ~BaseList() = default;
 
         //* description
         enum Flag

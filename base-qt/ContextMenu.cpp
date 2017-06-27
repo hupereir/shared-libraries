@@ -45,7 +45,7 @@ void ContextMenu::_raise( const QPoint& position )
 }
 
 //___________________________________________________
-void ContextMenu::_hideActions( void )
+void ContextMenu::_hideActions()
 {
 
     Debug::Throw() << "ContextMenu::_hideActions" << endl;
@@ -69,7 +69,7 @@ void ContextMenu::_hideActions( void )
 }
 
 //___________________________________________________
-void ContextMenu::_showActions( void )
+void ContextMenu::_showActions()
 {
     Debug::Throw() << "ContextMenu::_showActions" << endl;
     if( _hideDisabledActions() )

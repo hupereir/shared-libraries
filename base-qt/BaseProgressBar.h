@@ -38,7 +38,7 @@ class BaseProgressBar:public QProgressBar
     { setTextVisible( true ); }
 
     //* reset
-    virtual void reset( void )
+    virtual void reset()
     {
         text_ = QString();
         QProgressBar::reset();

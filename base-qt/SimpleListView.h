@@ -51,7 +51,7 @@ class SimpleListView: public QListView
     protected Q_SLOTS:
 
     //* adjust size
-    void _adjustSize( void );
+    void _adjustSize();
 
     //* hover index
     void _indexEntered( const QModelIndex& );

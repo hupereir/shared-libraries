@@ -55,29 +55,29 @@ namespace SpellCheck
         void showFilter( bool value );
 
         //* spell interface
-        SpellInterface& interface( void )
+        SpellInterface& interface()
         { return interface_; }
 
         //* editor
-        TextEditor &editor( void )
+        TextEditor &editor()
         { return *editor_; }
 
         //* dictionary
         bool setDictionary( const QString& dict );
 
         //* dictionary
-        QString dictionary( void ) const
+        QString dictionary() const
         { return dictionariesComboBox_->itemText( dictionariesComboBox_->currentIndex() ); }
 
         //* filter
         bool setFilter( const QString& filter );
 
         //* dictionary
-        QString filter( void ) const
+        QString filter() const
         { return filtersComboBox_->itemText( filtersComboBox_->currentIndex() ); }
 
         //* go to next word to be checked
-        void nextWord( void );
+        void nextWord();
 
         Q_SIGNALS:
 
@@ -85,7 +85,7 @@ namespace SpellCheck
         void ignoreWord( const QString& );
 
         //* need update
-        void needUpdate( void );
+        void needUpdate();
 
         //* filter has changed
         void filterChanged( QString );
@@ -96,19 +96,19 @@ namespace SpellCheck
         protected Q_SLOTS:
 
         //* update dictionaries
-        void _updateDictionaries( void );
+        void _updateDictionaries();
 
         //* update filters
-        void _updateFilters( void );
+        void _updateFilters();
 
         //* select suggestion, update replaceEditor_
         void _selectSuggestion( const QModelIndex& );
 
         //* select suggestion, update replaceEditor_
-        void _addWord( void );
+        void _addWord();
 
         //* check word in Replace Editor
-        void _checkWord( void );
+        void _checkWord();
 
         //* select dictionary
         void _selectDictionary( const QString& dict );
@@ -118,22 +118,22 @@ namespace SpellCheck
 
         //* recheck text from start
         /** initial begin/end are reset to the full text */
-        void _restart( void );
+        void _restart();
 
         //* ignore
-        void _ignore( void );
+        void _ignore();
 
         //* ignore all
-        void _ignoreAll( void );
+        void _ignoreAll();
 
         //* replace
         void _replace( const QModelIndex& index = QModelIndex() );
 
         //* replace All
-        void _replaceAll( void );
+        void _replaceAll();
 
         //* update buttons
-        void _updateButtons( void );
+        void _updateButtons();
 
         protected:
 
@@ -143,10 +143,10 @@ namespace SpellCheck
         protected Q_SLOTS:
 
         //* save word list
-        void _saveWordList( void );
+        void _saveWordList();
 
         //* restore read only state
-        void _restoreReadOnly( void );
+        void _restoreReadOnly();
 
         private:
 
@@ -186,7 +186,7 @@ namespace SpellCheck
         void _displayWord( const QString& word );
 
         //* spell checking completed
-        void _completed( void );
+        void _completed();
 
         //* spell interface
         SpellInterface interface_;

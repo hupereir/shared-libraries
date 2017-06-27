@@ -42,16 +42,16 @@ class OpenWithComboBox: public QComboBox, private Base::Counter<OpenWithComboBox
     //@{
 
     //* new items
-    const QStringList& newItems( void ) const
+    const QStringList& newItems() const
     { return newItems_; }
 
     using QComboBox::count;
 
     //* return current command
-    File command( void ) const;
+    File command() const;
 
     //* true if selected item is valid
-    bool isItemValid( void ) const
+    bool isItemValid() const
     { return currentIndex() != count()-1; }
 
     //@}

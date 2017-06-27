@@ -36,11 +36,11 @@ namespace Ssh
     { buffer_.resize( maxSize_ ); }
 
     //_______________________________________________________________________
-    BaseSocket::~BaseSocket( void )
+    BaseSocket::~BaseSocket()
     { close(); }
 
     //_______________________________________________________________________
-    bool BaseSocket::atEnd( void ) const
+    bool BaseSocket::atEnd() const
     {
 
         // check channel
@@ -54,7 +54,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    void BaseSocket::close( void )
+    void BaseSocket::close()
     {
         Debug::Throw( "Ssh::BaseSocket:close.\n" );
 
@@ -188,7 +188,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool BaseSocket::_tryRead( void )
+    bool BaseSocket::_tryRead()
     {
 
         if( !isConnected() ) return false;

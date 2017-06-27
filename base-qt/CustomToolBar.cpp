@@ -24,7 +24,7 @@
 #include "XmlOptions.h"
 
 //_______________________________________________________________
-CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas( void )
+CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
 {
     static AreaMap areas = _initializeAreas();
     return areas;
@@ -45,7 +45,7 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     _installActions();
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 }
 
@@ -107,7 +107,7 @@ void CustomToolBar::_toggleVisibility( bool state )
 }
 
 //_______________________________________________________________
-void CustomToolBar::_updateConfiguration( void )
+void CustomToolBar::_updateConfiguration()
 {
     Debug::Throw( "CustomToolBar::_updateConfiguration.\n" );
 
@@ -193,7 +193,7 @@ void CustomToolBar::_updateConfiguration( void )
 }
 
 //_______________________________________________________________
-void CustomToolBar::_installActions( void )
+void CustomToolBar::_installActions()
 {
     Debug::Throw( "CustomToolBar::_installActions.\n" );
     QString buffer;
@@ -212,7 +212,7 @@ void CustomToolBar::_installActions( void )
 }
 
 //_______________________________________________________________
-CustomToolBar::AreaMap CustomToolBar::_initializeAreas( void )
+CustomToolBar::AreaMap CustomToolBar::_initializeAreas()
 {
     AreaMap out;
     out.insert( tr( "None" ), Qt::NoToolBarArea );

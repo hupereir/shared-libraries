@@ -44,21 +44,21 @@ class XcbUtil::Private
     public:
 
     //* constructor
-    Private( void );
+    Private();
 
     #if HAVE_XCB
 
     //* xcb connection
-    xcb_connection_t* connection( void );
+    xcb_connection_t* connection();
 
     //* get screen matching a given number
-    xcb_screen_t* defaultScreen( void );
+    xcb_screen_t* defaultScreen();
 
     //* get screen matching a given number
     xcb_screen_t* screen( int );
 
     //* root window
-    xcb_window_t appRootWindow( void );
+    xcb_window_t appRootWindow();
 
     //* find atom
     xcb_atom_t* atom( const QString& );
@@ -104,7 +104,7 @@ class XcbUtil::Private
 };
 
 //________________________________________________________________________
-XcbUtil::Private::Private( void )
+XcbUtil::Private::Private()
 {
 
     atomNames_ = Base::makeHash<AtomId,QString>(
@@ -132,7 +132,7 @@ XcbUtil::Private::Private( void )
 
 #if HAVE_XCB
 //_______________________________________________________
-xcb_connection_t* XcbUtil::Private::connection( void )
+xcb_connection_t* XcbUtil::Private::connection()
 {
     if( !connection_ )
     {
@@ -172,7 +172,7 @@ xcb_screen_t* XcbUtil::Private::screen( int screenNumber )
 }
 
 //_______________________________________________________
-xcb_screen_t* XcbUtil::Private::defaultScreen( void )
+xcb_screen_t* XcbUtil::Private::defaultScreen()
 {
     if( !defaultScreen_ )
     {
@@ -184,7 +184,7 @@ xcb_screen_t* XcbUtil::Private::defaultScreen( void )
 }
 
 //_______________________________________________________
-xcb_window_t XcbUtil::Private::appRootWindow( void )
+xcb_window_t XcbUtil::Private::appRootWindow()
 {
     if( !appRootWindow_ && defaultScreen() ) { appRootWindow_ = defaultScreen()->root; }
     return appRootWindow_;
@@ -225,19 +225,19 @@ xcb_atom_t* XcbUtil::Private::atom( AtomId atom )
 
 
 //________________________________________________________________________
-XcbUtil& XcbUtil::get( void )
+XcbUtil& XcbUtil::get()
 {
     static XcbUtil singleton;
     return singleton;
 }
 
 //________________________________________________________________________
-XcbUtil::XcbUtil( void ):
+XcbUtil::XcbUtil():
     d( new Private )
     {}
 
 //________________________________________________________________________
-int XcbUtil::defaultScreenNumber( void ) const
+int XcbUtil::defaultScreenNumber() const
 {
     #if HAVE_XCB
     d->connection();
@@ -246,7 +246,7 @@ int XcbUtil::defaultScreenNumber( void ) const
 }
 
 //_______________________________________________________
-WId XcbUtil::appRootWindow( void ) const
+WId XcbUtil::appRootWindow() const
 {
     #if HAVE_XCB
     return d->appRootWindow();
@@ -256,7 +256,7 @@ WId XcbUtil::appRootWindow( void ) const
 }
 
 //________________________________________________________________________
-Qt::HANDLE XcbUtil::_connection( void ) const
+Qt::HANDLE XcbUtil::_connection() const
 {
     #if HAVE_XCB
     return Qt::HANDLE( d->connection() );

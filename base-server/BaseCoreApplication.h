@@ -39,28 +39,28 @@ class BaseCoreApplication: public QObject
     explicit BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
     //* destructor
-    ~BaseCoreApplication( void ) override;
+    ~BaseCoreApplication() override;
 
     //* initialize application manager
-    virtual bool initApplicationManager( void );
+    virtual bool initApplicationManager();
 
     //* create all widgets
-    virtual bool realizeWidget( void );
+    virtual bool realizeWidget();
 
     //*@name application information
     //@{
 
     //* usage
-    virtual void usage( void ) const = 0;
+    virtual void usage() const = 0;
 
     //* command line parser
     virtual CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const;
 
     //* application name
-    virtual QString applicationName( void ) const = 0;
+    virtual QString applicationName() const = 0;
 
     // application version
-    virtual QString applicationVersion( void ) const = 0;
+    virtual QString applicationVersion() const = 0;
 
     //@}
 
@@ -75,10 +75,10 @@ class BaseCoreApplication: public QObject
     Q_SIGNALS:
 
     //* emitted when configuration needs to be saved
-    void saveConfiguration( void );
+    void saveConfiguration();
 
     //* emitted when configuration is changed
-    void configurationChanged( void );
+    void configurationChanged();
 
     protected Q_SLOTS:
 
@@ -91,7 +91,7 @@ class BaseCoreApplication: public QObject
     private Q_SLOTS:
 
     //* configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     protected:
 
@@ -103,23 +103,23 @@ class BaseCoreApplication: public QObject
     { arguments_ = arguments; }
 
     //* argument list
-    CommandLineArguments& _arguments( void )
+    CommandLineArguments& _arguments()
     { return arguments_; }
 
     //* argument list
-    const CommandLineArguments& _arguments( void ) const
+    const CommandLineArguments& _arguments() const
     { return arguments_; }
 
     //* realized
-    bool _realized( void ) const
+    bool _realized() const
     { return realized_; }
 
     //* application manager
-    bool _hasApplicationManager( void ) const
+    bool _hasApplicationManager() const
     { return (bool) applicationManager_; }
 
     //* application manager
-    Server::ApplicationManager& _applicationManager( void ) const
+    Server::ApplicationManager& _applicationManager() const
     { return *applicationManager_; }
 
     private:

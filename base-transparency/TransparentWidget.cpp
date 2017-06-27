@@ -62,13 +62,13 @@ namespace Transparency
         // configuration
         _updateConfiguration();
 
-        if( Singleton::get().hasApplication() )
-        { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
+        if( Base::Singleton::get().hasApplication() )
+        { connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
 
     }
 
     //____________________________________________________________________
-    void TransparentWidget::setBackgroundChanged( void )
+    void TransparentWidget::setBackgroundChanged()
     {
         Debug::Throw( "TransparentWidget::setBackgroundChanged.\n"  );
         setBackgroundChanged( true );
@@ -183,7 +183,7 @@ namespace Transparency
     }
 
     //____________________________________________________________________
-    void TransparentWidget::_updateConfiguration( void )
+    void TransparentWidget::_updateConfiguration()
     {
 
         Debug::Throw( "TransparentWidget::_updateConfiguration.\n" );
@@ -229,7 +229,7 @@ namespace Transparency
     }
 
     //____________________________________________________________________
-    void TransparentWidget::_updateBackgroundPixmap( void )
+    void TransparentWidget::_updateBackgroundPixmap()
     {
 
         Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
@@ -249,7 +249,7 @@ namespace Transparency
 
 
     //____________________________________________________________________
-    void TransparentWidget::_installActions( void )
+    void TransparentWidget::_installActions()
     {
         Debug::Throw( "TransparentWidget::_installAction.\n" );
 
@@ -264,7 +264,7 @@ namespace Transparency
     }
 
     //________________________________________________
-    void TransparentWidget::_updateInputShape( void )
+    void TransparentWidget::_updateInputShape()
     {
 
         #if HAVE_XCB

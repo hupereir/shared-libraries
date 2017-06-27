@@ -61,7 +61,7 @@ namespace Ssh
     }
 
     //______________________________________________________________________
-    ConnectionAttributes LoginDialog::attributes( void ) const
+    ConnectionAttributes LoginDialog::attributes() const
     {
         ConnectionAttributes attributes( attributes_ );
         attributes.setUserName( userNameEditor_->text() );

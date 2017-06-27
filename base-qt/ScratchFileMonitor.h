@@ -46,7 +46,7 @@ class ScratchFileMonitor: public QObject, private Base::Counter<ScratchFileMonit
     void add( const File& file );
 
     //* delete all scratch files
-    void deleteScratchFiles( void );
+    void deleteScratchFiles();
 
     private:
 

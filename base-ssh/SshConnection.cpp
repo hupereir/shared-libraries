@@ -60,11 +60,11 @@ namespace Ssh
     {}
 
     //_______________________________________________
-    Connection::~Connection( void )
+    Connection::~Connection()
     { disconnect(); }
 
     //_______________________________________________
-    bool Connection::createTunnels( void )
+    bool Connection::createTunnels()
     {
 
         Debug::Throw( "Ssh::Connection::createTunnels.\n" );
@@ -100,7 +100,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    bool Connection::connect( void )
+    bool Connection::connect()
     {
 
         Debug::Throw( "Ssh::Connection::connect.\n" );
@@ -231,14 +231,14 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::abortCommands( void )
+    void Connection::abortCommands()
     {
         if( timer_.isActive() ) timer_.stop();
         commands_.clear();
     }
 
     //_______________________________________________
-    void Connection::disconnect( void )
+    void Connection::disconnect()
     {
 
         Debug::Throw( "Ssh::Connection::disconnect.\n" );
@@ -253,7 +253,7 @@ namespace Ssh
     { sshHost_ = host; }
 
     //_______________________________________________
-    void Connection::_disconnectChannels( void )
+    void Connection::_disconnectChannels()
     {
 
         Debug::Throw( "Ssh::Connection::_disconnectChannels.\n" );
@@ -268,7 +268,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_disconnectSession( void )
+    void Connection::_disconnectSession()
     {
 
         Debug::Throw( "Ssh::Connection::_disconnectSession.\n" );
@@ -311,7 +311,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_disconnectTunnels( void )
+    void Connection::_disconnectTunnels()
     {
         Debug::Throw( "Ssh::Connection::_disconnectTunnel.\n" );
 
@@ -328,7 +328,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    bool Connection::isSupported( void )
+    bool Connection::isSupported()
     {
         #if HAVE_SSH
         return true;
@@ -355,7 +355,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    bool Connection::_processCommands( void )
+    bool Connection::_processCommands()
     {
 
         // check empty commands list
@@ -712,7 +712,7 @@ namespace Ssh
     { Debug::Throw() << message << endl; }
 
     //_______________________________________________
-    void Connection::_newConnection( void )
+    void Connection::_newConnection()
     {
         Debug::Throw( "Ssh::Connection::_newConnection.\n" );
 

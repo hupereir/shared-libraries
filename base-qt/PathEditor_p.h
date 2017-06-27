@@ -71,11 +71,11 @@ namespace Private
         bool event( QEvent* ) override;
 
         //* item view
-        QWidget* _itemView( void ) const
+        QWidget* _itemView() const
         { return itemView_; }
 
         //* true if mouse over
-        bool _mouseOver( void ) const
+        bool _mouseOver() const
         { return mouseOver_; }
 
         private:
@@ -103,23 +103,23 @@ namespace Private
         //@{
 
         //* is selectable
-        bool isSelectable( void ) const
+        bool isSelectable() const
         { return isSelectable_; }
 
         //* is last
-        bool isLast( void ) const
+        bool isLast() const
         { return isLast_; }
 
         //* path
-        const File& path( void ) const
+        const File& path() const
         { return path_; }
 
         //* size hint
-        QSize sizeHint( void ) const override
+        QSize sizeHint() const override
         { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
 
         //* drag monitor
-        DragMonitor& dragMonitor( void ) const
+        DragMonitor& dragMonitor() const
         { return *dragMonitor_; }
 
         //@}
@@ -158,7 +158,7 @@ namespace Private
         //@}
 
         //* update minimum width
-        void updateMinimumSize( void );
+        void updateMinimumSize();
 
         //* shortcuts
         using List = QList<PathEditorItem*>;
@@ -173,7 +173,7 @@ namespace Private
         void _paint( QPainter* );
 
         //* arrow width
-        int _arrowWidth( void ) const
+        int _arrowWidth() const
         { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
 
         protected Q_SLOTS:
@@ -222,7 +222,7 @@ namespace Private
         }
 
         // minimum size
-        void updateMinimumSize( void );
+        void updateMinimumSize();
 
         protected:
 

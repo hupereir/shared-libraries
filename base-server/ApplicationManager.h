@@ -51,7 +51,7 @@ namespace Server
         explicit ApplicationManager( QObject* );
 
         //* destructor
-        ~ApplicationManager( void ) override;
+        ~ApplicationManager() override;
 
         //* application name
         void setApplicationName( const QString& );
@@ -78,11 +78,11 @@ namespace Server
         }
 
         //* reference to "this" client
-        Client& client( void ) const
+        Client& client() const
         { return *client_; }
 
         //* retrieve Application ID
-        const ApplicationId& id( void ) const
+        const ApplicationId& id() const
         { return id_; }
 
         public Q_SLOTS:
@@ -96,7 +96,7 @@ namespace Server
         void commandRecieved( Server::ServerCommand );
 
         //* emitted when the server is (re)initialized
-        void initialized( void );
+        void initialized();
 
         protected:
 
@@ -170,13 +170,13 @@ namespace Server
         protected Q_SLOTS:
 
         //* a new connection is granted
-        void _newConnection( void );
+        void _newConnection();
 
         //* a connection was closed
-        void _serverConnectionClosed( void );
+        void _serverConnectionClosed();
 
         //* a connection was closed
-        void _clientConnectionClosed( void );
+        void _clientConnectionClosed();
 
         //* client recieves errors
         void _error( QAbstractSocket::SocketError );
@@ -188,15 +188,15 @@ namespace Server
         void _process( Server::ServerCommand );
 
         //* start timeout
-        void _startTimer( void );
+        void _startTimer();
 
         private:
 
         //* initialize client
-        bool _initializeClient( void );
+        bool _initializeClient();
 
         //* initialize server
-        bool _initializeServer( void );
+        bool _initializeServer();
 
         //* host
         QHostAddress host_;

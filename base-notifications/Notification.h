@@ -47,33 +47,33 @@ class Notification
     //*@name accessors
     //@{
 
-    const QString& applicationName( void ) const
+    const QString& applicationName() const
     { return applicationName_; }
 
-    const QIcon& icon( void ) const
+    const QIcon& icon() const
     { return icon_; }
 
-    const QString& category( void ) const
+    const QString& category() const
     { return category_; }
 
-    const QString& summary( void ) const
+    const QString& summary() const
     { return summary_; }
 
-    const QString& body( void ) const
+    const QString& body() const
     { return body_; }
 
-    const QStringList& actionList( void ) const
+    const QStringList& actionList() const
     { return actionList_; }
 
-    int timeout( void ) const
+    int timeout() const
     { return timeout_; }
 
     //* flags
-    Flags flags( void ) const
+    Flags flags() const
     { return flags_; }
 
     //* true if valid
-    bool isValid( void ) const
+    bool isValid() const
     { return !body_.isEmpty(); }
 
     //* return true if two notifications can be merged

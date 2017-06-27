@@ -55,7 +55,7 @@
 #include <QToolTip>
 
 //______________________________________________
-TextSelection& TextEditor::lastSelection( void )
+TextSelection& TextEditor::lastSelection()
 {
     static TextSelection selection;
     return selection;
@@ -101,8 +101,8 @@ TextEditor::TextEditor( QWidget *parent ):
     connect( this, SIGNAL(selectionChanged()), SLOT(_updateClipboard()) );
     connect( this, SIGNAL(cursorPositionChanged()), SLOT(_synchronizeSelection()) );
 
-    if( Singleton::get().hasApplication() )
-    { connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
+    if( Base::Singleton::get().hasApplication() )
+    { connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
 
     // track changes of block counts
     connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
@@ -119,7 +119,7 @@ TextEditor::TextEditor( QWidget *parent ):
 }
 
 //________________________________________________
-TextEditor::~TextEditor( void )
+TextEditor::~TextEditor()
 {
 
     Debug::Throw() << "TextEditor::~TextEditor - key: " << key() << endl;
@@ -158,7 +158,7 @@ TextEditor::~TextEditor( void )
 }
 
 //________________________________________________
-int TextEditor::blockCount( void ) const
+int TextEditor::blockCount() const
 {
     Debug::Throw( "TextEditor::blockCount.\n" );
 
@@ -169,7 +169,7 @@ int TextEditor::blockCount( void ) const
 }
 
 //________________________________________________
-TextPosition TextEditor::textPosition( void )
+TextPosition TextEditor::textPosition()
 {
 
     auto cursor( textCursor() );
@@ -204,7 +204,7 @@ TextPosition TextEditor::textPosition( void )
 }
 
 //________________________________________________
-bool TextEditor::isCursorVisible( void ) const
+bool TextEditor::isCursorVisible() const
 {
 
     QRect cursor_rect( cursorRect() );
@@ -214,11 +214,11 @@ bool TextEditor::isCursorVisible( void ) const
 }
 
 //______________________________________________________________________
-bool TextEditor::hasSelection( void ) const
+bool TextEditor::hasSelection() const
 { return textCursor().hasSelection() || !boxSelection_.empty(); }
 
 //______________________________________________________________________
-TextSelection TextEditor::selection( void ) const
+TextSelection TextEditor::selection() const
 {
     Debug::Throw( "TextEditor::selection.\n" );
 
@@ -326,7 +326,7 @@ void TextEditor::paintMargin( QPainter& painter )
 }
 
 //________________________________________________
-void TextEditor::selectWord( void )
+void TextEditor::selectWord()
 {
     Debug::Throw( "TextEditor::selectWord.\n" );
 
@@ -374,7 +374,7 @@ void TextEditor::selectWord( void )
 }
 
 //________________________________________________
-void TextEditor::selectLine( void )
+void TextEditor::selectLine()
 {
     Debug::Throw( "TextEditor::selectLine.\n" );
 
@@ -536,7 +536,7 @@ void TextEditor::setReadOnly( bool readOnly )
 }
 
 //____________________________________________________________________
-void TextEditor::resetUndoRedoStack( void )
+void TextEditor::resetUndoRedoStack()
 {
     if( isReadOnly() || !document()->isUndoRedoEnabled() ) return;
 
@@ -688,7 +688,7 @@ void TextEditor::clearBackground( QTextBlock block )
 }
 
 //___________________________________________________________________________
-void TextEditor::clearAllBackgrounds( void )
+void TextEditor::clearAllBackgrounds()
 {
     Debug::Throw( "TextEditor::clearAllBackgrounds.\n" );
     for( auto block = document()->begin(); block.isValid(); block = block.next() )
@@ -696,7 +696,7 @@ void TextEditor::clearAllBackgrounds( void )
 }
 
 //________________________________________________
-void TextEditor::cut( void )
+void TextEditor::cut()
 {
 
     Debug::Throw( "TextEditor::cut.\n" );
@@ -719,7 +719,7 @@ void TextEditor::cut( void )
 }
 
 //________________________________________________
-void TextEditor::copy( void )
+void TextEditor::copy()
 {
 
     Debug::Throw( "TextEditor::copy.\n" );
@@ -729,7 +729,7 @@ void TextEditor::copy( void )
 }
 
 //________________________________________________
-void TextEditor::paste( void )
+void TextEditor::paste()
 {
 
     Debug::Throw( "TextEditor::paste.\n" );
@@ -749,7 +749,7 @@ void TextEditor::paste( void )
 }
 
 //________________________________________________
-void TextEditor::upperCase( void )
+void TextEditor::upperCase()
 {
     Debug::Throw( "TextEditor::upperCase.\n" );
 
@@ -776,7 +776,7 @@ void TextEditor::upperCase( void )
 }
 
 //________________________________________________
-void TextEditor::lowerCase( void )
+void TextEditor::lowerCase()
 {
 
     Debug::Throw( "TextEditor::lowerCase.\n" );
@@ -814,28 +814,28 @@ void TextEditor::find( TextSelection selection )
 }
 
 //______________________________________________________________________
-void TextEditor::findSelectionForward( void )
+void TextEditor::findSelectionForward()
 {
     Debug::Throw( "TextEditor::findSelectionForward.\n" );
     _findForward( selection(), true );
 }
 
 //______________________________________________________________________
-void TextEditor::findSelectionBackward( void )
+void TextEditor::findSelectionBackward()
 {
     Debug::Throw( "TextEditor::findSelectionBackward.\n" );
     _findBackward( selection(), true );
 }
 
 //______________________________________________________________________
-void TextEditor::findAgainForward( void )
+void TextEditor::findAgainForward()
 {
     Debug::Throw( "TextEditor::findAgainForward.\n" );
     _findForward( lastSelection(), true );
 }
 
 //______________________________________________________________________
-void TextEditor::findAgainBackward( void )
+void TextEditor::findAgainBackward()
 {
     Debug::Throw( "TextEditor::findAgainBackward.\n" );
     _findBackward( lastSelection(), true );
@@ -882,7 +882,7 @@ void TextEditor::replace( TextSelection selection )
 }
 
 //______________________________________________________________________
-void TextEditor::replaceAgainForward( void )
+void TextEditor::replaceAgainForward()
 {
     Debug::Throw( "TextEditor::replaceAgainForward.\n" );
     auto selection = lastSelection();
@@ -891,7 +891,7 @@ void TextEditor::replaceAgainForward( void )
 }
 
 //______________________________________________________________________
-void TextEditor::replaceAgainBackward( void )
+void TextEditor::replaceAgainBackward()
 {
     Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
     auto selection = lastSelection();
@@ -1034,7 +1034,7 @@ void TextEditor::removeLine()
 }
 
 //________________________________________________
-void TextEditor::clear( void )
+void TextEditor::clear()
 {
     Debug::Throw( "TextEditor::clear.\n" );
 
@@ -1772,7 +1772,7 @@ void TextEditor::scrollContentsBy( int dx, int dy )
 }
 
 //______________________________________________________________
-void TextEditor::_installActions( void )
+void TextEditor::_installActions()
 {
     Debug::Throw( "TextEditor::_installActions.\n" );
 
@@ -1916,7 +1916,7 @@ void TextEditor::_installActions( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createFindDialog( void )
+void TextEditor::_createFindDialog()
 {
 
     Debug::Throw( "TextEditor::_createFindDialog.\n" );
@@ -1933,7 +1933,7 @@ void TextEditor::_createFindDialog( void )
 }
 
 //______________________________________________________________________
-void TextEditor::_createReplaceDialog( void )
+void TextEditor::_createReplaceDialog()
 {
 
     Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
@@ -1950,7 +1950,7 @@ void TextEditor::_createReplaceDialog( void )
 }
 
 //________________________________________________
-void TextEditor::_createSelectLineDialog( void )
+void TextEditor::_createSelectLineDialog()
 {
     if( !selectLineDialog_ )
     {
@@ -1964,7 +1964,7 @@ void TextEditor::_createSelectLineDialog( void )
 }
 
 //__________________________________________________
-void TextEditor::_createProgressDialog( void )
+void TextEditor::_createProgressDialog()
 {
 
     Debug::Throw( "TextEditor::_createProgressDialog.\n" );
@@ -2321,7 +2321,7 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
 }
 
 //_____________________________________________________________
-void TextEditor::_synchronizeBoxSelection( void ) const
+void TextEditor::_synchronizeBoxSelection() const
 {
 
     if( !isSynchronized() ) return;
@@ -2348,7 +2348,7 @@ bool TextEditor::_setLeftMargin( int margin )
 }
 
 //_____________________________________________________________
-void TextEditor::_toggleOverwriteMode( void )
+void TextEditor::_toggleOverwriteMode()
 {
 
     Debug::Throw( "TextEditor::_toggleOverwriteMode.\n" );
@@ -2385,7 +2385,7 @@ bool TextEditor::_setTabSize( int tabSize )
 }
 
 //_____________________________________________________________
-void TextEditor::_insertTab( void )
+void TextEditor::_insertTab()
 {
     Debug::Throw( "TextEditor::_insertTab.\n" );
 
@@ -2407,7 +2407,7 @@ void TextEditor::_insertTab( void )
 }
 
 //___________________________________________________________________________
-bool TextEditor::_updateMargin( void )
+bool TextEditor::_updateMargin()
 {
 
     Debug::Throw( "TextEditor::_updateMargin.\n" );
@@ -2423,7 +2423,7 @@ bool TextEditor::_updateMargin( void )
 }
 
 //________________________________________________
-void TextEditor::_updateConfiguration( void )
+void TextEditor::_updateConfiguration()
 {
 
     Debug::Throw( "TextEditor::_updateConfiguration.\n" );
@@ -2471,7 +2471,7 @@ void TextEditor::_updateConfiguration( void )
 }
 
 //________________________________________________
-void TextEditor::_synchronizeSelection( void )
+void TextEditor::_synchronizeSelection()
 {
 
     //Debug::Throw( "TextEditor::_synchronizeSelection.\n" );
@@ -2502,7 +2502,7 @@ void TextEditor::_synchronizeSelection( void )
 }
 
 //________________________________________________________
-void TextEditor::_updateContentActions( void )
+void TextEditor::_updateContentActions()
 {
 
     Debug::Throw( "TextEditor::_updateContentActions.\n" );
@@ -2536,7 +2536,7 @@ void TextEditor::_updateReadOnlyActions( bool readOnly )
 }
 
 //________________________________________________
-void TextEditor::_updateUndoRedoActions( void )
+void TextEditor::_updateUndoRedoActions()
 {
 
     Debug::Throw( "TextEditor::_updateUndoRedoActions.\n" );
@@ -2587,7 +2587,7 @@ void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 }
 
 //________________________________________________
-void TextEditor::_updateClipboard( void )
+void TextEditor::_updateClipboard()
 {
     Debug::Throw( "TextEditor::_updateClipboard.\n" );
 
@@ -2598,7 +2598,7 @@ void TextEditor::_updateClipboard( void )
 }
 
 //_____________________________________________
-void TextEditor::_copyLinkLocation( void )
+void TextEditor::_copyLinkLocation()
 {
     Debug::Throw( "TextEditor::_copyLinkLocation.\n" );
     if( !trackAnchors_ ) return;
@@ -2613,7 +2613,7 @@ void TextEditor::_copyLinkLocation( void )
 }
 
 //________________________________________________
-void TextEditor::_updatePasteAction( void )
+void TextEditor::_updatePasteAction()
 {
 
     Debug::Throw( "TextEditor::_updatePasteAction.\n" );
@@ -2754,7 +2754,7 @@ void TextEditor::_blockCountChanged( int count )
 }
 
 //_____________________________________________________________________
-void TextEditor::_findFromDialog( void )
+void TextEditor::_findFromDialog()
 {
     Debug::Throw( "TextEditor::_findFromDialog.\n" );
 
@@ -2794,7 +2794,7 @@ void TextEditor::_findFromDialog( void )
 }
 
 //_____________________________________________________________________
-void TextEditor::_replaceFromDialog( void )
+void TextEditor::_replaceFromDialog()
 {
     Debug::Throw( "TextEditor::_replaceFromDialog.\n" );
 
@@ -2835,11 +2835,11 @@ void TextEditor::_replaceFromDialog( void )
 }
 
 //_____________________________________________
-void TextEditor::_updateReplaceInSelection( void )
+void TextEditor::_updateReplaceInSelection()
 { if( replaceWidget_ ) replaceWidget_->enableReplaceInSelection( hasSelection() ); }
 
 //________________________________________________
-void TextEditor::_selectLineFromDialog( void )
+void TextEditor::_selectLineFromDialog()
 {
 
     Debug::Throw( "TextEditor::_selectLineFromDialog.\n" );
@@ -2880,7 +2880,7 @@ TextEditor::Container::Container( QWidget* parent, TextEditor* editor ):
 { _initialize(); }
 
 //_________________________________________________________
-void TextEditor::Container::_initialize( void )
+void TextEditor::Container::_initialize()
 {
     Debug::Throw( "TextEditor::Container::_initialize.\n" );
     editor_->setParent( this );

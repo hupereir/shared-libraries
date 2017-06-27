@@ -29,7 +29,7 @@ BaseContextMenu::BaseContextMenu( QWidget* parent ):
 { ensurePolished(); }
 
 //___________________________________________________
-QAction* BaseContextMenu::addSeparator( void )
+QAction* BaseContextMenu::addSeparator()
 {
     separator_ = QMenu::addSeparator();
     if( hideDisabledActions_ )

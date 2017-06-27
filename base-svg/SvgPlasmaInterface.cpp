@@ -37,7 +37,7 @@ namespace Svg
     { installSvgSystemOptions(); }
 
     //_________________________________________________
-    QPalette SvgPlasmaInterface::themePalette( void ) const
+    QPalette SvgPlasmaInterface::themePalette() const
     {
 
         QPalette out;
@@ -75,7 +75,7 @@ namespace Svg
     }
 
     //_________________________________________________
-    bool SvgPlasmaInterface::loadTheme( void )
+    bool SvgPlasmaInterface::loadTheme()
     {
 
         Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme" << endl;
@@ -158,7 +158,7 @@ namespace Svg
     }
 
     //_________________________________________________
-    bool SvgPlasmaInterface::loadFile( void )
+    bool SvgPlasmaInterface::loadFile()
     {
 
         Debug::Throw( "Svg::SvgPlasmaInterface::loadFile.\n" );

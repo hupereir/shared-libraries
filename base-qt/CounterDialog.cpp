@@ -50,7 +50,7 @@ CustomDialog( parent, OkButton, Qt::Window )
 }
 
 //__________________________________________________________________________
-void CounterDialog::update( void )
+void CounterDialog::update()
 {
 
     Debug::Throw( "CounterDialog::update.\n" );

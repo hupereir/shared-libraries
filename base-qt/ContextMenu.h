@@ -40,10 +40,10 @@ class ContextMenu: public BaseContextMenu
     protected Q_SLOTS:
 
     //* add actions
-    void _hideActions( void );
+    void _hideActions();
 
     //* show actions
-    void _showActions( void );
+    void _showActions();
 
     //* raise request
     void _raise( const QPoint& );

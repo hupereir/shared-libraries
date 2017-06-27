@@ -54,19 +54,19 @@ class GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
     //@{
 
     //* visibility
-    bool isVisible( void ) const
+    bool isVisible() const
     { return visible_; }
 
     //* key
-    QString key( void ) const
+    QString key() const
     { return key_->text(); }
 
     //* value
-    QString text( void ) const
+    QString text() const
     { return value_->text(); }
 
     //* value label
-    QLabel& label( void ) const
+    QLabel& label() const
     { return *value_; }
 
     //*@}
@@ -89,10 +89,10 @@ class GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
     void setVisible( bool value );
 
     //* show
-    void show( void );
+    void show();
 
     //* hide
-    void hide( void );
+    void hide();
 
     //@}
 

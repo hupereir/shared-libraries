@@ -52,7 +52,7 @@ namespace SpellCheck
     };
 
     //____________________________________________________________________________
-    SpellParser::SpellParser( void ):
+    SpellParser::SpellParser():
         Counter( "SpellParser" )
     {  Debug::Throw( "SpellParser::SpellParser.\n" ); }
 

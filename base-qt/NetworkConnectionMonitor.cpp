@@ -49,13 +49,13 @@ namespace Network
         EncapsulatedSocket& operator = ( const EncapsulatedSocket& other ) = delete;
 
         //* destructor
-        ~EncapsulatedSocket( void )
+        ~EncapsulatedSocket()
         { if( fileDescriptor_ >= 0 ) ::close( fileDescriptor_ ); }
 
-        int fileDescriptor( void ) const
+        int fileDescriptor() const
         { return fileDescriptor_; }
 
-        bool isValid( void ) const
+        bool isValid() const
         { return fileDescriptor_ >= 0; }
 
         private:
@@ -138,7 +138,7 @@ namespace Network
     }
 
     //________________________________________________
-    void ConnectionMonitor::checkDevice( void )
+    void ConnectionMonitor::checkDevice()
     {
 
         Debug::Throw( "ConnectionMonitor::checkDevice.\n" );

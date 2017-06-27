@@ -34,13 +34,13 @@ class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
     public:
 
     //* constructor
-    explicit XmlDocument( void );
+    explicit XmlDocument();
 
     //*@name accessors
     //@{
 
     //* xml error
-    const XmlError& error( void ) const
+    const XmlError& error() const
     { return error_; }
 
     //@}

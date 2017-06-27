@@ -49,12 +49,12 @@ void ProgressStatusBar::setProgressBar( QProgressBar* value )
 }
 
 //______________________________________________________
-void ProgressStatusBar::showProgressBar( void )
+void ProgressStatusBar::showProgressBar()
 {
     if( progress_ )
     { stack_->setCurrentWidget( progress_ ); }
 }
 
 //______________________________________________________
-void ProgressStatusBar::showLabel( void )
+void ProgressStatusBar::showLabel()
 { stack_->setCurrentWidget( label_ ); }

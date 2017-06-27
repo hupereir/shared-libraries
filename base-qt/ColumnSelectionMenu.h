@@ -47,10 +47,10 @@ class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMen
     private Q_SLOTS:
 
     //* update actions
-    void _updateActions( void );
+    void _updateActions();
 
     //* hide current column
-    void _hideCurrentColumn( void );
+    void _hideCurrentColumn();
 
     //* update mask when triggering actions
     void _updateSelectedColumns( QAction* action );

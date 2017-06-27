@@ -63,23 +63,23 @@ namespace Base
         //@{
 
         //! dimensions
-        int left( void ) const
+        int left() const
         { return left_; }
 
         //! dimensions
-        int top( void ) const
+        int top() const
         { return top_; }
 
         //! dimensions
-        int right( void ) const
+        int right() const
         { return right_; }
 
         //! dimensions
-        int bottom( void ) const
+        int bottom() const
         { return bottom_; }
 
         //! true if null
-        bool isNull( void ) const
+        bool isNull() const
         {
             return
                 left_ == 0 &&
@@ -89,11 +89,11 @@ namespace Base
         }
 
         //! width
-        int width( void ) const
+        int width() const
         { return left_+right_; }
 
         //! height
-        int height( void ) const
+        int height() const
         { return top_+bottom_; }
 
         //! return adjusted rect
@@ -101,7 +101,7 @@ namespace Base
         { return source.adjusted( left_, top_, -right_, -bottom_ ); }
 
         //! top left point
-        QPoint topLeft( void ) const
+        QPoint topLeft() const
         { return QPoint( left_, top_ ); }
 
         //@}
@@ -110,7 +110,7 @@ namespace Base
         //@{
 
         //! clear
-        void clear( void )
+        void clear()
         {
             left_ = 0;
             top_ = 0;

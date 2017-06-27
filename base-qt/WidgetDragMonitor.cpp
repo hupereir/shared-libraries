@@ -209,7 +209,7 @@ XcbDefines::Direction WidgetDragMonitor::_direction( QWidget* widget, const QPoi
 }
 
 //___________________________________________________________
-bool WidgetDragMonitor::_startDrag( void )
+bool WidgetDragMonitor::_startDrag()
 {
 
     if( !target_ ) return false;
@@ -231,7 +231,7 @@ bool WidgetDragMonitor::_startDrag( void )
 }
 
 //___________________________________________________________
-void WidgetDragMonitor::_resetDrag( void )
+void WidgetDragMonitor::_resetDrag()
 {
     if( target_ ) target_->unsetCursor();
     target_ = nullptr;

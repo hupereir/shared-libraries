@@ -38,11 +38,11 @@ namespace Private
         explicit LocalTabWidget( QWidget* );
 
         //* main widget
-        QWidget* mainWidget( void )
+        QWidget* mainWidget()
         { return mainWidget_; }
 
         //* main layout
-        QVBoxLayout* mainLayout( void )
+        QVBoxLayout* mainLayout()
         { return mainLayout_; }
 
         Q_SIGNALS:

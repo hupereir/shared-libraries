@@ -35,8 +35,11 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     public:
 
     //* constructor
-    explicit CommandLineParser( void );
+    explicit CommandLineParser();
 
+    //* destructor
+    virtual ~CommandLineParser() = default;
+    
     //*@name default group names
     //@{
     static const QString applicationGroupName;
@@ -83,19 +86,19 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
         //@{
 
         //* long name
-        const QString& longName( void ) const
+        const QString& longName() const
         { return longName_; }
 
         //* short name
-        const QString& shortName( void ) const
+        const QString& shortName() const
         { return shortName_; }
 
         //* convert to string
-        QString toString( void ) const
+        QString toString() const
         { return shortName_.isNull() ? longName_:(shortName_+", "+longName_); }
 
         //* size
-        int size( void ) const
+        int size() const
         { return toString().size(); }
 
         using List = QList<Tag>;
@@ -111,13 +114,13 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     //@{
 
     //* print help
-    void usage( void ) const;
+    void usage() const;
 
     //* return 'rectified' arguments
-    CommandLineArguments arguments( void ) const;
+    CommandLineArguments arguments() const;
 
     //* application name
-    QString applicationName( void ) const
+    QString applicationName() const
     { return applicationName_; }
 
     //* return true if flag is on
@@ -131,7 +134,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
 
     //* orphans
     /** list of command line arguments located at the end of the list and that do not match any option */
-    const QStringList& orphans( void ) const
+    const QStringList& orphans() const
     { return orphans_; }
 
     //@}
@@ -165,11 +168,11 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     CommandLineParser& parse( const CommandLineArguments&, bool ignoreWarnings = true );
 
     //* clear
-    void clear( void );
+    void clear();
 
     //* orphans
     /** list of command line arguments located at the end of the list and that do not match any option */
-    QStringList& orphans( void )
+    QStringList& orphans()
     { return orphans_; }
 
     //@}
@@ -274,7 +277,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
         public:
 
         //* clear
-        void clear( void );
+        void clear();
 
         using Map = QHash< QString, Group>;
 
@@ -293,10 +296,10 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     };
 
     //* return all flags
-    Group::FlagMap _allFlags( void ) const;
+    Group::FlagMap _allFlags() const;
 
     //* return all options
-    Group::OptionMap _allOptions( void ) const;
+    Group::OptionMap _allOptions() const;
 
     //* find tag in list of flags
     Group::FlagMap::iterator _findTag( Group::FlagMap&, const QString& ) const;

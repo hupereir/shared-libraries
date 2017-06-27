@@ -53,11 +53,11 @@ namespace Base
         void install( const QString text[], bool clear = true );
 
         //* list of items
-        const HelpItem::List& items( void )
+        const HelpItem::List& items()
         { return items_; }
 
         //* clear help
-        void clear( void )
+        void clear()
         { items_.clear(); }
 
         //* set dialog caption
@@ -66,13 +66,13 @@ namespace Base
         //@}
 
         //* display action
-        QAction& displayAction( void )
+        QAction& displayAction()
         { return *displayAction_; }
 
         protected Q_SLOTS:
 
         //* opens help dialog
-        void _display( void );
+        void _display();
 
         private:
 

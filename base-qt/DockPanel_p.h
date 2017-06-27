@@ -73,11 +73,11 @@ namespace Private
         //@{
 
         //* true if attached
-        bool isDetached( void ) const
+        bool isDetached() const
         { return widgetDragMonitor_.isEnabled(); }
 
         //* widget drag monitor
-        const WidgetDragMonitor& widgetDragMonitor( void ) const
+        const WidgetDragMonitor& widgetDragMonitor() const
         { return widgetDragMonitor_; }
 
         //@}
@@ -86,7 +86,7 @@ namespace Private
         //@{
 
         //* widget drag monitor
-        WidgetDragMonitor& widgetDragMonitor( void )
+        WidgetDragMonitor& widgetDragMonitor()
         { return widgetDragMonitor_; }
 
         //* option name (needed to store sticky and stays-on-top state)
@@ -106,15 +106,15 @@ namespace Private
         //@{
 
         //* detach action
-        QAction& detachAction( void ) const
+        QAction& detachAction() const
         { return *detachAction_; }
 
         //* stay on top
-        QAction& staysOnTopAction( void ) const
+        QAction& staysOnTopAction() const
         { return *staysOnTopAction_; }
 
         //* widget is hidden from taskbar
-        QAction& stickyAction( void ) const
+        QAction& stickyAction() const
         { return *stickyAction_; }
 
         //@}
@@ -122,18 +122,18 @@ namespace Private
         protected:
 
         //* update actions
-        void _updateActions( void );
+        void _updateActions();
 
         //* true if option name is set
-        bool _hasOptionName( void ) const
+        bool _hasOptionName() const
         { return !(_stickyOptionName().isEmpty() || _staysOnTopOptionName().isEmpty() ); }
 
         //* option name
-        const QString& _stickyOptionName( void ) const
+        const QString& _stickyOptionName() const
         { return stickyOptionName_; }
 
         //* option name
-        const QString& _staysOnTopOptionName( void ) const
+        const QString& _staysOnTopOptionName() const
         { return staysOnTopOptionName_; }
 
         protected Q_SLOTS:
@@ -150,12 +150,12 @@ namespace Private
         private Q_SLOTS:
 
         //* configuration
-        void _updateConfiguration( void );
+        void _updateConfiguration();
 
         private:
 
         //* actions
-        void _installActions( void );
+        void _installActions();
 
         //*@name actions
         //@{

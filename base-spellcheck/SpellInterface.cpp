@@ -50,7 +50,7 @@ namespace SpellCheck
     const QString SpellInterface::FilterTexWithNoAccents = QObject::tr( "tex (no accents)" );
 
     //_______________________________________________
-    SpellInterface::SpellInterface( void ):
+    SpellInterface::SpellInterface():
         Counter( "SpellInterface" ),
         text_(""),
         checkedText_(""),
@@ -83,7 +83,7 @@ namespace SpellCheck
     }
 
     //__________________________________________
-    SpellInterface::~SpellInterface( void )
+    SpellInterface::~SpellInterface()
     {
         Debug::Throw( "SpellInterface::~SpellInterface.\n" );
         saveWordList();
@@ -95,7 +95,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellInterface::listDictionaries( void ) const
+    void SpellInterface::listDictionaries() const
     {
         if( dictionaries_.isEmpty() ) return;
         Debug::Throw(0) << QObject::tr( "Available dictionaries: " ) << endl;
@@ -104,7 +104,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellInterface::listFilters( void ) const
+    void SpellInterface::listFilters() const
     {
         if( dictionaries_.isEmpty() ) return;
         Debug::Throw(0) << QObject::tr( "Available filters: " ) << endl;
@@ -271,7 +271,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    bool SpellInterface::nextWord( void )
+    bool SpellInterface::nextWord()
     {
 
         // check filter
@@ -349,7 +349,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellInterface::saveWordList( void )
+    void SpellInterface::saveWordList()
     {
         Debug::Throw( "SpellInterface::saveWordList.\n" );
         if( spellChecker_ ) aspell_speller_save_all_word_lists( spellChecker_ );
@@ -357,7 +357,7 @@ namespace SpellCheck
 
 
     //____________________________________________________
-    bool SpellInterface::reset( void )
+    bool SpellInterface::reset()
     {
         Debug::Throw( "SpellInterface::reset.\n" );
 
@@ -372,7 +372,7 @@ namespace SpellCheck
 
 
     //____________________________________________________
-    void SpellInterface::_loadDictionaries( void )
+    void SpellInterface::_loadDictionaries()
     {
 
         Debug::Throw( "SpellInterface::_loadDictionaries.\n" );
@@ -394,7 +394,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    void SpellInterface::_loadFilters( void )
+    void SpellInterface::_loadFilters()
     {
         if( !filters_.isEmpty() ) return;
 
@@ -431,7 +431,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    bool SpellInterface::_reset( void )
+    bool SpellInterface::_reset()
     {
 
         Debug::Throw( "SpellInterface::_reset\n" );
@@ -480,7 +480,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________
-    bool SpellInterface::_resetSpellChecker( void )
+    bool SpellInterface::_resetSpellChecker()
     {
 
         Debug::Throw( "SpellInterface::_resetSpellChecker\n" );

@@ -29,10 +29,10 @@ namespace Transparency
         public:
 
         //! singleton
-        static CompositeEngine& get( void );
+        static CompositeEngine& get();
 
         //! availability
-        bool isAvailable( void )
+        bool isAvailable()
         {
             _initialize();
             return available_;
@@ -41,15 +41,15 @@ namespace Transparency
         protected:
 
         //! initialize
-        void _initialize( void );
+        void _initialize();
 
         //! returns true if composition is enabled
-        bool _compositingAvailable( void ) const;
+        bool _compositingAvailable() const;
 
         private:
 
         //! constructor
-        explicit CompositeEngine( void );
+        explicit CompositeEngine();
 
         //! validity
         bool available_;

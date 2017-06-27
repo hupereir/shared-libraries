@@ -40,7 +40,7 @@ class BaseReplaceWidget: public BaseFindWidget
     //@{
 
     //* string to replace
-    QString replaceText( void ) const
+    QString replaceText() const
     { return replaceEditor_->currentText(); }
 
     //* retrieve text selection from dialog
@@ -60,14 +60,14 @@ class BaseReplaceWidget: public BaseFindWidget
     { replaceEditor_->setEditText( text ); }
 
     //* synchronize searched strings and ComboBox
-    void synchronize( void ) override;
+    void synchronize() override;
 
     //@}
 
     Q_SIGNALS:
 
     //* emitted when replace all menu is about to show
-    void menuAboutToShow( void );
+    void menuAboutToShow();
 
     //* emitted when Replace is pressed
     void replace( TextSelection );
@@ -84,27 +84,27 @@ class BaseReplaceWidget: public BaseFindWidget
     protected Q_SLOTS:
 
     //* update combo box with current text
-    void _updateReplaceComboBox( void )
+    void _updateReplaceComboBox()
     { _addReplacedString( replaceEditor_->currentText() ); }
 
     //* create Selection object when replace button is pressed
-    void _replace( void )
+    void _replace()
     { emit replace( selection( false ) ); }
 
     //* create Selection object when replace button is pressed
-    void _replaceInWindow( void );
+    void _replaceInWindow();
 
     //* create Selection object when replace button is pressed
-    void _replaceInSelection( void );
+    void _replaceInSelection();
 
     protected:
 
     //* replace editor
-    CustomComboBox& _replaceEditor( void ) const
+    CustomComboBox& _replaceEditor() const
     { return *replaceEditor_; }
 
     //* replace all menu
-    QMenu& _replaceAllMenu( void ) const
+    QMenu& _replaceAllMenu() const
     { return *replaceAllMenu_; }
 
     //* add string to both combo box and static set

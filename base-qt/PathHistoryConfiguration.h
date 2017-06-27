@@ -39,7 +39,7 @@ class PathHistoryConfiguration: public QWidget, public OptionWidgetList, private
     Q_SIGNALS:
 
     //! modified
-    void modified( void );
+    void modified();
 
 };
 

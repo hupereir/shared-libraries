@@ -41,17 +41,17 @@ class OpenWithDialog: public CustomDialog
     //@{
 
     //* combo box
-    OpenWithComboBox& comboBox( void ) const
+    OpenWithComboBox& comboBox() const
     { return *comboBox_; }
 
     //* true if command is valid
-    bool isCommandValid( void ) const;
+    bool isCommandValid() const;
 
     //* true if command is default
-    bool isCommandDefault( void ) const;
+    bool isCommandDefault() const;
 
     //* current command
-    File command( void ) const;
+    File command() const;
 
     //@}
 
@@ -97,14 +97,14 @@ class OpenWithDialog: public CustomDialog
     }
 
     //* realize
-    void realizeWidget( void );
+    void realizeWidget();
 
     //@}
 
     protected Q_SLOTS:
 
     //* open file
-    void _open( void );
+    void _open();
 
     private:
 

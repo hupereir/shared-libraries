@@ -48,7 +48,7 @@ namespace SpellCheck
     }
 
     //___________________________________________
-    void FilterSelectionButton::_edit( void )
+    void FilterSelectionButton::_edit()
     {
 
         Debug::Throw( "FilterSelectionButton::_edit.\n" );

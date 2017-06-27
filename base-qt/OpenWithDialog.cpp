@@ -46,19 +46,19 @@ OpenWithDialog::OpenWithDialog( QWidget* parent ):
 }
 
 //____________________________________________________________________________
-bool OpenWithDialog::isCommandValid( void ) const
+bool OpenWithDialog::isCommandValid() const
 { return comboBox_->isItemValid(); }
 
 //____________________________________________________________________________
-bool OpenWithDialog::isCommandDefault( void ) const
+bool OpenWithDialog::isCommandDefault() const
 { return comboBox_->currentIndex() == 0; }
 
 //____________________________________________________________________________
-File OpenWithDialog::command( void ) const
+File OpenWithDialog::command() const
 { return comboBox_->command(); }
 
 //____________________________________________________________________________
-void OpenWithDialog::realizeWidget( void )
+void OpenWithDialog::realizeWidget()
 {
 
     Q_ASSERT( !files_.isEmpty() );
@@ -183,7 +183,7 @@ void OpenWithDialog::realizeWidget( void )
 }
 
 //____________________________________________________________________________
-void OpenWithDialog::_open( void )
+void OpenWithDialog::_open()
 {
     Debug::Throw( "OpenWithDialog::_open.\n" );
 

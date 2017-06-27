@@ -59,7 +59,7 @@ namespace SpellCheck
         public Q_SLOTS:
 
         //! reset dictionary list
-        void reset( void );
+        void reset();
 
         protected Q_SLOTS:
 

@@ -87,7 +87,7 @@ namespace Private
         //* constructor
         explicit NavigationWidget( QWidget* );
 
-        int pages( void )
+        int pages()
         { return pages_; }
 
         //* set page
@@ -109,16 +109,16 @@ namespace Private
         protected Q_SLOTS:
 
         //* previous page
-        void _previousPage( void );
+        void _previousPage();
 
         //* next page
-        void _nextPage( void );
+        void _nextPage();
 
         //* update page
-        void _updatePage( void );
+        void _updatePage();
 
         //* update buttons
-        void _updateButtons( void );
+        void _updateButtons();
 
         private:
 

@@ -39,7 +39,7 @@ class BrowseIconButton: public CustomToolButton
     explicit BrowseIconButton( QWidget*, const QString& = QString() );
 
     //* iconFile
-    const QString& file( void ) const
+    const QString& file() const
     { return file_; }
 
     //* iconFile
@@ -56,7 +56,7 @@ class BrowseIconButton: public CustomToolButton
     protected Q_SLOTS:
 
     //* opens file dialog to browse icon file
-    void _browse( void );
+    void _browse();
 
     private:
 

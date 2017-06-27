@@ -54,15 +54,15 @@ namespace SpellCheck
         Q_SIGNALS:
 
         //* modified
-        void modified( void );
+        void modified();
 
         protected Q_SLOTS:
 
         //* update dictionaries
-        void _updateDictionaries( void );
+        void _updateDictionaries();
 
         //* update filters
-        void _updateFilters( void );
+        void _updateFilters();
 
         private:
 

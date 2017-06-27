@@ -49,7 +49,7 @@ void FontInfo::setFormat( Format::TextFormatFlags format )
 }
 
 //__________________________________________________
-Format::TextFormatFlags FontInfo::format( void ) const
+Format::TextFormatFlags FontInfo::format() const
 {
     Debug::Throw( "FontInfo::format.\n" );
 

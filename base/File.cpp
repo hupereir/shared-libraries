@@ -34,46 +34,46 @@
 #include <cmath>
 
 //_____________________________________________________________________
-bool File::isAbsolute( void ) const
+bool File::isAbsolute() const
 { return QFileInfo( *this ).isAbsolute(); }
 
 //_____________________________________________________________________
-TimeStamp File::created( void ) const
+TimeStamp File::created() const
 {
     if( !exists() ) return TimeStamp();
     return TimeStamp(QFileInfo( *this ).created().toTime_t());
 }
 
 //_____________________________________________________________________
-TimeStamp File::lastModified( void ) const
+TimeStamp File::lastModified() const
 {
     if( !exists() ) return TimeStamp();
     return TimeStamp( QFileInfo( *this ).lastModified().toTime_t() );
 }
 
 //_____________________________________________________________________
-TimeStamp File::lastAccessed( void ) const
+TimeStamp File::lastAccessed() const
 {
     if( !exists() ) return TimeStamp();
     return TimeStamp( QFileInfo( *this ).lastRead().toTime_t() );
 }
 
 //_____________________________________________________________________
-uint File::userId( void ) const
+uint File::userId() const
 {
     if( !exists() ) return 0;
     return QFileInfo( *this ).ownerId();
 }
 
 //_____________________________________________________________________
-uint File::groupId( void ) const
+uint File::groupId() const
 {
     if( !exists() ) return 0;
     return QFileInfo( *this ).groupId();
 }
 
 //_____________________________________________________________________
-QString File::userName( void ) const
+QString File::userName() const
 {
     if( !exists() ) return QString();
     QString out( QFileInfo( *this ).owner() );
@@ -82,14 +82,14 @@ QString File::userName( void ) const
 }
 
 //_____________________________________________________________________
-QString File::groupName( void ) const
+QString File::groupName() const
 {
     if( !exists() ) return QString();
     return QFileInfo( *this ).group();
 }
 
 //_____________________________________________________________________
-QFile::Permissions File::permissions( void ) const
+QFile::Permissions File::permissions() const
 { return QFileInfo( *this ).permissions(); }
 
 //_____________________________________________________________________
@@ -123,7 +123,7 @@ QString File::permissionsString( const QFile::Permissions& mode ) const
 }
 
 //_____________________________________________________________________
-qint64 File::fileSize( void ) const
+qint64 File::fileSize() const
 {
     if( !exists() ) return 0;
     return QFileInfo( *this ).size();
@@ -177,27 +177,27 @@ QString File::rawSizeString( qint64 sizeInt )
 }
 
 //_____________________________________________________________________
-bool File::exists( void ) const
+bool File::exists() const
 { return QFileInfo( *this ).exists(); }
 
 //_____________________________________________________________________
-bool File::isWritable( void ) const
+bool File::isWritable() const
 { return isEmpty() || QFile( *this ).open( QIODevice::ReadWrite ); }
 
 //_____________________________________________________________________
-bool File::isDirectory( void ) const
+bool File::isDirectory() const
 { return !isEmpty() && QFileInfo( *this ).isDir(); }
 
 //_____________________________________________________________________
-bool File::isHidden( void ) const
+bool File::isHidden() const
 { return !isEmpty() && QFileInfo( *this ).isHidden(); }
 
 //_____________________________________________________________________
-bool File::isLink( void ) const
+bool File::isLink() const
 { return !isEmpty() && QFileInfo( *this ).isSymLink(); }
 
 //_____________________________________________________________________
-bool File::isBrokenLink( void ) const
+bool File::isBrokenLink() const
 { return isLink() && !File( QFileInfo( *this ).symLinkTarget() ).exists(); }
 
 //_____________________________________________________________________
@@ -240,11 +240,11 @@ File File::path( bool useAbsolute ) const
 }
 
 //_____________________________________________________________________
-File File::localName( void ) const
+File File::localName() const
 { return isEmpty() ? File(): File( QFileInfo(*this).fileName() ); }
 
 //_____________________________________________________________________
-File File::canonicalName( void ) const
+File File::canonicalName() const
 {
     if( isEmpty() ) return File();
     QString canonicalName( QFileInfo(*this).canonicalFilePath() );
@@ -252,7 +252,7 @@ File File::canonicalName( void ) const
 }
 
 //_____________________________________________________________________
-File File::extension( void ) const
+File File::extension() const
 {
     // check file name
     if( isEmpty() ) return File();
@@ -265,7 +265,7 @@ File File::extension( void ) const
 }
 
 //_____________________________________________________________________
-File File::truncatedName( void ) const
+File File::truncatedName() const
 {
 
     // check file name
@@ -285,7 +285,7 @@ File File::truncatedName( void ) const
 
 
 //_____________________________________________________________________
-bool File::create( void ) const
+bool File::create() const
 { return QFile( *this ).open( QIODevice::WriteOnly ); }
 
 //_____________________________________________________________________
@@ -297,7 +297,7 @@ bool File::createDirectory( const File& constPath ) const
 }
 
 //_____________________________________________________________________
-void File::setHidden( void ) const
+void File::setHidden() const
 {
     #if defined(Q_OS_WIN)
     if( !isEmpty() ) SetFileAttributes( toLatin1(), FILE_ATTRIBUTE_HIDDEN );
@@ -305,7 +305,7 @@ void File::setHidden( void ) const
 }
 
 //_____________________________________________________________________
-File File::version( void ) const
+File File::version() const
 {
 
     int version=0;
@@ -322,7 +322,7 @@ File File::version( void ) const
 }
 
 //_____________________________________________________________________
-File File::backup( void ) const
+File File::backup() const
 {
 
     // check filename is valid and file exists
@@ -339,11 +339,11 @@ File File::backup( void ) const
 }
 
 //_____________________________________________________________________
-File File::readLink( void ) const
+File File::readLink() const
 { return File( QFileInfo( *this ).canonicalFilePath() ); }
 
 //_____________________________________________________________________
-bool File::remove( void ) const
+bool File::remove() const
 {
 
     // check if file exists and remove
@@ -365,7 +365,7 @@ bool File::remove( void ) const
 }
 
 //_____________________________________________________________________
-bool File::removeRecursive( void ) const
+bool File::removeRecursive() const
 {
 
     if( isLink() || !isDirectory() ) return remove();
@@ -460,7 +460,7 @@ File File::addPath( const File& path, bool useAbsolute ) const
 }
 
 //_____________________________________________________________________
-File File::expand( void ) const
+File File::expand() const
 {
     if( isEmpty() ) return File();
     File out( QFileInfo(*this).absoluteFilePath() );

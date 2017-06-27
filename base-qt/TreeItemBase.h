@@ -22,38 +22,41 @@
 
 #include "Counter.h"
 
-//! used to wrap object T into tree structure
+//* used to wrap object T into tree structure
 class TreeItemBase: private Base::Counter<TreeItemBase>
 {
 
     public:
 
-    //! unique id
+    //* destructor
+    virtual ~TreeItemBase() = default;
+
+    //* unique id
     using Id = quint32;
 
-    //! unique id
-    const Id& id( void ) const
+    //* unique id
+    const Id& id() const
     { return id_; }
 
     protected:
 
-    //! constructor
-    /*! used to insert T in the tree structure */
+    //* constructor
+    /** used to insert T in the tree structure */
     explicit TreeItemBase( const Id& id ):
         Counter( "TreeItemBase" ),
         id_( id )
     {}
 
-    //! id
+    //* id
     void _setId( const Id& id )
     { id_ = id; }
 
-    //! running id
-    static Id& _runningId( void );
+    //* running id
+    static Id& _runningId();
 
     private:
 
-    //! unique id
+    //* unique id
     Id id_;
 
 };

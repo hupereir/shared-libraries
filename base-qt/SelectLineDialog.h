@@ -40,7 +40,7 @@ class SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialo
     //@{
 
     //* retrieve editor
-    LineEditor& editor( void ) const
+    LineEditor& editor() const
     { return selectLineWidget_->editor(); }
 
     //@}

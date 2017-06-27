@@ -47,7 +47,7 @@ namespace Base
         explicit HelpDialog( HelpManager& manager, QWidget *parent = nullptr );
 
         //* clear items
-        void clear( void )
+        void clear()
         { model_.clear(); }
 
         //* set items
@@ -59,7 +59,7 @@ namespace Base
         void _display( const QModelIndex&, const QModelIndex& );
 
         //* update configuration
-        void _updateConfiguration( void );
+        void _updateConfiguration();
 
         private:
 

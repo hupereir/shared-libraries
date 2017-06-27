@@ -40,7 +40,7 @@ class OptionWidgetList: public OptionWidget
     void addOptionWidget( OptionWidget* );
 
     //* clear option widgets
-    void clearOptionWidgets( void )
+    void clearOptionWidgets()
     {
         Debug::Throw( "OptionWidgetList::clearOptionWidgets.\n" );
         optionWidgets_.clear();
@@ -55,7 +55,7 @@ class OptionWidgetList: public OptionWidget
     protected:
 
     //* get necessary spacing for checkbox alignment
-    int _checkBoxSpacing( void ) const;
+    int _checkBoxSpacing() const;
 
     private:
 

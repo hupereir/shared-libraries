@@ -29,7 +29,7 @@
 #include <algorithm>
 
 //__________________________________________________________________
-FileRecordModel::IconCache& FileRecordModel::_icons( void )
+FileRecordModel::IconCache& FileRecordModel::_icons()
 {
     static IconCache cache;
     return cache;
@@ -47,7 +47,7 @@ FileRecordModel::FileRecordModel( QObject* parent ):
     columnTitles_ << tr( "Path" );
     columnTitles_ << tr( "Last Accessed" );
 
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
 
 }
 
@@ -214,7 +214,7 @@ void FileRecordModel::_add( const ValueType& value )
 }
 
 //____________________________________________________________
-void FileRecordModel::_updateConfiguration( void )
+void FileRecordModel::_updateConfiguration()
 {
     Debug::Throw( "FileRecordModel::_updateConfiguration.\n" );
     _icons().clear();

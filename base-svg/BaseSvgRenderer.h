@@ -37,13 +37,13 @@ namespace Svg
         public:
 
         //* constructor
-        explicit BaseSvgRenderer( void );
+        explicit BaseSvgRenderer();
 
         //*@name accessors
         //@{
 
         //* true if style sheet is used
-        bool styleSheetIsUsed( void ) const
+        bool styleSheetIsUsed() const
         { return styleSheetIsUsed_; }
 
         //@}

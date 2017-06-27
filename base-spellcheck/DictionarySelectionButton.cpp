@@ -48,7 +48,7 @@ namespace SpellCheck
     }
 
     //___________________________________________
-    void DictionarySelectionButton::_edit( void )
+    void DictionarySelectionButton::_edit()
     {
 
         Debug::Throw( "DictionarySelectionButton::_edit.\n" );

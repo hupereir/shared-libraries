@@ -32,7 +32,7 @@
 class TextEditor;
 
 //* handles box selection
-class BoxSelection: private Base::Counter<BoxSelection>
+class BoxSelection final: private Base::Counter<BoxSelection>
 {
 
     public:
@@ -55,22 +55,22 @@ class BoxSelection: private Base::Counter<BoxSelection>
     //@{
 
     //* enability
-    bool isEnabled( void ) const
+    bool isEnabled() const
     { return enabled_; }
 
     //* empty
-    bool empty( void ) const;
+    bool empty() const;
 
     //* forgeround color
-    const QColor& color( void ) const
+    const QColor& color() const
     { return color_; }
 
     //* background brush
-    const QBrush& brush( void ) const
+    const QBrush& brush() const
     { return brush_; }
 
     //* state
-    const State& state( void ) const
+    const State& state() const
     { return state_; }
 
     //* start point
@@ -82,7 +82,7 @@ class BoxSelection: private Base::Counter<BoxSelection>
     { return end_; }
 
     //* rect
-    const QRect& rect( void ) const
+    const QRect& rect() const
     { return rect_; }
 
     //@}
@@ -94,10 +94,10 @@ class BoxSelection: private Base::Counter<BoxSelection>
     void synchronize( const BoxSelection& );
 
     //* configuration update
-    void updateConfiguration( void );
+    void updateConfiguration();
 
     //* try enable box selection
-    bool checkEnabled( void );
+    bool checkEnabled();
 
     //* start
     bool start( QPoint point );
@@ -109,7 +109,7 @@ class BoxSelection: private Base::Counter<BoxSelection>
     bool finish( QPoint point );
 
     //* clear
-    bool clear( void );
+    bool clear();
 
     //@}
 
@@ -128,11 +128,11 @@ class BoxSelection: private Base::Counter<BoxSelection>
 
         //* first column
         /*! it is used for lines that are entirely outside of the existing blocks */
-        int firstColumn( void ) const
+        int firstColumn() const
         { return firstColumn_; }
 
         //* number of columns in the selection
-        int columnCount( void ) const
+        int columnCount() const
         { return columns_; }
 
         private:
@@ -151,11 +151,11 @@ class BoxSelection: private Base::Counter<BoxSelection>
 
     //* retrieve list of cursors matching the selection
     /*! they are used for cut, copy, paste and searching */
-    const CursorList& cursorList( void ) const
+    const CursorList& cursorList() const
     { return cursors_; }
 
     //* copy selection into a string
-    QString toString( void ) const;
+    QString toString() const;
 
     //* update from string
     bool fromString( QString );
@@ -167,13 +167,13 @@ class BoxSelection: private Base::Counter<BoxSelection>
     bool fromClipboard( const QClipboard::Mode& );
 
     //* remove selected text
-    bool removeSelectedText( void ) const;
+    bool removeSelectedText() const;
 
     //* convert selected text to upperCase
-    bool toUpper( void );
+    bool toUpper();
 
     //* convert selected text to upperCase
-    bool toLower( void );
+    bool toLower();
 
     //* apply char format to selection
     bool mergeCharFormat( const QTextCharFormat& ) const;
@@ -183,10 +183,10 @@ class BoxSelection: private Base::Counter<BoxSelection>
     private:
 
     //* update repaiint rect
-    void _updateRect( void );
+    void _updateRect();
 
     //* store selected text
-    void _store( void );
+    void _store();
 
     //* parent editor
     TextEditor* parent_ = nullptr;

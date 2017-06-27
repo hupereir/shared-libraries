@@ -70,20 +70,20 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     //@{
 
     //* lock from options
-    bool lockFromOptions( void ) const
+    bool lockFromOptions() const
     { return lockFromOptions_; }
 
     //* lock from options
-    bool sizeFromOptions( void ) const
+    bool sizeFromOptions() const
     { return sizeFromOptions_; }
 
     //* true if visible in menu
     /** the flag is ignored if parent is MainWindow */
-    bool appearsInMenu( void ) const
+    bool appearsInMenu() const
     { return appearsInMenu_; }
 
     //* visibility action
-    QAction& visibilityAction( void ) const
+    QAction& visibilityAction() const
     { return *visibilityAction_; }
 
     //@}
@@ -159,12 +159,12 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     private Q_SLOTS:
 
     //* update configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 
     //* install actions
-    void _installActions( void );
+    void _installActions();
 
     //* assocated option name
     QString optionName_;
@@ -187,10 +187,10 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     bool appearsInMenu_ = false;
 
     //* initialize area map
-    static AreaMap _initializeAreas( void );
+    static AreaMap _initializeAreas();
 
     //* map name and toolbar are
-    static AreaMap& _toolbarAreas( void );
+    static AreaMap& _toolbarAreas();
 
 };
 

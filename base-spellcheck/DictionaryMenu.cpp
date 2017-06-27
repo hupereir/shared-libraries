@@ -60,7 +60,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________________________
-    void DictionaryMenu::reset( void )
+    void DictionaryMenu::reset()
     {
 
         Debug::Throw( "DictionaryMenu::reset.\n" );

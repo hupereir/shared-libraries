@@ -51,7 +51,7 @@ namespace Ssh
         void connectToFile( void*, const QString&, quint64 size, int mode = 0644  );
 
         //* send eof
-        void sendEof( void );
+        void sendEof();
 
         //* wait for connected
         /** warning, this method is blocking */
@@ -83,19 +83,19 @@ namespace Ssh
         void _addCommand( Command );
 
         //* process pending commands
-        bool _processCommands( void );
+        bool _processCommands();
 
         //* try connect channel, returns true on success
-        bool _tryConnect( void );
+        bool _tryConnect();
 
         //* try send eof to channel, returns true on success
-        bool _trySendEof( void );
+        bool _trySendEof();
 
         //* try wait for eof from channel, returns true on success
-        bool _tryWaitEof( void );
+        bool _tryWaitEof();
 
         //* try close channel, returns true on success
-        bool _tryClose( void );
+        bool _tryClose();
 
         //* session pointer
         void* session_ = nullptr;

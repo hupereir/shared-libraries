@@ -32,7 +32,7 @@ namespace Private
     { connect( this, SIGNAL(returnPressed()), SLOT(_validate()) );}
 
     //______________________________________________________________
-    void LocalEditor::_validate( void )
+    void LocalEditor::_validate()
     {
         Debug::Throw( "Private::LocalEditor::_validate.\n" );
         valid_ = true;

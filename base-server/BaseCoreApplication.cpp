@@ -46,7 +46,7 @@ BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments 
 }
 
 //____________________________________________
-BaseCoreApplication::~BaseCoreApplication( void )
+BaseCoreApplication::~BaseCoreApplication()
 {
 
     Debug::Throw( "BaseCoreApplication::~BaseCoreApplication.\n" );
@@ -64,7 +64,7 @@ BaseCoreApplication::~BaseCoreApplication( void )
 }
 
 //____________________________________________
-bool BaseCoreApplication::initApplicationManager( void )
+bool BaseCoreApplication::initApplicationManager()
 {
 
     Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.join( " " ) << endl;
@@ -111,7 +111,7 @@ bool BaseCoreApplication::initApplicationManager( void )
 }
 
 //____________________________________________
-bool BaseCoreApplication::realizeWidget( void )
+bool BaseCoreApplication::realizeWidget()
 {
     Debug::Throw( "BaseCoreApplication::realizeWidget.\n" );
 
@@ -182,7 +182,7 @@ bool BaseCoreApplication::_processCommand( Server::ServerCommand command )
 }
 
 //_______________________________________________
-void BaseCoreApplication::_updateConfiguration( void )
+void BaseCoreApplication::_updateConfiguration()
 {
     Debug::Throw( "BaseCoreApplication::_updateConfiguration.\n" );
 

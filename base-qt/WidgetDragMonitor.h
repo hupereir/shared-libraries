@@ -53,11 +53,11 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     //@{
 
     //* mode
-    Mode mode( void ) const
+    Mode mode() const
     { return mode_; }
 
     //* enabled state
-    bool isEnabled( void ) const
+    bool isEnabled() const
     { return enabled_; }
 
     //@}
@@ -77,11 +77,11 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
 
     Q_SIGNALS:
 
-    void stateChangeRequest( void );
+    void stateChangeRequest();
 
     public Q_SLOTS:
 
-    void toggleState( void )
+    void toggleState()
     {
         enabled_ = !enabled_;
         if( !enabled_ ) _resetDrag();
@@ -104,10 +104,10 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     protected Q_SLOTS:
 
     //* start drag
-    bool _startDrag( void );
+    bool _startDrag();
 
     //* reset drag
-    void _resetDrag( void );
+    void _resetDrag();
 
     private:
 

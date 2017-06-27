@@ -26,7 +26,7 @@
 #include <QTextDocument>
 
 //* stores paragraph and index (in paragraph) into unique structure
-class TextPosition: private Base::Counter<TextPosition>
+class TextPosition final: private Base::Counter<TextPosition>
 {
     public:
 
@@ -41,19 +41,19 @@ class TextPosition: private Base::Counter<TextPosition>
     explicit TextPosition( QTextDocument*, int index );
 
     //* paragraph
-    int paragraph( void ) const
+    int paragraph() const
     { return paragraph_; }
 
     //* paragraph
-    int& paragraph( void )
+    int& paragraph()
     { return paragraph_; }
 
     //* index
-    int index( void ) const
+    int index() const
     { return index_; }
 
     //* index
-    int& index( void )
+    int& index()
     { return index_; }
 
     //* get absolute index for given document
@@ -90,7 +90,7 @@ class TextPosition: private Base::Counter<TextPosition>
     { return !( *this == position ); }
 
     //* validity
-    bool isValid( void ) const
+    bool isValid() const
     { return (paragraph() >= 0 && index() >= 0 ); }
 
     private:

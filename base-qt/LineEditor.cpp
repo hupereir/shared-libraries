@@ -141,7 +141,7 @@ LineEditor::LineEditor( QWidget* parent ):
 }
 
 //_____________________________________________________________________
-int LineEditor::clearButtonWidth( void ) const
+int LineEditor::clearButtonWidth() const
 {
     // adjust contents size
     QStyleOptionFrame option;
@@ -231,7 +231,7 @@ void LineEditor::installContextMenuActions( BaseContextMenu* menu )
 }
 
 //_____________________________________________________________________
-void LineEditor::lowerCase( void )
+void LineEditor::lowerCase()
 {
 
     // do nothing if object is read only
@@ -247,7 +247,7 @@ void LineEditor::lowerCase( void )
 }
 
 //_____________________________________________________________________
-void LineEditor::upperCase( void )
+void LineEditor::upperCase()
 {
 
     // do nothing if object is read only
@@ -330,7 +330,7 @@ void LineEditor::keyPressEvent( QKeyEvent* event )
 }
 
 //____________________________________________________________
-void LineEditor::_updateClearButton( void ) const
+void LineEditor::_updateClearButton() const
 {
     if( !clearButton_ ) return;
 
@@ -422,7 +422,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
 }
 
 //__________________________________________________________
-void LineEditor::_installActions( void )
+void LineEditor::_installActions()
 {
     Debug::Throw( "LineEditor::_installActions.\n" );
 
@@ -474,7 +474,7 @@ void LineEditor::_installActions( void )
 }
 
 //________________________________________________
-void LineEditor::_updateUndoRedoActions( void )
+void LineEditor::_updateUndoRedoActions()
 {
     Debug::Throw( "LineEditor::_updateUndoRedoActions.\n" );
     undoAction_->setEnabled( isUndoAvailable() );
@@ -498,7 +498,7 @@ void LineEditor::_updateSelectionActions()
 }
 
 //________________________________________________
-void LineEditor::_updatePasteAction( void )
+void LineEditor::_updatePasteAction()
 {
 
     Debug::Throw( "LineEditor::_updatePasteAction.\n" );

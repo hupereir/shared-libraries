@@ -25,7 +25,7 @@
 #include <QPainter>
 
 //_______________________________________________
-ColorOptionModel::IconCache& ColorOptionModel::_icons( void )
+ColorOptionModel::IconCache& ColorOptionModel::_icons()
 {
     static IconCache singleton;
     return singleton;

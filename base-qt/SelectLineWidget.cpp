@@ -119,11 +119,11 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
 }
 
 //________________________________________________________________________
-void SelectLineWidget::matchFound( void )
+void SelectLineWidget::matchFound()
 { editor_->setPalette( palette() ); }
 
 //________________________________________________________________________
-void SelectLineWidget::noMatchFound( void )
+void SelectLineWidget::noMatchFound()
 {
     if( !editor_->text().isEmpty() )
     { editor_->setPalette( notFoundPalette_ ); }
@@ -145,11 +145,11 @@ void SelectLineWidget::changeEvent( QEvent* event )
 }
 
 //_______________________________________________________
-void SelectLineWidget::_selectLine( void )
+void SelectLineWidget::_selectLine()
 { emit lineSelected( editor_->text().toInt()-1 ); }
 
 //________________________________________________________________________
-void SelectLineWidget::_updateNotFoundPalette( void )
+void SelectLineWidget::_updateNotFoundPalette()
 {
     notFoundPalette_ = palette();
     notFoundPalette_.setColor( QPalette::Base,

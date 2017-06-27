@@ -43,7 +43,7 @@ class ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMe
     Q_SIGNALS:
 
     //* emitted when default size is selected
-    void defaultStyleSelected( void );
+    void defaultStyleSelected();
 
     //* emitted when a new size is selected
     void styleSelected( int );

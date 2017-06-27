@@ -43,24 +43,24 @@ namespace Ssh
         explicit BaseSocket( QObject* );
 
         //* destructor
-        ~BaseSocket( void ) override;
+        ~BaseSocket() override;
 
         //*@name accessors
         //@{
 
         //* true if connected
-        bool isConnected( void ) const
+        bool isConnected() const
         { return channel_; }
 
         //* true if channel is closed
-        bool atEnd( void ) const override;
+        bool atEnd() const override;
 
         //* sequencial mode
-        bool isSequential( void ) const override
+        bool isSequential() const override
         { return true; }
 
         //* bytes available
-        qint64 bytesAvailable( void ) const override
+        qint64 bytesAvailable() const override
         { return bytesAvailable_; }
 
         //@}
@@ -77,7 +77,7 @@ namespace Ssh
         Q_SIGNALS:
 
         //* emit when connected
-        int connected( void );
+        int connected();
 
         //* error
         void error(QAbstractSocket::SocketError);
@@ -85,7 +85,7 @@ namespace Ssh
         public Q_SLOTS:
 
         //* close
-        void close( void ) override;
+        void close() override;
 
         protected:
 
@@ -99,11 +99,11 @@ namespace Ssh
         void timerEvent( QTimerEvent* ) override;
 
         //* get socket latency
-        int _latency( void ) const
+        int _latency() const
         { return latency_; }
 
         //* channel
-        void* _channel( void )
+        void* _channel()
         { return channel_; }
 
         //* channel
@@ -112,10 +112,10 @@ namespace Ssh
         private:
 
         //* try connect channel, returns true on success
-        bool _tryConnect( void );
+        bool _tryConnect();
 
         //* try read data from channel
-        bool _tryRead( void );
+        bool _tryRead();
 
         //* ssh channel
         void* channel_ = nullptr;

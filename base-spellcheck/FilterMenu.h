@@ -53,7 +53,7 @@ namespace SpellCheck
         public Q_SLOTS:
 
         //! reset filter list
-        void reset( void );
+        void reset();
 
         protected Q_SLOTS:
 

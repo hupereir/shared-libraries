@@ -42,7 +42,7 @@ namespace Base
         enum { nColumns = 1 };
 
         //* constructor
-        explicit HelpModel( void ):
+        explicit HelpModel():
             Counter( "HelpModel" )
         {}
 

@@ -52,23 +52,23 @@ class BasePrintHelper: public QObject
     //*@name accessors
     //@{
         //* orientation
-    QPrinter::Orientation orientation( void ) const
+    QPrinter::Orientation orientation() const
     { return orientation_; }
 
     //* page mode
-    PageMode pageMode( void ) const
+    PageMode pageMode() const
     { return pageMode_; }
 
     //* page number
-    int pageNumber( void ) const
+    int pageNumber() const
     { return pageNumber_; }
 
     //* page number
-    int sheetNumber( void ) const
+    int sheetNumber() const
     { return sheetNumber_; }
 
     //* file
-    const File& file( void ) const
+    const File& file() const
     { return file_; }
 
     //@}
@@ -108,7 +108,7 @@ class BasePrintHelper: public QObject
     protected:
 
     //* return pageRect
-    const QRect& _pageRect( void ) const
+    const QRect& _pageRect() const
     { return pageRect_; }
 
     //* increment page

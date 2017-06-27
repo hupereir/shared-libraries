@@ -38,7 +38,7 @@ class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
     explicit CustomProcess( QObject* parent = nullptr );
 
     //* destructor
-    ~CustomProcess( void ) override;
+    ~CustomProcess() override;
 
     /**
     \brief

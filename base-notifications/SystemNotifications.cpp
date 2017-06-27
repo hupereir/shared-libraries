@@ -37,7 +37,7 @@ SystemNotifications::SystemNotifications( QObject* parent, const QString& applic
 }
 
 //____________________________________________
-SystemNotifications::~SystemNotifications( void )
+SystemNotifications::~SystemNotifications()
 { _sendPendingNotification(); }
 
 //____________________________________________
@@ -45,7 +45,7 @@ void SystemNotifications::setApplicationName( const QString& value )
 { d->setApplicationName( value ); }
 
 //____________________________________________
-void SystemNotifications::initialize( void )
+void SystemNotifications::initialize()
 { d->initialize(); }
 
 //____________________________________________
@@ -53,7 +53,7 @@ void SystemNotifications::setApplicationIcon( const QIcon& value )
 { d->setApplicationIcon( value ); }
 
 //____________________________________________
-bool SystemNotifications::isSupported( void ) const
+bool SystemNotifications::isSupported() const
 { return d->isSupported(); }
 
 //____________________________________________
@@ -96,7 +96,7 @@ void SystemNotifications::timerEvent( QTimerEvent* event )
 }
 
 //____________________________________________
-void SystemNotifications::_sendPendingNotification( void )
+void SystemNotifications::_sendPendingNotification()
 {
     Debug::Throw( "SystemNotifications::_sendPendingNotification.\n" );
     if( notification_.isValid() )

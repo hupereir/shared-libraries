@@ -31,7 +31,7 @@ class CounterPair: public Base::CounterMap::Pair
     public:
 
     //* constructor
-    explicit CounterPair( void )
+    explicit CounterPair()
     {}
 
     //* constructor

@@ -24,7 +24,7 @@
 #include <QFileInfo>
 
 //__________________________________________________________
-PixmapEngine& PixmapEngine::get( void )
+PixmapEngine& PixmapEngine::get()
 {
     //! singleton
     static PixmapEngine singleton_;
@@ -32,12 +32,12 @@ PixmapEngine& PixmapEngine::get( void )
 }
 
 //__________________________________________________________
-PixmapEngine::PixmapEngine( void ):
+PixmapEngine::PixmapEngine():
     Counter( "PixmapEngine" )
 { Debug::Throw( "PixmapEngine::PixmapEngine.\n" ); }
 
 //__________________________________________________________
-bool PixmapEngine::reload( void )
+bool PixmapEngine::reload()
 {
     Debug::Throw( "PixmapEngine::reload.\n" );
 

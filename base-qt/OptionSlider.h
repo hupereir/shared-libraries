@@ -61,7 +61,7 @@ class OptionSlider: public CustomSlider, public OptionWidget
     Q_SIGNALS:
 
     //* modified
-    void modified( void );
+    void modified();
 
     private:
 

@@ -33,7 +33,7 @@ class XmlCommandLineArguments:public CommandLineArguments
     public:
 
     //! empty creator
-    explicit XmlCommandLineArguments( void )
+    explicit XmlCommandLineArguments()
     {}
 
     //! creator from DOM

@@ -53,7 +53,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
 }
 
 //__________________________________________________________________________
-void IconCacheDialog::update( void )
+void IconCacheDialog::update()
 {
 
     Debug::Throw( "IconCacheDialog::update.\n" );

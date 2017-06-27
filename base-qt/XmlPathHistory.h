@@ -60,10 +60,10 @@ class XmlPathHistory: public PathHistory
     private Q_SLOTS:
 
     //* update configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     //* save configuration
-    void _saveConfiguration( void );
+    void _saveConfiguration();
 
     //* compare two record lists
     bool _differs( const FileRecord::List&, const FileRecord::List& ) const;

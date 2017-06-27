@@ -38,14 +38,14 @@
 #endif
 
 //__________________________________________________________________________
-DefaultFolders& DefaultFolders::get( void )
+DefaultFolders& DefaultFolders::get()
 {
     static DefaultFolders singleton_;
     return singleton_;
 }
 
 //__________________________________________________________________________
-DefaultFolders::DefaultFolders( void )
+DefaultFolders::DefaultFolders()
 {
 
     // fill folder map
@@ -77,7 +77,7 @@ DefaultFolders::DefaultFolders( void )
 }
 
 //__________________________________________________________________________
-void DefaultFolders::initializeFolderNames( void )
+void DefaultFolders::initializeFolderNames()
 {
     if( folderNamesInitialized_ ) return;
 
@@ -98,7 +98,7 @@ void DefaultFolders::initializeFolderNames( void )
 }
 
 //__________________________________________________________________________
-void DefaultFolders::initializeIconNames( void )
+void DefaultFolders::initializeIconNames()
 {
     if( iconNamesInitialized_ ) return;
 

@@ -39,11 +39,11 @@ class DockWidget: public QDockWidget
     //@{
 
     //* lock
-    bool isLocked( void ) const
+    bool isLocked() const
     { return locked_; }
 
     //* visibility action
-    QAction& visibilityAction( void ) const
+    QAction& visibilityAction() const
     { return *visibilityAction_; }
 
     //@}
@@ -71,17 +71,17 @@ class DockWidget: public QDockWidget
     void _toggleVisibility( bool );
 
     //* update title bar
-    void _updateTitleBarWidget( void );
+    void _updateTitleBarWidget();
 
     private Q_SLOTS:
 
     //* update configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 
     //* install actions
-    void _installActions( void );
+    void _installActions();
 
     //* assocated option name
     QString optionName_;

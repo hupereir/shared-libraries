@@ -33,7 +33,7 @@ class XmlTimeStamp:public TimeStamp
     public:
 
     //* empty constructor
-    explicit XmlTimeStamp( void )
+    explicit XmlTimeStamp()
     {}
 
     //* constructor from DOM

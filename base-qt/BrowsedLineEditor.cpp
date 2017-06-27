@@ -98,7 +98,7 @@ void BrowsedLineEditor::setFile( const QString& file )
 { editor().setText( file ); }
 
 //____________________________________________________________
-void BrowsedLineEditor::_browse( void )
+void BrowsedLineEditor::_browse()
 {
 
     Debug::Throw( "BrowsedLineEditor::_browse.\n" );
@@ -113,7 +113,7 @@ void BrowsedLineEditor::_browse( void )
 }
 
 //_____________________________________________________________
-void BrowsedLineEditor::_findTargetApplication( void )
+void BrowsedLineEditor::_findTargetApplication()
 {
 
     // check if current text is valid

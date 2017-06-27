@@ -40,10 +40,10 @@ namespace SpellCheck
         {}
 
         //! convert to latex accents
-        QString toLatexAccents( void ) const;
+        QString toLatexAccents() const;
 
         //! convert to french accents
-        QString toTextAccents( void ) const;
+        QString toTextAccents() const;
 
         //! conversions
         using Conversion = QPair<QString, QString>;
@@ -52,7 +52,7 @@ namespace SpellCheck
         using ConversionList = QList< Conversion >;
 
         //! conversions
-        static const ConversionList& conversions( void );
+        static const ConversionList& conversions();
 
     };
 

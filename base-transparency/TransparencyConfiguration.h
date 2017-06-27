@@ -51,7 +51,7 @@ namespace Transparency
         Q_SIGNALS:
 
         //! modified
-        void modified( void );
+        void modified();
 
         protected:
 

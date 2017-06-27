@@ -26,27 +26,27 @@ namespace Ssh
 {
 
     //* singleton, to handle ssh allocation and freeing
-    class Singleton: private Base::Counter<Singleton>
+    class Singleton final: private Base::Counter<Singleton>
     {
         public:
 
         //* destructor
-        ~Singleton( void ) override;
+        ~Singleton();
 
         //* accessor
-        static Singleton& get( void );
+        static Singleton& get();
 
         //* true if initialized
-        bool initialized( void ) const
+        bool initialized() const
         { return initialized_; }
 
         //* initialize
-        void initialize( void );
+        void initialize();
 
         private:
 
         //* constructor
-        explicit Singleton( void );
+        explicit Singleton();
 
         //* true if initalized
         bool initialized_ = false;

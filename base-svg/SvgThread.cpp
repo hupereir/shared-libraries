@@ -35,7 +35,7 @@ namespace Svg
     }
 
     //______________________________________________________
-    void SvgThread::run( void )
+    void SvgThread::run()
     {
 
         if( !renderer_.isValid() ) return;

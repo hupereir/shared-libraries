@@ -77,7 +77,7 @@ bool LineNumberDisplay::updateWidth( int count )
 }
 
 //__________________________________________
-void LineNumberDisplay::clear( void )
+void LineNumberDisplay::clear()
 {
     Debug::Throw( "LineNumberDisplay::clear.\n" );
     lineNumberData_.clear();
@@ -136,7 +136,7 @@ void LineNumberDisplay::paint( QPainter& painter )
 }
 
 //________________________________________________________
-void LineNumberDisplay::_contentsChanged( void )
+void LineNumberDisplay::_contentsChanged()
 {
 
     // if text is wrapped, line number data needs update at next update
@@ -147,7 +147,7 @@ void LineNumberDisplay::_contentsChanged( void )
 }
 
 //________________________________________________________
-void LineNumberDisplay::_blockCountChanged( void )
+void LineNumberDisplay::_blockCountChanged()
 {
 
     // nothing to be done if wrap mode is not NoWrap, because
@@ -158,7 +158,7 @@ void LineNumberDisplay::_blockCountChanged( void )
 }
 
 //________________________________________________________
-void LineNumberDisplay::_updateLineNumberData( void )
+void LineNumberDisplay::_updateLineNumberData()
 {
 
     lineNumberData_.clear();

@@ -38,7 +38,7 @@ class QOrderedSet
 
     public:
 
-    inline QOrderedSet( void )
+    inline QOrderedSet()
     {}
 
     inline QOrderedSet(const QOrderedSet<T> &other) :

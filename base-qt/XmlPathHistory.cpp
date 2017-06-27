@@ -34,7 +34,7 @@ XmlPathHistory::XmlPathHistory( QObject* parent ):
 {
 
     Debug::Throw( "XmlPathHistory::XmlPathHistory.\n" );
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     connect( qApp, SIGNAL(aboutToQuit()), SLOT(_saveConfiguration()) );
     _updateConfiguration();
 
@@ -196,7 +196,7 @@ bool XmlPathHistory::_setDBFile( const File& file )
 }
 
 //______________________________________
-void XmlPathHistory::_updateConfiguration( void )
+void XmlPathHistory::_updateConfiguration()
 {
     Debug::Throw( "XmlPathHistory::_updateConfiguration.\n" );
 
@@ -216,7 +216,7 @@ void XmlPathHistory::_updateConfiguration( void )
 }
 
 //______________________________________
-void XmlPathHistory::_saveConfiguration( void )
+void XmlPathHistory::_saveConfiguration()
 {
     Debug::Throw( "XmlPathHistory::_saveConfiguration.\n" );
     write();

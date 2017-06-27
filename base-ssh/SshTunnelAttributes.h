@@ -38,9 +38,12 @@ namespace Ssh
         using List = QList<TunnelAttributes>;
 
         //* constructor
-        explicit TunnelAttributes( void ):
+        explicit TunnelAttributes():
             Counter( "Ssh::TunnelAttributes" )
         {}
+
+        //* destructor
+        virtual ~TunnelAttributes() = default;
 
         //* equal to operator
         bool operator == (const TunnelAttributes& other ) const
@@ -50,19 +53,19 @@ namespace Ssh
         //@{
 
         //* host
-        const QString& host( void ) const
+        const QString& host() const
         { return host_; }
 
         //* port
-        int localPort( void ) const
+        int localPort() const
         { return localPort_; }
 
         //* port
-        int remotePort( void ) const
+        int remotePort() const
         { return remotePort_; }
 
         //* validity
-        bool isValid( void ) const
+        bool isValid() const
         { return !(host_.isEmpty() || localPort_ <= 0 || remotePort_ <= 0 ); }
 
         //@}

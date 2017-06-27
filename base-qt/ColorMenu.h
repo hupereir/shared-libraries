@@ -49,7 +49,7 @@ class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
     Base::Color::Set colors() const;
 
     //* retrieves last selected color
-    QColor lastColor( void ) const
+    QColor lastColor() const
     { return lastColor_; }
 
     //@}
@@ -58,7 +58,7 @@ class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
     //@{
 
     //* clear
-    void reset( void )
+    void reset()
     { colors_.clear(); }
 
     //* add
@@ -79,14 +79,14 @@ class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
     private Q_SLOTS:
 
     //* display colors when about to show
-    void _display( void );
+    void _display();
 
     //* adds a new color
-    void _new( void );
+    void _new();
 
     //* select the no color choice
     /** emits colorSelected with an invalid color */
-    void _default( void );
+    void _default();
 
     //* get color associated to action, emit ColorSelected
     void _selected( QAction* );

@@ -64,11 +64,11 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     void setIconProvider( BaseFileIconProvider* );
 
     //* true if empty
-    bool isEmpty( void ) const
+    bool isEmpty() const
     { return group_->buttons().isEmpty(); }
 
     //* list of items
-    QList<BaseFileInfo> items( void ) const;
+    QList<BaseFileInfo> items() const;
 
     //* set item enabled
     bool setItemIsValid( const BaseFileInfo&, bool );
@@ -87,7 +87,7 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     public Q_SLOTS:
 
     //* clear all items
-    void clear( void );
+    void clear();
 
     //* add item
     void add( const BaseFileInfo& );
@@ -122,22 +122,22 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     void _updateIconSize( IconSize::Size );
 
     //* add item
-    void _addItem( void );
+    void _addItem();
 
     //* add separator
-    void _addSeparator( void );
+    void _addSeparator();
 
     //* add separator
-    void _insertSeparator( void );
+    void _insertSeparator();
 
     //* edit item
-    void _editItem( void );
+    void _editItem();
 
     //* remove item
-    void _removeItem( void );
+    void _removeItem();
 
     //* update item state
-    void _updateItems( void );
+    void _updateItems();
 
     //* hide item
     void _toggleHideItem( bool );
@@ -171,19 +171,19 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //@}
 
     //* Read fileList from file
-    bool _read( void );
+    bool _read();
 
     //* write fileList to file
-    bool _write( void );
+    bool _write();
 
     //* install default folders
-    void _addDefaultPlaces( void );
+    void _addDefaultPlaces();
 
     //* set db file
     bool _setDBFile( const File& );
 
     //* update drag state
-    void _updateDragState( void ) const;
+    void _updateDragState() const;
 
     //* drag target
     QPoint _updateDragTarget( const QPoint& ) const;
@@ -198,20 +198,20 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     QList<BaseFileInfo> _decode( const QMimeData* ) const;
 
     //* return item that have focus or none
-    Private::PlacesWidgetItem* _focusItem( void ) const;
+    Private::PlacesWidgetItem* _focusItem() const;
 
     private Q_SLOTS:
 
     //* update configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     //* save configuration
-    void _saveConfiguration( void );
+    void _saveConfiguration();
 
     private:
 
     //* install actions
-    void _installActions( void );
+    void _installActions();
 
     //* dummy treeview, needed for rendering items
     QAbstractItemView* itemView_ = nullptr;

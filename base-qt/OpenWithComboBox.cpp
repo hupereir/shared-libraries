@@ -35,7 +35,7 @@ OpenWithComboBox::OpenWithComboBox( QWidget* parent ):
 }
 
 //___________________________________________________________
-File OpenWithComboBox::command( void ) const
+File OpenWithComboBox::command() const
 {
     const int index = currentIndex();
     if( index == count()-1 ) return File();

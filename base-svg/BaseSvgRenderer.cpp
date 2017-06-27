@@ -30,7 +30,7 @@ namespace Svg
 {
 
     //________________________________________________
-    BaseSvgRenderer::BaseSvgRenderer( void ):
+    BaseSvgRenderer::BaseSvgRenderer():
         QSvgRenderer(),
         Counter( "Svg::BaseSvgRenderer" )
     {}

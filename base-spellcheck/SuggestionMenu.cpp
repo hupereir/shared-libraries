@@ -45,7 +45,7 @@ namespace SpellCheck
     }
 
     //________________________________________________________
-    void SuggestionMenu::_aboutToShow( void )
+    void SuggestionMenu::_aboutToShow()
     {
 
         Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
@@ -93,7 +93,7 @@ namespace SpellCheck
     }
 
     //________________________________________________
-    void SuggestionMenu::_addWord( void )
+    void SuggestionMenu::_addWord()
     {
 
         Debug::Throw( "SuggestionMenu::_addWord.\n" );

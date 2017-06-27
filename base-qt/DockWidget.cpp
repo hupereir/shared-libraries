@@ -53,7 +53,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     setUseScrollArea( false );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -167,7 +167,7 @@ void DockWidget::setAutoHideTitleBar( bool value )
 }
 
 //_________________________________________________________
-void DockWidget::_updateTitleBarWidget( void )
+void DockWidget::_updateTitleBarWidget()
 {
     Debug::Throw( "DockWidget::_updateTitleBarWidget.\n" );
 
@@ -204,7 +204,7 @@ void DockWidget::_toggleVisibility( bool state )
 }
 
 //_______________________________________________________________
-void DockWidget::_updateConfiguration( void )
+void DockWidget::_updateConfiguration()
 {
     Debug::Throw( "DockWidget::_updateConfiguration.\n" );
 
@@ -228,7 +228,7 @@ void DockWidget::_updateConfiguration( void )
 }
 
 //_______________________________________________________________
-void DockWidget::_installActions( void )
+void DockWidget::_installActions()
 {
     Debug::Throw( "DockWidget::_installActions.\n" );
 

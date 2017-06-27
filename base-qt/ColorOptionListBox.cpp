@@ -34,11 +34,11 @@ class EditDialog: public CustomDialog
     explicit EditDialog( QWidget* );
 
     //* editor
-    ColorDisplay& editor( void ) const
+    ColorDisplay& editor() const
     { return *editor_; }
 
     //* checkbox
-    QCheckBox& checkbox( void ) const
+    QCheckBox& checkbox() const
     { return *checkbox_; }
 
     private:
@@ -76,7 +76,7 @@ ColorOptionListBox::ColorOptionListBox( QWidget* parent, const QString& name ):
 { _setModel( new ColorOptionModel( this ) ); }
 
 //_______________________________________________________
-void ColorOptionListBox::_add( void )
+void ColorOptionListBox::_add()
 {
     Debug::Throw( "OptionListBox::_add.\n" );
 
@@ -106,7 +106,7 @@ void ColorOptionListBox::_add( void )
 }
 
 //_______________________________________________________
-void ColorOptionListBox::_edit( void )
+void ColorOptionListBox::_edit()
 {
     Debug::Throw( "OptionListBox::_edit.\n" );
 

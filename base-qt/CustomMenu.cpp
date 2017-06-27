@@ -40,7 +40,7 @@ void CustomMenu::addInvisibleAction( QAction* action )
 }
 
 //_______________________________________________________
-void CustomMenu::clear( void )
+void CustomMenu::clear()
 {
     QMenu::clear();
     invisibleActions_.clear();

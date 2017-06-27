@@ -45,16 +45,16 @@ class BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
   { enabled_ = value; }
 
   //* enable/disable
-  bool isEnabled( void ) const
+  bool isEnabled() const
   { return enabled_; }
 
   //* clear highlighted block
-  void clear( void );
+  void clear();
 
   public Q_SLOTS:
 
   //* highlight
-  void highlight( void );
+  void highlight();
 
   protected:
 
@@ -62,12 +62,12 @@ class BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
   void timerEvent( QTimerEvent* event ) override;
 
   //* highlight
-  void _highlight( void );
+  void _highlight();
 
   private:
 
   //* trigger update associated editors
-  void _updateEditors( void );
+  void _updateEditors();
 
   //* parent editor
   TextEditor* parent_ = nullptr;

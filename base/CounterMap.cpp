@@ -22,7 +22,7 @@
 namespace Base
 {
     //___________________________________________________
-    CounterMap& CounterMap::get( void )
+    CounterMap& CounterMap::get()
     {
         static CounterMap singleton;
         return singleton;

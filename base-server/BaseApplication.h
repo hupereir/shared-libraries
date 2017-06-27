@@ -40,10 +40,10 @@ class BaseApplication: public BaseCoreApplication
     explicit BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
 
     //* initialize application manager
-    bool initApplicationManager( void ) override;
+    bool initApplicationManager() override;
 
     //* create all widgets
-    bool realizeWidget( void ) override;
+    bool realizeWidget() override;
 
     //* true if fixed fonts are used
     void setUseFixedFonts( bool value )
@@ -54,26 +54,26 @@ class BaseApplication: public BaseCoreApplication
     }
 
     //* true if fixed fonts are used
-    bool useFixedFonts( void ) const
+    bool useFixedFonts() const
     { return useFixedFonts_; }
 
     //*@name actions
     //@{
 
     //* about
-    QAction& aboutAction( void ) const
+    QAction& aboutAction() const
     { return *aboutAction_; }
 
     //* about
-    QAction& aboutQtAction( void ) const
+    QAction& aboutQtAction() const
     { return *aboutQtAction_; }
 
     //* configuration
-    QAction& configurationAction( void ) const
+    QAction& configurationAction() const
     { return *configurationAction_; }
 
     //* exit safely
-    QAction& closeAction( void ) const
+    QAction& closeAction() const
     { return *closeAction_; }
 
     //@}
@@ -85,44 +85,44 @@ class BaseApplication: public BaseCoreApplication
     CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const override;
 
     // application icon
-    virtual QIcon applicationIcon( void ) const = 0;
+    virtual QIcon applicationIcon() const = 0;
 
     //@}
 
     public Q_SLOTS:
 
     //* set application busy
-    void busy( void );
+    void busy();
 
     //* set application idle
-    void idle( void );
+    void idle();
 
     protected Q_SLOTS:
 
     //* process request from application manager
-    void _aboutQt( void );
+    void _aboutQt();
 
     //* configuration
-    virtual void _configuration( void ) = 0;
+    virtual void _configuration() = 0;
 
     //* about to quit
-    virtual void _aboutToQuit( void );
+    virtual void _aboutToQuit();
 
     private Q_SLOTS:
 
     //* configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     //* fonts
-    void _updateFonts( void );
+    void _updateFonts();
 
     //* update icon path
-    void _updateIconTheme( void );
+    void _updateIconTheme();
 
     private Q_SLOTS:
 
     //* application 'about' dialog
-    virtual void _about( void );
+    virtual void _about();
 
     private:
 

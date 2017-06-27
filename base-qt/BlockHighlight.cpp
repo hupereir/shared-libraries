@@ -33,7 +33,7 @@ parent_( parent )
 { Debug::Throw( "BlockHighlight::BlockHighlight.\n" ); }
 
 //______________________________________________________________________
-void BlockHighlight::clear( void )
+void BlockHighlight::clear()
 {
 
     if( cleared_ ) return;
@@ -63,7 +63,7 @@ void BlockHighlight::clear( void )
 }
 
 //______________________________________________________________________
-void BlockHighlight::highlight( void )
+void BlockHighlight::highlight()
 {
 
     if( !isEnabled() ) return;
@@ -84,7 +84,7 @@ void BlockHighlight::timerEvent( QTimerEvent* event )
 }
 
 //______________________________________________________________________
-void BlockHighlight::_highlight( void )
+void BlockHighlight::_highlight()
 {
 
     if( !isEnabled() ) return;
@@ -115,7 +115,7 @@ void BlockHighlight::_highlight( void )
 }
 
 //______________________________________________________________________
-void BlockHighlight::_updateEditors( void )
+void BlockHighlight::_updateEditors()
 {
 
     Base::KeySet<TextEditor> editors( parent_ );

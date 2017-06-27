@@ -41,13 +41,13 @@ class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFra
     void setUser( const QString& );
 
     //* users
-    QStringList users( void ) const;
+    QStringList users() const;
 
     //* selected user
-    QString user( void ) const;
+    QString user() const;
 
     //* editor
-    CustomComboBox& comboBox( void ) const
+    CustomComboBox& comboBox() const
     { return *comboBox_; }
 
     Q_SIGNALS:
@@ -68,10 +68,10 @@ class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFra
     private Q_SLOTS:
 
     //* selected user changed
-    void _userChanged( void );
+    void _userChanged();
 
     //* selected user changed
-    void _delayedUserChanged( void )
+    void _delayedUserChanged()
     { timer_.start( delay_, this ); }
 
     private:

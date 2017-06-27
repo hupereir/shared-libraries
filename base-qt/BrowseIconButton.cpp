@@ -87,7 +87,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 }
 
 //_____________________________________________
-void BrowseIconButton::_browse( void )
+void BrowseIconButton::_browse()
 {
     Debug::Throw( "BrowseIconButton::_Browse.\n" );
 

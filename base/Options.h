@@ -49,7 +49,10 @@ class Options: private Base::Counter<Options>
     using SpecialMap = QMap<QString,List>;
 
     //* constructor
-    explicit Options( void );
+    explicit Options();
+
+    //* destructor
+    virtual ~Options() = default;
 
     //* equality operator
     bool operator == ( const Options& other ) const
@@ -66,17 +69,17 @@ class Options: private Base::Counter<Options>
     { return !( *this == other ); }
 
     //* install defaults
-    void installDefaultOptions( void );
+    void installDefaultOptions();
 
     //*@name accessors
     //@{
 
     //* retrieve Option map
-    const Map& options( void ) const
+    const Map& options() const
     { return options_; }
 
     //* retrieve special Option map
-    const SpecialMap& specialOptions( void ) const
+    const SpecialMap& specialOptions() const
     { return specialOptions_; }
 
     //* returns true if option name is special
@@ -193,7 +196,7 @@ class Options: private Base::Counter<Options>
     { autoDefault_ = value; }
 
     //* restore defaults
-    void restoreDefaults( void );
+    void restoreDefaults();
 
     //@}
 
@@ -203,7 +206,7 @@ class Options: private Base::Counter<Options>
     Map::const_iterator _find( const QString& name ) const;
 
     //* auto-default
-    bool _autoDefault( void ) const
+    bool _autoDefault() const
     { return autoDefault_; }
 
     private:

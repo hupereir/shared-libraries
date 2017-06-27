@@ -53,7 +53,7 @@ class Debug::Private
     public:
 
     //! constructor
-    Private( void ):
+    Private():
         level_( 0 ),
         nullStream_( &nullDevice_ ),
         stdStream_( &stdDevice_ )
@@ -82,7 +82,7 @@ class Debug::Private
 };
 
 //______________________________________
-int Debug::level( void )
+int Debug::level()
 { return _get().level_; }
 
 //______________________________________
@@ -128,7 +128,7 @@ QTextStream& Debug::Throw( int level )
 { return ( _get().level_ < level ) ? _get().nullStream_ : _get().stdStream_; }
 
 //_______________________________________________
-Debug::Private& Debug::_get( void )
+Debug::Private& Debug::_get()
 {
     static Debug::Private singleton;
     return singleton;

@@ -56,50 +56,50 @@ class CustomDialog: public BaseDialog, private Base::Counter<CustomDialog>
         Qt::WindowFlags = 0);
 
     //* retrieve main vbox
-    QBoxLayout& mainLayout( void ) const
+    QBoxLayout& mainLayout() const
     { return *mainLayout_; }
 
     //* returns true if OK button is valid
-    bool hasSeparator( void ) const
+    bool hasSeparator() const
     { return separator_; }
 
     //* separator
-    QWidget& separator( void ) const
+    QWidget& separator() const
     { return *separator_; }
 
     //* button box
-    QDialogButtonBox& buttonBox( void ) const
+    QDialogButtonBox& buttonBox() const
     { return *buttonBox_; }
 
     //* retrieve button layout
-    QBoxLayout& buttonLayout( void ) const
+    QBoxLayout& buttonLayout() const
     { return *(qobject_cast<QBoxLayout*>(buttonBox_->layout())); }
 
     //* returns true if OK button is valid
-    bool hasOkButton( void ) const
+    bool hasOkButton() const
     { return buttonBox_->button(QDialogButtonBox::Ok)||buttonBox_->button(QDialogButtonBox::Close); }
 
     //* retrieve OK button
-    QPushButton& okButton( void ) const
+    QPushButton& okButton() const
     {
         if( QPushButton* button = buttonBox_->button(QDialogButtonBox::Ok) ) return *button;
         else return *buttonBox_->button(QDialogButtonBox::Close);
     }
 
     //* returns true if close button is valid
-    bool hasCloseButton( void ) const
+    bool hasCloseButton() const
     { return hasOkButton(); }
 
     //* retrieve close button
-    QPushButton& closeButton( void ) const
+    QPushButton& closeButton() const
     { return okButton(); }
 
     //* returns true if Cancel button is valid
-    bool hasCancelButton( void ) const
+    bool hasCancelButton() const
     { return buttonBox_->button(QDialogButtonBox::Cancel); }
 
     //* retrieve CANCEL button
-    QPushButton& cancelButton( void ) const
+    QPushButton& cancelButton() const
     { return *buttonBox_->button(QDialogButtonBox::Cancel); }
 
     private:

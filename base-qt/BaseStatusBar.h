@@ -66,7 +66,7 @@ class BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
     explicit BaseStatusBar( QWidget* );
 
     //* add clock
-    void addClock( void );
+    void addClock();
 
     //* add label
     void addLabel( int stretch = 0 );

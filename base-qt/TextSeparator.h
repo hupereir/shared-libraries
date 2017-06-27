@@ -33,7 +33,7 @@ class TextSeparator
     using SeparatorSet = QSet< QChar >;
 
     //! return singleton
-    static const TextSeparator& get( void );
+    static const TextSeparator& get();
 
     //! retrieve base separators
     const SeparatorSet& base() const
@@ -50,7 +50,7 @@ class TextSeparator
     private:
 
     //! constructor
-    explicit TextSeparator( void );
+    explicit TextSeparator();
 
     //! base separators (space, tab, end of line)
     SeparatorSet baseSeparators_;

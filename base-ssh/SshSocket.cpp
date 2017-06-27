@@ -94,7 +94,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool Socket::_tryConnect( void )
+    bool Socket::_tryConnect()
     {
 
         if( isConnected() ) return true;

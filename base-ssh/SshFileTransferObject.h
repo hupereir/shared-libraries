@@ -83,11 +83,11 @@ namespace Ssh
         //@{
 
         //* file size
-        qint64 fileSize( void ) const
+        qint64 fileSize() const
         { return fileSize_; }
 
         //* bytes written
-        qint64 bytesTransferred( void ) const
+        qint64 bytesTransferred() const
         { return bytesTransferred_; }
 
         //* connection state
@@ -102,23 +102,23 @@ namespace Ssh
         Q_DECLARE_FLAGS( StateMask, State );
 
         //* state
-        StateMask state( void ) const
+        StateMask state() const
         { return state_; }
 
         //* true when remote file socket is connected
-        bool isConnected( void ) const
+        bool isConnected() const
         { return state_&Connected; }
 
         //* true when transfer is completed
-        bool isCompleted( void ) const
+        bool isCompleted() const
         { return state_&Completed; }
 
         //* true when transfer has failed
-        bool isFailed( void ) const
+        bool isFailed() const
         { return state_&Failed; }
 
         //* error string
-        QString errorString( void ) const
+        QString errorString() const
         { return error_; }
 
         //@}
@@ -135,10 +135,10 @@ namespace Ssh
         void debug( QString );
 
         //* emited when transfer is completed
-        void completed( void );
+        void completed();
 
         //* emited when transfer has failed
-        void failed( void );
+        void failed();
 
         protected Q_SLOTS:
 
@@ -146,27 +146,27 @@ namespace Ssh
         void _processError( QAbstractSocket::SocketError );
 
         //* mark as connected
-        void _setConnected( void );
+        void _setConnected();
 
         //* prepare reading
-        void _prepareReading( void );
+        void _prepareReading();
 
         //* read from ssh socket
-        void _readFromSocket( void );
+        void _readFromSocket();
 
         //* write to ssh socket
-        void _writeToSocket( void );
+        void _writeToSocket();
 
         //* close source file, once reading is finished
-        void _closeSourceFile( void );
+        void _closeSourceFile();
 
         //* close socket
-        void _closeSocket( void );
+        void _closeSocket();
 
         private:
 
         //* set completed
-        void _setCompleted( void )
+        void _setCompleted()
         {
             if( !(state_ & Completed ) )
             {
@@ -176,7 +176,7 @@ namespace Ssh
         }
 
         //* set failed
-        void _setFailed( void )
+        void _setFailed()
         {
             if( !(state_ & Failed) )
             {

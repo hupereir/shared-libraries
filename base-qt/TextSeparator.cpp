@@ -20,14 +20,14 @@
 #include "TextSeparator.h"
 
 //___________________________________
-const TextSeparator& TextSeparator::get( void )
+const TextSeparator& TextSeparator::get()
 {
     static TextSeparator singleton;
     return singleton;
 }
 
 //___________________________________
-TextSeparator::TextSeparator( void )
+TextSeparator::TextSeparator()
 {
 
     // initialize separator

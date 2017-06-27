@@ -43,7 +43,7 @@ class CustomSlider: public QWidget, private Base::Counter<CustomSlider>
     //@{
 
     //* retrieves value
-    int value( void ) const
+    int value() const
     { return slider_->value(); }
 
     //@}
@@ -89,15 +89,15 @@ class CustomSlider: public QWidget, private Base::Counter<CustomSlider>
     protected:
 
     //* retrieve QSlider
-    QSlider& slider( void )
+    QSlider& slider()
     { return *slider_; }
 
     //* retrieve QSlider
-    const QSlider& slider( void ) const
+    const QSlider& slider() const
     { return *slider_; }
 
     //* retrieve QSpinBox
-    QSpinBox& spinBox( void )
+    QSpinBox& spinBox()
     { return *spinBox_; }
 
     private Q_SLOTS:

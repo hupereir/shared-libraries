@@ -33,7 +33,7 @@ ValidFileThread::ValidFileThread( QObject* parent ):
 }
 
 //______________________________________________________
-void ValidFileThread::run( void )
+void ValidFileThread::run()
 {
 
     QMutexLocker lock( &mutex_ );

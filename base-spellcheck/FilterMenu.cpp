@@ -57,7 +57,7 @@ namespace SpellCheck
     }
 
     //____________________________________________________________________
-    void FilterMenu::reset( void )
+    void FilterMenu::reset()
     {
 
         Debug::Throw( "FilterMenu::reset.\n" );

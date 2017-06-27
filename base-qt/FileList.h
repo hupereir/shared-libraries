@@ -48,30 +48,30 @@ class FileList: public QObject, private Base::Counter<FileList>
     bool contains( const File& ) const;
 
     //* empty
-    bool isEmpty( void ) const
+    bool isEmpty() const
     { return records_.isEmpty(); }
 
     //* file list size
-    int size( void ) const
+    int size() const
     { return records_.size(); }
 
     //* file list max size
-    int maxSize( void ) const
+    int maxSize() const
     { return maxSize_; }
 
     //* all records
-    FileRecord::List records( void ) const
+    FileRecord::List records() const
     { return _truncatedList( records_ ); }
 
     //* all files
-    File::List files( void ) const;
+    File::List files() const;
 
     //* returns true if file list can be cleaned
-    bool cleanEnabled( void ) const
+    bool cleanEnabled() const
     { return (check()) ? cleanEnabled_ : !isEmpty(); }
 
     //* check flag
-    bool check( void ) const
+    bool check() const
     { return check_; }
 
     //@}
@@ -91,13 +91,13 @@ class FileList: public QObject, private Base::Counter<FileList>
     void set( const FileRecord::List& );
 
     //* get last valid file
-    FileRecord lastValidFile( void );
+    FileRecord lastValidFile();
 
     //* clean files. Remove either invalid or all files, depending on check_
-    void clean( void );
+    void clean();
 
     //* clear files. Remove all
-    void clear( void );
+    void clear();
 
     //* check_ flag
     void setCheck( bool value )
@@ -111,10 +111,10 @@ class FileList: public QObject, private Base::Counter<FileList>
     Q_SIGNALS:
 
     //* emitted when thread has completed validity check
-    void validFilesChecked( void );
+    void validFilesChecked();
 
     //* emitted when contents is changed
-    void contentsChanged( void );
+    void contentsChanged();
 
     public Q_SLOTS:
 
@@ -123,12 +123,12 @@ class FileList: public QObject, private Base::Counter<FileList>
     { return _add( FileRecord( file ) ); }
 
     //* run thread to check file validity
-    void checkValidFiles( void );
+    void checkValidFiles();
 
     protected:
 
     //* maximum size
-    int _maxSize( void ) const
+    int _maxSize() const
     { return maxSize_; }
 
     //* add record to current list
@@ -141,11 +141,11 @@ class FileList: public QObject, private Base::Counter<FileList>
     FileRecord::List _truncatedList( FileRecord::List ) const;
 
     //* list of files records
-    const FileRecord::List& _records( void ) const
+    const FileRecord::List& _records() const
     { return records_; }
 
     //* list of files records
-    FileRecord::List& _records( void )
+    FileRecord::List& _records()
     { return records_; }
 
     protected Q_SLOTS:

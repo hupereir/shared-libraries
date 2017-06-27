@@ -60,7 +60,7 @@ class XmlFileRecord: public FileRecord
         public:
 
         //* constructor
-        explicit List( void ):
+        explicit List():
             QList<XmlFileRecord>()
         {}
 

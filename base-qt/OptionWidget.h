@@ -42,15 +42,15 @@ class OptionWidget
     virtual void write( Options& ) const = 0;
 
     //* true if has buddy
-    bool hasBuddy( void ) const
+    bool hasBuddy() const
     { return buddy_; }
 
     //* buddy
-    QObject& buddy( void ) const
+    QObject& buddy() const
     { return *buddy_; }
 
     //* option name
-    const QString& optionName( void ) const
+    const QString& optionName() const
     { return optionName_; }
 
     protected:
@@ -60,7 +60,7 @@ class OptionWidget
     { buddy_ = buddy; }
 
     //* true when connected
-    bool _connected( void ) const
+    bool _connected() const
     { return connected_; }
 
     //* set connected

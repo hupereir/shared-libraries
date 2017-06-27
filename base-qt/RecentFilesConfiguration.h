@@ -47,31 +47,31 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList, private
     using OptionWidgetList::write;
 
     //* read files
-    void read( void );
+    void read();
 
     Q_SIGNALS:
 
     //* modified
-    void modified( void );
+    void modified();
 
     public Q_SLOTS:
 
     // write files
-    void write( void );
+    void write();
 
     //* reload
-    void reload( void );
+    void reload();
 
     private Q_SLOTS:
 
     //* update actions
-    void _updateButtons( void );
+    void _updateButtons();
 
     //* clean
-    void _clean( void );
+    void _clean();
 
     //* remove
-    void _remove( void );
+    void _remove();
 
     private:
 

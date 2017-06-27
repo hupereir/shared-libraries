@@ -29,7 +29,7 @@ class TextEncodingString: public QString
     public:
 
     //* constructor
-    explicit TextEncodingString( void )
+    explicit TextEncodingString()
     {}
 
     //* constructor
@@ -43,7 +43,7 @@ class TextEncodingString: public QString
     { parse(); }
 
     //* parse string into two lists of digits and text chunks
-    void parse( void )
+    void parse()
     {
         textSegments_.clear();
         numSegments_.clear();

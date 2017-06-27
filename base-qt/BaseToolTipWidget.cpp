@@ -52,7 +52,7 @@ BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
     setForegroundRole( QPalette::ToolTipText );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -177,11 +177,11 @@ void BaseToolTipWidget::timerEvent( QTimerEvent* event )
 }
 
 //_______________________________________________________
-bool BaseToolTipWidget::_checkMousePosition( void ) const
+bool BaseToolTipWidget::_checkMousePosition() const
 { return rect_.contains( QCursor::pos() ); }
 
 //_______________________________________________________
-void BaseToolTipWidget::_adjustPosition( void )
+void BaseToolTipWidget::_adjustPosition()
 {
 
     // get tooltip size
@@ -241,7 +241,7 @@ void BaseToolTipWidget::_adjustPosition( void )
 }
 
 //_____________________________________________
-void BaseToolTipWidget::_updateConfiguration( void )
+void BaseToolTipWidget::_updateConfiguration()
 {
     Debug::Throw( "BaseToolTipWidget::_updateConfiguration.\n" );
     if( XmlOptions::get().contains( "SHOW_TOOLTIPS" ) ) setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );

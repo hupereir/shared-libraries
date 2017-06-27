@@ -81,7 +81,7 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 }
 
 //________________________________________________________________
-QString BaseFileInfo::typeString( void ) const
+QString BaseFileInfo::typeString() const
 {
     if( isNavigator() ) return QObject::tr( "Navigator" );
     else if( isLink() ) return QObject::tr( "Symbolic Link" );
@@ -91,7 +91,7 @@ QString BaseFileInfo::typeString( void ) const
 }
 
 //________________________________________________________________
-QString BaseFileInfo::permissionsString( void ) const
+QString BaseFileInfo::permissionsString() const
 {
     QString permissionsString( File().permissionsString( permissions() ) );
     if( isLink() ) permissionsString[0] = 'l';
@@ -126,7 +126,7 @@ void BaseFileInfo::setPermissions( const QString& value )
 }
 
 //________________________________________________________________
-void BaseFileInfo::update( void )
+void BaseFileInfo::update()
 {
 
     if( file().isEmpty() )

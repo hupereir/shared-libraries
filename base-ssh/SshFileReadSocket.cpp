@@ -91,7 +91,7 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
-    bool FileReadSocket::_tryConnect( void )
+    bool FileReadSocket::_tryConnect()
     {
 
         if( isConnected() ) return true;

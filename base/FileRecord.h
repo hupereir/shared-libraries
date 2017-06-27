@@ -60,6 +60,9 @@ class FileRecord: private Base::Counter<FileRecord>
         valid_( true )
     {}
 
+    //* destructor
+    virtual ~FileRecord() = default;
+
     //* less than operator
     bool operator < (const FileRecord& record ) const;
 
@@ -67,7 +70,7 @@ class FileRecord: private Base::Counter<FileRecord>
     bool operator == (const FileRecord& record ) const;
 
     //* file
-    const File& file( void ) const
+    const File& file() const
     { return file_; }
 
     //* file
@@ -78,7 +81,7 @@ class FileRecord: private Base::Counter<FileRecord>
     }
 
     //* time stamp
-    const TimeStamp& time( void ) const
+    const TimeStamp& time() const
     { return time_; }
 
     //* time stamp
@@ -107,7 +110,7 @@ class FileRecord: private Base::Counter<FileRecord>
     }
 
     //* flags
-    int flags( void ) const
+    int flags() const
     { return flags_; }
 
     //* flags
@@ -139,7 +142,7 @@ class FileRecord: private Base::Counter<FileRecord>
     //@}
 
     //* validity
-    bool isValid( void ) const
+    bool isValid() const
     { return valid_; }
 
     //* validity
@@ -172,7 +175,7 @@ class FileRecord: private Base::Counter<FileRecord>
         private:
 
         //* counter
-        static Id& _counter( void );
+        static Id& _counter();
 
         //* id map
         using IdMap = QHash< QString, Id >;
@@ -207,7 +210,7 @@ class FileRecord: private Base::Counter<FileRecord>
     using PropertyMap = QHash< PropertyId::Id, QString >;
 
     //* property map
-    const PropertyMap& properties( void ) const
+    const PropertyMap& properties() const
     { return properties_; }
 
     //* retrieve property

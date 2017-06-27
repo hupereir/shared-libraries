@@ -31,7 +31,7 @@ class OptionPair: public Options::Pair
     public:
 
     //* constructor
-    explicit OptionPair( void )
+    explicit OptionPair()
     {}
 
     //* constructor
@@ -90,7 +90,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     { readOnly_ = value; }
 
     //* is read only
-    bool isReadOnly( void ) const
+    bool isReadOnly() const
     { return readOnly_; }
 
     //*@name methods reimplemented from base class

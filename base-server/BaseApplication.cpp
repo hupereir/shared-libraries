@@ -107,7 +107,7 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
 }
 
 //____________________________________________
-bool BaseApplication::initApplicationManager( void )
+bool BaseApplication::initApplicationManager()
 {
     Debug::Throw( "BaseApplication::initApplicationManager.\n" );
 
@@ -117,7 +117,7 @@ bool BaseApplication::initApplicationManager( void )
 }
 
 //____________________________________________
-bool BaseApplication::realizeWidget( void )
+bool BaseApplication::realizeWidget()
 {
     Debug::Throw( "BaseApplication::realizeWidget.\n" );
 
@@ -190,22 +190,22 @@ CommandLineParser BaseApplication::commandLineParser( CommandLineArguments argum
 }
 
 //____________________________________________
-void BaseApplication::busy( void )
+void BaseApplication::busy()
 {
     qApp->setOverrideCursor( Qt::WaitCursor );
     qApp->processEvents();
 }
 
 //____________________________________________
-void BaseApplication::idle( void )
+void BaseApplication::idle()
 { qApp->restoreOverrideCursor(); }
 
 //_______________________________________________
-void BaseApplication::_aboutToQuit( void )
+void BaseApplication::_aboutToQuit()
 { Debug::Throw( "BaseApplication::_aboutToQuit.\n" ); }
 
 //_______________________________________________
-void BaseApplication::_aboutQt( void )
+void BaseApplication::_aboutQt()
 {
     Debug::Throw( "BaseApplication::aboutQt.\n" );
     Server::AppEventFilter eventFilter;
@@ -214,7 +214,7 @@ void BaseApplication::_aboutQt( void )
 }
 
 //_______________________________________________
-void BaseApplication::_about( void )
+void BaseApplication::_about()
 {
 
     Debug::Throw( "BaseApplication::_about.\n" );
@@ -267,7 +267,7 @@ void BaseApplication::_about( void )
 }
 
 //_______________________________________________
-void BaseApplication::_updateConfiguration( void )
+void BaseApplication::_updateConfiguration()
 {
     Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
 
@@ -285,7 +285,7 @@ void BaseApplication::_updateConfiguration( void )
 }
 
 //_______________________________________________
-void BaseApplication::_updateFonts( void )
+void BaseApplication::_updateFonts()
 {
 
     Debug::Throw( "BaseApplication::_updateFonts.\n" );
@@ -390,7 +390,7 @@ void BaseApplication::_updateFonts( void )
 }
 
 //_______________________________________________
-void BaseApplication::_updateIconTheme( void )
+void BaseApplication::_updateIconTheme()
 {
 
     Debug::Throw( "BaseApplication::_updateIconTheme.\n" );

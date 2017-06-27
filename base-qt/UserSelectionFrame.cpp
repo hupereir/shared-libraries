@@ -51,7 +51,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
 }
 
 //____________________________________________________________
-QStringList UserSelectionFrame::users( void ) const
+QStringList UserSelectionFrame::users() const
 {
 
     QStringList out;
@@ -110,7 +110,7 @@ void UserSelectionFrame::updateUsers( QStringList users )
 }
 
 //____________________________________________________________
-QString UserSelectionFrame::user( void ) const
+QString UserSelectionFrame::user() const
 {
     Debug::Throw( "UserSelectionFrame::user.\n" );
     QString user(  comboBox_->currentText() );
@@ -119,7 +119,7 @@ QString UserSelectionFrame::user( void ) const
 }
 
 //____________________________________________________________
-void UserSelectionFrame::_userChanged( void )
+void UserSelectionFrame::_userChanged()
 {
     QString new_user( user() );
     if( new_user == user_ ) return;

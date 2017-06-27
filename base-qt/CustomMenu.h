@@ -51,7 +51,7 @@ class CustomMenu: public QMenu, private Base::Counter<CustomMenu>
     void addInvisibleAction( QAction* );
 
     //* clear
-    void clear( void );
+    void clear();
 
     //@}
 

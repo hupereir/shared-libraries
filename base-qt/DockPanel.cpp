@@ -88,14 +88,14 @@ DockPanel::DockPanel( QWidget* parent ):
 }
 
 //___________________________________________________________
-DockPanel::~DockPanel( void ) = default;
+DockPanel::~DockPanel() = default;
 
 //___________________________________________________________
-QWidget& DockPanel::panel( void )
+QWidget& DockPanel::panel()
 { return *panel_; }
 
 //___________________________________________________________
-bool DockPanel::isDetached( void ) const
+bool DockPanel::isDetached() const
 { return panel_->isDetached(); }
 
 //___________________________________________________________
@@ -110,7 +110,7 @@ void DockPanel::setOptionName( QString value )
 { return panel_->setOptionName( value ); }
 
 //___________________________________________________________
-void DockPanel::_toggleDock( void )
+void DockPanel::_toggleDock()
 {
 
     Debug::Throw( "DockPanel::_toggleDock.\n" );
@@ -240,12 +240,12 @@ namespace Private
         connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
 
         // configuration
-        connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+        connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
         _updateConfiguration();
     }
 
     //___________________________________________________________
-    void LocalWidget::_updateActions( void )
+    void LocalWidget::_updateActions()
     {
 
         detachAction_->setText( widgetDragMonitor_.isEnabled() ? tr( "Attach" ):tr( "Detach" ) );
@@ -357,7 +357,7 @@ namespace Private
     }
 
     //___________________________________________________________
-    void LocalWidget::_updateConfiguration( void )
+    void LocalWidget::_updateConfiguration()
     {
 
         Debug::Throw( "DockPanel::_updateConfiguration.\n" );
@@ -372,7 +372,7 @@ namespace Private
     }
 
     //___________________________________________________________
-    void LocalWidget::_installActions( void )
+    void LocalWidget::_installActions()
     {
 
         Debug::Throw( "LocalWidget::_installActions.\n" );

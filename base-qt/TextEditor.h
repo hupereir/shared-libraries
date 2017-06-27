@@ -85,13 +85,13 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     explicit TextEditor( QWidget* = nullptr );
 
     //* destrutor
-    ~TextEditor( void ) override;
+    ~TextEditor() override;
 
     //*@name accessors
     //@{
 
     //* retrieve number of blocks in document
-    virtual int blockCount( void ) const;
+    virtual int blockCount() const;
 
     //* retrieve number of blocks associated to argument
     /** the default implementation returns 1. In QEdit, it is reimplemented accounts for collapsed blocks */
@@ -99,54 +99,54 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     { return 1; }
 
     //* retrieve current text position
-    virtual TextPosition textPosition( void );
+    virtual TextPosition textPosition();
 
     //* anchor at context menu
-    virtual QString anchor( void ) const final
+    virtual QString anchor() const final
     { return anchorAt( _contextMenuPosition() ); }
 
     //* return true if current textCursor is visible
-    virtual bool isCursorVisible( void ) const;
+    virtual bool isCursorVisible() const;
 
     //* synchronization
-    virtual bool isSynchronized( void ) const
+    virtual bool isSynchronized() const
     { return synchronize_; }
 
     //* active state (in case of synchronization with other editors)
-    virtual bool isActive( void ) const
+    virtual bool isActive() const
     { return active_; }
 
     //* has selection
-    bool hasSelection( void ) const;
+    bool hasSelection() const;
 
     //* TextSelection object from this selection, or clipboard
-    TextSelection selection( void ) const;
+    TextSelection selection() const;
 
     //* last searched selection
-    static TextSelection& lastSelection( void );
+    static TextSelection& lastSelection();
 
     //* enable/disable reading of text wrapping mode from options
-    bool wrapFromOptions( void ) const
+    bool wrapFromOptions() const
     { return wrapFromOptions_; }
 
     //* enable/disable reading of line number display from options
-    bool lineNumbersFromOptions( void ) const
+    bool lineNumbersFromOptions() const
     { return lineNumberFromOptions_; }
 
     //* block highlight from options
-    bool highlightBlockFromOptions( void ) const
+    bool highlightBlockFromOptions() const
     { return highlightBlockFromOptions_; }
 
     //* tab character
-    virtual const QString& tabCharacter( void ) const
+    virtual const QString& tabCharacter() const
     { return tab_; }
 
     //* tab character
-    virtual const QString& normalTabCharacter( void ) const
+    virtual const QString& normalTabCharacter() const
     { return normalTab_; }
 
     //* tab character
-    virtual const QString& emulatedTabCharacter( void ) const
+    virtual const QString& emulatedTabCharacter() const
     { return emulatedTab_; }
 
     //* block highlight object
@@ -154,19 +154,19 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     { return *blockHighlight_; }
 
     //* find widget
-    BaseFindWidget& findWidget( void ) const
+    BaseFindWidget& findWidget() const
     { return *findWidget_; }
 
     //* replace widget
-    BaseReplaceWidget& replaceWidget( void ) const
+    BaseReplaceWidget& replaceWidget() const
     { return *replaceWidget_; }
 
     //* select line widget
-    SelectLineWidget& selectLineWidget( void ) const
+    SelectLineWidget& selectLineWidget() const
     { return *selectLineWidget_; }
 
     //* scrollbar position
-    QPoint scrollbarPosition( void ) const
+    QPoint scrollbarPosition() const
     { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
 
     //* widget to viewport translation
@@ -186,7 +186,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     { return point + scrollbarPosition(); }
 
     //* modifiers
-    Modifiers modifiers( void ) const
+    Modifiers modifiers() const
     { return modifiers_; }
 
     //* modifiers
@@ -226,10 +226,10 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual void paintMargin( QPainter& );
 
     //* select word under cursor
-    virtual void selectWord( void );
+    virtual void selectWord();
 
     //* select line under cursor
-    virtual void selectLine( void );
+    virtual void selectLine();
 
     //* set textChar format
     /**
@@ -239,7 +239,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     void mergeCurrentCharFormat( const QTextCharFormat& );
 
     //* clear box selection
-    virtual void clearBoxSelection( void )
+    virtual void clearBoxSelection()
     {
         if( boxSelection_.state() == BoxSelection::State::Finished )
         { boxSelection_.clear(); }
@@ -281,7 +281,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual void setReadOnly( bool );
 
     //* reset undo/redo history
-    virtual void resetUndoRedoStack( void );
+    virtual void resetUndoRedoStack();
 
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu*, bool = true );
@@ -310,94 +310,94 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual void clearBackground( QTextBlock );
 
     //* clear all blocks background
-    virtual void clearAllBackgrounds( void );
+    virtual void clearAllBackgrounds();
 
     //@}
 
     //*@name actions
     //@{
 
-    QAction& undoAction( void ) const
+    QAction& undoAction() const
     { return *undoAction_; }
 
     //* redo
-    QAction& redoAction( void ) const
+    QAction& redoAction() const
     { return *redoAction_; }
 
     //* cut selection
-    QAction& cutAction( void ) const
+    QAction& cutAction() const
     { return *cutAction_; }
 
     //* copy selection
-    QAction& copyAction( void ) const
+    QAction& copyAction() const
     { return *copyAction_; }
 
     //* paste clipboard
-    QAction& pasteAction( void ) const
+    QAction& pasteAction() const
     { return *pasteAction_;  }
 
     //* select all
-    QAction& selectAllAction( void ) const
+    QAction& selectAllAction() const
     { return *selectAllAction_; }
 
     //* clear
-    QAction& clearAction( void ) const
+    QAction& clearAction() const
     { return *clearAction_; }
 
     //* convert selection to upper case
-    QAction& lowerCaseAction( void ) const
+    QAction& lowerCaseAction() const
     { return *upperCaseAction_; }
 
     //* convert selection to lower case
-    QAction& upperCaseAction( void ) const
+    QAction& upperCaseAction() const
     { return *lowerCaseAction_; }
 
     //* find from dialog
-    QAction& findAction( void ) const
+    QAction& findAction() const
     { return *findAction_; }
 
     //* find selection again
-    QAction& findSelectionAction( void ) const
+    QAction& findSelectionAction() const
     { return *findSelectionAction_; }
 
     //* find again
-    QAction& findAgainAction( void ) const
+    QAction& findAgainAction() const
     { return *findAgainAction_; }
 
     //* replace
-    QAction& replaceAction( void ) const
+    QAction& replaceAction() const
     { return *replaceAction_; }
 
     //* replace again
-    QAction& replaceAgainAction( void ) const
+    QAction& replaceAgainAction() const
     { return *replaceAgainAction_; }
 
     //* goto line number
-    QAction& gotoLineAction( void ) const
+    QAction& gotoLineAction() const
     { return *gotoLineAction_; }
 
     //* block highlight action
-    QAction& blockHighlightAction( void ) const
+    QAction& blockHighlightAction() const
     { return *blockHighlightAction_; }
 
     //* toggle wrap mode
-    QAction& wrapModeAction( void ) const
+    QAction& wrapModeAction() const
     { return *wrapModeAction_; }
 
     //* toggle tab emulation
-    QAction& tabEmulationAction( void ) const
+    QAction& tabEmulationAction() const
     { return *tabEmulationAction_; }
 
     //* show line numbers
-    bool hasLineNumberAction( void ) const
+    bool hasLineNumberAction() const
     { return showLineNumberAction_; }
 
     //* show line numbers
-    QAction& showLineNumberAction( void ) const
+    QAction& showLineNumberAction() const
     { return *showLineNumberAction_; }
 
     //* copy link
-    virtual QAction& copyLinkAction( void ) const final
+    virtual QAction& copyLinkAction() const final
     { return *copyLinkAction_; }
 
     //@}
@@ -415,13 +415,13 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
         explicit Container( QWidget*, TextEditor* );
 
         //*@name accessors
-        TextEditor& editor( void ) const
+        TextEditor& editor() const
         { return *editor_; }
 
         private:
 
         //* initialize
-        void _initialize( void );
+        void _initialize();
 
         //* contained editor
         TextEditor* editor_;
@@ -437,19 +437,19 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     void progressAvailable( int );
 
     //* idle
-    void idle( void );
+    void idle();
 
     //* emitted when selection could not be found
-    void noMatchFound( void );
+    void noMatchFound();
 
     //* emitted when selection could be found
-    void matchFound( void );
+    void matchFound();
 
     //* emitted when selected line is not found
-    void lineNotFound( void );
+    void lineNotFound();
 
     //* emitted when selected line is found
-    void lineFound( void );
+    void lineFound();
 
     //* emitted when recieve focus
     void hasFocus( TextEditor* );
@@ -466,34 +466,34 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     public Q_SLOTS:
 
     //* cut
-    virtual void cut( void );
+    virtual void cut();
 
     //* copy
-    virtual void copy( void );
+    virtual void copy();
 
     //* paste
-    virtual void paste( void );
+    virtual void paste();
 
     //* changes selection to uppercase
-    virtual void upperCase( void );
+    virtual void upperCase();
 
     //* changes selection to lower case
-    virtual void lowerCase( void );
+    virtual void lowerCase();
 
     //* find next occurence of TextSelection
     virtual void find( TextSelection selection );
 
     //* find current selection forward
-    virtual void findSelectionForward( void );
+    virtual void findSelectionForward();
 
     //* find current selection backward
-    virtual void findSelectionBackward( void );
+    virtual void findSelectionBackward();
 
     //* find last search forward
-    virtual void findAgainForward( void );
+    virtual void findAgainForward();
 
     //* find last search forward
-    virtual void findAgainBackward( void );
+    virtual void findAgainBackward();
 
     //* find next occurence of TextSelection
     virtual void replace( TextSelection selection );
@@ -505,19 +505,19 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual int replaceInWindow( TextSelection selection, bool showDialog = true );
 
     //* replace again forward
-    virtual void replaceAgainForward( void );
+    virtual void replaceAgainForward();
 
     //* replace again forward
-    virtual void replaceAgainBackward( void );
+    virtual void replaceAgainBackward();
 
     //* select line by number
     virtual void selectLine( int index );
 
     //* remove current line
-    virtual void removeLine( void );
+    virtual void removeLine();
 
     //* clear
-    virtual void clear( void );
+    virtual void clear();
 
     protected:
 
@@ -575,23 +575,23 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     void scrollContentsBy( int dx, int dy ) override;
 
     //* context menu position
-    const QPoint& _contextMenuPosition( void ) const
+    const QPoint& _contextMenuPosition() const
     { return contextMenuPosition_; }
 
     //*@name find/replace selection
     //@{
 
     //* find dialog
-    virtual void _createFindDialog( void );
+    virtual void _createFindDialog();
 
     //* replace dialog
-    virtual void _createReplaceDialog( void );
+    virtual void _createReplaceDialog();
 
     //* select line dialog
-    virtual void _createSelectLineDialog( void );
+    virtual void _createSelectLineDialog();
 
     //* progress dialog
-    virtual void _createProgressDialog( void );
+    virtual void _createProgressDialog();
 
     //* find selection in forward direction
     virtual bool _findForward( const TextSelection& selection, bool rewind );
@@ -615,11 +615,11 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //@{
 
     //* box selection
-    BoxSelection& _boxSelection( void )
+    BoxSelection& _boxSelection()
     { return boxSelection_; }
 
     //* box selection
-    const BoxSelection& _boxSelection( void ) const
+    const BoxSelection& _boxSelection() const
     { return boxSelection_; }
 
     //* synchronize box selection with associated displays
@@ -631,7 +631,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //@{
 
     //* left margin
-    int _leftMargin( void ) const
+    int _leftMargin() const
     { return leftMargin_; }
 
     //* left margin
@@ -640,7 +640,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //@}
 
     //* toggle insertion mode
-    virtual void _toggleOverwriteMode( void );
+    virtual void _toggleOverwriteMode();
 
     //*@name tab emulation
     //@{
@@ -650,22 +650,22 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual bool _setTabSize( int size );
 
     //* tab emulation
-    virtual bool _hasTabEmulation( void ) const
+    virtual bool _hasTabEmulation() const
     { return hasTabEmulation_; }
 
     //* insert (normal or emulated) tab
-    virtual void _insertTab( void );
+    virtual void _insertTab();
 
     //* multi tab regular expression
-    virtual const QRegExp& _tabRegExp( void ) const
+    virtual const QRegExp& _tabRegExp() const
     { return tabRegexp_; }
 
     //* 'normal' tab regular expression
-    virtual const QRegExp& _normalTabRegExp( void ) const
+    virtual const QRegExp& _normalTabRegExp() const
     { return normalTabRegexp_; }
 
     //* 'emulated' tab regular expression
-    virtual const QRegExp& _emulatedTabRegExp( void ) const
+    virtual const QRegExp& _emulatedTabRegExp() const
     { return emulatedTabRegexp_; }
 
     //@}
@@ -674,14 +674,14 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //*@{
 
     //* margin widget
-    TextEditorMarginWidget& _marginWidget( void ) const
+    TextEditorMarginWidget& _marginWidget() const
     { return *marginWidget_; }
 
     //* update margins
-    virtual bool _updateMargin( void );
+    virtual bool _updateMargin();
 
     //* current block rect
-    virtual const QRect& _currentBlockRect( void ) const
+    virtual const QRect& _currentBlockRect() const
     { return currentBlockRect_; }
 
     //* current block rect
@@ -698,11 +698,11 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //@{
 
     //* line number display
-    bool _hasLineNumberDisplay( void ) const
+    bool _hasLineNumberDisplay() const
     { return lineNumberDisplay_; }
 
     //* line number display
-    LineNumberDisplay& _lineNumberDisplay( void ) const
+    LineNumberDisplay& _lineNumberDisplay() const
     { return *lineNumberDisplay_; }
 
     //@}
@@ -719,16 +719,16 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     protected Q_SLOTS:
 
     //* synchronize selection
-    virtual void _synchronizeSelection( void );
+    virtual void _synchronizeSelection();
 
     //* update action status
-    virtual void _updateContentActions( void );
+    virtual void _updateContentActions();
 
     //* update action status
     virtual void _updateReadOnlyActions( bool );
 
     //* update undo/redo actions
-    virtual void _updateUndoRedoActions( void );
+    virtual void _updateUndoRedoActions();
 
     //* update action status
     /** this works only if you have qt > 4.2 */
@@ -738,14 +738,14 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual void _updateClipboardActions( QClipboard::Mode );
 
     //* update selection clipboard
-    virtual void _updateClipboard( void );
+    virtual void _updateClipboard();
 
     //* copy anchor to clipboard
-    virtual void _copyLinkLocation( void );
+    virtual void _copyLinkLocation();
 
     //* update paste action
     /** depends on clipboard status and editability */
-    virtual void _updatePasteAction( void );
+    virtual void _updatePasteAction();
 
     //* toggle block highlight
     virtual void _toggleBlockHighlight( bool );
@@ -766,26 +766,26 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     void _blockCountChanged( int );
 
     //* find text from dialog
-    virtual void _findFromDialog( void );
+    virtual void _findFromDialog();
 
     //* replace text from dialog
-    virtual void _replaceFromDialog( void );
+    virtual void _replaceFromDialog();
 
     //* select line from dialog
-    virtual void _selectLineFromDialog( void );
+    virtual void _selectLineFromDialog();
 
     //* update replace in selection action
-    void _updateReplaceInSelection( void );
+    void _updateReplaceInSelection();
 
     private Q_SLOTS:
 
     //* update configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 
     //* install default actions
-    void _installActions( void );
+    void _installActions();
 
     //* margin widget
     TextEditorMarginWidget* marginWidget_ = nullptr;

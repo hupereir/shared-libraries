@@ -52,7 +52,7 @@ class ImageFileDialog: public QFileDialog
     void _currentChanged( const QString& path );
 
     //* display current image
-    void _preview( void );
+    void _preview();
 
     protected:
 

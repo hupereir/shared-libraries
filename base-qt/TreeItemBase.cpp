@@ -20,7 +20,7 @@
 #include "TreeItemBase.h"
 
 //______________________________________________________________
-TreeItemBase::Id& TreeItemBase::_runningId( void )
+TreeItemBase::Id& TreeItemBase::_runningId()
 {
     static Id id(0);
     return id;

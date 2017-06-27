@@ -28,7 +28,7 @@ PathHistory::PathHistory( QObject* parent ):
 {}
 
 //__________________________________________________________________
-FileRecord::List PathHistory::previousPathList( void ) const
+FileRecord::List PathHistory::previousPathList() const
 {
     FileRecord::List out;
     for( int index = 0; index < index_; ++index )
@@ -38,7 +38,7 @@ FileRecord::List PathHistory::previousPathList( void ) const
 }
 
 //__________________________________________________________________
-FileRecord::List PathHistory::nextPathList( void ) const
+FileRecord::List PathHistory::nextPathList() const
 {
     FileRecord::List out;
     for( int index = index_+1; index < pathList_.size(); ++index )
@@ -85,7 +85,7 @@ void PathHistory::add( const FileRecord& path )
 }
 
 //__________________________________________
-void PathHistory::clear( void )
+void PathHistory::clear()
 {
     Debug::Throw( "PathHistory::clear.\n" );
     pathList_.clear();

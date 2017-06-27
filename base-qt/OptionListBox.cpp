@@ -44,11 +44,11 @@ class EditDialog: public CustomDialog
     explicit EditDialog( QWidget*, bool, QFileDialog::FileMode );
 
     //! editor
-    BrowsedLineEditor::Editor& editor( void ) const
+    BrowsedLineEditor::Editor& editor() const
     { return *editor_; }
 
     //! checkbox
-    QCheckBox& checkbox( void ) const
+    QCheckBox& checkbox() const
     { return *checkbox_; }
 
     private:
@@ -247,7 +247,7 @@ void OptionListBox::write( Options& options ) const
 }
 
 //______________________________________________________________________
-void OptionListBox::_updateButtons( void )
+void OptionListBox::_updateButtons()
 {
     Debug::Throw( "OptionListBox::_updateButtons.\n" );
 
@@ -274,7 +274,7 @@ void OptionListBox::_updateButtons( void )
 }
 
 //_______________________________________________________
-void OptionListBox::_add( void )
+void OptionListBox::_add()
 {
     Debug::Throw( "OptionListBox::_add.\n" );
 
@@ -312,7 +312,7 @@ void OptionListBox::_add( void )
 }
 
 //_______________________________________________________
-void OptionListBox::_edit( void )
+void OptionListBox::_edit()
 {
     Debug::Throw( "OptionListBox::_edit.\n" );
 
@@ -365,7 +365,7 @@ void OptionListBox::_edit( void )
 }
 
 //_______________________________________________________
-void OptionListBox::_remove( void )
+void OptionListBox::_remove()
 {
     Debug::Throw( "OptionListBox::_remove.\n" );
 
@@ -383,7 +383,7 @@ void OptionListBox::_remove( void )
 }
 
 //_______________________________________________________
-void OptionListBox::_setDefault( void )
+void OptionListBox::_setDefault()
 {
     Debug::Throw( "OptionListBox::_setDefault.\n" );
 

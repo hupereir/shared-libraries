@@ -75,7 +75,7 @@ void OptionWidgetList::write( Options& options ) const
 }
 
 //__________________________________________________
-int OptionWidgetList::_checkBoxSpacing( void ) const
+int OptionWidgetList::_checkBoxSpacing() const
 {
     QStyleOption option;
     option.rect = QRect( 0, 0, 50, 50 );

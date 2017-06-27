@@ -45,13 +45,13 @@ class SystemNotifications: public QObject, private Base::Counter<SystemNotificat
     explicit SystemNotifications( QObject* = nullptr, const QString& = QString(), const QIcon& = QIcon() );
 
     //* destructor
-    ~SystemNotifications( void ) override;
+    ~SystemNotifications() override;
 
     //* @name modifiers
     //@{
 
     //* initialize
-    void initialize( void );
+    void initialize();
 
     //* applicatino name
     void setApplicationName( const QString& );
@@ -72,7 +72,7 @@ class SystemNotifications: public QObject, private Base::Counter<SystemNotificat
     //@{
 
     //* true if available
-    bool isSupported( void ) const;
+    bool isSupported() const;
 
     //@}
 
@@ -87,7 +87,7 @@ class SystemNotifications: public QObject, private Base::Counter<SystemNotificat
     void timerEvent( QTimerEvent* ) override;
 
     //* process message queue
-    void _sendPendingNotification( void );
+    void _sendPendingNotification();
 
     private:
 

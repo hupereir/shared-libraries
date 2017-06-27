@@ -63,7 +63,7 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QHeaderView* header, cons
 }
 
 //_____________________________________________________
-void ColumnSortingMenu::_updateActions( void )
+void ColumnSortingMenu::_updateActions()
 {
 
     Debug::Throw( "ColumnSortingMenu::_updateActions.\n" );
@@ -131,7 +131,7 @@ void ColumnSortingMenu::_sort( QAction* action )
 }
 
 //______________________________________________________________________________
-void ColumnSortingMenu::_revertOrder( void )
+void ColumnSortingMenu::_revertOrder()
 {
     Debug::Throw( "ColumnSortingMenu::_sort.\n" );
 

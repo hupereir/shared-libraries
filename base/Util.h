@@ -38,19 +38,19 @@ class Util
     static QString env( const QString&, const QString& = QString() );
 
     //*  user name
-    static QString user( void );
+    static QString user();
 
     //* returns the domain name
-    static QString domain( void );
+    static QString domain();
 
     //* user home directory
-    static File home( void );
+    static File home();
 
     //* temporary directory ("/tmp")
-    static File tmp( void );
+    static File tmp();
 
     //* user config path
-    static File config( void );
+    static File config();
 
     /** returns the host name.
     \par short_name if true returns only the string located before the first '.'
@@ -61,10 +61,10 @@ class Util
     static QString windowTitle( const QString& );
 
     //* application pid
-    static int pid( void );
+    static int pid();
 
     //* returns the work directory
-    static File workingDirectory( void );
+    static File workingDirectory();
 
 };
 

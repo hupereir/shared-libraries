@@ -73,7 +73,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
 }
 
 //________________________________________________________
-void ColorDisplay::_selectColorFromDialog( void )
+void ColorDisplay::_selectColorFromDialog()
 {
     Debug::Throw( "ColorDisplay::_selectColor.\n" );
     QColor color( QColorDialog::getColor( editor_->color(), this ) );
@@ -81,14 +81,14 @@ void ColorDisplay::_selectColorFromDialog( void )
 }
 
 //________________________________________________________
-void ColorDisplay::_selectColorFromText( void )
+void ColorDisplay::_selectColorFromText()
 {
     Debug::Throw( "ColorDisplay::_selectColorFromText.\n" );
     editor_->setColor( editor_->text() );
 }
 
 //_______________________________________________
-QColor ColorDisplay::Editor::color( void ) const
+QColor ColorDisplay::Editor::color() const
 {
     Debug::Throw( "ColorDisplay::Editor::color.\n" );
     QString text( LineEditor::text() );

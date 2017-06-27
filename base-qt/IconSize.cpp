@@ -36,7 +36,7 @@ IconSize::IconSize( IconSize::Size size )
 }
 
 //______________________________________________________________________
-IconSize::Map& IconSize::map( void )
+IconSize::Map& IconSize::map()
 {
     static Map sizeMap;
     if( sizeMap.empty() )

@@ -181,7 +181,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* get list of internal selected items
-    QModelIndexList selectedIndexes( void ) const override
+    QModelIndexList selectedIndexes() const override
     {
         QModelIndexList out;
         for( const auto& value:selectedItems_ )
@@ -193,15 +193,15 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* restore currentIndex
-    QModelIndex currentIndex( void ) const override
+    QModelIndex currentIndex() const override
     { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
     //* true if expended indexes are supported
-    bool supportsExpandedIndexes( void ) const override
+    bool supportsExpandedIndexes() const override
     { return true; }
 
     //* get list of internal selected items
-    QModelIndexList expandedIndexes( void ) const override
+    QModelIndexList expandedIndexes() const override
     {
         QModelIndexList out;
         for( const auto& value:expandedItems_ )
@@ -213,7 +213,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* root item
-    const Item& root( void ) const
+    const Item& root() const
     { return root_; }
 
     //@}
@@ -222,7 +222,7 @@ template<class T> class TreeModel : public ItemModel
     //@{
 
     //* clear internal list selected items
-    void clearSelectedIndexes( void ) override
+    void clearSelectedIndexes() override
     { selectedItems_.clear(); }
 
     //* set selected indexes
@@ -242,7 +242,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* current index;
-    void clearCurrentIndex( void ) override
+    void clearCurrentIndex() override
     { hasCurrentItem_ = false; }
 
     //* store current index
@@ -258,7 +258,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* clear internal list of expanded items
-    void clearExpandedIndexes( void ) override
+    void clearExpandedIndexes() override
     { expandedItems_.clear(); }
 
     //* set selected indexes
@@ -391,7 +391,7 @@ template<class T> class TreeModel : public ItemModel
     }
 
     //* reset tree
-    void resetTree( void )
+    void resetTree()
     {
         emit layoutAboutToBeChanged();
         _resetTree();
@@ -400,7 +400,7 @@ template<class T> class TreeModel : public ItemModel
 
 
     //* clear
-    void clear( void )
+    void clear()
     {
 
         emit layoutAboutToBeChanged();
@@ -419,7 +419,7 @@ template<class T> class TreeModel : public ItemModel
     protected:
 
     //* root item
-    Item& _root( void )
+    Item& _root()
     { return root_; }
 
     //* add
@@ -467,7 +467,7 @@ template<class T> class TreeModel : public ItemModel
 
     //* reset tree
     /** private version, with no signal emitted */
-    void _resetTree( void )
+    void _resetTree()
     {
         List children( TreeModel::children() );
         map_.clear();

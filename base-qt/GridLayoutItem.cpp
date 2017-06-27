@@ -83,7 +83,7 @@ void GridLayoutItem::setVisible( bool value )
 }
 
 //____________________________________________________________________________
-void GridLayoutItem::show( void )
+void GridLayoutItem::show()
 {
     key_->show();
     value_->show();
@@ -95,7 +95,7 @@ void GridLayoutItem::show( void )
 }
 
 //____________________________________________________________________________
-void GridLayoutItem::hide( void )
+void GridLayoutItem::hide()
 {
     key_->hide();
     value_->hide();

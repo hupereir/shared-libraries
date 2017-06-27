@@ -49,7 +49,7 @@ namespace SpellCheck
         { return position_ < word.position_; }
 
         //! position
-        int position( void ) const
+        int position() const
         { return position_; }
 
         //! true if given position is in the selected word

@@ -26,13 +26,13 @@
 #include "IconCache.h"
 
 //* customized Icon factory to provide better looking disabled icons
-class IconEngine: private Base::Counter<IconEngine>
+class IconEngine final: private Base::Counter<IconEngine>
 {
 
     public:
 
     //* retrieve singleton
-    static IconEngine& get( void );
+    static IconEngine& get();
 
     //* copy constructor
     explicit IconEngine( const IconEngine& ) = delete;
@@ -46,14 +46,14 @@ class IconEngine: private Base::Counter<IconEngine>
     { return get()._get( file, flags ); }
 
     //* return cache
-    static const Base::IconCache& cache( void )
+    static const Base::IconCache& cache()
     { return get().cache_; }
 
     //* reload all icons set in cache from new path list
-    bool reload( void );
+    bool reload();
 
     //* clear
-    void clear( void );
+    void clear();
 
     private:
 
@@ -61,7 +61,7 @@ class IconEngine: private Base::Counter<IconEngine>
     //@{
 
     //* constructor
-    explicit IconEngine( void );
+    explicit IconEngine();
 
     //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */

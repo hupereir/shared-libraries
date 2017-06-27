@@ -62,30 +62,30 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     //@{
 
     //* path
-    File path( void ) const;
+    File path() const;
 
     //* true if parent directory is available
-    bool hasParent( void ) const;
+    bool hasParent() const;
 
     //* true if previous path is available in history
-    bool hasPrevious( void ) const;
+    bool hasPrevious() const;
 
     //* true if next path available in history
-    bool hasNext( void ) const;
+    bool hasNext() const;
 
     //* minimum size hint
-    QSize minimumSizeHint( void ) const override;
+    QSize minimumSizeHint() const override;
 
     //* size hint
-    QSize sizeHint( void ) const override
+    QSize sizeHint() const override
     { return minimumSizeHint(); }
 
     //* previous path menu
-    QMenu& previousPathMenu( void ) const
+    QMenu& previousPathMenu() const
     { return *previousPathMenu_; }
 
     //* next path menu
-    QMenu& nextPathMenu( void ) const
+    QMenu& nextPathMenu() const
     { return *nextPathMenu_; }
 
     //@}
@@ -124,13 +124,13 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     public Q_SLOTS:
 
     //* select parent path
-    void selectParent( void );
+    void selectParent();
 
     //* select previous path in history
-    void selectPrevious( void );
+    void selectPrevious();
 
     //* select next path in history
-    void selectNext( void );
+    void selectNext();
 
     //* select from action
     void selectFromMenu( QAction* );
@@ -149,30 +149,30 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     }
 
     //* update prefix
-    void _updatePrefix( void );
+    void _updatePrefix();
 
     //* truncation
     void _setUseTruncation( bool );
 
     //* reload
-    void _reload( void )
+    void _reload()
     { setPath( path() ); }
 
     protected Q_SLOTS:
 
     //* show browser
-    void _showBrowser( void )
+    void _showBrowser()
     { setCurrentWidget( browserContainer_ ); }
 
     //* show editor
-    void _showEditor( void )
+    void _showEditor()
     { setCurrentWidget( editorContainer_ ); }
 
     //* return pressed in editor
-    void _returnPressed( void );
+    void _returnPressed();
 
     //* menu button clicked
-    void _menuButtonClicked( void );
+    void _menuButtonClicked();
 
     //* update path from menu action
     void _updatePath( QAction* );
@@ -181,15 +181,15 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     void _buttonClicked( QAbstractButton* );
 
     //* update button visibility
-    void _updateButtonVisibility( void );
+    void _updateButtonVisibility();
 
     //* update previous and next path menus
-    void _updatePathMenus( void );
+    void _updatePathMenus();
 
     private Q_SLOTS:
 
     //* configuration
-    void _updateConfiguration( void );
+    void _updateConfiguration();
 
     private:
 

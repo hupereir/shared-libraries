@@ -42,7 +42,7 @@ class XmlOptions
     //@{
 
     //* options
-    static Options& get( void );
+    static Options& get();
 
     //* file
     static const File& file();
@@ -63,10 +63,10 @@ class XmlOptions
     static void setFile( const File& );
 
     //* read options
-    static bool read( void );
+    static bool read();
 
     //* write options
-    static bool write( void );
+    static bool write();
 
     //@}
 

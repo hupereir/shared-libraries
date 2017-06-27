@@ -23,7 +23,7 @@
 #include <QFileInfo>
 
 //__________________________________________________________
-IconEngine& IconEngine::get( void )
+IconEngine& IconEngine::get()
 {
     //* singleton
     static IconEngine singleton_;
@@ -31,12 +31,12 @@ IconEngine& IconEngine::get( void )
 }
 
 //__________________________________________________________
-IconEngine::IconEngine( void ):
+IconEngine::IconEngine():
     Counter( "IconEngine" )
 { Debug::Throw( "IconEngine::IconEngine.\n" ); }
 
 //__________________________________________________________
-bool IconEngine::reload( void )
+bool IconEngine::reload()
 {
     Debug::Throw( "IconEngine::reload.\n" );
 
@@ -53,7 +53,7 @@ bool IconEngine::reload( void )
 }
 
 //__________________________________________________________
-void IconEngine::clear( void )
+void IconEngine::clear()
 {
     Debug::Throw( "IconEngine::clear.\n" );
     cache_.clear();

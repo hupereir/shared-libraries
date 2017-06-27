@@ -43,11 +43,11 @@ class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
     //@{
 
     //* elision mode
-    Qt::TextElideMode elideMode( void ) const
+    Qt::TextElideMode elideMode() const
     { return elideMode_; }
 
     //* text
-    QString text( void )
+    QString text()
     { return fullText_; }
 
     //@}
@@ -71,10 +71,10 @@ class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
     //@}
 
     //* minimum size hint
-    QSize minimumSizeHint( void ) const override;
+    QSize minimumSizeHint() const override;
 
     //* size hint
-    QSize sizeHint( void ) const override;
+    QSize sizeHint() const override;
 
     protected:
 
@@ -85,7 +85,7 @@ class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
     void resizeEvent( QResizeEvent* ) override;
 
     //* update text based on object size
-    void updateElidedText( void );
+    void updateElidedText();
 
     private:
 

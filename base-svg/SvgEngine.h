@@ -42,7 +42,7 @@ namespace Svg
         public:
 
         //* retrieve singleton
-        static SvgEngine& get( void );
+        static SvgEngine& get();
 
         //*@name accessors
         //@{
@@ -53,19 +53,19 @@ namespace Svg
         { return get()._get( id ); }
 
         //* is valid
-        bool isValid( void ) const
+        bool isValid() const
         { return renderer_.isValid(); }
 
         //* margins
-        Base::Margins margins( void ) const
+        Base::Margins margins() const
         { return margins_; }
 
         //* outer padding
-        Base::Margins outerPadding( void ) const
+        Base::Margins outerPadding() const
         { return outerPadding_; }
 
         //* true if reload is needed on palette change
-        bool needsReloadOnPaletteChange( void ) const;
+        bool needsReloadOnPaletteChange() const;
 
         //@}
 
@@ -78,13 +78,13 @@ namespace Svg
         Q_SIGNALS:
 
         //* emitted when svg files are changed
-        void changed( void );
+        void changed();
 
         public Q_SLOTS:
 
         //* reload all icons set in cache from new path list
         /** return true if changed */
-        bool forceReload( void )
+        bool forceReload()
         { return reload( true ); }
 
         //* reload all icons set in cache from new path list
@@ -105,7 +105,7 @@ namespace Svg
         //@{
 
         //* constructor
-        explicit SvgEngine( void );
+        explicit SvgEngine();
 
         //* create icon
         /** the file is stored into a cache to avoid all pixmaps manipulations */

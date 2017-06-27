@@ -30,7 +30,7 @@ namespace Base
 {
 
     //* reference manual single entry
-    class HelpItem : private Counter<HelpItem>
+    class HelpItem final: private Counter<HelpItem>
     {
 
         public:
@@ -55,7 +55,7 @@ namespace Base
         { label_ = label; }
 
         //* label
-        const QString& label( void ) const
+        const QString& label() const
         { return label_; }
 
         //* item text
@@ -63,7 +63,7 @@ namespace Base
         { text_ = text; }
 
         //* item text
-        const QString& text( void ) const
+        const QString& text() const
         { return text_; }
 
         //* shortcut to help item list

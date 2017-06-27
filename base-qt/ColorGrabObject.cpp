@@ -43,7 +43,7 @@ ColorGrabObject::ColorGrabObject( QWidget* parent ):
 }
 
 //________________________________________________________
-void ColorGrabObject::_grabColor( void )
+void ColorGrabObject::_grabColor()
 {
 
     Debug::Throw( "ColorGrabObject::_grabColor.\n" );
@@ -141,7 +141,7 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
 }
 
 //_________________________________________________________
-void ColorGrabObject::_clearCapture( void )
+void ColorGrabObject::_clearCapture()
 {
     if( captureWidget_ )
     {

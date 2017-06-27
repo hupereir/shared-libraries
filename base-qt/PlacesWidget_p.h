@@ -55,7 +55,7 @@ namespace Private
         Q_DECLARE_FLAGS( Flags, Flag );
 
         //* default constructor
-        explicit LocalFileInfo( void )
+        explicit LocalFileInfo()
         {}
 
         //* copy constructor
@@ -82,7 +82,7 @@ namespace Private
         QDomElement domElement( QDomDocument& ) const;
 
         //* flags
-        Flags flags( void ) const
+        Flags flags() const
         { return flags_; }
 
         //* has flag
@@ -112,7 +112,7 @@ namespace Private
             public:
 
             //* constructor
-            explicit List( void )
+            explicit List()
             {}
 
             //* constructor from DOM element
@@ -149,27 +149,27 @@ namespace Private
         //@{
 
         //* file info
-        const BaseFileInfo& fileInfo( void ) const
+        const BaseFileInfo& fileInfo() const
         { return fileInfo_; }
 
         //* true if is separator
-        bool isSeparator( void ) const
+        bool isSeparator() const
         { return hasFlag( LocalFileInfo::Separator ); }
 
         //* true if valid
-        bool isValid( void ) const
+        bool isValid() const
         { return valid_; }
 
         //* focus
-        bool hasFocus( void ) const
+        bool hasFocus() const
         { return hasFocus_; }
 
         //* size hint
-        QSize sizeHint( void ) const override
+        QSize sizeHint() const override
         { return minimumSize(); }
 
         //* flags
-        LocalFileInfo::Flags flags( void ) const
+        LocalFileInfo::Flags flags() const
         { return flags_; }
 
         //* has flag
@@ -177,7 +177,7 @@ namespace Private
         { return flags_&flag; }
 
         //* drag monitor
-        DragMonitor& dragMonitor( void ) const
+        DragMonitor& dragMonitor() const
         { return *dragMonitor_; }
 
         //@}
@@ -218,7 +218,7 @@ namespace Private
         { mouseOver_ = value; }
 
         //* update minimum width
-        void updateMinimumSize( void );
+        void updateMinimumSize();
 
         //* focus
         void setFocus( bool value )
@@ -260,7 +260,7 @@ namespace Private
         private Q_SLOTS:
 
         //* update configuration
-        void _updateConfiguration( void );
+        void _updateConfiguration();
 
         private:
 
@@ -302,15 +302,15 @@ namespace Private
         //@{
 
         //* name
-        QString name( void ) const
+        QString name() const
         { return nameEditor_->text(); }
 
         //* file
-        QString file( void ) const
+        QString file() const
         { return fileEditor_->editor().text(); }
 
         //* remote
-        bool isRemote( void ) const
+        bool isRemote() const
         { return remoteCheckBox_->isChecked(); }
 
         //@}
@@ -391,13 +391,13 @@ namespace Private
         protected:
 
         //* reload
-        void _reload( void )
+        void _reload()
         { setFileInfo( name_, fileInfo_, icon_ ); }
 
         private Q_SLOTS:
 
         //* update configuration
-        void _updateConfiguration( void );
+        void _updateConfiguration();
 
         private:
 

@@ -39,7 +39,7 @@ class KeyModifier
   };
 
   //! get state
-  State state( void ) const;
+  State state() const;
 
   private:
 

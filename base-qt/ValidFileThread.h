@@ -60,7 +60,7 @@ class ValidFileThread: public QThread, private Base::Counter<ValidFileThread>
     protected:
 
     //* Check files validity. Post a ValidFileEvent when finished
-    void run( void ) override;
+    void run() override;
 
     private:
 

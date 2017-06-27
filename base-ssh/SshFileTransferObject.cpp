@@ -224,14 +224,14 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    void FileTransferObject::_setConnected( void )
+    void FileTransferObject::_setConnected()
     {
         state_ |= Connected;
         emit debug( tr( "Succesfully connected to %1" ).arg( remoteFilename_ ) );
     }
 
     //____________________________________________________________________________
-    void FileTransferObject::_prepareReading( void )
+    void FileTransferObject::_prepareReading()
     {
         Debug::Throw( "Ssh::FileTransferObject::_prepareReading.\n" );
 
@@ -241,7 +241,7 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    void FileTransferObject::_readFromSocket( void )
+    void FileTransferObject::_readFromSocket()
     {
 
         Debug::Throw( "Ssh::FileTransferObject::_readFromSocket.\n" );
@@ -310,7 +310,7 @@ namespace Ssh
     }
 
     //______________________________________________________
-    void FileTransferObject::_writeToSocket( void )
+    void FileTransferObject::_writeToSocket()
     {
         Debug::Throw( "Ssh::FileTransferObject::_writeToSocket.\n" );
 
@@ -379,7 +379,7 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    void FileTransferObject::_closeSourceFile( void )
+    void FileTransferObject::_closeSourceFile()
     {
         if( localDevice_ && deviceOwned_ )
         {
@@ -389,7 +389,7 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    void FileTransferObject::_closeSocket( void )
+    void FileTransferObject::_closeSocket()
     { if( sshSocket_ ) sshSocket_->close(); }
 
 }

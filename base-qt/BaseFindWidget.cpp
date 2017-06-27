@@ -30,7 +30,7 @@
 #include <QToolButton>
 
 //________________________________________________________________________
-QOrderedSet<QString>& BaseFindWidget::_searchedStrings( void )
+QOrderedSet<QString>& BaseFindWidget::_searchedStrings()
 {
     static QOrderedSet<QString> strings;
     return strings;
@@ -182,11 +182,11 @@ void BaseFindWidget::enableRegExp( bool value )
 }
 
 //________________________________________________________________________
-void BaseFindWidget::matchFound( void )
+void BaseFindWidget::matchFound()
 { editor_->setPalette( palette() ); }
 
 //________________________________________________________________________
-void BaseFindWidget::noMatchFound( void )
+void BaseFindWidget::noMatchFound()
 {
     if( !editor_->currentText().isEmpty() )
     { editor_->setPalette( notFoundPalette_ ); }
@@ -228,7 +228,7 @@ void BaseFindWidget::_addSearchedString( const QString& text  )
 }
 
 //________________________________________________________________________
-void BaseFindWidget::synchronize( void )
+void BaseFindWidget::synchronize()
 {
     Debug::Throw( "BaseFindWidget::synchronize.\n" );
     editor_->clear();
@@ -262,7 +262,7 @@ void BaseFindWidget::_updateButtons( const QString& text )
 }
 
 //________________________________________________________________________
-void BaseFindWidget::_updateNotFoundPalette( void )
+void BaseFindWidget::_updateNotFoundPalette()
 {
     notFoundPalette_ = palette();
     notFoundPalette_.setColor( QPalette::Base,

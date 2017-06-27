@@ -61,7 +61,7 @@ namespace Server
     }
 
     //_________________________________________
-    ApplicationManager::~ApplicationManager( void )
+    ApplicationManager::~ApplicationManager()
     {}
 
     //_________________________________________
@@ -324,7 +324,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::_serverConnectionClosed( void )
+    void ApplicationManager::_serverConnectionClosed()
     {
         Debug::Throw( "ApplicationManager::_serverConnectionClosed - lost connection to server.\n" );
         serverInitialized_ = false;
@@ -332,7 +332,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::_clientConnectionClosed( void )
+    void ApplicationManager::_clientConnectionClosed()
     {
 
         Debug::Throw( "ApplicationManager::_clientConnectionClosed - client has disconnected.\n" );
@@ -480,7 +480,7 @@ namespace Server
     }
 
     //__________________________________________________________________________
-    bool ApplicationManager::_initializeServer( void )
+    bool ApplicationManager::_initializeServer()
     {
 
         Debug::Throw( "ApplicationManager::_initializeServer.\n" );
@@ -494,7 +494,7 @@ namespace Server
 
 
     //__________________________________________________________________________
-    bool ApplicationManager::_initializeClient( void )
+    bool ApplicationManager::_initializeClient()
     {
 
         Debug::Throw( "ApplicationManager::_initializeClient.\n" );
@@ -522,7 +522,7 @@ namespace Server
     }
 
     //__________________________________________________________________________
-    void ApplicationManager::_startTimer( void )
+    void ApplicationManager::_startTimer()
     {
         // time out delay (for existing server to reply)
         // one should really start the timer only when the client is connected

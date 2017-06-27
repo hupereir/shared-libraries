@@ -49,11 +49,11 @@ class DetailsDialog: public CustomDialog
     public Q_SLOTS:
 
     //* show details
-    void showDetails( void )
+    void showDetails()
     { toggleDetails( true ); }
 
     //* hide details
-    void hideDetails( void )
+    void hideDetails()
     { toggleDetails( false ); }
 
     //* toggle details

@@ -28,11 +28,11 @@ class MessageBuffer
     public:
 
     //* constructor
-    explicit MessageBuffer( void )
+    explicit MessageBuffer()
     {}
 
     //* clear
-    void clear( void )
+    void clear()
     {
         text_ = QString();
         position_ = 0;
@@ -43,7 +43,7 @@ class MessageBuffer
     { text_ += buffer; }
 
     //* move to position
-    void flush( void )
+    void flush()
     { flush( position() ); }
 
     //* move to new position
@@ -54,15 +54,15 @@ class MessageBuffer
     }
 
     //* text
-    const QString& text( void ) const
+    const QString& text() const
     { return text_; }
 
     //* text
-    QString& text( void )
+    QString& text()
     { return text_; }
 
     //* position
-    int position( void ) const
+    int position() const
     { return position_; }
 
     private:

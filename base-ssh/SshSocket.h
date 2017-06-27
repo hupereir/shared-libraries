@@ -61,7 +61,7 @@ namespace Ssh
         private:
 
         //* try connect channel, returns true on success
-        bool _tryConnect( void );
+        bool _tryConnect();
 
         //* session pointer
         void* session_ = nullptr;

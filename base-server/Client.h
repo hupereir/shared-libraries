@@ -45,7 +45,7 @@ namespace Server
         explicit Client( QObject*, QTcpSocket* = nullptr );
 
         //* id
-        quint32 id( void ) const
+        quint32 id() const
         { return id_; }
 
         /** returns true if message could be sent */
@@ -86,7 +86,7 @@ namespace Server
         private:
 
         //* client counter
-        static quint32& _counter( void );
+        static quint32& _counter();
 
         //* client id
         quint32 id_ = 0;

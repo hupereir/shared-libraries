@@ -44,10 +44,10 @@ class ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
     //@{
 
     //* retrieve colors
-    Base::Color::Set colors( void ) const;
+    Base::Color::Set colors() const;
 
     //* current color
-    QColor color( void ) const;
+    QColor color() const;
 
     //@}
 

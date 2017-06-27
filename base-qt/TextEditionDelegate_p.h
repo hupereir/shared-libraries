@@ -36,7 +36,7 @@ namespace Private
         explicit LocalEditor( QWidget* = nullptr );
 
         //* true if edition is valid
-        bool isEditionValid( void ) const
+        bool isEditionValid() const
         { return valid_; }
 
         protected Q_SLOTS:

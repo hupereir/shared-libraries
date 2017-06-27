@@ -144,7 +144,7 @@ void ImageFileDialog::_currentChanged( const QString& value )
 }
 
 //______________________________________________________________________
-void ImageFileDialog::_preview( void )
+void ImageFileDialog::_preview()
 {
 
     Debug::Throw( "ImageFileDialog::_preview.\n" );

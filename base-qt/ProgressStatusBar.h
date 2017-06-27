@@ -38,7 +38,7 @@ class ProgressStatusBar: public BaseStatusBar
     explicit ProgressStatusBar( QWidget* );
 
     //* progress bar
-    QProgressBar& progressBar( void ) const
+    QProgressBar& progressBar() const
     { return *progress_; }
 
     //* set progress bar
@@ -51,14 +51,14 @@ class ProgressStatusBar: public BaseStatusBar
     public Q_SLOTS:
 
     //* show progress bar as visible widget
-    void showProgressBar( void );
+    void showProgressBar();
 
     //* hide progress bar
-    void hideProgressBar( void )
+    void hideProgressBar()
     { showLabel(); }
 
     //* show label as visible widget
-    void showLabel( void );
+    void showLabel();
 
     private:
 

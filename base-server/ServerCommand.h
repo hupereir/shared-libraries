@@ -37,7 +37,7 @@ namespace Server
 
     //_________________________________________
     //* command to be send over the server
-    class ServerCommand:private Base::Counter<ServerCommand>
+    class ServerCommand final:private Base::Counter<ServerCommand>
     {
 
         public:
@@ -90,39 +90,39 @@ namespace Server
         //@{
 
         //* true if this command is a child of argument
-        /*! this is needed to have commands appear in Tree view */
+        /** this is needed to have commands appear in Tree view */
         bool isChild( const ServerCommand& command ) const
         { return timeStamp() >= command.timeStamp() && id() == command.id(); }
 
         //* time stamp
-        const TimeStamp& timeStamp( void ) const
+        const TimeStamp& timeStamp() const
         { return timestamp_; }
 
         //* client id
-        quint32 clientId( void ) const
+        quint32 clientId() const
         { return clientId_; }
 
         //* application id
-        const ApplicationId& id( void ) const
+        const ApplicationId& id() const
         { return id_; }
 
         //* command
-        CommandType command( void ) const
+        CommandType command() const
         { return command_; }
 
         //* command name
-        QString commandName( void ) const
+        QString commandName() const
         {
             _initializeCommandNames();
             return _commandNames()[ command() ];
         }
 
         //* arguments
-        const CommandLineArguments& arguments( void ) const
+        const CommandLineArguments& arguments() const
         { return arguments_; }
 
         //* option
-        const XmlOption& option( void ) const
+        const XmlOption& option() const
         {
             Q_ASSERT( command() == ServerCommand::Option );
             return option_;
@@ -164,10 +164,10 @@ namespace Server
         using CommandMap = QHash<CommandType, QString >;
 
         //* command names
-        static CommandMap& _commandNames( void );
+        static CommandMap& _commandNames();
 
         //* map command types to names
-        void _initializeCommandNames( void ) const;
+        void _initializeCommandNames() const;
 
         //* time stamp
         TimeStamp timestamp_;

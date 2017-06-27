@@ -133,7 +133,7 @@ CustomPixmap CustomPixmap::transparent( qreal intensity ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::desaturated( void ) const
+CustomPixmap CustomPixmap::desaturated() const
 {
     if( isNull() ) return *this;
 
@@ -263,7 +263,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 }
 
 //______________________________________________________________________________________
-qreal CustomPixmap::devicePixelRatio( void ) const
+qreal CustomPixmap::devicePixelRatio() const
 {
     #if QT_VERSION >= 0x050300
     return QPixmap::devicePixelRatio();

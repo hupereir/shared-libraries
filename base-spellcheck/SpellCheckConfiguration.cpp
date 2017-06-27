@@ -103,7 +103,7 @@ namespace SpellCheck
     }
 
     //___________________________________________
-    void SpellCheckConfiguration::_updateDictionaries( void )
+    void SpellCheckConfiguration::_updateDictionaries()
     {
         Debug::Throw( "SpellCheckConfiguration::_updateDictionaries.\n" );
 
@@ -126,7 +126,7 @@ namespace SpellCheck
     }
 
     //___________________________________________
-    void SpellCheckConfiguration::_updateFilters( void )
+    void SpellCheckConfiguration::_updateFilters()
     {
         Debug::Throw( "SpellCheckConfiguration::_updateFilters.\n" );
 

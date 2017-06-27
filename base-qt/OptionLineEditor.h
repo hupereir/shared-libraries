@@ -55,7 +55,7 @@ class OptionLineEditor: public LineEditor, public OptionWidget
     Q_SIGNALS:
 
     //* modified
-    void modified( void );
+    void modified();
 
 };
 #endif

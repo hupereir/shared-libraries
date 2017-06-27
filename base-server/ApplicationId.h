@@ -29,7 +29,7 @@ namespace Server
 {
 
     //* Stores application name and user to uniquely identify an application.
-    class ApplicationId:private Base::Counter<ApplicationId>
+    class ApplicationId final:private Base::Counter<ApplicationId>
     {
         public:
 
@@ -56,25 +56,25 @@ namespace Server
         //@{
 
         //* name
-        const QString& name( void ) const
+        const QString& name() const
         { return name_; }
 
         //* short name
-        QString userName( void ) const;
+        QString userName() const;
 
         //* short name
-        QString display( void ) const;
+        QString display() const;
 
         //* user
-        const QString& user( void ) const
+        const QString& user() const
         { return user_; }
 
         //* pid
-        qint64 processId( void ) const
+        qint64 processId() const
         { return pid_; }
 
         //* returns true if user and name makes sense
-        bool isValid( void ) const
+        bool isValid() const
         { return !(name().isEmpty() || user().isEmpty() ); }
 
         //@}

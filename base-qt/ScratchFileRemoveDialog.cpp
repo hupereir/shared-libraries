@@ -94,11 +94,11 @@ CustomDialog( parent )
 }
 
 //____________________________________________________________________________
-FileRecordModel::List ScratchFileRemoveDialog::selectedFiles( void ) const
+FileRecordModel::List ScratchFileRemoveDialog::selectedFiles() const
 { return model_.get( list_->selectionModel()->selectedRows() ); }
 
 //____________________________________________________________________
-void ScratchFileRemoveDialog::_updateActions( void )
+void ScratchFileRemoveDialog::_updateActions()
 {
     Debug::Throw( "ScratchFileRemoveDialog::_updateActions.\n" );
     bool hasSelection( !list_->selectionModel()->selectedRows().empty() );
@@ -133,7 +133,7 @@ void ScratchFileRemoveDialog::_updateContextMenu( const QPoint& position )
 }
 
 //____________________________________________________________________
-void ScratchFileRemoveDialog::_installActions( void )
+void ScratchFileRemoveDialog::_installActions()
 {
     // deselect all
     addAction( clearSelectionAction_ = new QAction( tr( "Clear Selection" ), this ) );

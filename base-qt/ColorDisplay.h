@@ -36,7 +36,7 @@ class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
     explicit ColorDisplay( QWidget* parent );
 
     //* color
-    QColor color( void ) const
+    QColor color() const
     { return editor_->color(); }
 
     public Q_SLOTS:
@@ -48,10 +48,10 @@ class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
     private Q_SLOTS:
 
     //* change color (from button)
-    void _selectColorFromDialog( void );
+    void _selectColorFromDialog();
 
     //* change color (from line editor)
-    void _selectColorFromText( void );
+    void _selectColorFromText();
 
     protected:
 
@@ -67,7 +67,7 @@ class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
         {}
 
         //* retrieve color
-        QColor color( void ) const;
+        QColor color() const;
 
         //* set color
         void setColor( QColor );
@@ -75,7 +75,7 @@ class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
     };
 
     //* editor
-    Editor& _editor( void ) const
+    Editor& _editor() const
     { return *editor_; }
 
     private:

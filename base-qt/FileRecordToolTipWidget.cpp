@@ -85,7 +85,7 @@ FileRecordToolTipWidget::FileRecordToolTipWidget( QWidget* parent ):
     vLayout->addStretch( 1 );
 
     // configuration
-    connect( Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
 
 }
@@ -176,7 +176,7 @@ void FileRecordToolTipWidget::setRecord( const FileRecord& record, const QIcon& 
 }
 
 //_____________________________________________
-void FileRecordToolTipWidget::_updateConfiguration( void )
+void FileRecordToolTipWidget::_updateConfiguration()
 {
     Debug::Throw( "FileRecordToolTipWidget::_updateConfiguration.\n" );
     if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<int>( "TOOLTIPS_PIXMAP_SIZE" ) );

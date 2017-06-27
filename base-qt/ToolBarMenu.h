@@ -37,11 +37,11 @@ class ToolBarMenu: public QMenu, private Base::Counter<ToolBarMenu>
     explicit ToolBarMenu( QWidget* = nullptr );
 
     //* tool button style menu
-    ToolButtonStyleMenu &toolButtonStyleMenu( void ) const
+    ToolButtonStyleMenu &toolButtonStyleMenu() const
     { return *toolButtonStyleMenu_; }
 
     //* icon size menu
-    IconSizeMenu &iconSizeMenu( void ) const
+    IconSizeMenu &iconSizeMenu() const
     { return *iconSizeMenu_; }
 
     private:

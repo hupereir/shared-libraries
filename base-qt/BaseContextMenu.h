@@ -38,7 +38,7 @@ class BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
     //@{
 
     //* return true if the menu has no visible action
-    bool isEmpty( void ) const
+    bool isEmpty() const
     { return isEmpty_; }
 
     //@}
@@ -51,14 +51,14 @@ class BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
     { hideDisabledActions_ = value; }
 
     //* clear
-    void clear( void )
+    void clear()
     {
         QMenu::clear();
         needSeparator_ = false;
     }
 
     //* add separator
-    QAction* addSeparator( void );
+    QAction* addSeparator();
 
     //* add menu
     QAction* addMenu( QMenu* );
@@ -73,7 +73,7 @@ class BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
 
     protected:
 
-    bool _hideDisabledActions( void ) const
+    bool _hideDisabledActions() const
     { return hideDisabledActions_; }
 
     private:

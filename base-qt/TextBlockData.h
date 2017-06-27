@@ -40,7 +40,7 @@ class TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockD
     {}
 
     //* flags
-    int flags( void ) const
+    int flags() const
     { return flags_; }
 
     //* flags
@@ -71,7 +71,7 @@ class TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockD
     }
 
     //* block background
-    const QColor& background( void ) const
+    const QColor& background() const
     { return background_; }
 
     private:

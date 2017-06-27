@@ -20,61 +20,68 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+
 #include <QObject>
 
-//* a class singleton used to centralize all objects that need static creation
-class Singleton
-{
+namespace Base{
 
-    public:
-
-    //* return singleton
-    static Singleton& get( void );
-
-    //*@name accessors
-    //@{
-
-    //* true if has application
-    bool hasApplication( void ) const
-    { return (bool) application_; }
-
-    //* application
-    QObject* application()
+    //* a class singleton used to centralize all objects that need static creation
+    class Singleton final: private Counter<Singleton>
     {
-        Q_CHECK_PTR( application_ );
-        return application_;
-    }
 
-    //* cast
-    template< typename T >
-        T* application( void )
-    {
-        Q_CHECK_PTR( application_ );
-        return static_cast<T*>( application_ );
-    }
+        public:
 
-    //@}
+        //* return singleton
+        static Singleton& get();
 
-    //*@name modifiers
-    //@{
+        //*@name accessors
+        //@{
 
-    //* set application
-    void setApplication( QObject* application )
-    {
-        Q_ASSERT( !application_ );
-        application_ = application;
-    }
+        //* true if has application
+        bool hasApplication() const
+        { return (bool) application_; }
 
-    //@}
+        //* application
+        QObject* application()
+        {
+            Q_CHECK_PTR( application_ );
+            return application_;
+        }
 
-    private:
+        //* cast
+        template< typename T >
+            T* application()
+        {
+            Q_CHECK_PTR( application_ );
+            return static_cast<T*>( application_ );
+        }
 
-    //* constructor
-    explicit Singleton( void )
-    {}
+        //@}
 
-    QObject* application_ = nullptr;
+        //*@name modifiers
+        //@{
 
-};
+        //* set application
+        void setApplication( QObject* application )
+        {
+            Q_ASSERT( !application_ );
+            application_ = application;
+        }
+
+        //@}
+
+        private:
+
+        //* constructor
+        explicit Singleton():
+            Counter( "Singleton" )
+        {}
+
+        QObject* application_ = nullptr;
+
+    };
+
+}
 
 #endif

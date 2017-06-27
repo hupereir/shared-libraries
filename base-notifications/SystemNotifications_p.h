@@ -50,13 +50,13 @@ namespace Private
         explicit SystemNotificationsP( QObject* = nullptr );
 
         //* destructor
-        ~SystemNotificationsP( void ) override;
+        ~SystemNotificationsP() override;
 
         //* @name modifiers
         //@{
 
         //* initialize
-        void initialize( void );
+        void initialize();
 
         //* application name
         void setApplicationName( const QString& );
@@ -73,7 +73,7 @@ namespace Private
         //@{
 
         //* true if available
-        bool isSupported( void ) const;
+        bool isSupported() const;
 
         //@}
 

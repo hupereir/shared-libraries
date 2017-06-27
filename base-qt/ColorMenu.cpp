@@ -37,7 +37,7 @@ ColorMenu::ColorMenu( QWidget* parent ):
 }
 
 //_______________________________________________
-Base::Color::Set ColorMenu::colors( void ) const
+Base::Color::Set ColorMenu::colors() const
 {
 
     Base::Color::Set out;
@@ -86,7 +86,7 @@ void ColorMenu::paintEvent( QPaintEvent* event )
 }
 
 //_______________________________________________
-void ColorMenu::_display( void )
+void ColorMenu::_display()
 {
 
     Debug::Throw( "ColorMenu::_display.\n" );
@@ -122,7 +122,7 @@ void ColorMenu::_display( void )
 }
 
 //_______________________________________________
-void ColorMenu::_new( void )
+void ColorMenu::_new()
 {
 
     Debug::Throw( "ColorMenu::_new.\n" );
@@ -137,7 +137,7 @@ void ColorMenu::_new( void )
 }
 
 //_______________________________________________
-void ColorMenu::_default( void )
+void ColorMenu::_default()
 {
 
     Debug::Throw( "ColorMenu::_default.\n" );

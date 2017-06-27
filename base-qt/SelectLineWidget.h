@@ -42,15 +42,15 @@ class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineW
     explicit SelectLineWidget( QWidget* = nullptr, bool compact = true );
 
     //* retrieve editor
-    LineEditor& editor( void ) const
+    LineEditor& editor() const
     { return *editor_; }
 
     //* ok button
-    QAbstractButton& okButton( void ) const
+    QAbstractButton& okButton() const
     { return *okButton_; }
 
     //* close button
-    QAbstractButton& closeButton( void ) const
+    QAbstractButton& closeButton() const
     { return *closeButton_; }
 
     Q_SIGNALS:
@@ -61,10 +61,10 @@ class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineW
     public Q_SLOTS:
 
     //* take action when at least one match is found
-    void matchFound( void );
+    void matchFound();
 
     //* take action when no match is found
-    void noMatchFound( void );
+    void noMatchFound();
 
     protected:
 
@@ -74,12 +74,12 @@ class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineW
     private Q_SLOTS:
 
     //* retrieve line number and emit signal
-    void _selectLine( void );
+    void _selectLine();
 
     private:
 
     //* create not found palette
-    void _updateNotFoundPalette( void );
+    void _updateNotFoundPalette();
 
     //* line editor for text to find
     LineEditor* editor_ = nullptr;

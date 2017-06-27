@@ -51,7 +51,7 @@ class MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconP
     { iconNames_.insert( key, value ); }
 
     //* clear
-    void clear( void )
+    void clear()
     { icons_.clear(); }
 
     //@}

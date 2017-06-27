@@ -61,15 +61,15 @@ namespace Ssh
         //@{
 
         //* file size
-        qint64 fileSize( void ) const
+        qint64 fileSize() const
         { return isConnected() ? stat_.st_size:0; }
 
         //* access time
-        TimeStamp accessTime( void ) const
+        TimeStamp accessTime() const
         { return isConnected() ? TimeStamp( stat_.st_atime ):TimeStamp(); }
 
         //* modification time
-        TimeStamp modificationTime( void ) const
+        TimeStamp modificationTime() const
         { return isConnected() ? TimeStamp( stat_.st_mtime ):TimeStamp(); }
 
         //@}
@@ -82,7 +82,7 @@ namespace Ssh
         private:
 
         //* try connect channel, returns true on success
-        bool _tryConnect( void );
+        bool _tryConnect();
 
         //* session pointer
         void* session_ = nullptr;

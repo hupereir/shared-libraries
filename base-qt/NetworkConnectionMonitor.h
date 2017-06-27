@@ -51,7 +51,7 @@ namespace Network
 
         //* list of connected devices
         using DeviceSet = QSet<QString>;
-        static DeviceSet connectedDevices( void )
+        static DeviceSet connectedDevices()
         { return devices( DeviceType::Connected ); }
 
         //* list of devices
@@ -69,7 +69,7 @@ namespace Network
         void setTimeOut( int );
 
         //* check whether current device is active and select one if not
-        void checkDevice( void );
+        void checkDevice();
 
         //@}
 

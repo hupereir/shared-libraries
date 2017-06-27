@@ -45,10 +45,10 @@ namespace Ssh
         //*@name accessors
         //@{
 
-        QTcpSocket* tcpSocket( void ) const
+        QTcpSocket* tcpSocket() const
         { return tcpSocket_; }
 
-        Socket* sshSocket( void ) const
+        Socket* sshSocket() const
         { return sshSocket_; }
 
         //@}
@@ -64,15 +64,15 @@ namespace Ssh
         public Q_SLOTS:
 
         //* close
-        void close( void );
+        void close();
 
         protected Q_SLOTS:
 
         //* read from tcp socket
-        void _readFromTcpSocket( void );
+        void _readFromTcpSocket();
 
         //* read from ssh socket
-        void _readFromSshSocket( void );
+        void _readFromSshSocket();
 
         private:
 

@@ -34,7 +34,7 @@ namespace Base
         public:
 
         //* constructor
-        explicit Key( void ):
+        explicit Key():
             key_( _counter()++ )
         {}
 
@@ -54,7 +54,7 @@ namespace Base
         }
 
         //* destructor
-        virtual ~Key( void )
+        virtual ~Key()
         { clearAssociations(); }
 
         //* equal to operator
@@ -69,18 +69,18 @@ namespace Base
         using Type = quint32;
 
         //* retrieve key
-        Type key( void ) const
+        Type key() const
         { return key_; }
 
         //* shortcut for set of Key
         using Set = QSet< Key* >;
 
         //* retrieve all associated keys
-        const Set& getAssociated( void ) const
+        const Set& getAssociated() const
         { return associatedKeys_; }
 
         //* clear associations for this key
-        void clearAssociations( void )
+        void clearAssociations()
         {
             for( const auto& key:associatedKeys_ )
             { key->_disassociate( this ); }
@@ -88,7 +88,7 @@ namespace Base
         }
 
         //* clear associations of a given type for this key
-        template<typename T> inline void clearAssociations( void );
+        template<typename T> inline void clearAssociations();
 
         //* associated two Keys
         static void associate( Key* first, Key* second )
@@ -191,7 +191,7 @@ namespace Base
         Set associatedKeys_;
 
         //* unique id counter
-        static Type& _counter( void );
+        static Type& _counter();
 
         //* to dump Key and associations
         friend QTextStream &operator << (QTextStream &out,const Key &key)
@@ -228,7 +228,7 @@ namespace Base
         public:
 
         //* default constructor
-        explicit KeySet( void )
+        explicit KeySet()
         {}
 
         /**
@@ -289,7 +289,7 @@ namespace Base
 };
 
 //______________________________________________________________
-template<typename T> void Base::Key::clearAssociations( void )
+template<typename T> void Base::Key::clearAssociations()
 {
     for( const auto& key:KeySet<T>(this) )
     {

@@ -74,7 +74,7 @@ namespace Private
     {}
 
     //____________________________________________
-    SystemNotificationsP::~SystemNotificationsP( void )
+    SystemNotificationsP::~SystemNotificationsP()
     {
         #ifndef QT_NO_DBUS
         delete dbusInterface_;
@@ -93,7 +93,7 @@ namespace Private
     }
 
     //____________________________________________
-    void SystemNotificationsP::initialize( void )
+    void SystemNotificationsP::initialize()
     {
 
         Debug::Throw( "SystemNotificationsP::initialize.\n" );
@@ -127,7 +127,7 @@ namespace Private
     }
 
     //____________________________________________
-    bool SystemNotificationsP::isSupported( void ) const
+    bool SystemNotificationsP::isSupported() const
     {
 
         Debug::Throw( "SystemNotificationsP::isSupported.\n" );

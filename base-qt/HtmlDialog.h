@@ -50,7 +50,7 @@ class HtmlDialog: public CustomDialog
     { commandEditor_->addItem( command ); }
 
     //* command
-    QString command( void ) const
+    QString command() const
     { return commandEditor_->currentText(); }
 
     //* file
@@ -58,7 +58,7 @@ class HtmlDialog: public CustomDialog
     { destinationEditor_->setFile( file ); }
 
     //* file
-    File file( void ) const
+    File file() const
     { return File( destinationEditor_->editor().text() ); }
 
     // options
@@ -67,10 +67,10 @@ class HtmlDialog: public CustomDialog
     protected Q_SLOTS:
 
     //* browse print command
-    void _browseCommand( void );
+    void _browseCommand();
 
     //* save print command
-    void _saveCommands( void );
+    void _saveCommands();
 
     private:
 

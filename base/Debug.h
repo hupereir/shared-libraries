@@ -31,7 +31,7 @@ class Debug
     //@{
 
     //* retrieves the debug level
-    static int level( void );
+    static int level();
 
     //@}
 
@@ -60,7 +60,7 @@ class Debug
     class Private;
 
     //* return singleton
-    static Private& _get( void );
+    static Private& _get();
 
 };
 

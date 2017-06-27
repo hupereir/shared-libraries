@@ -77,7 +77,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
 }
 
 //___________________________________________________________
-TabWidget::~TabWidget( void ) = default;
+TabWidget::~TabWidget() = default;
 
 //___________________________________________________________
 void TabWidget::setTitle( QString title )
@@ -98,7 +98,7 @@ void TabWidget::updateActions( bool detached )
 }
 
 //___________________________________________________________
-void TabWidget::_toggleDock( void )
+void TabWidget::_toggleDock()
 {
 
     Debug::Throw( "TabWidget::_toggleDock.\n" );
@@ -231,7 +231,7 @@ void TabWidget::_updateContextMenu( const QPoint& position )
 }
 
 //____________________________________________________
-void TabWidget::_installActions( void )
+void TabWidget::_installActions()
 {
 
     Debug::Throw( "TabWidget::_installActions.\n" );

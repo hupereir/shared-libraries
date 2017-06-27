@@ -29,7 +29,7 @@ FileThread::FileThread( QObject* parent ):
 { qRegisterMetaType<File::List>( "File::List" ); }
 
 //______________________________________________________
-void FileThread::run( void )
+void FileThread::run()
 {
 
     totalSize_ = 0;
@@ -134,7 +134,7 @@ void FileThread::_listFiles( const File& parent )
 }
 
 //______________________________________________________
-bool FileThread::_updateTotalSize( void )
+bool FileThread::_updateTotalSize()
 {
 
     qint64 size(0);
@@ -152,7 +152,7 @@ bool FileThread::_updateTotalSize( void )
 }
 
 //______________________________________________________
-void FileThread::_computeTotalSize( void )
+void FileThread::_computeTotalSize()
 {
 
     totalSize_ = 0;

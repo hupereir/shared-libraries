@@ -36,7 +36,7 @@ class DefaultFolders: public QObject
     public:
 
     //* return singleton
-    static DefaultFolders& get( void );
+    static DefaultFolders& get();
 
     //*@name accessors
     //@{
@@ -58,7 +58,7 @@ class DefaultFolders: public QObject
     //* folders
     using FolderMap = QMap<File, Type>;
     using FolderMapIterator = QMapIterator<File, Type>;
-    const FolderMap& folders( void ) const
+    const FolderMap& folders() const
     { return folders_; }
 
     //* return type for a given folder
@@ -80,10 +80,10 @@ class DefaultFolders: public QObject
     //@{
 
     //* initialize folder names
-    void initializeFolderNames( void );
+    void initializeFolderNames();
 
     //* initialize icon names
-    void initializeIconNames( void );
+    void initializeIconNames();
 
     //@}
 
@@ -98,7 +98,7 @@ class DefaultFolders: public QObject
     private:
 
     //* constructor
-    explicit DefaultFolders( void );
+    explicit DefaultFolders();
 
     //* map folder and type
     /* this list keeps only one folder per type */

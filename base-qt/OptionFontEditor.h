@@ -56,7 +56,7 @@ class OptionFontEditor: public FontEditor, public OptionWidget
     Q_SIGNALS:
 
     //! modified
-    void modified( void );
+    void modified();
 
 };
 

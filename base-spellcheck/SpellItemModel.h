@@ -72,7 +72,7 @@ namespace SpellCheck
         }
 
         //* disabled items
-        ItemSet disabledItems( void ) const
+        ItemSet disabledItems() const
         { return disabledItems_; }
 
         private:

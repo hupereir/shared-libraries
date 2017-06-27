@@ -26,18 +26,18 @@
 #include <cstring>
 
 //_____________________________________________________________
-InterruptionHandler::InterruptionHandler( void )
+InterruptionHandler::InterruptionHandler()
 {}
 
 //_____________________________________________________________
-InterruptionHandler& InterruptionHandler::get( void )
+InterruptionHandler& InterruptionHandler::get()
 {
     static  InterruptionHandler singleton;
     return singleton;
 }
 
 //_____________________________________________________________
-void InterruptionHandler::initialize( void )
+void InterruptionHandler::initialize()
 {
     if( get().initialized_ ) return;
     get().initialized_ = true;

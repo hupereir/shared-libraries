@@ -55,10 +55,10 @@ class WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
 
     //* size hint
     /** an invalid size is returned when option name is not set */
-    QSize sizeHint( void ) const;
+    QSize sizeHint() const;
 
     //* position
-    QPoint position( void ) const;
+    QPoint position() const;
 
     //* event filter
     bool eventFilter( QObject*, QEvent* ) override;
@@ -72,14 +72,14 @@ class WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
     private:
 
     //* true when option name was set
-    bool _hasOptionName( void ) const
+    bool _hasOptionName() const
     { return !widthOptionName_.isEmpty(); }
 
     //* save window size
-    void _saveWindowSize( void ) const;
+    void _saveWindowSize() const;
 
     //* save position
-    void _saveWindowPosition( void ) const;
+    void _saveWindowPosition() const;
 
     //* resize timer
     QBasicTimer timer_;

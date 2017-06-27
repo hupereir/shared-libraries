@@ -48,11 +48,11 @@ namespace Transparency
         //@{
 
         //* reload blur region action
-        QAction& reloadBlurRegionAction( void ) const
+        QAction& reloadBlurRegionAction() const
         { return *reloadBlurRegionAction_; }
 
         //* inverse colors
-        QAction& inverseColorsAction( void ) const
+        QAction& inverseColorsAction() const
         { return *inverseColorsAction_; }
 
         //@}
@@ -61,19 +61,19 @@ namespace Transparency
         //@{
 
         //* foreground
-        virtual const QColor& foregroundColor( void ) const
+        virtual const QColor& foregroundColor() const
         { return inverseColorsAction().isChecked() ? shadowColor_ : foregroundColor_; }
 
         //* shadow
-        virtual const QColor& shadowColor( void ) const
+        virtual const QColor& shadowColor() const
         { return inverseColorsAction().isChecked() ? foregroundColor_ : shadowColor_; }
 
         //* foreground intensity
-        virtual int foregroundIntensity( void ) const
+        virtual int foregroundIntensity() const
         { return foregroundIntensity_; }
 
         //* shadow offset
-        virtual int shadowOffset( void ) const
+        virtual int shadowOffset() const
         { return shadowOffset_; }
 
         //@}
@@ -90,7 +90,7 @@ namespace Transparency
         public Q_SLOTS:
 
         //* force reloading of the background
-        virtual void setBackgroundChanged( void );
+        virtual void setBackgroundChanged();
 
         protected:
 
@@ -104,7 +104,7 @@ namespace Transparency
         virtual void _setTintColor( const QColor& );
 
         //* tint color
-        virtual const QColor& _tintColor( void ) const
+        virtual const QColor& _tintColor() const
         { return tintColor_; }
 
         //* shadow offset
@@ -115,11 +115,11 @@ namespace Transparency
         virtual void _setForegroundIntensity( int value );
 
         //* background pixmap
-        virtual QPixmap& _backgroundPixmap( void )
+        virtual QPixmap& _backgroundPixmap()
         { return backgroundPixmap_; }
 
         //* background pixmap
-        virtual const QPixmap& _backgroundPixmap( void ) const
+        virtual const QPixmap& _backgroundPixmap() const
         { return backgroundPixmap_; }
 
         //*@name event handlers
@@ -140,11 +140,11 @@ namespace Transparency
         //@{
 
         //* margins
-        const Base::Margins& _margins( void ) const
+        const Base::Margins& _margins() const
         { return margins_; }
 
         //* clear margins
-        void _clearMargins( void )
+        void _clearMargins()
         { margins_.clear(); }
 
         //* margins
@@ -156,11 +156,11 @@ namespace Transparency
         { margins_ = Base::Margins( margins ); }
 
         //* outer padding
-        Base::Margins _outerPadding( void ) const
+        Base::Margins _outerPadding() const
         { return outerPadding_; }
 
         //* clear outer padding
-        void _clearOuterPadding( void )
+        void _clearOuterPadding()
         { outerPadding_.clear(); }
 
         //* outer padding
@@ -174,7 +174,7 @@ namespace Transparency
         //@}
 
         //* background changed
-        bool _backgroundChanged( void ) const
+        bool _backgroundChanged() const
         { return backgroundChanged_; }
 
         //* paint background on devide
@@ -186,7 +186,7 @@ namespace Transparency
         {}
 
         //* update input shape (to prevent input events in outerPadding region)
-        virtual void _updateInputShape( void );
+        virtual void _updateInputShape();
 
         //* update blur region
         virtual void _updateBlurRegion( const QRegion& );
@@ -194,10 +194,10 @@ namespace Transparency
         protected Q_SLOTS:
 
         //* update background pixmap
-        virtual void _updateBackgroundPixmap( void );
+        virtual void _updateBackgroundPixmap();
 
         //* update blur region
-        virtual void _updateBlurRegion( void )
+        virtual void _updateBlurRegion()
         {
             if( blurRegion_.isEmpty() ) blurRegion_ = rect().translated( mapTo( window(), QPoint(0,0) ) );
             _updateBlurRegion( blurRegion_ );
@@ -209,12 +209,12 @@ namespace Transparency
         private Q_SLOTS:
 
         //* update configuration
-        void _updateConfiguration( void );
+        void _updateConfiguration();
 
         private:
 
         //* actions
-        void _installActions( void );
+        void _installActions();
 
         //*@name actions
         //@{

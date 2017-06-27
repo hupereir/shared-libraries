@@ -85,7 +85,7 @@ class ListModel : public ItemModel
     { return parent.isValid() ? 0:values_.size(); }
 
     //* get list of internal selected items
-    QModelIndexList selectedIndexes( void ) const override
+    QModelIndexList selectedIndexes() const override
     {
 
         QModelIndexList out;
@@ -99,11 +99,11 @@ class ListModel : public ItemModel
     }
 
     //* restore currentIndex
-    QModelIndex currentIndex( void ) const override
+    QModelIndex currentIndex() const override
     { return hasCurrentItem_ ? this->index( currentItem_ ) : QModelIndex(); }
 
     //* return all values
-    const List& get( void ) const
+    const List& get() const
     { return values_; }
 
     //* return true if model contains given index
@@ -137,7 +137,7 @@ class ListModel : public ItemModel
     //@{
 
     //* clear internal list selected items
-    void clearSelectedIndexes( void ) override
+    void clearSelectedIndexes() override
     { selectedItems_.clear(); }
 
     //* set selected indexes
@@ -157,7 +157,7 @@ class ListModel : public ItemModel
     }
 
     //* current index;
-    void clearCurrentIndex( void ) override
+    void clearCurrentIndex() override
     { hasCurrentItem_ = false; }
 
     //* store current index
@@ -273,7 +273,7 @@ class ListModel : public ItemModel
     }
 
     //* clear
-    void clear( void )
+    void clear()
     { set( List() ); }
 
     //* update values from list
@@ -332,7 +332,7 @@ class ListModel : public ItemModel
     protected:
 
     //* return all values
-    List& _get( void )
+    List& _get()
     { return values_; }
 
     //* add, without update
