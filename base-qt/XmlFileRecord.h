@@ -55,20 +55,16 @@ class XmlFileRecord: public FileRecord
     //* write to dom
     QDomElement domElement( QDomDocument& ) const;
 
-    class List: public QList<XmlFileRecord>
+    using List = QList<XmlFileRecord>;
+    class ListHelper
     {
         public:
 
         //* constructor
-        explicit List():
-            QList<XmlFileRecord>()
-        {}
-
-        //* constructor
-        explicit List( const QDomElement& );
+        static List list( const QDomElement& );
 
         //* write to dom
-        QDomElement domElement( QDomDocument& ) const;
+        static QDomElement domElement( const List&, QDomDocument& );
 
     };
 

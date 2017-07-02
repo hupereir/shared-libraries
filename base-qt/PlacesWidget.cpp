@@ -77,13 +77,15 @@ namespace Private
     }
 
     //___________________________________________________________________
-    LocalFileInfo::List::List( const QDomElement& element )
+    LocalFileInfo::List LocalFileInfo::ListHelper::list( const QDomElement& element )
     {
 
+        LocalFileInfo::List out;
+
         // read records
-        for(QDomNode node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
+        for( auto node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
         {
-            QDomElement element = node.toElement();
+            auto element = node.toElement();
             if( element.isNull() ) continue;
 
             // children
@@ -92,22 +94,22 @@ namespace Private
 
                 LocalFileInfo fileInfo( element );
                 if( fileInfo.file().isEmpty() ) fileInfo.setFlag( LocalFileInfo::Separator, true );
-                append( fileInfo );
+                out.append( fileInfo );
             }
         }
+
+        return out;
 
     }
 
     //___________________________________________________________________
-    QDomElement LocalFileInfo::List::domElement( QDomDocument& document ) const
+    QDomElement LocalFileInfo::ListHelper::domElement( const LocalFileInfo::List& list, QDomDocument& document )
     {
-
         // create main element
         QDomElement top = document.createElement( Xml::FileInfoList );
-        for( const auto& fileInfo:*this )
+        for( const auto& fileInfo:list )
         { top.appendChild( fileInfo.domElement( document ) );  }
         return top;
-
     }
 
     //___________________________________________________________________
@@ -1418,7 +1420,7 @@ bool PlacesWidget::_read()
     QDomNodeList topNodes = document.elementsByTagName( Xml::FileInfoList );
     if( topNodes.isEmpty() ) return false;
 
-    const Private::LocalFileInfo::List fileInfoList( topNodes.at(0).toElement() );
+    const Private::LocalFileInfo::List fileInfoList( Private::LocalFileInfo::ListHelper::list( topNodes.at(0).toElement() ) );
     for( const auto& fileInfo:fileInfoList )
     {
 
@@ -1456,9 +1458,9 @@ bool PlacesWidget::_write()
     }
 
     // get list of items and create file info list
-    QList<Private::PlacesWidgetItem*> items( items_ );
+    // auto items( items_ );
     Private::LocalFileInfo::List fileInfoList;
-    for( const auto& item:items )
+    for( const auto& item:items_ )
     {
         Private::LocalFileInfo fileInfo( item->fileInfo() );
         fileInfo.setFlags( item->flags() );
@@ -1474,15 +1476,15 @@ bool PlacesWidget::_write()
     }
 
     // read old list of files
-    QDomNodeList topNodes = document.elementsByTagName( Xml::FileInfoList );
+    auto topNodes = document.elementsByTagName( Xml::FileInfoList );
     if( !topNodes.isEmpty() )
     {
-        const Private::LocalFileInfo::List oldFileInfoList( topNodes.at(0).toElement() );
+        const Private::LocalFileInfo::List oldFileInfoList( Private::LocalFileInfo::ListHelper::list( topNodes.at(0).toElement() ) );
         if( oldFileInfoList == fileInfoList ) return true;
     }
 
     // create main element
-    QDomElement top = fileInfoList.domElement( document );
+    auto top = Private::LocalFileInfo::ListHelper::domElement( fileInfoList, document );
 
     // append top node to document and write
     document.replaceChild( top );

@@ -120,7 +120,7 @@ namespace Base
         {
             public:
 
-            //* construct from any argument out of which you could make a QPair
+            //* universal constructor
             template< typename... Args >
             explicit Pair( Args&&... args ):
                 QPair<QString, IconCacheItem>( std::forward<Args>(args)... )

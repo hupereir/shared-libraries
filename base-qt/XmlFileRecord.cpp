@@ -111,10 +111,11 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 }
 
 //_______________________________________________
-XmlFileRecord::List::List( const QDomElement& element )
+XmlFileRecord::List XmlFileRecord::ListHelper::list( const QDomElement& element )
 {
     Debug::Throw( "XmlFileRecord::List::List.\n" );
 
+    List out;
     for(QDomNode node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
 
@@ -125,18 +126,20 @@ XmlFileRecord::List::List( const QDomElement& element )
         if( childElement.tagName() == Base::Xml::Record )
         {
             XmlFileRecord record( childElement );
-            if( !record.file().isEmpty() ) append( record );
+            if( !record.file().isEmpty() ) out.append( record );
         }
     }
+
+    return out;
 
 }
 
 //_______________________________________________
-QDomElement XmlFileRecord::List::domElement( QDomDocument& document ) const
+QDomElement XmlFileRecord::ListHelper::domElement( const List& list, QDomDocument& document )
 {
     Debug::Throw( "XmlFileRecord::List::domElement.\n" );
     QDomElement top = document.appendChild( document.createElement( Base::Xml::FileList ) ).toElement();
-    for( const auto& record:*this )
+    for( const auto& record:list )
     {
         if( !record.file().isEmpty() )
         { top.appendChild( XmlFileRecord( record ).domElement( document ) ); }

@@ -222,7 +222,7 @@ namespace Base
     Contains all objects of type T associated to the Key.
     */
     template<typename T>
-    class KeySet: public QSet< T* >
+    class KeySet final
     {
 
         public:
@@ -240,8 +240,8 @@ namespace Base
 
             for( const auto& associate:key->getAssociated() )
             {
-                T* t( dynamic_cast<T*>( associate ) );
-                if( t ) this->insert( t );
+                auto t( dynamic_cast<T*>( associate ) );
+                if(t) set_.insert(t);
             }
 
         }
@@ -255,36 +255,66 @@ namespace Base
 
             for( const auto& associate:key.getAssociated() )
             {
-                T* t( dynamic_cast<T*>( associate ) );
-                if( t ) this->insert( t );
+                auto t( dynamic_cast<T*>( associate ) );
+                if(t) set_.insert(t);
             }
 
         }
 
-        //* Merge argument KeySet with this one
-        void merge( const KeySet<T>& keySet )
+        //*@name accessors
+        //@{
+
+        using iterator = typename QSet<T*>::iterator;
+        using const_iterator = typename QSet<T*>::const_iterator;
+
+        const_iterator begin() const { return set_.begin(); }
+        const_iterator end() const { return set_.begin(); }
+
+        iterator begin() { return set_.begin(); }
+        iterator end() { return set_.begin(); }
+
+
+        const QSet<T*>& get() const { return set_; }
+
+        int size() const { return set_.size(); }
+        bool empty() const { return set_.empty(); }
+
+        QList<T*> toList() const { return set_.toList(); }
+
+        //@}
+
+        //*@name modifiers
+        //@{
+
+        //* mutable accessor
+        QSet<T*>& get() { return set_; }
+
+        //* insert
+        iterator insert( T* t ) { return set_.insert( t ); }
+
+        //* remove
+        bool remove( T* t ) { return set_.remove( t ); }
+
+        //* find
+        iterator find( T* t ) { return set_.find( t ); }
+
+        //* unite too keysets
+        KeySet& unite( const KeySet& other )
         {
-            for( const auto& key:keySet )
-            { this->insert( key ); }
+            set_.unite( other.set_ );
+            return *this;
         }
 
+        //@}
+
+        private:
+
+        QSet<T*> set_;
+
     };
 
-    /** \brief
-    templatized sorted set of casted keys.
-    Is constructed from a pointer to a Key;
-    Contains all objects of type T associated to the Key.
-    */
     template<typename T>
-    class KeySetIterator: public QSetIterator< T* >
-    {
-        public:
-
-        //* constructor
-        explicit KeySetIterator( KeySet<T> keySet ):
-            QSetIterator<T*>( keySet )
-        {}
-    };
+    using KeySetIterator = QSetIterator<T*>;
 
 };
 

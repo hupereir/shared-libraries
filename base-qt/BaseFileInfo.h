@@ -91,6 +91,9 @@ class BaseFileInfo
     //* constructor from DOM element
     explicit BaseFileInfo( const QDomElement& );
 
+    //* destructor
+    virtual ~BaseFileInfo() = default;
+
     //* dump to dom element
     virtual QDomElement domElement( QDomDocument& ) const;
 
@@ -382,35 +385,12 @@ class BaseFileInfo
     };
 
     //* file info list
-    template < typename T >
-    class BaseList: public QList<T>
+    class Description
     {
 
         public:
 
-        //* constructor
-        explicit BaseList()
-        {}
-
-        //* constructor
-        explicit BaseList( const QList<T>& other ):
-            QList<T>( other )
-        {}
-
-        //* constructor
-        explicit BaseList( QList<T>&& other ):
-            QList<T>( std::move( other ) )
-        {}
-
-        //* constructor
-        explicit BaseList( std::initializer_list<T>&& other ):
-            QList<T>( std::move(other) )
-        {}
-
-        //* destructor
-        virtual ~BaseList() = default;
-
-        //* description
+        //* description flags
         enum Flag
         {
             None = 0,
@@ -419,7 +399,21 @@ class BaseFileInfo
             Detail = 1<<2
         };
 
-        QString description( int = 0 ) const;
+        //* constructor
+        Description( int flags = 0 ):
+            flags_( flags )
+        {}
+
+        //* destructor
+        ~Description() = default;
+
+        template<class T>
+        QString get( const QList<T>& ) const;
+
+        private:
+
+        //* description flags
+        int flags_ = 0;
 
     };
 
@@ -476,44 +470,43 @@ class BaseFileInfo
 
 //________________________________________________________________
 template <typename T>
-QString BaseFileInfo::BaseList<T>::description( int flags ) const
+QString BaseFileInfo::Description::get( const QList<T>& files ) const
 {
-    Debug::Throw( "BaseFileInfo::BaseList::description.\n" );
+    if( files.empty() ) return QString();
 
-    if( this->empty() ) return QString();
     QString buffer;
-    if( this->size() == 1 )
+    if( files.size() == 1 )
     {
 
 
-        if( this->front().isLink() ) buffer = QString( QObject::tr( "%1 Symbolic Link" ) ).arg( (flags&Designate) ? QObject::tr( "This" ): QObject::tr( "One" ) );
-        else if( this->front().isFolder() ) buffer = QString( QObject::tr( "%1 Folder" ) ).arg( (flags&Designate) ? QObject::tr( "This" ): QObject::tr( "One" ) );
-        else buffer = QString( QObject::tr( "%1 File" ) ).arg( (flags&Designate) ? QObject::tr( "This" ): QObject::tr( "One" ) );
+        if( files.front().isLink() ) buffer = QString( QObject::tr( "%1 Symbolic Link" ) ).arg( (flags_&Designate) ? QObject::tr( "This" ): QObject::tr( "One" ) );
+        else if( files.front().isFolder() ) buffer = QString( QObject::tr( "%1 Folder" ) ).arg( (flags_&Designate) ? QObject::tr( "This" ): QObject::tr( "One" ) );
+        else buffer = QString( QObject::tr( "%1 File" ) ).arg( (flags_&Designate) ? QObject::tr( "This" ): QObject::tr( "One" ) );
 
     } else {
 
-        if( flags & Detail )
+        if( flags_ & Detail )
         {
-            const int nFolders( std::count_if( this->begin(), this->end(), BaseFileInfo::IsFolderFTor() ) );
+            const int nFolders( std::count_if( files.begin(), files.end(), BaseFileInfo::IsFolderFTor() ) );
             if( nFolders == 1 ) buffer = QObject::tr( "one Folder" );
             else if( nFolders > 1 ) buffer = QObject::tr( "%1 Folders" ).arg( nFolders );
 
-            const int nDocuments( std::count_if( this->begin(), this->end(), BaseFileInfo::IsDocumentFTor() ) );
+            const int nDocuments( std::count_if( files.begin(), files.end(), BaseFileInfo::IsDocumentFTor() ) );
             if( nDocuments > 0 && nFolders > 0 ) buffer += ", ";
             if( nDocuments == 1 ) buffer += QObject::tr( "one File" );
             else if( nDocuments > 1 ) buffer += QObject::tr( "%1 Files" ).arg( nDocuments );
 
         } else {
 
-            if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsLinkFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Symbolic Links" ) ).arg( this->size() );
-            else if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsFolderFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Folders" ) ).arg( this->size() );
-            else if( int(std::count_if( this->begin(), this->end(), BaseFileInfo::IsDocumentFTor() )) == this->size() ) buffer = QString( QObject::tr( "%1 Files" ) ).arg( this->size() );
-            else buffer = QString( QObject::tr( "%1 Items" ) ).arg( this->size() );
+            if( int(std::count_if( files.begin(), files.end(), BaseFileInfo::IsLinkFTor() )) == files.size() ) buffer = QString( QObject::tr( "%1 Symbolic Links" ) ).arg( files.size() );
+            else if( int(std::count_if( files.begin(), files.end(), BaseFileInfo::IsFolderFTor() )) == files.size() ) buffer = QString( QObject::tr( "%1 Folders" ) ).arg( files.size() );
+            else if( int(std::count_if( files.begin(), files.end(), BaseFileInfo::IsDocumentFTor() )) == files.size() ) buffer = QString( QObject::tr( "%1 Files" ) ).arg( files.size() );
+            else buffer = QString( QObject::tr( "%1 Items" ) ).arg( files.size() );
         }
 
     }
 
-    return (flags&LowerCase) ? buffer.toLower() : buffer;
+    return (flags_&LowerCase) ? buffer.toLower() : buffer;
 }
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( BaseFileInfo::TypeFlags)

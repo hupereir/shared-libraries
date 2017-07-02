@@ -106,31 +106,18 @@ class XmlError final: private Base::Counter<XmlError>
 
     //@}
 
+    //* list
+    using List = QList<XmlError>;
 
-    class List: public QList<XmlError>
+    //* write error list to string
+    static QString toString( const List& list )
     {
+        QStringList out;
+        for( const auto& error:list )
+        { out.append( error.toString() ); }
 
-        public:
-
-        //* constructor
-        explicit List()
-        {}
-
-        //* constructor
-        explicit List( const QList<XmlError>& other ):
-            QList<XmlError>( other )
-        {}
-
-        //* convert to string
-        QString toString() const
-        {
-            QStringList out;
-            for( const auto& error:*this )
-            { out << error.toString(); }
-            return out.join( "\n" );
-        }
-
-    };
+        return out.join( "\n" );
+    }
 
     private:
 
@@ -156,7 +143,7 @@ class XmlError final: private Base::Counter<XmlError>
     //* dumper
     friend QTextStream& operator << ( QTextStream &out, const List& errors )
     {
-        out << errors.toString() << endl;
+        out << XmlError::toString( errors ) << endl;
         return out;
     }
 

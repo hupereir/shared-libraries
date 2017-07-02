@@ -107,19 +107,16 @@ namespace Private
 
         //@}
 
-        class List: public QList<LocalFileInfo>
+
+        //* read/write file info list to xml
+        using List = QList<LocalFileInfo>;
+        class ListHelper
         {
+
             public:
 
-            //* constructor
-            explicit List()
-            {}
-
-            //* constructor from DOM element
-            explicit List( const QDomElement& );
-
-            //* dump to dom element
-            QDomElement domElement( QDomDocument& ) const;
+            static List list( const QDomElement& );
+            static QDomElement domElement( const List&, QDomDocument& );
 
         };
 

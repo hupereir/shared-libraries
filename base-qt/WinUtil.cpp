@@ -50,7 +50,7 @@ class WinUtilPrivate
     {
         #if defined(Q_OS_WIN)
         // define function pointer and try resolve from library
-        dwmapi_ .setFileName("dwmapi");
+        dwmapi_.setFileName("dwmapi");
         dwmapi_.load();
         blurBehindFunction_ =  (PtrDwmEnableBlurBehindWindow) dwmapi_.resolve( "DwmEnableBlurBehindWindow" );
         #endif
