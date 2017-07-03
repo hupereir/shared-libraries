@@ -217,7 +217,7 @@ namespace Base
     };
 
     /** \brief
-    templatized sorted set of casted keys.
+    templatized unsorted set of casted keys.
     Is constructed from a pointer to a Key;
     Contains all objects of type T associated to the Key.
     */
@@ -268,11 +268,10 @@ namespace Base
         using const_iterator = typename QSet<T*>::const_iterator;
 
         const_iterator begin() const { return set_.begin(); }
-        const_iterator end() const { return set_.begin(); }
+        const_iterator end() const { return set_.end(); }
 
         iterator begin() { return set_.begin(); }
-        iterator end() { return set_.begin(); }
-
+        iterator end() { return set_.end(); }
 
         const QSet<T*>& get() const { return set_; }
 
