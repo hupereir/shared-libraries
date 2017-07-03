@@ -34,8 +34,8 @@
 #include <cmath>
 
 //_____________________________________________________________________
-bool File::isAbsolute() const
-{ return QFileInfo( *this ).isAbsolute(); }
+bool File::isAbsolute( const QString& value )
+{ return QFileInfo( value ).isAbsolute(); }
 
 //_____________________________________________________________________
 TimeStamp File::created() const
@@ -182,19 +182,19 @@ bool File::exists() const
 
 //_____________________________________________________________________
 bool File::isWritable() const
-{ return isEmpty() || QFile( *this ).open( QIODevice::ReadWrite ); }
+{ return value_.isEmpty() || QFile( *this ).open( QIODevice::ReadWrite ); }
 
 //_____________________________________________________________________
 bool File::isDirectory() const
-{ return !isEmpty() && QFileInfo( *this ).isDir(); }
+{ return !value_.isEmpty() && QFileInfo( *this ).isDir(); }
 
 //_____________________________________________________________________
 bool File::isHidden() const
-{ return !isEmpty() && QFileInfo( *this ).isHidden(); }
+{ return !value_.isEmpty() && QFileInfo( *this ).isHidden(); }
 
 //_____________________________________________________________________
 bool File::isLink() const
-{ return !isEmpty() && QFileInfo( *this ).isSymLink(); }
+{ return !value_.isEmpty() && QFileInfo( *this ).isSymLink(); }
 
 //_____________________________________________________________________
 bool File::isBrokenLink() const
@@ -227,13 +227,13 @@ bool File::diff(const File& file ) const
 
 //_____________________________________________________________________
 bool File::isEqual( const File& other ) const
-{ return expand() == other.expand(); }
+{ return expanded() == other.expanded(); }
 
 //_____________________________________________________________________
 File File::path( bool useAbsolute ) const
 {
 
-    if( isEmpty() ) return File();
+    if( value_.isEmpty() ) return File();
     if( useAbsolute ) return File( QFileInfo(*this).absolutePath() );
     else return File( QFileInfo(*this).path() );
 
@@ -241,12 +241,12 @@ File File::path( bool useAbsolute ) const
 
 //_____________________________________________________________________
 File File::localName() const
-{ return isEmpty() ? File(): File( QFileInfo(*this).fileName() ); }
+{ return value_.isEmpty() ? File(): File( QFileInfo(*this).fileName() ); }
 
 //_____________________________________________________________________
 File File::canonicalName() const
 {
-    if( isEmpty() ) return File();
+    if( value_.isEmpty() ) return File();
     QString canonicalName( QFileInfo(*this).canonicalFilePath() );
     return canonicalName.isEmpty() ? File():File( canonicalName );
 }
@@ -255,7 +255,7 @@ File File::canonicalName() const
 File File::extension() const
 {
     // check file name
-    if( isEmpty() ) return File();
+    if( value_.isEmpty() ) return File();
 
     // loop over characters
     QString local( localName() );
@@ -269,20 +269,121 @@ File File::truncatedName() const
 {
 
     // check file name
-    if( isEmpty() ) return File();
+    if( value_.isEmpty() ) return File();
 
     // loop over characters
-    int dotpos = lastIndexOf(".");
-    int slashpos = lastIndexOf( "/" );
+    int dotpos = value_.lastIndexOf( '.' );
+    int slashpos = value_.lastIndexOf( '/' );
 
     if( dotpos < 0 ) return *this;
-    if( slashpos < 0 ) return File( dotpos >= 0 ? left(dotpos):"");
-    if( slashpos < dotpos ) return File( left(dotpos) );
+    if( slashpos < 0 ) return File( dotpos >= 0 ? value_.left(dotpos):"");
+    if( slashpos < dotpos ) return File( value_.left(dotpos) );
 
     return *this;
 
 }
 
+//_____________________________________________________________________
+File File::find( const File& file, bool caseSensitive ) const
+{
+
+    if( !( exists() && isDirectory() ) ) return File();
+
+    // check local files
+    {
+        File copy( file );
+        if( copy.addPath( *this ).exists() ) return copy;
+    }
+
+    // get subdirectories
+    QString fullname( value_ );
+    addTrailingSlash( fullname );
+
+    // filter
+    QDir::Filters filter = QDir::Dirs;
+    #if QT_VERSION >= 0x040800
+    filter |= QDir::NoDotDot;
+    #endif
+
+    const QDir dir( fullname );
+    for( const auto& value:dir.entryList( filter ) )
+    {
+        if( value == "." || value == ".." ) continue;
+
+        QFileInfo fileInfo;
+        fileInfo.setFile( dir, value );
+        const File local( fileInfo.absoluteFilePath() );
+        File found( local.find( file, caseSensitive ) );
+        if( !found.isEmpty() ) return found;
+
+    }
+
+    return File();
+
+}
+
+//_____________________________________________________________________
+File File::find( const File::List& pathList ) const
+{
+
+    // if absolute, return this if exists
+    if( isAbsolute() ) return exists() ? *this:File();
+
+    for( const auto& path:pathList )
+    {
+        File copy( *this );
+        if( copy.addPath( path ).exists() ) return copy;
+    }
+
+    return File();
+
+}
+
+//_____________________________________________________________________
+File::List File::listFiles( ListFlags flags ) const
+{
+
+    List out;
+    File fullname( expanded() );
+    if( !fullname.isDirectory() || (fullname.isLink() && !(flags&ListFlag::FollowLinks) ) ) return out;
+    fullname = fullname.addTrailingSlash();
+
+    // open directory
+    QDir::Filters filter = QDir::AllEntries|QDir::System;
+    #if QT_VERSION >= 0x040800
+    filter |= QDir::NoDotDot;
+    #endif
+
+    const QDir dir( fullname );
+    if( flags & ListFlag::ShowHiddenFiles ) filter |= QDir::Hidden;
+    for( const auto& value:dir.entryList( filter ) )
+    {
+
+        if( value == "." || value == ".." ) continue;
+
+        QFileInfo fileInfo;
+        fileInfo.setFile( dir, value );
+        const File file( fileInfo.absoluteFilePath() );
+        out << file;
+
+        // list subdirectory if recursive
+        if( flags & ListFlag::Recursive && file.isDirectory() )
+        {
+
+            // in case directory is a link
+            // make sure it is not already in the list
+            // to avoid recursivity
+            if( file.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( file ) ) != out.end() ) continue;
+
+            // list subdirectory
+            out << file.listFiles( flags );
+        }
+
+    }
+
+    return out;
+
+}
 
 //_____________________________________________________________________
 bool File::create() const
@@ -300,7 +401,7 @@ bool File::createDirectory( const File& constPath ) const
 void File::setHidden() const
 {
     #if defined(Q_OS_WIN)
-    if( !isEmpty() ) SetFileAttributes( toLatin1(), FILE_ATTRIBUTE_HIDDEN );
+    if( !value_.isEmpty() ) SetFileAttributes( toLatin1(), FILE_ATTRIBUTE_HIDDEN );
     #endif
 }
 
@@ -309,12 +410,12 @@ File File::version() const
 {
 
     int version=0;
-    QString expand( File::expand() );
-    File out( expand );
+    File out( this->expanded() );
+    QString expanded( out.get() );
     while( out.exists() )
     {
-        out.clear();
-        QTextStream(&out) << expand << "_" << version;
+        out.value_.clear();
+        QTextStream(&out.value_) << expanded << "_" << version;
         version++;
     }
 
@@ -328,11 +429,11 @@ File File::backup() const
     // check filename is valid and file exists
     if( !exists() ) return File();
 
-    QString expand( File::expand() );
-    QString backup( expand+"~" );
+    QString expanded( this->expanded() );
+    QString backup( expanded+"~" );
 
     // open this file
-    QFile in( expand );
+    QFile in( expanded );
     in.copy( backup );
     return File( backup );
 
@@ -438,135 +539,38 @@ bool File::copy( const File& newFile, bool force ) const
 }
 
 //____________________________________________
-File File::addPath( const File& path, bool useAbsolute ) const
+void File::addPath( QString& value, const QString& path, bool useAbsolute )
 {
 
     // returns 0 if either path nor file are given
-    if( isEmpty() && path.isEmpty() ) return File();
+    if( value.isEmpty() && path.isEmpty() ) return;
+    else if( value.isEmpty() ) value = path;
+    else if( isAbsolute( value ) ) return;
+    else if( path.isEmpty() ) value.prepend("./");
+    else {
 
-    // return path if path is given but not the file
-    if( isEmpty() ) return path;
-
-    // if file is absolute, keep unchanged
-    if( isAbsolute() ) return *this;
-
-    // returns file if it is relative but path is not given
-    if( !path.size() ) return File( QString("./")+(*this) );
-
-    QFileInfo info;
-    info.setFile( QDir( path ), *this );
-    return File( useAbsolute ? info.absoluteFilePath():info.filePath() );
-
-}
-
-//_____________________________________________________________________
-File File::expand() const
-{
-    if( isEmpty() ) return File();
-    File out( QFileInfo(*this).absoluteFilePath() );
-
-    // remove trailing slash, except for root
-    if( out.size() > 1 && out[out.size()-1] == '/' ) out.resize( out.size()-1 );
-
-    return out;
-
-}
-
-//_____________________________________________________________________
-File File::find( const File& file, bool caseSensitive ) const
-{
-
-    if( !( exists() && isDirectory() ) ) return File();
-
-    // check local files
-    File local;
-    if( ( local = File( file ).addPath( *this ) ).exists() ) return local;
-
-    // get subdirectories
-    File fullname( *this );
-    if( !fullname.endsWith( "/" ) ) fullname += "/";
-
-    // filter
-    QDir::Filters filter = QDir::Dirs;
-    #if QT_VERSION >= 0x040800
-    filter |= QDir::NoDotDot;
-    #endif
-
-    const QDir dir( fullname );
-    for( const auto& value:dir.entryList( filter ) )
-    {
-        if( value == "." || value == ".." ) continue;
-
-        QFileInfo fileInfo;
-        fileInfo.setFile( dir, value );
-        const File local( fileInfo.absoluteFilePath() );
-        File found( local.find( file, caseSensitive ) );
-        if( !found.isEmpty() ) return found;
-
+        QFileInfo info;
+        info.setFile( QDir( path ), value );
+        value = useAbsolute ? info.absoluteFilePath():info.filePath();
     }
 
-    return File();
+    return;
 
 }
 
 //_____________________________________________________________________
-File File::find( const File::List& pathList ) const
+void File::expand( QString& value )
 {
-
-    // if absolute, return this if exists
-    if( isAbsolute() ) return exists() ? *this:File();
-
-    for( const auto& path:pathList )
-    {
-        auto out = addPath( path );
-        if( out.exists() ) return out;
-    }
-
-    return File();
-
+    if( value.isEmpty() ) return;
+    value = QFileInfo(value).absoluteFilePath();
+    removeTrailingSlash( value );
+    return;
 }
+
 //_____________________________________________________________________
-File::List File::listFiles( ListFlags flags ) const
-{
+void File::addTrailingSlash( QString& value )
+{ if( !value.endsWith( '/' ) ) value += '/'; }
 
-    List out;
-    File fullname( expand() );
-    if( !fullname.isDirectory() || (fullname.isLink() && !(flags&ListFlag::FollowLinks) ) ) return out;
-    if( !fullname.endsWith( "/" ) ) fullname += "/";
-
-    // open directory
-    QDir::Filters filter = QDir::AllEntries|QDir::System;
-    #if QT_VERSION >= 0x040800
-    filter |= QDir::NoDotDot;
-    #endif
-
-    const QDir dir( fullname );
-    if( flags & ListFlag::ShowHiddenFiles ) filter |= QDir::Hidden;
-    for( const auto& value:dir.entryList( filter ) )
-    {
-
-        if( value == "." || value == ".." ) continue;
-
-        QFileInfo fileInfo;
-        fileInfo.setFile( dir, value );
-        const File file( fileInfo.absoluteFilePath() );
-        out << file;
-
-        // list subdirectory if recursive
-        if( flags & ListFlag::Recursive && file.isDirectory() )
-        {
-
-            // in case directory is a link
-            // make sure it is not already in the list
-            // to avoid recursivity
-            if( file.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( file ) ) != out.end() ) continue;
-
-            // list subdirectory
-            out << file.listFiles( flags );
-        }
-
-    }
-
-    return out;
-
-}
+//_____________________________________________________________________
+void File::removeTrailingSlash( QString& value )
+{ if( value.size() > 1 && value.endsWith( '/' ) ) value.resize( value.size()-1 ); }

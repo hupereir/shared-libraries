@@ -137,12 +137,12 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
             // retrieve associated file info
             const T& fileInfo( ListModel<T>::get()[index.row()] );
 
-            if( fileInfo.type() & BaseFileInfo::Navigator ) return (index.column() == Filename ) ? fileInfo.file() : QVariant();
+            if( fileInfo.type() & BaseFileInfo::Navigator ) return (index.column() == Filename ) ? fileInfo.file().get() : QVariant();
 
             switch( index.column() )
             {
-                case Filename: return fileInfo.file().localName();
-                case Path: return fileInfo.file().path();
+                case Filename: return fileInfo.file().localName().get();
+                case Path: return fileInfo.file().path().get();
                 case Size: return (fileInfo.isFolder() || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
                 case User: return fileInfo.user();
                 case Group: return fileInfo.group();
@@ -304,7 +304,7 @@ bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& 
 
         default:
         case Filename:
-        { return first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0; }
+        { return first.file().localName().get().compare( second.file().localName(), Qt::CaseInsensitive ) < 0; }
         break;
 
 

@@ -25,9 +25,10 @@
 #include <QFileInfo>
 #include <QList>
 #include <QString>
+#include <QTextStream>
 
 //* file manipulation utility
-class File: public QString
+class File
 {
 
     public:
@@ -46,25 +47,54 @@ class File: public QString
 
     Q_DECLARE_FLAGS(ListFlags, ListFlag)
 
-    //* constructor
-    explicit File()
+    //* universal constructor
+    template<typename... Args>
+    explicit File(Args&&... args):
+        value_( std::forward<Args>(args)... )
     {}
 
-    //* constructor
-    explicit File( QString&& value ):
-        QString( std::move(value) )
-    {}
-
-    //* constructor
-    explicit File( const QString& value ):
-        QString( value )
-    {}
+    //* destructor
+    virtual ~File() = default;
 
     //*@name accessors
     //@{
 
+    //* convert to string
+    operator QString() const { return value_; }
+
+    //* accessor
+    const QString& get() const { return value_; }
+
+    //* less than operator
+    bool operator < (const File& other ) const
+    { return value_ < other.value_; }
+
+    //* equal to operator
+    bool operator == (const File& other ) const
+    { return value_ == other.value_; }
+
+    //* different from operator
+    bool operator != (const File& other ) const
+    { return value_ != other.value_; }
+
+    template<class T>
+        bool startsWith( const T& t ) const
+    { return value_.startsWith( t ); }
+
+    template<class T>
+        bool endsWith( const T& t ) const
+    { return value_.endsWith( t ); }
+
+    template<typename... Args>
+        bool contains( Args&&... args ) const
+    { return value_.contains( args... ); }
+
+    //* true if empty
+    bool isEmpty( void ) const { return value_.isEmpty(); }
+
     //* returns true if file has absolute pathname
-    bool isAbsolute() const;
+    bool isAbsolute() const
+    { return isAbsolute( value_ ); }
 
     //* time of file creation
     TimeStamp created() const;
@@ -167,11 +197,20 @@ class File: public QString
     //* return list of files in a directory
     List listFiles( ListFlags flags ) const;
 
+    //* expand a file name replacing .. or ~ to full path
+    File expanded() const
+    { return File(*this).expand(); }
 
     //@}
 
     //*@name modifiers
     //@{
+
+    //* accessor
+    QString& get() { return value_; }
+
+    //* clear
+    void clear() { value_.clear(); }
 
     //* try create
     bool create() const;
@@ -211,10 +250,37 @@ class File: public QString
 
     //* adds path to a file
     /** note: the file is taken raw. No truncation/expension performed.*/
-    File addPath( const File&, bool absolute = false ) const;
+    File& addPath( const File& path, bool absolute = false )
+    {
+        addPath( value_, path, absolute );
+        return *this;
+    }
 
     //* expand a file name replacing .. or ~ to full path
-    File expand() const;
+    File& expand()
+    {
+        expand( value_ );
+        return *this;
+    }
+
+    //* add trailing slash
+    File& addTrailingSlash( void )
+    { addTrailingSlash( value_ ); return *this; }
+
+    //* remove trailing slash
+    File& removeTrailingSlash( void )
+    { removeTrailingSlash( value_ ); return *this; }
+
+    //@}
+
+    //*@name utilities
+    //@{
+
+    static bool isAbsolute( const QString& );
+    static void expand( QString& );
+    static void addTrailingSlash( QString& );
+    static void removeTrailingSlash( QString& );
+    static void addPath( QString& file, const QString& path, bool absolute = false );
 
     //@}
 
@@ -240,8 +306,26 @@ class File: public QString
 
     };
 
+    //* streamer
+    friend QTextStream& operator >> ( QTextStream& in, File& file )
+    {
+        in >> file.value_;
+        return in;
+    }
+
+    //* streamer
+    friend QTextStream& operator >> ( QTextStream& out, const File& file )
+    {
+        out << file.value_;
+        return out;
+    }
+
+    private:
+
+    //* value
+    QString value_;
+
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( File::ListFlags )
-
 #endif

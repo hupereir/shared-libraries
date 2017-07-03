@@ -62,7 +62,7 @@ void IconCacheDialog::update()
     const Base::IconCache& cache( IconEngine::cache() );
     IconCacheModel::List modelList;
     for( auto&& iter = cache.begin(); iter != cache.end(); ++iter )
-    { modelList << Base::IconCache::Pair( iter.key(), iter.value() ); }
+    { modelList.append( Base::IconPair( iter.key(), iter.value() ) ); }
 
     model_.set( modelList );
 

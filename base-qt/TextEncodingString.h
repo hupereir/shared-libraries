@@ -24,41 +24,19 @@
 #include <QString>
 
 //* model content
-class TextEncodingString: public QString
+class TextEncodingString final
 {
     public:
 
-    //* constructor
-    explicit TextEncodingString()
-    {}
-
-    //* constructor
-    explicit TextEncodingString( const QByteArray& other ):
-        QString( other )
+    //* universal constructor
+    template<typename... Args>
+    explicit TextEncodingString(Args&&... args):
+        value_( std::forward<Args>(args)... )
     { parse(); }
 
-    //* constructor
-    explicit TextEncodingString( QByteArray&& other ):
-        QString( std::move( other ) )
-    { parse(); }
-
-    //* parse string into two lists of digits and text chunks
-    void parse()
-    {
-        textSegments_.clear();
-        numSegments_.clear();
-        int lastPosition = 0;
-        int position = 0;
-        QRegExp regExp( "(\\d+)" );
-        while( ( position = indexOf( regExp, lastPosition ) ) >= 0 )
-        {
-            textSegments_.append( left( position ) );
-            numSegments_.append( regExp.cap(0).toInt() );
-            lastPosition = position + regExp.matchedLength();
-        }
-
-        textSegments_.append( mid( lastPosition ) );
-    }
+    //* equal to operator
+    bool operator == (const TextEncodingString& other ) const
+    { return value_ == other.value_; }
 
     //* less than operator
     bool operator < (const TextEncodingString& other ) const
@@ -84,8 +62,33 @@ class TextEncodingString: public QString
         return true;
     }
 
+    //* convert to string
+    operator QString () const { return value_; }
+
+    //* accessor
+    const QString& get() const { return value_; }
+
+    //* parse string into two lists of digits and text chunks
+    void parse()
+    {
+        textSegments_.clear();
+        numSegments_.clear();
+        int lastPosition = 0;
+        int position = 0;
+        QRegExp regExp( "(\\d+)" );
+        while( ( position = value_.indexOf( regExp, lastPosition ) ) >= 0 )
+        {
+            textSegments_.append( value_.left( position ) );
+            numSegments_.append( regExp.cap(0).toInt() );
+            lastPosition = position + regExp.matchedLength();
+        }
+
+        textSegments_.append( value_.mid( lastPosition ) );
+    }
+
     private:
 
+    QString value_;
     QList<QString> textSegments_;
     QList<int> numSegments_;
 

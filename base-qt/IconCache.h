@@ -106,37 +106,14 @@ namespace Base
     };
 
     //* cache
-    class IconCache: public QHash<QString, IconCacheItem>
-    {
+    using IconCache = QHash<QString, IconCacheItem>;
+    using IconPair =  QPair<QString, IconCacheItem >;
 
-        public:
+    inline bool operator == ( const IconPair& first, const IconPair& second )
+    { return first.first == second.first; }
 
-        //* constructor
-        explicit IconCache()
-        {}
-
-        //* pair
-        class Pair: public QPair<QString, IconCacheItem >
-        {
-            public:
-
-            //* universal constructor
-            template< typename... Args >
-            explicit Pair( Args&&... args ):
-                QPair<QString, IconCacheItem>( std::forward<Args>(args)... )
-                {}
-
-            //* equal to operator
-            bool operator == ( const Pair& other ) const
-            { return first == other.first; }
-
-            //* less than operator
-            bool operator < ( const Pair& other ) const
-            { return first < other.first; }
-
-        };
-
-    };
+    inline bool operator < ( const IconPair& first, const IconPair& second )
+    { return first.first < second.first; }
 
     Q_DECLARE_OPERATORS_FOR_FLAGS( IconCacheItem::Flags )
 

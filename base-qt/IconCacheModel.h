@@ -28,7 +28,7 @@
 #include <array>
 
 //* qlistview for object IconCaches
-class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Counter<IconCacheModel>
+class IconCacheModel: public ListModel<Base::IconPair>, private Base::Counter<IconCacheModel>
 {
 
     Q_OBJECT
@@ -46,7 +46,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
 
     //* constructor
     explicit IconCacheModel( QObject* parent = 0 ):
-        ListModel<Base::IconCache::Pair>( parent ),
+        ListModel<Base::IconPair>( parent ),
         Counter( "IconCacheModel" )
     {}
 
@@ -72,7 +72,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
     { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
     //* get sizes from icon pair
-    static QString _availableSizes( const Base::IconCache::Pair& );
+    static QString _availableSizes( const Base::IconPair& );
 
     private:
 
@@ -88,7 +88,7 @@ class IconCacheModel: public ListModel<Base::IconCache::Pair>, private Base::Cou
         {}
 
         //* prediction
-        bool operator() ( Base::IconCache::Pair, Base::IconCache::Pair ) const;
+        bool operator() ( Base::IconPair, Base::IconPair ) const;
 
     };
 

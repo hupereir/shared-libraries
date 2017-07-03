@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "XmlFileRecord.h"
-#include "XmlString.h"
 
 namespace Base
 {
@@ -47,7 +46,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() || attribute.name().isEmpty() ) continue;
-        if( attribute.name() == Base::Xml::File ) setFile( File( XmlString( attribute.value() ) ) );
+        if( attribute.name() == Base::Xml::File ) setFile( File( attribute.value() ) );
         else if( attribute.name() == Base::Xml::Time ) setTime( TimeStamp(attribute.value().toInt()) );
         else if( attribute.name() == Base::Xml::Flags ) setFlags( attribute.value().toUInt() );
         else if( attribute.name() == Base::Xml::Valid ) setValid( attribute.value().toInt() );
@@ -74,8 +73,8 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
                 QDomAttr attribute( attributes.item( i ).toAttr() );
                 if( attribute.isNull() || attribute.name().isEmpty() ) continue;
 
-                if( attribute.name() == Base::Xml::Name ) property.first = XmlString( attribute.value() );
-                else if( attribute.name() == Base::Xml::Value ) property.second = XmlString( attribute.value() );
+                if( attribute.name() == Base::Xml::Name ) property.first = attribute.value();
+                else if( attribute.name() == Base::Xml::Value ) property.second = attribute.value();
                 else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized attribute " << attribute.name() << endl;
 
             }
@@ -111,7 +110,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 }
 
 //_______________________________________________
-XmlFileRecord::List XmlFileRecord::ListHelper::list( const QDomElement& element )
+XmlFileRecord::List XmlFileRecord::Helper::list( const QDomElement& element )
 {
     Debug::Throw( "XmlFileRecord::List::List.\n" );
 
@@ -135,7 +134,7 @@ XmlFileRecord::List XmlFileRecord::ListHelper::list( const QDomElement& element 
 }
 
 //_______________________________________________
-QDomElement XmlFileRecord::ListHelper::domElement( const List& list, QDomDocument& document )
+QDomElement XmlFileRecord::Helper::domElement( const List& list, QDomDocument& document )
 {
     Debug::Throw( "XmlFileRecord::List::domElement.\n" );
     QDomElement top = document.appendChild( document.createElement( Base::Xml::FileList ) ).toElement();

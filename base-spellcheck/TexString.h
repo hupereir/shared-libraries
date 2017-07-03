@@ -25,34 +25,39 @@
 #include <QPair>
 #include <QSet>
 
-//! some tex related utilities
+//* some tex related utilities
 namespace SpellCheck
 {
 
-    class TexString: public QString
+    class TexString final
     {
 
         public:
 
-        //! constructor
-        explicit TexString( const QString& value ):
-            QString( value )
+        //* universal constructor
+        template<typename... Args>
+        explicit TexString(Args&&... args):
+            value_( std::forward<Args>(args)... )
         {}
 
-        //! convert to latex accents
+        //* convert to latex accents
         QString toLatexAccents() const;
 
-        //! convert to french accents
+        //* convert to french accents
         QString toTextAccents() const;
 
-        //! conversions
+        //* conversions
         using Conversion = QPair<QString, QString>;
 
-        //! conversions
+        //* conversions
         using ConversionList = QList< Conversion >;
 
-        //! conversions
+        //* conversions
         static const ConversionList& conversions();
+
+        private:
+
+        QString value_;
 
     };
 

@@ -68,7 +68,7 @@ bool RecentFilesMenu::openLastValidFile()
 
 //______________________________________
 void RecentFilesMenu::setCurrentFile( const File& file )
-{ if( !file.isEmpty() )  setCurrentFile( fileList_->add( file.expand() ) ); }
+{ if( !file.isEmpty() )  setCurrentFile( fileList_->add( file.expanded() ) ); }
 
 //______________________________________
 void RecentFilesMenu::_updateActions()
@@ -149,7 +149,7 @@ void RecentFilesMenu::_loadFiles()
         action->setChecked( record.file() == currentFile().file() );
         actionGroup_->addAction( action );
 
-        if( fileList_->check() ) action->setEnabled( record.file().size() && record.isValid() );
+        if( fileList_->check() ) action->setEnabled( !record.file().isEmpty() && record.isValid() );
         actions_.insert( action, record );
     }
 

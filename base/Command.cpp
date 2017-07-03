@@ -27,17 +27,17 @@ bool Command::run( const QString& path ) const
 {
 
     Debug::Throw( "Command::run.\n" );
-    if( empty() ) return false;
+    if( values_.empty() ) return false;
 
-    QString program( front() );
-    QStringList arguments( *this );
+    QString program( values_.front() );
+    QStringList arguments( values_ );
     arguments.removeFirst();
     return QProcess::startDetached( program, arguments, path );
 
 }
 
 //_________________________________________________________
-QStringList Command::_parse( const QString &in ) const
+QStringList Command::_parse( const QString &in )
 {
 
     Debug::Throw( "Command::parse.\n" );

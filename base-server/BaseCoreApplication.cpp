@@ -67,7 +67,7 @@ BaseCoreApplication::~BaseCoreApplication()
 bool BaseCoreApplication::initApplicationManager()
 {
 
-    Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.join( " " ) << endl;
+    Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.get().join( " " ) << endl;
 
     // check if already initialized
     if( _hasApplicationManager() ) return true;

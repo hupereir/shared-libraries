@@ -26,65 +26,83 @@
 
 namespace SpellCheck
 {
-    //! keep track of misspelled words in text
-    class Word: public QString
+    //* keep track of misspelled words in text
+    class Word final
     {
         public:
 
-        //! shortcut for set
+        //* shortcut for set
         using Set = QSet<Word>;
 
-        //! constructor
+        //* constructor
         explicit Word( const QString& word = QString(), int position = 0 ):
-            QString( word ),
+            value_( word ),
             position_( position )
         {}
 
-        //! equal to operator
+        //* equal to operator
         bool operator == ( const Word& word ) const
         { return position_ == word.position_; }
 
-        //! less than to operator
+        //* less than to operator
         bool operator < ( const Word& word ) const
         { return position_ < word.position_; }
 
-        //! position
+        //*@name accessors
+        //@{
+
+        //* position
         int position() const
         { return position_; }
 
-        //! true if given position is in the selected word
+        //* convert to string
+        operator QString () const
+        { return value_; }
+
+        //* true if given position is in the selected word
         bool has( int position ) const
         {
             return
                 position >= position_ &&
-                position < position_+static_cast<int>(size());
+                position < position_+static_cast<int>(value_.size());
         }
 
-        //! returns true if Word is find at position
+        //* empty
+        bool isEmpty() const { return value_.isEmpty(); }
+
+        //* length
+        int length() const { return value_.length(); }
+
+        //@}
+
+        //* returns true if Word is find at position
         class AtPositionFTor
         {
 
             public:
 
-            //! constructor
+            //* constructor
             explicit AtPositionFTor( int position ):
                 position_( position )
             {}
 
-            //! predicate
+            //* predicate
             bool operator() (const Word& word )
             { return word.has( position_ ); }
 
             private:
 
-            //! predicate position
+            //* predicate position
             const int position_;
 
         };
 
         private:
 
-        //! position in text
+        //* value
+        QString value_;
+
+        //* position in text
         const int position_;
 
     };

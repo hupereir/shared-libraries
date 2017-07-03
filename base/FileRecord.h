@@ -69,45 +69,15 @@ class FileRecord: private Base::Counter<FileRecord>
     //* less than operator
     bool operator == (const FileRecord& record ) const;
 
-    //* file
-    const File& file() const
-    { return file_; }
+    //*@name accessors
+    //@{
 
     //* file
-    FileRecord& setFile( const File& file )
-    {
-        file_ = file;
-        return *this;
-    }
+    const File& file() const { return file_; }
 
     //* time stamp
     const TimeStamp& time() const
     { return time_; }
-
-    //* time stamp
-    FileRecord& setTime( const TimeStamp& time )
-    {
-        time_ = time;
-        return *this;
-    }
-
-    //*@name flags
-    //@{
-
-    //* flags
-    FileRecord& setFlags( int value )
-    {
-        flags_ = value;
-        return *this;
-    }
-
-    //* flags
-    FileRecord& setFlag( int flag, bool value = true )
-    {
-        if( value ) { flags_ |= flag; }
-        else { flags_ &= (~flag); }
-        return *this;
-    }
 
     //* flags
     int flags() const
@@ -117,44 +87,9 @@ class FileRecord: private Base::Counter<FileRecord>
     bool hasFlag( int flag ) const
     { return flags_ & flag; }
 
-    //* used to retrieve file records that match a given flag
-    class HasFlagFTor
-    {
-
-        public:
-
-        //* constructor
-        explicit HasFlagFTor( int flag ):
-            flag_( flag )
-         {}
-
-        //* predicate
-        bool operator() ( const FileRecord& record ) const
-        { return record.hasFlag( flag_ ); }
-
-        private:
-
-        // predicted flag
-        int flag_;
-
-    };
-
-    //@}
-
     //* validity
     bool isValid() const
     { return valid_; }
-
-    //* validity
-    FileRecord& setValid( bool valid )
-    {
-        valid_ = valid;
-        return *this;
-    }
-
-
-    //*@name properties
-    //@{
 
     //* map string to property ID
     class PropertyId
@@ -191,13 +126,6 @@ class FileRecord: private Base::Counter<FileRecord>
 
     };
 
-    //* add property
-    FileRecord& addProperty( QString tag, QString value )
-    { return addProperty( PropertyId::get( tag ), value ); }
-
-    //* add property
-    FileRecord& addProperty( PropertyId::Id, QString );
-
     //* true if property is available
     bool hasProperty( QString tag ) const
     { return hasProperty( PropertyId::get( tag ) ); }
@@ -225,6 +153,76 @@ class FileRecord: private Base::Counter<FileRecord>
     }
 
     //@}
+
+    //*@name modifiers
+    //@{
+
+    //* file
+    FileRecord& setFile( const File& file )
+    {
+        file_ = file;
+        return *this;
+    }
+
+    //* time stamp
+    FileRecord& setTime( const TimeStamp& time )
+    {
+        time_ = time;
+        return *this;
+    }
+
+    //* flags
+    FileRecord& setFlags( int value )
+    {
+        flags_ = value;
+        return *this;
+    }
+
+    //* flags
+    FileRecord& setFlag( int flag, bool value = true )
+    {
+        if( value ) { flags_ |= flag; }
+        else { flags_ &= (~flag); }
+        return *this;
+    }
+
+    //* validity
+    FileRecord& setValid( bool valid )
+    {
+        valid_ = valid;
+        return *this;
+    }
+
+    //* add property
+    FileRecord& addProperty( QString tag, QString value )
+    { return addProperty( PropertyId::get( tag ), value ); }
+
+    //* add property
+    FileRecord& addProperty( PropertyId::Id, QString );
+
+    //@}
+
+    //* used to retrieve file records that match a given flag
+    class HasFlagFTor
+    {
+
+        public:
+
+        //* constructor
+        explicit HasFlagFTor( int flag ):
+            flag_( flag )
+         {}
+
+        //* predicate
+        bool operator() ( const FileRecord& record ) const
+        { return record.hasFlag( flag_ ); }
+
+        private:
+
+        // predicted flag
+        int flag_;
+
+    };
 
     //* used to sort records according to files
     class FileFTor

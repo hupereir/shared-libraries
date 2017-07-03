@@ -77,7 +77,7 @@ namespace Private
     }
 
     //___________________________________________________________________
-    LocalFileInfo::List LocalFileInfo::ListHelper::list( const QDomElement& element )
+    LocalFileInfo::List LocalFileInfo::Helper::list( const QDomElement& element )
     {
 
         LocalFileInfo::List out;
@@ -103,7 +103,7 @@ namespace Private
     }
 
     //___________________________________________________________________
-    QDomElement LocalFileInfo::ListHelper::domElement( const LocalFileInfo::List& list, QDomDocument& document )
+    QDomElement LocalFileInfo::Helper::domElement( const LocalFileInfo::List& list, QDomDocument& document )
     {
         // create main element
         QDomElement top = document.createElement( Xml::FileInfoList );
@@ -1420,7 +1420,7 @@ bool PlacesWidget::_read()
     QDomNodeList topNodes = document.elementsByTagName( Xml::FileInfoList );
     if( topNodes.isEmpty() ) return false;
 
-    const Private::LocalFileInfo::List fileInfoList( Private::LocalFileInfo::ListHelper::list( topNodes.at(0).toElement() ) );
+    const Private::LocalFileInfo::List fileInfoList( Private::LocalFileInfo::Helper::list( topNodes.at(0).toElement() ) );
     for( const auto& fileInfo:fileInfoList )
     {
 
@@ -1479,12 +1479,12 @@ bool PlacesWidget::_write()
     auto topNodes = document.elementsByTagName( Xml::FileInfoList );
     if( !topNodes.isEmpty() )
     {
-        const Private::LocalFileInfo::List oldFileInfoList( Private::LocalFileInfo::ListHelper::list( topNodes.at(0).toElement() ) );
+        const Private::LocalFileInfo::List oldFileInfoList( Private::LocalFileInfo::Helper::list( topNodes.at(0).toElement() ) );
         if( oldFileInfoList == fileInfoList ) return true;
     }
 
     // create main element
-    auto top = Private::LocalFileInfo::ListHelper::domElement( fileInfoList, document );
+    auto top = Private::LocalFileInfo::Helper::domElement( fileInfoList, document );
 
     // append top node to document and write
     document.replaceChild( top );

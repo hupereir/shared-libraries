@@ -94,10 +94,7 @@ namespace Private
         {
 
             // get local name
-            File localName( path.localName() );
-            if( localName.endsWith( "/" ) ) localName = File( localName.left( localName.size()-1 ) );
-            Q_ASSERT( !localName.isEmpty() );
-
+            File localName( path.localName().removeTrailingSlash() );
             setText( localName );
 
         } else setText( name );
@@ -525,8 +522,8 @@ void PathEditor::setPath( const File& constPath, const File& file )
     {
 
         // search proper root path
-        File root( "/" );
-        File path( constPath );
+        QString root( "/" );
+        QString path( constPath );
 
         for( const auto& file:rootPathList_ )
         {
@@ -534,7 +531,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
             {
                 // store root file and truncate
                 root = file;
-                path = File( path.mid( root.size() ) );
+                path = path.mid( root.size() );
                 break;
             }
         }
@@ -566,8 +563,8 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
         }
 
-        if( hasHome && root == home_ ) item->setPath( root, "Home" );
-        else item->setPath( root, "Root" );
+        if( hasHome && root == home_ ) item->setPath( File( root ), "Home" );
+        else item->setPath( File( root ), "Root" );
         index++;
 
         // create path items
@@ -625,7 +622,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
             }
 
-            item->setPath( file.addPath( path ) );
+            item->setPath( File( file ).addPath( File( path ) ) );
             item->setIsSelectable( false );
             index++;
 
@@ -655,13 +652,13 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
     // update editor
     {
-        File path( file.isEmpty() ? constPath:file.addPath( constPath ) );
+        File path( file.isEmpty() ? constPath: File( file ).addPath( constPath ) );
         if( editor_->currentText() != path )
         {
 
             const bool usePrefix( usePrefix_ && !prefix_.isEmpty() );
             const QString prefix( prefix_+"//" );
-            if( usePrefix && !path.startsWith( prefix ) ) path.prepend( prefix );
+            if( usePrefix && !path.startsWith( prefix ) ) path.get().prepend( prefix );
 
             int id( editor_->findText( path ) );
             if( id < 0 )

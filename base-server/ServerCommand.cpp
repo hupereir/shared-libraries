@@ -70,7 +70,7 @@ namespace Server
             << command.clientId_
             << command.id_
             << quint32(command.command_)
-            << command.arguments_
+            << command.arguments_.get()
             << command.option_.name()
             << command.option_;
         return stream;

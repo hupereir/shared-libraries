@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "XmlOption.h"
-#include "XmlString.h"
 
 namespace Base
 {
@@ -50,7 +49,7 @@ XmlOption::XmlOption( const QDomElement& element )
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
         if( attribute.name() == Base::Xml::Name ) setName( attribute.value() );
-        else if( attribute.name() == Base::Xml::Value ) setRaw( XmlString( attribute.value() ) );
+        else if( attribute.name() == Base::Xml::Value ) setRaw( attribute.value() );
         else if( attribute.name() == Base::Xml::Flags ) setFlags( (Option::Flags) attribute.value().toInt() );
         else Debug::Throw() << "XmlOption::XmlOption - unrecognized attribute " << attribute.name() << ".\n";
 
@@ -61,7 +60,7 @@ XmlOption::XmlOption( const QDomElement& element )
     {
         QDomElement childElement = childNode.toElement();
         if( childElement.tagName() == Base::Xml::Name ) setName( childElement.text() );
-        else if( childElement.tagName() == Base::Xml::Value ) setRaw( XmlString( childElement.text() ) );
+        else if( childElement.tagName() == Base::Xml::Value ) setRaw( childElement.text() );
         else if( childElement.tagName() == Base::Xml::Flags ) setFlags( (Option::Flags) childElement.text().toInt() );
         else Debug::Throw() << "XmlOption::XmlOption - unrecognized child " << childElement.tagName() << ".\n";
 

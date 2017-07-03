@@ -27,7 +27,7 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
     if( !contains( index ) ) return QVariant();
 
     // associated icon pair
-    const Base::IconCache::Pair& iconPair( get(index) );
+    const Base::IconPair& iconPair( get(index) );
 
     if( role == Qt::DisplayRole )
     {
@@ -68,7 +68,7 @@ QVariant IconCacheModel::headerData(int section, Qt::Orientation orientation, in
 }
 
 //________________________________________________________
-QString IconCacheModel::_availableSizes( const Base::IconCache::Pair& iconPair )
+QString IconCacheModel::_availableSizes( const Base::IconPair& iconPair )
 {
 
     QString buffer;
@@ -85,7 +85,7 @@ QString IconCacheModel::_availableSizes( const Base::IconCache::Pair& iconPair )
 }
 
 //________________________________________________________
-bool IconCacheModel::SortFTor::operator () ( Base::IconCache::Pair first, Base::IconCache::Pair second ) const
+bool IconCacheModel::SortFTor::operator () ( Base::IconPair first, Base::IconPair second ) const
 {
 
     if( order_ == Qt::DescendingOrder ) std::swap( first, second );

@@ -110,7 +110,7 @@ namespace Private
 
         //* read/write file info list to xml
         using List = QList<LocalFileInfo>;
-        class ListHelper
+        class Helper
         {
 
             public:

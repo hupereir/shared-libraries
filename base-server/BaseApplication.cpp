@@ -320,7 +320,7 @@ void BaseApplication::_updateFonts()
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
                 for( const auto& path:configurationPath )
-                { configurationFiles << File( "kdeglobals" ).addPath( File( path ) ); }
+                { configurationFiles.append( File( "kdeglobals" ).addPath( File( path ) ) ); }
 
             }
 
@@ -329,10 +329,9 @@ void BaseApplication::_updateFonts()
         if( configurationFiles.isEmpty() )
         {
             // add some files manually in case the above failed
-            configurationFiles
-                << File( ".config/kdeglobals" ).addPath( Util::home() )
-                << File( ".kde/share/config/kdeglobals" ).addPath( Util::home() )
-                << File( ".kde4/share/config/kdeglobals" ).addPath( Util::home() );
+            configurationFiles.append( File( ".config/kdeglobals" ).addPath( Util::home() ) );
+            configurationFiles.append( File( ".kde/share/config/kdeglobals" ).addPath( Util::home() ) );
+            configurationFiles.append( File( ".kde4/share/config/kdeglobals" ).addPath( Util::home() ) );
         }
 
         bool fontFound( false );

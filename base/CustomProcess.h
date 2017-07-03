@@ -22,6 +22,7 @@
 
 
 #include "Counter.h"
+#include "Command.h"
 
 #include <QProcess>
 #include <QObject>
@@ -47,12 +48,12 @@ class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
     */
     void start( QString arguments, OpenMode mode = ReadWrite );
 
-    /**
-    \brief
-    add arguments.
-    every space separated argument is added separately
-    */
+    //* run
     void start( const QStringList&, OpenMode = ReadWrite );
+
+    //* run
+    void start( const Command& command, OpenMode mode = ReadWrite )
+    { start( command.get(), mode ); }
 
     //* ensure object is deleted at job completion
     void setAutoDelete();

@@ -25,7 +25,7 @@
 
 #include <QStringList>
 
-class CommandLineArguments: public QStringList, private Base::Counter<CommandLineArguments>
+class CommandLineArguments: private Base::Counter<CommandLineArguments>
 {
 
     public:
@@ -38,6 +38,49 @@ class CommandLineArguments: public QStringList, private Base::Counter<CommandLin
 
     //* constructor
     explicit CommandLineArguments( QStringList&& );
+
+    //* destructor
+    virtual ~CommandLineArguments() = default;
+
+    //*@name accessors
+    //@{
+
+    //* convert to QStringList
+    operator QStringList() const { return arguments_; }
+
+    const QStringList& get() const { return arguments_; }
+
+    //* empty
+    bool isEmpty() const { return arguments_.isEmpty(); }
+
+    //* size
+    int size() const { return arguments_.size(); }
+
+    const QString& operator[] (int i) const { return arguments_[i]; }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    QStringList& get() { return arguments_; }
+
+    //* append
+    void append( const QString& str ) { arguments_.append(str); }
+
+    //* streamers
+    template<class T>
+    CommandLineArguments & operator<< ( const T& t )
+    {
+        arguments_ << t;
+        return *this;
+    }
+
+    //@}
+
+    private:
+
+    QStringList arguments_;
 
 };
 

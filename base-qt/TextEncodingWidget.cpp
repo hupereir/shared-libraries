@@ -61,7 +61,7 @@ class TextEncodingModel: public ListModel<TextEncodingString>
         if( index.isValid() && role == Qt::DisplayRole )
         {
 
-            return get()[index.row()];
+            return get()[index.row()].get();
 
         } else return QVariant();
 

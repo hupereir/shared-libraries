@@ -45,14 +45,14 @@ File OpenWithComboBox::command() const
 //___________________________________________________________
 void OpenWithComboBox::addItem( const File& file )
 {
-    QComboBox::insertItem( count()-1, file.localName(), file );
+    QComboBox::insertItem( count()-1, file.localName(), file.get() );
     setCurrentIndex( count()-2 );
 }
 
 //___________________________________________________________
-void OpenWithComboBox::addItem( const QString& item, const File& data)
+void OpenWithComboBox::addItem( const QString& item, const File& file)
 {
-    QComboBox::insertItem( count()-1, item, data );
+    QComboBox::insertItem( count()-1, item, file.get() );
     setCurrentIndex( count()-2 );
 }
 

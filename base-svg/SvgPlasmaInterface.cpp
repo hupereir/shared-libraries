@@ -102,9 +102,8 @@ namespace Svg
         if( configurationFiles.isEmpty() )
         {
             // add some files manually in case the above failed
-            configurationFiles
-                << File( ".kde/share/config/plasmarc" ).addPath( Util::home() )
-                << File( ".kde4/share/config/plasmarc" ).addPath( Util::home() );
+            configurationFiles.append( File( ".kde/share/config/plasmarc" ).addPath( Util::home() ) );
+            configurationFiles.append( File( ".kde4/share/config/plasmarc" ).addPath( Util::home() ) );
         }
 
         // make sure fileSystemWatcher is valid
@@ -223,7 +222,7 @@ namespace Svg
                 { themePathList.append( File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( File( path ) ) ) ); }
                 #else
                 for( const auto& path:configurationPath )
-                { themePathList << File( theme ).addPath( File( "desktoptheme/" ).addPath( File( path ) ) ); }
+                { themePathList.append( File( theme ).addPath( File( "desktoptheme/" ).addPath( File( path ) ) ) ); }
                 #endif
 
             }
@@ -235,12 +234,12 @@ namespace Svg
             // add local path
             QStringList localPath = { ".kde/share/apps/desktoptheme/", ".kde4/share/apps/desktoptheme/" };
             for( const auto& pathName:localPath )
-            { themePathList << File( theme ).addPath( File( pathName ).addPath( Util::home() ) ); }
+            { themePathList.append( File( theme ).addPath( File( pathName ).addPath( Util::home() ) ) ); }
 
         }
 
         // add local path
-        themePathList << File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) );
+        themePathList.append( File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) ) );
         for( const auto& themePath:themePathList )
         {
             Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - checking " << themePath << endl;
@@ -314,7 +313,7 @@ namespace Svg
         auto imagePath( _imagePath( id ) );
         auto files = { imagePath, File( imagePath + ".svg" ), File( imagePath + ".svgz" ) };
         for( auto file:files )
-        { if( (file = file.addPath( path ) ).exists() ) return file; }
+        { if( file.addPath( path ).exists() ) return file; }
 
         return File();
     }

@@ -48,7 +48,7 @@ class XmlError final: private Base::Counter<XmlError>
     { return error_.length() != 0; }
 
     //* File
-    const QString& file() const
+    const File& file() const
     { return file_; }
 
     //* error

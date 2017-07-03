@@ -123,7 +123,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
                 return buffer;
             }
 
-            case Path: return record.file().path();
+            case Path: return record.file().path().get();
             case Time: return TimeStamp( record.time() ).toString();
             default:
             if( index.column() < (int) columnTitles_.size() && record.hasProperty( columnTitles_[index.column()] ) )
@@ -247,7 +247,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
     switch( type_ )
     {
 
-        case Filename: return first.file().localName().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
+        case Filename: return first.file().localName().get().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
         case Path: return first.file().path() < second.file().path();
         case Time: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
         default:

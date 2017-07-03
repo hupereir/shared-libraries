@@ -27,27 +27,17 @@
 namespace Base
 {
 
-    class CounterMap: public QHash<QString, int*>
+    class CounterMap final
     {
 
         public:
 
+        //* convenience
+        using Map = QHash<QString, int*>;
+        using Pair = QPair<QString, int>;
+
         //* singleton
-        static CounterMap& get();
-
-        //* copy constructor is deleted
-        explicit CounterMap( const CounterMap& ) = delete;
-
-        //* assignment is deleted
-        CounterMap& operator = ( const CounterMap& ) = delete;
-
-        //* counter pair
-        using Pair=QPair<QString, int>;
-
-        private:
-
-        //* default constructor
-        explicit CounterMap() {}
+        static Map& get();
 
     };
 

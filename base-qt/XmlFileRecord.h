@@ -56,7 +56,7 @@ class XmlFileRecord: public FileRecord
     QDomElement domElement( QDomDocument& ) const;
 
     using List = QList<XmlFileRecord>;
-    class ListHelper
+    class Helper
     {
         public:
 

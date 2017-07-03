@@ -25,55 +25,60 @@
 #include <QString>
 #include <QStringList>
 
-class Command: public QStringList, private Base::Counter<Command>
+class Command final: private Base::Counter<Command>
 {
 
     public:
 
     //* constructor
     explicit Command( const QStringList& other = QStringList() ):
-        QStringList( other ),
-        Counter( "Command" )
+        Counter( "Command" ),
+        values_( other )
     {}
 
     //* constructor
     explicit Command( QStringList&& other ):
-        QStringList( std::move( other ) ),
-        Counter( "Command" )
+        Counter( "Command" ),
+        values_( std::move( other ) )
     {}
 
     //* constructor
     explicit Command( const QString& in ):
-        QStringList( _parse( in ) ),
-        Counter( "Command" )
+        Counter( "Command" ),
+        values_( _parse( in ) )
     {}
 
-    // run
+    //* accessor
+    const QStringList& get() const { return values_; }
+
+    //* run
     bool run( const QString& = QString() ) const;
 
-    // streamers
-    Command & operator<< ( const QString & str )
+    //*@name modifiers
+    //@{
+
+    //* streamers
+    template<class T>
+    Command& operator<< ( const T& t )
     {
-        QStringList::operator << ( str );
+        values_ << t;
         return *this;
     }
 
-    // streamers
-    Command & operator<< ( const QStringList & other )
-    {
-        QStringList::operator << ( other );
-        return *this;
-    }
+    //@}
 
     private:
 
     //* parse command
-    /*!
+    /**
     parse command so that first string in the list
     is the command name and following strings are all arguments
     first argument must start with a "-"
     */
-    QStringList _parse( const QString& ) const;
+    static QStringList _parse( const QString& );
+
+    //* values
+    QStringList values_;
 
 };
 
