@@ -289,7 +289,7 @@ namespace Base
         QSet<T*>& get() { return set_; }
 
         //* insert
-        iterator insert( T* t ) { return set_.insert( t ); }
+        const_iterator insert( T* t ) { return set_.insert( t ); }
 
         //* remove
         bool remove( T* t ) { return set_.remove( t ); }
