@@ -126,7 +126,7 @@ class ItemModel : public QAbstractItemModel
         {}
 
         //* destructor
-        virtual ~SortFTor() = default;
+        virtual ~SortFTor() {};
 
         protected:
 
