@@ -40,7 +40,7 @@
 #endif
 
 //_______________________________________
-class WinUtilPrivate
+class WinUtilPrivate final
 {
 
     public:
@@ -57,14 +57,12 @@ class WinUtilPrivate
     }
 
     //* destructor
-    virtual ~WinUtilPrivate()
+    ~WinUtilPrivate()
     {
-
         #if defined(Q_OS_WIN)
         // unlooad library
         dwmapi_.unload();
         #endif
-
     }
 
     #if defined(Q_OS_WIN)
@@ -107,46 +105,53 @@ WinUtil::WinUtil( QWidget* target ):
 WinUtil::~WinUtil() = default;
 
 //_______________________________________
+void WinUtil::makeTransparent( double opacity ) const
+{
+
+    #if defined(Q_OS_WIN)
+    if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
+
+    auto hwnd = HWND( target_->winId());
+
+    // SetLayeredWindowAttributes(hwnd, 0, 255*opacity, LWA_ALPHA);
+    BLENDFUNCTION blend = { AC_SRC_OVER, 0, 255*opacity, AC_SRC_ALPHA };
+    UpdateLayeredWindow( hwnd, nullptr,  nullptr,  nullptr, nullptr,  nullptr, 0, &blend, ULW_ALPHA);
+
+    // repaint
+    // RedrawWindow(hwnd, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME | RDW_ALLCHILDREN);
+    #endif
+
+}
+
+//_______________________________________
 void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 {
 
     #if defined(Q_OS_WIN)
     if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
 
-    HBITMAP oldBitmap;
-    HBITMAP hBitmap;
-    SIZE size;
-    size.cx = pixmap.width();
-    size.cy = pixmap.height();
-    HDC screenDc = GetDC(NULL);
-    POINT pointSource;
-    pointSource.x = 0;
-    pointSource.y = 0;
-    POINT topPos;
-    topPos.x = target_->x();
-    topPos.y = target_->y();
-    HDC memDc = CreateCompatibleDC(screenDc);
-    BLENDFUNCTION blend;
-    blend.BlendOp             = AC_SRC_OVER;
-    blend.BlendFlags          = 0;
-    blend.SourceConstantAlpha = int( opacity*255 );
-    blend.AlphaFormat         = AC_SRC_ALPHA;
+    SIZE size = { pixmap.width(), pixmap.height() };
+    POINT pointSource = {0,0};
+    POINT topPos = { target_->x(),  target_->y() };
+    BLENDFUNCTION blend = { AC_SRC_OVER, 0, opacity*255, AC_SRC_ALPHA };
 
     #if QT_VERSION >= 0x050000
-    hBitmap = QtWin::toHBITMAP(pixmap, QtWin::HBitmapPremultipliedAlpha);
+    HBITMAP hBitmap = QtWin::toHBITMAP(pixmap, QtWin::HBitmapPremultipliedAlpha);
     #else
-    hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha);
+    HBITMAP hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha);
     #endif
 
-    oldBitmap = (HBITMAP)SelectObject(memDc, hBitmap);
+    auto screenDc = GetDC(nullptr);
+    auto memDc = CreateCompatibleDC(screenDc);
+
+    HBITMAP oldBitmap =static_cast<HBITMAP>( SelectObject(memDc, hBitmap) );
 
     UpdateLayeredWindow( HWND(target_->winId()), screenDc,  &topPos,  &size, memDc,  &pointSource, 0, &blend, ULW_ALPHA);
 
-    ReleaseDC( NULL, screenDc);
-    if (hBitmap != NULL)
+    ReleaseDC( nullptr, screenDc);
+    if (hBitmap != nullptr)
     {
         SelectObject(memDc, oldBitmap);
-        DeleteObject(hBitmap);
         DeleteObject(hBitmap);
     }
     DeleteDC(memDc);
@@ -174,7 +179,7 @@ void WinUtil::enableBlurBehind( const Base::Margins& margins )
 
     // create blur region
     const QRect rect( margins.adjustedRect( target_->rect() ) );
-    HRGN region = CreateRectRgn( rect.left(), rect.top(), rect.right(), rect.bottom() );
+    auto region = CreateRectRgn( rect.left(), rect.top(), rect.right(), rect.bottom() );
 
     // create flags
     blurBehind.dwFlags = WinUtilPrivate::DWM_BB_ENABLE|WinUtilPrivate::DWM_BB_BLURREGION;

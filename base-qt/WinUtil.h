@@ -29,7 +29,7 @@
 
 class WinUtilPrivate;
 
-class WinUtil
+class WinUtil final
 {
 
     public:
@@ -39,6 +39,9 @@ class WinUtil
 
     //* destructor (needed due to std::unique_ptr)
     ~WinUtil();
+
+    //* set layered widget transparent
+    void makeTransparent( double = 1.0 ) const;
 
     //* update layered widget using pixmap
     void update( const QPixmap&, double = 1.0 ) const;
@@ -54,14 +57,6 @@ class WinUtil
 
     //* has flag
     bool hasFlag( long int ) const;
-
-    protected:
-
-    // returns true if widget is of type layered window
-    bool _isLayered() const;
-
-    //* set widget a layered window
-    void _setLayered() const;
 
     private:
 
