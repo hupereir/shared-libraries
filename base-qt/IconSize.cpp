@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "IconSize.h"
+#include "CppUtil.h"
 
 #include <QApplication>
 #include <QStyle>
@@ -37,7 +38,7 @@ IconSize::IconSize( IconSize::Size size )
 //______________________________________________________________________
 IconSize::Map& IconSize::map()
 {
-    static Map sizeMap =
+    static Map sizeMap( Base::makeMap<Size,QString>(
     {
         { Default, QObject::tr( "System Default" ) },
         { Small, QObject::tr( "Small (16x16)" ) },
@@ -46,7 +47,7 @@ IconSize::Map& IconSize::map()
         { Huge, QObject::tr( "Huge (48x48)" ) },
         { Oversized, QObject::tr( "Oversized (128x128)" ) },
         { Maximum, QObject::tr( "Maximum (256x256)" ) }
-    };
+    } ) );
 
     return sizeMap;
 }
