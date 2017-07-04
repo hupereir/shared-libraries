@@ -26,6 +26,16 @@
 #include <QHash>
 #include <algorithm>
 
+//* generic "isChild" method
+/** can be specialized for objects to which one cannot add an "isChild" member function */
+
+namespace Base
+{
+    template<class T>
+    bool isChild( const T& first, const T& second )
+    { return first.isChild( second ); }
+}
+
 //* used to wrap object T into tree structure
 template<class T> class TreeItem: public TreeItemBase
 {
@@ -194,7 +204,7 @@ template<class T> class TreeItem: public TreeItemBase
     {
 
         // try add to this list of children
-        if( value.isChild( get() ) )
+        if( Base::isChild( value, get() ) )
         {
             children_ << TreeItem( map_, this, value );
             return true;
@@ -241,7 +251,7 @@ template<class T> class TreeItem: public TreeItemBase
         {
             int found( values.indexOf( child(row).get() ) );
             if( found < 0 ) remove( row );
-            else if( values.at(found).isChild( get() ) )
+            else if( Base::isChild( values.at(found), get() ) )
             {
 
                 // update child
@@ -285,7 +295,7 @@ template<class T> class TreeItem: public TreeItemBase
             {
 
                 // make sure parent has not changed
-                if( values.at(found).isChild( get() ) )
+                if( Base::isChild( values.at(found), get() ) )
                 {
 
                     // re-assign and remove from list
