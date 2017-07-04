@@ -297,7 +297,7 @@ class File
 
         //* predicate
         bool operator() ( const File& file ) const
-        { return file.readLink() == file_; }
+        { return file.readLink().get() == file_; }
 
         private:
 
