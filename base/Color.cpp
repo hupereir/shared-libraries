@@ -25,44 +25,42 @@ namespace Base
 {
 
     //__________________________________________________________
-    Color Color::merge( const QColor& other, qreal intensity ) const
+    Color& Color::merge( const QColor& other, qreal intensity )
     {
-        if( !isValid() ) return Color(other);
+        if( !isValid() ) { *this = Color( other ); return *this; }
         if( !other.isValid() ) return *this;
-        if( other == *this ) return *this;
+        if( other == color_ ) return *this;
 
-        double red = intensity*Color::red() + (1.0-intensity )*other.red();
-        double green = intensity*Color::green() + (1.0-intensity )*other.green();
-        double blue = intensity*Color::blue() + (1.0-intensity )*other.blue();
-        double alpha = intensity*Color::alpha() + (1.0-intensity )*other.alpha();
+        color_.setRed( intensity*color_.red() + (1.0-intensity )*other.red() );
+        color_.setGreen( intensity*color_.green() + (1.0-intensity )*other.green() );
+        color_.setBlue( intensity*color_.blue() + (1.0-intensity )*other.blue() );
+        color_.setAlpha( intensity*color_.alpha() + (1.0-intensity )*other.alpha() );
+        return *this;
 
-        return Color( int( red ), int( green ), int( blue ), int( alpha ) );
     }
 
     //__________________________________________________________
-    Color Color::addAlpha( qreal intensity ) const
+    Color& Color::addAlpha( qreal intensity )
     {
-        auto out( *this );
-        out.setAlpha( intensity*alpha() );
-        return out;
+        color_.setAlpha( intensity*color_.alpha() );
+        return *this;
     }
 
     //__________________________________________________________
     bool Color::operator < (const Color& other ) const
     {
-        if( red() != other.red() ) return red() < other.red();
-        else if( green() != other.green() ) return green() < other.green();
-        else if( blue() != other.blue() ) return blue() < other.blue();
-        else if( alpha() != other.alpha() ) return alpha() < other.alpha();
+        if( color_.red() != other.color_.red() ) return color_.red() < other.color_.red();
+        else if( color_.green() != other.color_.green() ) return color_.green() < other.color_.green();
+        else if( color_.blue() != other.color_.blue() ) return color_.blue() < other.color_.blue();
+        else if( color_.alpha() != other.color_.alpha() ) return color_.alpha() < other.color_.alpha();
         else return false;
     }
-
 }
 
 //__________________________________________________________
 QTextStream& operator << (QTextStream& out, const Base::Color& color )
 {
-    out << color.red() << "," << color.green() << "," << color.blue() << "," << color.alpha();
+    out << color.get().red() << "," << color.get().green() << "," << color.get().blue() << "," << color.get().alpha();
     return out;
 }
 
@@ -74,16 +72,16 @@ QTextStream& operator >> (QTextStream& in, Base::Color& color )
     const QStringList stringList( colorString.split( "," ) );
     if( stringList.size() >= 3 )
     {
-        color.setRed( stringList[0].toInt() );
-        color.setGreen( stringList[1].toInt() );
-        color.setBlue( stringList[2].toInt() );
+        color.get().setRed( stringList[0].toInt() );
+        color.get().setGreen( stringList[1].toInt() );
+        color.get().setBlue( stringList[2].toInt() );
 
-        if( stringList.size() >= 4 )  color.setAlpha( stringList[3].toInt() );
-        else color.setAlpha( 255 );
+        if( stringList.size() >= 4 )  color.get().setAlpha( stringList[3].toInt() );
+        else color.get().setAlpha( 255 );
 
     } else {
 
-        color.setNamedColor( colorString );
+        color.get().setNamedColor( colorString );
 
     }
 

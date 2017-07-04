@@ -90,7 +90,7 @@ class File
     { return value_.contains( args... ); }
 
     //* true if empty
-    bool isEmpty( void ) const { return value_.isEmpty(); }
+    bool isEmpty() const { return value_.isEmpty(); }
 
     //* returns true if file has absolute pathname
     bool isAbsolute() const
@@ -264,11 +264,11 @@ class File
     }
 
     //* add trailing slash
-    File& addTrailingSlash( void )
+    File& addTrailingSlash()
     { addTrailingSlash( value_ ); return *this; }
 
     //* remove trailing slash
-    File& removeTrailingSlash( void )
+    File& removeTrailingSlash()
     { removeTrailingSlash( value_ ); return *this; }
 
     //@}

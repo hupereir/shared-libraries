@@ -29,49 +29,50 @@
 #include "RoundedRegion.h"
 
 //_________________________________________________________
-RoundedRegion::RoundedRegion( QRect rect, Corners corners ):
-  QRegion( rect )
+RoundedRegion::RoundedRegion( const QRect& rect, Corners corners ):
+  Counter( "RoundedRegon" ),
+  region_( rect )
 {
 
   // top left
   if( corners & Corner::TopLeft )
   {
-    const QPoint& point( rect.topLeft() );
-    *this -= QRegion(point.x(), point.y()+0, 5, 1);
-    *this -= QRegion(point.x(), point.y()+1, 3, 1);
-    *this -= QRegion(point.x(), point.y()+2, 2, 1);
-    *this -= QRegion(point.x(), point.y()+3, 1, 2);
+    const auto& point( rect.topLeft() );
+    region_ -= QRegion(point.x(), point.y()+0, 5, 1);
+    region_ -= QRegion(point.x(), point.y()+1, 3, 1);
+    region_ -= QRegion(point.x(), point.y()+2, 2, 1);
+    region_ -= QRegion(point.x(), point.y()+3, 1, 2);
   }
 
   // top right
   if( corners & Corner::TopRight )
   {
-    const QPoint& point( rect.topRight() );
-    *this -= QRegion(point.x()-4, point.y()+0, 5, 1);
-    *this -= QRegion(point.x()-2, point.y()+1, 3, 1);
-    *this -= QRegion(point.x()-1, point.y()+2, 2, 1);
-    *this -= QRegion(point.x()-0, point.y()+3, 1, 2);
+    const auto& point( rect.topRight() );
+    region_ -= QRegion(point.x()-4, point.y()+0, 5, 1);
+    region_ -= QRegion(point.x()-2, point.y()+1, 3, 1);
+    region_ -= QRegion(point.x()-1, point.y()+2, 2, 1);
+    region_ -= QRegion(point.x()-0, point.y()+3, 1, 2);
   }
 
   // bottom left
   if( corners & Corner::BottomLeft )
   {
-    const QPoint& point( rect.bottomLeft() );
-    *this -= QRegion(point.x(), point.y()-0, 5, 1);
-    *this -= QRegion(point.x(), point.y()-1, 3, 1);
-    *this -= QRegion(point.x(), point.y()-2, 2, 1);
-    *this -= QRegion(point.x(), point.y()-4, 1, 2);
+    const auto& point( rect.bottomLeft() );
+    region_ -= QRegion(point.x(), point.y()-0, 5, 1);
+    region_ -= QRegion(point.x(), point.y()-1, 3, 1);
+    region_ -= QRegion(point.x(), point.y()-2, 2, 1);
+    region_ -= QRegion(point.x(), point.y()-4, 1, 2);
   }
 
 
   // bottom right
   if( corners & Corner::BottomRight )
   {
-    const QPoint& point( rect.bottomRight() );
-    *this -= QRegion(point.x()-4, point.y()-0, 5, 1);
-    *this -= QRegion(point.x()-2, point.y()-1, 3, 1);
-    *this -= QRegion(point.x()-1, point.y()-2, 2, 1);
-    *this -= QRegion(point.x()-0, point.y()-4, 1, 2);
+    const auto& point( rect.bottomRight() );
+    region_ -= QRegion(point.x()-4, point.y()-0, 5, 1);
+    region_ -= QRegion(point.x()-2, point.y()-1, 3, 1);
+    region_ -= QRegion(point.x()-1, point.y()-2, 2, 1);
+    region_ -= QRegion(point.x()-0, point.y()-4, 1, 2);
   }
 
 }

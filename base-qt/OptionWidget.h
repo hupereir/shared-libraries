@@ -35,6 +35,9 @@ class OptionWidget
         buddy_( budy )
     {}
 
+    //* destructor
+    virtual ~OptionWidget() = default;
+
     //* set widget value from option value
     virtual void read( const Options& ) = 0;
 

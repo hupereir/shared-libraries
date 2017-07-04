@@ -159,7 +159,7 @@ bool XmlPathHistory::write( File file )
     {
 
         if( !path.file().isEmpty() )
-        { top.appendChild( XmlFileRecord( path ).domElement( document ) ); }
+        { top.appendChild( XmlFileRecord( path ).domElement( document.get() ) ); }
 
     }
 

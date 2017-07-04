@@ -153,7 +153,7 @@ bool XmlFileList::write( File file )
     {
 
         if( !record.file().isEmpty() )
-        { top.appendChild( XmlFileRecord( record ).domElement( document ) ); }
+        { top.appendChild( XmlFileRecord( record ).domElement( document.get() ) ); }
 
     }
 

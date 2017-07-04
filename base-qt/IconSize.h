@@ -25,11 +25,10 @@
 #include <QMap>
 
 //* default icon sizes
-class IconSize: public QSize
+class IconSize final
 {
 
     public:
-
 
     //* icon sizes
     enum Size
@@ -45,13 +44,21 @@ class IconSize: public QSize
     };
 
     //* constructor
-    explicit IconSize( Size size );
+    explicit IconSize( Size );
+
+    //* convert to QSize
+    operator QSize() const { return size_; }
 
     //* map text to icon size
     using Map = QMap<Size, QString>;
 
     //* text to icon size
     static Map& map();
+
+    private:
+
+    //* size
+    QSize size_;
 
 };
 

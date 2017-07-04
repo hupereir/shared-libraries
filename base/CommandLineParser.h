@@ -39,7 +39,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
 
     //* destructor
     virtual ~CommandLineParser() = default;
-    
+
     //*@name default group names
     //@{
     static const QString applicationGroupName;
@@ -196,6 +196,9 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
             Counter( "CommandLineParser::Flag" ),
             helpText_( helpText )
         {}
+
+        //* destructor
+        virtual ~Flag() = default;
 
         //* help text
         QString helpText_;

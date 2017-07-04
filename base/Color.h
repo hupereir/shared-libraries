@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
 #include "QOrderedSet.h"
 
 #include <QColor>
@@ -29,7 +30,7 @@ namespace Base
 {
 
     // color utility
-    class Color: public QColor
+    class Color: private Base::Counter<Color>
     {
 
         public:
@@ -37,20 +38,61 @@ namespace Base
         //* construct a color objects from any argument out of which you could make a qcolor
         template< typename... Args >
             explicit Color( Args&&... args ):
-            QColor( std::forward<Args>(args)... )
+            Counter( "Base::Color" ),
+            color_( std::forward<Args>(args)... )
         {}
 
-        //* merge argument color with intensity to this one
-        Color merge( const QColor& , qreal = 0.5 ) const;
+        //* destructor
+        virtual ~Color() = default;
 
-        //* add alpha
-        Color addAlpha( qreal = 0.5 ) const;
+        //* sorted set of colors
+        using Set = QOrderedSet<Color>;
+
+        //* equal to operator
+        bool operator == (const Color& other ) const
+        { return color_ == other.color_; }
 
         //* less than operator
         bool operator < (const Color& ) const;
 
-        //* sorted set of colors
-        using Set = QOrderedSet<Color>;
+        //*@name accessors
+        //@{
+
+        //* conversion to QColor
+        operator QColor() const { return color_; }
+
+        //* mutable accessor
+        const QColor& get() const { return color_; }
+
+        //* validity
+        bool isValid() const { return color_.isValid(); }
+
+        //* merge color with intensity to this one
+        Color merged( const QColor& color, qreal intensity = 0.5 )
+        {
+            Color copy( *this );
+            return copy.merge( color, intensity );
+        }
+
+        //*@}
+
+        //*@name modifiers
+        //@{
+
+        //* mutable accessor
+        QColor& get() { return color_; }
+
+        //* merge color with intensity to this one
+        Color& merge( const QColor& , qreal = 0.5 );
+
+        //* add alpha
+        Color& addAlpha( qreal = 0.5 );
+
+        //@}
+
+        private:
+
+        QColor color_;
 
     };
 

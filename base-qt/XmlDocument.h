@@ -28,7 +28,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 
-class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
+class XmlDocument final: private Base::Counter<XmlDocument>
 {
 
     public:
@@ -39,6 +39,17 @@ class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
     //*@name accessors
     //@{
 
+    //* mutable accessor
+    const QDomDocument& get() const { return document_; }
+
+    //* elements
+    QDomNodeList elementsByTagName( const QString& value ) const
+    { return document_.elementsByTagName( value ); }
+
+    //* content
+    QByteArray toByteArray() const
+    { return document_.toByteArray(); }
+
     //* xml error
     const XmlError& error() const
     { return error_; }
@@ -48,29 +59,25 @@ class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
     //*@name modifiers
     //@{
 
-    //* set content
-    bool setContent( QFile* file )
-    { return setContent( file, error_ ); }
+    //* mutable accessor
+    QDomDocument& get() { return document_; }
 
     //* set content
-    bool setContent( const QString& content )
-    { return setContent( content, error_ ); }
+    template<class T>
+        bool setContent( T&& t )
+    { return setContent( std::forward<T>(t), error_ ); }
 
     //* set content
-    bool setContent( const QByteArray& content )
-    { return setContent( content, error_ ); }
+    template<class T>
+        bool setContent( T&& t, XmlError& error )
+    {
+        error.clear();
+        return document_.setContent( std::forward<T>(t), &error.error(), &error.line(), &error.column() );
+    }
 
-    //* set content
-    bool setContent( QFile*, XmlError& );
-
-    //* set content
-    bool setContent( QIODevice*, XmlError& );
-
-    //* set content
-    bool setContent( const QByteArray&, XmlError& );
-
-    //* set content
-    bool setContent( const QString&, XmlError& );
+    //* create element
+    QDomElement createElement( const QString& value )
+    { return document_.createElement( value ); }
 
     //* replace child
     void replaceChild( QDomElement& );
@@ -78,6 +85,9 @@ class XmlDocument: public QDomDocument, private Base::Counter<XmlDocument>
     //@}
 
     private:
+
+    //* document
+    QDomDocument document_;
 
     //* document node name
     const QString topNodeTagName_;

@@ -206,7 +206,7 @@ namespace Transparency
         if( tintColor.isValid() && tintIntensity )
         {
 
-            tintColor.setAlpha( tintIntensity );
+            tintColor.get().setAlpha( tintIntensity );
             _setTintColor( tintColor );
 
         } else _setTintColor( QColor() );

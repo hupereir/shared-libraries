@@ -20,16 +20,18 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+
 #include <QRegion>
 #include <QRect>
 
 //! rounded QRegion based on a rect
-class RoundedRegion: public QRegion
+class RoundedRegion final: private Base::Counter<RoundedRegion>
 {
 
     public:
 
-    //! corners
+    //* corners
     enum Corner
     {
         None = 0,
@@ -46,8 +48,17 @@ class RoundedRegion: public QRegion
 
     Q_DECLARE_FLAGS( Corners, Corner );
 
-    //! constructor
-    explicit RoundedRegion( QRect, Corners = Corner::All );
+    //* constructor
+    explicit RoundedRegion( const QRect&, Corners = Corner::All );
+
+    //* accessor
+    const QRegion& get() const
+    { return region_; }
+
+    private:
+
+    //* region
+    QRegion region_;
 
 };
 

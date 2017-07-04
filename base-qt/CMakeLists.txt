@@ -173,7 +173,6 @@ set(base_qt_SOURCES
   RecentFilesConfiguration.cpp
   RecentFilesMenu.cpp
   RemoveLineBuffer.cpp
-  RoundedPath.cpp
   RoundedRegion.cpp
   ScratchFileMonitor.cpp
   ScratchFileRemoveDialog.cpp

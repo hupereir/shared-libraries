@@ -29,69 +29,29 @@ XmlDocument::XmlDocument():
 {}
 
 //___________________________________________________________________
-bool XmlDocument::setContent( QFile* file, XmlError& error )
-{
-    Q_ASSERT( file );
-    error.clear();
-    error.setFile( File( file->fileName() ) );
-    return QDomDocument::setContent( file, &error.error(), &error.line(), &error.column() );
-}
-
-//___________________________________________________________________
-bool XmlDocument::setContent( QIODevice* device, XmlError& error )
-{
-    Q_ASSERT( device );
-    error.clear();
-    return QDomDocument::setContent( device, &error.error(), &error.line(), &error.column() );
-}
-
-//___________________________________________________________________
-bool XmlDocument::setContent( const QByteArray& content, XmlError& error )
-{
-    error.clear();
-    return QDomDocument::setContent( content, &error.error(), &error.line(), &error.column() );
-}
-
-//___________________________________________________________________
-bool XmlDocument::setContent( const QString& content, XmlError& error )
-{
-    error.clear();
-    return QDomDocument::setContent( content, &error.error(), &error.line(), &error.column() );
-}
-
-//___________________________________________________________________
 void XmlDocument::replaceChild( QDomElement& element )
 {
 
-    if( documentElement().tagName() != topNodeTagName_ )
+    if( document_.documentElement().tagName() != topNodeTagName_ )
     {
 
-        clear();
-        Debug::Throw() << "XmlDocument - creating document element named " << topNodeTagName_ << endl;
-        appendChild( createElement( topNodeTagName_ ) );
-        documentElement().appendChild( element );
+        document_.clear();
+        document_.appendChild( document_.createElement( topNodeTagName_ ) );
+        document_.documentElement().appendChild( element );
         return;
 
     }
 
     // find previous options element
-    auto&& children( elementsByTagName( element.tagName() ) );
+    auto&& children( document_.elementsByTagName( element.tagName() ) );
     if( !children.isEmpty() )
     {
 
-        Debug::Throw() << "XmlDocument -"
-            << " replacing node " << element.tagName()
-            << " inside " << documentElement().tagName()
-            << endl;
-        documentElement().replaceChild( element, children.at(0) );
+        document_.documentElement().replaceChild( element, children.at(0) );
 
     } else {
 
-        Debug::Throw() << "XmlDocument -"
-            << " creating node " << element.tagName()
-            << " inside " << documentElement().tagName()
-            << endl;
-        documentElement().appendChild( element );
+        document_.documentElement().appendChild( element );
 
     }
 

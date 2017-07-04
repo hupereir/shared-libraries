@@ -150,7 +150,7 @@ bool XmlOptions::write()
         {
 
             if( option.hasFlag( Option::Flag::Recordable ) && option.isSet() )
-            { top.appendChild( XmlOption( iter.key(), option ).domElement( document ) ); }
+            { top.appendChild( XmlOption( iter.key(), option ).domElement( document.get() ) ); }
 
         }
 
@@ -161,7 +161,7 @@ bool XmlOptions::write()
     {
 
         if( iter.value().hasFlag( Option::Flag::Recordable ) && iter.value().isSet() && !iter.value().isDefault() )
-        { top.appendChild( XmlOption( iter.key(), iter.value() ).domElement( document ) ); }
+        { top.appendChild( XmlOption( iter.key(), iter.value() ).domElement( document.get() ) ); }
 
     }
 
@@ -184,7 +184,7 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
 {
 
     // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( Base::Xml::Options );
+    auto topNodes = document.elementsByTagName( Base::Xml::Options );
     if( topNodes.isEmpty() ) return false;
 
     for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )

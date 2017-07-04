@@ -30,25 +30,23 @@ IconSize::IconSize( IconSize::Size size )
     if( size == Default )
     { iconSize =  qApp->style()->pixelMetric( QStyle::PM_ToolBarIconSize ); }
 
-    setWidth( iconSize );
-    setHeight( iconSize );
-
+    size_.setWidth( iconSize );
+    size_.setHeight( iconSize );
 }
 
 //______________________________________________________________________
 IconSize::Map& IconSize::map()
 {
-    static Map sizeMap;
-    if( sizeMap.empty() )
+    static Map sizeMap =
     {
-        sizeMap.insert( Default, QObject::tr( "System Default" ) );
-        sizeMap.insert( Small, QObject::tr( "Small (16x16)" ) );
-        sizeMap.insert( Medium, QObject::tr( "Medium (22x22)" ) );
-        sizeMap.insert( Large, QObject::tr( "Large (32x32)" ) );
-        sizeMap.insert( Huge, QObject::tr( "Huge (48x48)" ) );
-        sizeMap.insert( Oversized, QObject::tr( "Oversized (128x128)" ) );
-        sizeMap.insert( Maximum, QObject::tr( "Maximum (256x256)" ) );
-    }
+        { Default, QObject::tr( "System Default" ) },
+        { Small, QObject::tr( "Small (16x16)" ) },
+        { Medium, QObject::tr( "Medium (22x22)" ) },
+        { Large, QObject::tr( "Large (32x32)" ) },
+        { Huge, QObject::tr( "Huge (48x48)" ) },
+        { Oversized, QObject::tr( "Oversized (128x128)" ) },
+        { Maximum, QObject::tr( "Maximum (256x256)" ) }
+    };
 
     return sizeMap;
 }

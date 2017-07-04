@@ -125,6 +125,9 @@ class ItemModel : public QAbstractItemModel
             order_( order )
         {}
 
+        //* destructor
+        virtual ~SortFTor() = default;
+
         protected:
 
         //* column

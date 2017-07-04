@@ -44,11 +44,11 @@ XmlColor::XmlColor( const QDomElement& element )
     {
         QDomAttr attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
-        if( attribute.name() == Base::Xml::Name ) setNamedColor( attribute.value() );
-        else if( attribute.name() == Base::Xml::Red ) setRed( attribute.value().toInt() );
-        else if( attribute.name() == Base::Xml::Green ) setGreen( attribute.value().toInt() );
-        else if( attribute.name() == Base::Xml::Blue ) setBlue( attribute.value().toInt() );
-        else if( attribute.name() == Base::Xml::Alpha ) setAlpha( attribute.value().toInt() );
+        if( attribute.name() == Base::Xml::Name ) get().setNamedColor( attribute.value() );
+        else if( attribute.name() == Base::Xml::Red ) get().setRed( attribute.value().toInt() );
+        else if( attribute.name() == Base::Xml::Green ) get().setGreen( attribute.value().toInt() );
+        else if( attribute.name() == Base::Xml::Blue ) get().setBlue( attribute.value().toInt() );
+        else if( attribute.name() == Base::Xml::Alpha ) get().setAlpha( attribute.value().toInt() );
     }
 
 }
@@ -58,10 +58,10 @@ QDomElement XmlColor::domElement( QDomDocument& document ) const
 {
 
     QDomElement element = document.createElement( Base::Xml::Color );
-    element.setAttribute( Base::Xml::Red, QString::number( red() ) );
-    element.setAttribute( Base::Xml::Green, QString::number( green() ) );
-    element.setAttribute( Base::Xml::Blue, QString::number( blue() ) );
-    element.setAttribute( Base::Xml::Alpha, QString::number( alpha() ) );
+    element.setAttribute( Base::Xml::Red, QString::number( get().red() ) );
+    element.setAttribute( Base::Xml::Green, QString::number( get().green() ) );
+    element.setAttribute( Base::Xml::Blue, QString::number( get().blue() ) );
+    element.setAttribute( Base::Xml::Alpha, QString::number( get().alpha() ) );
 
     return element;
 

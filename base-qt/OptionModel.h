@@ -27,41 +27,19 @@
 
 #include <array>
 
-class OptionPair: public Options::Pair
+using OptionPair = Options::Pair;
+
+inline bool operator == ( OptionPair& first, OptionPair& second )
+{ return first.first == second.first && first.second.raw() == second.second.raw(); }
+
+namespace Base
 {
 
-    public:
+    template<>
+    inline bool isChild<OptionPair>( const OptionPair& first, const OptionPair& second )
+    { return second.first == first.first && second.second.raw().isEmpty(); }
 
-    //* constructor
-    explicit OptionPair()
-    {}
-
-    //* constructor
-    explicit OptionPair( const Options::Pair& option ):
-        Options::Pair( option )
-     {}
-
-    //* constructor
-    explicit OptionPair( const QString& name, const Option& option ):
-        Options::Pair( name, option )
-    {}
-
-    //* equal to operator
-    bool operator == ( const OptionPair& other ) const
-    { return first == other.first && second.raw() == other.second.raw(); }
-
-    //* returns true if this record is a child of argument
-    bool isChild( const OptionPair& other ) const
-    { return other.first == first && other.second.raw().isEmpty(); }
-
-    //* write to stream
-    friend QTextStream& operator << (QTextStream& out, const OptionPair& pair )
-    {
-        out << pair.first << " " << pair.second.raw();
-        return out;
-    }
-
-};
+}
 
 class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionModel>
 {

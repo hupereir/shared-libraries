@@ -1484,7 +1484,7 @@ bool PlacesWidget::_write()
     }
 
     // create main element
-    auto top = Private::LocalFileInfo::Helper::domElement( fileInfoList, document );
+    auto top = Private::LocalFileInfo::Helper::domElement( fileInfoList, document.get() );
 
     // append top node to document and write
     document.replaceChild( top );

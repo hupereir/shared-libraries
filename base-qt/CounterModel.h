@@ -26,30 +26,13 @@
 
 #include <array>
 
-//* counter pair
-class CounterPair: public Base::CounterMap::Pair
-{
+using CounterPair = Base::CounterMap::Pair;
 
-    public:
+inline bool operator < (const CounterPair& first, const CounterPair& second )
+{ return first.first < second.first; }
 
-    //* constructor
-    explicit CounterPair()
-    {}
-
-    //* constructor
-    explicit CounterPair( const Base::CounterMap::Pair& other ):
-        Base::CounterMap::Pair( other )
-    {}
-
-    //* less than operator
-    bool operator < ( const CounterPair& pair ) const
-    { return first < pair.first; }
-
-    //* equal to operator
-    bool operator == (const CounterPair& pair ) const
-    { return first == pair.first; }
-
-};
+inline bool operator == (const CounterPair& first, const CounterPair& second )
+{ return first.first == second.first; }
 
 //* qlistview for object counters
 class CounterModel: public ListModel<CounterPair>
