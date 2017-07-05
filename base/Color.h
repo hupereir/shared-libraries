@@ -35,7 +35,7 @@ namespace Base
 
         public:
 
-        //* construct a color objects from any argument out of which you could make a qcolor
+        //* universal constructor
         template< typename... Args >
             explicit Color( Args&&... args ):
             Counter( "Base::Color" ),
