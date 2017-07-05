@@ -78,6 +78,12 @@ class SystemNotifications: public QObject, private Base::Counter<SystemNotificat
 
     Q_SIGNALS:
 
+    //* notification sent
+    void notificationSent( quint32 );
+
+    //* notification closed
+    void notificationClosed( quint32 );
+
     //* action invoked
     void actionInvoked( quint32, QString );
 

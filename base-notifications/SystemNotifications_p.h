@@ -79,6 +79,12 @@ namespace Private
 
         Q_SIGNALS:
 
+        //* notification sent
+        void notificationSent( quint32 );
+
+        //* notification closed
+        void notificationClosed( quint32 );
+
         //* action called
         void actionInvoked( quint32, QString );
 

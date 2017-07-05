@@ -29,6 +29,8 @@ SystemNotifications::SystemNotifications( QObject* parent, const QString& applic
 {
 
     d = new Private::SystemNotificationsP( this );
+    connect( d, SIGNAL(notificationSent(quint32)), this, SIGNAL(notificationSent(quint32)) );
+    connect( d, SIGNAL(notificationClosed(quint32)), this, SIGNAL(notificationClosed(quint32)) );
     connect( d, SIGNAL(actionInvoked(quint32,QString)), this, SIGNAL(actionInvoked(quint32,QString)) );
 
     if( !applicationName.isNull() ) setApplicationName( applicationName );

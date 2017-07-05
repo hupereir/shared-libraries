@@ -102,8 +102,9 @@ namespace Private
         initialized_ = true;
 
         #ifndef QT_NO_DBUS
+
         // check session bus
-        QDBusConnection dbus( QDBusConnection::sessionBus() );
+        auto dbus( QDBusConnection::sessionBus() );
         if( !dbus.isConnected() ) return;
 
         // connections
@@ -122,6 +123,7 @@ namespace Private
 
         // setup type for image transfer
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
+
         #endif
 
     }
@@ -175,7 +177,7 @@ namespace Private
         lastNotificationActions_ = notification.actionList();
 
         // send
-        QDBusPendingCall pendingCall = dbusInterface_->asyncCall( "Notify", "Notification", (uint)0,
+        auto pendingCall = dbusInterface_->asyncCall( "Notify", "Notification", (uint)0,
             notification.applicationName(),
             notification.summary(),
             notification.body(),
@@ -183,7 +185,7 @@ namespace Private
             hints,
             notification.timeout() );
 
-        QDBusPendingCallWatcher* watcher = new QDBusPendingCallWatcher( pendingCall, this );
+        auto watcher = new QDBusPendingCallWatcher( pendingCall, this );
         connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
 
         #endif
@@ -195,15 +197,21 @@ namespace Private
     void SystemNotificationsP::_pendingCallFinished( QDBusPendingCallWatcher* watcher )
     {
         QDBusReply<quint32> reply( *watcher );
-        if( reply.isValid() ) notificationIds_.insert( reply.value(), lastNotificationActions_ );
+        if( reply.isValid() )
+        {
+            notificationIds_.insert( reply.value(), lastNotificationActions_ );
+            emit notificationSent( reply.value() );
+        }
         lastNotificationActions_.clear();
         watcher->deleteLater();
-
     }
 
     //____________________________________________
     void SystemNotificationsP::_notificationClosed( quint32 id, quint32 reason )
-    { notificationIds_.remove( id ); }
+    {
+        emit notificationClosed( id );
+        notificationIds_.remove( id );
+    }
 
     //____________________________________________
     void SystemNotificationsP::_checkActionInvoked( quint32 id, QString key )
