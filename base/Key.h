@@ -225,6 +225,10 @@ namespace Base
     class KeySet final
     {
 
+        private:
+
+        QSet<T*> set_;
+
         public:
 
         //* default constructor
@@ -289,7 +293,9 @@ namespace Base
         QSet<T*>& get() { return set_; }
 
         //* insert
-        const_iterator insert( T* t ) { return set_.insert( t ); }
+        /** needs decltype because return type ofr set_.insert has changed with qt version */
+        auto insert( T* t ) -> decltype(set_.insert( t ))
+        { return set_.insert( t ); }
 
         //* remove
         bool remove( T* t ) { return set_.remove( t ); }
@@ -305,10 +311,6 @@ namespace Base
         }
 
         //@}
-
-        private:
-
-        QSet<T*> set_;
 
     };
 
