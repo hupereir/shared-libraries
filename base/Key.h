@@ -54,8 +54,7 @@ namespace Base
         }
 
         //* destructor
-        virtual ~Key()
-        { clearAssociations(); }
+        inline virtual ~Key() = 0;
 
         //* equal to operator
         bool operator == (const Key& key ) const
@@ -318,6 +317,9 @@ namespace Base
     using KeySetIterator = QSetIterator<T*>;
 
 };
+
+//______________________________________________________________
+Base::Key::~Key() { clearAssociations(); }
 
 //______________________________________________________________
 template<typename T> void Base::Key::clearAssociations()
