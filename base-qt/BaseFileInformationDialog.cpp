@@ -37,7 +37,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     Debug::Throw( "BaseFileInformationDialog::BaseFileInformationDialog.\n" );
     setOptionName( "FILE_INFORMATION_DIALOG" );
-    setIconSize( IconSize( IconSize::Oversized ) );
+    setIconSize( IconSize::get( IconSize::Oversized ) );
 
     // customize layout
     layout()->setMargin(0);

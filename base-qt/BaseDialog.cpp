@@ -32,7 +32,7 @@
 BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):
     QDialog( parent, flags ),
     monitor_( this ),
-    iconSize_( IconSize( IconSize::VeryHuge ) )
+    iconSize_( IconSize::get( IconSize::VeryHuge ) )
 {
     Debug::Throw( "BaseDialog::BaseDialog.\n" );
     setSizeGripEnabled(false);

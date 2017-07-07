@@ -35,7 +35,7 @@ BrowseIconButton::BrowseIconButton( QWidget* parent, const QString& file):
     CustomToolButton( parent )
 {
 
-    setIconSize( IconSize( IconSize::Huge ) );
+    setIconSize( IconSize::get( IconSize::Huge ) );
     setAutoRaise( false );
     setFile( file, false );
     connect( this, SIGNAL(clicked()), SLOT(_browse()) );
@@ -65,8 +65,8 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
     {
 
         // resize pixmap
-        if( pixmap.size() != IconSize( IconSize::Huge ) )
-        { pixmap = CustomPixmap( pixmap.scaled( IconSize( IconSize::Huge ), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
+        if( pixmap.size() != IconSize::get( IconSize::Huge ) )
+        { pixmap = CustomPixmap( pixmap.scaled( IconSize::get( IconSize::Huge ), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
 
         setIcon( pixmap );
         return true;
@@ -78,7 +78,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 
     // if file, set pixmap to empty
     if( noIconPixmap_.isNull() ) {
-        noIconPixmap_ = CustomPixmap( IconSize( IconSize::Huge ), CustomPixmap::Flag::Transparent );
+        noIconPixmap_ = CustomPixmap( IconSize::get( IconSize::Huge ), CustomPixmap::Flag::Transparent );
         setIcon( noIconPixmap_ );
     }
 

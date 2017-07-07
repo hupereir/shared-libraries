@@ -252,7 +252,7 @@ void BaseApplication::_about()
     auto icon( applicationIcon() );
     dialog.setWindowIcon( icon );
 
-    QSize size = IconSize( IconSize::Maximum );
+    const auto& size = IconSize::get( IconSize::Maximum );
     dialog.setIconPixmap( icon.pixmap( size ) );
     dialog.setText( buffer );
     dialog.adjustSize();

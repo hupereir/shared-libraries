@@ -89,7 +89,7 @@ namespace Private
     void SystemNotificationsP::setApplicationIcon( const QIcon& icon )
     {
         if( icon.isNull() ) imageData_ = Notifications::ImageData();
-        else imageData_ = Notifications::ImageData( icon.pixmap( IconSize( IconSize::Maximum ) ).toImage() );
+        else imageData_ = Notifications::ImageData( icon.pixmap( IconSize::get( IconSize::Maximum ) ).toImage() );
     }
 
     //____________________________________________
@@ -156,7 +156,7 @@ namespace Private
         if( !notification.icon().isNull() )
         {
 
-            hints.insert( iconDataString, QVariant::fromValue( Notifications::ImageData( notification.icon().pixmap( IconSize( IconSize::Maximum ) ).toImage() ) ) );
+            hints.insert( iconDataString, QVariant::fromValue( Notifications::ImageData( notification.icon().pixmap( IconSize::get( IconSize::Maximum ) ).toImage() ) ) );
 
         } else if( imageData_.isValid() ) {
 

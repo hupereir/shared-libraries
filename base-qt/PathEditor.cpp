@@ -375,7 +375,7 @@ PathEditor::PathEditor( QWidget* parent ):
         button->setIcon( IconEngine::get( IconNames::DialogOk ) );
         button->setAutoRaise( true );
         button->setToolButtonStyle( Qt::ToolButtonIconOnly );
-        button->setIconSize( IconSize( IconSize::Small ) );
+        button->setIconSize( IconSize::get( IconSize::Small ) );
         button->setFixedSize( QSize( editor_->height(), editor_->height() ) );
         hLayout->addWidget( button );
 

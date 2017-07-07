@@ -24,15 +24,20 @@
 #include <QStyle>
 
 //__________________________________________________________________
-IconSize::IconSize( IconSize::Size size )
+IconSize::IconSize( IconSize::Size size ):
+   size_( std::move( get( size ) ) )
+{}
+
+
+//__________________________________________________________________
+QSize IconSize::get( IconSize::Size size )
 {
 
     int iconSize( size );
     if( size == Default )
     { iconSize =  qApp->style()->pixelMetric( QStyle::PM_ToolBarIconSize ); }
 
-    size_.setWidth( iconSize );
-    size_.setHeight( iconSize );
+    return QSize( iconSize, iconSize );
 }
 
 //______________________________________________________________________

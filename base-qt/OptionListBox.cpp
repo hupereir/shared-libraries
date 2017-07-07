@@ -124,7 +124,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     if( list_->itemDelegate() ) list_->itemDelegate()->deleteLater();
     list_->setItemDelegate( new TextEditionDelegate( this ) );
 
-    list_->setIconSize( IconSize( IconSize::Small ) );
+    list_->setIconSize( IconSize::get( IconSize::Small ) );
     layout->addWidget( list_, 1 );
 
     QVBoxLayout* buttonLayout = new QVBoxLayout;

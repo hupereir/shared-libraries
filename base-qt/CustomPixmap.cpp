@@ -67,7 +67,7 @@ CustomPixmap::CustomPixmap( const QString& file ):
         QIcon icon( QFileIconProvider().icon( file ) );
         if( icon.isNull() ) return;
 
-        const QSize iconSize( IconSize( IconSize::Maximum ) );
+        const QSize iconSize( IconSize::get( IconSize::Maximum ) );
         CustomPixmap out( icon.pixmap( iconSize ) );
         *this = out;
 

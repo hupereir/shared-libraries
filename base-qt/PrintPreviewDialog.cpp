@@ -127,7 +127,7 @@ namespace Private
         hLayout->addWidget( previousPageButton_ = new QToolButton( this ) );
         previousPageButton_->setAutoRaise( true );
         previousPageButton_->setIcon( IconEngine::get( IconNames::Previous ) );
-        previousPageButton_->setIconSize( IconSize( IconSize::Medium ) );
+        previousPageButton_->setIconSize( IconSize::get( IconSize::Medium ) );
         connect( previousPageButton_, SIGNAL(clicked()), SLOT(_previousPage()) );
 
         // editor
@@ -149,7 +149,7 @@ namespace Private
         hLayout->addWidget( nextPageButton_ = new QToolButton( this ) );
         nextPageButton_->setAutoRaise( true );
         nextPageButton_->setIcon( IconEngine::get( IconNames::Next ) );
-        nextPageButton_->setIconSize( IconSize( IconSize::Medium ) );
+        nextPageButton_->setIconSize( IconSize::get( IconSize::Medium ) );
         connect( nextPageButton_, SIGNAL(clicked()), SLOT(_nextPage()) );
 
         // pages

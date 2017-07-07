@@ -43,7 +43,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     list_ = new TreeView( this );
     mainLayout().addWidget( list_ );
     list_->setModel( &model_ );
-    list_->setIconSize( IconSize( IconSize::Large ) );
+    list_->setIconSize( IconSize::get( IconSize::Large ) );
 
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Update" ), this ) );

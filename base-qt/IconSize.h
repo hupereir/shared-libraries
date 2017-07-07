@@ -46,8 +46,11 @@ class IconSize final
     //* constructor
     explicit IconSize( Size );
 
-    //* convert to QSize
-    operator QSize() const { return size_; }
+    //* static accessor
+    static QSize get( Size );
+
+    //* accessor
+    const QSize& get() const { return size_; }
 
     //* map text to icon size
     using Map = QMap<Size, QString>;

@@ -76,7 +76,7 @@ void ColorComboBox::setColors( const Base::Color::Set& colors )
     insertItem( QComboBox::count(), IconEngine::get( IconNames::Add ), tr( "New" ) );
 
     // insert default action
-    insertItem( QComboBox::count(), CustomPixmap( IconSize( IconSize::Huge ), CustomPixmap::Flag::Transparent ), tr( "Default" ) );
+    insertItem( QComboBox::count(), CustomPixmap( IconSize::get( IconSize::Huge ), CustomPixmap::Flag::Transparent ), tr( "Default" ) );
 
     // loop over colors
     for( const auto& color:colors )
@@ -90,7 +90,7 @@ void ColorComboBox::addColor( const QColor& color )
     Debug::Throw() << "ColorComboBox::addColor - color: " << color.name() << endl;
 
     // create pixmap
-    QPixmap pixmap = QPixmap( IconSize( IconSize::Huge ) );
+    QPixmap pixmap = QPixmap( IconSize::get( IconSize::Huge ) );
     pixmap.fill( Qt::transparent );
 
     QPainter painter( &pixmap );

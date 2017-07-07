@@ -865,7 +865,7 @@ void PlacesWidget::_updateIconSize( IconSize::Size size )
     XmlOptions::get().set<int>( "PLACES_ICON_SIZE", size );
 
     // update button sizes
-    QSize iconSize = size==IconSize::Default ? Private::PlacesWidgetItem().iconSize() : IconSize( size );
+    QSize iconSize = size==IconSize::Default ? Private::PlacesWidgetItem().iconSize() : IconSize( size ).get();
     for( const auto& item:items_ )
     {
         item->setIconSize( iconSize );
