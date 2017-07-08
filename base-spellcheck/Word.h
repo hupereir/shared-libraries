@@ -51,13 +51,12 @@ namespace SpellCheck
         //*@name accessors
         //@{
 
+        //* accessor
+        const QString& get() const { return value_; }
+
         //* position
         int position() const
         { return position_; }
-
-        //* convert to string
-        operator QString () const
-        { return value_; }
 
         //* true if given position is in the selected word
         bool has( int position ) const
@@ -106,6 +105,10 @@ namespace SpellCheck
         const int position_;
 
     };
+
+    //____________________________________________________
+    inline uint qHash( const Word& word ) { return qHash( word.get() ); }
+
 }
 
 #endif
