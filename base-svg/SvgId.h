@@ -24,7 +24,7 @@
 #include <QString>
 #include <QList>
 
-//! svg namespace
+//* svg namespace
 namespace Svg
 {
     class SvgId
@@ -33,22 +33,22 @@ namespace Svg
 
         using List = QList<SvgId>;
 
-        //! constructor
+        //* constructor
         explicit SvgId( QSize size ):
             size_( size )
         {}
 
-        //! constructor
+        //* constructor
         explicit SvgId( QString name, QSize size ):
             id_( name ),
             size_( size )
         {}
 
-        //! equal to operator
+        //* equal to operator
         bool operator == (const SvgId& id ) const
         { return size_ == id.size_ && id_ == id.id_; }
 
-        //! less than operator
+        //* less than operator
         bool operator < (const SvgId& id ) const
         {
 
@@ -58,20 +58,20 @@ namespace Svg
 
         }
 
-        //! id
+        //* id
         const QString& id() const
         { return id_; }
 
-        //! size
+        //* size
         const QSize& size() const
         { return size_; }
 
         private:
 
-        //! name
+        //* name
         QString id_;
 
-        //! size
+        //* size
         QSize size_;
 
     };

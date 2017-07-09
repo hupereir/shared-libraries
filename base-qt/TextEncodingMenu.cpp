@@ -51,7 +51,7 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     for( const auto& codecString:codecStrings )
     {
 
-        const QByteArray value( qPrintable( codecString ) );
+        const QByteArray value( qPrintable( codecString.get() ) );
         QAction* action = new QAction( value, this );
         addAction( action );
         action->setCheckable( true );

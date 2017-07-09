@@ -28,10 +28,9 @@ class TextEncodingString final
 {
     public:
 
-    //* universal constructor
-    template<typename... Args>
-    explicit TextEncodingString(Args&&... args):
-        value_( std::forward<Args>(args)... )
+    //* default constructor
+    explicit TextEncodingString( const QString& value = QString() ):
+        value_( value )
     { parse(); }
 
     //* equal to operator
@@ -63,7 +62,7 @@ class TextEncodingString final
     }
 
     //* convert to string
-    operator QString () const { return value_; }
+    // operator QString () const { return value_; }
 
     //* accessor
     const QString& get() const { return value_; }

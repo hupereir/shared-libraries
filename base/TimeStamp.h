@@ -47,7 +47,7 @@ class TimeStamp:private Base::Counter<TimeStamp>
 
     //* destructor
     virtual ~TimeStamp() = default;
-    
+
     //* set time
     bool setTime( time_t time )
     {
@@ -64,19 +64,19 @@ class TimeStamp:private Base::Counter<TimeStamp>
         return valid_;
     }
 
-    //* inferior to operator
+    //* less than operator
     bool operator < (const TimeStamp& stamp ) const
     { return( time_ < stamp.time_ ); }
 
-    //* inferior to operator
+    //* less than operator
     bool operator <= (const TimeStamp& stamp ) const
     { return( time_ <= stamp.time_ ); }
 
-    //* inferior to operator
+    //* less than operator
     bool operator > (const TimeStamp& stamp ) const
     { return( time_ > stamp.time_ ); }
 
-    //* inferior to operator
+    //* less than operator
     bool operator >= (const TimeStamp& stamp ) const
     { return( time_ >= stamp.time_ ); }
 

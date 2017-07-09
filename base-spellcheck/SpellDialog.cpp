@@ -196,8 +196,8 @@ namespace SpellCheck
         }
 
         // asign text
-        if( !interface().setText( editor_->toPlainText(), indexBegin, indexEnd ) )
-        { InformationDialog( this, interface().error() ).exec(); }
+        if( !interface_.setText( editor_->toPlainText(), indexBegin, indexEnd ) )
+        { InformationDialog( this, interface_.error() ).exec(); }
 
         // set TextEditor as ReadOnly
         readOnlyEditor_ = editor_->isReadOnly();
@@ -238,9 +238,9 @@ namespace SpellCheck
         }
 
         // update interface
-        if( !interface().setDictionary( dictionary ) )
+        if( !interface_.setDictionary( dictionary ) )
         {
-            InformationDialog( this, interface().error() ).exec();
+            InformationDialog( this, interface_.error() ).exec();
             return false;
         }
 
@@ -265,9 +265,9 @@ namespace SpellCheck
         }
 
         // update interface
-        if( !interface().setFilter( filter ) )
+        if( !interface_.setFilter( filter ) )
         {
-            InformationDialog( this, interface().error() ).exec();
+            InformationDialog( this, interface_.error() ).exec();
             return false;
         }
 
@@ -293,7 +293,7 @@ namespace SpellCheck
         dictionariesComboBox_->clear();
 
         // get dictionary list and populate combobox
-        for( const auto& dictionary:interface().dictionaries() )
+        for( const auto& dictionary:interface_.dictionaries() )
         { if( !disabledDictionaries.contains( dictionary ) ) dictionariesComboBox_->addItem( dictionary ); }
 
         // restore default value
@@ -316,7 +316,7 @@ namespace SpellCheck
         filtersComboBox_->clear();
 
         // get dictionary list and populate combobox
-        for( const auto& filter:interface().filters() )
+        for( const auto& filter:interface_.filters() )
         { if( !disabledFilters.contains( filter ) ) filtersComboBox_->addItem( filter ); }
 
         // restore default value
@@ -338,17 +338,17 @@ namespace SpellCheck
         Debug::Throw( "SpellCheck::SpellDialog::_SelectDictionary.\n" );
 
         // see if changed
-        if( interface().dictionary() == dictionary ) return;
+        if( interface_.dictionary() == dictionary ) return;
 
         // try update interface
-        if( !interface().setDictionary( dictionary ) )
+        if( !interface_.setDictionary( dictionary ) )
         {
-            InformationDialog( this, interface().error() ).exec();
+            InformationDialog( this, interface_.error() ).exec();
             return;
         }
 
         // emit signal
-        emit dictionaryChanged( interface().dictionary() );
+        emit dictionaryChanged( interface_.dictionary() );
 
         // restart
         _restart();
@@ -362,17 +362,17 @@ namespace SpellCheck
         Debug::Throw( "SpellCheck::SpellDialog::_SelectFilter.\n" );
 
         // see if changed
-        if( interface().filter() == filter ) return;
+        if( interface_.filter() == filter ) return;
 
         // try update interface
-        if( !interface().setFilter( filter ) )
+        if( !interface_.setFilter( filter ) )
         {
-            InformationDialog( this, interface().error() ).exec();
+            InformationDialog( this, interface_.error() ).exec();
             return;
         }
 
         // emit signal
-        emit filterChanged( interface().filter() );
+        emit filterChanged( interface_.filter() );
 
         // restart
         _restart();
@@ -384,9 +384,9 @@ namespace SpellCheck
     {
         Debug::Throw( "SpellCheck::SpellDialog::_restart.\n" );
 
-        if( !interface().reset() )
+        if( !interface_.reset() )
         {
-            InformationDialog( this, interface().error() ).exec();
+            InformationDialog( this, interface_.error() ).exec();
             return;
         }
 
@@ -399,13 +399,13 @@ namespace SpellCheck
     {
         Debug::Throw( "SpellCheck::SpellDialog::_addWord.\n" );
 
-        if( !interface().addWord( interface().word() ) )
+        if( !interface_.addWord( interface_.word() ) )
         {
-            InformationDialog( this, interface().error() ).exec();
+            InformationDialog( this, interface_.error() ).exec();
             return;
         }
 
-        emit ignoreWord( interface().word() );
+        emit ignoreWord( interface_.word() );
         emit needUpdate();
 
         // get next mispelled word
@@ -437,7 +437,7 @@ namespace SpellCheck
     {
 
         Debug::Throw( "SpellCheck::SpellDialog::_ignoreAll.\n" );
-        interface().ignoreWord( sourceLabel_->text() );
+        interface_.ignoreWord( sourceLabel_->text() );
         _ignore();
 
     }
@@ -452,7 +452,7 @@ namespace SpellCheck
         if( !local.isValid() ) return;
 
         const QString word( model_.get( local ) );
-        if( interface().replace( word ) ) _replaceSelection( word );
+        if( interface_.replace( word ) ) _replaceSelection( word );
 
         // parse next word
         nextWord();
@@ -492,18 +492,18 @@ namespace SpellCheck
         Debug::Throw( "SpellCheck::SpellDialog::nextWord.\n" );
 
         bool accepted( false );
-        QString word( "" );
+        QString word;
         while( !accepted )
         {
             // get next word from interface
-            if( !interface().nextWord() )
+            if( !interface_.nextWord() )
             {
-                InformationDialog( this, interface().error() ).exec();
+                InformationDialog( this, interface_.error() ).exec();
                 return;
             }
 
             // check for completed spelling
-            word = interface().word();
+            word = interface_.word();
             if( word.isEmpty() )
             {
                 Debug::Throw() << "SpellCheck::SpellDialog::NextWord - empty word " << endl;
@@ -513,7 +513,7 @@ namespace SpellCheck
             Debug::Throw() << "SpellCheck::SpellDialog::NextWord - word: " << word << endl;
 
             // see if word is in ignore list
-            if( interface().isWordIgnored( word ) ) continue;
+            if( interface_.isWordIgnored( word ) ) continue;
 
             // see if word is in replace all list
             if( replacedWords_.find( word ) != replacedWords_.end() )
@@ -521,9 +521,9 @@ namespace SpellCheck
 
                 // automatic replacement
                 QHash< QString, QString >::iterator iter = replacedWords_.find( word );
-                _updateSelection( interface().position() + interface().offset(), word.size() );
+                _updateSelection( interface_.position() + interface_.offset(), word.size() );
                 _replaceSelection( iter.value() );
-                interface().replace( iter.value() );
+                interface_.replace( iter.value() );
                 continue;
             }
 
@@ -534,7 +534,7 @@ namespace SpellCheck
         if( accepted )
         {
 
-            _updateSelection( interface().position() + interface().offset(), word.size() );
+            _updateSelection( interface_.position() + interface_.offset(), word.size() );
             _displayWord( word );
 
         } else {
@@ -563,7 +563,7 @@ namespace SpellCheck
 
     //__________________________________________
     void SpellDialog::_saveWordList()
-    { interface().saveWordList(); }
+    { interface_.saveWordList(); }
 
     //__________________________________________
     void SpellDialog::_restoreReadOnly()
@@ -603,7 +603,7 @@ namespace SpellCheck
 
         // clear list of suggestions
         model_.clear();
-        Model::List suggestions( interface().suggestions( word ) );
+        Model::List suggestions( interface_.suggestions( word ) );
         model_.add( suggestions );
 
         // select the first suggestion, if any

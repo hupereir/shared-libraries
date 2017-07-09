@@ -45,9 +45,6 @@ class CommandLineArguments: private Base::Counter<CommandLineArguments>
     //*@name accessors
     //@{
 
-    //* convert to QStringList
-    operator QStringList() const { return arguments_; }
-
     const QStringList& get() const { return arguments_; }
 
     //* empty

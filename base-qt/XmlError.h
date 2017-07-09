@@ -45,7 +45,7 @@ class XmlError final: private Base::Counter<XmlError>
 
     //* cast to boolean
     operator bool() const
-    { return error_.length() != 0; }
+    { return !error_.isEmpty(); }
 
     //* File
     const File& file() const

@@ -31,7 +31,7 @@ namespace Base
 
         public:
 
-        //! constructor
+        //* constructor
         explicit Margins( int margin = 0 ):
             left_(margin),
             top_(margin),
@@ -39,7 +39,7 @@ namespace Base
             bottom_(margin)
         {}
 
-        //! add to operator
+        //* add to operator
         Margins& operator += (const Margins& other )
         {
             left_ += other.left_;
@@ -49,7 +49,7 @@ namespace Base
             return *this;
         }
 
-        //! remove from operator
+        //* remove from operator
         Margins& operator -= (const Margins& other )
         {
             left_ -= other.left_;
@@ -59,26 +59,26 @@ namespace Base
             return *this;
         }
 
-        //!@name accessors
+        //*@name accessors
         //@{
 
-        //! dimensions
+        //* dimensions
         int left() const
         { return left_; }
 
-        //! dimensions
+        //* dimensions
         int top() const
         { return top_; }
 
-        //! dimensions
+        //* dimensions
         int right() const
         { return right_; }
 
-        //! dimensions
+        //* dimensions
         int bottom() const
         { return bottom_; }
 
-        //! true if null
+        //* true if null
         bool isNull() const
         {
             return
@@ -88,28 +88,28 @@ namespace Base
                 bottom_ == 0;
         }
 
-        //! width
+        //* width
         int width() const
         { return left_+right_; }
 
-        //! height
+        //* height
         int height() const
         { return top_+bottom_; }
 
-        //! return adjusted rect
+        //* return adjusted rect
         QRect adjustedRect( const QRect& source ) const
         { return source.adjusted( left_, top_, -right_, -bottom_ ); }
 
-        //! top left point
+        //* top left point
         QPoint topLeft() const
         { return QPoint( left_, top_ ); }
 
         //@}
 
-        //!@name modifiers
+        //*@name modifiers
         //@{
 
-        //! clear
+        //* clear
         void clear()
         {
             left_ = 0;
@@ -118,19 +118,19 @@ namespace Base
             bottom_ = 0;
         }
 
-        //! dimensions
+        //* dimensions
         void setLeft( int value )
         { left_ = value; }
 
-        //! dimensions
+        //* dimensions
         void setTop( int value )
         { top_ = value; }
 
-        //! dimensions
+        //* dimensions
         void setRight( int value )
         { right_ = value; }
 
-        //! dimensions
+        //* dimensions
         void setBottom( int value )
         { bottom_ = value; }
 
@@ -138,12 +138,12 @@ namespace Base
 
         private:
 
-        int left_;
-        int top_;
-        int right_;
-        int bottom_;
+        int left_ = 0;
+        int top_ = 0;
+        int right_ = 0;
+        int bottom_ = 0;
 
-        //! streamer
+        //* streamer
         friend QTextStream& operator << ( QTextStream& out, const Margins& margins )
         {
             out << "(" << margins.left_ << "," << margins.top_ << "," << margins.right_ << "," << margins.bottom_ << ")";

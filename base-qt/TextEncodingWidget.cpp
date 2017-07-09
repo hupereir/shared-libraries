@@ -185,7 +185,7 @@ void TextEncodingWidget::_updateSelection()
     QModelIndex current( list_->selectionModel()->currentIndex() );
     if( !current.isValid() ) return;
     const TextEncodingString& codec( model_->get(current) );
-    editor_->setText( codec );
+    editor_->setText( codec.get() );
 
 }
 
