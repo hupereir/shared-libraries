@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "NetworkConnectionMonitor.h"
-
+#include "NonCopyable.h"
 #include "Debug.h"
 
 #if !defined(Q_OS_WIN)
@@ -32,18 +32,19 @@
 //____________________________________________________________
 namespace Network
 {
-    //________________________________________________
-    class EncapsulatedSocket
+
+    //_______________________________________________________________________
+    class EncapsulatedSocket: private Base::NonCopyable<EncapsulatedSocket>
     {
         public:
 
         //* constructor
-        EncapsulatedSocket( int fileDescriptor ):
+        explicit EncapsulatedSocket( int fileDescriptor ):
             fileDescriptor_( fileDescriptor )
         {}
 
         //* copy constructor
-        EncapsulatedSocket( const EncapsulatedSocket& other ) = delete;
+        explicit EncapsulatedSocket( const EncapsulatedSocket& other ) = delete;
 
         //* assignment operator
         EncapsulatedSocket& operator = ( const EncapsulatedSocket& other ) = delete;

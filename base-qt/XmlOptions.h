@@ -78,7 +78,7 @@ class XmlOptions
     private:
 
     //* singleton
-    static Private::XmlOptionsSingleton singleton_;
+    static Private::XmlOptionsSingleton& _singleton();
 
 };
 

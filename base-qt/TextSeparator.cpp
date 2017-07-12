@@ -31,13 +31,13 @@ TextSeparator::TextSeparator()
 {
 
     // initialize separator
-    const QString base_separators( " \t\n" );
-    for( int i=0; i< base_separators.size(); i++ )
-    { baseSeparators_.insert( base_separators[i] ); }
+    const QString baseSeparators( " \t\n" );
+    for( int i=0; i< baseSeparators.size(); i++ )
+    { baseSeparators_.insert( baseSeparators[i] ); }
 
-    const QString extended_separators( ",;.:?!&+-=*/|-()'`{}[]<>\"\\%" );
-    for( int i=0; i< extended_separators.size(); i++ )
-        extendedSeparators_.insert( extended_separators[i] );
+    const QString extendedSeparators( ",;.:?!&+-=*/|-()'`{}[]<>\"\\%" );
+    for( int i=0; i< extendedSeparators.size(); i++ )
+    { extendedSeparators_.insert( extendedSeparators[i] ); }
 
     separators_ = baseSeparators_;
     separators_.unite( extendedSeparators_ );

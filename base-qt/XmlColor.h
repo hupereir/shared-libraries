@@ -31,7 +31,7 @@ namespace Base
 {
     namespace Xml
     {
-        static const QString ColorList( "Colors" );
+        static const QString ColorList = "Colors";
         static const QString Color = "Color";
     }
 }

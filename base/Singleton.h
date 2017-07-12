@@ -51,7 +51,7 @@ namespace Base{
 
         //* cast
         template< typename T >
-            T* application()
+        T* application()
         {
             Q_CHECK_PTR( application_ );
             return static_cast<T*>( application_ );

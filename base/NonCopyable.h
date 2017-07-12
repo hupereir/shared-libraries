@@ -1,5 +1,5 @@
-#ifndef SshSingleton_h
-#define SshSingleton_h
+#ifndef NonCopyable_h
+#define NonCopyable_h
 
 /******************************************************************************
 *
@@ -20,46 +20,27 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "NonCopyable.h"
-
-namespace Ssh
+namespace Base
 {
-
-    //* singleton, to handle ssh allocation and freeing
-    class Singleton final: private Base::Counter<Singleton>, private Base::NonCopyable<Singleton>
+    template <class T>
+    class NonCopyable
     {
-        public:
-
-        //* destructor
-        ~Singleton();
-
-        //* copy constructor
-        Singleton( const Singleton& ) = delete;
-
-        //* assignment operator
-        Singleton& operator = ( const Singleton& ) = delete;
-
-        //* accessor
-        static Singleton& get();
-
-        //* true if initialized
-        bool initialized() const
-        { return initialized_; }
-
-        //* initialize
-        void initialize();
-
-        private:
+        protected:
 
         //* constructor
-        explicit Singleton();
+        explicit NonCopyable ()
+        {}
 
-        //* true if initalized
-        bool initialized_ = false;
+        //* destructor
+        ~NonCopyable ()
+        {}
 
+        //* copy constructor
+        NonCopyable (const NonCopyable &) = delete;
+
+        //* assignment operator
+        NonCopyable& operator = ( const NonCopyable& ) = delete;
     };
-
 }
 
 #endif

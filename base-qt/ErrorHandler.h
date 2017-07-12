@@ -20,25 +20,15 @@
 *
 *******************************************************************************/
 
+#include "NonCopyable.h"
+
 #include <QApplication>
 #include <QStringList>
 
-/*!
-\class ErrorHandler
-\brief Customized Qt error handler. Messages in the disabledMessages_ list
-are skipped.
-*/
-
-class ErrorHandler
+class ErrorHandler: private Base::NonCopyable<ErrorHandler>
 {
 
     public:
-
-    //* copy constructor
-    explicit ErrorHandler( const ErrorHandler& ) = delete;
-
-    //* equal to operator
-    ErrorHandler& operator = ( const ErrorHandler& ) = delete;
 
     //* singleton
     static ErrorHandler& get();

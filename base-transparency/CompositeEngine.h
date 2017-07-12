@@ -20,18 +20,20 @@
 *
 *******************************************************************************/
 
+#include "NonCopyable.h"
+
 namespace Transparency
 {
 
-    //! initialize compositing, if available
-    class CompositeEngine
+    //* initialize compositing, if available
+    class CompositeEngine: private Base::NonCopyable<CompositeEngine>
     {
         public:
 
-        //! singleton
+        //* singleton
         static CompositeEngine& get();
 
-        //! availability
+        //* availability
         bool isAvailable()
         {
             _initialize();
@@ -40,21 +42,21 @@ namespace Transparency
 
         protected:
 
-        //! initialize
+        //* initialize
         void _initialize();
 
-        //! returns true if composition is enabled
+        //* returns true if composition is enabled
         bool _compositingAvailable() const;
 
         private:
 
-        //! constructor
+        //* constructor
         explicit CompositeEngine();
 
-        //! validity
+        //* validity
         bool available_;
 
-        //! initialized
+        //* initialized
         bool initialized_;
 
     };

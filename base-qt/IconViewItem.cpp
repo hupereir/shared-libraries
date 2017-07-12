@@ -72,11 +72,6 @@ QString preProcessWrap(const QString &text)
 }
 
 //____________________________________________________________________
-int IconViewItem::margin( 5 );
-int IconViewItem::spacing( 5 );
-int IconViewItem::maxTextWidth( 100 );
-
-//____________________________________________________________________
 QRect IconViewItem::boundingRect() const
 {
     if( dirty_ ) const_cast<IconViewItem*>( this )->_updateBoundingRect();

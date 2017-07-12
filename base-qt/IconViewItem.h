@@ -108,14 +108,12 @@ class IconViewItem final: private Base::Counter<IconViewItem>
     //* paint
     void paint( QPainter*, const QStyleOption*, QWidget* ) const;
 
-    //* margin
-    static int margin;
-
-    //* spacing
-    static int spacing;
-
-    //* max text width
-    static int maxTextWidth;
+    //*@name metrics
+    //@{
+    static const int margin = 5;
+    static const int spacing = 5;
+    static const int maxTextWidth = 100;
+    //@}
 
     protected:
 

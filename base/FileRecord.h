@@ -101,7 +101,7 @@ class FileRecord: private Base::Counter<FileRecord>
 
         //* get id matching name
         /** insert in map if name is new */
-        static Id get( QString name );
+        static Id get( QString );
 
         //* get name matching id
         /** throw exception if not found */

@@ -21,7 +21,9 @@
 *
 *******************************************************************************/
 
-class InterruptionHandler
+#include "NonCopyable.h"
+
+class InterruptionHandler: private Base::NonCopyable<InterruptionHandler>
 {
     public:
 

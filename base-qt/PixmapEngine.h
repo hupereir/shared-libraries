@@ -22,47 +22,48 @@
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
+#include "NonCopyable.h"
 #include "PixmapCache.h"
 
-//! customized Icon factory to provide better looking disabled icons
-class PixmapEngine final: private Base::Counter<PixmapEngine>
+//* customized Icon factory to provide better looking disabled icons
+class PixmapEngine final: private Base::Counter<PixmapEngine>, private Base::NonCopyable<PixmapEngine>
 {
 
     public:
 
-    //! retrieve singleton
+    //* retrieve singleton
     static PixmapEngine& get();
 
-    //! create icon
+    //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
     static const QPixmap& get( const QString& file, bool fromCache = true )
     { return get()._get( file, fromCache ); }
 
-    //! return cache
+    //* return cache
     static const Base::PixmapCache& cache()
     { return get().cache_; }
 
-    //! reload all icons set in cache from new path list
+    //* reload all icons set in cache from new path list
     bool reload();
 
     private:
 
-    //!@name non static methods are hidden
+    //*@name non static methods are hidden
     //@{
 
-    //! constructor
+    //* constructor
     explicit PixmapEngine();
 
-    //! create icon
+    //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */
     const QPixmap& _get( const QString& file, bool fromCache );
 
     //@}
 
-    //! pixmap path
+    //* pixmap path
     File::List pixmapPath_;
 
-    //! map files and QPixmap
+    //* map files and QPixmap
     Base::PixmapCache cache_;
 
 };

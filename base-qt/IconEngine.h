@@ -24,21 +24,16 @@
 #include "Debug.h"
 #include "File.h"
 #include "IconCache.h"
+#include "NonCopyable.h"
 
 //* customized Icon factory to provide better looking disabled icons
-class IconEngine final: private Base::Counter<IconEngine>
+class IconEngine final: private Base::Counter<IconEngine>, private Base::NonCopyable<IconEngine>
 {
 
     public:
 
     //* retrieve singleton
     static IconEngine& get();
-
-    //* copy constructor
-    explicit IconEngine( const IconEngine& ) = delete;
-
-    //* assignment operator
-    IconEngine& operator = (const IconEngine& ) = delete;
 
     //* create icon
     /*! the file is stored into a cache to avoid all pixmaps manipulations */

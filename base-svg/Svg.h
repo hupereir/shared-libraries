@@ -27,11 +27,11 @@
 #include <QPixmap>
 #include <QImage>
 
-//! namespace for icon static name wrappers
+//* namespace for icon static name wrappers
 namespace Svg
 {
 
-    //!@name main panel
+    //*@name main panel
     //@{
     static const QString TopLeft="topleft";
     static const QString Top="top";
@@ -44,10 +44,10 @@ namespace Svg
     static const QString BottomLeft="bottomleft";
     //@}
 
-    //! overlay
+    //* overlay
     static const QString Overlay="overlay";
 
-    //!@name main panel margin hints
+    //*@name main panel margin hints
     //@{
     static const QString MarginLeft="hint-left-margin";
     static const QString MarginRight="hint-right-margin";
@@ -55,7 +55,7 @@ namespace Svg
     static const QString MarginBottom="hint-bottom-margin";
     //@}
 
-    //!@name main panel shadow hints
+    //*@name main panel shadow hints
     //@{
     static const QString ShadowLeft="hint-left-shadow";
     static const QString ShadowRight="hint-right-shadow";
@@ -63,7 +63,7 @@ namespace Svg
     static const QString ShadowBottom="hint-bottom-shadow";
     //@}
 
-    //! map size and pixmap
+    //* map size and pixmap
     using PixmapCache = QMap< SvgId, QPixmap >;
     using ImageCache = QMap< SvgId, QImage >;
 

@@ -70,11 +70,9 @@ namespace Transparency
         *  zR,zG,zB and zA in fp format 8.zprec
         */
         template<int aprec,int zprec>
-            static void expBlur(QImage &img, int radius)
+        static void expBlur(QImage &img, int radius)
         {
-            if(radius < 1) {
-                return;
-            }
+            if(radius < 1) return;
 
             /* Calculate the alpha such that 90% of
             the kernel is within the radius.
@@ -82,13 +80,12 @@ namespace Transparency
             */
             int alpha = (int)((1 << aprec) * (1.0f - std::exp(-2.3f / (radius + 1.f))));
 
-            for (int row=0; row<img.height(); row++) {
-                blurRow<aprec,zprec>(img, row, alpha);
-            }
+            for (int row=0; row<img.height(); row++)
+            { blurRow<aprec,zprec>(img, row, alpha); }
 
-            for (int col=0; col<img.width(); col++) {
-                blurCol<aprec,zprec>(img, col, alpha);
-            }
+            for (int col=0; col<img.width(); col++)
+            { blurCol<aprec,zprec>(img, col, alpha); }
+
             return;
         }
 

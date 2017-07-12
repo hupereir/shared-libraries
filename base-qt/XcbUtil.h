@@ -21,13 +21,14 @@
 *******************************************************************************/
 
 #include "XcbDefines.h"
+#include "NonCopyable.h"
 
 #include <QHash>
 #include <QWidget>
 
 #include <memory>
 
-class XcbUtil: private XcbDefines
+class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
 {
 
     public:
@@ -40,6 +41,12 @@ class XcbUtil: private XcbDefines
 
     //* singleton
     static XcbUtil& get();
+
+    //* copy constructor
+    XcbUtil( const XcbUtil& ) = delete;
+
+    //* assignment operator
+    XcbUtil& operator = ( const XcbUtil& ) = delete;
 
     //*@name accessors
     //@{

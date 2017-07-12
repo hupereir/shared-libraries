@@ -20,45 +20,47 @@
 *
 *******************************************************************************/
 
+#include "NonCopyable.h"
+
 #include <QSet>
 #include <QString>
 
-//! text separator between words
-class TextSeparator
+//* text separator between words
+class TextSeparator: private Base::NonCopyable<TextSeparator>
 {
 
     public:
 
-    //! shortcut to set of separators
+    //* shortcut to set of separators
     using SeparatorSet = QSet< QChar >;
 
-    //! return singleton
+    //* return singleton
     static const TextSeparator& get();
 
-    //! retrieve base separators
+    //* retrieve base separators
     const SeparatorSet& base() const
     { return baseSeparators_; }
 
-    //! retrieve base separators
+    //* retrieve base separators
     const SeparatorSet& extended() const
     { return extendedSeparators_; }
 
-    //! retrieve all separators
+    //* retrieve all separators
     const SeparatorSet& all() const
     { return separators_; }
 
     private:
 
-    //! constructor
+    //* constructor
     explicit TextSeparator();
 
-    //! base separators (space, tab, end of line)
+    //* base separators (space, tab, end of line)
     SeparatorSet baseSeparators_;
 
-    //! extended separators (brackets, parenthesis, quotes, etc.)
+    //* extended separators (brackets, parenthesis, quotes, etc.)
     SeparatorSet extendedSeparators_;
 
-    //! all separators
+    //* all separators
     SeparatorSet separators_;
 
 };

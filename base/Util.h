@@ -31,7 +31,7 @@ class Util
 
     //* square a number
     template< typename T >
-        static T sqr( const T& t)
+    static T square( const T& t)
     { return t*t; }
 
     //* returns environment variable or empty string
