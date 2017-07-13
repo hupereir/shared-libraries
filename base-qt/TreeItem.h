@@ -92,6 +92,9 @@ template<class T> class TreeItem: public TreeItemBase
     TreeItem& operator = ( const TreeItem& item )
     {
 
+        // check for identity
+        if( this == &item ) return *this;
+
         parent_ = item.parent_;
         value_ = item.value_;
         children_ = item.children_;

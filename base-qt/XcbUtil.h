@@ -42,12 +42,6 @@ class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
     //* singleton
     static XcbUtil& get();
 
-    //* copy constructor
-    XcbUtil( const XcbUtil& ) = delete;
-
-    //* assignment operator
-    XcbUtil& operator = ( const XcbUtil& ) = delete;
-
     //*@name accessors
     //@{
 

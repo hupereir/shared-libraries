@@ -34,12 +34,6 @@ namespace Ssh
         //* destructor
         ~Singleton();
 
-        //* copy constructor
-        Singleton( const Singleton& ) = delete;
-
-        //* assignment operator
-        Singleton& operator = ( const Singleton& ) = delete;
-
         //* accessor
         static Singleton& get();
 
