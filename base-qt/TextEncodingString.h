@@ -28,9 +28,10 @@ class TextEncodingString final
 {
     public:
 
-    //* default constructor
-    explicit TextEncodingString( const QString& value = QString() ):
-        value_( value )
+    //* universal constructor
+    template<typename... Args>
+    explicit TextEncodingString(Args&&... args):
+        value_( std::forward<Args>(args)... )
     { parse(); }
 
     //* equal to operator
@@ -92,5 +93,12 @@ class TextEncodingString final
     QList<int> numSegments_;
 
 };
+
+//* specialized copy constructor
+template<>
+TextEncodingString::TextEncodingString<TextEncodingString&>(TextEncodingString& other );
+
+template<>
+TextEncodingString::TextEncodingString<const TextEncodingString&>(const TextEncodingString& other );
 
 #endif

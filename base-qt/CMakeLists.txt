@@ -188,6 +188,7 @@ set(base_qt_SOURCES
   TextEditionDelegate.cpp
   TextEncodingDialog.cpp
   TextEncodingMenu.cpp
+  TextEncodingString.cpp
   TextEncodingWidget.cpp
   TextPosition.cpp
   TextSeparator.cpp
