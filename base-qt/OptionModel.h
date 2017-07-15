@@ -29,15 +29,10 @@
 
 using OptionPair = Options::Pair;
 
-inline bool operator == ( OptionPair& first, OptionPair& second )
-{ return first.first == second.first && first.second.raw() == second.second.raw(); }
-
 namespace Base
 {
-
-    template<>
-    inline bool isChild<OptionPair>( const OptionPair& first, const OptionPair& second )
-    { return second.first == first.first && second.second.raw().isEmpty(); }
+    //* isChild operator, needed for TreeModel
+    template<> bool isChild<OptionPair>( const OptionPair&, const OptionPair& );
 
 }
 

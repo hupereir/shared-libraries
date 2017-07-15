@@ -26,6 +26,13 @@
 #include <QPalette>
 
 //_______________________________________________
+namespace Base
+{
+    template<> bool isChild<OptionPair>( const OptionPair& first, const OptionPair& second )
+    { return second.first == first.first && second.second.raw().isEmpty(); }
+};
+
+//_______________________________________________
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid()) return 0;
