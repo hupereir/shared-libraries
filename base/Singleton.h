@@ -21,13 +21,14 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "NonCopyable.h"
 
 #include <QObject>
 
 namespace Base{
 
     //* a class singleton used to centralize all objects that need static creation
-    class Singleton final: private Counter<Singleton>
+    class Singleton final: private Counter<Singleton>, private NonCopyable<Singleton>
     {
 
         public:
