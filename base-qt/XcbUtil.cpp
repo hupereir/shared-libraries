@@ -449,6 +449,74 @@ uint32_t XcbUtil::cardinal( WId window, AtomId atom ) const
 }
 
 //________________________________________________________________________
+QIcon XcbUtil::icon( WId window ) const
+{
+
+    QIcon result;
+
+    #if HAVE_XCB
+
+    // connection and atom
+    auto connection( d->connection() );
+    auto atom( *d->atom( _NET_WM_ICON ) );
+
+    uint32_t offset(0);
+    ScopedPointer<xcb_get_property_reply_t> reply;
+    forever
+    {
+
+        // width
+        uint32_t width(0);
+        auto cookie( xcb_get_property( connection, 0, window, atom, XCB_ATOM_CARDINAL, offset, 1 ) );
+        reply.reset( xcb_get_property_reply( connection, cookie, nullptr ) );
+        if( reply && xcb_get_property_value_length( reply.get() ) > 0 )
+        {
+            width = reinterpret_cast<uint32_t*>( xcb_get_property_value(reply.get() ) )[0];
+            ++offset;
+
+        } else break;
+
+        // height
+        uint32_t height(0);
+        cookie = xcb_get_property( connection, 0, window, atom, XCB_ATOM_CARDINAL, offset, 1 );
+        reply.reset( xcb_get_property_reply( connection, cookie, nullptr ) );
+        if( reply && xcb_get_property_value_length( reply.get() ) > 0 )
+        {
+            height = reinterpret_cast<uint32_t*>( xcb_get_property_value( reply.get() ) )[0];
+            ++offset;
+
+        } else break;
+
+        // data
+        const uint32_t length( width*height );
+        cookie = xcb_get_property( connection, 0, window, atom, XCB_ATOM_CARDINAL, offset, length );
+        reply.reset( xcb_get_property_reply( connection, cookie, nullptr ) );
+        if( reply && xcb_get_property_value_length( reply.get() ) > 0 )
+        {
+
+            // get image data
+            const uint32_t* imageData( reinterpret_cast<uint32_t*>( xcb_get_property_value( reply.get() ) ) );
+
+            // create image
+            QImage image( width, height, QImage::Format_ARGB32);
+            for(int i=0; i<image.byteCount()/4; ++i)
+            { ((uint32_t*)image.bits())[i] = imageData[i]; }
+
+            // add to icon
+            result.addPixmap( QPixmap::fromImage( image ) );
+
+            // free reply and increment offset
+            offset += length;
+
+        } else break;
+    }
+
+    #endif
+
+    return result;
+}
+
+//________________________________________________________________________
 bool XcbUtil::changeState( QWidget* widget, AtomId atom, bool value ) const
 {
 

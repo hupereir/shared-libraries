@@ -73,9 +73,9 @@ KeyModifier::State KeyModifier::state() const
     }
 
     // get matching key code
-    auto&& connection( XcbUtil::get().connection<xcb_connection_t>() );
-    auto&& symbols( xcb_key_symbols_alloc( connection ) );
-    auto&& keyCodes( xcb_key_symbols_get_keycode( symbols, keySymbol ) );
+    auto connection( XcbUtil::get().connection<xcb_connection_t>() );
+    auto symbols( xcb_key_symbols_alloc( connection ) );
+    XcbUtil::ScopedPointer<xcb_keycode_t> keyCodes( xcb_key_symbols_get_keycode( symbols, keySymbol ) );
 
     // convert key codes to bit mask
     int keyMask( 0 );
@@ -90,11 +90,11 @@ KeyModifier::State KeyModifier::state() const
 
         for( int i = 0; i<count; ++i )
         {
-            if( modifiers[i] == keyCodes[0] )
+            if( modifiers[i] == keyCodes.get()[0] )
             { keyMask = 1 << i; }
         }
 
-        free( keyCodes );
+        keyCodes.reset();
         xcb_key_symbols_free(symbols);
     }
 

@@ -92,6 +92,9 @@ class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
     //* get atom carninal value
     uint32_t cardinal( WId, AtomId ) const;
 
+    //* icon from window id
+    QIcon icon( WId ) const;
+
     //@}
 
     //*@name modifiers
