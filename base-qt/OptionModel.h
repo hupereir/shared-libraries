@@ -29,6 +29,10 @@
 
 using OptionPair = Options::Pair;
 
+//___________________________________________________________________
+inline bool operator == ( OptionPair& first, OptionPair& second )
+{ return first.first == second.first && first.second.raw() == second.second.raw(); }
+
 namespace Base
 {
     //* isChild operator, needed for TreeModel

@@ -48,11 +48,15 @@ class Command final: private Base::Counter<Command>
         values_( _parse( in ) )
     {}
 
-    //* accessor
+    //*@name accessors
+    //@{
+
     const QStringList& get() const { return values_; }
 
     //* run
     bool run( const QString& = QString() ) const;
+
+    //@}
 
     //*@name modifiers
     //@{

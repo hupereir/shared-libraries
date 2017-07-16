@@ -39,7 +39,7 @@ namespace Base
         template< typename... Args >
             explicit Color( Args&&... args ):
             Counter( "Base::Color" ),
-            color_( std::forward<Args>(args)... )
+            value_( std::forward<Args>(args)... )
         {}
 
         //* destructor
@@ -50,7 +50,7 @@ namespace Base
 
         //* equal to operator
         bool operator == (const Color& other ) const
-        { return color_ == other.color_; }
+        { return value_ == other.value_; }
 
         //* less than operator
         bool operator < (const Color& ) const;
@@ -59,13 +59,13 @@ namespace Base
         //@{
 
         //* conversion to QColor
-        operator QColor() const { return color_; }
+        operator const QColor& () const { return value_; }
 
         //* mutable accessor
-        const QColor& get() const { return color_; }
+        const QColor& get() const { return value_; }
 
         //* validity
-        bool isValid() const { return color_.isValid(); }
+        bool isValid() const { return value_.isValid(); }
 
         //* merge color with intensity to this one
         Color merged( const QColor& color, qreal intensity = 0.5 )
@@ -80,7 +80,7 @@ namespace Base
         //@{
 
         //* mutable accessor
-        QColor& get() { return color_; }
+        QColor& get() { return value_; }
 
         //* merge color with intensity to this one
         Color& merge( const QColor& , qreal = 0.5 );
@@ -92,10 +92,9 @@ namespace Base
 
         private:
 
-        QColor color_;
+        QColor value_;
 
     };
-
 }
 
 //* streamers

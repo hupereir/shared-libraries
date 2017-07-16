@@ -62,9 +62,6 @@ class TextEncodingString final
         return true;
     }
 
-    //* convert to string
-    // operator QString () const { return value_; }
-
     //* accessor
     const QString& get() const { return value_; }
 
@@ -95,10 +92,7 @@ class TextEncodingString final
 };
 
 //* specialized copy constructor
-template<>
-TextEncodingString::TextEncodingString<TextEncodingString&>(TextEncodingString& other );
-
-template<>
-TextEncodingString::TextEncodingString<const TextEncodingString&>(const TextEncodingString& other );
+template<> TextEncodingString::TextEncodingString<TextEncodingString&>(TextEncodingString& );
+template<> TextEncodingString::TextEncodingString<const TextEncodingString&>(const TextEncodingString& );
 
 #endif

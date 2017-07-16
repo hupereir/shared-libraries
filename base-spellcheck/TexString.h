@@ -20,6 +20,8 @@
 *
 *******************************************************************************/
 
+#include "NonCopyable.h"
+
 #include <QString>
 #include <QList>
 #include <QPair>
@@ -29,7 +31,7 @@
 namespace SpellCheck
 {
 
-    class TexString final
+    class TexString final: private Base::NonCopyable<TexString>
     {
 
         public:

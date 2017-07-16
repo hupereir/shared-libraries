@@ -60,7 +60,7 @@ class File
     //@{
 
     //* convert to string
-    operator QString() const { return value_; }
+    operator const QString& () const { return value_; }
 
     //* accessor
     const QString& get() const { return value_; }
@@ -326,6 +326,10 @@ class File
     QString value_;
 
 };
+
+// specialized copy constructor
+template<> File::File<File&>( File& );
+template<> File::File<const File&>( const File& );
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( File::ListFlags )
 #endif

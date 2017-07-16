@@ -29,12 +29,12 @@ namespace Base
     {
         if( !isValid() ) { *this = Color( other ); return *this; }
         if( !other.isValid() ) return *this;
-        if( other == color_ ) return *this;
+        if( other == value_ ) return *this;
 
-        color_.setRed( intensity*color_.red() + (1.0-intensity )*other.red() );
-        color_.setGreen( intensity*color_.green() + (1.0-intensity )*other.green() );
-        color_.setBlue( intensity*color_.blue() + (1.0-intensity )*other.blue() );
-        color_.setAlpha( intensity*color_.alpha() + (1.0-intensity )*other.alpha() );
+        value_.setRed( intensity*value_.red() + (1.0-intensity )*other.red() );
+        value_.setGreen( intensity*value_.green() + (1.0-intensity )*other.green() );
+        value_.setBlue( intensity*value_.blue() + (1.0-intensity )*other.blue() );
+        value_.setAlpha( intensity*value_.alpha() + (1.0-intensity )*other.alpha() );
         return *this;
 
     }
@@ -42,17 +42,17 @@ namespace Base
     //__________________________________________________________
     Color& Color::addAlpha( qreal intensity )
     {
-        color_.setAlpha( intensity*color_.alpha() );
+        value_.setAlpha( intensity*value_.alpha() );
         return *this;
     }
 
     //__________________________________________________________
     bool Color::operator < (const Color& other ) const
     {
-        if( color_.red() != other.color_.red() ) return color_.red() < other.color_.red();
-        else if( color_.green() != other.color_.green() ) return color_.green() < other.color_.green();
-        else if( color_.blue() != other.color_.blue() ) return color_.blue() < other.color_.blue();
-        else if( color_.alpha() != other.color_.alpha() ) return color_.alpha() < other.color_.alpha();
+        if( value_.red() != other.value_.red() ) return value_.red() < other.value_.red();
+        else if( value_.green() != other.value_.green() ) return value_.green() < other.value_.green();
+        else if( value_.blue() != other.value_.blue() ) return value_.blue() < other.value_.blue();
+        else if( value_.alpha() != other.value_.alpha() ) return value_.alpha() < other.value_.alpha();
         else return false;
     }
 }
