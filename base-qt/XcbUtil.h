@@ -24,6 +24,7 @@
 #include "NonCopyable.h"
 
 #include <QHash>
+#include <QIcon>
 #include <QWidget>
 
 #include <memory>
