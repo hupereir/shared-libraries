@@ -25,6 +25,11 @@
 #include <QStyleOptionViewItem>
 #include <QTextLayout>
 
+const int IconViewItem::margin = 5;
+const int IconViewItem::spacing = 5;
+const int IconViewItem::maxTextWidth = 100;
+
+
 //____________________________________________________________________
 /*!
    copied from kdelibs/kdecore/text/kstringhandler.cpp

@@ -110,9 +110,9 @@ class IconViewItem final: private Base::Counter<IconViewItem>
 
     //*@name metrics
     //@{
-    static const int margin = 5;
-    static const int spacing = 5;
-    static const int maxTextWidth = 100;
+    static const int margin;
+    static const int spacing;
+    static const int maxTextWidth;
     //@}
 
     protected:
