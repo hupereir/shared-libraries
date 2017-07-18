@@ -18,19 +18,21 @@
 *******************************************************************************/
 
 #include "Debug.h"
+#include "NonCopyable.h"
+#include "TimeStamp.h"
 
 #include <QFile>
 #include <QIODevice>
 #include <QMutex>
 #include <QMutexLocker>
 
-//! null device.
+//* null device.
 /*! Used to throw everything if the level is not high enough */
 class NullIODevice : public QIODevice
 {
     public:
 
-    //! constructor
+    //* constructor
     explicit NullIODevice()
     { setOpenMode( WriteOnly ); }
 
@@ -47,36 +49,30 @@ class NullIODevice : public QIODevice
 };
 
 // debug private class
-class Debug::Private
+class Debug::Private final: private Base::NonCopyable<Debug::Private>
 {
 
     public:
 
-    //! constructor
+    //* constructor
     Private():
-        level_( 0 ),
         nullStream_( &nullDevice_ ),
         stdStream_( &stdDevice_ )
-    {
+    { stdDevice_.open( stdout, QIODevice::WriteOnly ); }
 
-        // by default open stdout
-        stdDevice_.open( stdout, QIODevice::WriteOnly );
+    //* debug level
+    int level_ = 0;
 
-    }
-
-    //! debug level
-    int level_;
-
-    //! null device
+    //* null device
     NullIODevice nullDevice_;
 
-    //! null stream
+    //* null stream
     QTextStream nullStream_;
 
-    //! file device
+    //* file device
     QFile stdDevice_;
 
-    //! default stream
+    //* default stream
     QTextStream stdStream_;
 
 };
@@ -92,32 +88,20 @@ void Debug::setLevel( int level )
 //______________________________________
 void Debug::setFileName( QString filename )
 {
-    if( filename.isEmpty() )
-    {
 
-        if( _get().stdDevice_.isOpen() ) _get().stdDevice_.close();
-        _get().stdDevice_.open( stdout, QIODevice::WriteOnly );
+    if( _get().stdDevice_.isOpen() ) _get().stdDevice_.close();
+    if( filename.isEmpty() ) _get().stdDevice_.open( stdout, QIODevice::WriteOnly );
+    else {
 
-    } else {
-
-        // close file device
-        if( _get().stdDevice_.isOpen() ) _get().stdDevice_.close();
         _get().stdDevice_.setFileName( filename );
         _get().stdDevice_.open( QIODevice::WriteOnly );
 
-
     }
-
 }
 
 //______________________________________
 void Debug::Throw( int level, QString str )
-{
-    // check level and print
-    if( _get().level_ >= level )
-    { _get().stdStream_ << str << flush; }
-    return;
-}
+{ if( _get().level_ >= level ) _get().stdStream_ << TimeStamp::now().toString( "yyyy/MM/dd HH:mm:ss" ) << " " << str << flush; }
 
 //______________________________________
 void Debug::Throw( QString str )
@@ -125,7 +109,10 @@ void Debug::Throw( QString str )
 
 //______________________________________
 QTextStream& Debug::Throw( int level )
-{ return ( _get().level_ < level ) ? _get().nullStream_ : _get().stdStream_; }
+{
+    if( _get().level_ < level ) return _get().nullStream_;
+    else return _get().stdStream_  << TimeStamp::now().toString( "yyyy/MM/dd HH:mm:ss" ) << " ";
+}
 
 //_______________________________________________
 Debug::Private& Debug::_get()
