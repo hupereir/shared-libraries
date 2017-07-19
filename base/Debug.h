@@ -101,7 +101,6 @@ class Debug final
     };
 
     //* returns either clog or dummy stream depending of the level
-    // static QTextStream& Throw( int = 1 );
     static Stream& Throw( int = 1 );
 
     //@}
