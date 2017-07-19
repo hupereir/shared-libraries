@@ -61,7 +61,7 @@ class Debug final
         public:
 
         //* constructor
-        Stream();
+        Stream( bool enabled );
 
         //*@name modifiers
         //@{
@@ -72,10 +72,6 @@ class Debug final
 
         //* file name
         void setFileName( const QString& );
-
-        //* set enabled
-        void setEnabled( bool value )
-        { enabled_ = value; }
 
         //* universal streamer
         template< class T >

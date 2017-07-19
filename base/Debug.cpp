@@ -32,16 +32,27 @@ class Debug::Private final: private Base::NonCopyable<Debug::Private>
 
     public:
 
+    //* constructor
+    Private():
+        debugStream_( true ),
+        nullStream_( false )
+    {}
+
     //* debug level
     int level_ = 0;
 
     //* custom stream
     Debug::Stream debugStream_;
 
+
+    //* custom stream
+    Debug::Stream nullStream_;
+
 };
 
 //_________________________________________________________________
-Debug::Stream::Stream():
+Debug::Stream::Stream( bool enabled ):
+    enabled_( enabled ),
     stream_( &device_ )
 { device_.open( stdout, QIODevice::WriteOnly ); }
 
@@ -90,16 +101,11 @@ Debug::Stream& Debug::Throw( int level )
     if( _get().level_ >= level )
     {
 
-        // enable
-        _get().debugStream_.setEnabled( true );
-
         // add timestamp
         _get().debugStream_.get() << TimeStamp::now().toString( "yyyy/MM/dd HH:mm:ss" ) << " ";
+        return _get().debugStream_;
 
-    } else _get().debugStream_.setEnabled( false );
-
-    // return stream
-    return _get().debugStream_;
+    } else return _get().nullStream_;
 }
 
 //_______________________________________________
