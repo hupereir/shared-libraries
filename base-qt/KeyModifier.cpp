@@ -55,6 +55,8 @@ KeyModifier::State KeyModifier::state() const
 
     #if HAVE_XCB
 
+    if( !XcbUtil::isX11() ) return State::Unknown;
+
     // map Qt Key to X11
     int keySymbol(0);
     switch( key_ )

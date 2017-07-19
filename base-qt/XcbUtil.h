@@ -46,6 +46,9 @@ class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
     //*@name accessors
     //@{
 
+    //* true if platform is X11
+    static bool isX11( void );
+
     //* connection
     template <typename T> T* connection() const;
 
@@ -154,14 +157,14 @@ class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
 
 //________________________________________________________________________
 template <typename T> T* XcbUtil::connection() const
-{ return reinterpret_cast<T*>( _connection() ); }
+{ return isX11() ? reinterpret_cast<T*>( _connection() ):nullptr; }
 
 //________________________________________________________________________
 template <typename T> T* XcbUtil::atom( const QString& value ) const
-{ return reinterpret_cast<T*>( _atom( value ) ); }
+{ return isX11() ? reinterpret_cast<T*>( _atom( value ) ):nullptr; }
 
 //________________________________________________________________________
 template <typename T> T* XcbUtil::atom( XcbUtil::AtomId value ) const
-{ return reinterpret_cast<T*>( _atom( value ) ); }
+{ return isX11() ? reinterpret_cast<T*>( _atom( value ) ):nullptr; }
 
 #endif

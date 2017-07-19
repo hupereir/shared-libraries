@@ -269,6 +269,8 @@ namespace Transparency
 
         #if HAVE_XCB
 
+        if( !XcbUtil::isX11() ) return;
+
         // check outer padding
         // TODO: should remove existing shape if any
         // TODO: should check shape extension version
@@ -318,6 +320,8 @@ namespace Transparency
         Debug::Throw() << "TransparentWidget::_updateBlurRegion" << endl;
 
         #if HAVE_XCB
+
+        if( !XcbUtil::isX11() ) return;
 
         // create data
         blurRegion_ = region;

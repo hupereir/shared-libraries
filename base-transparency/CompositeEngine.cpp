@@ -67,6 +67,9 @@ namespace Transparency
         #endif
 
         #if HAVE_XCB
+
+        if( !XcbUtil::isX11() ) return false;
+
         // connection
         xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
 

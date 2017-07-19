@@ -22,6 +22,8 @@
 
 #include "Counter.h"
 
+#include "XcbUtil.h"
+
 #if HAVE_XCB
 #include <xcb/xcb.h>
 #endif
@@ -36,7 +38,8 @@ class XcbConnection final: private Base::Counter<XcbConnection>
         Counter( "XcbConnection" )
     {
         #if HAVE_XCB
-        connection_ = xcb_connect( nullptr, nullptr );
+        if( XcbUtil::isX11() )
+        { connection_ = xcb_connect( nullptr, nullptr ); }
         #endif
     }
 
@@ -44,14 +47,23 @@ class XcbConnection final: private Base::Counter<XcbConnection>
     ~XcbConnection()
     {
         #if HAVE_XCB
-        xcb_disconnect( connection_ );
+        if( XcbUtil::isX11() )
+        { xcb_disconnect( connection_ );  }
         #endif
     }
 
     #if HAVE_XCB
 
+    //*@name accessors
+    //@{
+
     //* accessor
-    operator xcb_connection_t*() { return connection_; }
+    operator xcb_connection_t*() const { return connection_; }
+
+    //* accessor
+    xcb_connection_t* get() const { return connection_; }
+
+    //@}
 
     private:
 

@@ -15,7 +15,7 @@ if(USE_QT5)
   find_package(Qt5PrintSupport REQUIRED)
 
   if(WIN32)
-  find_package(Qt5WinExtras REQUIRED)
+    find_package(Qt5WinExtras REQUIRED)
   endif()
 
   # needed to access QPA classes
@@ -37,7 +37,13 @@ if(UNIX AND NOT APPLE)
   find_package(XCB COMPONENTS XCB KEYSYMS)
   find_package(X11_XCB)
   if( XCB_XCB_FOUND AND XCB_KEYSYMS_FOUND AND X11_XCB_FOUND )
-      add_definitions(-DHAVE_XCB=1)
+
+    add_definitions(-DHAVE_XCB=1)
+
+    if(USE_QT5)
+      find_package(Qt5X11Extras REQUIRED)
+    endif()
+
   else()
     add_definitions(-DHAVE_XCB=0)
   endif()
@@ -256,6 +262,10 @@ if(USE_QT5)
   target_link_libraries(base-qt Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Xml)
   if(WIN32)
     target_link_libraries(base-qt Qt5::WinExtras)
+  endif()
+
+  if(XCB_FOUND)
+    target_link_libraries(base-qt Qt5::X11Extras)
   endif()
 
 endif()
