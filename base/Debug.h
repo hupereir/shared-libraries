@@ -20,10 +20,13 @@
 *
 *******************************************************************************/
 
+#include "TimeStamp.h"
+
+#include <QFile>
 #include <QString>
 #include <QTextStream>
 
-class Debug
+class Debug final
 {
     public:
 
@@ -42,16 +45,64 @@ class Debug
     static void setLevel( int );
 
     //* set file name
-    static void setFileName( QString );
+    static void setFileName( const QString& );
 
     //* writes string to clog if level is lower than level_
-    static void Throw( int, QString );
+    static void Throw( int, const QString& );
 
     //* writes string to clog if level_ is bigger than 0
-    static void Throw( QString );
+    static void Throw( const QString& value )
+    { Throw( 1, value ); }
+
+    //* debug stream
+    class Stream final
+    {
+
+        public:
+
+        //* constructor
+        Stream();
+
+        //*@name modifiers
+        //@{
+
+        //* mutable accessor
+        QTextStream& get()
+        { return stream_; }
+
+        //* file name
+        void setFileName( const QString& );
+
+        //* set enabled
+        void setEnabled( bool value )
+        { enabled_ = value; }
+
+        //* universal streamer
+        template< class T >
+            Stream& operator << ( const T& t )
+        {
+            if( enabled_ ) stream_ << t;
+            return *this;
+        }
+
+        //@}
+
+        private:
+
+        //* debug level
+        bool enabled_ = false;
+
+        //* internal device
+        QFile device_;
+
+        //* internal stream
+        QTextStream stream_;
+
+    };
 
     //* returns either clog or dummy stream depending of the level
-    static QTextStream& Throw( int = 1 );
+    // static QTextStream& Throw( int = 1 );
+    static Stream& Throw( int = 1 );
 
     //@}
 
