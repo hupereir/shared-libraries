@@ -123,7 +123,7 @@ namespace Base
         using Set = QSet< Key* >;
 
         //* retrieve all associated keys
-        const Set& getAssociated() const
+        const Set& associatedKeys() const
         { return associatedKeys_; }
 
         //* return true if keys are associated
@@ -262,7 +262,7 @@ namespace Base
         explicit KeySet( const Key* key )
         {
 
-            for( const auto& associate:key->getAssociated() )
+            for( const auto& associate:key->associatedKeys() )
             {
                 auto t( dynamic_cast<T*>( associate ) );
                 if(t) set_.insert(t);
@@ -277,7 +277,7 @@ namespace Base
         explicit KeySet( const Key& key )
         {
 
-            for( const auto& associate:key.getAssociated() )
+            for( const auto& associate:key.associatedKeys() )
             {
                 auto t( dynamic_cast<T*>( associate ) );
                 if(t) set_.insert(t);
