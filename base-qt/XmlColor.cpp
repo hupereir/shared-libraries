@@ -61,7 +61,9 @@ QDomElement XmlColor::domElement( QDomDocument& document ) const
     element.setAttribute( Base::Xml::Red, QString::number( get().red() ) );
     element.setAttribute( Base::Xml::Green, QString::number( get().green() ) );
     element.setAttribute( Base::Xml::Blue, QString::number( get().blue() ) );
-    element.setAttribute( Base::Xml::Alpha, QString::number( get().alpha() ) );
+
+    // do not write alpha if opaque
+    if( get().alpha() < 255 ) element.setAttribute( Base::Xml::Alpha, QString::number( get().alpha() ) );
 
     return element;
 
