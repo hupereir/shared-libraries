@@ -67,43 +67,6 @@ namespace Base
         //* shortcut for key unique id
         using Type = quint32;
 
-        //* retrieve key
-        Type key() const
-        { return key_; }
-
-        //* shortcut for set of Key
-        using Set = QSet< Key* >;
-
-        //* retrieve all associated keys
-        const Set& getAssociated() const
-        { return associatedKeys_; }
-
-        //* clear associations for this key
-        void clearAssociations()
-        {
-            for( const auto& key:associatedKeys_ )
-            { key->_disassociate( this ); }
-            associatedKeys_.clear();
-        }
-
-        //* clear associations of a given type for this key
-        template<typename T> inline void clearAssociations();
-
-        //* associated two Keys
-        static void associate( Key* first, Key* second )
-        {
-            Q_ASSERT( first->key() != second->key() );
-            first->_associate( second );
-            second->_associate( first );
-        }
-
-        //* associated two Keys
-        static void associate( Key& first, Key& second )
-        {
-            Q_ASSERT( first.key() != second.key() );
-            first._associate( &second );
-            second._associate( &first );
-        }
 
         //* used to find keys of matching id
         class SameKeyFTor
@@ -149,6 +112,19 @@ namespace Base
 
         };
 
+        //*@name accessors
+        //@{
+
+        //* retrieve key
+        Type key() const
+        { return key_; }
+
+        //* shortcut for set of Key
+        using Set = QSet< Key* >;
+
+        //* retrieve all associated keys
+        const Set& getAssociated() const
+        { return associatedKeys_; }
 
         //* return true if keys are associated
         bool isAssociated( const Key* key ) const
@@ -157,6 +133,49 @@ namespace Base
                 associatedKeys_.begin(),
                 associatedKeys_.end(),
                 SameKeyFTor( key->key() ) ) != associatedKeys_.end();
+        }
+
+        //*@}
+
+        //*@name modifiers
+        //@{
+
+        //* clear associations for this key
+        void clearAssociations()
+        {
+            for( const auto& key:associatedKeys_ )
+            { key->_disassociate( this ); }
+            associatedKeys_.clear();
+        }
+
+        //* clear associations of a given type for this key
+        template<typename T> inline void clearAssociations();
+
+        //* remove all associated keys
+        /** warning: this is non reflexive, unlike clear associations */
+        void removeAssociatedKeys()
+        { associatedKeys_.clear(); }
+
+        //* remove all associated keys of a given type
+        /** warning: this is non reflexive, unlike clear associations */
+        template<typename T> inline void removeAssociatedKeys();
+
+        //* associated two Keys
+        static void associate( Key* first, Key* second )
+        {
+            Q_ASSERT( first->key() != second->key() );
+            first->_associate( second );
+            second->_associate( first );
+        }
+
+        //* associated two Keys
+        static void associate( Key& first, Key& second )
+        {
+            if( first.key() != second.key() )
+            {
+                first._associate( &second );
+                second._associate( &first );
+            }
         }
 
         //* disassociate two Keys
@@ -172,6 +191,8 @@ namespace Base
             first._disassociate( &second );
             second._disassociate( &first );
         }
+
+        //@}
 
         private:
 
@@ -329,6 +350,13 @@ template<typename T> void Base::Key::clearAssociations()
         key->_disassociate( this );
         _disassociate( key );
     }
+}
+
+//______________________________________________________________
+template<typename T> void Base::Key::removeAssociatedKeys()
+{
+    for( const auto& key:KeySet<T>(this) )
+    { _disassociate( key ); }
 }
 
 //____________________________________________________
