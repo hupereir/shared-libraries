@@ -28,15 +28,15 @@ namespace Base
         protected:
 
         //* constructor
-        explicit NonCopyable ()
+        explicit NonCopyable()
         {}
 
         //* destructor
-        ~NonCopyable ()
+        ~NonCopyable()
         {}
 
         //* copy constructor
-        NonCopyable (const NonCopyable &) = delete;
+        NonCopyable(const NonCopyable &) = delete;
 
         //* assignment operator
         NonCopyable& operator = ( const NonCopyable& ) = delete;
