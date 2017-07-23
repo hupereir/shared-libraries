@@ -193,8 +193,8 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
     bool autoOrphan( false );
 
     // get all flags and all options
-    Group::FlagMap flags( _allFlags() );
-    Group::OptionMap options( _allOptions() );
+    auto flags( _allFlags() );
+    auto options( _allOptions() );
 
     for( int index = 1; index < arguments.size(); index++ )
     {
@@ -228,8 +228,10 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
             if( !ignoreWarnings )
             {
-                QTextStream(stdout) << "CommandLineParser::parse -"
-                    << " tag " << tagName << " is ill-formed. It is ignored."
+                QTextStream(stdout)
+                    << "CommandLineParser::parse -"
+                    << " tag " << tagName
+                    << " is ill-formed. It is ignored."
                     << endl;
             }
             continue;
@@ -246,8 +248,10 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                 {
                     if( !ignoreWarnings )
                     {
-                        QTextStream(stdout) << "CommandLineParser::parse -"
-                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
+                        QTextStream(stdout)
+                            << "CommandLineParser::parse -"
+                            << " tag " << tagName
+                            << " appears after option delimiter \"-\". It is ignored."
                             << endl;
                     }
 
@@ -281,8 +285,10 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
                     if( !ignoreWarnings )
                     {
-                        QTextStream(stdout) << "CommandLineParser::parse -"
-                            << " tag " << tagName << " appears after option delimiter \"-\". It is ignored."
+                        QTextStream(stdout)
+                            << "CommandLineParser::parse -"
+                            << " tag " << tagName
+                            << " appears after option delimiter \"-\". It is ignored."
                             << endl;
                     }
 
@@ -321,7 +327,8 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
                 }  else if( !ignoreWarnings ) {
 
-                    Debug::Throw(0) << "CommandLineParser::parse -"
+                    QTextStream( stdout )
+                        << "CommandLineParser::parse -"
                         << " expected argument of type " << iter.value().type_
                         << " after option " << iter.key().longName() << endl;
 
@@ -337,7 +344,12 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
         {
 
             if( !ignoreWarnings )
-            { Debug::Throw(0) << "CommandLineParser::parse - unrecognized option " << tagName << endl; }
+            {
+                QTextStream( stdout )
+                    << "CommandLineParser::parse - unrecognized option "
+                    << tagName
+                    << endl;
+            }
 
             continue;
 
