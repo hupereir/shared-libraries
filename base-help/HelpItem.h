@@ -42,14 +42,6 @@ namespace Base
             text_( text )
         { Debug::Throw( "HelpItem::HelpItem.\n" ); }
 
-        //* equal-to operator
-        bool operator == (const HelpItem& item ) const
-        { return label() == item.label() && text() == item.text(); }
-
-        //* equal-to operator
-        bool operator < (const HelpItem& item ) const
-        { return label() < item.label() || (label() == item.label() && text() < item.text() ); }
-
         //* item label
         void setLabel( const QString& label )
         { label_ = label; }
@@ -79,6 +71,14 @@ namespace Base
 
     };
 
-};
+    //* equal-to operator
+    inline bool operator == (const HelpItem& first, const HelpItem& second)
+    { return first.label() == second.label() && first.text() == second.text(); }
+
+    //* less than operator
+    inline bool operator < (const HelpItem& first, const HelpItem& second)
+    { return first.label() < second.label() || (first.label() == second.label() && first.text() < second.text() ); }
+
+}
 
 #endif

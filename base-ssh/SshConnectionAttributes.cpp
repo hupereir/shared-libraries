@@ -27,16 +27,6 @@ namespace Ssh
     const QString ConnectionAttributes::MimeType( "ssh/connection-attributes" );
 
     //_____________________________________________________________
-    bool ConnectionAttributes::operator == (const ConnectionAttributes& other) const
-    {
-        return
-            name_ == other.name_ &&
-            host_ == other.host_ &&
-            userName_ == other.userName_ &&
-            tunnels_ == other.tunnels_;
-    }
-
-    //_____________________________________________________________
     bool ConnectionAttributes::isValid() const
     {
         if( host_.isEmpty() ) return false;
@@ -60,6 +50,16 @@ namespace Ssh
         auto iter = tunnels_.find( attributes );
         if( iter != tunnels_.end() ) tunnels_.erase( iter );
         tunnels_.insert( attributes );
+    }
+
+    //_____________________________________________________________
+    bool operator == (const ConnectionAttributes& first, const ConnectionAttributes& second)
+    {
+        return
+            first.name_ == second.name_ &&
+            first.host_ == second.host_ &&
+            first.userName_ == second.userName_ &&
+            first.tunnels_ == second.tunnels_;
     }
 
 }

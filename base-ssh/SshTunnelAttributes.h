@@ -45,10 +45,6 @@ namespace Ssh
         //* destructor
         virtual ~TunnelAttributes() = default;
 
-        //* equal to operator
-        bool operator == (const TunnelAttributes& other ) const
-        { return localPort_ == other.localPort_; }
-
         //*@name accessors
         //@{
 
@@ -92,6 +88,11 @@ namespace Ssh
         QString host_;
         int localPort_ = 0;
         int remotePort_ = 0;
+
+        //* equal to operator
+        friend bool operator == (const TunnelAttributes& first, const TunnelAttributes& second)
+        { return first.localPort_ == second.localPort_; }
+
 
     };
 

@@ -73,14 +73,6 @@ class Debug final
         //* file name
         void setFileName( const QString& );
 
-        //* universal streamer
-        template< class T >
-            Stream& operator << ( const T& t )
-        {
-            if( enabled_ ) stream_ << t;
-            return *this;
-        }
-
         //@}
 
         private:
@@ -93,6 +85,14 @@ class Debug final
 
         //* internal stream
         QTextStream stream_;
+
+        //* universal streamer
+        template< class T >
+        friend Stream& operator << ( Stream& stream, const T& t )
+        {
+            if( stream.enabled_ ) stream.stream_ << t;
+            return stream;
+        }
 
     };
 

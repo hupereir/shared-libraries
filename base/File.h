@@ -65,18 +65,6 @@ class File
     //* accessor
     const QString& get() const { return value_; }
 
-    //* less than operator
-    bool operator < (const File& other ) const
-    { return value_ < other.value_; }
-
-    //* equal to operator
-    bool operator == (const File& other ) const
-    { return value_ == other.value_; }
-
-    //* different from operator
-    bool operator != (const File& other ) const
-    { return value_ != other.value_; }
-
     template<class T>
         bool startsWith( const T& t ) const
     { return value_.startsWith( t ); }
@@ -326,6 +314,18 @@ class File
     QString value_;
 
 };
+
+//* less than operator
+inline bool operator < (const File& first, const File& second)
+{ return first.get() < second.get(); }
+
+//* equal to operator
+inline bool operator == (const File& first, const File& second)
+{ return first.get() == second.get(); }
+
+//* different from operator
+inline bool operator != (const File& first, const File& second)
+{ return first.get() != second.get(); }
 
 // specialized copy constructor
 template<> File::File<File&>( File& );

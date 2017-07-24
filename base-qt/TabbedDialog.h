@@ -116,14 +116,6 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
         const QIcon& icon() const
         { return icon_; }
 
-        //* equal to operator
-        bool operator == (const Item& other ) const
-        { return widget_ == other.widget_;  }
-
-        //* less than operator
-        bool operator < (const Item& other ) const
-        { return widget_ < other.widget_; }
-
         private:
 
         //* name
@@ -134,6 +126,15 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
 
         //* icon
         QIcon icon_;
+
+
+        //* equal to operator
+        friend bool operator == (const Item& first, const Item& second)
+        { return first.widget_ == second.widget_;  }
+
+        //* less than operator
+        friend bool operator < (const Item& first, const Item& second)
+        { return first.widget_ < second.widget_; }
 
     };
 

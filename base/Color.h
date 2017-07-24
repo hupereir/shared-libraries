@@ -48,13 +48,6 @@ namespace Base
         //* sorted set of colors
         using Set = QOrderedSet<Color>;
 
-        //* equal to operator
-        bool operator == (const Color& other ) const
-        { return value_ == other.value_; }
-
-        //* less than operator
-        bool operator < (const Color& ) const;
-
         //*@name accessors
         //@{
 
@@ -95,6 +88,14 @@ namespace Base
         QColor value_;
 
     };
+
+    //* equal to operator
+    inline bool operator == (const Color& first, const Color& second)
+    { return first.get() == second.get(); }
+
+    //* less than operator
+    bool operator < (const Color&, const Color&);
+
 }
 
 //* streamers

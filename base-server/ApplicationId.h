@@ -36,22 +36,6 @@ namespace Server
         //* constructor
         explicit ApplicationId( const QString& = QString(), QString = QString(), QString = QString() );
 
-        //* equal to operator
-        bool operator == (const ApplicationId& app ) const
-        { return name() == app.name() && user() == app.user(); }
-
-        //* equal to operator
-        bool operator != (const ApplicationId& app ) const
-        { return !( app == *this ); }
-
-        //* lower than to operator
-        bool operator < (const ApplicationId& app ) const
-        {
-            if ( name() != app.name() ) return name() < app.name();
-            else if( user() != app.user() ) return user() < app.user();
-            return false;
-        }
-
         //*@name accessors
         //@{
 
@@ -114,6 +98,22 @@ namespace Server
         //@}
 
     };
+
+    //* equal to operator
+    inline bool operator == (const ApplicationId& first, const ApplicationId& second)
+    { return first.name() == second.name() && first.user() == second.user(); }
+
+    //* equal to operator
+    inline bool operator != (const ApplicationId& first, const ApplicationId& second)
+    { return !( first == second ); }
+
+    //* lower than to operator
+    inline bool operator < (const ApplicationId& first, const ApplicationId& second)
+    {
+        if ( first.name() != second.name() ) return first.name() < second.name();
+        else if( first.user() != second.user() ) return first.user() < second.user();
+        return false;
+    }
 };
 
 #endif

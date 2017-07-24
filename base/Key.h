@@ -56,14 +56,6 @@ namespace Base
         //* destructor
         inline virtual ~Key() = 0;
 
-        //* equal to operator
-        bool operator == (const Key& key ) const
-        { return this->key() == key.key(); }
-
-        //* lower than operator
-        bool operator < (const Key& key ) const
-        { return this->key() < key.key(); }
-
         //* shortcut for key unique id
         using Type = quint32;
 
@@ -337,26 +329,34 @@ namespace Base
     template<typename T>
     using KeySetIterator = QSetIterator<T*>;
 
-};
+    //* equal to operator
+    inline bool operator == (const Key& first, const Key& second )
+    { return first.key() == second.key(); }
 
-//______________________________________________________________
-Base::Key::~Key() { clearAssociations(); }
+    //* lower than operator
+    inline bool operator < (const Key& first, const Key& second )
+    { return first.key() < second.key(); }
 
-//______________________________________________________________
-template<typename T> void Base::Key::clearAssociations()
-{
-    for( const auto& key:KeySet<T>(this) )
+    //______________________________________________________________
+    Key::~Key() { clearAssociations(); }
+
+    //______________________________________________________________
+    template<typename T> void Key::clearAssociations()
     {
-        key->_disassociate( this );
-        _disassociate( key );
+        for( const auto& key:KeySet<T>(this) )
+        {
+            key->_disassociate( this );
+            _disassociate( key );
+        }
     }
-}
 
-//______________________________________________________________
-template<typename T> void Base::Key::removeAssociatedKeys()
-{
-    for( const auto& key:KeySet<T>(this) )
-    { _disassociate( key ); }
+    //______________________________________________________________
+    template<typename T> void Key::removeAssociatedKeys()
+    {
+        for( const auto& key:KeySet<T>(this) )
+        { _disassociate( key ); }
+    }
+
 }
 
 //____________________________________________________

@@ -34,34 +34,6 @@ class TextEncodingString final
         value_( std::forward<Args>(args)... )
     { parse(); }
 
-    //* equal to operator
-    bool operator == (const TextEncodingString& other ) const
-    { return value_ == other.value_; }
-
-    //* less than operator
-    bool operator < (const TextEncodingString& other ) const
-    {
-        int textIndex(0);
-        int numIndex(0);
-
-        while( true )
-        {
-            if( textIndex < textSegments_.size() && textIndex < other.textSegments_.size() )
-            {
-                if( textSegments_[textIndex] != other.textSegments_[textIndex] ) return textSegments_[textIndex] < other.textSegments_[textIndex];
-                else textIndex++;
-            } else return textSegments_.size() < other.textSegments_.size();
-
-            if( numIndex < numSegments_.size() && numIndex < other.numSegments_.size() )
-            {
-                if( numSegments_[numIndex] != other.numSegments_[numIndex] ) return numSegments_[numIndex] < other.numSegments_[numIndex];
-                else numIndex++;
-            }
-        }
-
-        return true;
-    }
-
     //* accessor
     const QString& get() const { return value_; }
 
@@ -89,7 +61,35 @@ class TextEncodingString final
     QList<QString> textSegments_;
     QList<int> numSegments_;
 
+    //* less than operator
+    friend bool operator < (const TextEncodingString& first, const TextEncodingString& second )
+    {
+        int textIndex(0);
+        int numIndex(0);
+
+        while( true )
+        {
+            if( textIndex < first.textSegments_.size() && textIndex < second.textSegments_.size() )
+            {
+                if( first.textSegments_[textIndex] != second.textSegments_[textIndex] ) return first.textSegments_[textIndex] < second.textSegments_[textIndex];
+                else textIndex++;
+            } else return first.textSegments_.size() < second.textSegments_.size();
+
+            if( numIndex < first.numSegments_.size() && numIndex < second.numSegments_.size() )
+            {
+                if( first.numSegments_[numIndex] != second.numSegments_[numIndex] ) return first.numSegments_[numIndex] < second.numSegments_[numIndex];
+                else numIndex++;
+            }
+        }
+
+        return true;
+    }
+
 };
+
+//* equal to operator
+inline bool operator == (const TextEncodingString& first, const TextEncodingString& second)
+{ return first.get() == second.get(); }
 
 //* specialized copy constructor
 template<> TextEncodingString::TextEncodingString<TextEncodingString&>(TextEncodingString& );

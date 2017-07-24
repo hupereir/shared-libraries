@@ -63,12 +63,6 @@ class FileRecord: private Base::Counter<FileRecord>
     //* destructor
     virtual ~FileRecord() = default;
 
-    //* less than operator
-    bool operator < (const FileRecord& record ) const;
-
-    //* less than operator
-    bool operator == (const FileRecord& record ) const;
-
     //*@name accessors
     //@{
 
@@ -370,6 +364,12 @@ class FileRecord: private Base::Counter<FileRecord>
         { out << "  " << iter.key() << " (" << PropertyId::get( iter.key() ) << "): " << iter.value() << endl; }
         return out;
     }
+
+    //* less than operator
+    friend bool operator < (const FileRecord&, const FileRecord& );
+
+    //* less than operator
+    friend bool operator == (const FileRecord&, const FileRecord& );
 
 };
 

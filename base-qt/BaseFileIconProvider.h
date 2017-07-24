@@ -64,9 +64,18 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
             type_( type )
         {}
 
-        //* equal-to operator
-        bool operator == (const Key& other ) const
-        { return file_ == other.file_ && type_ == other.type_; }
+        //*@name accessors
+        //@{
+
+        //* file
+        const QString file() const { return file_; }
+
+        //* type
+        int type() const { return type_; }
+
+        //@}
+
+        private:
 
         QString file_;
         int type_ = 0;
@@ -104,8 +113,12 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
 
 };
 
+//* equal-to operator
+inline bool operator == (const BaseFileIconProvider::Key& first, const BaseFileIconProvider::Key& second )
+{ return first.file() == second.file() && first.type() == second.type(); }
+
 //* hash
 inline uint qHash( const BaseFileIconProvider::Key& key )
-{ return qHash( key.file_ )|key.type_; }
+{ return qHash( key.file() )|key.type(); }
 
 #endif

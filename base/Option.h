@@ -64,23 +64,6 @@ class Option:private Base::Counter<Option>
     //* destructor
     virtual ~Option() = default;
 
-    //* less than operator
-    bool operator < (const Option& other ) const
-    {
-        if( value_ != other.value_ ) return value_ < other.value_;
-        else if( flags_ != other.flags_ ) return flags_ < other.flags_;
-        else if( defaultValue_ != other.defaultValue_ ) return defaultValue_ < other.defaultValue_;
-        else return defaultFlags_ < other.defaultFlags_;
-    }
-
-    //* equal operator
-    bool operator == (const Option& other ) const
-    { return value_ == other.value_ && flags_ == other.flags_; }
-
-    //* different operator
-    bool operator != (const Option& other ) const
-    { return !( *this == other ); }
-
     //*@name accessors
     //@{
 
@@ -279,6 +262,22 @@ class Option:private Base::Counter<Option>
     friend QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
     //@}
 
+    //* less than operator
+    friend bool operator < (const Option& first, const Option& second )
+    {
+        if( first.value_ != second.value_ ) return first.value_ < second.value_;
+        else if( first.flags_ != second.flags_ ) return first.flags_ < second.flags_;
+        else if( first.defaultValue_ != second.defaultValue_ ) return first.defaultValue_ < second.defaultValue_;
+        else return first.defaultFlags_ < second.defaultFlags_;
+    }
+
+    //* equal to operator
+    friend bool operator == (const Option& first, const Option& second )
+    { return first.value_ == second.value_ && first.flags_ == second.flags_; }
+
+    //* different from operator
+    friend bool operator != (const Option& first, const Option& second )
+    { return !( first == second ); }
 
 };
 

@@ -116,14 +116,6 @@ template<class T> class TreeItem: public TreeItemBase
     ~TreeItem() override
     { _eraseFromMap(); }
 
-    //* less than operator
-    bool operator < (const TreeItem& item ) const
-    { return get() < item.get(); }
-
-    //* equal to operator
-    bool operator == (const TreeItem& item ) const
-    { return get() == item.get(); }
-
     //* clear children
     void clear()
     { children_.clear(); }
@@ -412,5 +404,15 @@ template<class T> class TreeItem: public TreeItemBase
     }
 
 };
+
+//* less than operator
+template<class T>
+inline bool operator < (const TreeItem<T>& first, const TreeItem<T>& second)
+{ return first.get() < second.get(); }
+
+//* equal to operator
+template<class T>
+inline bool operator == (const TreeItem<T>& first, const TreeItem<T>& second)
+{ return first.get() == second.get(); }
 
 #endif

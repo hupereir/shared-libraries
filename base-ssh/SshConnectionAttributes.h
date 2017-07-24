@@ -47,17 +47,6 @@ namespace Ssh
 
         virtual ~ConnectionAttributes() = default;
 
-        //* equal to operator
-        bool operator == (const ConnectionAttributes& other) const;
-
-        //* different from operator
-        bool operator != (const ConnectionAttributes& other ) const
-        { return !(*this == other); }
-
-        //* less than operator
-        bool operator < ( const ConnectionAttributes& other ) const
-        { return name_ < other.name_; }
-
         //*@name accessors
         //@{
 
@@ -184,7 +173,19 @@ namespace Ssh
         //* tunnels
         TunnelAttributes::Set tunnels_;
 
+        //* equal to operator
+        friend bool operator == (const ConnectionAttributes&, const ConnectionAttributes&);
+
     };
+
+    //* less than operator
+    inline bool operator < (const ConnectionAttributes& first, const ConnectionAttributes& second)
+    { return first.name() < second.name(); }
+
+    //* different from operator
+    inline bool operator != (const ConnectionAttributes& first, const ConnectionAttributes& second)
+    { return !(first == second); }
+
 }
 
 #endif

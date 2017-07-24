@@ -66,15 +66,6 @@ namespace Private
         //* constructor from DOM element
         explicit LocalFileInfo( const QDomElement& );
 
-        //* equal to operator
-        bool operator == (const LocalFileInfo& other ) const
-        {
-            return
-                (BaseFileInfo::operator == (other)) &&
-                alias() == other.alias() &&
-                flags_ == other.flags_;
-        }
-
         //*@name accessors
         //@{
 
@@ -125,8 +116,15 @@ namespace Private
         //* flags
         Flags flags_ = 0;
 
-
     };
+
+    //* equal to operator
+    inline bool operator == (const LocalFileInfo& first, const LocalFileInfo& second)
+    {
+        return ( operator == ( *static_cast<const BaseFileInfo*>(&first), *static_cast<const BaseFileInfo*>(&second) ) ) &&
+            first.alias() == second.alias() &&
+            first.flags() == second.flags();
+    }
 
     //* places widget item
     class PlacesWidgetItem: public QAbstractButton

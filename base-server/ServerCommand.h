@@ -67,25 +67,6 @@ namespace Server
         //* constructor
         explicit ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
 
-        //* equal-to operator
-        bool operator == ( const ServerCommand& command ) const
-        {
-            return timeStamp() == command.timeStamp() &&
-                id() == command.id() &&
-                ServerCommand::command() == command.command();
-        }
-
-        //* less-than operator
-        bool operator < ( const ServerCommand& command ) const
-        {
-            if( timeStamp() != command.timeStamp() ) return timeStamp() < command.timeStamp();
-            if( id() != command.id() ) return id() < command.id();
-
-            // to order command, place IDENTIFY_SERVER first
-            if( ServerCommand::command() != command.command() ) return ( ServerCommand::command() == IdentifyServer || ServerCommand::command() < command.command() );
-            return false;
-        }
-
         //*@name accessors
         //@{
 
@@ -193,6 +174,26 @@ namespace Server
         friend QDataStream& operator >> (QDataStream&, ServerCommand& );
         //@}
     };
-};
+
+    //* equal-to operator
+    inline bool operator == ( const ServerCommand& first, const ServerCommand& second )
+    {
+        return first.timeStamp() == second.timeStamp() &&
+            first.id() == second.id() &&
+            first.command() == second.command();
+    }
+
+    //* less-than operator
+    inline bool operator < ( const ServerCommand& first, const ServerCommand& second )
+    {
+        if( first.timeStamp() != second.timeStamp() ) return first.timeStamp() < second.timeStamp();
+        if( first.id() != second.id() ) return first.id() < second.id();
+
+        // to order command, place IdentifyServer first
+        if( first.command() != second.command() ) return ( first.command() == ServerCommand::IdentifyServer || first.command() < second.command() );
+        return false;
+    }
+
+}
 
 #endif

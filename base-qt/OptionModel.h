@@ -30,9 +30,10 @@
 using OptionPair = Options::Pair;
 
 //___________________________________________________________________
-inline bool operator == ( OptionPair& first, OptionPair& second )
+inline bool operator == ( const OptionPair& first, const OptionPair& second )
 { return first.first == second.first && first.second.raw() == second.second.raw(); }
 
+//___________________________________________________________________
 namespace Base
 {
     //* isChild operator, needed for TreeModel
@@ -40,6 +41,7 @@ namespace Base
 
 }
 
+//___________________________________________________________________
 class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionModel>
 {
 

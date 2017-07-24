@@ -54,11 +54,6 @@ namespace Format
         //* destructor
         virtual ~TextFormatBlock() = default;
 
-
-        //* less than operator (based on Begin position)
-        bool operator < (const TextFormatBlock& format ) const
-        { return begin_ < format.begin_; }
-
         //*@name accessors
         //@{
 
@@ -230,7 +225,10 @@ namespace Format
 
     };
 
+    //* less than operator (based on Begin position)
+    inline bool operator < (const TextFormatBlock& first, const TextFormatBlock& second )
+    { return first.begin() < second.begin(); }
 
-};
+}
 
 #endif

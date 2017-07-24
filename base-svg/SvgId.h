@@ -44,20 +44,6 @@ namespace Svg
             size_( size )
         {}
 
-        //* equal to operator
-        bool operator == (const SvgId& id ) const
-        { return size_ == id.size_ && id_ == id.id_; }
-
-        //* less than operator
-        bool operator < (const SvgId& id ) const
-        {
-
-            if( size_.width() != id.size_.width() ) return size_.width() < id.size_.width();
-            else if( size_.height() != id.size_.height() ) return size_.height() < id.size_.height();
-            else return id_ < id.id_;
-
-        }
-
         //* id
         const QString& id() const
         { return id_; }
@@ -75,6 +61,21 @@ namespace Svg
         QSize size_;
 
     };
+
+    //* equal to operator
+    inline bool operator == (const SvgId& first, const SvgId& second)
+    { return first.size() == second.size() && first.id() == second.id(); }
+
+    //* less than operator
+    inline bool operator < (const SvgId& first, const SvgId& second)
+    {
+
+        if( first.size().width() != second.size().width() ) return first.size().width() < second.size().width();
+        else if( first.size().height() != second.size().height() ) return first.size().height() < second.size().height();
+        else return first.id() < second.id();
+
+    }
+
 };
 
 #endif

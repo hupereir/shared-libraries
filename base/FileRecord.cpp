@@ -66,12 +66,12 @@ QString FileRecord::PropertyId::get( FileRecord::PropertyId::Id id )
 { return _nameMap()[id]; }
 
 //_______________________________________________
-bool FileRecord::operator < (const FileRecord& record ) const
-{ return file() < record.file(); }
+bool operator < (const FileRecord& first, const FileRecord& second )
+{ return first.file() < second.file(); }
 
 //_______________________________________________
-bool FileRecord::operator == (const FileRecord& record ) const
-{ return file() == record.file(); }
+bool operator == (const FileRecord& first, const FileRecord& second )
+{ return first.file() == second.file(); }
 
 //_______________________________________________
 FileRecord& FileRecord::addProperty( PropertyId::Id id, QString value )

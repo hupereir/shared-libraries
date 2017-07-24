@@ -60,28 +60,6 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
             shortName_( shortName )
         {}
 
-        //* equal to operator
-        bool operator == (const Tag& other ) const
-        {
-            if( shortName_.isNull() ) return longName_ == other.longName_ || longName_ == other.shortName_;
-            else if( other.shortName_.isNull() ) return longName_ == other.longName_ || shortName_ == other.longName_;
-            else return longName_ == other.longName_ && shortName_ == other.shortName_;
-        }
-
-        //* less than operator
-        bool operator < (const Tag& other ) const
-        {
-            if( shortName_.isNull() )
-            {
-                if( other.shortName_.isNull() ) return longName_ < other.longName_;
-                else return false;
-            } else {
-                if( other.shortName_.isNull() ) return true;
-                else if( shortName_ != other.shortName_ ) return shortName_ < other.shortName_;
-                else return  longName_ < other.longName_;
-            }
-        }
-
         //*@name accessors
         //@{
 
@@ -107,6 +85,28 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
 
         QString longName_;
         QString shortName_;
+
+        //* equal to operator
+        friend bool operator == (const Tag& first, const Tag& second )
+        {
+            if( first.shortName_.isNull() ) return first.longName_ == second.longName_ || first.longName_ == second.shortName_;
+            else if( second.shortName_.isNull() ) return first.longName_ == second.longName_ || first.shortName_ == second.longName_;
+            else return first.longName_ == second.longName_ && first.shortName_ == second.shortName_;
+        }
+
+        //* less than operator
+        friend bool operator < (const Tag& first, const Tag& second)
+        {
+            if( first.shortName_.isNull() )
+            {
+                if( second.shortName_.isNull() ) return first.longName_ < second.longName_;
+                else return false;
+            } else {
+                if( second.shortName_.isNull() ) return true;
+                else if( first.shortName_ != second.shortName_ ) return first.shortName_ < second.shortName_;
+                else return  first.longName_ < second.longName_;
+            }
+        }
 
     };
 

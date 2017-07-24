@@ -40,14 +40,6 @@ namespace SpellCheck
             position_( position )
         {}
 
-        //* equal to operator
-        bool operator == ( const Word& word ) const
-        { return position_ == word.position_; }
-
-        //* less than to operator
-        bool operator < ( const Word& word ) const
-        { return position_ < word.position_; }
-
         //*@name accessors
         //@{
 
@@ -105,6 +97,10 @@ namespace SpellCheck
         const int position_;
 
     };
+
+    //* equal to operator
+    inline bool operator == ( const Word& first, const Word& second )
+    { return first.position() == second.position(); }
 
     //____________________________________________________
     inline uint qHash( const Word& word ) { return qHash( word.get() ); }

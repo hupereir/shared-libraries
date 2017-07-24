@@ -78,7 +78,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     private:
 
     //* map block number and position
-    class LineNumberData
+    class LineNumberData final
     {
 
         public:
@@ -94,10 +94,6 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
             position_( -1 ),
             valid_( false )
         {}
-
-        //* equal to operator
-        bool operator == (const LineNumberData& data )
-        { return id() == data.id(); }
 
         //* id
         int id() const
@@ -142,6 +138,10 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
 
         //* validity
         bool valid_;
+
+        //* equal to operator
+        friend bool operator == (const LineNumberData& first, const LineNumberData& second )
+        { return first.id() == second.id(); }
 
     };
 

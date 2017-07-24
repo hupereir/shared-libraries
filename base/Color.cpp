@@ -47,12 +47,12 @@ namespace Base
     }
 
     //__________________________________________________________
-    bool Color::operator < (const Color& other ) const
+    bool operator < (const Color& first, const Color& second)
     {
-        if( value_.red() != other.value_.red() ) return value_.red() < other.value_.red();
-        else if( value_.green() != other.value_.green() ) return value_.green() < other.value_.green();
-        else if( value_.blue() != other.value_.blue() ) return value_.blue() < other.value_.blue();
-        else if( value_.alpha() != other.value_.alpha() ) return value_.alpha() < other.value_.alpha();
+        if( first.get().red() != second.get().red() ) return first.get().red() < second.get().red();
+        else if( first.get().green() != second.get().green() ) return first.get().green() < second.get().green();
+        else if( first.get().blue() != second.get().blue() ) return first.get().blue() < second.get().blue();
+        else if( first.get().alpha() != second.get().alpha() ) return first.get().alpha() < second.get().alpha();
         else return false;
     }
 }

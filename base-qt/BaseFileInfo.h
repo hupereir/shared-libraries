@@ -97,21 +97,6 @@ class BaseFileInfo
     //* dump to dom element
     virtual QDomElement domElement( QDomDocument& ) const;
 
-    //* equal to operator
-    virtual bool operator == (const BaseFileInfo& other) const
-    { return file_ == other.file_ && type() == other.type(); }
-
-    //* equal to operator
-    virtual bool operator != (const BaseFileInfo& other) const
-    { return !( *this == other ); }
-
-    //* less than operator
-    virtual bool operator < (const BaseFileInfo& other) const
-    {
-        if( file_ != other.file_ ) return file_ < other.file_;
-        return type() < other.type();
-    }
-
     //*@name accessors
     //@{
 
@@ -467,6 +452,21 @@ class BaseFileInfo
 
 };
 
+
+//* equal to operator
+inline bool operator == (const BaseFileInfo& first, const BaseFileInfo& second)
+{ return first.file() == second.file() && first.type() == second.type(); }
+
+//* equal to operator
+inline bool operator != (const BaseFileInfo& first, const BaseFileInfo& second)
+{ return !( first == second ); }
+
+//* less than operator
+inline bool operator < (const BaseFileInfo& first, const BaseFileInfo& second)
+{
+    if( first.file() != second.file() ) return first.file() < second.file();
+    else return first.type() < second.type();
+}
 
 //________________________________________________________________
 template <typename T>

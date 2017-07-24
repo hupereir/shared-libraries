@@ -59,36 +59,6 @@ class TextPosition final: private Base::Counter<TextPosition>
     //* get absolute index for given document
     int index( QTextDocument* ) const;
 
-    //* lower than operater
-    bool operator < (const TextPosition& position ) const
-    {
-        if( paragraph() != position.paragraph() ) return paragraph() < position.paragraph();
-        else return index() < position.index();
-    }
-
-    //* greater than operator
-    bool operator > (const TextPosition& position ) const
-    {
-        if( paragraph() != position.paragraph() ) return paragraph() > position.paragraph();
-        else return index() > position.index();
-    }
-
-    //* lower than operater
-    bool operator <= (const TextPosition& position ) const
-    { return !(*this > position ); }
-
-    //* larger than operater
-    bool operator >= (const TextPosition& position ) const
-    { return !(*this < position ); }
-
-    //* equal operator
-    bool operator == (const TextPosition& position ) const
-    { return (paragraph() == position.paragraph() && index() == position.index()); }
-
-    //* equal operator
-    bool operator != (const TextPosition& position ) const
-    { return !( *this == position ); }
-
     //* validity
     bool isValid() const
     { return (paragraph() >= 0 && index() >= 0 ); }
@@ -109,5 +79,36 @@ class TextPosition final: private Base::Counter<TextPosition>
     }
 
 };
+
+//* lower than operater
+inline bool operator < (const TextPosition& first, const TextPosition& second)
+{
+    if( first.paragraph() != second.paragraph() ) return first.paragraph() < second.paragraph();
+    else return first.index() < second.index();
+}
+
+//* greater than operator
+inline bool operator > (const TextPosition& first, const TextPosition& second)
+{
+    if( first.paragraph() != second.paragraph() ) return first.paragraph() > second.paragraph();
+    else return first.index() > second.index();
+}
+
+//* lower than operater
+inline bool operator <= (const TextPosition& first, const TextPosition& second)
+{ return !(first > second); }
+
+//* larger than operater
+inline bool operator >= (const TextPosition& first, const TextPosition& second)
+{ return !(first < second); }
+
+//* equal operator
+inline bool operator == (const TextPosition& first, const TextPosition& second)
+{ return (first.paragraph() == second.paragraph() && first.index() == second.index()); }
+
+//* equal operator
+inline bool operator != (const TextPosition& first, const TextPosition& second)
+{ return !(first == second); }
+
 
 #endif

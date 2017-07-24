@@ -54,20 +54,6 @@ class Options: private Base::Counter<Options>
     //* destructor
     virtual ~Options() = default;
 
-    //* equality operator
-    bool operator == ( const Options& other ) const
-    {
-        Debug::Throw( "Options::operator ==.\n" );
-        bool out(
-            ( options_ == other.options_ ) &&
-            ( specialOptions_ == other.specialOptions_ ) );
-        return out;
-    }
-
-    //* different operator
-    bool operator != ( const Options& other ) const
-    { return !( *this == other ); }
-
     //* install defaults
     void installDefaultOptions();
 
@@ -223,6 +209,14 @@ class Options: private Base::Counter<Options>
     //* streamer
     friend QTextStream &operator << ( QTextStream &,const Options &);
 
+    //* equality operator
+    friend bool operator == ( const Options& first, const Options& second )
+    { return ( first.options_ == second.options_ ) && ( first.specialOptions_ == second.specialOptions_ ); }
+
 };
+
+//* different operator
+inline bool operator != ( const Options& first, const Options& second )
+{ return !( first == second ); }
 
 #endif

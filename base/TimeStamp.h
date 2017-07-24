@@ -64,30 +64,6 @@ class TimeStamp:private Base::Counter<TimeStamp>
         return valid_;
     }
 
-    //* less than operator
-    bool operator < (const TimeStamp& stamp ) const
-    { return( time_ < stamp.time_ ); }
-
-    //* less than operator
-    bool operator <= (const TimeStamp& stamp ) const
-    { return( time_ <= stamp.time_ ); }
-
-    //* less than operator
-    bool operator > (const TimeStamp& stamp ) const
-    { return( time_ > stamp.time_ ); }
-
-    //* less than operator
-    bool operator >= (const TimeStamp& stamp ) const
-    { return( time_ >= stamp.time_ ); }
-
-    //* equal to operator
-    bool operator == (const TimeStamp& stamp ) const
-    { return( time_ == stamp.time_ ); }
-
-    //* different from operator
-    bool operator != (const TimeStamp& stamp ) const
-    { return( time_ != stamp.time_ ); }
-
     //*@name accessors
     //@{
 
@@ -258,6 +234,30 @@ class TimeStamp:private Base::Counter<TimeStamp>
     friend QDataStream& operator << ( QDataStream&, const TimeStamp& );
     friend QDataStream& operator >> ( QDataStream&, TimeStamp& );
     //@}
+
+    //* less than operator
+    friend bool operator < (const TimeStamp& first, const TimeStamp& second)
+    { return( first.time_ < second.time_ ); }
+
+    //* less than operator
+    friend bool operator <= (const TimeStamp& first, const TimeStamp& second)
+    { return( first.time_ <= second.time_ ); }
+
+    //* less than operator
+    friend bool operator > (const TimeStamp& first, const TimeStamp& second)
+    { return( first.time_ > second.time_ ); }
+
+    //* less than operator
+    friend bool operator >= (const TimeStamp& first, const TimeStamp& second)
+    { return( first.time_ >= second.time_ ); }
+
+    //* equal to operator
+    friend bool operator == (const TimeStamp& first, const TimeStamp& second)
+    { return( first.time_ == second.time_ ); }
+
+    //* different from operator
+    friend bool operator != (const TimeStamp& first, const TimeStamp& second)
+    { return( first.time_ != second.time_ ); }
 
 };
 
