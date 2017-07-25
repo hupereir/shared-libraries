@@ -19,6 +19,7 @@
 
 #include "FileRecordModel.h"
 
+#include "CppUtil.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
 #include "Singleton.h"

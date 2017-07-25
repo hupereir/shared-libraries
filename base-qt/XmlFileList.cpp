@@ -19,6 +19,7 @@
 
 #include "XmlFileList.h"
 
+#include "CppUtil.h"
 #include "Debug.h"
 #include "XmlDocument.h"
 #include "XmlFileRecord.h"

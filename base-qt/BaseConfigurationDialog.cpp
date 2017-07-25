@@ -21,6 +21,7 @@
 #include "BaseConfigurationDialog_p.h"
 
 #include "BaseIconNames.h"
+#include "CppUtil.h"
 #include "GridLayout.h"
 #include "CustomDialog.h"
 #include "Debug.h"

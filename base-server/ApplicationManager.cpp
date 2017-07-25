@@ -18,7 +18,9 @@
 *******************************************************************************/
 
 #include "ApplicationManager.h"
+
 #include "Client.h"
+#include "CppUtil.h"
 #include "Debug.h"
 #include "Util.h"
 #include "XmlOptions.h"

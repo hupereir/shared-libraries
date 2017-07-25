@@ -215,8 +215,4 @@ class Options: private Base::Counter<Options>
 
 };
 
-//* different operator
-inline bool operator != ( const Options& first, const Options& second )
-{ return !( first == second ); }
-
 #endif

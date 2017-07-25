@@ -182,10 +182,6 @@ namespace Ssh
     inline bool operator < (const ConnectionAttributes& first, const ConnectionAttributes& second)
     { return first.name() < second.name(); }
 
-    //* different from operator
-    inline bool operator != (const ConnectionAttributes& first, const ConnectionAttributes& second)
-    { return !(first == second); }
-
 }
 
 #endif

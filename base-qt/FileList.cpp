@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "CppUtil.h"
 #include "Debug.h"
 #include "FileList.h"
 #include "File.h"

@@ -21,8 +21,10 @@
 *******************************************************************************/
 
 #include "ApplicationId.h"
+
 #include "CommandLineArguments.h"
 #include "Counter.h"
+#include "CppUtil.h"
 #include "Debug.h"
 #include "TimeStamp.h"
 #include "XmlOption.h"

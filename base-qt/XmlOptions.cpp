@@ -20,6 +20,7 @@
 #include "XmlOptions.h"
 #include "XmlOptions_p.h"
 
+#include "CppUtil.h"
 #include "Options.h"
 #include "XmlDocument.h"
 #include "XmlOption.h"

@@ -106,9 +106,4 @@ inline bool operator >= (const TextPosition& first, const TextPosition& second)
 inline bool operator == (const TextPosition& first, const TextPosition& second)
 { return (first.paragraph() == second.paragraph() && first.index() == second.index()); }
 
-//* equal operator
-inline bool operator != (const TextPosition& first, const TextPosition& second)
-{ return !(first == second); }
-
-
 #endif

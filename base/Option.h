@@ -274,11 +274,6 @@ class Option:private Base::Counter<Option>
     //* equal to operator
     friend bool operator == (const Option& first, const Option& second )
     { return first.value_ == second.value_ && first.flags_ == second.flags_; }
-
-    //* different from operator
-    friend bool operator != (const Option& first, const Option& second )
-    { return !( first == second ); }
-
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( Option::Flags )

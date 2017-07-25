@@ -103,10 +103,6 @@ namespace Server
     inline bool operator == (const ApplicationId& first, const ApplicationId& second)
     { return first.name() == second.name() && first.user() == second.user(); }
 
-    //* equal to operator
-    inline bool operator != (const ApplicationId& first, const ApplicationId& second)
-    { return !( first == second ); }
-
     //* lower than to operator
     inline bool operator < (const ApplicationId& first, const ApplicationId& second)
     {

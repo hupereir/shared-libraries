@@ -19,6 +19,7 @@
 
 #include "XmlPathHistory.h"
 
+#include "CppUtil.h"
 #include "Debug.h"
 #include "Singleton.h"
 #include "XmlDocument.h"

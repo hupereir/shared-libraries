@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "CppUtil.h"
 #include "Debug.h"
 #include "File.h"
 #include "TimeStamp.h"
@@ -456,10 +457,6 @@ class BaseFileInfo
 //* equal to operator
 inline bool operator == (const BaseFileInfo& first, const BaseFileInfo& second)
 { return first.file() == second.file() && first.type() == second.type(); }
-
-//* equal to operator
-inline bool operator != (const BaseFileInfo& first, const BaseFileInfo& second)
-{ return !( first == second ); }
 
 //* less than operator
 inline bool operator < (const BaseFileInfo& first, const BaseFileInfo& second)

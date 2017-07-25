@@ -255,10 +255,6 @@ class TimeStamp:private Base::Counter<TimeStamp>
     friend bool operator == (const TimeStamp& first, const TimeStamp& second)
     { return( first.time_ == second.time_ ); }
 
-    //* different from operator
-    friend bool operator != (const TimeStamp& first, const TimeStamp& second)
-    { return( first.time_ != second.time_ ); }
-
 };
 
 #endif

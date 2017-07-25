@@ -82,4 +82,9 @@ template<typename T,
     uint qHash( const T& value )
 { return qHash(Base::toIntegralType(value)); }
 
+//* different from operator
+template<class T, class U>
+    bool operator != (const T& first, const U& second)
+{ return !(first == second); }
+
 #endif
