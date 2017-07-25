@@ -87,21 +87,6 @@ inline bool operator < (const TextPosition& first, const TextPosition& second)
     else return first.index() < second.index();
 }
 
-//* greater than operator
-inline bool operator > (const TextPosition& first, const TextPosition& second)
-{
-    if( first.paragraph() != second.paragraph() ) return first.paragraph() > second.paragraph();
-    else return first.index() > second.index();
-}
-
-//* lower than operater
-inline bool operator <= (const TextPosition& first, const TextPosition& second)
-{ return !(first > second); }
-
-//* larger than operater
-inline bool operator >= (const TextPosition& first, const TextPosition& second)
-{ return !(first < second); }
-
 //* equal operator
 inline bool operator == (const TextPosition& first, const TextPosition& second)
 { return (first.paragraph() == second.paragraph() && first.index() == second.index()); }

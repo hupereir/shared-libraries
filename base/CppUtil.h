@@ -87,4 +87,19 @@ template<class T, class U>
     bool operator != (const T& first, const U& second)
 { return !(first == second); }
 
+//* more than
+template<class T, class U>
+    bool operator > (const T& first, const U& second)
+{ return second < first; }
+
+//* less or equal
+template<class T, class U>
+    bool operator <= (const T& first, const U& second)
+{ return !(second < first); }
+
+//* more or equal
+template<class T, class U>
+    bool operator >= (const T& first, const U& second)
+{ return !(first < second); }
+
 #endif

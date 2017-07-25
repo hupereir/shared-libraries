@@ -239,18 +239,6 @@ class TimeStamp:private Base::Counter<TimeStamp>
     friend bool operator < (const TimeStamp& first, const TimeStamp& second)
     { return( first.time_ < second.time_ ); }
 
-    //* less than operator
-    friend bool operator <= (const TimeStamp& first, const TimeStamp& second)
-    { return( first.time_ <= second.time_ ); }
-
-    //* less than operator
-    friend bool operator > (const TimeStamp& first, const TimeStamp& second)
-    { return( first.time_ > second.time_ ); }
-
-    //* less than operator
-    friend bool operator >= (const TimeStamp& first, const TimeStamp& second)
-    { return( first.time_ >= second.time_ ); }
-
     //* equal to operator
     friend bool operator == (const TimeStamp& first, const TimeStamp& second)
     { return( first.time_ == second.time_ ); }
