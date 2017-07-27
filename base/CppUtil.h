@@ -46,12 +46,12 @@ namespace Base
     #if QT_VERSION >= 0x050100
     // for new Qt versoins, QHash can be constructed from initializer_list. So just move the arguments
     template<typename T>
-    std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>> makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>>&& reference )
+    std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>> makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>>&& reference ) noexcept
     { return std::move( reference ); }
 
     // for new Qt versoins, QMap can be constructed from initializer_list. So just move the arguments
     template<typename T>
-    std::initializer_list<typename T::key_type> makeT( std::initializer_list<typename T::key_type>&& reference )
+    std::initializer_list<typename T::key_type> makeT( std::initializer_list<typename T::key_type>&& reference ) noexcept
     { return std::move( reference ); }
 
     #else
