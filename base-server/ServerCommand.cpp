@@ -28,28 +28,23 @@ namespace Server
     //__________________________________________________________________
     ServerCommand::CommandMap& ServerCommand::_commandNames()
     {
-        static CommandMap names;
+        static CommandMap names = Base::makeT<CommandMap>( {
+            { None, "" },
+            { Accepted, QObject::tr( "Accepted" ) },
+            { Denied, QObject::tr( "Denied" ) },
+            { Abort, QObject::tr( "Abort" ) },
+            { Identify, QObject::tr( "Identify" ) },
+            { IdentifyServer, QObject::tr( "Server" ) },
+            { Killed, QObject::tr( "Killed" ) },
+            { Raise, QObject::tr( "Raise" ) },
+            { Alive, QObject::tr( "Alive" ) },
+            { Request, QObject::tr( "Request" ) },
+            { Unlock, QObject::tr( "Unlock" ) },
+            { GeometryRequest, QObject::tr(  "Request geometry" ) },
+            { Geometry, QObject::tr( "Send geometry" ) },
+            { Option, QObject::tr( "Option" ) }
+        });
         return names;
-    }
-
-    //_________________________________________
-    void ServerCommand::_initializeCommandNames() const
-    {
-        if( !_commandNames().empty() ) return;
-        _commandNames().insert( None, "" );
-        _commandNames().insert( Accepted, QObject::tr( "Accepted" ) );
-        _commandNames().insert( Denied, QObject::tr( "Denied" ) );
-        _commandNames().insert( Abort, QObject::tr( "Abort" ) );
-        _commandNames().insert( Identify, QObject::tr( "Identify" ) );
-        _commandNames().insert( IdentifyServer, QObject::tr( "Server" ) );
-        _commandNames().insert( Killed, QObject::tr( "Killed" ) );
-        _commandNames().insert( Raise, QObject::tr( "Raise" ) );
-        _commandNames().insert( Alive, QObject::tr( "Alive" ) );
-        _commandNames().insert( Request, QObject::tr( "Request" ) );
-        _commandNames().insert( Unlock, QObject::tr( "Unlock" ) );
-        _commandNames().insert( GeometryRequest, QObject::tr(  "Request geometry" ) );
-        _commandNames().insert( Geometry, QObject::tr( "Send geometry" ) );
-        _commandNames().insert( Option, QObject::tr( "Option" ) );
     }
 
     //___________________________________________

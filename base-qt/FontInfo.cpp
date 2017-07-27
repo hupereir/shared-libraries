@@ -18,6 +18,8 @@
 *******************************************************************************/
 
 #include "FontInfo.h"
+
+#include "CppUtil.h"
 #include "Debug.h"
 
 #include <QLayout>
@@ -30,14 +32,20 @@ QWidget( parent )
 
     // create checkboxes
     setLayout( new QVBoxLayout );
-    layout()->addWidget( checkBoxes_.insert( Format::Bold, new QCheckBox( tr( "Bold" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( Format::Italic, new QCheckBox( tr( "Italic" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( Format::Underline, new QCheckBox( tr( "Underline" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( Format::Strike, new QCheckBox( tr( "Strike" ), this ) ).value() );
-    layout()->addWidget( checkBoxes_.insert( Format::Overline, new QCheckBox( tr( "Overline" ), this ) ).value() );
+    checkBoxes_ = Base::makeT<CheckBoxMap>( {
+        {  Format::Bold, new QCheckBox( tr( "Bold" ), this ) },
+        {  Format::Italic, new QCheckBox( tr( "Italic" ), this ) },
+        {  Format::Underline, new QCheckBox( tr( "Underline" ), this ) },
+        {  Format::Strike, new QCheckBox( tr( "Strike" ), this ) },
+        {  Format::Overline, new QCheckBox( tr( "Overline" ), this ) },
+    });
 
-    for( auto&& iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
-    { connect( iter.value(), SIGNAL(toggled(bool)), SIGNAL(modified())); }
+    for( auto&& iterator = checkBoxes_.begin(); iterator != checkBoxes_.end(); ++iterator )
+    {
+        layout()->addWidget( iterator.value() );
+        connect( iterator.value(), SIGNAL(toggled(bool)), SIGNAL(modified()));
+    }
+
 }
 
 //__________________________________________________

@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include <QList>
+#include <QRegExp>
 #include <QString>
 
 //* model content

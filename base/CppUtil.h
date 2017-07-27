@@ -45,31 +45,31 @@ namespace Base
 
     #if QT_VERSION >= 0x050100
     // for new Qt versoins, QHash can be constructed from initializer_list. So just move the arguments
-    template<typename Key, typename T>
-    std::initializer_list<std::pair<Key,T>> makeHash( std::initializer_list<std::pair<Key,T>>&& reference )
+    template<typename T>
+    std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>> makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>>&& reference )
     { return std::move( reference ); }
 
     // for new Qt versoins, QMap can be constructed from initializer_list. So just move the arguments
-    template<typename Key, typename T>
-    std::initializer_list<std::pair<Key,T>> makeMap( std::initializer_list<std::pair<Key,T>>&& reference )
+    template<typename T>
+    std::initializer_list<typename T::key_type> makeT( std::initializer_list<typename T::key_type>&& reference )
     { return std::move( reference ); }
 
     #else
     // for old QT versions there is no QHash constructor from initializer_list
-    template<typename Key, typename T>
-    QHash<Key,T> makeHash( std::initializer_list<std::pair<Key,T>>&& reference )
+    template<typename T>
+    T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>>&& reference )
     {
-        QHash<Key,T> out;
+        T out;
         for( auto&& pair:reference ) { out.insert( pair.first, pair.second ); }
         return out;
     }
 
-    // for old QT versions there is no QMap constructor from initializer_list
-    template<typename Key, typename T>
-    QMap<Key,T> makeMap( std::initializer_list<std::pair<Key,T>>&& reference )
+    // for old QT versions there is no QSet constructor from initializer_list
+    template<typename T>
+    T makeT( std::initializer_list<typename T::key_type>&& reference )
     {
-        QMap<Key,T> out;
-        for( auto&& pair:reference ) { out.insert( pair.first, pair.second ); }
+        T out;
+        for( auto&& value:reference ) { out.insert( value ); }
         return out;
     }
     #endif

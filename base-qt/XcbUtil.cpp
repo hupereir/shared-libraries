@@ -107,7 +107,7 @@ class XcbUtil::Private
 XcbUtil::Private::Private()
 {
 
-    atomNames_ = Base::makeHash<AtomId,QString>(
+    atomNames_ = Base::makeT<AtomNameMap>(
     {
         { AtomId::WM_STATE, "WM_STATE" },
         { AtomId::_NET_SUPPORTED, "_NET_SUPPORTED" },

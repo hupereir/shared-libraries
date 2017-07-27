@@ -23,7 +23,7 @@
 #include "TextFormat.h"
 
 #include <QCheckBox>
-#include <QHash>
+#include <QMap>
 
 //! font formating
 class FontInfo: public QWidget
@@ -50,7 +50,7 @@ class FontInfo: public QWidget
     private:
 
     //! checkbox map
-    using CheckBoxMap = QHash<Format::TextFormat, QCheckBox*>;
+    using CheckBoxMap = QMap<Format::TextFormat, QCheckBox*>;
 
     //! checkboxes
     CheckBoxMap checkBoxes_;

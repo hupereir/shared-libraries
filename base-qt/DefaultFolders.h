@@ -75,18 +75,6 @@ class DefaultFolders: public QObject
 
     //@}
 
-
-    //*@name modifiers
-    //@{
-
-    //* initialize folder names
-    void initializeFolderNames();
-
-    //* initialize icon names
-    void initializeIconNames();
-
-    //@}
-
     protected:
 
     //* insert folder in map
@@ -110,12 +98,10 @@ class DefaultFolders: public QObject
     FolderHash allFolders_;
 
     //* folder names
-    bool folderNamesInitialized_ = false;
     using NameMap = QHash<Type, QString>;
     NameMap names_;
 
     //* icon names
-    bool iconNamesInitialized_ = false;
     using IconMap = QHash<Type, QString>;
     IconMap iconNames_;
 

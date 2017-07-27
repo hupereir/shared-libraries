@@ -48,7 +48,42 @@ DefaultFolders& DefaultFolders::get()
 DefaultFolders::DefaultFolders()
 {
 
-    // fill folder map
+
+    // folder names map
+    names_ = Base::makeT<NameMap>(
+    {
+        { Type::Home, tr( "Home" ) },
+        { Type::Desktop, tr( "Desktop" ) },
+        { Type::Documents, tr( "Documents" ) },
+        { Type::Downloads, tr( "Downloads" ) },
+        { Type::Music, tr( "Music" ) },
+        { Type::Pictures, tr( "Pictures" ) },
+        { Type::Templates, tr( "Templates" ) },
+        { Type::Videos, tr( "Video" ) }
+    });
+
+
+    // icons map
+    iconNames_ = Base::makeT<IconMap>(
+    {
+        { Type::Home, "user-home.png" },
+        { Type::Desktop, "user-desktop" },
+        { Type::Documents, "folder-documents" },
+        { Type::Music, "folder-sound" }
+    });
+
+    // there are discrepencies for folder icon names between icon themes
+    // try to deal with major ones
+    if( QIcon::hasThemeIcon( "folder-download" ) ) iconNames_.insert( Type::Downloads, "folder-download" );
+    else iconNames_.insert( Type::Downloads, "folder-downloads" );
+
+    if( QIcon::hasThemeIcon( "folder-pictures" ) ) iconNames_.insert( Type::Pictures, "folder-pictures" );
+    else iconNames_.insert( Type::Pictures, "folder-image" );
+
+    if( QIcon::hasThemeIcon( "folder-videos" ) ) iconNames_.insert( Type::Videos, "folder-videos" );
+    else iconNames_.insert( Type::Videos, "folder-video" );
+
+    // path map
     folders_.insert( Util::home(), Type::Home );
 
     #if QT_VERSION >= 0x050000
@@ -74,55 +109,6 @@ DefaultFolders::DefaultFolders()
     _insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Type::Downloads );
     #endif
 
-}
-
-//__________________________________________________________________________
-void DefaultFolders::initializeFolderNames()
-{
-    if( folderNamesInitialized_ ) return;
-
-    // fill icons map
-    names_ = Base::makeHash<Type,QString>(
-    {
-        { Type::Home, tr( "Home" ) },
-        { Type::Desktop, tr( "Desktop" ) },
-        { Type::Documents, tr( "Documents" ) },
-        { Type::Downloads, tr( "Downloads" ) },
-        { Type::Music, tr( "Music" ) },
-        { Type::Pictures, tr( "Pictures" ) },
-        { Type::Templates, tr( "Templates" ) },
-        { Type::Videos, tr( "Video" ) }
-    });
-
-    folderNamesInitialized_ = true;
-}
-
-//__________________________________________________________________________
-void DefaultFolders::initializeIconNames()
-{
-    if( iconNamesInitialized_ ) return;
-
-    // fill icons map
-    iconNames_ = Base::makeHash<Type, QString>(
-    {
-        { Type::Home, "user-home.png" },
-        { Type::Desktop, "user-desktop" },
-        { Type::Documents, "folder-documents" },
-        { Type::Music, "folder-sound" }
-    });
-
-    // there are discrepencies for folder icon names between icon themes
-    // try to deal with major ones
-    if( QIcon::hasThemeIcon( "folder-download" ) ) iconNames_.insert( Type::Downloads, "folder-download" );
-    else iconNames_.insert( Type::Downloads, "folder-downloads" );
-
-    if( QIcon::hasThemeIcon( "folder-pictures" ) ) iconNames_.insert( Type::Pictures, "folder-pictures" );
-    else iconNames_.insert( Type::Pictures, "folder-image" );
-
-    if( QIcon::hasThemeIcon( "folder-videos" ) ) iconNames_.insert( Type::Videos, "folder-videos" );
-    else iconNames_.insert( Type::Videos, "folder-video" );
-
-    iconNamesInitialized_ = true;
 }
 
 //__________________________________________________________________________

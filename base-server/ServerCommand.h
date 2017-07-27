@@ -95,10 +95,7 @@ namespace Server
 
         //* command name
         QString commandName() const
-        {
-            _initializeCommandNames();
-            return _commandNames()[ command() ];
-        }
+        { return _commandNames()[ command() ]; }
 
         //* arguments
         const CommandLineArguments& arguments() const
@@ -144,13 +141,10 @@ namespace Server
         private:
 
         //* command names
-        using CommandMap = QHash<CommandType, QString >;
+        using CommandMap = QHash<CommandType, QString>;
 
         //* command names
         static CommandMap& _commandNames();
-
-        //* map command types to names
-        void _initializeCommandNames() const;
 
         //* time stamp
         TimeStamp timestamp_;

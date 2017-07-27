@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "BaseMainWindow.h"
+#include "CppUtil.h"
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
 #include "Singleton.h"
@@ -26,7 +27,13 @@
 //_______________________________________________________________
 CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
 {
-    static AreaMap areas = _initializeAreas();
+    static AreaMap areas = Base::makeT<AreaMap>( {
+        { tr( "None" ), Qt::NoToolBarArea },
+        { tr( "Left" ), Qt::LeftToolBarArea },
+        { tr( "Right" ), Qt::RightToolBarArea },
+        { tr( "Top" ), Qt::TopToolBarArea },
+        { tr( "Bottom" ), Qt::BottomToolBarArea }
+    });
     return areas;
 }
 
@@ -209,16 +216,4 @@ void CustomToolBar::_installActions()
     }
 
     connect( visibilityAction_, SIGNAL(toggled(bool)), SLOT(_toggleVisibility(bool)) );
-}
-
-//_______________________________________________________________
-CustomToolBar::AreaMap CustomToolBar::_initializeAreas()
-{
-    AreaMap out;
-    out.insert( tr( "None" ), Qt::NoToolBarArea );
-    out.insert( tr( "Left" ), Qt::LeftToolBarArea );
-    out.insert( tr( "Right" ), Qt::RightToolBarArea );
-    out.insert( tr( "Top" ), Qt::TopToolBarArea );
-    out.insert( tr( "Bottom" ), Qt::BottomToolBarArea );
-    return out;
 }

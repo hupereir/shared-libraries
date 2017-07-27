@@ -25,7 +25,7 @@
 MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     QObject( parent ),
     Counter( "MimeTypeIconProvider" ),
-    iconNames_( Base::makeHash<QString,QString>(
+    iconNames_( Base::makeT<IconNameCache>(
     {
         // source code
         { "C", "text-x-csrc" },

@@ -43,7 +43,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     explicit CustomToolBar( const QString& = QString(), QWidget* = nullptr, const QString& = QString() );
 
     // map toolbar area and name
-    using AreaMap = QHash< QString, Qt::ToolBarArea>;
+    using AreaMap = QHash<QString, Qt::ToolBarArea>;
 
     //*@name convenience
     //@{
@@ -185,9 +185,6 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     //* true if toolbar must appear in menu
     /** the flag is ignored if parent is MainWindow */
     bool appearsInMenu_ = false;
-
-    //* initialize area map
-    static AreaMap _initializeAreas();
 
     //* map name and toolbar are
     static AreaMap& _toolbarAreas();
