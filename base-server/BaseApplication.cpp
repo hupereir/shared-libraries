@@ -176,6 +176,7 @@ CommandLineParser BaseApplication::commandLineParser( CommandLineArguments argum
     out.setGroup( CommandLineParser::qtGroupName );
     out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
     out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (native|raster)" ) );
+    out.registerOption( "-platform", "string", QObject::tr( "Qt platform" ) );
 
     #if QT_VERSION >= 0x050400
     out.setGroup( CommandLineParser::applicationGroupName );
