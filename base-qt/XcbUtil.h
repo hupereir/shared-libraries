@@ -47,7 +47,7 @@ class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
     //@{
 
     //* true if platform is X11
-    static bool isX11( void );
+    static bool isX11();
 
     //* connection
     template <typename T> T* connection() const;
