@@ -323,9 +323,8 @@ inline bool operator < (const File& first, const File& second)
 inline bool operator == (const File& first, const File& second)
 { return first.get() == second.get(); }
 
-// specialized copy constructor
-template<> File::File<File&>( File& );
-template<> File::File<const File&>( const File& );
+//* specialized copy constructor
+template<> File::File( File& );
+template<> File::File( const File& );
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( File::ListFlags )
 #endif

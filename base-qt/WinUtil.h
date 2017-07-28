@@ -64,7 +64,9 @@ class WinUtil final
     std::unique_ptr<WinUtilPrivate> private_;
 
     //* target widget
+    #if defined(Q_OS_WIN)
     QWidget *target_ = nullptr;
+    #endif
 
 };
 

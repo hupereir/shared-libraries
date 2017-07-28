@@ -94,7 +94,7 @@ namespace Private
         void setPage( int );
 
         //* event filter
-        bool eventFilter( QObject*, QEvent* );
+        bool eventFilter( QObject*, QEvent* ) override;
 
         public Q_SLOTS:
 

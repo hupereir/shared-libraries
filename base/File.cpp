@@ -34,10 +34,10 @@
 #include <cmath>
 
 //_____________________________________________________________________
-template<> File::File<File&>( File& other ): value_( other.value_ ) {}
+template<> File::File( File& other ): value_( other.value_ ) {}
 
 //_____________________________________________________________________
-template<> File::File<const File&>( const File& other ): value_( other.value_ ) {}
+template<> File::File( const File& other ): value_( other.value_ ) {}
 
 //_____________________________________________________________________
 bool File::isAbsolute( const QString& value )

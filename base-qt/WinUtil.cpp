@@ -97,8 +97,10 @@ class WinUtilPrivate final
 };
 
 //_______________________________________
-WinUtil::WinUtil( QWidget* target ):
-    target_( target )
+WinUtil::WinUtil( QWidget* target )
+    #if defined(Q_OS_WIN)
+    : target_( target )
+    #endif
 {}
 
 //_______________________________________

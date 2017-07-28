@@ -21,12 +21,12 @@
 
 //* specialized copy constructor
 template<>
-TextEncodingString::TextEncodingString<TextEncodingString&>(TextEncodingString& other ):
+TextEncodingString::TextEncodingString(TextEncodingString& other ):
     value_( other.value_ )
 { parse(); }
 
 //* specialized copy constructor
 template<>
-TextEncodingString::TextEncodingString<const TextEncodingString&>(const TextEncodingString& other ):
+TextEncodingString::TextEncodingString(const TextEncodingString& other ):
     value_( other.value_ )
 { parse(); }

@@ -211,7 +211,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     void saveSortOrder();
 
     // items layout
-    void doItemsLayout();
+    void doItemsLayout() override;
 
     //* find next occurence of TextSelection
     void find( TextSelection selection );
@@ -343,7 +343,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     protected Q_SLOTS:
 
     //* update geometries
-    void updateGeometries();
+    void updateGeometries() override;
 
     //* sort order
     void sortByColumn( int, Qt::SortOrder );

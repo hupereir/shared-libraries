@@ -25,9 +25,8 @@
 
 //__________________________________________________________________
 IconSize::IconSize( IconSize::Size size ):
-   size_( std::move( get( size ) ) )
+   size_( get( size ) )
 {}
-
 
 //__________________________________________________________________
 QSize IconSize::get( IconSize::Size size )

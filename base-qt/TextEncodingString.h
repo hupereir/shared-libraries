@@ -93,7 +93,7 @@ inline bool operator == (const TextEncodingString& first, const TextEncodingStri
 { return first.get() == second.get(); }
 
 //* specialized copy constructor
-template<> TextEncodingString::TextEncodingString<TextEncodingString&>(TextEncodingString& );
-template<> TextEncodingString::TextEncodingString<const TextEncodingString&>(const TextEncodingString& );
+template<> TextEncodingString::TextEncodingString(TextEncodingString& );
+template<> TextEncodingString::TextEncodingString(const TextEncodingString& );
 
 #endif
