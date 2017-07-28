@@ -44,6 +44,14 @@ namespace Svg
     { return ( renderer_.styleSheetIsUsed() && !(plasmaInterface_ && plasmaInterface_->hasThemePalette()) ); }
 
     //__________________________________________________________
+    bool SvgEngine::hasThemePalette() const
+    { return ( renderer_.styleSheetIsUsed() && plasmaInterface_ && plasmaInterface_->hasThemePalette() ); }
+
+    //__________________________________________________________
+    QPalette SvgEngine::themePalette() const
+    { return hasThemePalette() ? plasmaInterface_->themePalette():QPalette(); }
+
+    //__________________________________________________________
     bool SvgEngine::reload( bool forced )
     {
 

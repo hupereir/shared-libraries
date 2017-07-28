@@ -67,6 +67,13 @@ namespace Svg
         //* true if reload is needed on palette change
         bool needsReloadOnPaletteChange() const;
 
+        //* true if underlying svg theme has dedicated palette
+        /** propagated from SvgPlasmaInterface */
+        bool hasThemePalette() const;
+
+        //* themed palette
+        QPalette themePalette() const;
+
         //@}
 
         //*@name modifiers
