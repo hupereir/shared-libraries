@@ -139,9 +139,6 @@ bool BaseApplication::realizeWidget()
     }
     #endif
 
-    // connections
-    connect( qApp, SIGNAL(aboutToQuit()), SLOT(_aboutToQuit()) );
-
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
 
@@ -200,10 +197,6 @@ void BaseApplication::busy()
 //____________________________________________
 void BaseApplication::idle()
 { qApp->restoreOverrideCursor(); }
-
-//_______________________________________________
-void BaseApplication::_aboutToQuit()
-{ Debug::Throw( "BaseApplication::_aboutToQuit.\n" ); }
 
 //_______________________________________________
 void BaseApplication::_aboutQt()

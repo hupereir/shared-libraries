@@ -105,9 +105,6 @@ class BaseApplication: public BaseCoreApplication
     //* configuration
     virtual void _configuration() = 0;
 
-    //* about to quit
-    virtual void _aboutToQuit();
-
     private Q_SLOTS:
 
     //* configuration
