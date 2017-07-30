@@ -50,9 +50,6 @@ namespace Server
         //* constructor
         explicit ApplicationManager( QObject* );
 
-        //* destructor
-        ~ApplicationManager() override;
-
         //* application name
         void setApplicationName( const QString& );
 
@@ -199,10 +196,10 @@ namespace Server
         bool _initializeServer();
 
         //* host
-        QHostAddress host_;
+        QHostAddress host_ = QHostAddress::LocalHost;
 
         //* port
-        int port_ = 0;
+        int port_ = 8091;
 
         //* arguments
         CommandLineArguments arguments_;
@@ -226,7 +223,7 @@ namespace Server
         ApplicationId id_;
 
         //* manager status
-        State state_ = StateUnknown;
+        State state_ = AwaitingReply;
 
         //* reply timeout
         QBasicTimer timer_;

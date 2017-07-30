@@ -35,12 +35,8 @@ namespace Server
     ApplicationManager::ApplicationManager( QObject* parent ):
         QObject( parent ),
         Counter( "ApplicationManager" ),
-        host_( QHostAddress::LocalHost ),
-        port_( 8091 ),
         server_( new QTcpServer( this ) ),
-        serverInitialized_( false ),
-        client_( new Client( this ) ),
-        state_( AwaitingReply )
+        client_( new Client( this ) )
     {
 
         Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
@@ -61,10 +57,6 @@ namespace Server
         { XmlOptions::get().set<int>( "SERVER_PORT", port_, true ); }
 
     }
-
-    //_________________________________________
-    ApplicationManager::~ApplicationManager()
-    {}
 
     //_________________________________________
     CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings )
@@ -97,7 +89,7 @@ namespace Server
         arguments_ = arguments;
 
         // overwrite host from command line arguments
-        CommandLineParser parser( commandLineParser( arguments_ ) );
+        auto parser = commandLineParser( arguments_ );
         if( parser.hasOption( "--server-host" ) )
         {
 
@@ -317,10 +309,10 @@ namespace Server
         while( server_->hasPendingConnections() )
         {
             // create client from pending connection
-            Client *client( new Client( this, server_->nextPendingConnection() ) );
+            auto client = new Client( this, server_->nextPendingConnection() );
             connect( client, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
             connect( &client->socket(), SIGNAL(disconnected()), SLOT(_clientConnectionClosed()) );
-            connectedClients_ << client;
+            connectedClients_.append( client );
         }
 
     }
@@ -408,7 +400,7 @@ namespace Server
 
         Debug::Throw( "Application::_redirect.\n" );
 
-        ClientList::iterator iter( std::find_if(  connectedClients_.begin(), connectedClients_.end(), Client::SameIdFTor( command.clientId() ) ) );
+        const auto iter( std::find_if(  connectedClients_.begin(), connectedClients_.end(), Client::SameIdFTor( command.clientId() ) ) );
         Q_ASSERT( iter != connectedClients_.end() );
         _redirect( command, *iter );
 
@@ -528,8 +520,8 @@ namespace Server
     {
         // time out delay (for existing server to reply)
         // one should really start the timer only when the client is connected
-        int timeout_delay( XmlOptions::get().contains( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 );
-        timer_.start( timeout_delay, this );
+        int timeoutDelay( XmlOptions::get().contains( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 );
+        timer_.start( timeoutDelay, this );
     }
 
 }
