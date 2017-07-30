@@ -39,10 +39,10 @@ class TreeViewConfiguration: public QGroupBox, public OptionWidget
     explicit TreeViewConfiguration( QWidget*, QTreeView*, const QString&  );
 
     //* read value from option
-    void read( const Options& );
+    void read( const Options& ) override;
 
     //* write value to option
-    void write( Options& ) const;
+    void write( Options& ) const override;
 
     Q_SIGNALS:
 
