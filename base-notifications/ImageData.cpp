@@ -32,7 +32,7 @@ namespace Notifications
         hasAlpha = image.hasAlphaChannel();
         channels = hasAlpha ? 4:3;
         bitsPerSample = image.depth()/channels;
-        data.append( (char*)image.rgbSwapped().bits(), rowStride*height );
+        data.append( reinterpret_cast<char*>(image.rgbSwapped().bits()), rowStride*height );
     }
 
 }
