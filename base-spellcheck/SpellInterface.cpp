@@ -52,20 +52,12 @@ namespace SpellCheck
     //_______________________________________________
     SpellInterface::SpellInterface():
         Counter( "SpellInterface" ),
-        text_(""),
-        checkedText_(""),
-        begin_(0),
-        end_(0),
-        position_(0),
-        offset_(0),
-        spellConfig_( new_aspell_config() ),
-        spellChecker_( 0 ),
-        documentChecker_( 0 )
+        spellConfig_( new_aspell_config() )
     {
         Debug::Throw( "SpellInterface::SpellInterface.\n" );
 
         // set encoding. Forced to latin1
-        aspell_config_replace(spellConfig_, "encoding", "iso8859-1" );
+        aspell_config_replace(spellConfig_.get(), "encoding", "iso8859-1" );
 
         // load dictionaries and filters
         _loadDictionaries();
@@ -84,15 +76,7 @@ namespace SpellCheck
 
     //__________________________________________
     SpellInterface::~SpellInterface()
-    {
-        Debug::Throw( "SpellInterface::~SpellInterface.\n" );
-        saveWordList();
-        if( spellConfig_ ) delete_aspell_config( spellConfig_ );
-        if( documentChecker_ ) delete_aspell_document_checker( documentChecker_ );
-        if( spellChecker_ ) delete_aspell_speller( spellChecker_ );
-        Debug::Throw( "SpellInterface::~SpellInterface - done.\n" );
-
-    }
+    { saveWordList(); }
 
     //____________________________________________________
     void SpellInterface::listDictionaries() const
@@ -135,15 +119,15 @@ namespace SpellCheck
         }
 
         // save previous personal dictionary
-        if( spellChecker_ ) aspell_speller_save_all_word_lists( spellChecker_ );
+        if( spellChecker_ ) aspell_speller_save_all_word_lists( spellChecker_.get() );
 
         // update main dictionary
-        aspell_config_replace(spellConfig_, "lang", dictionary.toLatin1().constData() );
+        aspell_config_replace(spellConfig_.get(), "lang", dictionary.toLatin1().constData() );
         dictionary_ = dictionary;
 
         // update personal dictionary
         QString personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
-        aspell_config_replace(spellConfig_, "personal", personal_dictionary.toLatin1().constData() );
+        aspell_config_replace(spellConfig_.get(), "personal", personal_dictionary.toLatin1().constData() );
 
         // reset
         return _reset();
@@ -172,7 +156,7 @@ namespace SpellCheck
         filter_ = filter;
 
         // update aspell
-        aspell_config_replace(spellConfig_, "mode", (filter == FilterTexWithNoAccents ? FilterTex:filter).toLatin1().constData() );
+        aspell_config_replace(spellConfig_.get(), "mode", (filter == FilterTexWithNoAccents ? FilterTex:filter).toLatin1().constData() );
 
         // reset SpellChecker
         return _reset() || filter == FilterNone;
@@ -208,8 +192,8 @@ namespace SpellCheck
         end_ += offset_;
         position_ = 0;
         offset_ = 0;
-        aspell_document_checker_reset( documentChecker_ );
-        aspell_document_checker_process(documentChecker_, text_.mid( begin_, end_-begin_).toLatin1().constData(), -1);
+        aspell_document_checker_reset( documentChecker_.get() );
+        aspell_document_checker_process(documentChecker_.get(), text_.mid( begin_, end_-begin_).toLatin1().constData(), -1);
 
         return true;
 
@@ -231,7 +215,7 @@ namespace SpellCheck
         }
 
         // retrieve word from editor
-        aspell_speller_add_to_personal(spellChecker_, word.toLatin1().constData(), -1);
+        aspell_speller_add_to_personal(spellChecker_.get(), word.toLatin1().constData(), -1);
         return true;
 
     }
@@ -259,7 +243,7 @@ namespace SpellCheck
 
         // inform spellchecker of the replacement
         aspell_speller_store_replacement(
-            spellChecker_,
+            spellChecker_.get(),
             word_.toLatin1().constData(), -1,
             word.toLatin1().constData(), -1 );
 
@@ -303,7 +287,7 @@ namespace SpellCheck
         }
 
         AspellToken token;
-        while( token = aspell_document_checker_next_misspelling( documentChecker_ ), token.len )
+        while( token = aspell_document_checker_next_misspelling( documentChecker_.get() ), token.len )
         {
 
             // update position
@@ -316,7 +300,7 @@ namespace SpellCheck
         }
 
         // spelling completed
-        word_ = "";
+        word_.clear();
         position_ = end_;
 
         return true;
@@ -336,12 +320,12 @@ namespace SpellCheck
             return out;
         }
 
-        const AspellWordList * suggestions( aspell_speller_suggest( spellChecker_, word.toLatin1().constData(), -1 ) );
-        AspellStringEnumeration * elements( aspell_word_list_elements( suggestions ) );
+        const auto suggestions( aspell_speller_suggest( spellChecker_.get(), word.toLatin1().constData(), -1 ) );
+        auto elements( aspell_word_list_elements( suggestions ) );
 
-        const char * suggestion( 0 );
+        const char* suggestion( nullptr );
         while( ( suggestion = aspell_string_enumeration_next( elements ) ) )
-        { out << QString::fromLatin1( suggestion ); }
+        { out.append( QString::fromLatin1( suggestion ) ); }
 
         delete_aspell_string_enumeration( elements );
         return out;
@@ -352,7 +336,7 @@ namespace SpellCheck
     void SpellInterface::saveWordList()
     {
         Debug::Throw( "SpellInterface::saveWordList.\n" );
-        if( spellChecker_ ) aspell_speller_save_all_word_lists( spellChecker_ );
+        if( spellChecker_ ) aspell_speller_save_all_word_lists( spellChecker_.get() );
     }
 
 
@@ -380,9 +364,10 @@ namespace SpellCheck
         dictionaries_.clear();
         if( !spellConfig_ ) return;
 
-        const AspellDictInfoList * dictionaries( get_aspell_dict_info_list( spellConfig_ ) );
-        AspellDictInfoEnumeration *elements( aspell_dict_info_list_elements( dictionaries ) );
-        const AspellDictInfo* dictionary( 0 );
+        // todo: encapsulate
+        const auto dictionaries( get_aspell_dict_info_list( spellConfig_.get() ) );
+        auto elements( aspell_dict_info_list_elements( dictionaries ) );
+        const AspellDictInfo* dictionary( nullptr );
 
         while( ( dictionary = aspell_dict_info_enumeration_next( elements ) ) )
         { if( dictionary->code ) dictionaries_.insert( dictionary->code ); }
@@ -443,8 +428,7 @@ namespace SpellCheck
         }
 
         // delete document checker
-        if( documentChecker_ ) delete_aspell_document_checker( documentChecker_ );
-        documentChecker_ = 0;
+        documentChecker_.reset();
 
         //!reset spell checker
         if( !_resetSpellChecker() )
@@ -454,13 +438,15 @@ namespace SpellCheck
         }
 
         // recreate document checker
-        AspellCanHaveError* err = new_aspell_document_checker(spellChecker_);
+        AspellCanHaveError* err = new_aspell_document_checker(spellChecker_.get());
         if( aspell_error_number(err) )
         {
+
             error_ = aspell_error_message( err );
             Debug::Throw( "SpellInterface::_reset - unable to create document_checker.\n" );
             return false;
-        } else documentChecker_ = to_aspell_document_checker(err);
+
+        } else documentChecker_.reset( to_aspell_document_checker(err) );
 
         // assign text if any
         if( checkedText_.size() )
@@ -470,8 +456,8 @@ namespace SpellCheck
             end_ += offset_;
             position_ = 0;
             offset_ = 0;
-            aspell_document_checker_reset( documentChecker_ );
-            aspell_document_checker_process(documentChecker_, text_.mid( begin_, end_-begin_).toLatin1().constData(), -1);
+            aspell_document_checker_reset( documentChecker_.get() );
+            aspell_document_checker_process(documentChecker_.get(), text_.mid( begin_, end_-begin_).toLatin1().constData(), -1);
             Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );
         }
 
@@ -486,24 +472,26 @@ namespace SpellCheck
         Debug::Throw( "SpellInterface::_resetSpellChecker\n" );
 
         // check config
-        if( !spellConfig_ ) {
+        if( !spellConfig_ )
+        {
             Debug::Throw( "SpellInterface::_resetSpellChecker - invalid aspell configuration.\n" );
             error_ = QObject::tr( "invalid aspell configuration" );
             return false;
         }
 
         // delete spell checker
-        if( spellChecker_ ) delete_aspell_speller( spellChecker_ );
-        spellChecker_ = 0;
+        spellChecker_.reset();
 
         // recreate spell checker
-        AspellCanHaveError* err = new_aspell_speller(spellConfig_);
+        AspellCanHaveError* err = new_aspell_speller(spellConfig_.get());
         if( aspell_error_number(err) )
         {
+
             Debug::Throw( "SpellInterface::_resetSpellChecker - failed to create speller.\n" );
             error_ = aspell_error_message( err );
             return false;
-        } else spellChecker_ = to_aspell_speller(err);
+
+        } else spellChecker_.reset( to_aspell_speller(err) );
 
         return true;
 

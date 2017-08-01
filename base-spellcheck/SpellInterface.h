@@ -27,6 +27,7 @@
 #include <QStringList>
 
 #include <aspell.h>
+#include <memory>
 
 namespace SpellCheck
 {
@@ -248,10 +249,10 @@ namespace SpellCheck
         int end_ = 0;
 
         //* position in started text (counted from begin_)
-        int position_;
+        int position_ = 0;
 
         //* offset between checkedText_ and text_
-        int offset_;
+        int offset_ = 0;
 
         //* configuration error
         QString error_;
@@ -262,14 +263,53 @@ namespace SpellCheck
         //* filter
         QString filter_;
 
+        //* Aspell config deleter
+        class AspellConfigDeleter
+        {
+
+            public:
+
+            //* deleter
+            void operator()(AspellConfig* value)
+            { delete_aspell_config( value ); }
+
+        };
+
         //* aspell configuration singleton
-        AspellConfig* spellConfig_ = nullptr;
+        using AspellConfigPtr = std::unique_ptr<AspellConfig, AspellConfigDeleter>;
+        AspellConfigPtr spellConfig_;
+
+        //* Aspell checker deleter
+        class AspellSpellerDeleter
+        {
+
+            public:
+
+            //* deleter
+            void operator()(AspellSpeller* value)
+            { delete_aspell_speller( value ); }
+
+        };
 
         //* aspell checker
-        AspellSpeller* spellChecker_ = nullptr;
+        using AspellSpellerPtr = std::unique_ptr<AspellSpeller, AspellSpellerDeleter>;
+        AspellSpellerPtr spellChecker_;
 
-        //* aspell checker
-        AspellDocumentChecker* documentChecker_ = nullptr;
+        //* Aspell document checker deleter
+        class AspellDocumentCheckerDeleter
+        {
+
+            public:
+
+            //* deleter
+            void operator()(AspellDocumentChecker* value)
+            { delete_aspell_document_checker( value ); }
+
+        };
+
+
+        using AspellDocumentCheckerPtr = std::unique_ptr<AspellDocumentChecker, AspellDocumentCheckerDeleter>;
+        AspellDocumentCheckerPtr documentChecker_;
     };
 
 }
