@@ -87,7 +87,8 @@ namespace Base
         Debug::Throw( "HelpManager::_display.\n" );
 
         // create dialog
-        HelpDialog* dialog( new HelpDialog( *this ) );
+        auto dialog = new HelpDialog;
+        dialog->setAttribute( Qt::WA_DeleteOnClose );
         dialog->setWindowTitle( windowTitle_ );
         dialog->setItems( items_ );
         dialog->centerOnWidget( qApp->activeWindow() );

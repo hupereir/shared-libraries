@@ -25,9 +25,9 @@
 #include "XmlOptions.h"
 
 //_______________________________________________________________
-CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
+const CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
 {
-    static AreaMap areas = Base::makeT<AreaMap>( {
+    static const AreaMap areas = Base::makeT<AreaMap>( {
         { tr( "None" ), Qt::NoToolBarArea },
         { tr( "Left" ), Qt::LeftToolBarArea },
         { tr( "Right" ), Qt::RightToolBarArea },

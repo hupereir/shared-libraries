@@ -40,9 +40,8 @@ namespace Base
 {
 
     //_________________________________________________________
-    HelpDialog::HelpDialog( HelpManager& manager, QWidget *parent ):
-        CustomDialog( parent, CloseButton ),
-        manager_( &manager )
+    HelpDialog::HelpDialog( QWidget *parent ):
+        CustomDialog( parent, CloseButton )
     {
 
         Debug::Throw( "HelpDialog::HelpDialog.\n" );
@@ -53,12 +52,9 @@ namespace Base
         layout()->setSpacing(0);
         buttonLayout().setMargin(5);
 
-        // tell dialog to delete when close
-        setAttribute( Qt::WA_DeleteOnClose );
-
         setOptionName( "HELP_DIALOG" );
 
-        QHBoxLayout *layout = new QHBoxLayout;
+        auto layout = new QHBoxLayout;
         layout->setMargin(0);
         layout->setSpacing(2);
         mainLayout().addLayout( layout );
@@ -76,7 +72,7 @@ namespace Base
         layout->addWidget( htmlFrame_ = new QWidget( this ) );
 
         // vbox layout for editor and button
-        QVBoxLayout *vLayout = new QVBoxLayout;
+        auto vLayout = new QVBoxLayout;
         vLayout->setMargin(0);
         htmlFrame_->setLayout( vLayout );
 
@@ -129,7 +125,7 @@ namespace Base
         else {
 
             // retrieve item
-            const HelpItem& item( model_.get( current ) );
+            const auto& item( model_.get( current ) );
             htmlEditor_->setHtml( item.text() );
 
         }

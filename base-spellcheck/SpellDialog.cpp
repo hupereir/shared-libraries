@@ -52,19 +52,19 @@ namespace SpellCheck
         setOptionName( "SPELL_DIALOG" );
 
         // horizontal layout for suggestions and buttons
-        QHBoxLayout* hLayout = new QHBoxLayout;
+        auto hLayout = new QHBoxLayout;
         hLayout->setMargin(0);
         hLayout->setSpacing(10);
         mainLayout().addLayout( hLayout, 1 );
 
         // insert left vertical box
-        QVBoxLayout *vLayout = new QVBoxLayout;
+        auto vLayout = new QVBoxLayout;
         vLayout->setMargin( 0 );
         vLayout->setSpacing(5);
         hLayout->addLayout( vLayout );
 
         // grid for text editors
-        GridLayout *gridLayout = new GridLayout;
+        auto gridLayout = new GridLayout;
         gridLayout->setMargin( 0 );
         gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 2 );
@@ -284,10 +284,10 @@ namespace SpellCheck
         Debug::Throw( "SpellCheck::SpellDialog::_updateDictionaries.\n" );
 
         // store selection
-        const QString selection( dictionariesComboBox_->currentText() );
+        const auto selection( dictionariesComboBox_->currentText() );
 
         // read list of disabled dictionaries
-        const QStringList disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
+        const auto disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
 
         // clear combobox
         dictionariesComboBox_->clear();
@@ -307,10 +307,10 @@ namespace SpellCheck
         Debug::Throw( "SpellCheck::SpellDialog::_updateFilters.\n" );
 
         // store selection
-        const QString selection( filtersComboBox_->currentText() );
+        const auto selection( filtersComboBox_->currentText() );
 
         // read list of disabled filters
-        const QStringList disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
+        const auto disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
 
         // clear combobox
         filtersComboBox_->clear();
@@ -451,7 +451,7 @@ namespace SpellCheck
         if( !local.isValid() ) local = list_->selectionModel()->currentIndex();
         if( !local.isValid() ) return;
 
-        const QString word( model_.get( local ) );
+        const auto& word( model_.get( local ) );
         if( interface_.replace( word ) ) _replaceSelection( word );
 
         // parse next word
@@ -573,7 +573,7 @@ namespace SpellCheck
     void SpellDialog::_updateSelection( int index, int length )
     {
         Debug::Throw() << "SpellCheck::SpellDialog::_updateSelection - index=" << index << endl;
-        QTextCursor cursor( editor_->textCursor() );
+        auto cursor( editor_->textCursor() );
         cursor.setPosition( index, QTextCursor::MoveAnchor );
         cursor.setPosition( index+length, QTextCursor::KeepAnchor );
         editor_->setTextCursor( cursor );
@@ -603,7 +603,7 @@ namespace SpellCheck
 
         // clear list of suggestions
         model_.clear();
-        Model::List suggestions( interface_.suggestions( word ) );
+        const auto suggestions( interface_.suggestions( word ) );
         model_.add( suggestions );
 
         // select the first suggestion, if any

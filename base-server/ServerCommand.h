@@ -144,7 +144,7 @@ namespace Server
         using CommandMap = QHash<CommandType, QString>;
 
         //* command names
-        static CommandMap& _commandNames();
+        static const CommandMap& _commandNames();
 
         //* time stamp
         TimeStamp timestamp_;

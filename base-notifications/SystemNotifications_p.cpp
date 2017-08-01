@@ -74,12 +74,7 @@ namespace Private
     {}
 
     //____________________________________________
-    SystemNotificationsP::~SystemNotificationsP()
-    {
-        #ifndef QT_NO_DBUS
-        delete dbusInterface_;
-        #endif
-    }
+    SystemNotificationsP::~SystemNotificationsP() = default;
 
     //____________________________________________
     void SystemNotificationsP::setApplicationName( const QString& value )
@@ -111,15 +106,12 @@ namespace Private
         dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","NotificationClosed", this, SLOT(_notificationClosed(quint32,quint32)) );
         dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","ActionInvoked", this, SLOT(_checkActionInvoked(quint32,QString)) );
 
-        // delete old interface if any
-        delete dbusInterface_;
-
         // create new interface
-        dbusInterface_ = new QDBusInterface(
+        dbusInterface_.reset( new QDBusInterface(
             "org.freedesktop.Notifications",
             "/org/freedesktop/Notifications",
             "org.freedesktop.Notifications",
-            dbus );
+            dbus ) );
 
         // setup type for image transfer
         if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();

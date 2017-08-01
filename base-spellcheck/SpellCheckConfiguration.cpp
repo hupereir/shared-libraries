@@ -43,7 +43,7 @@ namespace SpellCheck
     {
         Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
 
-        GridLayout* gridLayout( new GridLayout );
+        auto gridLayout( new GridLayout );
         gridLayout->setSpacing( 5 );
         gridLayout->setMargin( 5 );
         gridLayout->setMaxCount( 3 );
@@ -54,7 +54,7 @@ namespace SpellCheck
         if( flags & ASpell )
         {
             gridLayout->addWidget( new QLabel( tr( "Aspell command:" ), this ), 0, 0, 1, 1 );
-            OptionBrowsedLineEditor* editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
+            auto editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
             gridLayout->addWidget( editor, 0, 1, 1, 2 );
             editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
             addOptionWidget( editor );
@@ -110,7 +110,7 @@ namespace SpellCheck
         if( !dictionariesComboBox_ ) return;
 
         // read list of disabled dictionaries
-        const QStringList disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
+        const auto disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ) );
 
         // clear combobox
         dictionariesComboBox_->clear();
@@ -133,7 +133,7 @@ namespace SpellCheck
         if( !filtersComboBox_ ) return;
 
         // read list of disabled filters
-        const QStringList disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
+        const auto disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( " " ) );
 
         // clear combobox
         filtersComboBox_->clear();

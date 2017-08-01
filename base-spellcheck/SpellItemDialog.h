@@ -58,10 +58,6 @@ namespace SpellCheck
 
         private:
 
-        //* list
-        TreeView& _list() const
-        { return *list_; }
-
         //* model
         SpellItemModel model_;
 

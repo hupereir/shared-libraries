@@ -32,18 +32,18 @@ namespace SpellCheck
     {
 
         // add label
-        QLabel* label = new QLabel( tr( "Select the items that should appear in the menu:" ), this );
+        auto label = new QLabel( tr( "Select the items that should appear in the menu:" ), this );
         label->setWordWrap( true );
         mainLayout().addWidget( label );
 
         // add list
         mainLayout().addWidget( list_ = new TreeView( this ) );
-        _list().setSortingEnabled( false );
-        _list().setModel( &model_ );
-        _list().header()->hide();
+        list_->setSortingEnabled( false );
+        list_->setModel( &model_ );
+        list_->header()->hide();
 
         // connections
-        connect( &_list(), SIGNAL(clicked(QModelIndex)), SLOT(_selectItem(QModelIndex)) );
+        connect( list_, SIGNAL(clicked(QModelIndex)), SLOT(_selectItem(QModelIndex)) );
 
     }
 
@@ -67,7 +67,7 @@ namespace SpellCheck
         if( !index.isValid() ) return;
 
         // get string and list of disabled items
-        SpellItemModel::ItemSet disabledItems( model_.disabledItems() );
+        auto disabledItems( model_.disabledItems() );
         const QString value( model_.get( index ) );
 
         // toggle

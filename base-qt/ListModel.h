@@ -296,7 +296,7 @@ class ListModel : public ItemModel
 
             // see if iterator is in list
             auto foundIter( std::find_if( values.begin(), values.end(), std::bind2nd( EqualTo(), *iter ) ) );
-            if( foundIter == values.end() ) removedValues << *iter;
+            if( foundIter == values.end() ) removedValues.append( *iter );
             else {
                 *iter = *foundIter;
                 values.erase( foundIter );

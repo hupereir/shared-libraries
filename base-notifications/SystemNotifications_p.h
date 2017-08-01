@@ -36,6 +36,8 @@
 #include <QDBusPendingCallWatcher>
 #endif
 
+#include <memory>
+
 namespace Private
 {
 
@@ -111,8 +113,9 @@ namespace Private
         bool initialized_ = false;
 
         #ifndef QT_NO_DBUS
+
         //* dbus interface
-        QDBusInterface* dbusInterface_ = nullptr;
+        std::unique_ptr<QDBusInterface> dbusInterface_;
         #endif
 
         //* image data

@@ -56,7 +56,7 @@ class IconSize final
     using Map = QMap<Size, QString>;
 
     //* text to icon size
-    static Map& map();
+    static const Map& map();
 
     private:
 

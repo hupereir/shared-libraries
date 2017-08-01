@@ -34,7 +34,7 @@ namespace Ssh
         Debug::Throw( "LoginDialog::LoginDialog.\n" );
         setOptionName( "SSH_LOGIN_DIALOG" );
         setWindowTitle( tr( "SSH login - Homechat" ) );
-        GridLayout* gridLayout = new GridLayout;
+        auto gridLayout = new GridLayout;
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
@@ -63,7 +63,7 @@ namespace Ssh
     //______________________________________________________________________
     ConnectionAttributes LoginDialog::attributes() const
     {
-        ConnectionAttributes attributes( attributes_ );
+        auto attributes( attributes_ );
         attributes.setUserName( userNameEditor_->text() );
         attributes.setPassword( passwordEditor_->text() );
         attributes.setRememberPassword( rememberPaswordCheckBox_->isChecked() );

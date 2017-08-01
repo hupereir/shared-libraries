@@ -19,6 +19,7 @@
 
 #include "SshConnection.h"
 
+#include "CppUtil.h"
 #include "Debug.h"
 #include "File.h"
 #include "Sleep.h"
@@ -75,12 +76,12 @@ namespace Ssh
         {
 
             // create Tcp server
-            QTcpServer* tcpServer = new QTcpServer( this );
+            auto tcpServer = new QTcpServer( this );
             connect( tcpServer, SIGNAL(newConnection()), SLOT(_newConnection()) );
             if( !tcpServer->listen( QHostAddress::LocalHost, attributes.localPort() ) )
             {
 
-                const QString message = tr( "Cannot listen to localhost:%1 - error:%2")
+                const auto message = tr( "Cannot listen to localhost:%1 - error:%2")
                     .arg( attributes.localPort() )
                     .arg( tcpServer->errorString() );
 
@@ -210,13 +211,6 @@ namespace Ssh
 
         while( (msecs < 0 || timer.elapsed() < msecs) && _processCommands() )
         { qApp->processEvents(); }
-
-//         while( msecs < 0 || timer.elapsed() < msecs )
-//         {
-//             // qApp->processEvents();
-//             if( !_processCommands() ) break;
-//             Sleep::msleep( 100 );
-//         }
 
         return isConnected();
 
@@ -491,7 +485,7 @@ namespace Ssh
                 {
 
                     // get updated attributes
-                    const ConnectionAttributes attributes( dialog.attributes() );
+                    const auto attributes( dialog.attributes() );
 
                     // detect changes, save, and emit signal if needed
                     if( ( attributes_.userName() != attributes.userName() ) ||
@@ -742,7 +736,7 @@ namespace Ssh
 
             while( QTcpSocket* tcpSocket = tcpServer->nextPendingConnection() )
             {
-                Tunnel* tunnel = new Tunnel( this, tcpSocket );
+                auto tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
 
                 connect( tunnel, SIGNAL(error(QString)), SLOT(_notifyError(QString)) );
@@ -758,21 +752,19 @@ namespace Ssh
     //_______________________________________________
     QString Connection::_commandMessage( Command command ) const
     {
-        switch( command )
-        {
-            case Connect: return tr( "Connecting to host" );
-            case Handshake: return tr( "Performing SSH handshake" );
-            case ConnectAgent: return tr( "Connecting to SSH agent" );
-            case RequestIdentity: return tr( "Waiting for user authentication" );
-            case LoadAuthenticationMethods: return tr( "Loading authentication methods" );
-            case ListIdentities: return tr( "Loading existing identities" );
-            case AuthenticateWithAgent: return tr( "Trying to authenticate using SSH agent" );
-            case AuthenticateWithPassword: return tr( "Trying to authenticate using password" );
-            default: return QString();
-        }
+        using CommandHash = QHash<Command,QString>;
+        static const CommandHash commandNames = Base::makeT<CommandHash>( {
+            { Connect, tr( "Connecting to host" ) },
+            { Handshake, tr( "Performing SSH handshake" ) },
+            { ConnectAgent, tr( "Connecting to SSH agent" ) },
+            { RequestIdentity, tr( "Waiting for user authentication" ) },
+            { LoadAuthenticationMethods, tr( "Loading authentication methods" ) },
+            { ListIdentities, tr( "Loading existing identities" ) },
+            { AuthenticateWithAgent, tr( "Trying to authenticate using SSH agent" ) },
+            { AuthenticateWithPassword, tr( "Trying to authenticate using password" ) }
+        });
 
-
-
+        return commandNames[command];
     }
 
     //_______________________________________________

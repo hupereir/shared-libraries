@@ -38,7 +38,7 @@ namespace SpellCheck
     {
         Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
 
-        GridLayout* gridLayout( new GridLayout );
+        auto gridLayout( new GridLayout );
         gridLayout->setSpacing( 5 );
         gridLayout->setMargin( 5 );
         gridLayout->setMaxCount( 2 );
@@ -47,7 +47,7 @@ namespace SpellCheck
 
         // suggestions
         gridLayout->addWidget( new QLabel( tr( "Maximum number of suggestions:" ), this ) );
-        OptionSpinBox* spinbox = new OptionSpinBox( this, "MAX_SUGGESTIONS" ) ;
+        auto spinbox = new OptionSpinBox( this, "MAX_SUGGESTIONS" ) ;
         gridLayout->addWidget( spinbox);
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 50 );
@@ -56,13 +56,13 @@ namespace SpellCheck
 
         // options
         gridLayout->addWidget( new QLabel( tr( "Highlight color:" ), this ), 1, 0 );
-        OptionColorDisplay *colordisplay = new OptionColorDisplay( this, "AUTOSPELL_COLOR" );
+        auto colordisplay = new OptionColorDisplay( this, "AUTOSPELL_COLOR" );
         gridLayout->addWidget( colordisplay  );
         colordisplay->setToolTip( tr( "Highlight color for misspelled words" ) );
         addOptionWidget( colordisplay );
 
         gridLayout->addWidget( new QLabel( tr( "Highlight font format:" ), this ), 2, 0 );
-        OptionFontInfo* fontinfo =  new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" );
+        auto fontinfo =  new OptionFontInfo( this, "AUTOSPELL_FONT_FORMAT" );
         fontinfo->layout()->setMargin(0);
         gridLayout->addWidget( fontinfo, 2, 1, 5, 1 );
         fontinfo->setToolTip( tr( "Font format for misspelled words" ) );

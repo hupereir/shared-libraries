@@ -41,19 +41,19 @@ namespace Ssh
     //____________________________________________________
     uint32_t Util::tcpOptions( int socket )
     {
-        int optionNames[] =
+        QList<int> optionNames =
         {
             #if  !defined(Q_OS_WIN)
             TCP_CORK, TCP_DEFER_ACCEPT, TCP_INFO, TCP_KEEPCNT, TCP_KEEPIDLE,
             TCP_KEEPINTVL, TCP_LINGER2, TCP_MAXSEG, TCP_QUICKACK,  TCP_SYNCNT,
             TCP_WINDOW_CLAMP,
             #endif
-            TCP_NODELAY, 0
+            TCP_NODELAY
         };
 
         uint32_t result = 0;
         int bit = 0;
-        for( int index = 0; optionNames[index]; ++index )
+        for( const auto& optionName:optionNames )
         {
             #if defined( Q_OS_WIN )
             char value = 0;
@@ -61,7 +61,7 @@ namespace Ssh
             int value = 0;
             #endif
             socklen_t length = 0;
-            if( getsockopt( socket, IPPROTO_TCP, optionNames[index], &value, &length ) == 0 && value )
+            if( getsockopt( socket, IPPROTO_TCP, optionName, &value, &length ) == 0 && value )
             { result |= (1<<bit); }
 
             if( value ) result |= (1<<bit);
@@ -75,7 +75,7 @@ namespace Ssh
     //____________________________________________________
     uint32_t Util::socketOptions( int socket )
     {
-        int optionNames[] =
+        QList<int> optionNames =
         {
             SO_ACCEPTCONN, SO_BROADCAST, SO_DEBUG,SO_ERROR, SO_DONTROUTE,
             SO_KEEPALIVE, SO_LINGER,
@@ -91,7 +91,7 @@ namespace Ssh
 
         uint32_t result = 0;
         int bit = 0;
-        for( int index = 0; optionNames[index]; ++index )
+        for( const auto& optionName:optionNames )
         {
             #if defined( Q_OS_WIN )
             char value = 0;
@@ -100,7 +100,7 @@ namespace Ssh
             #endif
 
             socklen_t length = 0;
-            if( getsockopt( socket, SOL_SOCKET, optionNames[index], &value, &length ) == 0 && value )
+            if( getsockopt( socket, SOL_SOCKET, optionName, &value, &length ) == 0 && value )
             { result |= (1<<bit); }
             ++bit;
         }

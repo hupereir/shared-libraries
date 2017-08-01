@@ -74,7 +74,7 @@ void TaskBarProgressNotifications::setValue(int value)
     {
         first_ = false;
         value_ = value;
-        _update({ {QLatin1String("progress"), value/qreal(maximum_ )} });
+        _update({ {QLatin1String("progress"), value/qreal(maximum_)} });
     }
 }
 
@@ -84,7 +84,7 @@ void TaskBarProgressNotifications::_update(const QVariantMap &properties)
     if( launcherId_.isEmpty() || path_.isEmpty() ) return;
 
     #ifndef QT_NO_DBUS
-    QDBusMessage message = QDBusMessage::createSignal(
+    auto message = QDBusMessage::createSignal(
         path_,
         QLatin1String("com.canonical.Unity.LauncherEntry"),
         QLatin1String("Update"));

@@ -187,7 +187,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     bool appearsInMenu_ = false;
 
     //* map name and toolbar are
-    static AreaMap& _toolbarAreas();
+    static const AreaMap& _toolbarAreas();
 
 };
 

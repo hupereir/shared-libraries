@@ -33,23 +33,35 @@ namespace SpellCheck
 
         public:
 
-        //! constructor
+        //* constructor
         explicit Position( int position, const TexString::Conversion conversion ):
             position_(position),
             conversion_(conversion)
         {}
 
-        int position_;
-        TexString::Conversion conversion_;
+        //*@name accessors
+        //@{
 
-        //! less than operator
-        bool operator < (const Position& other ) const
-        { return position_ < other.position_; }
+        //* position
+        int position() const { return position_; }
 
-        //! list
+        //* conversion
+        TexString::Conversion conversion() const { return conversion_; }
+
+        //* list
         using List=QList<Position>;
 
+        private:
+
+        int position_;
+
+        TexString::Conversion conversion_;
+
     };
+
+    //* less than operator
+    bool operator < (const Position& first, const Position& second )
+    { return first.position() < second.position(); }
 
     //____________________________________________________________________________
     SpellParser::SpellParser():
@@ -69,7 +81,7 @@ namespace SpellCheck
         if( !enabled_ ) return ( Word::Set() );
 
         Position::List positions;
-        if( interface().filter() == SpellInterface::FilterTexWithNoAccents )
+        if( interface_.filter() == SpellInterface::FilterTexWithNoAccents )
         {
 
             // apply conversions
@@ -92,25 +104,25 @@ namespace SpellCheck
         }
 
         // retrieve misspelled words
-        interface().setText( text );
+        interface_.setText( text );
         Word::Set words;
         forever
         {
-            interface().nextWord();
-            QString word( interface().word() );
-            int wordPosition( interface().position() );
+            interface_.nextWord();
+            auto word( interface_.word() );
+            int wordPosition( interface_.position() );
             if( word.isEmpty() ) break;
-            if( interface().isWordIgnored( word ) ) continue;
+            if( interface_.isWordIgnored( word ) ) continue;
 
             // apply offset
-            if( interface().filter() == SpellInterface::FilterTexWithNoAccents && !positions.empty() )
+            if( interface_.filter() == SpellInterface::FilterTexWithNoAccents && !positions.empty() )
             {
 
                 // update position
                 int offset = 0;
                 for( const auto& position:positions )
                 {
-                    if( position.position_ - offset <= wordPosition ) offset += (position.conversion_.second.size() - position.conversion_.first.size() );
+                    if( position.position() - offset <= wordPosition ) offset += (position.conversion().second.size() - position.conversion().first.size() );
                     else break;
                 }
 
@@ -119,9 +131,9 @@ namespace SpellCheck
                 // update word
                 for( const auto& position:positions )
                 {
-                    if( position.position_ < wordPosition ) continue;
-                    else if( position.position_ - wordPosition > word.size() ) break;
-                    else word.replace( position.position_ - wordPosition, position.conversion_.first.size(), position.conversion_.second );
+                    if( position.position() < wordPosition ) continue;
+                    else if( position.position() - wordPosition > word.size() ) break;
+                    else word.replace( position.position() - wordPosition, position.conversion().first.size(), position.conversion().second );
 
                 }
 

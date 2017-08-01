@@ -97,7 +97,7 @@ namespace SpellCheck
             }
 
             // insert action
-            QAction* action( new QAction( filter, this ) );
+            auto action( new QAction( filter, this ) );
             action->setCheckable( true );
             action->setChecked( filter == selection );
             actionMap_.insert( action, filter );
@@ -112,7 +112,7 @@ namespace SpellCheck
     {
 
         Debug::Throw( "FilterMenu::_filter.\n" );
-        ActionMap::iterator iter( actionMap_.find( action ) );
+        const auto iter( actionMap_.find( action ) );
         if( iter == actionMap_.end() ) return;
 
         select( iter.value() );

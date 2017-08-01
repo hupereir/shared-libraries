@@ -101,7 +101,7 @@ namespace SpellCheck
             }
 
             // insert action
-            QAction* action( new QAction( dictionary, this ) );
+            auto action( new QAction( dictionary, this ) );
             action->setCheckable( true );
             action->setChecked( dictionary == selection );
             actionMap_.insert( action, dictionary );
@@ -117,7 +117,7 @@ namespace SpellCheck
     {
 
         Debug::Throw( "DictionaryMenu::_dictionary.\n" );
-        ActionMap::iterator iter( actionMap_.find( action ) );
+        const auto iter( actionMap_.find( action ) );
         if( iter == actionMap_.end() ) return;
 
         select( iter.value() );

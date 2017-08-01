@@ -44,28 +44,25 @@ namespace SpellCheck
     //________________________________________________________
     const TexString::ConversionList& TexString::conversions()
     {
-        static ConversionList conversions_;
-
-        if( conversions_.empty() )
+        static ConversionList conversions =
         {
-            conversions_ << Conversion( "à", "\\`a" );
-            conversions_ << Conversion( "â", "\\^a" );
-            conversions_ << Conversion( "ä", "\\\"a" );
-            conversions_ << Conversion( "é", "\\'e" );
-            conversions_ << Conversion( "è", "\\`e" );
-            conversions_ << Conversion( "ê", "\\^e" );
-            conversions_ << Conversion( "ë", "\\\"e" );
-            conversions_ << Conversion( "î", "\\^\\i " );
-            conversions_ << Conversion( "ï", "\\\"\\i " );
-            conversions_ << Conversion( "ô", "\\^o" );
-            conversions_ << Conversion( "ö", "\\\"o" );
-            conversions_ << Conversion( "ù", "\\`u" );
-            conversions_ << Conversion( "û", "\\^u" );
-            conversions_ << Conversion( "ç", "\\c c" );
-            // (wtf) conversions_ << Conversion( "?", "-" );
-        }
+             Conversion( "à", "\\`a" ),
+             Conversion( "â", "\\^a" ),
+             Conversion( "ä", "\\\"a" ),
+             Conversion( "é", "\\'e" ),
+             Conversion( "è", "\\`e" ),
+             Conversion( "ê", "\\^e" ),
+             Conversion( "ë", "\\\"e" ),
+             Conversion( "î", "\\^\\i " ),
+             Conversion( "ï", "\\\"\\i " ),
+             Conversion( "ô", "\\^o" ),
+             Conversion( "ö", "\\\"o" ),
+             Conversion( "ù", "\\`u" ),
+             Conversion( "û", "\\^u" ),
+             Conversion( "ç", "\\c c" )
+        };
 
-        return conversions_;
+        return conversions;
 
     }
 

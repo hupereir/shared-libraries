@@ -33,8 +33,6 @@ class TreeView;
 namespace Base
 {
 
-    class HelpManager;
-
     //* reference manual display dialog
     class HelpDialog:public CustomDialog
     {
@@ -44,7 +42,7 @@ namespace Base
         public:
 
         //* constructor
-        explicit HelpDialog( HelpManager& manager, QWidget *parent = nullptr );
+        explicit HelpDialog( QWidget* = nullptr );
 
         //* clear items
         void clear()
@@ -62,9 +60,6 @@ namespace Base
         void _updateConfiguration();
 
         private:
-
-        //* help manager
-        HelpManager* manager_ = nullptr;
 
         //* model
         HelpModel model_;

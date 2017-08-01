@@ -77,7 +77,7 @@ namespace Ssh
     {
 
         deviceOwned_ = true;
-        QFile* device = new QFile( localFilename, this );
+        auto device = new QFile( localFilename, this );
 
         emit debug( tr( "Transfering remote file %1 to local file %2" ).arg( remoteFilename_ ).arg( localFilename ) );
 
@@ -129,7 +129,7 @@ namespace Ssh
 
         emit debug( tr( "Transfering local file %1 to remote file %2" ).arg( localFilename ).arg( remoteFilename_ ) );
 
-        QFile* device = new QFile( localFilename, this );
+        auto device = new QFile( localFilename, this );
         if( device->open( QIODevice::ReadOnly ) ) return toRemote( session, device );
         else
         {
@@ -323,8 +323,6 @@ namespace Ssh
         {
 
             qint64 bytesRead = localDevice_->read( buffer_.data(), buffer_.size() );
-            // emit debug( QString( "Ssh::FileTransferObject::_writeToSocket - bytesAvailable=%1, bytesRead=%2" ).arg( bytesAvailable ).arg( bytesRead ) );
-
             if( bytesRead < 0 )
             {
                 emit error( tr( "invalid read from source file: %1" ).arg( bytesRead ) );

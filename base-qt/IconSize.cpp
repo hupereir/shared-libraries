@@ -40,9 +40,9 @@ QSize IconSize::get( IconSize::Size size )
 }
 
 //______________________________________________________________________
-IconSize::Map& IconSize::map()
+const IconSize::Map& IconSize::map()
 {
-    static Map sizeMap = Base::makeT<Map>(
+    static const Map sizeMap = Base::makeT<Map>(
     {
         { Default, QObject::tr( "System Default" ) },
         { Small, QObject::tr( "Small (16x16)" ) },
