@@ -50,8 +50,8 @@ QStringList Command::_parse( const QString &in )
     {
         if( !line.isEmpty() )
         {
-            if( split ) out << line.split( QRegExp( "\\s+" ), QString::SkipEmptyParts );
-            else out << QString("\"") + line + "\"" ;
+            if( split ) out.append( line.split( QRegExp( "\\s+" ), QString::SkipEmptyParts ) );
+            else out.append( QString("\"") + line + "\"" );
         }
 
         split = !split;

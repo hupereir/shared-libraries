@@ -39,6 +39,9 @@ class CommandLineArguments: private Base::Counter<CommandLineArguments>
     //* constructor
     explicit CommandLineArguments( QStringList&& );
 
+    //* constructor
+    explicit CommandLineArguments( std::initializer_list<QString>&& );
+
     //* destructor
     virtual ~CommandLineArguments() = default;
 
@@ -63,7 +66,8 @@ class CommandLineArguments: private Base::Counter<CommandLineArguments>
     QStringList& get() { return arguments_; }
 
     //* append
-    void append( const QString& str ) { arguments_.append(str); }
+    template<class T>
+    void append( const T& t ) { arguments_.append(t); }
 
     //* streamers
     template<class T>

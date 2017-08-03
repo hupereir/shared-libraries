@@ -190,10 +190,7 @@ namespace Svg
         OptionComboBox* plasmaImagePath;
         gridLayout->addWidget( plasmaImagePath = new OptionComboBox( box, "SVG_PLASMA_IMAGE_PATH" ) );
         plasmaImagePath->setUseValue( false );
-        plasmaImagePath->addItems( QStringList()
-            << "dialogs/background"
-            << "widgets/background"
-            << "widgets/translucentbackground" );
+        plasmaImagePath->addItems( { "dialogs/background", "widgets/background", "widgets/translucentbackground" } );
         plasmaImagePath->setToolTip( tr( "Relative path of the svg file used for the background" ) );
         addOptionWidget( plasmaImagePath );
         label->setBuddy( plasmaImagePath );

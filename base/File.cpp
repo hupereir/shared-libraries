@@ -370,7 +370,7 @@ File::List File::listFiles( ListFlags flags ) const
         QFileInfo fileInfo;
         fileInfo.setFile( dir, value );
         const File file( fileInfo.absoluteFilePath() );
-        out << file;
+        out.append( file );
 
         // list subdirectory if recursive
         if( flags & ListFlag::Recursive && file.isDirectory() )
@@ -382,7 +382,7 @@ File::List File::listFiles( ListFlags flags ) const
             if( file.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( file ) ) != out.end() ) continue;
 
             // list subdirectory
-            out << file.listFiles( flags );
+            out.append( file.listFiles( flags ) );
         }
 
     }

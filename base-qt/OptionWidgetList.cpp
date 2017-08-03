@@ -32,7 +32,7 @@ void OptionWidgetList::addOptionWidget( OptionWidget* widget )
         << " buddy: " << ( widget->hasBuddy() ? widget->buddy().metaObject()->className():"none" )
         << endl;
 
-    optionWidgets_ << widget;
+    optionWidgets_.append( widget );
 
     //* connect signals
     if( _connected() && hasBuddy() && widget->hasBuddy() )

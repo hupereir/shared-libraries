@@ -35,9 +35,6 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
 
     Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" );
 
-    // check target
-    Q_CHECK_PTR( target );
-
     // create vbox layout
     setLayout( new QVBoxLayout );
     layout()->setMargin(5);
@@ -47,20 +44,19 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     QCheckBox *checkbox;
 
     // retrieve columns
-    QHeaderView* header( target->header() );
-    Q_CHECK_PTR( header );
+    auto header( target->header() );
     for( int index=0; index < header->count(); index++ )
     {
 
         // retrieve column name
-        QString columnName( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
+        auto columnName( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
         if( columnName.isNull() || columnName.isEmpty() )
         { columnName = QString( tr( "Column %1" ) ).arg( index+1 ); }
 
         // add checkbox
         checkbox = new QCheckBox( columnName, this );
         layout()->addWidget( checkbox );
-        checkbox_ << checkbox;
+        checkbox_.append( checkbox );
 
         // add tooltip
         checkbox->setToolTip( QString( tr( "Show/hide column '%1'" ) ).arg( columnName )  );

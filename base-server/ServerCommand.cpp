@@ -28,7 +28,7 @@ namespace Server
     //__________________________________________________________________
     const ServerCommand::CommandMap& ServerCommand::_commandNames()
     {
-        static const CommandMap names = Base::makeT<CommandMap>( {
+        static const auto names = Base::makeT<CommandMap>( {
             { None, "" },
             { Accepted, QObject::tr( "Accepted" ) },
             { Denied, QObject::tr( "Denied" ) },

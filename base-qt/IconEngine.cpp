@@ -128,7 +128,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
                 if( sizes.contains( pixmap.size() ) ) continue;
                 out.addPixmap( pixmap );
                 out.addFile( pixmapFile );
-                sizes << pixmap.size();
+                sizes.append( pixmap.size() );
 
             }
 

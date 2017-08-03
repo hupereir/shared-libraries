@@ -40,3 +40,9 @@ CommandLineArguments::CommandLineArguments( QStringList&& ref ):
     Counter( "CommandLineArguments" ),
     arguments_( std::move(ref) )
 {}
+
+//_____________________________________________________________________
+CommandLineArguments::CommandLineArguments( std::initializer_list<QString>&& ref ):
+    Counter( "CommandLineArguments" ),
+    arguments_( std::move(ref) )
+{}

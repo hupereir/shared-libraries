@@ -691,7 +691,7 @@ void BaseConfigurationDialog::_restoreDefaults()
     OptionModel::List local;
     auto&& options( XmlOptions::get().options() );
     for( auto&& iter = options.begin(); iter != options.end(); ++iter )
-    { if( iter.value().defaultValue().isEmpty() ) local << OptionPair( iter.key(), iter.value() ); }
+    { if( iter.value().defaultValue().isEmpty() ) local.append( OptionPair( iter.key(), iter.value() ) ); }
 
     QuestionDialog dialog( this );
     dialog.setOptionName( "RESTORE_DEFAULT_DIALOG" );

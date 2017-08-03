@@ -104,13 +104,13 @@ void FileThread::_listFiles( const File& parent )
     for( const auto& file:parent.listFiles( flags ) )
     {
 
-        files_ << file;
+        files_.append( file );
         if( command_ == Command::ListRecursive || command_ == Command::SizeRecursive )
         {
 
-            filesRecursive_ << file;
+            filesRecursive_.append( file );
             if( file.isDirectory() && ( !file.isLink() || (command_ == Command::ListRecursive && (flags_&File::ListFlag::FollowLinks) ) ) )
-            { directories << file; }
+            { directories.append( file ); }
 
         }
 

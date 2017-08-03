@@ -160,9 +160,7 @@ void RecentFilesConfiguration::reload()
 {
 
     Debug::Throw( "RecentFilesConfiguration::reload.\n" );
-    FileRecordModel::List recordModelList;
-    for( const auto& record:recentFiles_->records() )
-    { recordModelList << record; }
+    const auto recordModelList( recentFiles_->records() );
     model_.set( recordModelList );
 
     list_->selectionModel()->clear();

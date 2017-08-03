@@ -43,36 +43,31 @@ namespace Base
     toIntegralType(T value) noexcept
     { return static_cast<underlying_type_t<T>>(value);}
 
-    #if QT_VERSION >= 0x050100
-    // for new Qt versoins, QHash can be constructed from initializer_list. So just move the arguments
-    template<typename T>
-    std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>> makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>>&& reference ) noexcept
-    { return std::move( reference ); }
-
-    // for new Qt versoins, QMap can be constructed from initializer_list. So just move the arguments
-    template<typename T>
-    std::initializer_list<typename T::key_type> makeT( std::initializer_list<typename T::key_type>&& reference ) noexcept
-    { return std::move( reference ); }
-
-    #else
-    // for old QT versions there is no QHash constructor from initializer_list
     template<typename T>
     T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>>&& reference )
     {
+        #if QT_VERSION >= 0x050100
+        return T( std::move( reference ) );
+        #else
+        // for old QT versions there is no QHash constructor from initializer_list
         T out;
         for( auto&& pair:reference ) { out.insert( pair.first, pair.second ); }
         return out;
+        #endif
     }
 
-    // for old QT versions there is no QSet constructor from initializer_list
     template<typename T>
     T makeT( std::initializer_list<typename T::key_type>&& reference )
     {
+        #if QT_VERSION >= 0x050100
+        return T( std::move( reference ) );
+        #else
+        // for old QT versions there is no QSet constructor from initializer_list
         T out;
         for( auto&& value:reference ) { out.insert( value ); }
         return out;
+        #endif
     }
-    #endif
 
 }
 

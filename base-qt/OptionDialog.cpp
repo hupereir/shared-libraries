@@ -118,7 +118,7 @@ void OptionDialog::_reload()
     const Options::Map& options( backupOptions_.options() );
     OptionModel::List optionList;
     for( auto&& iter = options.begin(); iter != options.end(); ++iter )
-    { optionList << OptionPair( iter.key(), iter.value() ); }
+    { optionList.append( OptionPair( iter.key(), iter.value() ) ); }
     model_.add( optionList );
 
     list_->resizeColumns();

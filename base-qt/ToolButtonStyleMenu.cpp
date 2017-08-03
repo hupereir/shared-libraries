@@ -35,13 +35,12 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     // install values
     using NamePair=QPair<QString, int >;
     using List=QList< NamePair >;
-    List actionNames;
-    actionNames
-        << NamePair( tr( "System Default" ), -1 )
-        << NamePair( tr( "No Text" ), Qt::ToolButtonIconOnly )
-        << NamePair( tr( "Text Only" ), Qt::ToolButtonTextOnly )
-        << NamePair( tr( "Text Alongside icons" ), Qt::ToolButtonTextBesideIcon )
-        << NamePair( tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon );
+    List actionNames = {
+        { tr( "System Default" ), -1 },
+        { tr( "No Text" ), Qt::ToolButtonIconOnly },
+        { tr( "Text Only" ), Qt::ToolButtonTextOnly },
+        { tr( "Text Alongside icons" ), Qt::ToolButtonTextBesideIcon },
+        { tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon } };
 
     // generic action
     for( const auto& namePair:actionNames )

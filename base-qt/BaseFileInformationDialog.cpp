@@ -80,15 +80,16 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     vLayout->addStretch();
 
     // store all items in array, for visibility
-    QList<GridLayoutItem*> items;
-
-    items.append(fileItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
-    items.append(typeItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
-    items.append(pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable|GridLayoutItem::Flag::Elide ) );
-    items.append(sizeItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable ) );
-    items.append(createdItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
-    items.append(modifiedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
-    items.append(accessedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ) );
+    QList<GridLayoutItem*> items =
+    {
+        fileItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
+        typeItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
+        pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable|GridLayoutItem::Flag::Elide ),
+        sizeItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable ),
+        createdItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
+        modifiedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
+        accessedItem_ = new GridLayoutItem( mainPage_, gridLayout_ )
+    };
 
     fileItem_->setKey( tr( "File name:" ) );
     typeItem_->setKey( tr( "Type:" ) );
@@ -119,8 +120,11 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     layout->addItem( gridLayout );
 
-    items << (userItem_ = new GridLayoutItem( box, gridLayout ) );
-    items << (groupItem_ = new GridLayoutItem( box, gridLayout ) );
+    items.append( {
+        userItem_ = new GridLayoutItem( box, gridLayout ),
+        groupItem_ = new GridLayoutItem( box, gridLayout )
+    } );
+
     userItem_->setKey( tr( "User:" ) );
     groupItem_->setKey( tr( "Group:" ) );
 

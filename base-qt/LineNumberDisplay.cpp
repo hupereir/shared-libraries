@@ -165,16 +165,16 @@ void LineNumberDisplay::_updateLineNumberData()
 
     // get document
     int id( 0 );
-    int block_count( 1 );
+    int blockCount( 1 );
     QTextDocument &document( *editor_->document() );
     for( auto&& block = document.begin(); block.isValid(); block = block.next(), id++ )
     {
 
         // insert new data
-        lineNumberData_ << LineNumberData( id, block_count, block.position() );
+        lineNumberData_.append( LineNumberData( id, blockCount, block.position() ) );
 
         // update block count
-        block_count += editor_->blockCount( block );
+        blockCount += editor_->blockCount( block );
 
     }
 

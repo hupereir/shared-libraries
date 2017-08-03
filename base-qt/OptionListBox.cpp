@@ -224,7 +224,7 @@ void OptionListBox::read( const Options& options )
     // add to model.
     OptionModel::List optionList;
     for( const auto& option:values )
-    { optionList << OptionPair( optionName(), option ); }
+    { optionList.append( OptionPair( optionName(), option ) ); }
 
     model_->set( optionList );
     list_->resizeColumns();
@@ -372,7 +372,7 @@ void OptionListBox::_remove()
     // retrieve selected items; retrieve only recordable options
     OptionModel::List removed;
     for( const auto& optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
-    { if( optionPair.second.hasFlag( Option::Flag::Recordable ) ) removed << optionPair; }
+    { if( optionPair.second.hasFlag( Option::Flag::Recordable ) ) removed.append( optionPair ); }
 
     // remove
     model_->remove( removed );

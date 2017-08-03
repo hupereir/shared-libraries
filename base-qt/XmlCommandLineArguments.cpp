@@ -37,7 +37,6 @@ XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
         if( child_element.isNull() ) continue;
 
         if( child_element.tagName() == Xml::Argument ) { append( child_element.text() ); }
-        else Debug::Throw() << "XmlCommandLineArguments::XmlCommandLineArguments - unrecognized child: " << child_element.tagName() << endl;
 
     }
 

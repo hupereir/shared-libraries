@@ -45,7 +45,7 @@ void FileSystemWatcher::_addModifiedDirectory( const QString& directory )
 
     // append to directory list
     Debug::Throw() << "FileSystemWatcher::_addModifiedDirectory - " << directory << endl;
-    directories_ << directory;
+    directories_.append( directory );
 
     // restart timer
     if( !timer_.isActive() ) timer_.start( delay_, this );

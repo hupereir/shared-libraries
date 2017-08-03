@@ -211,7 +211,7 @@ void BaseFindWidget::changeEvent( QEvent* event )
 void BaseFindWidget::_addDisabledButton( QAbstractButton* button )
 {
     Debug::Throw( "BaseFindWidget::_addDisabledButton.\n" );
-    buttons_ << button;
+    buttons_.append( button );
     _updateButtons();
 }
 

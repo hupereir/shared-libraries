@@ -40,16 +40,11 @@ FileRecordModel::IconCache& FileRecordModel::_icons()
 FileRecordModel::FileRecordModel( QObject* parent ):
     ListModel<FileRecord>( parent ),
     Counter( "FileRecordModel" ),
-    iconPropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Icon ) )
+    iconPropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Icon ) ),
+    columnTitles_( { tr( "File" ), tr( "Path" ), tr( "Last Accessed" ) } )
 {
     Debug::Throw("FileRecordModel::FileRecordModel.\n" );
-
-    columnTitles_ << tr( "File" );
-    columnTitles_ << tr( "Path" );
-    columnTitles_ << tr( "Last Accessed" );
-
     connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
-
 }
 
 //__________________________________________________________________
@@ -233,7 +228,7 @@ void FileRecordModel::_updateColumns( const ValueType& value )
     {
         // look for property name in list of columns
         if( std::find( columnTitles_.begin(), columnTitles_.end(), FileRecord::PropertyId::get( iter.key() ) ) == columnTitles_.end() )
-        { columnTitles_ << FileRecord::PropertyId::get( iter.key() ); }
+        { columnTitles_.append( FileRecord::PropertyId::get( iter.key() ) ); }
 
     }
 

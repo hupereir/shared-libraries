@@ -753,7 +753,7 @@ namespace Ssh
     QString Connection::_commandMessage( Command command ) const
     {
         using CommandHash = QHash<Command,QString>;
-        static const CommandHash commandNames = Base::makeT<CommandHash>( {
+        static const auto commandNames = Base::makeT<CommandHash>( {
             { Connect, tr( "Connecting to host" ) },
             { Handshake, tr( "Performing SSH handshake" ) },
             { ConnectAgent, tr( "Connecting to SSH agent" ) },

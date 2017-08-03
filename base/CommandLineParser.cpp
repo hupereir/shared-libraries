@@ -110,8 +110,7 @@ CommandLineArguments CommandLineParser::arguments() const
 {
     Debug::Throw( "CommandLineParser::arguments.\n" );
 
-    CommandLineArguments out;
-    out << applicationName_;
+    CommandLineArguments out( { applicationName_ } );
 
     // add flags
     for( auto&& iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
@@ -119,17 +118,16 @@ CommandLineArguments CommandLineParser::arguments() const
         const Group& group = iter.value();
 
         for( auto&& iter = group.flags_.constBegin(); iter != group.flags_.constEnd(); ++iter )
-        { if( iter.value().set_ ) out << iter.key().longName(); }
+        { if( iter.value().set_ ) out.append( iter.key().longName() ); }
 
         // add options
         for( auto&& iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
-        { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out << iter.key().longName() << iter.value().value_; }
+        { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out.append( std::initializer_list<QString>( { iter.key().longName(), iter.value().value_ } ) ); }
 
     }
 
     // add orphans
-    for( const auto& orphan:orphans_ )
-    { out << orphan; }
+    out.append( orphans_ );
 
     return out;
 

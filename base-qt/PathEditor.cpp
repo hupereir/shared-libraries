@@ -559,7 +559,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
             item->dragMonitor().setDragEnabled( dragEnabled_ );
             group_->addButton( item );
             buttonLayout_->addWidget( item );
-            items_ << item;
+            items_.append( item );
 
         }
 
@@ -590,7 +590,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item->dragMonitor().setDragEnabled( dragEnabled_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
-                items_ << item;
+                items_.append( item );
 
             }
 
@@ -618,7 +618,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
                 item->dragMonitor().setDragEnabled( dragEnabled_ );
                 group_->addButton( item );
                 buttonLayout_->addWidget( item );
-                items_ << item;
+                items_.append( item );
 
             }
 
@@ -759,7 +759,7 @@ void PathEditor::_updatePrefix()
             else if( item.startsWith( prefix ) ) item = item.mid( prefix.size() );
 
             if( item.trimmed().isEmpty() ) continue;
-            items << item;
+            items.append( item );
         }
 
         editor_->clear();
@@ -794,11 +794,11 @@ void PathEditor::_menuButtonClicked()
     File::List pathList;
     for( const auto& item:items_ )
     {
-        if( item->isHidden() ) pathList << item->path();
+        if( item->isHidden() ) pathList.append( item->path() );
         else {
 
             // also add first non visible path
-            pathList << item->path();
+            pathList.append( item->path() );
             break;
 
         }

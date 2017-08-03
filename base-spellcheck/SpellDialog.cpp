@@ -451,7 +451,7 @@ namespace SpellCheck
         if( !local.isValid() ) local = list_->selectionModel()->currentIndex();
         if( !local.isValid() ) return;
 
-        const auto& word( model_.get( local ) );
+        const auto word( model_.get( local ) );
         if( interface_.replace( word ) ) _replaceSelection( word );
 
         // parse next word

@@ -65,7 +65,7 @@ namespace Base
             QString label( text[i] );
             i++;
             if( text[i].isNull() ) break;
-            items_ << HelpItem( label, text[i] );
+            items_.append( HelpItem( label, text[i] ) );
         }
 
         return;

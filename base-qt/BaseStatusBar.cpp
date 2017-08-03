@@ -62,7 +62,7 @@ void BaseStatusBar::addLabel( int stretch )
     label->setMargin(2);
 
     addPermanentWidget( label, stretch );
-    labels_ << label;
+    labels_.append( label );
 }
 
 //__________________________________________________________________

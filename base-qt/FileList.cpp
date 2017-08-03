@@ -64,7 +64,7 @@ File::List FileList::files() const
     FileRecord::List records( _truncatedList( records_ ) );
     File::List out;
     for( const auto& record:records )
-    { out << record.file(); }
+    { out.append( record.file() ); }
 
     return out;
 }
@@ -180,7 +180,7 @@ FileRecord& FileList::_add(
     } else {
 
         Debug::Throw() << "FileList::_add - adding: " << record.file() << endl;
-        records_ << record;
+        records_.append( record );
 
         if( emitSignal ) emit contentsChanged();
         return records_.back();

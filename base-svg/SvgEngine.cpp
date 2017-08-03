@@ -72,7 +72,7 @@ namespace Svg
 
             SvgId::List svgIdList;
             for( auto&& iter = cache_.begin(); iter != cache_.end(); ++iter )
-            { svgIdList << iter.key(); }
+            { svgIdList.append( iter.key() ); }
 
             cache_.clear();
             preload( svgIdList );

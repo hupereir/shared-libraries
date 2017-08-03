@@ -125,7 +125,7 @@ namespace Base
         else {
 
             // retrieve item
-            const auto& item( model_.get( current ) );
+            const auto item( model_.get( current ) );
             htmlEditor_->setHtml( item.text() );
 
         }

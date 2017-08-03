@@ -75,14 +75,13 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
 
                 if( attribute.name() == Base::Xml::Name ) property.first = attribute.value();
                 else if( attribute.name() == Base::Xml::Value ) property.second = attribute.value();
-                else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized attribute " << attribute.name() << endl;
 
             }
 
             if( !( property.first.isEmpty() || property.second.isEmpty() ) )
             { addProperty( property.first, property.second ); }
 
-        } else Debug::Throw(0) << "XmlFileRecord::XmlFileRecord - unrecognized child " << childElement.tagName() << endl;
+        }
     }
 
 }

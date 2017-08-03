@@ -455,7 +455,7 @@ void IconView::startDrag( Qt::DropActions supportedActions )
     // get list of dragable indexes
     QModelIndexList indexes;
     for( const auto& index:selectionModel()->selectedIndexes() )
-    { if( model()->flags( index ) & Qt::ItemIsDragEnabled ) indexes << index; }
+    { if( model()->flags( index ) & Qt::ItemIsDragEnabled ) indexes.append( index ); }
     if( indexes.isEmpty() ) return;
 
     // get mime data
@@ -841,7 +841,7 @@ QModelIndexList IconView::_selectedIndexes( const QRect& constRect ) const
 
         const IconViewItem& item( iter.value() );
         if( rect.intersects( item.boundingRect().translated( item.position() ) ) )
-        { indexes << model()->index( iter.key(), 0 ); }
+        { indexes.append( model()->index( iter.key(), 0 ) ); }
 
     }
 

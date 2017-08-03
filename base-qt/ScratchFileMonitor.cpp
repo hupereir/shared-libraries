@@ -40,7 +40,7 @@ void ScratchFileMonitor::deleteScratchFiles()
     {
 
         if( file.exists() && file.isWritable() && (file.isLink() || !file.isDirectory() ) )
-        { records << FileRecord( file ); }
+        { records.append( FileRecord( file ) ); }
 
     }
 

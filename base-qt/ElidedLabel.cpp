@@ -180,11 +180,11 @@ void ElidedLabel::updateElidedText()
         if (lineWidth > labelWidth)
         {
             elided = true;
-            elidedLines << prefix + fontMetrics.elidedText(line, elideMode_, labelWidth ) + suffix;
+            elidedLines.append( prefix + fontMetrics.elidedText(line, elideMode_, labelWidth ) + suffix );
 
         } else {
 
-            elidedLines << fullLine;
+            elidedLines.append( fullLine );
 
         }
     }

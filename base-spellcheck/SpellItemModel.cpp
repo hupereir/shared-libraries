@@ -32,7 +32,7 @@ namespace SpellCheck
         if( !contains( index ) ) return QVariant();
 
         // retrieve associated file info
-        const auto& text( get(index) );
+        const auto text( get(index) );
         if( role == Qt::DisplayRole ) return text;
         else if( role == Qt::CheckStateRole ) return disabledItems_.contains( text ) ?  Qt::Unchecked : Qt::Checked;
         else return QVariant();

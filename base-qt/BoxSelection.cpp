@@ -236,7 +236,7 @@ bool BoxSelection::fromString( QString input )
 
     // if there are more lines in current box than in the selection, fill with blank lines
     for( int i = inputList.size(); i < cursors_.size(); i++ )
-    { inputList << QString( columns, ' ' ); }
+    { inputList.append( QString( columns, ' ' ) ); }
 
     // loop over items and cursors, replace strings
     QTextCursor cursor( parent_->textCursor() );
@@ -523,7 +523,7 @@ void BoxSelection::_store()
     Debug::Throw() << "BoxSelection::_store - [" << firstColumn << "," << columns << "," << rows << "]" << endl;
 
     // translate rect
-    QRect local( parent_->toViewport( rect() ) );
+    auto local( parent_->toViewport( rect() ) );
     cursors_ = CursorList( firstColumn, columns );
     for( int row = 0; row < rows; row ++ )
     {
@@ -538,7 +538,7 @@ void BoxSelection::_store()
             << " end: (" << end.x() << "," << end.y() << ")"
             << endl;
 
-        QTextCursor cursor( parent_->cursorForPosition( begin ) );
+        auto cursor( parent_->cursorForPosition( begin ) );
         Debug::Throw()
             << "BoxSelection::_store -"
             << " begin: " << parent_->cursorForPosition( begin ).position()
@@ -550,7 +550,7 @@ void BoxSelection::_store()
         { cursor.setPosition( parent_->cursorForPosition( end ).position(), QTextCursor::KeepAnchor ); }
 
         // store in list
-        cursors_ << cursor;
+        cursors_.append( cursor );
 
     }
 

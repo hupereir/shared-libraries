@@ -491,7 +491,6 @@ namespace Server
     bool ApplicationManager::_initializeClient()
     {
 
-        Debug::Throw( "ApplicationManager::_initializeClient.\n" );
         Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << host_.toString() << " port: " << port_ << endl;
 
         // connect client to port

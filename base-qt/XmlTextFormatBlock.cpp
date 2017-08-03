@@ -57,7 +57,6 @@ namespace Format
             else if( name == Xml::Color ) setColor( value );
             else if( name == Xml::HRef ) setHRef( value );
 
-            else Debug::Throw(0) << "XmlTextFormatBlock::XmlTextFormatBlock - unrecognized text format attribute: \"" << name << "\"\n";
         }
 
     }

@@ -1326,7 +1326,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
 
                 BaseFileInfo fileInfo( element );
                 if( fileInfo.file().isEmpty() || fileInfo.isNavigator() || !fileInfo.isFolder() ) continue;
-                fileInfoList << fileInfo;
+                fileInfoList.append( fileInfo );
 
             }
         }
@@ -1355,7 +1355,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
             if( file.isBrokenLink() ) fileInfo.setIsBrokenLink();
             if( file.isHidden() ) fileInfo.setIsHidden();
 
-            fileInfoList << fileInfo;
+            fileInfoList.append( fileInfo );
 
         }
 
