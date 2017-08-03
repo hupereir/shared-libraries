@@ -28,8 +28,6 @@
 #include <QHash>
 #endif
 
-#include <QVector>
-
 #include <initializer_list>
 #include <utility>
 
@@ -51,7 +49,7 @@ namespace Base
         #if QT_VERSION >= 0x050100
         return T( std::move( reference ) );
         #else
-        // for old QT versions there is no QHash constructor from initializer_list
+        // for old QT versions there is no container constructor from initializer_list
         T out;
         for( auto&& pair:reference ) { out.insert( pair.first, pair.second ); }
         return out;
@@ -64,7 +62,7 @@ namespace Base
         #if QT_VERSION >= 0x050100
         return T( std::move( reference ) );
         #else
-        // for old QT versions there is no QSet constructor from initializer_list
+        // for old QT versions there is no container constructor from initializer_list
         T out;
         for( auto&& value:reference ) { out.insert( value ); }
         return out;
@@ -72,11 +70,12 @@ namespace Base
     }
 
     template<typename T>
-    void append( QVector<T>& first, std::initializer_list<T>&& second )
+    void append( T& first, std::initializer_list<typename T::value_type>&& second )
     {
         #if QT_VERSION >= 0x050500
         first.append( std::move( second ) );
         #else
+        // for old QT versions there is no append to some containers from initializer_list
         for( const auto& content:std::move(second) )
         { first.append( content ); }
         #endif
