@@ -28,6 +28,8 @@
 #include <QHash>
 #endif
 
+#include <QVector>
+
 #include <initializer_list>
 #include <utility>
 
@@ -66,6 +68,17 @@ namespace Base
         T out;
         for( auto&& value:reference ) { out.insert( value ); }
         return out;
+        #endif
+    }
+
+    template<typename T>
+    void append( QVector<T>& first, std::initializer_list<T>&& second )
+    {
+        #if QT_VERSION >= 0x050500
+        first.append( std::move( second ) );
+        #else
+        for( const auto& content:std::move(second) )
+        { first.append( content ); }
         #endif
     }
 
