@@ -32,7 +32,7 @@
 #include <QIcon>
 #include <QSettings>
 
-#if defined( Q_OS_WIN )
+#if defined(Q_OS_WIN)
 #include <windows.h>
 #include <shlobj.h>
 #endif

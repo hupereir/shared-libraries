@@ -59,7 +59,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     layout->addWidget( buttonBox_ );
 
     // update icons, on windows
-    #if defined( Q_OS_WIN )
+    #if defined(Q_OS_WIN)
     if( hasCancelButton() ) cancelButton().setIcon( IconEngine::get( IconNames::DialogCancel ) );
     if( hasOkButton() ) okButton().setIcon( hasCancelButton() ? IconEngine::get( IconNames::DialogOk ) : IconEngine::get( IconNames::DialogClose ) );
     #endif
