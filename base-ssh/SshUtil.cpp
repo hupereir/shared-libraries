@@ -35,6 +35,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#ifdef __OS2__
+typedef __socklen_t     socklen_t;
+#endif
+
 namespace Ssh
 {
 
@@ -43,7 +47,7 @@ namespace Ssh
     {
         QList<int> optionNames =
         {
-            #if  !defined(Q_OS_WIN)
+            #if  !defined(Q_OS_WIN) && !defined(__OS2__)
             TCP_CORK, TCP_DEFER_ACCEPT, TCP_INFO, TCP_KEEPCNT, TCP_KEEPIDLE,
             TCP_KEEPINTVL, TCP_LINGER2, TCP_MAXSEG, TCP_QUICKACK,  TCP_SYNCNT,
             TCP_WINDOW_CLAMP,
@@ -55,7 +59,7 @@ namespace Ssh
         int bit = 0;
         for( const auto& optionName:optionNames )
         {
-            #if defined( Q_OS_WIN )
+            #if defined(Q_OS_WIN)
             char value = 0;
             #else
             int value = 0;
@@ -79,7 +83,7 @@ namespace Ssh
         {
             SO_ACCEPTCONN, SO_BROADCAST, SO_DEBUG,SO_ERROR, SO_DONTROUTE,
             SO_KEEPALIVE, SO_LINGER,
-            #if !defined( Q_OS_WIN )
+            #if !defined(Q_OS_WIN) && !defined(__OS2__)
             SO_BINDTODEVICE,  SO_BSDCOMPAT, SO_DOMAIN, SO_MARK, SO_PASSCRED,
             SO_PEERCRED,  SO_PRIORITY,  SO_PROTOCOL, SO_RCVBUFFORCE, SO_SNDBUFFORCE,
             SO_TIMESTAMP,
@@ -93,7 +97,7 @@ namespace Ssh
         int bit = 0;
         for( const auto& optionName:optionNames )
         {
-            #if defined( Q_OS_WIN )
+            #if defined(Q_OS_WIN)
             char value = 0;
             #else
             int value = 0;
