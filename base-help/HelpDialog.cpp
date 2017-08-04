@@ -29,6 +29,7 @@
 #include "XmlOptions.h"
 
 #include <QAction>
+#include <QDesktopServices>
 #include <QHeaderView>
 #include <QLayout>
 #include <QPushButton>
@@ -80,6 +81,8 @@ namespace Base
         htmlEditor_->setReadOnly( true );
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );
+        htmlEditor_->setTrackAnchors( true );
+        connect( htmlEditor_, SIGNAL(linkActivated(QString)), SLOT(_openLink(QString)) );
 
         // connect list to text edit
         connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex,QModelIndex)) );
@@ -141,4 +144,10 @@ namespace Base
         htmlEditor_->setFont( qApp->font() );
     }
 
+    //_________________________________________________________
+    void HelpDialog::_openLink( QString link )
+    {
+        Debug::Throw() << "HelpDialog::_openLink - link: " << link << endl;
+        QDesktopServices::openUrl( link );
+    }
 }

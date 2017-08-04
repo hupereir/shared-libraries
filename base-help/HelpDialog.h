@@ -59,6 +59,9 @@ namespace Base
         //* update configuration
         void _updateConfiguration();
 
+        //* open link
+        void _openLink( QString );
+
         private:
 
         //* model
