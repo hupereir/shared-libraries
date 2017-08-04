@@ -21,7 +21,7 @@
 #include "NonCopyable.h"
 #include "Debug.h"
 
-#if !defined(Q_OS_WIN)
+#if !defined(Q_OS_WIN) && !defined(__OS2__)
 #include <sys/socket.h>
 #include <net/if.h>
 #include <sys/ioctl.h>
@@ -74,7 +74,9 @@ namespace Network
     //______________________________________________________________________
     void ConnectionMonitor::setEnabled( bool enabled )
     {
-        #if !defined(Q_OS_WIN)
+        #if defined(Q_OS_WIN) || defined(__OS2__)
+        return;
+        #else
         if( enabled == enabled_ ) return;
         enabled_ = enabled;
 
@@ -99,7 +101,7 @@ namespace Network
     ConnectionMonitor::DeviceSet ConnectionMonitor::devices( ConnectionMonitor::DeviceType type )
     {
         Debug::Throw( "Network::ConnectionMonitor::devices.\n" );
-        #if defined(Q_OS_WIN)
+        #if defined(Q_OS_WIN) || defined(__OS2__)
         return DeviceSet();
         #else
         DeviceSet out;
