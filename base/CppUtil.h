@@ -44,14 +44,14 @@ namespace Base
     { return static_cast<underlying_type_t<T>>(value);}
 
     template<typename T>
-    T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type>>&& reference )
+    T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
     {
         #if QT_VERSION >= 0x050100
         return T( std::move( reference ) );
         #else
         // for old QT versions there is no container constructor from initializer_list
         T out;
-        for( auto&& pair:reference ) { out.insert( pair.first, pair.second ); }
+        for( auto&& pair:std::move(reference) ) { out.insert( pair.first, pair.second ); }
         return out;
         #endif
     }
@@ -64,11 +64,12 @@ namespace Base
         #else
         // for old QT versions there is no container constructor from initializer_list
         T out;
-        for( auto&& value:reference ) { out.insert( value ); }
+        for( auto&& value:std::move(reference) ) { out.insert( value ); }
         return out;
         #endif
     }
 
+    //* append initializer_list to a container
     template<typename T>
     void append( T& first, std::initializer_list<typename T::value_type>&& second )
     {
@@ -79,6 +80,25 @@ namespace Base
         for( const auto& content:std::move(second) )
         { first.append( content ); }
         #endif
+    }
+
+
+    //* efficient map insertion
+    template<typename T>
+    void insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
+    {
+        auto iterator = map.lowerBound( key );
+        if( iterator != map.end() && !( key < iterator.key() || iterator.key() < key ) )
+        {
+
+            iterator.value() = value;
+
+        } else {
+
+            map.insert( iterator, key, value );
+
+        }
+
     }
 
 }

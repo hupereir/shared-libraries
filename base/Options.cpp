@@ -20,6 +20,7 @@
 #include "Options.h"
 
 #include "Color.h"
+#include "CppUtil.h"
 #include "Debug.h"
 
 #include <algorithm>
@@ -124,10 +125,11 @@ void Options::clearSpecialOptions( const QString& name )
 void Options::set( const QString& name, const Option& constOption, bool isDefault )
 {
     Debug::Throw() << "Options::set - name: " << name << endl;
-    Q_ASSERT( !isSpecialOption( name ) );
-    Option option( constOption );
+    auto option( constOption );
     if( isDefault || _autoDefault() ) option.setDefault();
-    options_[name] = option;
+
+    // options_[name] = option;
+    Base::insert( options_, name, option );
 }
 
 //________________________________________________
@@ -137,7 +139,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
     Debug::Throw() << "Options::add - name: " << name << " value: \"" << constOption.raw() << "\"" << endl;
 
     // store option as special if requested
-    SpecialMap::iterator iter( specialOptions_.find( name ) );
+    auto iter( specialOptions_.find( name ) );
 
     // check option
     if( iter == specialOptions_.end() )
@@ -147,7 +149,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
     }
 
     // set as default
-    Option option( constOption );
+    auto option( constOption );
     if( isDefault || _autoDefault() ) option.setDefault();
 
     // if option is first, set as current

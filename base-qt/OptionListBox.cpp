@@ -224,7 +224,7 @@ void OptionListBox::read( const Options& options )
     // add to model.
     OptionModel::List optionList;
     for( const auto& option:values )
-    { optionList.append( OptionPair( optionName(), option ) ); }
+    { optionList.append( Options::Pair( optionName(), option ) ); }
 
     model_->set( optionList );
     list_->resizeColumns();
@@ -286,7 +286,7 @@ void OptionListBox::_add()
     if( dialog.editor().text().isEmpty() ) return;
 
     // create new item
-    OptionPair option( optionName(), Option(dialog.editor().text()) );
+    Options::Pair option( optionName(), Option(dialog.editor().text()) );
     model_->add( option );
 
     // make sure item is selected

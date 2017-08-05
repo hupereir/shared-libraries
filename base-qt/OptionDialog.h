@@ -49,10 +49,10 @@ class OptionDialog: public CustomDialog
     void _reload();
 
     //* option modified
-    void _optionModified( OptionPair );
+    void _optionModified( Options::Pair );
 
     //* option modified
-    void _specialOptionModified( OptionPair );
+    void _specialOptionModified( Options::Pair );
 
     private:
 

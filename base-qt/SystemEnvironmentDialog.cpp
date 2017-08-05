@@ -57,13 +57,13 @@ CustomDialog( parent, CloseButton )
     #if QT_VERSION >= 0x040800
     auto environment = QProcessEnvironment::systemEnvironment();
     for( const auto& key:environment.keys() )
-    { options.append( OptionPair( key, Option(environment.value( key )) ) ); }
+    { options.append( { key, Option(environment.value( key )) } ); }
     #else
     for( const auto& line:QProcess::systemEnvironment())
     {
         auto parsed( line.split( "=" ) );
         if( parsed.empty() ) continue;
-        options.append( OptionPair( parsed[0], parsed.size() > 1 ? parsed[1]: "" ) );
+        options.append( { parsed[0], parsed.size() > 1 ? Option( parsed[1] ): Option() } );
     }
     #endif
 

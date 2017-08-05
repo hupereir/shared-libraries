@@ -83,8 +83,8 @@ OptionDialog::OptionDialog( QWidget* parent ):
     _reload();
 
     // connections
-    connect( &model_, SIGNAL(optionModified(OptionPair)), SLOT(_optionModified(OptionPair)) );
-    connect( &model_, SIGNAL(specialOptionModified(OptionPair)), SLOT(_specialOptionModified(OptionPair)) );
+    connect( &model_, SIGNAL(optionModified(Options::Pair)), SLOT(_optionModified(Options::Pair)) );
+    connect( &model_, SIGNAL(specialOptionModified(Options::Pair)), SLOT(_specialOptionModified(Options::Pair)) );
     connect( this, SIGNAL(configurationChanged()), Base::Singleton::get().application(), SIGNAL(configurationChanged()) );
 
     // insert reload
@@ -107,10 +107,10 @@ void OptionDialog::_reload()
     const Options::SpecialMap specialOptions( backupOptions_.specialOptions() );
     for( auto&& iter = specialOptions.begin(); iter != specialOptions.end(); ++iter )
     {
-        model_.add( OptionPair( iter.key(), Option() ) );
+        model_.add( Options::Pair( iter.key(), Option() ) );
         OptionModel::List options;
         for( const auto& option:iter.value() )
-        { model_.add( OptionPair( iter.key(), option ) ); }
+        { model_.add( Options::Pair( iter.key(), option ) ); }
 
     }
 
@@ -118,7 +118,7 @@ void OptionDialog::_reload()
     const Options::Map& options( backupOptions_.options() );
     OptionModel::List optionList;
     for( auto&& iter = options.begin(); iter != options.end(); ++iter )
-    { optionList.append( OptionPair( iter.key(), iter.value() ) ); }
+    { optionList.append( Options::Pair( iter.key(), iter.value() ) ); }
     model_.add( optionList );
 
     list_->resizeColumns();
@@ -134,7 +134,7 @@ void OptionDialog::_reload()
 }
 
 //______________________________________________________________
-void OptionDialog::_optionModified( OptionPair option )
+void OptionDialog::_optionModified( Options::Pair option )
 {
     Debug::Throw() << "OptionDialog::_optionModified - " << option.first << " value: " << option.second.raw() << endl;
     if( XmlOptions::get().raw( option.first ) != option.second.raw() )
@@ -148,12 +148,12 @@ void OptionDialog::_optionModified( OptionPair option )
 }
 
 //______________________________________________________________
-void OptionDialog::_specialOptionModified( OptionPair option )
+void OptionDialog::_specialOptionModified( Options::Pair option )
 {
     Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first << endl;
 
     // find all matching options from model
-    QModelIndex index( model_.index( OptionPair( option.first, Option() ) ) );
+    QModelIndex index( model_.index( Options::Pair( option.first, Option() ) ) );
     Q_ASSERT( index.isValid() );
 
     OptionModel::List values( model_.children( index ) );

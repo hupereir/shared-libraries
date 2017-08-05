@@ -28,7 +28,7 @@
 //_______________________________________________
 namespace Base
 {
-    template<> bool isChild<OptionPair>( const OptionPair& first, const OptionPair& second )
+    template<> bool isChild<Options::Pair>( const Options::Pair& first, const Options::Pair& second )
     { return second.first == first.first && second.second.raw().isEmpty(); }
 };
 
@@ -48,7 +48,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
     // check index, role and column
     if( !index.isValid() ) return QVariant();
 
-    const OptionPair& option( get( index ) );
+    const Options::Pair& option( get( index ) );
 
     // return text associated to file and column
     if( role == Qt::DisplayRole )
@@ -77,12 +77,12 @@ bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int r
     if( !(index.isValid() && index.column() == Value && role == Qt::EditRole ) ) return false;
 
     // retrieve option
-    const OptionPair source( get( index ) );
+    const Options::Pair source( get( index ) );
     const QString newString( value.toString() );
     if( !( newString.isNull() || newString == source.second.raw() ) )
     {
 
-        OptionPair destination( source );
+        Options::Pair destination( source );
         destination.second.setRaw( newString );
         replace( source, destination );
 
@@ -114,7 +114,7 @@ QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int r
 }
 
 //________________________________________________________
-bool OptionModel::SortFTor::operator () ( OptionPair first, OptionPair second ) const
+bool OptionModel::SortFTor::operator () ( Options::Pair first, Options::Pair second ) const
 {
 
     if( order_ == Qt::DescendingOrder ) std::swap( first, second );

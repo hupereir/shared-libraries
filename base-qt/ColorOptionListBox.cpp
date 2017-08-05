@@ -88,7 +88,7 @@ void ColorOptionListBox::_add()
     if( !dialog.editor().color().isValid() ) return;
 
     // create new item
-    OptionPair option( optionName(), Option().set<Base::Color>( Base::Color(dialog.editor().color()) ) );
+    Options::Pair option( optionName(), Option().set<Base::Color>( Base::Color(dialog.editor().color()) ) );
     _model().add( option );
 
     // make sure item is selected

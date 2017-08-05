@@ -27,22 +27,20 @@
 
 #include <array>
 
-using OptionPair = Options::Pair;
-
 //___________________________________________________________________
-inline bool operator == ( const OptionPair& first, const OptionPair& second )
+inline bool operator == ( const Options::Pair& first, const Options::Pair& second )
 { return first.first == second.first && first.second.raw() == second.second.raw(); }
 
 //___________________________________________________________________
 namespace Base
 {
     //* isChild operator, needed for TreeModel
-    template<> bool isChild<OptionPair>( const OptionPair&, const OptionPair& );
+    template<> bool isChild<Options::Pair>( const Options::Pair&, const Options::Pair& );
 
 }
 
 //___________________________________________________________________
-class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionModel>
+class OptionModel: public TreeModel<Options::Pair>, private Base::Counter<OptionModel>
 {
 
     Q_OBJECT
@@ -62,7 +60,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
 
     //* constructor
     explicit OptionModel( QObject* parent = nullptr ):
-        TreeModel<OptionPair>( parent ),
+        TreeModel<Options::Pair>( parent ),
         Counter( "OptionModel" )
     {}
 
@@ -98,10 +96,10 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
     Q_SIGNALS:
 
     //* emitted when one special option is modified
-    void specialOptionModified( OptionPair );
+    void specialOptionModified( Options::Pair );
 
     //* emitted when one option is modified
-    void optionModified( OptionPair );
+    void optionModified( Options::Pair );
 
     protected:
 
@@ -127,7 +125,7 @@ class OptionModel: public TreeModel<OptionPair>, private Base::Counter<OptionMod
         { return (*this)( first.get(), second.get() ); }
 
         //* prediction
-        bool operator() ( OptionPair, OptionPair ) const;
+        bool operator() ( Options::Pair, Options::Pair ) const;
 
     };
 
