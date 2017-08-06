@@ -104,7 +104,7 @@ namespace Server
         using ClientPair = QPair< ApplicationId, Client* >;
 
         //* map of clients
-        using ClientMap = QMap< ApplicationId, Client* >;
+        using ClientMap = QHash< ApplicationId, Client* >;
 
         //* list of clients
         using ClientList = QList< Client* >;

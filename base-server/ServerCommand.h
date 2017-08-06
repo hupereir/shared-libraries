@@ -179,17 +179,6 @@ namespace Server
             first.command() == second.command();
     }
 
-    //* less-than operator
-    inline bool operator < ( const ServerCommand& first, const ServerCommand& second )
-    {
-        if( first.timeStamp() != second.timeStamp() ) return first.timeStamp() < second.timeStamp();
-        if( first.id() != second.id() ) return first.id() < second.id();
-
-        // to order command, place IdentifyServer first
-        if( first.command() != second.command() ) return ( first.command() == ServerCommand::IdentifyServer || first.command() < second.command() );
-        return false;
-    }
-
 }
 
 #endif

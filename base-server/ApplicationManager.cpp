@@ -153,14 +153,12 @@ namespace Server
         if( forced ) return acceptedClients_.insert( id, client );
         else {
 
-            ClientMap::iterator iter( acceptedClients_.find( id ) );
-            SameClientFTor sameClientFTor( client );
-            if( iter == acceptedClients_.end() && std::find_if( acceptedClients_.begin(), acceptedClients_.end(), sameClientFTor ) == acceptedClients_.end() )
-            {
+            auto iter = acceptedClients_.find( id );
+            if( iter == acceptedClients_.end() )
+            { iter = std::find_if( acceptedClients_.begin(), acceptedClients_.end(), SameClientFTor(client) ); }
 
-                return acceptedClients_.insert( id, client );
-
-            } else return iter;
+            if( iter == acceptedClients_.end() ) return acceptedClients_.insert( id, client );
+            else return iter;
 
         }
     }

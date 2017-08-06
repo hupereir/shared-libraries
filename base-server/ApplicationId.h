@@ -103,13 +103,10 @@ namespace Server
     inline bool operator == (const ApplicationId& first, const ApplicationId& second)
     { return first.name() == second.name() && first.user() == second.user(); }
 
-    //* lower than to operator
-    inline bool operator < (const ApplicationId& first, const ApplicationId& second)
-    {
-        if ( first.name() != second.name() ) return first.name() < second.name();
-        else if( first.user() != second.user() ) return first.user() < second.user();
-        return false;
-    }
-};
+    //* hash
+    inline uint qHash( const ApplicationId& id )
+    { return qHash( id.name() + id.user() ); }
+
+}
 
 #endif
