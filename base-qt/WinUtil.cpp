@@ -116,7 +116,7 @@ void WinUtil::makeTransparent( double opacity ) const
     auto hwnd = HWND( target_->winId());
 
     // SetLayeredWindowAttributes(hwnd, 0, 255*opacity, LWA_ALPHA);
-    BLENDFUNCTION blend = { AC_SRC_OVER, 0, 255*opacity, AC_SRC_ALPHA };
+    BLENDFUNCTION blend = { AC_SRC_OVER, 0, static_cast<BYTE>(opacity*255), AC_SRC_ALPHA };
     UpdateLayeredWindow( hwnd, nullptr,  nullptr,  nullptr, nullptr,  nullptr, 0, &blend, ULW_ALPHA);
 
     // repaint
@@ -135,7 +135,7 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
     SIZE size = { pixmap.width(), pixmap.height() };
     POINT pointSource = {0,0};
     POINT topPos = { target_->x(),  target_->y() };
-    BLENDFUNCTION blend = { AC_SRC_OVER, 0, opacity*255, AC_SRC_ALPHA };
+    BLENDFUNCTION blend = { AC_SRC_OVER, 0, static_cast<BYTE>(opacity*255), AC_SRC_ALPHA };
 
     #if QT_VERSION >= 0x050000
     HBITMAP hBitmap = QtWin::toHBITMAP(pixmap, QtWin::HBitmapPremultipliedAlpha);
