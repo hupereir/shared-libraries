@@ -20,6 +20,7 @@
 #include "ColorMenu.h"
 
 #include "BaseIconNames.h"
+#include "CppUtil.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 
@@ -39,7 +40,6 @@ ColorMenu::ColorMenu( QWidget* parent ):
 //_______________________________________________
 Base::Color::Set ColorMenu::colors() const
 {
-
     Base::Color::Set out;
     for( auto&& iter = colors_.begin(); iter != colors_.end(); ++iter )
     { out.insert( iter.key() ); }
@@ -48,11 +48,14 @@ Base::Color::Set ColorMenu::colors() const
 }
 
 //_______________________________________________
-void ColorMenu::add( QColor color )
+void ColorMenu::add( const QColor& color )
 {
+    if( !color.isValid() ) return;
 
-    if( color.isValid() && !colors_.contains( Base::Color(color) ) )
-    { colors_.insert( Base::Color(color), QBrush() ); }
+    Base::Color copy( color );
+    auto iter = colors_.lowerBound( copy );
+    if( iter == colors_.end() || !Base::areEquivalent( copy, iter.key() ) )
+    {  colors_.insert( iter, copy, QBrush() ); }
 
     return;
 }
@@ -73,12 +76,12 @@ void ColorMenu::paintEvent( QPaintEvent* event )
     painter.setPen( Qt::NoPen );
     for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
-        QRect action_rect( actionGeometry( iter.key() ) );
-        if( !event->rect().intersects( action_rect ) ) continue;
-        action_rect.adjust( 2*margin, margin+1, -2*margin-1, -margin );
+        auto actionRect( actionGeometry( iter.key() ) );
+        if( !event->rect().intersects( actionRect ) ) continue;
+        actionRect.adjust( 2*margin, margin+1, -2*margin-1, -margin );
         painter.setBrush( colors_[Base::Color(iter.value())] );
         painter.setRenderHints(QPainter::Antialiasing );
-        painter.drawRoundedRect( action_rect, 4, 4 );
+        painter.drawRoundedRect( actionRect, 4, 4 );
     }
 
     painter.end();
@@ -103,15 +106,14 @@ void ColorMenu::_display()
 
     // clear actions
     actions_.clear();
-
     for( auto&& iter = colors_.begin(); iter != colors_.end(); ++iter )
     {
 
         // create pixmap if not done already
-        if( iter.value() == Qt::NoBrush ) iter.value() = QColor( iter.key() );
+        if( iter.value() == Qt::NoBrush ) iter.value() = QBrush( iter.key() );
 
         // create action
-        QAction* action = new QAction( this );
+        auto action = new QAction( this );
         actions_.insert( action, iter.key() );
         addAction( action );
 
@@ -150,7 +152,7 @@ void ColorMenu::_default()
 void ColorMenu::_selected( QAction* action )
 {
     Debug::Throw( "ColorMenu::_selected.\n" );
-    ActionMap::const_iterator iter = actions_.find( action );
+    auto iter = actions_.find( action );
     if( iter != actions_.end() )
     {
         lastColor_ = iter.value();

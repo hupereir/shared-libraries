@@ -83,12 +83,17 @@ namespace Base
     }
 
 
+    //* different from operator
+    template<class T, class U>
+        bool areEquivalent(const T& first, const U& second)
+    { return !(first < second || second < first); }
+
     //* efficient map insertion
     template<typename T>
     void insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
     {
         auto iterator = map.lowerBound( key );
-        if( iterator != map.end() && !( key < iterator.key() || iterator.key() < key ) )
+        if( iterator != map.end() && areEquivalent( key, iterator.key() ) )
         {
 
             iterator.value() = value;

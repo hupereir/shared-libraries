@@ -27,9 +27,9 @@
 #include "ServerCommand.h"
 
 #include <QBasicTimer>
+#include <QHash>
 #include <QHostAddress>
 #include <QList>
-#include <QMap>
 #include <QObject>
 #include <QPair>
 #include <QTcpServer>

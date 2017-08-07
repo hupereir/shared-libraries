@@ -49,7 +49,7 @@ class ColorOptionModel: public OptionModel
     static IconCache& _icons();
 
     //* icon matching color
-    static QIcon _icon( const Base::Color& );
+    static const QIcon& _icon( const Base::Color& );
 
 
 };

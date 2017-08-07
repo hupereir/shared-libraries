@@ -19,6 +19,7 @@
 
 #include "ColorOptionModel.h"
 
+#include "CppUtil.h"
 #include "CustomPixmap.h"
 #include "IconSize.h"
 
@@ -39,7 +40,7 @@ QVariant ColorOptionModel::data( const QModelIndex& index, int role ) const
     if( !index.isValid() ) return QVariant();
 
     // retrieve associated color
-    const Base::Color& color( get( index ).second.get<Base::Color>() );
+    auto color( get( index ).second.get<Base::Color>() );
 
     if( role == Qt::DisplayRole && index.column() == Value ) return color.get().name();
     else if( role == Qt::DecorationRole && index.column() == Value ) return _icon( color );
@@ -48,11 +49,11 @@ QVariant ColorOptionModel::data( const QModelIndex& index, int role ) const
 }
 
 //______________________________________________________
-QIcon ColorOptionModel::_icon( const Base::Color& color )
+const QIcon& ColorOptionModel::_icon( const Base::Color& color )
 {
 
-    IconCache::iterator iter( _icons().find( color ) );
-    if( iter != _icons().end() ) return iter.value();
+    auto iter( _icons().lowerBound( color ) );
+    if( iter != _icons().end() && Base::areEquivalent( color, iter.key() ) ) return iter.value();
     else {
 
 
@@ -71,9 +72,7 @@ QIcon ColorOptionModel::_icon( const Base::Color& color )
         painter.setBrush( Qt::NoBrush );
         painter.drawEllipse( rect );
 
-        QIcon icon( pixmap );
-        _icons()[color] = icon;
-        return icon;
+        return _icons().insert( iter, color, QIcon(pixmap) ).value();
 
     }
 

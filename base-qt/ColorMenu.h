@@ -62,7 +62,7 @@ class ColorMenu: public QMenu, private Base::Counter<ColorMenu>
     { colors_.clear(); }
 
     //* add
-    void add( QColor );
+    void add( const QColor& );
 
     //@}
 

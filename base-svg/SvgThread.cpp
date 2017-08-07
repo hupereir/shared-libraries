@@ -46,12 +46,10 @@ namespace Svg
 
         for( const auto& svg:svgIds_ )
         {
-
             QImage image( svg.size(), QImage::Format_ARGB32_Premultiplied );
             image.fill( Qt::transparent );
             renderer_.render( image, svg.id() );
             cache_.insert( svg, image );
-
         }
 
         emit imageCacheAvailable( cache_ );

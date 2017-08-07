@@ -17,8 +17,10 @@
 *
 *******************************************************************************/
 
-#include "SvgPlasmaInterface.h"
 #include "SvgEngine.h"
+
+#include "CppUtil.h"
+#include "SvgPlasmaInterface.h"
 #include "Svg.h"
 #include "XmlOptions.h"
 
@@ -121,7 +123,12 @@ namespace Svg
     {
 
         for( auto&& iter = cache.begin(); iter != cache.end(); ++iter )
-        { cache_.insert( iter.key(), QPixmap::fromImage( iter.value() ) ); }
+        {
+            // insert only if not already in cache
+            auto foundIter( cache_.lowerBound( iter.key() ) );
+            if( foundIter == cache_.end() || !Base::areEquivalent( foundIter.key(), iter.key() ) )
+            { cache_.insert( foundIter, iter.key(), QPixmap::fromImage( iter.value() ) ); }
+        }
 
     }
 
@@ -129,15 +136,17 @@ namespace Svg
     QPixmap SvgEngine::_get( const SvgId& id, bool fromCache )
     {
 
-        auto&& iter( cache_.find( id ) );
-        if( iter != cache_.end() ) return iter.value();
+        auto iter( cache_.lowerBound( id ) );
+        if( iter != cache_.end() && Base::areEquivalent( id, iter.key() ) ) return iter.value();
+        else
+        {
+            // add to map
+            QPixmap pixmap( id.size() );
+            pixmap.fill( Qt::transparent );
+            renderer_.render( pixmap, id.id() );
 
-        // add to map
-        QPixmap pixmap( id.size() );
-        pixmap.fill( Qt::transparent );
-        renderer_.render( pixmap, id.id() );
-
-        return cache_.insert( id, pixmap ).value();
+            return cache_.insert( iter, id, pixmap ).value();
+        }
 
     }
 

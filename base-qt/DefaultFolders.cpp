@@ -114,14 +114,14 @@ DefaultFolders::DefaultFolders()
 //__________________________________________________________________________
 DefaultFolders::Type DefaultFolders::type( const File& file ) const
 {
-    auto&& iter( allFolders_.find( file ) );
+    auto iter( allFolders_.find( file ) );
     return iter == allFolders_.end() ? Type::Unknown:iter.value();
 }
 
 //__________________________________________________________________________
 File DefaultFolders::file( DefaultFolders::Type type ) const
 {
-    for( auto iter = folders_.constBegin(); iter != folders_.constEnd(); ++iter )
+    for( auto&& iter = folders_.constBegin(); iter != folders_.constEnd(); ++iter )
     { if( iter.value() == type ) return iter.key(); }
 
     return File();
@@ -145,7 +145,7 @@ QString DefaultFolders::iconName( Type type ) const
 void DefaultFolders::_insert( const QStringList& keys, Type value )
 {
     for( const auto& key:keys ) allFolders_.insert( File( key ), value );
-    if( !keys.isEmpty() ) folders_.insert( File( keys.front() ), value );
+    if( !keys.isEmpty() ) Base::insert( folders_, File( keys.front() ), value );
 }
 
 //__________________________________________________________________________
@@ -154,6 +154,6 @@ void DefaultFolders::_insert( const QString& key, Type value )
     if( !key.isEmpty() )
     {
         allFolders_.insert( File( key ), value );
-        folders_.insert( File( key ), value );
+        Base::insert( folders_, File( key ), value );
     }
 }

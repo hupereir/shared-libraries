@@ -22,6 +22,7 @@
 #include "BaseFindDialog.h"
 #include "BaseFindWidget.h"
 #include "BaseIconNames.h"
+#include "CppUtil.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
@@ -107,10 +108,10 @@ TextSelection IconView::selection() const
 
     QString text;
     if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
-    else if( selectionModel() && model() && selectionModel()->currentIndex().isValid() )
+    else if( selectionModel() && model_ && selectionModel()->currentIndex().isValid() )
     {
         const QModelIndex current( selectionModel()->currentIndex() );
-        if( !(text =  model()->data( current ).toString()).isEmpty() ) out.setText( text );
+        if( !(text =  model_->data( current ).toString()).isEmpty() ) out.setText( text );
     }
 
     // if everything else failed, retrieve last selection
@@ -169,7 +170,7 @@ QModelIndex IconView::indexAt( const QPoint& constPosition ) const
     for( auto&& iter = items_.begin(); iter != items_.end(); ++iter )
     {
         if( iter.value().boundingRect().translated( iter.value().position() ).contains( position ) )
-        { return model()->index( iter.key(), 0 ); }
+        { return model_->index( iter.key(), 0 ); }
     }
 
     return QModelIndex();
@@ -209,10 +210,10 @@ void IconView::scrollTo( const QModelIndex& index, ScrollHint )
 //____________________________________________________________________
 QRect IconView::visualRect( const QModelIndex&  index ) const
 {
-
-    if( items_.contains( index.row() ) )
+    auto iter = items_.find( index.row() );
+    if( iter != items_.end() )
     {
-        const IconViewItem& item( items_[index.row()] );
+        const auto& item( iter.value() );
         return item.boundingRect().translated( item.position() ).translated( -_scrollBarPosition() );
     } else return QRect();
 }
@@ -261,26 +262,31 @@ void IconView::saveSortOrder()
 void IconView::doItemsLayout()
 {
 
-    const int rowCount( model()->rowCount() );
+    const int rowCount( model_->rowCount() );
 
     // first remove invalid items
     for( const auto& key:items_.keys() )
     { if( key >= rowCount ) items_.remove( key ); }
 
     // update existing items and insert new ones
-    for( int row = 0; row < model()->rowCount(); ++row )
+    for( int row = 0; row < model_->rowCount(); ++row )
     {
 
         // index
-        const QModelIndex index( model()->index( row, 0, QModelIndex() ) );
+        const QModelIndex index( model_->index( row, 0 ) );
 
         // make sure row is in map
-        if( items_.contains( row ) ) _updateItem( items_[row], index );
-        else {
+        auto iter( items_.lowerBound( row ) );
+        if( iter != items_.end() && Base::areEquivalent( row, iter.key() ) )
+        {
+
+            _updateItem( iter.value(), index );
+
+        } else {
 
             IconViewItem item;
              _updateItem( item, index );
-            items_.insert( row, item );
+            items_.insert( iter, row, item );
 
         }
 
@@ -350,9 +356,11 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 
     // current index
     QModelIndex index = currentIndex();
-    if( !index.isValid() ) index = model()->index( 0, 0 );
-    if( !( index.isValid() && items_.contains( index.row() ) ) )
-    { return QModelIndex(); }
+    if( !index.isValid() ) index = model_->index( 0, 0 );
+    if( !index.isValid() ) return QModelIndex();
+
+    auto iter = items_.find( index.row() );
+    if( iter == items_.end() ) return QModelIndex();
 
     // convert next/previous action depending on layout direction
     const bool isRightToLeft( qApp->isRightToLeft() );
@@ -365,21 +373,21 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 
     // get current item
     QModelIndex targetIndex;
-    const IconViewItem& item( items_[index.row()] );
+    const auto& item( iter.value() );
     switch( action )
     {
 
-        case MoveHome: targetIndex = model()->index( 0, 0 ); break;
-        case MoveEnd: targetIndex = model()->index( items_.size()-1, 0 ); break;
+        case MoveHome: targetIndex = model_->index( 0, 0 ); break;
+        case MoveEnd: targetIndex = model_->index( items_.size()-1, 0 ); break;
 
-        case MoveLeft: targetIndex = model()->index( item.row()*columnCount_ + item.column() - 1, 0 ); break;
-        case MoveRight: targetIndex = model()->index( item.row()*columnCount_ + item.column() + 1, 0 ); break;
-        case MoveUp: targetIndex = model()->index( (item.row()-1)*columnCount_ + item.column(), 0 ); break;
+        case MoveLeft: targetIndex = model_->index( item.row()*columnCount_ + item.column() - 1, 0 ); break;
+        case MoveRight: targetIndex = model_->index( item.row()*columnCount_ + item.column() + 1, 0 ); break;
+        case MoveUp: targetIndex = model_->index( (item.row()-1)*columnCount_ + item.column(), 0 ); break;
         case MoveDown:
         {
             int row( (item.row()+1)*columnCount_ + item.column() );
-            if( row < items_.size() ) targetIndex = model()->index( row, 0 );
-            else if( items_.values().back().row() > item.row() ) targetIndex = model()->index( items_.size()-1, 0 );
+            if( row < items_.size() ) targetIndex = model_->index( row, 0 );
+            else if( items_.values().back().row() > item.row() ) targetIndex = model_->index( items_.size()-1, 0 );
             else targetIndex = QModelIndex();
             break;
         }
@@ -389,11 +397,15 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
             const qreal target( item.position().y() + item.boundingRect().height() - viewport()->height() );
             for( int i = 0; i <= index.row(); ++i )
             {
-                const IconViewItem& local( items_[i] );
-                if( local.column() != item.column() ) continue;
-                if( local.position().y() > target ) {
+                const auto& iter( items_.find(i) );
+                if( iter == items_.end() ) continue;
 
-                    targetIndex = model()->index( i, 0 );
+                const auto& local( iter.value() );
+                if( local.column() != item.column() ) continue;
+                else if( local.position().y() > target )
+                {
+
+                    targetIndex = model_->index( i, 0 );
                     break;
 
                 }
@@ -408,12 +420,15 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
             const qreal target( item.position().y() + viewport()->height() );
             for( int i = index.row()+1; i < items_.size(); ++i )
             {
-                const IconViewItem& local( items_[i] );
+                const auto& iter( items_.find(i) );
+                if( iter == items_.end() ) continue;
+
+                const auto& local( iter.value() );
                 if( local.column() != item.column() ) continue;
-                if( !targetIndex.isValid() || local.position().y() + local.boundingRect().height() < target )
+                else if( !targetIndex.isValid() || local.position().y() + local.boundingRect().height() < target )
                 {
 
-                    targetIndex = model()->index( i, 0 );
+                    targetIndex = model_->index( i, 0 );
 
                 } else break;
             }
@@ -455,11 +470,11 @@ void IconView::startDrag( Qt::DropActions supportedActions )
     // get list of dragable indexes
     QModelIndexList indexes;
     for( const auto& index:selectionModel()->selectedIndexes() )
-    { if( model()->flags( index ) & Qt::ItemIsDragEnabled ) indexes.append( index ); }
+    { if( model_->flags( index ) & Qt::ItemIsDragEnabled ) indexes.append( index ); }
     if( indexes.isEmpty() ) return;
 
     // get mime data
-    QMimeData* data = model()->mimeData( indexes );
+    QMimeData* data = model_->mimeData( indexes );
     if( !data ) return;
 
     // reset hover index
@@ -545,16 +560,16 @@ void IconView::paintEvent( QPaintEvent* event )
     painter.setRenderHint( QPainter::TextAntialiasing, true );
 
     // loop over events
-    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+    for( auto&& iter = items_.constBegin(); iter != items_.constEnd(); ++iter )
     {
         // check intersection with clipRect
-        const IconViewItem& item( iter.value() );
+        const auto& item( iter.value() );
 
         // todo: try understand offsets properly
         if( !item.boundingRect().translated( item.position() ).intersects( clipRect ) ) continue;
 
         // setup option
-        const QModelIndex index( model()->index( iter.key(), 0 ) );
+        const QModelIndex index( model_->index( iter.key(), 0 ) );
         QStyleOptionViewItemV4 option = _viewOptions( index );
         option.rect = item.boundingRect();
 
@@ -836,12 +851,12 @@ QModelIndexList IconView::_selectedIndexes( const QRect& constRect ) const
 
     QModelIndexList indexes;
     const QRect rect( constRect.translated( _scrollBarPosition() ) );
-    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter )
+    for( auto&& iter = items_.constBegin(); iter != items_.constEnd(); ++iter )
     {
 
-        const IconViewItem& item( iter.value() );
+        const auto& item( iter.value() );
         if( rect.intersects( item.boundingRect().translated( item.position() ) ) )
-        { indexes.append( model()->index( iter.key(), 0 ) ); }
+        { indexes.append( model_->index( iter.key(), 0 ) ); }
 
     }
 
@@ -865,11 +880,11 @@ void IconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const
 {
 
     // update text
-    QVariant textVariant( model()->data( index, Qt::DisplayRole ) );
+    QVariant textVariant( model_->data( index, Qt::DisplayRole ) );
     if( textVariant.canConvert( QVariant::String ) ) item.setText( textVariant.value<QString>() );
 
     // update pixmap
-    QVariant decorationVariant( model()->data( index, Qt::DecorationRole ) );
+    QVariant decorationVariant( model_->data( index, Qt::DecorationRole ) );
     if( decorationVariant.canConvert( QVariant::Icon ) ) item.setPixmap( CustomPixmap( decorationVariant.value<QIcon>().pixmap( iconSize() ) ) );
     else if( decorationVariant.canConvert( QVariant::Pixmap ) ) item.setPixmap( CustomPixmap( decorationVariant.value<QPixmap>() ) );
 
@@ -885,10 +900,10 @@ void IconView::_layoutItems()
     int width( 0 );
     columnCount_ = 0;
 
-    for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++columnCount_ )
+    for( auto&& iter = items_.constBegin(); iter != items_.constEnd(); ++iter, ++columnCount_ )
     {
         if( columnCount_ ) width += spacing_;
-        const IconViewItem& item( iter.value() );
+        const auto& item( iter.value() );
         width += item.boundingRect().width();
         if( width > maxWidth ) break;
     }
@@ -909,10 +924,10 @@ void IconView::_layoutItems()
         rowCount_ = 0;
         totalHeight = 0;
         columnSizes = QVector<int>( columnCount_, 0 );
-        for( IconViewItem::Map::const_iterator iter = items_.begin(); iter != items_.end(); ++iter, ++column )
+        for( auto&& iter = items_.constBegin(); iter != items_.constEnd(); ++iter, ++column )
         {
             // reset column
-            const IconViewItem& item( iter.value() );
+            const auto& item( iter.value() );
             if( column >= columnCount_ )
             {
                 if( totalHeight ) totalHeight += spacing_;
@@ -957,10 +972,10 @@ void IconView::_layoutItems()
     int row = 0;
     boundingRect_ = QRect();
     QPoint position( margin, margin_ );
-    for( IconViewItem::Map::iterator iter = items_.begin(); iter != items_.end(); ++iter, ++column )
+    for( auto&& iter = items_.begin(); iter != items_.end(); ++iter, ++column )
     {
 
-        IconViewItem& item( iter.value() );
+        auto& item( iter.value() );
 
         // reset column
         if( column >= columnCount_ )
@@ -989,7 +1004,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
     for( const auto& index:indexes )
     {
         // find item
-        IconViewItem::Map::const_iterator iter( items_.find( index.row() ) );
+        auto iter( items_.find( index.row() ) );
         if( iter == items_.end() ) continue;
 
         // insert in map and update bounding rect
@@ -1004,11 +1019,11 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
     QPainter painter( &pixmap );
     painter.setRenderHint( QPainter::TextAntialiasing, true );
     painter.translate( -boundingRect.topLeft() );
-    for( IconViewItem::Map::const_iterator iter = items.constBegin(); iter != items.constEnd(); ++iter )
+    for( auto&& iter = items.constBegin(); iter != items.constEnd(); ++iter )
     {
 
         // setup option
-        const QModelIndex index( model()->index( iter.key(), 0 ) );
+        const QModelIndex index( model_->index( iter.key(), 0 ) );
         QStyleOptionViewItemV4 option = _viewOptions( index );
         option.rect = iter.value().boundingRect();
 
@@ -1080,7 +1095,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
     TextEditor::setLastSelection( selection );
 
     // check model and selection model
-    if( !( model() && selectionModel() ) ) return false;
+    if( !( model_ && selectionModel() ) ) return false;
 
     QRegExp regexp;
     if( selection.flag( TextSelection::RegExp ) )
@@ -1121,7 +1136,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
         bool accepted( false );
 
         // check if column is visible
-        if( !(text = model()->data( index ).toString() ).isEmpty() )
+        if( !(text = model_->data( index ).toString() ).isEmpty() )
         {
 
             // check if text match
@@ -1176,7 +1191,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
     TextEditor::setLastSelection( selection );
 
     // check model and selection model
-    if( !( model() && selectionModel() ) ) return false;
+    if( !( model_ && selectionModel() ) ) return false;
 
     QRegExp regexp;
     if( selection.flag( TextSelection::RegExp ) )
@@ -1217,7 +1232,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
         bool accepted( false );
 
         // check if column is visible
-        if( !(text = model()->data( index ).toString() ).isEmpty() )
+        if( !(text = model_->data( index ).toString() ).isEmpty() )
         {
 
             // check if text match
@@ -1278,14 +1293,14 @@ QStyleOptionViewItemV4 IconView::_viewOptions( const QModelIndex& index ) const
 
     // color
     {
-        QVariant variant( model()->data( index, Qt::ForegroundRole ) );
+        QVariant variant( model_->data( index, Qt::ForegroundRole ) );
         if( variant.canConvert( QVariant::Color ) )
         { option.palette.setColor( QPalette::Text, variant.value<QColor>() ); }
     }
 
     // font
     {
-        QVariant variant( model()->data( index, Qt::FontRole ) );
+        QVariant variant( model_->data( index, Qt::FontRole ) );
         if( variant.canConvert( QVariant::Font ) )
         { option.font = variant.value<QFont>(); }
     }
@@ -1316,7 +1331,7 @@ void IconView::updateGeometries()
 void IconView::sortByColumn( int column, Qt::SortOrder order)
 {
     Debug::Throw() << "IconView::sortByColumn - column: " << column << " order: " << order << endl;
-    if( model() ) model()->sort( column, order );
+    if( model_ ) model_->sort( column, order );
 }
 
 //_____________________________________________________________________
@@ -1383,7 +1398,7 @@ void IconView::_updateConfiguration()
         emit iconSizeChanged( this->iconSize() );
         #endif
 
-        if( model() ) doItemsLayout();
+        if( model_ ) doItemsLayout();
     }
 }
 
@@ -1427,19 +1442,19 @@ void IconView::_installActions()
 
 //_________________________________________________________
 QModelIndex IconView::_firstIndex() const
-{ return items_.empty() ? QModelIndex():model()->index( 0, 0 ); }
+{ return items_.empty() ? QModelIndex():model_->index( 0, 0 ); }
 
 //_________________________________________________________
 QModelIndex IconView::_lastIndex() const
-{ return items_.empty() ? QModelIndex():model()->index( 0, items_.size()-1 ); }
+{ return items_.empty() ? QModelIndex():model_->index( 0, items_.size()-1 ); }
 
 //_________________________________________________________
 QModelIndex IconView::_indexAfter( const QModelIndex& current ) const
-{ return (current.row() >= items_.size()) ? QModelIndex():model()->index( current.row()+1, 0 ); }
+{ return (current.row() >= items_.size()) ? QModelIndex():model_->index( current.row()+1, 0 ); }
 
 //_________________________________________________________
 QModelIndex IconView::_indexBefore( const QModelIndex& current ) const
-{ return (items_.empty() || current.row() == 0 || current.row() > items_.size() ) ? QModelIndex():model()->index( current.row()-1, 0 ); }
+{ return (items_.empty() || current.row() == 0 || current.row() > items_.size() ) ? QModelIndex():model_->index( current.row()-1, 0 ); }
 
 //_________________________________________________________
 IconView::Container::Container( QWidget* parent ):

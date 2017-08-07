@@ -154,7 +154,6 @@ QString CommandLineParser::option( const QString& tag ) const
 {
     const Group::OptionMap options( _allOptions() );
     auto&& iter( _findTag( options, tag ) );
-    Q_ASSERT( iter != options.end() && iter.value().set_ && !iter.value().value_.isEmpty() );
     return iter.value().value_;
 }
 
@@ -432,22 +431,12 @@ CommandLineParser::Group::FlagMap::iterator CommandLineParser::_findTag( Group::
 
 //_______________________________________________________
 CommandLineParser::Group::FlagMap::const_iterator CommandLineParser::_findTag( const Group::FlagMap& flags, const QString& tag ) const
-{
-    auto&& iter( flags.find( Tag( tag ) ) );
-    if( iter == flags.constEnd() )
-    {
-        const Tag::List tags = flags.keys();
-        auto&& tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
-        if( tagIter != tags.constEnd() ) iter = flags.find( *tagIter );
-    }
-
-    return iter;
-}
+{ return _findTag( const_cast<Group::FlagMap&>(flags), tag ); }
 
 //_______________________________________________________
 CommandLineParser::Group::OptionMap::iterator CommandLineParser::_findTag( Group::OptionMap& options, const QString& tag ) const
 {
-    Group::OptionMap::iterator iter( options.find( Tag( tag ) ) );
+    auto iter( options.find( Tag( tag ) ) );
     if( iter == options.end() )
     {
         const Tag::List tags = options.keys();
@@ -460,17 +449,7 @@ CommandLineParser::Group::OptionMap::iterator CommandLineParser::_findTag( Group
 
 //_______________________________________________________
 CommandLineParser::Group::OptionMap::const_iterator CommandLineParser::_findTag( const Group::OptionMap& options, const QString& tag ) const
-{
-    auto&& iter( options.find( Tag( tag ) ) );
-    if( iter == options.constEnd() )
-    {
-        const Tag::List tags = options.keys();
-        auto&& tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
-        if( tagIter != tags.constEnd() ) iter = options.find( *tagIter );
-    }
-
-    return iter;
-}
+{ return _findTag( const_cast<Group::OptionMap&>( options ), tag ); }
 
 //_______________________________________________________
 void CommandLineParser::Group::clear()

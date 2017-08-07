@@ -94,19 +94,8 @@ class TaskBarProgressNotifications : public QObject, private Base::Counter<TaskB
 
     private:
 
-    #if QT_VERSION < 0x050100
-    //* needed because there is not QMap constructor from initialzer list in older versions of Qt
-    void _update(const std::initializer_list<typename std::pair<QString, QVariant>>& propertyList)
-    {
-        QVariantMap properties;
-        for( auto property:propertyList )
-        { properties.insert( property.first, property.second ); }
-        _update( properties );
-    }
-    #endif
-
     //* update progress, by passing dbus signal
-    void _update(const QVariantMap &properties);
+    void _update(std::initializer_list<typename std::pair<QString, QVariant>>&&);
 
     //* dbus signal path
     QString path_;
