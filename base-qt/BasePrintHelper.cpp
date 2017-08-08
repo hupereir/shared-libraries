@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "BasePrintHelper.h"
+#include "CppUtil.h"
 
 #include <QTextStream>
 #include <QButtonGroup>
@@ -72,10 +73,10 @@ void BasePrintHelper::setupPage( QPrinter* printer )
             // change orientation and define viewports
             printer->setOrientation( orientation_ == QPrinter::Portrait ? QPrinter::Landscape:QPrinter::Portrait );
             const QRect viewport = QRect( 0, 0, scale*printer->pageRect().width(), scale*printer->pageRect().height() );
-            pages_ = {
+            pages_ = Base::makeT<QRectList>({
                 viewport,
                 viewport.translated( scale*fullPageRect.width() + margin, 0 )
-            };
+            });
 
             break;
         }
@@ -87,12 +88,12 @@ void BasePrintHelper::setupPage( QPrinter* printer )
 
             // define viewports
             const QRect viewport = QRect( 0, 0, scale*printer->pageRect().width(), scale*printer->pageRect().height() );
-            pages_ = {
+            pages_ = Base::makeT<QRectList>({
                 viewport,
                 viewport.translated( scale*fullPageRect.width() + margin, 0 ),
                 viewport.translated( 0, scale*fullPageRect.height() + margin ),
                 viewport.translated( scale*fullPageRect.width() + margin, scale*fullPageRect.height() + margin )
-            };
+            });
             break;
         }
 

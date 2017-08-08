@@ -128,7 +128,8 @@ class BasePrintHelper: public QObject
     QRect footerRect_;
 
     //* list of pages viewports
-    QList<QRect> pages_;
+    using QRectList = QList<QRect>;
+    QRectList pages_;
 
     //* page
     int pageNumber_ = 0;
