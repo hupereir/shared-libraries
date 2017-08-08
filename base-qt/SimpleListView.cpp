@@ -85,11 +85,40 @@ void Private::SimpleListViewDelegate::paint( QPainter *painter, const QStyleOpti
         painter->setPen( option.palette.color( colorGroup, QPalette::Text ) );
     }
 
-    if( !pixmap.isNull() )
-    { painter->drawPixmap( option.rect.x() + (option.rect.width()/2)-(pixmapWidth/2), option.rect.y() + 5, pixmap ); }
+    const bool hasPixmap( !pixmap.isNull() );
+    const bool hasText( !text.isEmpty() );
+    const int textHeight = hasText ? textLayout.boundingRect().height():0;
 
-    if ( !text.isEmpty() )
-    { textLayout.draw( painter, QPoint( option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + pixmapHeight + 7 ) ); }
+    if( hasPixmap )
+    {
+        if( hasText )
+        {
+            const int vOffset = (option.rect.height() - textHeight - pixmapHeight)/3;
+            painter->drawPixmap( option.rect.x() + (option.rect.width()/2)-(pixmapWidth/2), option.rect.y() + vOffset, pixmap );
+        } else {
+
+            const int vOffset = (option.rect.height() - pixmapHeight)/2;
+            painter->drawPixmap( option.rect.x() + (option.rect.width()/2)-(pixmapWidth/2), option.rect.y() + vOffset, pixmap );
+
+        }
+
+    }
+
+    if ( hasText )
+    {
+        if( hasPixmap )
+        {
+
+            const int vOffset = 2*(option.rect.height() - textHeight - pixmapHeight)/3 + pixmapHeight;
+            textLayout.draw( painter, QPoint( option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + vOffset ) );
+
+        } else {
+
+            const int vOffset = (option.rect.height() - textHeight)/2;
+            textLayout.draw( painter, QPoint( option.rect.x() + (option.rect.width()/2)-(maxWidth/2), option.rect.y() + vOffset ) );
+
+        }
+    }
 
     // restore pen
     painter->setPen( oldPen );
@@ -119,11 +148,10 @@ QSize Private::SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &opt
         pixmapWidth = pixmap.width()/pixmap.devicePixelRatio();
     }
 
-
     QTextLayout textLayout( text, option.font );
     const int maxWidth = qMax( 3 * pixmapWidth, 8 * fontMetrics.height() );
     const int textWidth = _layoutText( &textLayout, maxWidth );
-    int textHeight = textLayout.boundingRect().height();
+    const int textHeight = textLayout.boundingRect().height();
 
     int width, height;
     if ( text.isEmpty() ) height = pixmapHeight;
