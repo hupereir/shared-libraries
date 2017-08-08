@@ -20,6 +20,7 @@
 #include "BaseFileInformationDialog.h"
 
 #include "BaseIconNames.h"
+#include "CppUtil.h"
 #include "Debug.h"
 #include "ElidedLabel.h"
 #include "File.h"
@@ -80,8 +81,8 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     vLayout->addStretch();
 
     // store all items in array, for visibility
-    QList<GridLayoutItem*> items =
-    {
+    using GridLayoutItemList = QList<GridLayoutItem*>;
+    auto items = Base::makeT<GridLayoutItemList>({
         fileItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
         typeItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
         pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable|GridLayoutItem::Flag::Elide ),
@@ -89,7 +90,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
         createdItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
         modifiedItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
         accessedItem_ = new GridLayoutItem( mainPage_, gridLayout_ )
-    };
+    });
 
     fileItem_->setKey( tr( "File name:" ) );
     typeItem_->setKey( tr( "Type:" ) );
@@ -120,10 +121,10 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     layout->addItem( gridLayout );
 
-    items.append( {
+    items.append( Base::makeT<GridLayoutItemList>({
         userItem_ = new GridLayoutItem( box, gridLayout ),
         groupItem_ = new GridLayoutItem( box, gridLayout )
-    } );
+    }) );
 
     userItem_->setKey( tr( "User:" ) );
     groupItem_->setKey( tr( "Group:" ) );
