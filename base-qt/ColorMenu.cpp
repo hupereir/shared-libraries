@@ -55,7 +55,7 @@ void ColorMenu::add( const QColor& color )
     Base::Color copy( color );
     auto iter = colors_.lowerBound( copy );
     if( iter == colors_.end() || !Base::areEquivalent( copy, iter.key() ) )
-    {  colors_.insert( iter, copy, QBrush() ); }
+    { Base::insert( colors_, iter, copy, QBrush() ); }
 
     return;
 }

@@ -36,6 +36,7 @@
 #include <QToolButton>
 #include <QShortcut>
 #include <QTextStream>
+#include <QUrl>
 
 namespace Base
 {
@@ -148,6 +149,6 @@ namespace Base
     void HelpDialog::_openLink( QString link )
     {
         Debug::Throw() << "HelpDialog::_openLink - link: " << link << endl;
-        QDesktopServices::openUrl( link );
+        QDesktopServices::openUrl( QUrl(link) );
     }
 }

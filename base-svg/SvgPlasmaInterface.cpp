@@ -29,6 +29,8 @@
 #include <QStringList>
 #include <QSettings>
 
+#include <array>
+
 namespace Svg
 {
 
@@ -233,10 +235,9 @@ namespace Svg
         if( themePathList.empty() )
         {
             // add local path
-            QStringList localPath = { ".kde/share/apps/desktoptheme/", ".kde4/share/apps/desktoptheme/" };
+            static const std::array<QString,2> localPath = {{ ".kde/share/apps/desktoptheme/", ".kde4/share/apps/desktoptheme/" }};
             for( const auto& pathName:localPath )
             { themePathList.append( File( theme ).addPath( File( pathName ).addPath( Util::home() ) ) ); }
-
         }
 
         // add local path

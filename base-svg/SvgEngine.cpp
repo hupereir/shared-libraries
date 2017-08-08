@@ -127,7 +127,7 @@ namespace Svg
             // insert only if not already in cache
             auto foundIter( cache_.lowerBound( iter.key() ) );
             if( foundIter == cache_.end() || !Base::areEquivalent( foundIter.key(), iter.key() ) )
-            { cache_.insert( foundIter, iter.key(), QPixmap::fromImage( iter.value() ) ); }
+            { Base::insert( cache_, foundIter, iter.key(), QPixmap::fromImage( iter.value() ) ); }
         }
 
     }
@@ -145,7 +145,7 @@ namespace Svg
             pixmap.fill( Qt::transparent );
             renderer_.render( pixmap, id.id() );
 
-            return cache_.insert( iter, id, pixmap ).value();
+            return Base::insert(cache_, iter, id, pixmap ).value();
         }
 
     }

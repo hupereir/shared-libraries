@@ -286,8 +286,7 @@ void IconView::doItemsLayout()
 
             IconViewItem item;
              _updateItem( item, index );
-            items_.insert( iter, row, item );
-
+            Base::insert( items_, iter, row, item );
         }
 
     }
@@ -482,10 +481,10 @@ void IconView::startDrag( Qt::DropActions supportedActions )
 
     // create drag pixmap
     QRect rect;
-    const QPixmap pixmap( _pixmap( indexes, rect ) );
+    const auto pixmap( _pixmap( indexes, rect ) );
 
     // create drag
-    QDrag *drag = new QDrag(this);
+    auto drag = new QDrag(this);
     drag->setMimeData(data);
     drag->setPixmap( pixmap );
 
@@ -555,7 +554,7 @@ void IconView::paintEvent( QPaintEvent* event )
     painter.setRenderHint( QPainter::TextAntialiasing, true );
     painter.setClipRegion( event->region() );
     painter.translate( -_scrollBarPosition() );
-    const QRect clipRect( event->rect().translated( _scrollBarPosition() ) );
+    const auto clipRect( event->rect().translated( _scrollBarPosition() ) );
     painter.setFont( QApplication::font() );
     painter.setRenderHint( QPainter::TextAntialiasing, true );
 
@@ -569,8 +568,8 @@ void IconView::paintEvent( QPaintEvent* event )
         if( !item.boundingRect().translated( item.position() ).intersects( clipRect ) ) continue;
 
         // setup option
-        const QModelIndex index( model_->index( iter.key(), 0 ) );
-        QStyleOptionViewItemV4 option = _viewOptions( index );
+        const auto index( model_->index( iter.key(), 0 ) );
+        auto option = _viewOptions( index );
         option.rect = item.boundingRect();
 
         // paint
@@ -1008,7 +1007,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
         if( iter == items_.end() ) continue;
 
         // insert in map and update bounding rect
-        items.insert( iter.key(), iter.value() );
+        Base::insert( items, iter.key(), iter.value() );
         boundingRect |= iter.value().boundingRect().translated( iter.value().position() );
     }
 

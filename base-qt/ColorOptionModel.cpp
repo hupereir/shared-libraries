@@ -72,7 +72,7 @@ const QIcon& ColorOptionModel::_icon( const Base::Color& color )
         painter.setBrush( Qt::NoBrush );
         painter.drawEllipse( rect );
 
-        return _icons().insert( iter, color, QIcon(pixmap) ).value();
+        return Base::insert( _icons(), iter, color, QIcon(pixmap) ).value();
 
     }
 
