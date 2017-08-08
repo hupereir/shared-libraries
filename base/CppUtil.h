@@ -34,16 +34,16 @@
 namespace Base
 {
 
-    template<typename T>
+    template<class T>
         using underlying_type_t = typename std::underlying_type<T>::type;
 
     //* convert an strong type enum to integral type
-    template<typename T>
-    constexpr typename std::underlying_type<T>::type
+    template<class T>
+    constexpr underlying_type_t<T>
     toIntegralType(T value) noexcept
     { return static_cast<underlying_type_t<T>>(value);}
 
-    template<typename T>
+    template<class T>
     T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
     {
         #if QT_VERSION >= 0x050100
@@ -56,7 +56,7 @@ namespace Base
         #endif
     }
 
-    template<typename T>
+    template<class T>
     T makeT( std::initializer_list<typename T::key_type>&& reference )
     {
         #if QT_VERSION >= 0x050100
@@ -70,7 +70,7 @@ namespace Base
     }
 
     //* append initializer_list to a container
-    template<typename T>
+    template<class T>
     void append( T& first, std::initializer_list<typename T::value_type>&& second )
     {
         #if QT_VERSION >= 0x050500
@@ -82,25 +82,44 @@ namespace Base
         #endif
     }
 
-
-    //* different from operator
+    //* equivalent-to pseudo-operator
+    /** it is used for smart insertion in maps and hashed */
     template<class T, class U>
         bool areEquivalent(const T& first, const U& second)
     { return !(first < second || second < first); }
 
     //* efficient map insertion
-    template<typename T>
-    void insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
+    template<class T>
+    typename T::iterator insert(
+        T& map,
+        const typename T::const_iterator iterator,
+        const typename T::key_type& key,
+        const typename T::mapped_type& value )
+    {
+
+        #if QT_VERSION >= 0x050100
+        return map.insert( iterator, key, value );
+        #else
+        Q_UNUSED( iterator );
+        return map.insert( key, value );
+        #endif
+
+    }
+
+    //* efficient map insertion
+    template<class T>
+    typename T::iterator insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
     {
         auto iterator = map.lowerBound( key );
         if( iterator != map.end() && areEquivalent( key, iterator.key() ) )
         {
 
             iterator.value() = value;
+            return iterator;
 
         } else {
 
-            map.insert( iterator, key, value );
+            return insert( map, iterator, key, value );
 
         }
 
@@ -109,7 +128,7 @@ namespace Base
 }
 
 //* fancy qhash for all enum types
-template<typename T,
+template<class T,
     typename = typename std::enable_if<std::is_enum<T>::value>::type>
     uint qHash( const T& value )
 { return qHash(Base::toIntegralType(value)); }
