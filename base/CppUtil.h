@@ -28,7 +28,7 @@
 #include <QHash>
 #endif
 
-#include <QStringList>
+#include <QList>
 
 #include <initializer_list>
 #include <utility>
@@ -76,7 +76,7 @@ namespace Base
     //* construct QStringList from initializer_list
     template<
         class T,
-        typename = typename std::enable_if<std::is_base_of<QStringList, typename std::decay<T>::type>::value>::type
+        typename = typename std::enable_if<std::is_base_of<QList<typename T::value_type>, typename std::decay<T>::type>::value>::type
         >
         T makeT( std::initializer_list<typename T::value_type>&& reference )
     {
