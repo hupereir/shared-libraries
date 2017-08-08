@@ -41,7 +41,7 @@ FileRecordModel::FileRecordModel( QObject* parent ):
     ListModel<FileRecord>( parent ),
     Counter( "FileRecordModel" ),
     iconPropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Icon ) ),
-    columnTitles_( { tr( "File" ), tr( "Path" ), tr( "Last Accessed" ) } )
+    columnTitles_( Base::makeT<QStringList>({ tr( "File" ), tr( "Path" ), tr( "Last Accessed" ) }) )
 {
     Debug::Throw("FileRecordModel::FileRecordModel.\n" );
     connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
