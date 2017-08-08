@@ -73,7 +73,7 @@ namespace Base
         #endif
     }
 
-    //* construct QStringList from initializer_list
+    //* construct QList from initializer_list
     template<
         class T,
         typename = typename std::enable_if<std::is_base_of<QList<typename T::value_type>, typename std::decay<T>::type>::value>::type
