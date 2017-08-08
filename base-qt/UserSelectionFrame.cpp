@@ -57,7 +57,7 @@ QStringList UserSelectionFrame::users() const
     QStringList out;
     for( int i=0; i< comboBox_->QComboBox::count(); i++ )
     {
-        const QString& user( comboBox_->itemText( i ) );
+        const auto& user( comboBox_->itemText( i ) );
         if( !user.isNull() ) out.append( user );
     }
 

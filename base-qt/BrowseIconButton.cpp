@@ -111,7 +111,7 @@ void BrowseIconButton::_browse()
     if( dialog.exec() == QDialog::Rejected ) return;
 
     // retrieve selected files
-    QStringList files( dialog.selectedFiles() );
+    const auto files( dialog.selectedFiles() );
 
     // check file size
     if( files.size() > 1 )

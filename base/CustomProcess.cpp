@@ -46,7 +46,7 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
     if( arguments.empty() ) return;
 
     QString program( arguments.front() );
-    QStringList localArgs( arguments );
+    auto localArgs( arguments );
     localArgs.removeFirst();
 
     if( localArgs.empty() ) return QProcess::start( program, mode );

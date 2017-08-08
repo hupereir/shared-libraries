@@ -57,7 +57,7 @@ namespace SpellCheck
 
     //_______________________________________________
     QString SpellItemDialog::disabledItems() const
-    { return QStringList( QList<QString>::fromSet( model_.disabledItems() ) ).join( " " ); }
+    { return QStringList( model_.disabledItems().toList() ).join( " " ); }
 
     //_______________________________________________
     void SpellItemDialog::_selectItem( const QModelIndex& index )

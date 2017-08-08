@@ -391,7 +391,7 @@ namespace SpellCheck
         CustomProcess process;
         process.start( XmlOptions::get().raw("ASPELL") + " dump modes" );
         process.waitForFinished();
-        const QStringList lines( QString( process.readAllStandardOutput() ).split( "\n" ) );
+        const auto lines( QString( process.readAllStandardOutput() ).split( "\n" ) );
         for( const auto& line:lines )
         {
             QRegExp regExp( "\\s+" );

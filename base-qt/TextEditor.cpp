@@ -1375,8 +1375,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         Debug::Throw( "TextEditor::dropEvent - dropping box selection.\n" );
 
         // retrieve text from mimeType
-        QString text( event->mimeData()->text() );
-        QStringList input_list( text.split( "\n" ) );
+        auto text( event->mimeData()->text() );
 
         // create an empty boxSelection from current position with proper size
         boxSelection_.start( event->pos() );

@@ -26,7 +26,6 @@
 #include "SvgSystemOptions.h"
 #include "Util.h"
 
-#include <QStringList>
 #include <QSettings>
 
 #include <array>
@@ -218,7 +217,7 @@ namespace Svg
             process.start( Command( kdeConfigCommand ) << "--path" << "data" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
-                const QStringList configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
+                const auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
 
                 #if QT_VERSION >= 0x050000
                 for( const auto& path:configurationPath )

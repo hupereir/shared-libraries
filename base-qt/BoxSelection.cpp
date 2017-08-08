@@ -227,7 +227,7 @@ bool BoxSelection::fromString( QString input )
     input.replace( "\t", parent_->emulatedTabCharacter() );
 
     // try split
-    QStringList inputList( input.split( "\n" ) );
+    auto inputList( input.split( "\n" ) );
 
     // retrieve maximum length
     int columns(0);

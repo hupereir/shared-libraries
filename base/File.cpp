@@ -24,7 +24,6 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QStringList>
 
 #if defined(Q_OS_WIN)
 #include <windows.h>

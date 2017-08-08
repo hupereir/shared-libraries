@@ -20,7 +20,6 @@
 #include "HelpModel.h"
 
 #include <QMimeData>
-#include <QStringList>
 
 namespace Base
 {
@@ -37,7 +36,7 @@ namespace Base
     QVariant HelpModel::data( const QModelIndex& index, int role ) const
     {
         // check index
-        if( contains( index ) && role == Qt::DisplayRole ) return QString( get(index).label() );
+        if( contains( index ) && role == Qt::DisplayRole ) return get(index).label();
         else return QVariant();
     }
 

@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "CommandLineParser.h"
+#include "CppUtil.h"
 
 #include <QTextStream>
 #include <QObject>
@@ -122,7 +123,7 @@ CommandLineArguments CommandLineParser::arguments() const
 
         // add options
         for( auto&& iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
-        { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out.append( QStringList( { iter.key().longName(), iter.value().value_ } ) ); }
+        { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out.append( Base::makeT<QStringList>( { iter.key().longName(), iter.value().value_ } ) ); }
 
     }
 
@@ -214,7 +215,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
         // see if tag contains "=" string
         QString value;
-        QStringList values( tagName.split( "=" ) );
+        auto values( tagName.split( "=" ) );
         if( values.size() == 2 )
         {
 

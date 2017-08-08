@@ -19,8 +19,6 @@
 
 #include "Color.h"
 
-#include <QStringList>
-
 namespace Base
 {
 
@@ -69,7 +67,7 @@ QTextStream& operator >> (QTextStream& in, Base::Color& color )
 {
     QString colorString;
     in >> colorString;
-    const QStringList stringList( colorString.split( "," ) );
+    const auto stringList( colorString.split( "," ) );
     if( stringList.size() >= 3 )
     {
         color.get().setRed( stringList[0].toInt() );

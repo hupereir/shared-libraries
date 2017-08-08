@@ -29,8 +29,8 @@ bool Command::run( const QString& path ) const
     Debug::Throw( "Command::run.\n" );
     if( values_.empty() ) return false;
 
-    QString program( values_.front() );
-    QStringList arguments( values_ );
+    const auto program( values_.front() );
+    auto arguments( values_ );
     arguments.removeFirst();
     return QProcess::startDetached( program, arguments, path );
 

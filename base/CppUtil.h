@@ -28,6 +28,8 @@
 #include <QHash>
 #endif
 
+#include <QStringList>
+
 #include <initializer_list>
 #include <utility>
 
@@ -39,12 +41,13 @@ namespace Base
 
     //* convert an strong type enum to integral type
     template<class T>
-    constexpr underlying_type_t<T>
-    toIntegralType(T value) noexcept
+        constexpr underlying_type_t<T>
+        toIntegralType(T value) noexcept
     { return static_cast<underlying_type_t<T>>(value);}
 
+    //* construct QHash, QMap from initializer_list
     template<class T>
-    T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
+        T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
     {
         #if QT_VERSION >= 0x050100
         return T( std::move( reference ) );
@@ -56,8 +59,9 @@ namespace Base
         #endif
     }
 
+    //* construct QSet from initializer_list
     template<class T>
-    T makeT( std::initializer_list<typename T::key_type>&& reference )
+        T makeT( std::initializer_list<typename T::key_type>&& reference )
     {
         #if QT_VERSION >= 0x050100
         return T( std::move( reference ) );
@@ -69,9 +73,27 @@ namespace Base
         #endif
     }
 
+    //* construct QStringList from initializer_list
+    template<
+        class T,
+        typename = typename std::enable_if<std::is_base_of<QStringList, typename std::decay<T>::type>::value>::type
+        >
+        T makeT( std::initializer_list<typename T::value_type>&& reference )
+    {
+        #if QT_VERSION >= 0x040800
+        return T( std::move(reference) );
+        #else
+        T out;
+        for( auto&& value:std::move(reference) )
+        { out.append( value ); }
+        return out;
+        #endif
+    }
+
+
     //* append initializer_list to a container
     template<class T>
-    void append( T& first, std::initializer_list<typename T::value_type>&& second )
+        void append( T& first, std::initializer_list<typename T::value_type>&& second )
     {
         #if QT_VERSION >= 0x050500
         first.append( std::move( second ) );
@@ -90,7 +112,7 @@ namespace Base
 
     //* efficient map insertion
     template<class T>
-    typename T::iterator insert(
+        typename T::iterator insert(
         T& map,
         const typename T::const_iterator iterator,
         const typename T::key_type& key,
@@ -108,7 +130,7 @@ namespace Base
 
     //* efficient map insertion
     template<class T>
-    typename T::iterator insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
+        typename T::iterator insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
     {
         auto iterator = map.lowerBound( key );
         if( iterator != map.end() && areEquivalent( key, iterator.key() ) )

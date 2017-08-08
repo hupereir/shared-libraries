@@ -390,7 +390,7 @@ void BaseApplication::_updateIconTheme()
     #if QT_VERSION >= 0x040600
     if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
     {
-        QIcon::setThemeSearchPaths( QStringList() << XmlOptions::get().raw( "ICON_THEME_PATH" ) );
+        QIcon::setThemeSearchPaths( { XmlOptions::get().raw( "ICON_THEME_PATH" ) } );
         QIcon::setThemeName( XmlOptions::get().raw( "ICON_THEME" ) );
     }
     #endif
