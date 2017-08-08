@@ -18,6 +18,8 @@
 *******************************************************************************/
 
 #include "CommandLineArguments.h"
+
+#include "CppUtil.h"
 #include "Debug.h"
 
 //_____________________________________________________________________
@@ -44,5 +46,5 @@ CommandLineArguments::CommandLineArguments( QStringList&& ref ):
 //_____________________________________________________________________
 CommandLineArguments::CommandLineArguments( std::initializer_list<QString>&& ref ):
     Counter( "CommandLineArguments" ),
-    arguments_( std::move(ref) )
+    arguments_( Base::makeT<QStringList>(std::move(ref)) )
 {}
