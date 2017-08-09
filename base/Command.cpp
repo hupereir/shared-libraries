@@ -18,9 +18,18 @@
 *******************************************************************************/
 
 #include "Command.h"
+
+#include "CppUtil.h"
 #include "Debug.h"
 
 #include <QProcess>
+
+#if QT_VERSION < 0x040800
+//____________________________________________
+Command::Command( std::initializer_list<QString>&& arguments ):
+Command( Base::makeT<QStringList>(std::move( arguments) ) )
+{}
+#endif
 
 //____________________________________________
 bool Command::run( const QString& path ) const
