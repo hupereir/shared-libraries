@@ -47,7 +47,7 @@ namespace Base
 
     //* construct QHash, QMap from initializer_list
     template<class T>
-        T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
+        inline T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
     {
         #if QT_VERSION >= 0x050100
         return T( std::move( reference ) );
@@ -61,7 +61,7 @@ namespace Base
 
     //* construct QSet from initializer_list
     template<class T>
-        T makeT( std::initializer_list<typename T::key_type>&& reference )
+        inline T makeT( std::initializer_list<typename T::key_type>&& reference )
     {
         #if QT_VERSION >= 0x050100
         return T( std::move( reference ) );
@@ -78,7 +78,7 @@ namespace Base
         class T,
         typename = typename std::enable_if<std::is_base_of<QList<typename T::value_type>, typename std::decay<T>::type>::value>::type
         >
-        T makeT( std::initializer_list<typename T::value_type>&& reference )
+        inline T makeT( std::initializer_list<typename T::value_type>&& reference )
     {
         #if QT_VERSION >= 0x040800
         return T( std::move(reference) );
@@ -93,7 +93,7 @@ namespace Base
 
     //* append initializer_list to a container
     template<class T>
-        void append( T& first, std::initializer_list<typename T::value_type>&& second )
+        inline void append( T& first, std::initializer_list<typename T::value_type>&& second )
     {
         #if QT_VERSION >= 0x050500
         first.append( std::move( second ) );
@@ -107,12 +107,12 @@ namespace Base
     //* equivalent-to pseudo-operator
     /** it is used for smart insertion in maps and hashed */
     template<class T, class U>
-        bool areEquivalent(const T& first, const U& second)
+        inline bool areEquivalent(const T& first, const U& second)
     { return !(first < second || second < first); }
 
     //* efficient map insertion
     template<class T>
-        typename T::iterator insert(
+        inline typename T::iterator insert(
         T& map,
         const typename T::const_iterator iterator,
         const typename T::key_type& key,
@@ -130,7 +130,7 @@ namespace Base
 
     //* efficient map insertion
     template<class T>
-        typename T::iterator insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
+        inline typename T::iterator insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
     {
         auto iterator = map.lowerBound( key );
         if( iterator != map.end() && areEquivalent( key, iterator.key() ) )
@@ -152,27 +152,27 @@ namespace Base
 //* fancy qhash for all enum types
 template<class T,
     typename = typename std::enable_if<std::is_enum<T>::value>::type>
-    uint qHash( const T& value )
+    inline uint qHash( const T& value )
 { return qHash(Base::toIntegralType(value)); }
 
 //* different from operator
 template<class T, class U>
-    bool operator != (const T& first, const U& second)
+    inline bool operator != (const T& first, const U& second)
 { return !(first == second); }
 
 //* more than
 template<class T, class U>
-    bool operator > (const T& first, const U& second)
+    inline bool operator > (const T& first, const U& second)
 { return second < first; }
 
 //* less or equal
 template<class T, class U>
-    bool operator <= (const T& first, const U& second)
+    inline bool operator <= (const T& first, const U& second)
 { return !(second < first); }
 
 //* more or equal
 template<class T, class U>
-    bool operator >= (const T& first, const U& second)
+    inline bool operator >= (const T& first, const U& second)
 { return !(first < second); }
 
 #endif
