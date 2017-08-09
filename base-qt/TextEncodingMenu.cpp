@@ -26,6 +26,8 @@
 #include <QActionGroup>
 #include <QTextCodec>
 
+#include <algorithm>
+
 //__________________________________________________________
 TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     QMenu( parent ),

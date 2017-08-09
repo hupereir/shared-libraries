@@ -577,10 +577,10 @@ bool XcbUtil::moveResizeWidget(
     Qt::MouseButton button )
 {
 
+    #if HAVE_XCB
+
     if( !widget->isWindow() ) return false;
     if( !isX11() ) return false;
-
-    #if HAVE_XCB
 
     // check
     if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
@@ -626,7 +626,8 @@ bool XcbUtil::moveResizeWidget(
     xcb_flush( d->connection() );
 
     return true;
-
+    #else
+    return false;
     #endif
 }
 

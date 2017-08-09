@@ -17,8 +17,10 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "ToolButtonStyleMenu.h"
+
+#include "CppUtil.h"
+#include "Debug.h"
 
 #include <QActionGroup>
 
@@ -29,23 +31,23 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
 {
     Debug::Throw( "ToolButtonStyleMenu::ToolButtonStyleMenu.\n" );
 
-    QActionGroup *group = new QActionGroup( this );
+    auto group = new QActionGroup( this );
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     // install values
     using NamePair=QPair<QString, int >;
     using List=QList< NamePair >;
-    List actionNames = {
+    auto actionNames = Base::makeT<List>( {
         { tr( "System Default" ), -1 },
         { tr( "No Text" ), Qt::ToolButtonIconOnly },
         { tr( "Text Only" ), Qt::ToolButtonTextOnly },
         { tr( "Text Alongside icons" ), Qt::ToolButtonTextBesideIcon },
-        { tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon } };
+        { tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon } } );
 
     // generic action
     for( const auto& namePair:actionNames )
     {
-        QAction* action = new QAction( namePair.first, this );
+        auto action = new QAction( namePair.first, this );
         addAction( action );
         action->setCheckable( true );
         actions_.insert( action, namePair.second );
@@ -77,7 +79,7 @@ void ToolButtonStyleMenu::_selected( QAction* action )
     Debug::Throw( "ToolButtonStyleMenu::_selected.\n" );
 
     // find matching actions
-    ActionMap::const_iterator iter = actions_.find( action );
+    auto iter = actions_.find( action );
     Q_ASSERT( iter != actions_.end() );
     emit styleSelected( iter.value() );
 

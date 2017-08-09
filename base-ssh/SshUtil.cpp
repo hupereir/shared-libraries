@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "SshUtil.h"
+#include "CppUtil.h"
 
 #include <QList>
 
@@ -45,7 +46,7 @@ namespace Ssh
     //____________________________________________________
     uint32_t Util::tcpOptions( int socket )
     {
-        QList<int> optionNames =
+        static const auto optionNames = Base::makeT< QList<int> >(
         {
             #if  !defined(Q_OS_WIN) && !defined(__OS2__)
             TCP_CORK, TCP_DEFER_ACCEPT, TCP_INFO, TCP_KEEPCNT, TCP_KEEPIDLE,
@@ -53,7 +54,7 @@ namespace Ssh
             TCP_WINDOW_CLAMP,
             #endif
             TCP_NODELAY
-        };
+        });
 
         uint32_t result = 0;
         int bit = 0;
@@ -79,7 +80,7 @@ namespace Ssh
     //____________________________________________________
     uint32_t Util::socketOptions( int socket )
     {
-        QList<int> optionNames =
+        static const auto optionNames = Base::makeT< QList<int> >(
         {
             SO_ACCEPTCONN, SO_BROADCAST, SO_DEBUG,SO_ERROR, SO_DONTROUTE,
             SO_KEEPALIVE, SO_LINGER,
@@ -91,7 +92,7 @@ namespace Ssh
             SO_OOBINLINE, SO_RCVBUF, SO_RCVLOWAT, SO_SNDLOWAT, SO_RCVTIMEO,
             SO_SNDTIMEO, SO_REUSEADDR, SO_SNDBUF, SO_TYPE,
             0
-        };
+        });
 
         uint32_t result = 0;
         int bit = 0;
