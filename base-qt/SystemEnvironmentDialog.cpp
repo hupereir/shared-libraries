@@ -45,7 +45,7 @@ CustomDialog( parent, CloseButton )
     setAttribute( Qt::WA_DeleteOnClose );
 
     // insert list
-    TreeView* list = new TreeView( this );
+    auto list = new TreeView( this );
     mainLayout().addWidget( list );
     list->setModel( &model_ );
     list->setRootIsDecorated( false );

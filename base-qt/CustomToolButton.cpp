@@ -20,6 +20,7 @@
 
 #include "CustomToolButton.h"
 
+#include "CppUtil.h"
 #include "IconSize.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
@@ -56,8 +57,8 @@ bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
     QIcon copy;
 
     // loop over available sizes, modes and states
-    QList<QIcon::Mode> modes( { QIcon::Normal, QIcon::Disabled, QIcon::Active, QIcon::Selected } );
-    QList<QIcon::State> states( { QIcon::Off, QIcon::On } );
+    const auto modes = Base::makeT< QList<QIcon::Mode> >( { QIcon::Normal, QIcon::Disabled, QIcon::Active, QIcon::Selected } );
+    const auto states = Base::makeT< QList<QIcon::State> >( { QIcon::Off, QIcon::On } );
 
     for( const auto& size:source.availableSizes() )
     for( const auto& mode:modes )

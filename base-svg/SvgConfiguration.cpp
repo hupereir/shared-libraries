@@ -20,6 +20,8 @@
 #include "SvgConfiguration.h"
 
 #include "CustomDialog.h"
+
+#include "CppUtil.h"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "OptionListBox.h"
@@ -190,7 +192,7 @@ namespace Svg
         OptionComboBox* plasmaImagePath;
         gridLayout->addWidget( plasmaImagePath = new OptionComboBox( box, "SVG_PLASMA_IMAGE_PATH" ) );
         plasmaImagePath->setUseValue( false );
-        plasmaImagePath->addItems( { "dialogs/background", "widgets/background", "widgets/translucentbackground" } );
+        plasmaImagePath->addItems( Base::makeT<QStringList>({ "dialogs/background", "widgets/background", "widgets/translucentbackground" }) );
         plasmaImagePath->setToolTip( tr( "Relative path of the svg file used for the background" ) );
         addOptionWidget( plasmaImagePath );
         label->setBuddy( plasmaImagePath );

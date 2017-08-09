@@ -62,7 +62,7 @@ void CounterDialog::update()
     for( auto&& iter = counters.begin(); iter != counters.end(); ++iter )
     {
         if( *iter.value() )
-        { counterList.append( CounterPair( { iter.key(), *iter.value() } ) ); }
+        { counterList.append( { iter.key(), *iter.value() } ); }
     }
 
     model_.add( counterList );

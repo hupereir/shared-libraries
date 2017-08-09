@@ -18,8 +18,10 @@
 *******************************************************************************/
 
 #include "BaseApplication.h"
+
 #include "BaseIconNames.h"
 #include "Command.h"
+#include "CppUtil.h"
 #include "CustomProcess.h"
 #include "File.h"
 #include "IconEngine.h"
@@ -390,7 +392,7 @@ void BaseApplication::_updateIconTheme()
     #if QT_VERSION >= 0x040600
     if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
     {
-        QIcon::setThemeSearchPaths( { XmlOptions::get().raw( "ICON_THEME_PATH" ) } );
+        QIcon::setThemeSearchPaths( Base::makeT<QStringList>({ XmlOptions::get().raw( "ICON_THEME_PATH" ) }) );
         QIcon::setThemeName( XmlOptions::get().raw( "ICON_THEME" ) );
     }
     #endif
