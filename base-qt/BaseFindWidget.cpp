@@ -58,7 +58,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     editorLayout_->setSpacing( 5 );
 
     // label and find editor
-    QLabel *label = new QLabel( tr( "Text to find:" ), this );
+    auto label = new QLabel( tr( "Text to find:" ), this );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     editorLayout_->addWidget( label, 0, 0, 1, 1 );
     editorLayout_->addWidget( editor_ = new CustomComboBox( this ), 0, 1, 1, 1 );
@@ -116,7 +116,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
         vLayout->addStretch(1);
 
         // horizontal separator
-        QFrame* frame( new QFrame( this ) );
+        auto frame = new QFrame( this );
         frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
         vLayout->addWidget( frame );
     }
@@ -134,7 +134,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
 
     } else {
 
-        QHBoxLayout* hLayout = new QHBoxLayout;
+        auto hLayout = new QHBoxLayout;
         hLayout->setMargin( 0 );
         hLayout->setSpacing( 5 );
         vLayout->addItem( hLayout );
