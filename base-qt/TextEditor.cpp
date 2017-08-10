@@ -30,6 +30,7 @@
 #include "CustomTextDocument.h"
 #include "IconEngine.h"
 #include "KeyModifier.h"
+#include "LineEditor.h"
 #include "LineNumberDisplay.h"
 #include "QtUtil.h"
 #include "SelectLineDialog.h"
@@ -613,7 +614,6 @@ void TextEditor::createFindWidget( bool compact )
         connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
-        connect( this, SIGNAL(destroyed()), findWidget_, SLOT(deleteLater()) );
     }
 
     return;
@@ -627,7 +627,6 @@ void TextEditor::createReplaceWidget( bool compact )
     Debug::Throw( "TextEditor::createReplaceWidget.\n" );
     if( !replaceWidget_ )
     {
-
         replaceWidget_ = new BaseReplaceWidget( this, compact );
         connect( replaceWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( replaceWidget_, SIGNAL(replace(TextSelection)), SLOT(replace(TextSelection)) );
@@ -636,8 +635,6 @@ void TextEditor::createReplaceWidget( bool compact )
         connect( replaceWidget_, SIGNAL(menuAboutToShow()), SLOT(_updateReplaceInSelection()) );
         connect( this, SIGNAL(matchFound()), replaceWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), replaceWidget_, SLOT(noMatchFound()) );
-        connect( this, SIGNAL(destroyed()), replaceWidget_, SLOT(deleteLater()) );
-
     }
 
     return;
@@ -654,7 +651,6 @@ void TextEditor::createSelectLineWidget( bool compact )
         connect( selectLineWidget_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
         connect( this, SIGNAL(lineFound()), selectLineWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(lineNotFound()), selectLineWidget_, SLOT(noMatchFound()) );
-        connect( this, SIGNAL(destroyed()), selectLineWidget_, SLOT(deleteLater()) );
    }
 }
 
