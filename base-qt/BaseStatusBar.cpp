@@ -25,6 +25,8 @@
 #include <QMainWindow>
 #include <QMenu>
 
+#include <memory>
+
 //___________________________________________
 BaseStatusBar::BaseStatusBar( QWidget* parent ):
     QStatusBar( parent ),
@@ -69,10 +71,9 @@ void BaseStatusBar::addLabel( int stretch )
 void BaseStatusBar::contextMenuEvent( QContextMenuEvent *event )
 {
     Debug::Throw( "BaseStatusBar::contextMenuEvent.\n" );
-    QMenu* menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
+    std::unique_ptr<QMenu> menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
     if( !menu ) return;
     menu->exec( event->globalPos() );
-    menu->deleteLater();
 }
 
 //__________________________________________________________________
