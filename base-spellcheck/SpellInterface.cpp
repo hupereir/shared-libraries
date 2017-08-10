@@ -321,13 +321,16 @@ namespace SpellCheck
         }
 
         const auto suggestions( aspell_speller_suggest( spellChecker_.get(), word.toLatin1().constData(), -1 ) );
-        auto elements( aspell_word_list_elements( suggestions ) );
+
+        // get corresponding word list
+        std::unique_ptr<AspellStringEnumeration, std::function<void(AspellStringEnumeration*)>> elements(
+            aspell_word_list_elements( suggestions ),
+            [](AspellStringEnumeration* elements){ delete_aspell_string_enumeration( elements ); } );
 
         const char* suggestion( nullptr );
-        while( ( suggestion = aspell_string_enumeration_next( elements ) ) )
+        while( ( suggestion = aspell_string_enumeration_next( elements.get() ) ) )
         { out.append( QString::fromLatin1( suggestion ) ); }
 
-        delete_aspell_string_enumeration( elements );
         return out;
 
     }
@@ -366,13 +369,13 @@ namespace SpellCheck
 
         // todo: encapsulate
         const auto dictionaries( get_aspell_dict_info_list( spellConfig_.get() ) );
-        auto elements( aspell_dict_info_list_elements( dictionaries ) );
+        std::unique_ptr<AspellDictInfoEnumeration,std::function<void(AspellDictInfoEnumeration*)>> elements(
+            aspell_dict_info_list_elements( dictionaries ),
+            []( AspellDictInfoEnumeration* elements ){ delete_aspell_dict_info_enumeration( elements ); } );
+
         const AspellDictInfo* dictionary( nullptr );
-
-        while( ( dictionary = aspell_dict_info_enumeration_next( elements ) ) )
+        while( ( dictionary = aspell_dict_info_enumeration_next( elements.get() ) ) )
         { if( dictionary->code ) dictionaries_.insert( dictionary->code ); }
-
-        delete_aspell_dict_info_enumeration( elements );
 
         return;
 
