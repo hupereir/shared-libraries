@@ -279,13 +279,14 @@ bool LineEditor::event( QEvent* event )
                 currentStyle->inherits( "QStyleSheetStyle" ) )
                 { break; }
 
-            // delete old style
+            // create proxy style
             if( !proxyStyle_ ) proxyStyle_ = new Private::LineEditorStyle( currentStyle );
             else proxyStyle_.data()->setBaseStyle( currentStyle );
 
             // assign
             setStyle( proxyStyle_.data() );
             break;
+
         }
 
         case QEvent::Show:
