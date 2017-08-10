@@ -19,14 +19,15 @@
 
 #include "CustomComboBox.h"
 
+#include "LineEditor.h"
+
 #include <QAbstractItemView>
 #include <QCompleter>
 
 //___________________________________________________
 CustomComboBox::CustomComboBox( QWidget* parent ):
     QComboBox( parent ),
-    Counter( "CustomComboBox" ),
-    editor_( 0 )
+    Counter( "CustomComboBox" )
 {
 
     Debug::Throw( "CustomComboBox::CustomComboBox.\n" );
@@ -38,22 +39,20 @@ CustomComboBox::CustomComboBox( QWidget* parent ):
 }
 
 //____________________________________________________
+CustomComboBox::~CustomComboBox() = default;
+
+//____________________________________________________
 void CustomComboBox::setEditable( bool value )
 {
     Debug::Throw( "CustomComboBox::setEditable.\n" );
     QComboBox::setEditable( value );
 
-    if( !value )
-    {
-        if( editor_ ) delete editor_;
-        return;
-    }
+    if( !value ) editor_.reset();
+    else if( !editor_ ) {
 
-    if( !editor_ )
-    {
-        editor_ = new LineEditor( this );
+        editor_.reset( new LineEditor( this ) );
         editor_->setFrame( false );
-        setLineEdit( editor_ );
+        setLineEdit( editor_.get() );
     }
 
 }

@@ -22,10 +22,13 @@
 
 #include "Counter.h"
 #include "Debug.h"
-#include "LineEditor.h"
 
 #include <QComboBox>
 #include <QKeyEvent>
+
+#include <memory>
+
+class LineEditor;
 
 //* Customized QCombobox to handle case sensitive auto completion
 class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
@@ -38,6 +41,9 @@ class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
 
     //* constructor
     explicit CustomComboBox( QWidget* = nullptr );
+
+    //* destructor
+    ~CustomComboBox() override;
 
     //* editability
     void setEditable( bool value );
@@ -57,7 +63,7 @@ class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
     private:
 
     //* local line editor
-    LineEditor* editor_ = nullptr;
+    std::unique_ptr<LineEditor> editor_;
 
     //* navigation enabled
     bool navigationEnabled_ = true;
