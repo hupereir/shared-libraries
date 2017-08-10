@@ -50,7 +50,7 @@ namespace SpellCheck
     //____________________________________________________________________
     void DictionaryMenu::select( const QString& dictionary )
     {
-        Debug::Throw( "DictionaryMenu::select.\n" );
+        Debug::Throw() << "DictionaryMenu::select - dictionary: " << dictionary << endl;
 
         for( auto&& iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
         { if( iter.value() == dictionary ) iter.key()->setChecked( true ); }
@@ -116,7 +116,7 @@ namespace SpellCheck
     void DictionaryMenu::_selectDictionary( QAction*  action )
     {
 
-        Debug::Throw( "DictionaryMenu::_dictionary.\n" );
+        Debug::Throw( "DictionaryMenu::_selectDictionary.\n" );
         const auto iter( actionMap_.find( action ) );
         if( iter == actionMap_.end() ) return;
 
