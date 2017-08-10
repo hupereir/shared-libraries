@@ -20,6 +20,7 @@
 #include "BaseReplaceWidget.h"
 #include "Debug.h"
 
+#include <QLineEdit>
 #include <QPushButton>
 
 //________________________________________________________________________
