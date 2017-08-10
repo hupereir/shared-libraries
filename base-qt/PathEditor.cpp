@@ -33,6 +33,7 @@
 #include <QApplication>
 #include <QDrag>
 #include <QLayout>
+#include <QLineEdit>
 #include <QListView>
 #include <QMenu>
 #include <QMimeData>
