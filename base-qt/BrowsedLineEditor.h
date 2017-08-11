@@ -26,6 +26,8 @@
 #include <QFileDialog>
 #include <QWidget>
 
+#include <memory>
+
 class LineEditor;
 
 class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor>
@@ -106,7 +108,7 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     File targetApplication_;
 
     //* update target button
-    QWidget* findTargetButton_ = nullptr;
+    std::unique_ptr<QWidget> findTargetButton_;
 
 };
 

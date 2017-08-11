@@ -70,15 +70,8 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
 void BrowsedLineEditor::setTargetApplication( File target )
 {
     targetApplication_ = target;
-    if( findTargetButton_ && target.isEmpty() )
-    {
-        findTargetButton_->hide();
-        findTargetButton_->deleteLater();
-        findTargetButton_ = nullptr;
-        return;
-    }
-
-    if( !findTargetButton_ )
+    if( target.isEmpty() ) findTargetButton_.reset();
+    else if( !findTargetButton_ )
     {
         auto button = new QToolButton( this );
         button->setAutoRaise( true );
@@ -87,7 +80,7 @@ void BrowsedLineEditor::setTargetApplication( File target )
         layout()->addWidget( button );
         connect( button, SIGNAL(clicked()), SLOT(_findTargetApplication()) );
 
-        findTargetButton_ = button;
+        findTargetButton_.reset( button );
 
     }
 
