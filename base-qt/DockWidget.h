@@ -25,6 +25,8 @@
 
 #include <QDockWidget>
 
+#include <memory>
+
 class DockWidget: public QDockWidget
 {
 
@@ -99,13 +101,13 @@ class DockWidget: public QDockWidget
     bool autoHideTitleBar_ = false;
 
     //* container
-    QWidget* container_ = nullptr;
+    std::unique_ptr<QWidget> container_;
 
     //* main widget
     QWidget* mainWidget_ = nullptr;
 
     //* title bar widget
-    QWidget* titleBarWidget_ = nullptr;
+    std::unique_ptr<QWidget> titleBarWidget_;
 
 };
 

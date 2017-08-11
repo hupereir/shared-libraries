@@ -74,14 +74,9 @@ void DockWidget::setUseScrollArea( bool value )
         Private::ContainerScrollArea* container = new Private::ContainerScrollArea( widget() );
 
         if( mainWidget_ ) container->setWidget( mainWidget_ );
-        if( container_ )
-        {
-            container_->hide();
-            container_->deleteLater();
-        }
 
-        container_ = container;
-        widget()->layout()->addWidget( container_ );
+        container_.reset( container );
+        widget()->layout()->addWidget( container_.get() );
 
     } else {
 
@@ -92,14 +87,8 @@ void DockWidget::setUseScrollArea( bool value )
             container->layout()->addWidget( mainWidget_ );
         }
 
-        if( container_ )
-        {
-            container_->hide();
-            container_->deleteLater();
-        }
-
-        container_ = container;
-        widget()->layout()->addWidget( container_ );
+        container_.reset( container );
+        widget()->layout()->addWidget( container_.get() );
 
     }
 
@@ -148,10 +137,10 @@ void DockWidget::setMainWidget( QWidget* mainWidget )
     if( container_ )
     {
 
-        if( useScrollArea_ ) qobject_cast<Private::ContainerScrollArea*>( container_ )->setWidget( mainWidget_ );
+        if( useScrollArea_ ) qobject_cast<Private::ContainerScrollArea*>( container_.get() )->setWidget( mainWidget_ );
         else {
 
-            mainWidget_->setParent( container_ );
+            mainWidget_->setParent( container_.get() );
             container_->layout()->addWidget( mainWidget_ );
         }
 
@@ -174,17 +163,12 @@ void DockWidget::_updateTitleBarWidget()
     if( autoHideTitleBar_ && locked_ )
     {
 
-        if( !titleBarWidget_ ) titleBarWidget_ = new Private::TitleBarWidget();
-        setTitleBarWidget( titleBarWidget_ );
+        if( !titleBarWidget_ ) titleBarWidget_.reset( new Private::TitleBarWidget() );
+        setTitleBarWidget( titleBarWidget_.get() );
 
     } else {
 
-        if( titleBarWidget_ )
-        {
-            titleBarWidget_->deleteLater();
-            titleBarWidget_ = 0;
-        }
-
+        titleBarWidget_.reset();
         setTitleBarWidget( nullptr );
 
     }
