@@ -124,7 +124,7 @@ void RecentFilesMenu::_loadFiles()
     // run thread to check file validity
     cleanAction_->setEnabled( fileList_->cleanEnabled() );
 
-    // clear menu an actions map
+    // clear menu and actions map
     for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     { delete iter.key(); }
     actions_.clear();

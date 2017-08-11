@@ -111,7 +111,7 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
     //* clean action
     QAction* cleanAction_ = nullptr;
 
-    //* map actions to file recors
+    //* map actions to file records
     using ActionMap = QHash<QAction*, FileRecord>;
 
     //* map actions to FileRecords
