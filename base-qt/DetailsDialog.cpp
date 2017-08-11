@@ -44,11 +44,6 @@ void DetailsDialog::setDetails( QWidget* widget )
 {
 
     Debug::Throw( "DetailsDialog::setDetails.\n" );
-    if( detailsWidget_ )
-    {
-        detailsWidget_->hide();
-        detailsWidget_->deleteLater();
-    }
 
     // details label
     if( !detailsLabel_ )
@@ -62,9 +57,9 @@ void DetailsDialog::setDetails( QWidget* widget )
     }
 
     // assign widget
-    detailsWidget_ = widget;
+    detailsWidget_.reset( widget );
     if( detailsWidget_->parentWidget() != this ) detailsWidget_->setParent( this );
-    mainLayout().addWidget( detailsWidget_, 1 );
+    mainLayout().addWidget( detailsWidget_.get(), 1 );
     detailsWidget_->hide();
 
 }

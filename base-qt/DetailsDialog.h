@@ -25,6 +25,8 @@
 #include <QLabel>
 #include <QWidget>
 
+#include <memory>
+
 //* customized QDialog
 class DetailsDialog: public CustomDialog
 {
@@ -65,7 +67,7 @@ class DetailsDialog: public CustomDialog
     QLabel* detailsLabel_ = nullptr;
 
     //* details widget
-    QWidget* detailsWidget_ = nullptr;
+    std::unique_ptr<QWidget> detailsWidget_;
 
 };
 
