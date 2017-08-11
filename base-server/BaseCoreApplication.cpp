@@ -48,19 +48,10 @@ BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments 
 //____________________________________________
 BaseCoreApplication::~BaseCoreApplication()
 {
-
     Debug::Throw( "BaseCoreApplication::~BaseCoreApplication.\n" );
     emit saveConfiguration();
     XmlOptions::write();
-
-    if( _hasApplicationManager() )
-    {
-        delete applicationManager_;
-        applicationManager_ = 0;
-    }
-
     ErrorHandler::get().exit();
-
 }
 
 //____________________________________________
@@ -98,11 +89,11 @@ bool BaseCoreApplication::initApplicationManager()
     }
 
     // create application manager
-    applicationManager_ = new Server::ApplicationManager( this );
+    applicationManager_.reset( new Server::ApplicationManager( this ) );
     applicationManager_->setApplicationName( applicationName() );
 
     // connections
-    connect( applicationManager_, SIGNAL(commandRecieved(Server::ServerCommand)), SLOT(_processCommand(Server::ServerCommand)) );
+    connect( applicationManager_.get(), SIGNAL(commandRecieved(Server::ServerCommand)), SLOT(_processCommand(Server::ServerCommand)) );
 
     // initialization
     applicationManager_->initialize( arguments_ );

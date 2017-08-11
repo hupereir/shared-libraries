@@ -26,6 +26,8 @@
 
 #include <QObject>
 
+#include <memory>
+
 //* Main Window singleton object
 class BaseCoreApplication: public QObject
 {
@@ -120,12 +122,12 @@ class BaseCoreApplication: public QObject
 
     //* application manager
     Server::ApplicationManager& _applicationManager() const
-    { return *applicationManager_; }
+    { return *applicationManager_.get(); }
 
     private:
 
     //* pointer to application manager
-    Server::ApplicationManager* applicationManager_ = nullptr;
+    std::unique_ptr<Server::ApplicationManager> applicationManager_;
 
     //* command line arguments
     CommandLineArguments arguments_;
