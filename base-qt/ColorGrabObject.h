@@ -25,6 +25,8 @@
 #include <QEvent>
 #include <QWidget>
 
+#include <memory>
+
 class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
 {
 
@@ -54,8 +56,22 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
     //* clear capture
     void _clearCapture();
 
+    // grab deleter
+    class Deleter
+    {
+        public:
+
+        //* deleter
+        void operator() (QDialog* dialog)
+        {
+            dialog->releaseMouse();
+            delete dialog;
+        }
+
+    };
+
     //* window grabber
-    QDialog* captureWidget_ = nullptr;
+    std::unique_ptr<QDialog, Deleter> captureWidget_;
 
     //* is true when the mouse is down
     bool mouseDown_ = false;

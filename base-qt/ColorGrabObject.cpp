@@ -36,10 +36,7 @@ ColorGrabObject::ColorGrabObject( QWidget* parent ):
     Counter( "ColorGrabObject" )
 {
     Debug::Throw( "ColorGrabObject::ColorGrabObject.\n" );
-    Q_CHECK_PTR( parent );
-
     connect( parent, SIGNAL(clicked()), SLOT(_grabColor()) );
-
 }
 
 //________________________________________________________
@@ -49,7 +46,7 @@ void ColorGrabObject::_grabColor()
     Debug::Throw( "ColorGrabObject::_grabColor.\n" );
 
     _clearCapture();
-    captureWidget_ = new QDialog( 0, Qt::X11BypassWindowManagerHint );
+    captureWidget_.reset( new QDialog( nullptr, Qt::X11BypassWindowManagerHint ) );
     captureWidget_->installEventFilter( this );
     captureWidget_->move( -1000, -1000 );
     captureWidget_->setModal( true );
@@ -68,7 +65,7 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
 {
 
     // check object
-    if( object != captureWidget_ ) return false;
+    if( object != captureWidget_.get() ) return false;
 
     switch( event->type() )
     {
@@ -143,16 +140,6 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
 //_________________________________________________________
 void ColorGrabObject::_clearCapture()
 {
-    if( captureWidget_ )
-    {
-
-        Debug::Throw( "ColorGrabObject::_clearCapture.\n" );
-
-        // release mouse and delete widget
-        captureWidget_->releaseMouse();
-        captureWidget_->deleteLater();
-        captureWidget_ = 0;
-    }
-
+    captureWidget_.reset();
     mouseDown_ = false;
 }
