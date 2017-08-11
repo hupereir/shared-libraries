@@ -43,12 +43,6 @@ namespace Network
             fileDescriptor_( fileDescriptor )
         {}
 
-        //* copy constructor
-        explicit EncapsulatedSocket( const EncapsulatedSocket& other ) = delete;
-
-        //* assignment operator
-        EncapsulatedSocket& operator = ( const EncapsulatedSocket& other ) = delete;
-
         //* destructor
         ~EncapsulatedSocket()
         { if( fileDescriptor_ >= 0 ) ::close( fileDescriptor_ ); }
