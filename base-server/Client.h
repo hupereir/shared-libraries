@@ -63,7 +63,8 @@ namespace Server
             {}
 
             //* predicate
-            bool operator() ( const Client* client ) const
+            template<class T>
+            bool operator() ( const T& client ) const
             { return client->id() == id_; }
 
             protected:

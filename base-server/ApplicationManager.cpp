@@ -146,7 +146,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    ApplicationManager::ClientMap::iterator ApplicationManager::_register( const ApplicationId& id, Client* client, bool forced )
+    ApplicationManager::ClientMap::iterator ApplicationManager::_register( const ApplicationId& id, ClientPtr client, bool forced )
     {
         Debug::Throw( "ApplicationManager::_register.\n" );
 
@@ -164,7 +164,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::_redirect( ServerCommand command, Client* sender )
+    void ApplicationManager::_redirect( ServerCommand command, ClientPtr sender )
     {
 
         Debug::Throw() << "ApplicationManager::_redirect -"
@@ -194,7 +194,7 @@ namespace Server
                 ClientMap::iterator clientIterator( _register( command.id(), sender ) );
                 if( clientIterator == acceptedClients_.end() ) return;
 
-                Client* existingClient( clientIterator.value() );
+                const auto existingClient( clientIterator.value() );
 
                 if( sender == existingClient )
                 {
@@ -291,7 +291,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::_broadcast( ServerCommand command, Client* sender )
+    void ApplicationManager::_broadcast( ServerCommand command, ClientPtr sender )
     {
 
         Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << endl;
@@ -307,8 +307,8 @@ namespace Server
         while( server_->hasPendingConnections() )
         {
             // create client from pending connection
-            auto client = new Client( this, server_->nextPendingConnection() );
-            connect( client, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
+            auto client = std::make_shared<Client>( this, server_->nextPendingConnection() );
+            connect( client.get(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
             connect( &client->socket(), SIGNAL(disconnected()), SLOT(_clientConnectionClosed()) );
             connectedClients_.append( client );
         }
@@ -344,15 +344,8 @@ namespace Server
             }
         }
 
-        // look for disconnected clients in connected clients list
-        {
-            ClientList::iterator iter;
-            while( ( iter = std::find_if( connectedClients_.begin(), connectedClients_.end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ) ) != connectedClients_.end() )
-            {
-                (*iter)->deleteLater();
-                connectedClients_.erase( iter );
-            }
-        }
+        // remove disconnected clients from connected clients list
+        connectedClients_.erase( std::remove_if( connectedClients_.begin(), connectedClients_.end(), SameStateFTor( QAbstractSocket::UnconnectedState ) ), connectedClients_.end() );
 
         return;
 

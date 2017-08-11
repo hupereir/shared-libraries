@@ -35,6 +35,8 @@
 #include <QTcpServer>
 #include <QTimerEvent>
 
+#include <memory>
+
 namespace Server
 {
 
@@ -100,14 +102,17 @@ namespace Server
         //* timer event
         void timerEvent( QTimerEvent* ) override;
 
+        //* client pointer
+        using ClientPtr = std::shared_ptr<Client>;
+
         //* pair of application id and client
-        using ClientPair = QPair< ApplicationId, Client* >;
+        using ClientPair = QPair<ApplicationId, ClientPtr>;
 
         //* map of clients
-        using ClientMap = QHash< ApplicationId, Client* >;
+        using ClientMap = QHash<ApplicationId, ClientPtr>;
 
         //* list of clients
-        using ClientList = QList< Client* >;
+        using ClientList = QList<ClientPtr>;
 
         //* used to retrieve clients for a given state
         class SameStateFTor: public Client::SameStateFTor
@@ -115,17 +120,17 @@ namespace Server
             public:
 
             //* constructor
-            explicit SameStateFTor( QAbstractSocket::SocketState state ):
+            template<class T>
+            explicit SameStateFTor( const T& state ):
                 Client::SameStateFTor( state )
             {}
+
+            //* parent class operator
+            using Client::SameStateFTor::operator();
 
             //* predicate
             bool operator() ( const ClientPair& pair ) const
             { return Client::SameStateFTor::operator() (pair.second); }
-
-            //* predicate
-            bool operator() ( const Client* client ) const
-            { return Client::SameStateFTor::operator() (client); }
 
         };
 
@@ -135,7 +140,7 @@ namespace Server
             public:
 
             //* constructor
-            explicit SameClientFTor( Client* client ):
+            explicit SameClientFTor( ClientPtr client ):
                 client_( client )
                 {}
 
@@ -144,25 +149,25 @@ namespace Server
             { return pair.second == client_; }
 
             //* predicate
-            bool operator() ( Client* client ) const
-            { return client == client_; }
+            bool operator() ( ClientPtr client ) const
+            { return client.get() == client_.get(); }
 
             private:
 
             //* prediction
-            Client* client_;
+            ClientPtr client_;
         };
 
         /** \brief register a client, returns true if application is new.
         if forced is set to true, the old cliend, if any, is replaced
         */
-        ClientMap::iterator _register( const ApplicationId& id, Client* client, bool forced = false );
+        ClientMap::iterator _register( const ApplicationId&, ClientPtr, bool forced = false );
 
         //* redirect message
-        void _redirect( ServerCommand, Client* );
+        void _redirect( ServerCommand, ClientPtr );
 
         //* broadcast a message to all registered clients but the sender (if valid)
-        void _broadcast( ServerCommand, Client* sender = 0 );
+        void _broadcast( ServerCommand, ClientPtr sender = ClientPtr() );
 
         protected Q_SLOTS:
 

@@ -37,7 +37,7 @@ namespace Server
     //_______________________________________________________
     Client::Client( QObject* parent, QTcpSocket* socket ):
         BaseSocketInterface( parent, socket ),
-        Counter( "Server::Counter" ),
+        Counter( "Server::Client" ),
         id_( _counter()++ )
     { connect( this, SIGNAL(bufferReceived(qint32,QByteArray)), SLOT(_parseBuffer(qint32,QByteArray)) ); }
 

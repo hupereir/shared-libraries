@@ -54,7 +54,8 @@ class BaseSocketInterface: public QObject
         virtual ~SameStateFTor() = default;
 
         //* predicate
-        bool operator() ( const BaseSocketInterface* reader ) const
+        template<class T>
+        bool operator() ( const T& reader ) const
         { return reader->socket().state() == state_; }
 
         private:
