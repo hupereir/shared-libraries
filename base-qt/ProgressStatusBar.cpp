@@ -29,22 +29,18 @@ ProgressStatusBar::ProgressStatusBar( QWidget* parent ):
 
     addPermanentWidget( stack_ = new QStackedWidget( this ), 1 );
     stack_->addWidget( label_ = new StatusBarLabel );
-    stack_->addWidget( progress_ = new QProgressBar );
+
+    progress_.reset( new QProgressBar );
+    stack_->addWidget( progress_.get() );
 
 }
 
 //______________________________________________________
 void ProgressStatusBar::setProgressBar( QProgressBar* value )
 {
+    progress_.reset( value );
     if( progress_ )
-    {
-        progress_->hide();
-        progress_->setParent( nullptr );
-        progress_->deleteLater();
-    }
-
-    if( (progress_ = value) )
-    { stack_->addWidget( progress_ ); }
+    { stack_->addWidget( progress_.get() ); }
 
 }
 
@@ -52,7 +48,7 @@ void ProgressStatusBar::setProgressBar( QProgressBar* value )
 void ProgressStatusBar::showProgressBar()
 {
     if( progress_ )
-    { stack_->setCurrentWidget( progress_ ); }
+    { stack_->setCurrentWidget( progress_.get() ); }
 }
 
 //______________________________________________________

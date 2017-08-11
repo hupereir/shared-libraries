@@ -26,6 +26,8 @@
 #include <QProgressBar>
 #include <QStackedWidget>
 
+#include <memory>
+
 //* customized status bar for selection frame
 class ProgressStatusBar: public BaseStatusBar
 {
@@ -39,7 +41,7 @@ class ProgressStatusBar: public BaseStatusBar
 
     //* progress bar
     QProgressBar& progressBar() const
-    { return *progress_; }
+    { return *progress_.get(); }
 
     //* set progress bar
     void setProgressBar( QProgressBar* );
@@ -66,7 +68,7 @@ class ProgressStatusBar: public BaseStatusBar
     QStackedWidget* stack_ = nullptr;
 
     //* progress bar
-    QProgressBar* progress_ = nullptr;
+    std::unique_ptr<QProgressBar> progress_;
 
     //* label
     StatusBarLabel* label_ = nullptr;
