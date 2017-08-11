@@ -128,8 +128,8 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
 
     Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
     QMainWindow::setMenuBar( menu );
-    if( !menuBar() ) return;
-    menuBar()->setVisible( showMenuBarAction_->isChecked() );
+    if( !menu ) return;
+    menu->setVisible( showMenuBarAction_->isChecked() );
     showMenuBarAction_->setEnabled( true );
 }
 
@@ -147,14 +147,14 @@ void BaseMainWindow::setStatusBar( QStatusBar* widget )
 //__________________________________________________
 QSize BaseMainWindow::minimumSizeHint() const
 {
-    QSize out( monitor_.sizeHint() );
+    const auto out( monitor_.sizeHint() );
     return out.isValid() ? out:QMainWindow::minimumSizeHint();
 }
 
 //__________________________________________________
 QSize BaseMainWindow::sizeHint() const
 {
-    QSize out( monitor_.sizeHint() );
+    const auto out( monitor_.sizeHint() );
     return out.isValid() ? out:QMainWindow::sizeHint();
 }
 
@@ -183,7 +183,7 @@ QMenu* BaseMainWindow::createPopupMenu()
     if( !_hasToolBars() )
     {
 
-        QMenu* menu = new QMenu( this );
+        auto menu = new QMenu( this );
         if( _hasPanels() ) menu->addAction( lockPanelsAction_ );
         if( _hasMenuBar() ) menu->addAction( showMenuBarAction_ );
         if( _hasStatusBar() ) menu->addAction( showStatusBarAction_ );
@@ -191,25 +191,25 @@ QMenu* BaseMainWindow::createPopupMenu()
 
     } else {
 
-        ToolBarMenu& menu = toolBarMenu( this );
-        menu.toolButtonStyleMenu().select( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-        menu.iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-        connect( &menu.toolButtonStyleMenu(), SIGNAL(styleSelected(int)), SLOT(_updateToolButtonStyle(int)) );
-        connect( &menu.iconSizeMenu(), SIGNAL(iconSizeSelected(IconSize::Size)), SLOT(_updateToolButtonIconSize(IconSize::Size)) );
-        return &menu;
+        auto menu = toolBarMenu( this );
+        menu->toolButtonStyleMenu().select( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+        menu->iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+        connect( &menu->toolButtonStyleMenu(), SIGNAL(styleSelected(int)), SLOT(_updateToolButtonStyle(int)) );
+        connect( &menu->iconSizeMenu(), SIGNAL(iconSizeSelected(IconSize::Size)), SLOT(_updateToolButtonIconSize(IconSize::Size)) );
+        return menu;
 
     }
 
 }
 
 //________________________________________________________________
-ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
+ToolBarMenu* BaseMainWindow::toolBarMenu( QWidget* parent )
 {
 
     Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
-    ToolBarMenu* menu = new ToolBarMenu( parent );
+    auto menu = new ToolBarMenu( parent );
 
-    const ActionList actions( _toolBarsActions( menu ) );
+    const auto actions( _toolBarsActions( menu ) );
     if( actions.size() > 1 )
     {
         QMenu* toolbarsMenu( menu->addMenu( tr( "Toolbars" ) ) );
@@ -232,7 +232,7 @@ ToolBarMenu& BaseMainWindow::toolBarMenu( QWidget* parent )
 
     if( _hasStatusBar() ) menu->addAction( showStatusBarAction_ );
 
-    return *menu;
+    return menu;
 
 }
 
@@ -265,10 +265,10 @@ bool BaseMainWindow::event( QEvent* event )
         case QEvent::WindowStateChange:
         {
             // cast
-            QWindowStateChangeEvent *state_event( static_cast<QWindowStateChangeEvent*>(event) );
+            auto stateEvent( static_cast<QWindowStateChangeEvent*>(event) );
 
             if( windowState() & Qt::WindowMinimized )
-            { _setWasMaximized( state_event->oldState() & Qt::WindowMaximized ); }
+            { _setWasMaximized( stateEvent->oldState() & Qt::WindowMaximized ); }
 
         }
         break;
@@ -298,7 +298,7 @@ bool BaseMainWindow::_hasStatusBar() const
 bool BaseMainWindow::_hasToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
-    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
+    auto toolbars( findChildren<QToolBar*>() );
     for( const auto& toolbar:toolbars )
     {
 
@@ -306,7 +306,7 @@ bool BaseMainWindow::_hasToolBars() const
         if( toolbar->windowTitle().isEmpty() ) continue;
 
         // cast to custom
-        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+        auto customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
 
         // skip toolbars that are not direct children
         if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
@@ -324,12 +324,12 @@ bool BaseMainWindow::_hasLockableToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasLockableToolBars.\n" );
 
-    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
+    auto toolbars( findChildren<QToolBar*>() );
     for( const auto& toolbar:toolbars )
     {
 
         // try cast to custom
-        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+        auto customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
 
         // skip toolbars that are not direct children
         // or should not appear in menu
@@ -357,12 +357,12 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
 
     ActionList actions;
 
-    QList<QToolBar*> toolbars( findChildren<QToolBar*>() );
+    auto toolbars( findChildren<QToolBar*>() );
     for( const auto& toolbar:toolbars )
     {
 
         // try cast to custom
-        CustomToolBar* customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+        auto customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
 
         // skip toolbars that are not direct children
         // or should not appear in menu
@@ -376,7 +376,7 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
         } else if( !toolbar->windowTitle().isEmpty() ) {
 
             // add visibility action
-            QAction* action = new QAction( toolbar->windowTitle(), menu );
+            auto action = new QAction( toolbar->windowTitle(), menu );
             action->setCheckable( true );
             action->setChecked( toolbar->isVisible() );
             connect( action, SIGNAL(toggled(bool)), toolbar, SLOT(setVisible(bool)) );
@@ -460,7 +460,7 @@ void BaseMainWindow::_lockToolBars( bool value )
         if( !(toolbar->window() == this) ) continue;
 
         // try cast to CustomToolBar and check for 'lock from options'
-        CustomToolBar* customtoolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+        auto customtoolbar( qobject_cast<CustomToolBar*>( toolbar ) );
         if( customtoolbar && customtoolbar->lockFromOptions() ) continue;
 
         // update movability

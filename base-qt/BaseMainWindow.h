@@ -94,7 +94,7 @@ class BaseMainWindow: public QMainWindow
     QMenu* createPopupMenu() override;
 
     //* toolbar menu
-    ToolBarMenu& toolBarMenu( QWidget* = nullptr );
+    ToolBarMenu* toolBarMenu( QWidget* = nullptr );
 
     //* option name
     void setOptionName( const QString& name );
