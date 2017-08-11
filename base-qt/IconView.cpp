@@ -1076,8 +1076,6 @@ void IconView::_createFindWidget( bool compact )
         connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
         connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
         connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
-        connect( this, SIGNAL(destroyed()), findWidget_, SLOT(deleteLater()) );
-
     }
 
     return;
