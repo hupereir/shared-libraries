@@ -24,6 +24,8 @@
 #include "BaseFindWidget.h"
 #include "Counter.h"
 
+#include <memory>
+
 //* find dialog for text editor widgets
 class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
 {
@@ -34,7 +36,7 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     public:
 
     //* constructor
-    explicit BaseFindDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
+    explicit BaseFindDialog( QWidget* = nullptr, Qt::WindowFlags = 0 );
 
     //*@name accessors
     //@{
@@ -99,7 +101,7 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     private:
 
     //* find widget
-    BaseFindWidget* baseFindWidget_ = nullptr;
+    std::unique_ptr<BaseFindWidget> baseFindWidget_;
 
 };
 #endif
