@@ -25,6 +25,7 @@
 #include "XmlOptions.h"
 
 #include <algorithm>
+#include <functional>
 
 namespace SpellCheck
 {
