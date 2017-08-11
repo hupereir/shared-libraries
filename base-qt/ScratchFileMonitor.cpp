@@ -47,7 +47,7 @@ void ScratchFileMonitor::deleteScratchFiles()
     if( records.empty() ) return;
 
     // create dialog
-    ScratchFileRemoveDialog dialog( 0L, records );
+    ScratchFileRemoveDialog dialog( nullptr, records );
     if( dialog.exec() == QDialog::Rejected  || ( records = dialog.selectedFiles() ).empty() ) return;
 
     // convert back to QSet
@@ -65,7 +65,7 @@ void ScratchFileMonitor::deleteScratchFiles()
         iter.toBack();
         while( iter.hasPrevious() )
         {
-            const File& file( iter.previous() );
+            const auto& file( iter.previous() );
             file.remove();
             files_.remove( file );
         }
