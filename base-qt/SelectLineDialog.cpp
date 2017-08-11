@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "SelectLineDialog.h"
+#include "SelectLineWidget.h"
 #include "Debug.h"
 
 #include <QLayout>
@@ -45,17 +46,19 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
 }
 
 //________________________________________________________________________
+SelectLineDialog::~SelectLineDialog() = default;
+
+//________________________________________________________________________
+LineEditor& SelectLineDialog::editor() const
+{ return selectLineWidget_->editor(); }
+
+//________________________________________________________________________
 void SelectLineDialog::setSelectLineWidget( SelectLineWidget* selectLineWidget )
 {
     Debug::Throw( "BaseFindDialog::setBaseFindWidget.\n" );
-    if( selectLineWidget_ )
-    {
-        selectLineWidget_->hide();
-        selectLineWidget_->deleteLater();
-    }
 
     // assign new widget and change parent
-    selectLineWidget_ = selectLineWidget;
+    selectLineWidget_.reset( selectLineWidget );
     if( selectLineWidget_->parent() != this )
     {
         selectLineWidget_->setParent( this );
@@ -63,10 +66,10 @@ void SelectLineDialog::setSelectLineWidget( SelectLineWidget* selectLineWidget )
     }
 
     // append to layout
-    layout()->addWidget( selectLineWidget_ );
+    layout()->addWidget( selectLineWidget_.get() );
 
     // setup connections
-    connect( selectLineWidget_, SIGNAL(lineSelected(int)), this, SIGNAL(lineSelected(int)) );
+    connect( selectLineWidget_.get(), SIGNAL(lineSelected(int)), this, SIGNAL(lineSelected(int)) );
     connect( &selectLineWidget_->okButton(), SIGNAL(clicked()), SLOT(close()));
     connect( &selectLineWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()));
 

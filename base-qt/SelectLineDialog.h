@@ -22,7 +22,11 @@
 
 #include "BaseDialog.h"
 #include "Counter.h"
-#include "SelectLineWidget.h"
+
+#include <memory>
+
+class LineEditor;
+class SelectLineWidget;
 
 //* find_text dialog for text editor widgets
 class SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialog>
@@ -36,12 +40,14 @@ class SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialo
     //* constructor
     explicit SelectLineDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
 
+    //* destructor
+    ~SelectLineDialog() override;
+
     //*@name accessors
     //@{
 
     //* retrieve editor
-    LineEditor& editor() const
-    { return selectLineWidget_->editor(); }
+    LineEditor& editor() const;
 
     //@}
 
@@ -61,7 +67,7 @@ class SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialo
     private:
 
     //* select line widget
-    SelectLineWidget* selectLineWidget_ = nullptr;
+    std::unique_ptr<SelectLineWidget> selectLineWidget_;
 
 };
 #endif
