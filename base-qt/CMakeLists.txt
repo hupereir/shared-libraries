@@ -94,7 +94,6 @@ set(base_qt_SOURCES
   ColorDisplay.cpp
   ColorGrabButton.cpp
   ColorGrabObject.cpp
-  ColorMenu.cpp
   ColorOptionListBox.cpp
   ColorOptionModel.cpp
   ColumnSelectionMenu.cpp
