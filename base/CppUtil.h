@@ -29,6 +29,7 @@
 #endif
 
 #include <QList>
+#include <QVector>
 
 #include <initializer_list>
 #include <utility>
@@ -73,10 +74,13 @@ namespace Base
         #endif
     }
 
-    //* construct QList from initializer_list
+    //* construct QList or QVector from initializer_list
     template<
         class T,
-        typename = typename std::enable_if<std::is_base_of<QList<typename T::value_type>, typename std::decay<T>::type>::value>::type
+        typename = typename std::enable_if<
+            std::is_base_of<QList<typename T::value_type>, typename std::decay<T>::type>::value ||
+            std::is_base_of<QVector<typename T::value_type>, typename std::decay<T>::type>::value
+            >::type
         >
         inline T makeT( std::initializer_list<typename T::value_type>&& reference )
     {
@@ -89,7 +93,6 @@ namespace Base
         return out;
         #endif
     }
-
 
     //* append initializer_list to a container
     template<class T>
