@@ -261,8 +261,18 @@ class QOrderedSet
     inline int count() const
     { return q_map.count(); }
 
-    inline const_iterator insert(const T &value) // ### Qt 5: should return an 'iterator'
-    { return static_cast<typename Map::const_iterator>(q_map.insert(value, QOrderedSetDummyValue())); }
+    inline iterator insert(const T &value)
+    { return q_map.insert(value, QOrderedSetDummyValue()); }
+
+    inline iterator insert(const_iterator i, const T &value)
+    {
+        #if QT_VERSION >= 0x050100
+        return q_map.insert( reinterpret_cast<typename Map::const_iterator &>(i), value, QOrderedSetDummyValue());
+        #else
+        Q_UNUSED( i );
+        return q_map.insert( value, QOrderedSetDummyValue());
+        #endif
+    }
 
     iterator find(const T &value)
     { return q_map.find(value); }
@@ -272,6 +282,13 @@ class QOrderedSet
 
     inline const_iterator constFind(const T &value) const
     { return find(value); }
+
+    inline iterator lowerBound(const T &value)
+    { return q_map.lowerBound(value); }
+
+    inline const_iterator lowerBound(const T &value) const
+    { return q_map.lowerBound(value); }
+
 
     QOrderedSet<T> &unite(const QOrderedSet<T> &other);
 
