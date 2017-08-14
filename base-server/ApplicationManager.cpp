@@ -330,18 +330,16 @@ namespace Server
         Debug::Throw( "ApplicationManager::_clientConnectionClosed - client has disconnected.\n" );
 
         // look for disconnected clients in client map
+        for( auto&& iter = acceptedClients_.begin(); iter != acceptedClients_.end(); )
         {
-            ClientMap::iterator iter;
-            while( ( iter = std::find_if(  acceptedClients_.begin(), acceptedClients_.end(), SameStateFTor( QAbstractSocket::UnconnectedState ) )  ) != acceptedClients_.end() )
+            if( iter.value()->socket().state() == QAbstractSocket::UnconnectedState )
             {
 
-                // broadcast client as dead
+                // broadcast client as dead and erase from list
                 _broadcast( ServerCommand( iter.key(), ServerCommand::Killed ), iter.value() );
+                iter = acceptedClients_.erase( iter );
 
-                // erase from map of accepted clients
-                acceptedClients_.erase( iter );
-
-            }
+            } else ++iter;
         }
 
         // remove disconnected clients from connected clients list
