@@ -29,18 +29,6 @@
 
 #include <memory>
 
-//* custom process
-class ProcessDeleter
-{
-
-    public:
-
-    //* deleter
-    void operator()(QProcess* process)
-    { process->deleteLater(); }
-
-};
-
 //* customized process to store stdout/stderr in full/flushed streams
 class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
 {
@@ -50,13 +38,13 @@ class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
     public:
 
     //* creator
-    explicit CustomProcess( QObject* parent = nullptr );
+    explicit CustomProcess( QObject* = nullptr );
 
     //* destructor
     ~CustomProcess() override;
 
     //* smart pointer
-    using Pointer = std::unique_ptr<CustomProcess, ProcessDeleter>;
+    using Pointer = std::unique_ptr<CustomProcess>;
 
     /**
     \brief
