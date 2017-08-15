@@ -475,7 +475,6 @@ namespace Server
 
         // connect client to port
         client_.reset( new Client( this ) );
-        // create new socket
         connect( &client_->socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
         connect( &client_->socket(), SIGNAL(connected()), SLOT(_startTimer()) );
         connect( &client_->socket(), SIGNAL(disconnected()), SLOT(_serverConnectionClosed()) );
