@@ -52,11 +52,31 @@ namespace Server
         //* constructor
         explicit ApplicationManager( QObject* );
 
-        //* application name
-        void setApplicationName( const QString& );
+        //*@name accessors
+        //@{
 
         //* commandLine parser
         static CommandLineParser commandLineParser( CommandLineArguments = CommandLineArguments(), bool ignoreWarnings = true );
+
+        //* retrieve Application ID
+        const ApplicationId& id() const
+        { return id_; }
+
+        //* client
+        bool hasClient() const
+        { return static_cast<bool>(client_); }
+
+        //* client
+        Client& client() const
+        { return *client_; }
+
+        //@}
+
+        //*@name modifiers
+        //@{
+
+        //* application name
+        void setApplicationName( const QString& );
 
         //* application state enumeration
         enum State
@@ -76,13 +96,7 @@ namespace Server
             return true;
         }
 
-        //* reference to "this" client
-        Client& client() const
-        { return *client_; }
-
-        //* retrieve Application ID
-        const ApplicationId& id() const
-        { return id_; }
+        //@}
 
         public Q_SLOTS:
 
@@ -94,7 +108,7 @@ namespace Server
         //* emitted when a given command is recieved
         void commandRecieved( Server::ServerCommand );
 
-        //* emitted when the server is (re)initialized
+        //* emitted when the client is (re)initialized
         void initialized();
 
         protected:

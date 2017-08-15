@@ -402,7 +402,7 @@ namespace Server
     {
 
         Debug::Throw() << "ApplicationManager::_process -"
-            << "  app:" << command.id().name()
+            << " app:" << command.id().name()
             << " command: " << command.commandName()
             << endl;
 
@@ -423,17 +423,17 @@ namespace Server
 
                 client_->sendCommand( ServerCommand( id_, ServerCommand::Alive ) );
                 emit commandRecieved( command );
-                return;
 
-            } else break;
+            }
+            break;
 
             case ServerCommand::Denied:
             if( state_ == AwaitingReply )
             {
                 timer_.stop();
                 if( setState( Dead ) ) emit commandRecieved( command );
-                return;
-            } else break;
+            }
+            break;
 
 
             case ServerCommand::Abort:
@@ -441,16 +441,16 @@ namespace Server
             {
                 timer_.stop();
                 if( setState( Dead ) ) emit commandRecieved( command );
-                return;
-            } else break;
+            }
+            break;
 
             case ServerCommand::Accepted:
             if( state_ == AwaitingReply )
             {
                 timer_.stop();
                 if( setState( Alive ) ) emit commandRecieved( command );
-                return;
-            } else break;
+            }
+            break;
 
             default:
             {
@@ -459,6 +459,8 @@ namespace Server
             }
 
         }
+
+        return;
 
     }
 
@@ -474,7 +476,6 @@ namespace Server
         return server_->listen( host_, port_ );
 
     }
-
 
     //__________________________________________________________________________
     bool ApplicationManager::_initializeClient()
