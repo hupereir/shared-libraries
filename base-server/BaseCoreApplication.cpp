@@ -136,7 +136,7 @@ CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments a
 void BaseCoreApplication::sendServerCommand( Server::ServerCommand::CommandType type )
 {
     Debug::Throw( "BaseCoreApplication::sendServerCommand.\n" );
-    { if( _hasApplicationManager() ) sendServerCommand( Server::ServerCommand( _applicationManager().id(), type ) ); }
+    if( _hasApplicationManager() ) sendServerCommand( Server::ServerCommand( _applicationManager().id(), type ) );
 }
 
 //__________________________________________________________________
