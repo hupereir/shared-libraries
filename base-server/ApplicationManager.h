@@ -223,14 +223,25 @@ namespace Server
         //* arguments
         CommandLineArguments arguments_;
 
+        class Deleter
+        {
+
+            public:
+
+            template<class T>
+            void operator() (T* t) const
+            { t->deleteLater(); }
+
+        };
+
         //* Server
-        QTcpServer* server_ = nullptr;
+        std::unique_ptr<QTcpServer, Deleter> server_;
 
         //* true if initializeServer was called
         bool serverInitialized_ = false;
 
         //* Client
-        Client* client_ = nullptr;
+        std::unique_ptr<Client, Deleter> client_;
 
         //* list of connected clients
         ClientList connectedClients_;

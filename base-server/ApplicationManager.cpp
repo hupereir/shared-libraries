@@ -34,21 +34,11 @@ namespace Server
     //_________________________________________
     ApplicationManager::ApplicationManager( QObject* parent ):
         QObject( parent ),
-        Counter( "ApplicationManager" ),
-        server_( new QTcpServer( this ) ),
-        client_( new Client( this ) )
+        Counter( "ApplicationManager" )
     {
 
         Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
         setApplicationName( "Generic Application" );
-
-        connect( server_, SIGNAL(newConnection()), SLOT(_newConnection()) );
-
-        // create new socket
-        connect( &client_->socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
-        connect( &client_->socket(), SIGNAL(connected()), SLOT(_startTimer()) );
-        connect( &client_->socket(), SIGNAL(disconnected()), SLOT(_serverConnectionClosed()) );
-        connect( client_, SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_process(Server::ServerCommand)) );
 
         if( !XmlOptions::get().contains( "SERVER_HOST" ) )
         { XmlOptions::get().setRaw( "SERVER_HOST", host_.toString(), true ); }
@@ -406,8 +396,6 @@ namespace Server
             << " command: " << command.commandName()
             << endl;
 
-        Q_ASSERT( client_->id() == command.clientId() );
-
         // check command id is valid
         if( !command.id().isValid() ) return;
 
@@ -472,7 +460,9 @@ namespace Server
 
         serverInitialized_ = true;
 
-        // connect server to port
+        server_.reset( new QTcpServer( this ) ),
+        connect( server_.get(), SIGNAL(newConnection()), SLOT(_newConnection()) );
+
         return server_->listen( host_, port_ );
 
     }
@@ -484,7 +474,12 @@ namespace Server
         Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << host_.toString() << " port: " << port_ << endl;
 
         // connect client to port
-        client_->socket().abort();
+        client_.reset( new Client( this ) );
+        // create new socket
+        connect( &client_->socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
+        connect( &client_->socket(), SIGNAL(connected()), SLOT(_startTimer()) );
+        connect( &client_->socket(), SIGNAL(disconnected()), SLOT(_serverConnectionClosed()) );
+        connect( client_.get(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_process(Server::ServerCommand)) );
         client_->socket().connectToHost( host_, port_ );
 
         // emit initialization signal
