@@ -62,7 +62,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
         public:
 
         //* deleter
-        void operator() (QDialog* dialog)
+        void operator() (QDialog* dialog) const
         {
             dialog->releaseMouse();
             delete dialog;

@@ -37,7 +37,7 @@ class WinUtil final
     //* constructor
     explicit WinUtil( QWidget* );
 
-    //* destructor (needed due to std::unique_ptr)
+    //* destructor
     ~WinUtil();
 
     //* set layered widget transparent

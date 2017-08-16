@@ -270,7 +270,7 @@ namespace SpellCheck
             public:
 
             //* deleter
-            void operator()(AspellConfig* value)
+            void operator()(AspellConfig* value) const
             { delete_aspell_config( value ); }
 
         };
@@ -286,7 +286,7 @@ namespace SpellCheck
             public:
 
             //* deleter
-            void operator()(AspellSpeller* value)
+            void operator()(AspellSpeller* value) const
             { delete_aspell_speller( value ); }
 
         };
@@ -302,7 +302,7 @@ namespace SpellCheck
             public:
 
             //* deleter
-            void operator()(AspellDocumentChecker* value)
+            void operator()(AspellDocumentChecker* value) const
             { delete_aspell_document_checker( value ); }
 
         };

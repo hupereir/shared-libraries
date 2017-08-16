@@ -35,10 +35,17 @@ class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
     public:
 
     //* delete object allocated with malloc
-    struct pod_delete{ void operator()(void* x) { free(x); } };
+    class PodDeleter
+    {
+        public:
+
+        void operator()(void* x) const
+        { free(x); }
+
+    };
 
     //* specialized unique pointer
-    template <typename T> using ScopedPointer = std::unique_ptr<T,pod_delete>;
+    template <typename T> using ScopedPointer = std::unique_ptr<T,PodDeleter>;
 
     //* singleton
     static XcbUtil& get();

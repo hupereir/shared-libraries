@@ -52,7 +52,7 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     //* constructor
     explicit TabWidget( QTabWidget* parent );
 
-    //* destructor (needed because of std::unique_ptr
+    //* destructor
     ~TabWidget() override;
 
     //*@name accessors
