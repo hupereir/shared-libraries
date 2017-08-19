@@ -50,7 +50,7 @@ namespace Private
 
             // get matching options in the second set
             if( !second.isSpecialOption( firstIter.key() ) ) return true;
-            Options::List options( second.specialOptions( firstIter.key() ) );
+            auto options( second.specialOptions( firstIter.key() ) );
 
             // loop over options in first list
             for( const auto& option:firstIter.value() )
@@ -59,7 +59,7 @@ namespace Private
                 if( !option.isRecordable() ) continue;
 
                 // find in second list
-                if( options.indexOf( option ) < 0 ) return true;
+                if( !options.contains( option ) ) return true;
 
             }
 
@@ -72,7 +72,7 @@ namespace Private
             // skip non recordable options
             if( !firstIter.value().isRecordable() ) continue;
 
-            const Options::Map::const_iterator secondIter( second.options().constFind( firstIter.key() ) );
+            const auto secondIter( second.options().constFind( firstIter.key() ) );
             if( secondIter == second.options().constEnd() )
             {
 
@@ -193,9 +193,9 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
     auto topNodes = document.elementsByTagName( Base::Xml::Options );
     if( topNodes.isEmpty() ) return false;
 
-    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
+    for(auto node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
-        QDomElement element = node.toElement();
+        auto element = node.toElement();
         if( element.isNull() ) continue;
 
         // special options
@@ -203,7 +203,7 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
         {
 
             // retrieve Value attribute
-            QString value( element.attribute( Base::Xml::Value ) );
+            auto value( element.attribute( Base::Xml::Value ) );
             if( value.size() ) options.keep( value );
 
         } else if( element.tagName() == Base::Xml::Option ) {
