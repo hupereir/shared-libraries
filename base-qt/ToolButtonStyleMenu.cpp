@@ -24,6 +24,8 @@
 
 #include <QActionGroup>
 
+#include <algorithm>
+
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     QMenu( tr( "Text position" ), parent ),
@@ -35,23 +37,19 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     // install values
-    using NamePair=QPair<QString, int >;
-    using List=QList< NamePair >;
-    auto actionNames = Base::makeT<List>( {
-        { tr( "System Default" ), -1 },
-        { tr( "No Text" ), Qt::ToolButtonIconOnly },
-        { tr( "Text Only" ), Qt::ToolButtonTextOnly },
-        { tr( "Text Alongside icons" ), Qt::ToolButtonTextBesideIcon },
-        { tr( "Text Under icons" ), Qt::ToolButtonTextUnderIcon } } );
-
-    // generic action
-    for( const auto& namePair:actionNames )
+    actions_ = Base::makeT<ActionMap>(
     {
-        auto action = new QAction( namePair.first, this );
-        addAction( action );
-        action->setCheckable( true );
-        actions_.insert( action, namePair.second );
-        group->addAction( action );
+        { addAction( tr( "System Default" ) ), -1 },
+        { addAction( tr( "No Text" ) ), Qt::ToolButtonIconOnly },
+        { addAction( tr( "Text Only" ) ), Qt::ToolButtonTextOnly },
+        { addAction( tr( "Text Alongside icons" ) ), Qt::ToolButtonTextBesideIcon },
+        { addAction( tr( "Text Under icons" ) ), Qt::ToolButtonTextUnderIcon }
+    } );
+
+    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
+    {
+        iter.key()->setCheckable( true );
+        group->addAction( iter.key() );
     }
 
 }
@@ -61,15 +59,8 @@ void ToolButtonStyleMenu::select( int style )
 {
 
     Debug::Throw() << "ToolButtonStyleMenu::select - style: " << style << endl;
-    for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
-    {
-        if( iter.value() == style )
-        {
-            iter.key()->setChecked( true );
-            return;
-        }
-    }
-
+    const auto iter = std::find_if( actions_.begin(), actions_.end(), [&style]( int current ){ return current == style; } );
+    if( iter != actions_.end() ) iter.key()->setChecked( true );
 }
 
 //_____________________________________________________________________________
