@@ -24,11 +24,9 @@
 #include <QHeaderView>
 
 //_____________________________________________________
-ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const QString& title ):
+ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, const QString& title ):
     QMenu( parent ),
     Counter( "ColumnSortingMenu" ),
-    target_( target ),
-    header_( 0 ),
     group_( new QActionGroup( this ) )
 {
     Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
@@ -42,25 +40,15 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const 
     addAction( tr( "Reverse Order" ), this, SLOT(_revertOrder()) );
 }
 
+//_____________________________________________________
+ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const QString& title ):
+    ColumnSortingMenu( parent, title )
+{ target_ = target; }
 
 //_____________________________________________________
 ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QHeaderView* header, const QString& title ):
-    QMenu( parent ),
-    Counter( "ColumnSortingMenu" ),
-    target_( 0 ),
-    header_( header ),
-    group_( new QActionGroup( this ) )
-{
-    Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
-    setTitle( title );
-    connect( this, SIGNAL(aboutToShow()), SLOT(_updateActions()) );
-    connect( this, SIGNAL(triggered(QAction*)), SLOT(_sort(QAction*)) );
-    group_->setExclusive( true );
-
-    addSeparator();
-
-    addAction( tr( "Reverse order" ), this, SLOT(_revertOrder()) );
-}
+    ColumnSortingMenu( parent, title )
+{ header_ = header; }
 
 //_____________________________________________________
 void ColumnSortingMenu::_updateActions()
@@ -79,8 +67,6 @@ void ColumnSortingMenu::_updateActions()
 
     // retrieve parent header.
     if( target_ ) header_ = target_->header();
-    Q_ASSERT( header_ );
-    Q_ASSERT( header_->isSortIndicatorShown() );
 
     // try cast to treeview
     TreeView* treeView( qobject_cast<TreeView*>( header_->parentWidget() ) );

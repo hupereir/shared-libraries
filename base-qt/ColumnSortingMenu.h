@@ -58,6 +58,8 @@ class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
 
     private:
 
+    explicit ColumnSortingMenu( QWidget*, const QString& );
+
     //* target
     QTreeView* target_ = nullptr;
 
