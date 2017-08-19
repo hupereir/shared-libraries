@@ -42,12 +42,12 @@ void ColumnSelectionMenu::_updateActions()
 
     Debug::Throw( "ColumnSelectionMenu::_updateActions.\n" );
 
+    // clear current column action
+    currentColumnAction_.reset();
+
     // clear existing actions
     for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     { delete iter.key(); }
-
-    delete currentColumnAction_;
-    currentColumnAction_ = nullptr;
 
     actions_.clear();
 
@@ -72,9 +72,9 @@ void ColumnSelectionMenu::_updateActions()
         // disable/hide action for locked columns
         if( !( treeView && treeView->isColumnVisibilityLocked( currentColumn_ ) ) )
         {
-            currentColumnAction_ = new QAction( tr( "Hide Column '%1'" ).arg( columnName ), this );
-            connect( currentColumnAction_, SIGNAL(triggered()), SLOT(_hideCurrentColumn()) );
-            insertAction( firstAction, currentColumnAction_ );
+            currentColumnAction_.reset( new QAction( tr( "Hide Column '%1'" ).arg( columnName ), this ) );
+            connect( currentColumnAction_.get(), SIGNAL(triggered()), SLOT(_hideCurrentColumn()) );
+            insertAction( firstAction, currentColumnAction_.get() );
             insertSeparator( firstAction );
         }
 

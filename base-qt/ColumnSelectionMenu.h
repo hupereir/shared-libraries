@@ -28,6 +28,8 @@
 #include <QTreeView>
 #include <QHash>
 
+#include <memory>
+
 //_______________________________________________________________
 class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMenu>
 {
@@ -64,7 +66,7 @@ class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMen
     int currentColumn_ = -1;
 
     //* current column action
-    QAction *currentColumnAction_ = nullptr;
+    std::unique_ptr<QAction> currentColumnAction_;
 
     //* map action to column index
     using ActionMap = QHash< QAction*, int >;
