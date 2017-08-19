@@ -20,6 +20,8 @@
 #include "Debug.h"
 #include "IconSizeMenu.h"
 
+#include <algorithm>
+
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
     QMenu( tr( "Icon size" ), parent ),
@@ -30,7 +32,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
     QActionGroup *group = new QActionGroup( this );
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
-    const IconSize::Map& sizes( IconSize::map() );
+    const auto& sizes( IconSize::map() );
 
     // generic action
     QAction* action;
@@ -54,14 +56,8 @@ void IconSizeMenu::select( IconSize::Size size )
 {
 
     Debug::Throw( "IconSizeMenu::select.\n" );
-    for( auto iter = actions_.begin(); iter != actions_.end(); ++iter )
-    {
-        if( iter.value() == size )
-        {
-            iter.key()->setChecked( true );
-            return;
-        }
-    }
+    const auto iter = std::find_if( actions_.begin(), actions_.end(), [&size](const IconSize::Size& current){ return current == size; } );
+    if( iter != actions_.end() ) iter.key()->setChecked( true );
 
 }
 
@@ -72,7 +68,7 @@ void IconSizeMenu::_selected( QAction* action )
     Debug::Throw( "IconSizeMenu::_selected.\n" );
 
     // find matching actions
-    ActionMap::const_iterator iter = actions_.find( action );
+    const auto iter = actions_.find( action );
     Q_ASSERT( iter != actions_.end() );
     emit iconSizeSelected( iter.value() );
 
