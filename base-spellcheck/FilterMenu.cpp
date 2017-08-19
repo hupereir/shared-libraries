@@ -24,6 +24,8 @@
 #include "SpellInterface.h"
 #include "XmlOptions.h"
 
+#include <algorithm>
+
 namespace SpellCheck
 {
 
@@ -48,10 +50,8 @@ namespace SpellCheck
     {
 
         Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
-
-        for( auto&& iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
-        { if( iter.value() == filter ) iter.key()->setChecked( true ); }
-
+        const auto iter = std::find_if( actions_.begin(), actions_.end(), [&filter](const QString& current){ return current == filter; } );
+        if( iter != actions_.end() ) iter.key()->setChecked( true );
         return;
 
     }
@@ -64,12 +64,17 @@ namespace SpellCheck
 
         // store selected filter
         QString selection;
-        for( auto&& iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        #if QT_VERSION >= 0x050600
+        auto iter = std::find_if( actions_.keyBegin(), actions_.keyEnd(), [](QAction* current){ return current->isChecked(); } );
+        if( iter != actions_.keyEnd() ) selection = iter.base().value();
+        #else
+        for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
         { if( iter.key()->isChecked() ) selection = iter.value(); }
+        #endif
 
         // clear actions
         QMenu::clear();
-        actionMap_.clear();
+        actions_.clear();
 
         // add reset button
         QAction* action;
@@ -97,11 +102,10 @@ namespace SpellCheck
             }
 
             // insert action
-            auto action( new QAction( filter, this ) );
+            auto action( addAction( filter ) );
             action->setCheckable( true );
             action->setChecked( filter == selection );
-            actionMap_.insert( action, filter );
-            addAction( action );
+            actions_.insert( action, filter );
             group_->addAction( action );
         }
 
@@ -112,8 +116,8 @@ namespace SpellCheck
     {
 
         Debug::Throw( "FilterMenu::_filter.\n" );
-        const auto iter( actionMap_.find( action ) );
-        if( iter == actionMap_.end() ) return;
+        const auto iter( actions_.find( action ) );
+        if( iter == actions_.end() ) return;
 
         select( iter.value() );
         emit selectionChanged( iter.value() );

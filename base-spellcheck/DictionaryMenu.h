@@ -73,7 +73,7 @@ namespace SpellCheck
 
         //! map dictionaries and action
         using ActionMap = QHash<QAction*, QString>;
-        ActionMap actionMap_;
+        ActionMap actions_;
 
     };
 

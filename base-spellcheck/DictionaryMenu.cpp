@@ -24,6 +24,8 @@
 #include "SpellInterface.h"
 #include "XmlOptions.h"
 
+#include <algorithm>
+
 namespace SpellCheck
 {
     //____________________________________________________________________
@@ -51,12 +53,9 @@ namespace SpellCheck
     void DictionaryMenu::select( const QString& dictionary )
     {
         Debug::Throw() << "DictionaryMenu::select - dictionary: " << dictionary << endl;
-
-        for( auto&& iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
-        { if( iter.value() == dictionary ) iter.key()->setChecked( true ); }
-
+        const auto iter = std::find_if( actions_.begin(), actions_.end(), [&dictionary]( const QString& current ) { return current == dictionary; } );
+        if( iter != actions_.end() ) iter.key()->setChecked( true );
         return;
-
     }
 
     //____________________________________________________________________
@@ -67,12 +66,17 @@ namespace SpellCheck
 
         // store selected dictionary
         QString selection;
-        for( auto&& iter = actionMap_.begin(); iter != actionMap_.end(); ++iter )
+        #if QT_VERSION >= 0x050600
+        auto iter = std::find_if( actions_.keyBegin(), actions_.keyEnd(), [](QAction* current){ return current->isChecked(); } );
+        if( iter != actions_.keyEnd() ) selection = iter.base().value();
+        #else
+        for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
         { if( iter.key()->isChecked() ) selection = iter.value(); }
+        #endif
 
         // clear actions
         QMenu::clear();
-        actionMap_.clear();
+        actions_.clear();
 
         // add reset button
         QAction* action;
@@ -101,10 +105,10 @@ namespace SpellCheck
             }
 
             // insert action
-            auto action( new QAction( dictionary, this ) );
+            auto action( addAction( dictionary ) );
             action->setCheckable( true );
             action->setChecked( dictionary == selection );
-            actionMap_.insert( action, dictionary );
+            actions_.insert( action, dictionary );
             addAction( action );
             group_->addAction( action );
 
@@ -117,8 +121,8 @@ namespace SpellCheck
     {
 
         Debug::Throw( "DictionaryMenu::_selectDictionary.\n" );
-        const auto iter( actionMap_.find( action ) );
-        if( iter == actionMap_.end() ) return;
+        const auto iter( actions_.find( action ) );
+        if( iter == actions_.end() ) return;
 
         select( iter.value() );
         emit selectionChanged( iter.value() );

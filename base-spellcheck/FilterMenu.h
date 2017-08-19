@@ -40,10 +40,10 @@ namespace SpellCheck
         public:
 
         //! constructor
-        explicit FilterMenu( QWidget* parent );
+        explicit FilterMenu( QWidget* );
 
         //! select filter manualy
-        void select( const QString& filter );
+        void select( const QString& );
 
         Q_SIGNALS:
 
@@ -58,19 +58,19 @@ namespace SpellCheck
         protected Q_SLOTS:
 
         //! filter selected from menu
-        void _selectFilter( QAction* action );
+        void _selectFilter( QAction* );
 
         private:
 
         //! action group
-        QActionGroup* group_;
+        QActionGroup* group_ = nullptr;
 
         //! map filters and action
         using ActionMap = QHash<QAction*, QString>;
-        ActionMap actionMap_;
+        ActionMap actions_;
 
     };
 
-};
+}
 
 #endif
