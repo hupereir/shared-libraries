@@ -81,7 +81,7 @@ void RecentFilesMenu::_updateActions()
     for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     {
 
-        FileRecord::List::const_iterator found = std::find_if(
+        auto found = std::find_if(
             records.begin(),
             records.end(),
             FileRecord::SameFileFTor( iter.value().file() ) );
