@@ -20,6 +20,7 @@
 #include "PrintPreviewDialog.h"
 #include "PrintPreviewDialog_p.h"
 
+#include "CppUtil.h"
 #include "Debug.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
@@ -44,48 +45,44 @@ namespace Private
 
         {
             QMenu* menu = addMenu( tr( "Orientation" ) );
-            QAction* action;
+            orientationActions_ = Base::makeT<OrientationActionMap>(
+            {
+                { menu->addAction( tr( "Portrait" ) ), QPrinter::Portrait },
+                { menu->addAction( tr( "Landscape" ) ), QPrinter::Landscape }
+            } );
+
             QActionGroup* actionGroup = new QActionGroup( this );
-
-            action = menu->addAction( tr( "Portrait" ) );
-            action->setCheckable( true );
-            action->setChecked( true );
-            actionGroup->addAction( action );
-            orientationActions_.insert( action, QPrinter::Portrait );
-
-            action = menu->addAction( tr( "Landscape" ) );
-            action->setCheckable( true );
-            actionGroup->addAction( action );
-            orientationActions_.insert( action, QPrinter::Landscape );
+            for( auto&& iter = orientationActions_.begin(); iter != orientationActions_.end(); ++iter )
+            {
+                iter.key()->setCheckable( true );
+                actionGroup->addAction( iter.key() );
+            }
 
             connect( actionGroup, SIGNAL(triggered(QAction*)), SLOT(_setOrientation(QAction*)) );
+            menu->actions().front()->setChecked( true );
 
         }
 
         {
             QMenu* menu = addMenu( tr( "Layout" ) );
+            pageModeActions_ = Base::makeT<PageModeActionMap>(
+            {
+                { menu->addAction( tr( "One Page Per Sheet" ) ), BasePrintHelper::PageMode::SinglePage },
+                { menu->addAction( tr( "Two Pages Per Sheet" ) ), BasePrintHelper::PageMode::TwoPages },
+                { menu->addAction( tr( "Four Pages Per Sheet" ) ), BasePrintHelper::PageMode::FourPages }
+            } );
 
-            QAction* action;
             QActionGroup* actionGroup = new QActionGroup( this );
+            for( auto&& iter = pageModeActions_.begin(); iter != pageModeActions_.end(); ++iter )
+            {
+                iter.key()->setCheckable( true );
+                actionGroup->addAction( iter.key() );
+            }
 
-            action = menu->addAction( tr( "One Page Per Sheet" ) );
-            action->setCheckable( true );
-            action->setChecked( true );
-            actionGroup->addAction( action );
-            pageModeActions_.insert( action, BasePrintHelper::PageMode::SinglePage );
-
-            action = menu->addAction( tr( "Two Pages Per Sheet" ) );
-            action->setCheckable( true );
-            actionGroup->addAction( action );
-            pageModeActions_.insert( action, BasePrintHelper::PageMode::TwoPages );
-
-            action = menu->addAction( tr( "Four Pages Per Sheet" ) );
-            action->setCheckable( true );
-            actionGroup->addAction( action );
-            pageModeActions_.insert( action, BasePrintHelper::PageMode::FourPages );
-
+            menu->actions().front()->setChecked( true );
             connect( actionGroup, SIGNAL(triggered(QAction*)), SLOT(_setPageMode(QAction*)) );
-       }
+
+        }
 
     }
 
