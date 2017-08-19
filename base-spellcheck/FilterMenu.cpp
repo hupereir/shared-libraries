@@ -19,12 +19,11 @@
 
 #include "FilterMenu.h"
 
+#include "CppUtil.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
 #include "XmlOptions.h"
-
-#include <algorithm>
 
 namespace SpellCheck
 {
@@ -50,7 +49,7 @@ namespace SpellCheck
     {
 
         Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
-        const auto iter = std::find_if( actions_.begin(), actions_.end(), [&filter](const QString& current){ return current == filter; } );
+        const auto iter = Base::findByValue( actions_, filter );
         if( iter != actions_.end() ) iter.key()->setChecked( true );
         return;
 

@@ -33,6 +33,7 @@
 
 #include <initializer_list>
 #include <utility>
+#include <algorithm>
 
 namespace Base
 {
@@ -149,6 +150,11 @@ namespace Base
         }
 
     }
+
+    //* find iterator by value in map
+    template<class T>
+        inline typename T::const_iterator findByValue( const T& map, const typename T::mapped_type& value )
+    { return std::find_if( map.begin(), map.end(), [&value](const typename T::mapped_type& current) { return current == value; } ); }
 
 }
 

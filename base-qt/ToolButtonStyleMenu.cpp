@@ -24,8 +24,6 @@
 
 #include <QActionGroup>
 
-#include <algorithm>
-
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     QMenu( tr( "Text position" ), parent ),
@@ -59,7 +57,7 @@ void ToolButtonStyleMenu::select( int style )
 {
 
     Debug::Throw() << "ToolButtonStyleMenu::select - style: " << style << endl;
-    const auto iter = std::find_if( actions_.begin(), actions_.end(), [&style]( int current ){ return current == style; } );
+    const auto iter = Base::findByValue( actions_, style );
     if( iter != actions_.end() ) iter.key()->setChecked( true );
 }
 

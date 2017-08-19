@@ -19,12 +19,11 @@
 
 #include "DictionaryMenu.h"
 
+#include "CppUtil.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
 #include "XmlOptions.h"
-
-#include <algorithm>
 
 namespace SpellCheck
 {
@@ -53,7 +52,7 @@ namespace SpellCheck
     void DictionaryMenu::select( const QString& dictionary )
     {
         Debug::Throw() << "DictionaryMenu::select - dictionary: " << dictionary << endl;
-        const auto iter = std::find_if( actions_.begin(), actions_.end(), [&dictionary]( const QString& current ) { return current == dictionary; } );
+        const auto iter = Base::findByValue( actions_, dictionary );
         if( iter != actions_.end() ) iter.key()->setChecked( true );
         return;
     }

@@ -19,14 +19,12 @@
 
 #include "TextEncodingMenu.h"
 
-#include "TextEncodingString.h"
-
+#include "CppUtil.h"
 #include "Debug.h"
+#include "TextEncodingString.h"
 
 #include <QActionGroup>
 #include <QTextCodec>
-
-#include <algorithm>
 
 //__________________________________________________________
 TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
@@ -76,7 +74,7 @@ void TextEncodingMenu::select( const QByteArray& constValue )
 
     // get 'standard name'
     auto value( codec->name() );
-    auto iter = std::find_if( actions_.begin(), actions_.end(), [&value]( const QByteArray& current ) { return current == value; } );
+    auto iter = Base::findByValue( actions_, value );
     if( iter != actions_.end() ) iter.key()->setChecked( true );
 
 }

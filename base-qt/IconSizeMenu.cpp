@@ -17,10 +17,9 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "IconSizeMenu.h"
-
-#include <algorithm>
+#include "CppUtil.h"
+#include "Debug.h"
 
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
@@ -56,7 +55,7 @@ void IconSizeMenu::select( IconSize::Size size )
 {
 
     Debug::Throw( "IconSizeMenu::select.\n" );
-    const auto iter = std::find_if( actions_.begin(), actions_.end(), [&size](const IconSize::Size& current){ return current == size; } );
+    const auto iter = Base::findByValue( actions_, size );
     if( iter != actions_.end() ) iter.key()->setChecked( true );
 
 }
