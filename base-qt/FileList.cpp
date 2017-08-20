@@ -36,13 +36,13 @@ FileList::FileList( QObject* parent ):
 
 //_______________________________________________
 bool FileList::contains( const File& file ) const
-{ return std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( file ) ) != records_.end(); }
+{ return std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTorUnary( file ) ) != records_.end(); }
 
 //_______________________________________________
 void FileList::remove( const File& file )
 {
     Debug::Throw() << "FileList::remove - " << file << endl;
-    records_.erase(std::remove_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( file ) ), records_.end() );
+    records_.erase(std::remove_if( records_.begin(), records_.end(), FileRecord::SameFileFTorUnary( file ) ), records_.end() );
     return;
 }
 
@@ -106,7 +106,7 @@ void FileList::_processRecords( const FileRecord::List& records, bool hasInvalid
     // set file records validity
     for( auto& record:records_ )
     {
-        FileRecord::List::const_iterator found = std::find_if( records.begin(), records.end(), FileRecord::SameFileFTor( record.file() ) );
+        FileRecord::List::const_iterator found = std::find_if( records.begin(), records.end(), FileRecord::SameFileFTorUnary( record.file() ) );
         if( found == records.end() ) continue;
         record.setValid( found->isValid() );
     }
@@ -164,7 +164,7 @@ FileRecord& FileList::_add(
     // do not add empty files
     Q_ASSERT( !record.file().isEmpty() );
 
-    auto iter = std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTor( record.file() ) );
+    auto iter = std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTorUnary( record.file() ) );
     if( iter != records_.end() )
     {
 

@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "Functors.h"
 #include "TextFormat.h"
 
 #include <QColor>
@@ -113,48 +114,10 @@ namespace Format
         //@}
 
         //* get TextFormatBlock matching a given begin position
-        class SamePositionBeginFTor
-        {
-
-            public:
-
-            //* constructor
-            explicit SamePositionBeginFTor( int position ):
-                position_( position )
-            {}
-
-            //* predicate
-            bool operator() (const TextFormatBlock& format ) const
-            { return format.begin() == position_; }
-
-            private:
-
-            //* predicted position
-            int position_ = 0;
-
-        };
+        using SamePositionBeginFTor = Base::Functor::Unary<TextFormatBlock, int, &TextFormatBlock::begin>;
 
         //* get TextFormatBlock matching a given end position
-        class SamePositionEndFTor
-        {
-
-            public:
-
-            //* constructor
-            explicit SamePositionEndFTor( int position ):
-                position_( position )
-            {}
-
-            //* predicate
-            bool operator() (const TextFormatBlock& format ) const
-            { return format.end() == position_; }
-
-            private:
-
-            //* predicted position
-            int position_ = 0;
-
-        };
+        using SamePositionEndFTor = Base::Functor::Unary<TextFormatBlock, int, &TextFormatBlock::end>;
 
         //* get TextFormatBlock containing a given position
         class ContainsFTor

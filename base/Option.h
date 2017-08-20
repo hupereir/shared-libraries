@@ -22,6 +22,7 @@
 
 #include "Counter.h"
 #include "Debug.h"
+#include "Functors.h"
 
 #include <QDataStream>
 #include <QString>
@@ -213,25 +214,7 @@ class Option:private Base::Counter<Option>
     };
 
     //* used to get options with matching values
-    class SameValueFTor
-    {
-        public:
-
-        //* constructor
-        explicit SameValueFTor( const Option& option ):
-            value_( option.value_ )
-            {}
-
-        //* predicate
-        bool operator() (const Option& other ) const
-        { return value_ == other.value_; }
-
-        private:
-
-        //* prediction
-        QByteArray value_;
-
-    };
+    using SameValueFTor = Base::Functor::Unary<Option, const QByteArray&, &Option::raw>;
 
     private:
 

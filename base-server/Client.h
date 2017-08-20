@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "Functors.h"
 #include "BaseSocketInterface.h"
 #include "ServerCommand.h"
 
@@ -52,27 +53,7 @@ namespace Server
         void sendCommand( const ServerCommand& );
 
         //* used to retrieve client matching id
-        class SameIdFTor
-        {
-
-            public:
-
-            //* constructor
-            explicit SameIdFTor( quint32 id ):
-                id_( id )
-            {}
-
-            //* predicate
-            template<class T>
-            bool operator() ( const T& client ) const
-            { return client->id() == id_; }
-
-            protected:
-
-            //* prediction
-            quint32 id_;
-
-        };
+        using SameIdFTor = Base::Functor::Unary<Client, quint32, &Client::id>;
 
         Q_SIGNALS:
 

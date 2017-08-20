@@ -23,6 +23,7 @@
 #include "CommandLineArguments.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "Functors.h"
 
 #include <QStringList>
 #include <QHash>
@@ -220,6 +221,9 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
             type_( type )
         {}
 
+        int typeSize() const
+        { return type_.size(); }
+
         //* type
         QString type_;
 
@@ -229,28 +233,10 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     };
 
     //* used to select tag of maximum length
-    class MinLengthFTor
-    {
-
-        public:
-
-        //* predicate
-        bool operator () ( const Tag& first, const Tag& second )
-        { return first.size() < second.size(); }
-
-    };
+    using MinLengthFTor = Base::Functor::BinaryLess<Tag, int, &Tag::size>;
 
     //* used to select tag of maximum length
-    class MinTypeLengthFTor
-    {
-
-        public:
-
-        //* predicate
-        bool operator () ( const Option& first, const Option& second )
-        { return first.type_.size() < second.type_.size(); }
-
-    };
+    using MinTypeLengthFTor = Base::Functor::BinaryLess<Option, int, &Option::typeSize>;
 
     //* used to find matching flag
     class SameTagFTor

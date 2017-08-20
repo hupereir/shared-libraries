@@ -23,6 +23,7 @@
 #include "CppUtil.h"
 #include "Debug.h"
 #include "File.h"
+#include "Functors.h"
 #include "TimeStamp.h"
 
 #include <QString>
@@ -312,15 +313,7 @@ class BaseFileInfo
     };
 
     //* used to retrieve documents
-    class IsDocumentFTor
-    {
-        public:
-
-        //* predicate
-        bool operator() (const BaseFileInfo& info ) const
-        { return info.isDocument() && !info.isNavigator(); }
-
-    };
+    using IsDocumentFTor = Base::Functor::UnaryTrue<BaseFileInfo, &BaseFileInfo::isDocument>;
 
     //* used to retrieve folders
     class IsFolderFTor
@@ -334,41 +327,10 @@ class BaseFileInfo
     };
 
     //* used to retrieve folder
-    class IsLinkFTor
-    {
-        public:
-
-        //* predicate
-        bool operator() (const BaseFileInfo& info ) const
-        { return info.isLink(); }
-
-    };
+    using IsLinkFTor = Base::Functor::UnaryTrue<BaseFileInfo, &BaseFileInfo::isLink>;
 
     //* used to retrieve FileInfo with matching file
-    class SameFileFTor
-    {
-        public:
-
-        //* constructor
-        explicit SameFileFTor( const BaseFileInfo& info ):
-            file_( info.file_ )
-        {}
-
-        //* constructor
-        explicit SameFileFTor( const File& file ):
-            file_( file )
-        {}
-
-        //* predicate
-        bool operator() (const BaseFileInfo& info ) const
-        { return info.file_ == file_; }
-
-        private:
-
-        //* predicted file
-        File file_;
-
-    };
+    using SameFileFTor = Base::Functor::Unary<BaseFileInfo, const File&, &BaseFileInfo::file>;
 
     //* file info list
     class Description

@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "Functors.h"
 #include "Debug.h"
 #include "File.h"
 #include "QOrderedSet.h"
@@ -219,47 +220,11 @@ class FileRecord: private Base::Counter<FileRecord>
     };
 
     //* used to sort records according to files
-    class FileFTor
-    {
-
-        public:
-
-        //* predicate
-        bool operator() (const FileRecord& first, const FileRecord& second) const
-        { return first.file() < second.file(); }
-
-    };
+    using FileFTor = Base::Functor::BinaryLess<FileRecord, const File&, &FileRecord::file>;
 
     //* used to retrieve FileRecord with identical filenames
-    class SameFileFTor
-    {
-
-        public:
-
-        //* constructor
-        explicit SameFileFTor( const File& file = File("") ):
-            file_( file )
-        {}
-
-        //* constructor
-        explicit SameFileFTor( const FileRecord& record ):
-            file_( record.file() )
-        {}
-
-        //* predicate
-        bool operator() (const FileRecord& record ) const
-        { return record.file() == file_; }
-
-        //* predicate
-        bool operator() (const FileRecord& first, const FileRecord& second) const
-        { return first.file() == second.file(); }
-
-        private:
-
-        //* filename
-        File file_;
-
-    };
+    using SameFileFTorUnary = Base::Functor::Unary<FileRecord, const File&, &FileRecord::file>;
+    using SameFileFTorBinary = Base::Functor::Binary<FileRecord, const File&, &FileRecord::file>;
 
     //* used to sort FileRecords using canonical filenames
     class CanonicalFileFTor
@@ -270,7 +235,6 @@ class FileRecord: private Base::Counter<FileRecord>
         //* predicate
         bool operator() (const FileRecord& first, const FileRecord& second) const
         { return first.file().canonicalName() < second.file().canonicalName(); }
-
 
     };
 
@@ -328,16 +292,7 @@ class FileRecord: private Base::Counter<FileRecord>
     };
 
     //* used to retrieve most recent file records
-    class FirstOpenFTor
-    {
-
-        public:
-
-        //* predicate
-        bool operator() (const FileRecord& first, const FileRecord& second) const
-        { return first.time() < second.time(); }
-
-    };
+    using FirstOpenFTor = Base::Functor::BinaryLess<FileRecord, const TimeStamp&, &FileRecord::time>;
 
     private:
 

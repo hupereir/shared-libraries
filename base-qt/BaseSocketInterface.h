@@ -20,6 +20,8 @@
 *
 *******************************************************************************/
 
+#include "Functors.h"
+
 #include <QTcpSocket>
 
 class BaseSocketInterface: public QObject
@@ -32,38 +34,30 @@ class BaseSocketInterface: public QObject
     //* constructor
     explicit BaseSocketInterface( QObject*, QTcpSocket* = nullptr );
 
-    //* socket
-    QTcpSocket& socket()
-    { return *socket_; }
+    //*@name accessors
+     //@{
 
     //* associated socket
     const QTcpSocket& socket() const
     { return *socket_; }
 
+    //* socket state
+    QAbstractSocket::SocketState socketState() const
+    { return socket_->state(); }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* socket
+    QTcpSocket& socket()
+    { return *socket_; }
+
+    //@}
+
     //* used to retrieve all readers for a given state
-    class SameStateFTor
-    {
-        public:
-
-        //* constructor
-        explicit SameStateFTor( QAbstractSocket::SocketState state ):
-            state_( state )
-        {}
-
-        //* destructor
-        virtual ~SameStateFTor() = default;
-
-        //* predicate
-        template<class T>
-        bool operator() ( const T& reader ) const
-        { return reader->socket().state() == state_; }
-
-        private:
-
-        //* prediction
-        QAbstractSocket::SocketState state_;
-
-    };
+    using SameStateFTor = Base::Functor::Unary<BaseSocketInterface, QAbstractSocket::SocketState, &BaseSocketInterface::socketState>;
 
     Q_SIGNALS:
 

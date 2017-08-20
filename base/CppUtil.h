@@ -31,13 +31,14 @@
 #include <QList>
 #include <QVector>
 
+#include <algorithm>
 #include <initializer_list>
 #include <utility>
-#include <algorithm>
 
 namespace Base
 {
 
+    //* converninece trait for underlying type
     template<class T>
         using underlying_type_t = typename std::underlying_type<T>::type;
 

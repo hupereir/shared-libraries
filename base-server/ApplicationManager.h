@@ -148,30 +148,6 @@ namespace Server
 
         };
 
-        //* used to retrieve pair with matching client
-        class SameClientFTor
-        {
-            public:
-
-            //* constructor
-            explicit SameClientFTor( ClientPtr client ):
-                client_( client )
-                {}
-
-            //* predicate
-            bool operator() ( const ClientPair& pair ) const
-            { return pair.second == client_; }
-
-            //* predicate
-            bool operator() ( ClientPtr client ) const
-            { return client.get() == client_.get(); }
-
-            private:
-
-            //* prediction
-            ClientPtr client_;
-        };
-
         /** \brief register a client, returns true if application is new.
         if forced is set to true, the old cliend, if any, is replaced
         */

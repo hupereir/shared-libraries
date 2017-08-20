@@ -145,7 +145,7 @@ namespace Server
 
             auto iter = acceptedClients_.find( id );
             if( iter == acceptedClients_.end() )
-            { iter = std::find_if( acceptedClients_.begin(), acceptedClients_.end(), SameClientFTor(client) ); }
+            { iter = std::find( acceptedClients_.begin(), acceptedClients_.end(), client ); }
 
             if( iter == acceptedClients_.end() ) return acceptedClients_.insert( id, client );
             else return iter;

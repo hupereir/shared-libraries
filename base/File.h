@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "Functors.h"
 #include "TimeStamp.h"
 
 #include <QFileInfo>
@@ -273,26 +274,7 @@ class File
     //@}
 
     //* used to find files pointing to the same link
-    class SameLinkFTor
-    {
-
-        public:
-
-        //* constructor
-        explicit SameLinkFTor( const File& file ):
-            file_( file.readLink() )
-        {}
-
-        //* predicate
-        bool operator() ( const File& file ) const
-        { return file.readLink().get() == file_; }
-
-        private:
-
-        //* predicted file
-        QString file_;
-
-    };
+    using SameLinkFTor = Base::Functor::Unary<File, File, &File::readLink>;
 
     //* streamer
     friend QTextStream& operator >> ( QTextStream& in, File& file )

@@ -20,6 +20,8 @@
 *
 *******************************************************************************/
 
+#include "Functors.h"
+
 #include <QTextStream>
 #include <QSet>
 #include <algorithm>
@@ -59,51 +61,6 @@ namespace Base
         //* shortcut for key unique id
         using Type = quint32;
 
-
-        //* used to find keys of matching id
-        class SameKeyFTor
-        {
-
-            public:
-
-            //* constructor
-            explicit SameKeyFTor( Type key ):
-                key_( key )
-            {}
-
-            //* predicate
-            bool operator() (const Key* key ) const
-            { return key->key() == key_; }
-
-            private:
-
-            //* predicted key
-            Type key_;
-
-        };
-
-        //* used to find keys of matching id
-        class IsAssociatedFTor
-        {
-
-            public:
-
-            //* constructor
-            explicit IsAssociatedFTor( const Key* key ):
-                key_( key )
-            {}
-
-            //* predicate
-            bool operator() (const Key* key ) const
-            { return key_->isAssociated( key ); }
-
-            private:
-
-            //* predicted key
-            const Key* key_;
-
-        };
-
         //*@name accessors
         //@{
 
@@ -119,13 +76,7 @@ namespace Base
         { return associatedKeys_; }
 
         //* return true if keys are associated
-        bool isAssociated( const Key* key ) const
-        {
-            return std::find_if(
-                associatedKeys_.begin(),
-                associatedKeys_.end(),
-                SameKeyFTor( key->key() ) ) != associatedKeys_.end();
-        }
+        inline bool isAssociated( const Key* key ) const;
 
         //*@}
 
@@ -185,6 +136,31 @@ namespace Base
         }
 
         //@}
+
+        //* used to find keys of matching id
+        using SameKeyFTor = Base::Functor::Unary<Key, Type, &Key::key>;
+
+        //* used to find keys of matching id
+        class IsAssociatedFTor
+        {
+
+            public:
+
+            //* constructor
+            explicit IsAssociatedFTor( const Key* key ):
+                key_( key )
+            {}
+
+            //* predicate
+            bool operator() (const Key* key ) const
+            { return key_->isAssociated( key ); }
+
+            private:
+
+            //* predicted key
+            const Key* key_;
+
+        };
 
         private:
 
@@ -339,6 +315,15 @@ namespace Base
 
     //______________________________________________________________
     Key::~Key() { clearAssociations(); }
+
+    //______________________________________________________________
+    bool Key::isAssociated( const Key* key ) const
+    {
+        return std::find_if(
+            associatedKeys_.begin(),
+            associatedKeys_.end(),
+            SameKeyFTor( key->key() ) ) != associatedKeys_.end();
+    }
 
     //______________________________________________________________
     template<typename T> void Key::clearAssociations()

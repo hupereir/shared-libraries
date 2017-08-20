@@ -22,6 +22,7 @@
 
 #include "SshTunnelAttributes.h"
 #include "Counter.h"
+#include "Functors.h"
 
 #include <QString>
 #include <QList>
@@ -127,25 +128,7 @@ namespace Ssh
         //@}
 
         //* used to find attributes with same names
-        class SameNameFTor
-        {
-            public:
-
-            //* constructor
-            explicit SameNameFTor( const QString& name ):
-                name_( name )
-            {}
-
-            //* predicate
-            bool operator() (const ConnectionAttributes& other ) const
-            { return other.name() == name_; }
-
-            private:
-
-            //* prediction
-            const QString name_;
-
-        };
+        using SameNameFTor = Base::Functor::Unary<ConnectionAttributes, const QString&, &ConnectionAttributes::name>;
 
         private:
 

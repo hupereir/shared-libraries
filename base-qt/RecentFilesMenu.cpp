@@ -84,7 +84,7 @@ void RecentFilesMenu::_updateActions()
         auto found = std::find_if(
             records.begin(),
             records.end(),
-            FileRecord::SameFileFTor( iter.value().file() ) );
+            FileRecord::SameFileFTorUnary( iter.value().file() ) );
         if( found == records.end() ) continue;
         iter.value().setValid( found->isValid() );
         iter.key()->setEnabled( found->isValid() );
