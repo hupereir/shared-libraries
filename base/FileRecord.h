@@ -70,6 +70,9 @@ class FileRecord: private Base::Counter<FileRecord>
     //* file
     const File& file() const { return file_; }
 
+    //* canonical file
+    File canonicalFile() const { return file_.canonicalName(); }
+
     //* time stamp
     const TimeStamp& time() const
     { return time_; }
@@ -227,69 +230,11 @@ class FileRecord: private Base::Counter<FileRecord>
     using SameFileFTorBinary = Base::Functor::Binary<FileRecord, const File&, &FileRecord::file>;
 
     //* used to sort FileRecords using canonical filenames
-    class CanonicalFileFTor
-    {
-
-        public:
-
-        //* predicate
-        bool operator() (const FileRecord& first, const FileRecord& second) const
-        { return first.file().canonicalName() < second.file().canonicalName(); }
-
-    };
-
-    //* used to remove FileRecord with identical canonical filenames
-    class SameCanonicalFileFTor
-    {
-
-        public:
-
-        //* constructor
-        explicit SameCanonicalFileFTor( const File& file = File("") ):
-            file_( file.canonicalName() )
-        {}
-
-        //* constructor
-        explicit SameCanonicalFileFTor( const FileRecord& record ):
-            file_( record.file().canonicalName() )
-        {}
-
-        //* predicate
-        bool operator() (const FileRecord& first, const FileRecord& second) const
-        { return first.file().canonicalName() == second.file().canonicalName(); }
-
-        //* predicate
-        bool operator() (const FileRecord& record ) const
-        { return record.file().canonicalName() == file_; }
-
-        private:
-
-        //* filename
-        File file_;
-
-    };
+    using CanonicalFileFTor = Base::Functor::BinaryLess<FileRecord, File, &FileRecord::canonicalFile>;
 
     //* used to remove non-existing files
-    class InvalidFTor
-    {
-        public:
-
-        //* predicate
-        bool operator()( const FileRecord& record )
-        { return !record.isValid(); }
-
-    };
-
-    //* used to remove non-existing files
-    class ValidFTor
-    {
-        public:
-
-        //* predicate
-        bool operator()( const FileRecord& record )
-        { return record.isValid(); }
-
-    };
+    using ValidFTor = Base::Functor::UnaryTrue<FileRecord, &FileRecord::isValid>;
+    using InvalidFTor = Base::Functor::UnaryFalse<FileRecord, &FileRecord::isValid>;
 
     //* used to retrieve most recent file records
     using FirstOpenFTor = Base::Functor::BinaryLess<FileRecord, const TimeStamp&, &FileRecord::time>;
