@@ -258,15 +258,9 @@ void OptionListBox::_updateButtons()
     default_->setEnabled( current.isValid() );
     defaultAction_->setEnabled( current.isValid() );
 
-    bool removeEnabled( false );
-    for( const auto& optionPair:model_->get( list_->selectionModel()->selectedRows() ) )
-    {
-        if( optionPair.second.hasFlag( Option::Flag::Recordable ) )
-        {
-            removeEnabled = true;
-            break;
-        }
-    }
+    const auto list = model_->get( list_->selectionModel()->selectedRows() );
+    auto iter = std::find_if( list.begin(), list.end(), Options::HasFlagFTor( Option::Flag::Recordable ) );
+    const bool removeEnabled( iter != list.end() );
 
     removeAction_->setEnabled( removeEnabled );
     remove_->setEnabled( removeEnabled );
