@@ -21,7 +21,6 @@
 #include "File.h"
 
 #include <QMetaType>
-#include <algorithm>
 
 namespace Svg
 {
