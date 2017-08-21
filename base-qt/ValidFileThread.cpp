@@ -42,31 +42,24 @@ void ValidFileThread::run()
     // loop over files, check if exists, set validity accordingly, and post event
     for( auto& record:records_ )
     {
-        record.setValid( File( record.file() ).exists() );
+        record.setValid( record.file().exists() );
         hasInvalidRecords |= !record.isValid();
     }
 
     // look for duplicated records
     if( checkDuplicates_ )
     {
-        for( auto&& iter = records_.begin(); iter != records_.end(); )
+
+        std::sort( records_.begin(), records_.end(), FileRecord::CanonicalFileFTor() );
+        auto&& iter = records_.begin();
+        auto&& previous = iter++;
+        for( ; iter != records_.end(); ++iter )
         {
-
-            // check item validity
-            if( iter->isValid() )
+            if( iter->isValid() && iter->canonicalFile() == previous->canonicalFile() )
             {
-
-                // check for duplicates
-                FileRecord& current( *iter );
-                FileRecord::SameCanonicalFileFTor ftor( current.file() );
-                if( std::find_if( ++iter, records_.end(), ftor ) != records_.end() )
-                {
-                    current.setValid( false );
-                    hasInvalidRecords = true;
-                }
-
-            } else { ++iter; }
-
+                iter->setValid( false );
+                hasInvalidRecords = true;
+            } else previous = iter;
         }
 
     }
