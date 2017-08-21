@@ -168,7 +168,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
 
             // update flags otherwise and return true
             sameOptionIter->setFlags( option.flags() );
-            std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Flag::Current ) );
+            std::partition( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Flag::Current ) );
             return true;
 
         }
@@ -176,7 +176,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
     } else {
 
         iter.value().append( option );
-        std::sort( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Flag::Current ) );
+        std::partition( iter.value().begin(), iter.value().end(), Option::HasFlagFTor( Option::Flag::Current ) );
         return true;
 
     }
@@ -235,6 +235,5 @@ Options::Map::const_iterator Options::_find( const QString& name ) const
 {
     Map::const_iterator out( options_.find( name ) );
     if( out == options_.end() ) { Debug::Throw(0) << "Options::_find - invalid option: " << name << endl; }
-    Q_ASSERT( out != options_.end() );
     return out;
 }
