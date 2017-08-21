@@ -585,11 +585,10 @@ bool XcbUtil::moveResizeWidget(
     // check
     if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
 
-    QPoint localPosition( widget->mapFromGlobal( position ) );
-
     #if QT_VERSION >= 0x050300
+    auto localPosition( widget->mapFromGlobal( position ) );
     qreal dpiRatio = 1;
-    QWindow* windowHandle = widget->window()->windowHandle();
+    auto windowHandle = widget->window()->windowHandle();
     if( windowHandle ) dpiRatio = windowHandle->devicePixelRatio();
     else dpiRatio = qApp->devicePixelRatio();
 
@@ -598,13 +597,12 @@ bool XcbUtil::moveResizeWidget(
 
     localPosition.rx()*=dpiRatio;
     localPosition.ry()*=dpiRatio;
-
     #endif
 
     xcb_ungrab_pointer( d->connection(), XCB_TIME_CURRENT_TIME );
 
     // move resize event
-    xcb_atom_t moveWMResize( *d->atom( _NET_WM_MOVERESIZE ) );
+    auto moveWMResize( *d->atom( _NET_WM_MOVERESIZE ) );
     xcb_client_message_event_t clientMessageEvent;
     memset(&clientMessageEvent, 0, sizeof(clientMessageEvent));
 
