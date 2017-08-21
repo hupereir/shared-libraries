@@ -186,6 +186,26 @@ class Options: private Base::Counter<Options>
 
     //@}
 
+    //* used to retrieve file records that match a given flag
+    class HasFlagFTor: public Option::HasFlagFTor
+    {
+
+        public:
+
+        //* constructor
+        explicit HasFlagFTor( Option::Flag flag ):
+            Option::HasFlagFTor( flag )
+            {}
+
+        //* forward Option predicate
+        using Option::HasFlagFTor::operator();
+
+        //* predicate
+        bool operator() (const Options::Pair& pair ) const
+        { return Option::HasFlagFTor::operator()( pair.second ); }
+
+    };
+
     protected:
 
     //* find name
