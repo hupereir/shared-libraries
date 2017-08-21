@@ -93,7 +93,7 @@ FileRecord FileList::lastValidFile()
 void FileList::checkValidFiles()
 {
     Debug::Throw( "FileList::checkValidFiles.\n" );
-    if( !check() ) return;
+    if( !check_ ) return;
     if( thread_.isRunning() ) return;
     thread_.setRecords( records_ );
     thread_.start();
@@ -105,11 +105,7 @@ void FileList::_processRecords( const FileRecord::List& records, bool hasInvalid
 
     // set file records validity
     for( auto& record:records_ )
-    {
-        FileRecord::List::const_iterator found = std::find_if( records.begin(), records.end(), FileRecord::SameFileFTorUnary( record.file() ) );
-        if( found == records.end() ) continue;
-        record.setValid( found->isValid() );
-    }
+    { record.setValid( std::find_if( records.begin(), records.end(), FileRecord::SameFileFTorUnary( record.file() ) ) != records.end() ); }
 
     _setCleanEnabled( hasInvalidRecords );
 
@@ -122,16 +118,19 @@ void FileList::clean()
 {
     Debug::Throw( "FileList::clean" );
 
-    if( !check() )
+    if( check_ )
     {
-        records_.clear();
-        return;
-    }
 
-    // remove invalid files
-    records_.erase(
-        std::remove_if( records_.begin(), records_.end(), FileRecord::InvalidFTor() ),
-        records_.end() );
+        // remove invalid files
+        records_.erase(
+            std::remove_if( records_.begin(), records_.end(), FileRecord::InvalidFTor() ),
+            records_.end() );
+
+    } else {
+
+        records_.clear();
+
+    }
 
     return;
 }
@@ -190,28 +189,29 @@ FileRecord& FileList::_add(
 }
 
 //___________________________________________________________________
-FileRecord::List FileList::_truncatedList( FileRecord::List records ) const
+FileRecord::List FileList::_truncatedList( const FileRecord::List& constRecords ) const
 {
-    // shrink list
-    if( maxSize_ > 0 && int(records.size()) > maxSize_ )
+
+    // copy
+    auto records = constRecords;
+
+    // remove invalid records
+    if( check_ )
     {
 
-        std::sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() );
-        if( check_ )
-        {
+        records.erase(
+            std::remove_if( records.begin(), records.end(), FileRecord::InvalidFTor() ),
+            records.end() );
 
-            while( int(records.size()) > maxSize_ )
-            {
-                auto iter( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
-                if( iter != records.end() ) records.erase( iter );
-                else break;
-            }
+    }
 
-        }
+    // shrink list
+    if( maxSize_ > 0 )
+    {
 
-        // remove oldest files
-        while( int(records.size()) > maxSize_ )
-        { records.erase( records.begin() ); }
+        const int excess = records.size() - maxSize_;
+        if( excess > 0 )
+        { records.erase( records.begin(), records.begin()+excess ); }
 
     }
 

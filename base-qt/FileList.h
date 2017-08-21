@@ -138,7 +138,7 @@ class FileList: public QObject, private Base::Counter<FileList>
         bool = true );
 
     //* truncate list if larger than maxSize_
-    FileRecord::List _truncatedList( FileRecord::List ) const;
+    FileRecord::List _truncatedList( const FileRecord::List& ) const;
 
     //* list of files records
     const FileRecord::List& _records() const
