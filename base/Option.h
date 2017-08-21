@@ -193,23 +193,21 @@ class Option:private Base::Counter<Option>
         public:
 
         //* constructor
-        explicit HasFlagFTor( Option::Flags flags ):
-            flags_( flags )
+        explicit HasFlagFTor( Option::Flag flag ):
+            flag_( flag )
         {}
+
+        //* destructor
+        virtual ~HasFlagFTor() = default;
 
         //* predicate
         bool operator() ( const Option& option ) const
-        { return option.flags() & flags_; }
-
-        //* sorting predicate
-        /** it is used to ensure that options that have a given flag appear first in a list */
-        bool operator() (const Option& first, const Option& second ) const
-        { return ( (first.flags() & flags_) && !(second.flags()&flags_) ); }
+        { return option.hasFlag( flag_ ); }
 
         private:
 
         // predicted flag
-        Option::Flags flags_;
+        Option::Flag flag_;
 
     };
 
