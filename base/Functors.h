@@ -27,7 +27,29 @@ namespace Base
 
     namespace Functor
     {
-        //* generic unary functor that compares a the result of a given accessor to a fixed value
+
+        //* generic unary functor that verifies if a given method returns a specific value
+        template<class T>
+            class SameFTor
+        {
+            public:
+
+            //* constructor
+            explicit SameFTor( const T& prediction):
+                prediction_( prediction )
+            {}
+
+            //* predicate
+            template<class U>
+                inline bool operator() (const U& object )
+            { return object == prediction_; }
+
+            private:
+
+            T prediction_;
+        };
+
+        //* generic unary functor that verifies if a given method returns a specific value
         template <class T, typename R, R (T::*accessor)() const>
             class Unary
         {
