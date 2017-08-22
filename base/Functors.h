@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include <memory>
+#include <functional>
 
 namespace Base
 {
@@ -28,26 +29,10 @@ namespace Base
     namespace Functor
     {
 
-        //* generic unary functor that verifies if a given method returns a specific value
+        //* generic unary functor that verifies if a value equals a prediction
         template<class T>
-            class SameFTor
-        {
-            public:
-
-            //* constructor
-            explicit SameFTor( const T& prediction):
-                prediction_( prediction )
-            {}
-
-            //* predicate
-            template<class U>
-                inline bool operator() (const U& object )
-            { return object == prediction_; }
-
-            private:
-
-            T prediction_;
-        };
+            std::function<bool(const T&)> SameFTor( const T& prediction )
+        { return [&prediction]( const T& value ){ return value == prediction; }; }
 
         //* generic unary functor that verifies if a given method returns a specific value
         template <class T, typename R, R (T::*accessor)() const>
@@ -99,7 +84,7 @@ namespace Base
         using UnaryEqual = Unary<T, R, accessor>;
 
         //* generic unary functor that verifies if a given method is satisfied
-        template <class T, bool (T::*accessor)() const>
+        template <class T, bool (T::*accessor)() const, bool prediction = true>
             class UnaryTrue
         {
 
@@ -108,46 +93,26 @@ namespace Base
             //* predicate
             template<class U>
                 inline bool operator() (const U& object ) const
-            { return (object.*accessor)(); }
+            { return (object.*accessor)() == prediction; }
 
             //* predicate
             template<class U>
                 inline bool operator() ( U* pointer ) const
-            { return (pointer->*accessor)(); }
+            { return (pointer->*accessor)() == prediction; }
 
             //* predicate
             template<class U>
                 inline bool operator() (const std::shared_ptr<U>& pointer ) const
-            { return (pointer.get()->*accessor)(); }
+            { return (pointer.get()->*accessor)() == prediction; }
 
         };
 
-        //* generic unary functor that verifies if a given method is satisfied
+        //* generic unary functor that verifies if a given method is not satisfied
         template <class T, bool (T::*accessor)() const>
-            class UnaryFalse
-        {
-
-            public:
-
-            //* predicate
-            template<class U>
-                inline bool operator() (const U& object ) const
-            { return !(object.*accessor)(); }
-
-            //* predicate
-            template<class U>
-                inline bool operator() ( U* pointer ) const
-            { return !(pointer->*accessor)(); }
-
-            //* predicate
-            template<class U>
-                inline bool operator() (const std::shared_ptr<U>& pointer ) const
-            { return !(pointer.get()->*accessor)(); }
-
-        };
+        using  UnaryFalse = UnaryTrue<T, accessor, false>;
 
         //* generic binary functor that compares a the result of a given accessor between two objects
-        template <class T, typename R, R (T::*accessor)() const>
+        template <class T, typename R, R (T::*accessor)() const, typename Comparator = std::equal_to<R> >
             class Binary
         {
 
@@ -156,55 +121,28 @@ namespace Base
             //* predicate
             template<class U>
                 inline bool operator() (const U& lhs, const U& rhs ) const
-            { return (lhs.*accessor)() == (rhs.*accessor)(); }
+            { return c_((lhs.*accessor)(), (rhs.*accessor)()); }
 
             //* predicate
             template<class U>
                 inline bool operator() ( U* lhs, U* rhs ) const
-            { return (lhs->*accessor)() == (rhs->*accessor)(); }
+            { return c_((lhs->*accessor)(), (rhs->*accessor)()); }
+
+            private:
+
+            //* comparator
+            Comparator c_;
 
         };
 
         template <class T, typename R, R (T::*accessor)() const>
         using BinaryEqual = Binary<T, R, accessor>;
 
-        //* generic binary functor that compares a the result of a given accessor between two objects
         template <class T, typename R, R (T::*accessor)() const>
-            class BinaryLess
-        {
+        using BinaryLess = Binary<T, R, accessor, std::less<R>>;
 
-            public:
-
-            //* predicate
-            template<class U>
-                inline bool operator() (const U& lhs, const U& rhs ) const
-            { return (lhs.*accessor)() < (rhs.*accessor)(); }
-
-            //* predicate
-            template<class U>
-                inline bool operator() (U* lhs, U* rhs ) const
-            { return (lhs->*accessor)() < (rhs->*accessor)(); }
-
-        };
-
-        //* generic binary functor that compares a the result of a given accessor between two objects
         template <class T, typename R, R (T::*accessor)() const>
-            class BinaryMore
-        {
-
-            public:
-
-            //* predicate
-            template<class U>
-                inline bool operator() (const U& lhs, const U& rhs ) const
-            { return (rhs.*accessor)() < (lhs.*accessor)(); }
-
-            //* predicate
-            template<class U>
-                inline bool operator() (U* lhs, U* rhs ) const
-            { return (rhs->*accessor)() < (lhs->*accessor)(); }
-
-        };
+        using BinaryMore = Binary<T, R, accessor, std::greater<R>>;
 
     }
 
