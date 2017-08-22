@@ -66,8 +66,7 @@ template<class T> class TreeItem: public TreeItemBase
     //* root constructor
     TreeItem( Map& itemMap ):
         TreeItemBase(0),
-        map_( itemMap ),
-        parent_(0)
+        map_( itemMap )
     { map_[id()] = this; }
 
     //* copy constructor
@@ -83,8 +82,7 @@ template<class T> class TreeItem: public TreeItemBase
         map_[id()] = this;
 
         // reassign parents
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
-        { iter->parent_ = this; }
+        for( auto& child:children_ ) { child.parent_ = this; }
 
     }
 
@@ -106,8 +104,7 @@ template<class T> class TreeItem: public TreeItemBase
         map_[id()] = this;
 
         // reassign parents
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
-        { iter->parent_ = this; }
+        for( auto& child:children_ ) { child.parent_ = this; }
 
         return *this;
     }
@@ -156,14 +153,11 @@ template<class T> class TreeItem: public TreeItemBase
         if( value == get() ) return this;
 
         // check against children
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
-        {
-            TreeItem* out = iter->find( value );
-            if( out ) return out;
-        }
+        for( auto& child:children_ )
+        { if( TreeItem* out = child.find( value ) ) return out; }
 
-        // not found. Returns zero
-        return 0;
+        // not found. return null_ptr
+        return nullptr;
 
     }
 
@@ -174,8 +168,8 @@ template<class T> class TreeItem: public TreeItemBase
         ValueList out;
         for( const auto& item:children_ )
         {
-            out << item.get();
-            out << item.childValues();
+            out.append( item.get() );
+            out.append( item.childValues() );
         }
 
         return out;
@@ -185,15 +179,12 @@ template<class T> class TreeItem: public TreeItemBase
     //* remove child at given row
     bool remove( int row )
     {
-        if( row >= childCount() ) return false;
-        int local(0);
-        typename List::iterator iter = children_.begin();
-        for( ; iter != children_.end() && local < row; ++iter, local++ ) {}
-        children_.erase( iter );
+        if( row >= children_.size() ) return false;
+        children_.erase( children_.begin() + row );
         return true;
     }
 
-    //* add child [recursive]
+    //* add child (recursive)
     /** note: this code assumes that the value is not already in the tree */
     bool add( ConstReference value )
     {
@@ -201,19 +192,19 @@ template<class T> class TreeItem: public TreeItemBase
         // try add to this list of children
         if( Base::isChild( value, get() ) )
         {
-            children_ << TreeItem( map_, this, value );
+            children_.append( TreeItem( map_, this, value ) );
             return true;
         }
 
         // try add to children
         bool added(false);
-        for( typename List::iterator iter = children_.begin(); iter != children_.end() && !added; ++iter )
-        { added = iter->add( value ); }
+        for( auto& child:children_ )
+        { if( child.add( value ) ) { added = true; break; } }
 
         // add to this if top level
         if( !( added || hasParent() ) )
         {
-            children_ << TreeItem( map_, this, value );
+            children_.append( TreeItem( map_, this, value ) );
             return true;
         }
 
@@ -232,35 +223,33 @@ template<class T> class TreeItem: public TreeItemBase
         // check if there are remainig values
         if( values.isEmpty() )
         {
-            // remove all rows
-            while( childCount() > 0 )
-            { remove(0); }
 
-            // and stop here
+            children_.clear();
             return;
+
         }
 
         // update children that are found in set
         // remove children that are not found
-        for( int row = 0; row < childCount(); )
+        for( auto iter = children_.begin(); iter != children_.end(); )
         {
-            int found( values.indexOf( child(row).get() ) );
-            if( found < 0 ) remove( row );
+            int found( values.indexOf( iter->get() ) );
+            if( found < 0 ) iter = children_.erase( iter );
             else if( Base::isChild( values.at(found), get() ) )
             {
 
                 // update child
-                child(row).set( values.at(found) );
+                iter->set( values.at(found) );
                 values.removeAt( found );
 
                 // update child children recursively
-                child(row).set( values );
-                row++;
+                iter->set( values );
+                ++iter;
 
             } else {
 
                 // remove row and stop here
-                remove( row );
+                iter = children_.erase( iter );
 
             }
 
@@ -282,10 +271,10 @@ template<class T> class TreeItem: public TreeItemBase
         if( values.isEmpty() ) return;
 
         // first update children that are found in set
-        for( int row = 0; row < childCount();)
+        for( auto&& iter = children_.begin(); iter != children_.end(); )
         {
 
-            int found( values.indexOf( child(row).get() ) );
+            int found( values.indexOf( iter->get() ) );
             if( found >= 0 )
             {
 
@@ -294,13 +283,13 @@ template<class T> class TreeItem: public TreeItemBase
                 {
 
                     // re-assign and remove from list
-                    child(row).set( values.at(found) );
+                    iter->set( values.at(found) );
                     values.removeAt( found );
 
                 } else {
 
                     // remove row and stop here
-                    remove( row );
+                    iter = children_.erase( iter );
                     continue;
 
                 }
@@ -308,8 +297,8 @@ template<class T> class TreeItem: public TreeItemBase
             }
 
             // update child children recursively
-            child(row).update( values );
-            row++;
+            iter->update( values );
+            ++iter;
 
         }
 
@@ -324,8 +313,8 @@ template<class T> class TreeItem: public TreeItemBase
         std::sort( children_.begin(), children_.end() );
 
         // do the same with children
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
-        { iter->sort(); }
+        for( auto& child:children_ )
+        { child.sort(); }
 
     }
 
@@ -338,8 +327,8 @@ template<class T> class TreeItem: public TreeItemBase
         std::sort( children_.begin(), children_.end(), method );
 
         // do the same with children
-        for( typename List::iterator iter = children_.begin(); iter != children_.end(); ++iter )
-        { iter->sort( method ); }
+        for( auto& child:children_ )
+        { child.sort( method ); }
 
     }
 
@@ -361,7 +350,7 @@ template<class T> class TreeItem: public TreeItemBase
     //* erase from map
     void _eraseFromMap()
     {
-        typename Map::iterator iter( map_.find( id() ) );
+        auto iter( map_.find( id() ) );
         if( iter != map_.end() && iter.value() == this )
         { map_.erase( iter ); }
     }
@@ -372,7 +361,7 @@ template<class T> class TreeItem: public TreeItemBase
     Map& map_;
 
     //* parent
-    const TreeItem* parent_;
+    const TreeItem* parent_ = nullptr;
 
     //* associated value
     ValueType value_;
@@ -396,8 +385,8 @@ template<class T> class TreeItem: public TreeItemBase
         out << item.id() << " " << item.get() << endl;
 
         // print job children
-        for( int i=0; i<item.childCount(); ++i )
-        { out << item.child(i); }
+        for( const auto& child:item.children_ )
+        { out << child; }
 
         return out;
 
