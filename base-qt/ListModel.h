@@ -92,7 +92,7 @@ class ListModel : public ItemModel
         for( const auto& value:selectedItems_ )
         {
             QModelIndex index( this->index( value ) );
-            if( index.isValid() ) out << index;
+            if( index.isValid() ) out.append( index );
         }
         return out;
 
@@ -234,7 +234,7 @@ class ListModel : public ItemModel
 
                 selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), oldValue ) ), selectedItems_.end() );
                 values_[index.row()] = value;
-                selectedItems_ << value;
+                selectedItems_.append( value );
 
             } else {
 
@@ -339,7 +339,7 @@ class ListModel : public ItemModel
     virtual void _add( const ValueType& value )
     {
         auto iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
-        if( iter == values_.end() ) values_ << value;
+        if( iter == values_.end() ) values_.append( value );
         else *iter = value;
     }
 
