@@ -90,8 +90,7 @@ namespace Base
         return T( std::move(reference) );
         #else
         T out;
-        for( auto&& value:std::move(reference) )
-        { out.append( value ); }
+        std::copy( reference.begin(), reference.end(), std::back_inserter(out) );
         return out;
         #endif
     }
@@ -103,9 +102,7 @@ namespace Base
         #if QT_VERSION >= 0x050500
         first.append( std::move( second ) );
         #else
-        // for old QT versions there is no append to some containers from initializer_list
-        for( const auto& content:std::move(second) )
-        { first.append( content ); }
+        std::copy( second.begin(), second.end(), std::back_inserter(first) );
         #endif
     }
 
