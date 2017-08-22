@@ -218,7 +218,7 @@ void OptionListBox::read( const Options& options )
     Options::List values( options.specialOptions( optionName() ) );
 
     // check if one option is default, set first otherwise
-    if( !values.empty() && std::find_if( values.begin(), values.end(), Option::HasFlagFTor( Option::Flag::Current ) ) == values.end() )
+    if( !values.empty() && std::none_of( values.begin(), values.end(), Option::HasFlagFTor( Option::Flag::Current ) ) )
     { values.front().setCurrent( true ); }
 
     // add to model.
@@ -259,8 +259,7 @@ void OptionListBox::_updateButtons()
     defaultAction_->setEnabled( current.isValid() );
 
     const auto list = model_->get( list_->selectionModel()->selectedRows() );
-    auto iter = std::find_if( list.begin(), list.end(), Options::HasFlagFTor( Option::Flag::Recordable ) );
-    const bool removeEnabled( iter != list.end() );
+    const bool removeEnabled( std::any_of( list.begin(), list.end(), Options::HasFlagFTor( Option::Flag::Recordable ) ) );
 
     removeAction_->setEnabled( removeEnabled );
     remove_->setEnabled( removeEnabled );

@@ -85,9 +85,11 @@ void RecentFilesMenu::_updateActions()
             records.begin(),
             records.end(),
             FileRecord::SameFileFTorUnary( iter.value().file() ) );
-        if( found == records.end() ) continue;
-        iter.value().setValid( found->isValid() );
-        iter.key()->setEnabled( found->isValid() );
+        if( found != records.end() )
+        {
+            iter.value().setValid( found->isValid() );
+            iter.key()->setEnabled( found->isValid() );
+        }
 
     }
 

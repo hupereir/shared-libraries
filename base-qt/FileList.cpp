@@ -36,7 +36,7 @@ FileList::FileList( QObject* parent ):
 
 //_______________________________________________
 bool FileList::contains( const File& file ) const
-{ return std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTorUnary( file ) ) != records_.end(); }
+{ return std::any_of( records_.begin(), records_.end(), FileRecord::SameFileFTorUnary( file ) ); }
 
 //_______________________________________________
 void FileList::remove( const File& file )
@@ -61,11 +61,9 @@ File::List FileList::files() const
 {
     Debug::Throw( "FileList::files.\n" );
 
-    FileRecord::List records( _truncatedList( records_ ) );
     File::List out;
-    for( const auto& record:records )
-    { out.append( record.file() ); }
-
+    const auto records( _truncatedList( records_ ) );
+    std::transform( records.begin(), records.end(), std::back_inserter( out ), []( const FileRecord& record ) { return record.file(); } );
     return out;
 }
 
@@ -77,16 +75,10 @@ FileRecord FileList::lastValidFile()
 
     // sort list
     std::sort( records_.begin(), records_.end(), FileRecord::FirstOpenFTor() );
-    FileRecord::ListIterator iter( records_ );
-    iter.toBack();
-    while( iter.hasPrevious() )
-    {
-        const FileRecord& record( iter.previous() );
-        if( (!check_) || record.isValid() ) return record;
-    }
 
-    return FileRecord( File("") );
-
+    // find last valid file using reverse_iterators
+    auto iter = std::find_if( records_.rbegin(), records_.rend(), [this]( const FileRecord& record ) { return (!check_) || record.isValid(); } );
+    return iter == records_.rend() ? FileRecord():*iter;
 }
 
 //_______________________________________________
@@ -105,7 +97,7 @@ void FileList::_processRecords( const FileRecord::List& records, bool hasInvalid
 
     // set file records validity
     for( auto& record:records_ )
-    { record.setValid( std::find_if( records.begin(), records.end(), FileRecord::SameFileFTorUnary( record.file() ) ) != records.end() ); }
+    { record.setValid( std::any_of( records.begin(), records.end(), FileRecord::SameFileFTorUnary( record.file() ) ) ); }
 
     _setCleanEnabled( hasInvalidRecords );
 

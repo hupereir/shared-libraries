@@ -144,9 +144,7 @@ namespace Server
         else {
 
             auto iter = acceptedClients_.find( id );
-            if( iter == acceptedClients_.end() )
-            { iter = std::find( acceptedClients_.begin(), acceptedClients_.end(), client ); }
-
+            if( iter == acceptedClients_.end() ) iter = std::find( acceptedClients_.begin(), acceptedClients_.end(), client );
             if( iter == acceptedClients_.end() ) return acceptedClients_.insert( id, client );
             else return iter;
 
@@ -379,10 +377,7 @@ namespace Server
 
         Debug::Throw( "Application::_redirect.\n" );
 
-        const auto iter( std::find_if(  connectedClients_.begin(), connectedClients_.end(), Client::SameIdFTor( command.clientId() ) ) );
-        Q_ASSERT( iter != connectedClients_.end() );
-        _redirect( command, *iter );
-
+        _redirect( command, *std::find_if(  connectedClients_.begin(), connectedClients_.end(), Client::SameIdFTor( command.clientId() ) ) );
         return;
     }
 

@@ -119,7 +119,7 @@ class ListModel : public ItemModel
     {
         List out;
         for( const auto& index:indexes )
-        { if( index.isValid() && index.row() < values_.size() ) out << get( index ); }
+        { if( index.isValid() && index.row() < values_.size() ) out.append( get( index ) ); }
         return out;
     }
 
@@ -145,14 +145,14 @@ class ListModel : public ItemModel
     {
         selectedItems_.clear();
         for( const auto& index:indexes )
-        { if( contains( index ) ) selectedItems_ << values_[index.row()]; }
+        { if( contains( index ) ) selectedItems_.append( values_[index.row()] ); }
     }
 
     //* store index internal selection state
     void setIndexSelected( const QModelIndex& index, bool value ) override
     {
         if( !contains( index ) ) return;
-        if( value ) selectedItems_ << values_[index.row()];
+        if( value ) selectedItems_.append( values_[index.row()] );
         else selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), values_[index.row()] ) ), selectedItems_.end() );
     }
 

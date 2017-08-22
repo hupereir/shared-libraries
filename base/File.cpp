@@ -378,7 +378,7 @@ File::List File::listFiles( ListFlags flags ) const
             // in case directory is a link
             // make sure it is not already in the list
             // to avoid recursivity
-            if( file.isLink() && std::find_if( out.begin(), out.end(), SameLinkFTor( file.readLink() ) ) != out.end() ) continue;
+            if( file.isLink() && std::any_of( out.begin(), out.end(), SameLinkFTor( file.readLink() ) ) ) continue;
 
             // list subdirectory
             out.append( file.listFiles( flags ) );

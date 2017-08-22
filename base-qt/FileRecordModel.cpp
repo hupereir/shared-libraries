@@ -227,7 +227,7 @@ void FileRecordModel::_updateColumns( const ValueType& value )
     for( auto iter = properties.begin(); iter != properties.end(); ++iter )
     {
         // look for property name in list of columns
-        if( std::find( columnTitles_.begin(), columnTitles_.end(), FileRecord::PropertyId::get( iter.key() ) ) == columnTitles_.end() )
+        if( std::none_of( columnTitles_.begin(), columnTitles_.end(), Base::Functor::SameFTor<QString>(FileRecord::PropertyId::get( iter.key() )) ) )
         { columnTitles_.append( FileRecord::PropertyId::get( iter.key() ) ); }
 
     }

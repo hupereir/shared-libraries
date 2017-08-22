@@ -166,7 +166,7 @@ void RecentFilesConfiguration::reload()
     list_->selectionModel()->clear();
 
     reloadButton_->setEnabled( false );
-    cleanButton_->setEnabled( std::find_if( recordModelList.begin(), recordModelList.end(), FileRecord::InvalidFTor() ) != recordModelList.end() );
+    cleanButton_->setEnabled( std::any_of( recordModelList.begin(), recordModelList.end(), FileRecord::InvalidFTor() ) );
     _updateButtons();
 
 }
@@ -199,7 +199,7 @@ void RecentFilesConfiguration::_remove()
 
     // records
     FileRecordModel::List records( model_.get() );
-    cleanButton_->setEnabled( std::find_if( records.begin(), records.end(), FileRecord::InvalidFTor() ) != records.end() );
+    cleanButton_->setEnabled( std::any_of( records.begin(), records.end(), FileRecord::InvalidFTor() ) );
 
 }
 

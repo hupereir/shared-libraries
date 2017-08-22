@@ -40,7 +40,6 @@ class FileRecord: private Base::Counter<FileRecord>
     //* shortcut to list of records
     using Set = QOrderedSet<FileRecord>;
     using List = QList<FileRecord>;
-    using ListIterator = QListIterator<FileRecord>;
 
     //* mimetype for drag and drop operations
     static const QString MimeType;

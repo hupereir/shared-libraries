@@ -74,7 +74,7 @@ void CommandLineParser::usage() const
             const QList<Tag> optionKeys( group.options_.keys() );
             const QList<Option> optionValues( group.options_.values() );
             maxOptionLength = std::max_element( optionKeys.constBegin(), optionKeys.constEnd(), MinLengthFTor() )->size();
-            maxTypeLength = 1+ std::max_element( optionValues.constBegin(), optionValues.constEnd(), MinTypeLengthFTor() )->type_.size();
+            maxTypeLength = 1 + std::max_element( optionValues.constBegin(), optionValues.constEnd(), MinTypeLengthFTor() )->type_.size();
         }
 
         int maxLength = 1+ qMax( maxFlagLength, maxOptionLength );
@@ -422,8 +422,8 @@ CommandLineParser::Group::FlagMap::iterator CommandLineParser::_findTag( Group::
     auto&& iter( flags.find( Tag( tag ) ) );
     if( iter == flags.end() )
     {
-        const Tag::List tags = flags.keys();
-        auto&& tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
+        const auto tags = flags.keys();
+        auto tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
         if( tagIter != tags.constEnd() ) iter = flags.find( *tagIter );
     }
 
@@ -441,7 +441,7 @@ CommandLineParser::Group::OptionMap::iterator CommandLineParser::_findTag( Group
     if( iter == options.end() )
     {
         const Tag::List tags = options.keys();
-        auto&& tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
+        auto tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
         if( tagIter != tags.constEnd() ) iter = options.find( *tagIter );
     }
 
