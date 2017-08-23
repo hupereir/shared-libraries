@@ -133,8 +133,8 @@ namespace Private
         Debug::Throw( "PathEditorItem::_startDrag.\n" );
 
         // start drag
-        QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
+        auto drag = new QDrag(this);
+        auto mimeData = new QMimeData;
 
         // fill Drag data. Use XML
         QDomDocument document;
@@ -205,14 +205,14 @@ namespace Private
         const bool isRightToLeft( qApp->isRightToLeft() );
 
         // render text
-        QRect textRect( rect().adjusted( 0, 2*BorderWidth, 0, -2*BorderWidth ) );
+        auto textRect( rect().adjusted( 0, 2*BorderWidth, 0, -2*BorderWidth ) );
         if( !isLast_ )
         {
             if( isRightToLeft ) textRect.adjust(_arrowWidth()-2*BorderWidth, 0, 0, 0 );
             else textRect.adjust( 0, 0, -_arrowWidth()-2*BorderWidth, 0 );
         }
 
-        QFont adjustedFont(font());
+        auto adjustedFont(font());
         adjustedFont.setBold( isLast_ );
         painter->setFont( adjustedFont );
         painter->drawText( QRectF( textRect ), Qt::AlignHCenter|Qt::AlignBottom|Qt::TextHideMnemonic, text() );
@@ -268,7 +268,7 @@ namespace Private
     void PathEditorMenuButton::updateMinimumSize()
     {
         Debug::Throw( "PathEditorMenuButton::updateMinimumSize.\n" );
-        QFont adjustedFont(font());
+        auto adjustedFont(font());
         adjustedFont.setBold( true );
 
         QFontMetrics metrics( adjustedFont );
@@ -322,7 +322,7 @@ PathEditor::PathEditor( QWidget* parent ):
         browserContainer_ = new QWidget;
         browserContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
-        QHBoxLayout* hLayout = new QHBoxLayout;
+        auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
         hLayout->setMargin(0);
         browserContainer_->setLayout( hLayout );
@@ -362,7 +362,7 @@ PathEditor::PathEditor( QWidget* parent ):
         editorContainer_ = new QWidget;
         editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
-        QHBoxLayout* hLayout = new QHBoxLayout;
+        auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
         hLayout->setMargin(0);
         editorContainer_->setLayout( hLayout );
@@ -372,7 +372,7 @@ PathEditor::PathEditor( QWidget* parent ):
         hLayout->addWidget( editor_ );
 
         // ok button
-        QToolButton* button = new QToolButton( editorContainer_ );
+        auto button = new QToolButton( editorContainer_ );
         button->setIcon( IconEngine::get( IconNames::DialogOk ) );
         button->setAutoRaise( true );
         button->setToolButtonStyle( Qt::ToolButtonIconOnly );
@@ -545,7 +545,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
         // create root item
         int index = 0;
-        Private::PathEditorItem* item(0);
+        Private::PathEditorItem* item = nullptr;
         if( index < items_.size() ) {
 
             item = items_[index];
@@ -967,7 +967,7 @@ void PathEditor::_updatePathMenus()
     previousPathMenu_->clear();
     for( const auto& record:history_->previousPathList() )
     {
-        QAction* action( previousPathMenu_->addAction( record.file() ) );
+        auto action( previousPathMenu_->addAction( record.file() ) );
         action->setData( index );
         ++index;
     }
@@ -977,7 +977,7 @@ void PathEditor::_updatePathMenus()
     nextPathMenu_->clear();
     for( const auto& record:history_->nextPathList() )
     {
-        QAction* action( nextPathMenu_->addAction( record.file() ) );
+        auto action( nextPathMenu_->addAction( record.file() ) );
         action->setData( index );
         ++index;
     }
