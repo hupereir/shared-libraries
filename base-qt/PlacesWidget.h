@@ -68,7 +68,7 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     { return group_->buttons().isEmpty(); }
 
     //* list of items
-    QList<BaseFileInfo> items() const;
+    BaseFileInfo::List items() const;
 
     //* set item enabled
     bool setItemIsValid( const BaseFileInfo&, bool );

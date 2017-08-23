@@ -57,10 +57,10 @@ namespace Private
         Debug::Throw( "LocalFileInfo::LocalFileInfo (dom).\n" );
 
         // parse attributes
-        QDomNamedNodeMap attributes( element.attributes() );
+        auto attributes( element.attributes() );
         for( int i=0; i<attributes.count(); i++ )
         {
-            QDomAttr attribute( attributes.item( i ).toAttr() );
+            auto attribute( attributes.item( i ).toAttr() );
             if( attribute.isNull() ) continue;
             if( attribute.name() == Xml::Flags ) setFlags( (Flags) attribute.value().toInt() );
         }
@@ -71,7 +71,7 @@ namespace Private
     QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
     {
         Debug::Throw( "BaseFileInfo::DomElement.\n" );
-        QDomElement out( BaseFileInfo::domElement( document ) );
+        auto out( BaseFileInfo::domElement( document ) );
         if( flags_ ) out.setAttribute( Xml::Flags, flags_ );
         return out;
     }
@@ -91,7 +91,6 @@ namespace Private
             // children
             if( element.tagName() == Xml::FileInfo )
             {
-
                 LocalFileInfo fileInfo( element );
                 if( fileInfo.file().isEmpty() ) fileInfo.setFlag( LocalFileInfo::Separator, true );
                 out.append( fileInfo );
@@ -106,7 +105,7 @@ namespace Private
     QDomElement LocalFileInfo::Helper::domElement( const LocalFileInfo::List& list, QDomDocument& document )
     {
         // create main element
-        QDomElement top = document.createElement( Xml::FileInfoList );
+        auto top = document.createElement( Xml::FileInfoList );
         for( const auto& fileInfo:list )
         { top.appendChild( fileInfo.domElement( document ) );  }
         return top;
@@ -160,7 +159,6 @@ namespace Private
             QSize textSize = fontMetrics().boundingRect( text() ).size();
             size.rwidth() += textSize.width();
             size.rheight() = qMax<int>( size.height(), textSize.height() );
-
         }
 
         QStyleOptionFrameV3 option;
@@ -195,8 +193,8 @@ namespace Private
         Debug::Throw( "PlacesWidgetItem::_startDrag.\n" );
 
         // start drag
-        QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
+        auto drag = new QDrag(this);
+        auto mimeData = new QMimeData;
 
         mimeData->setData( PlacesWidgetItem::MimeType, nullptr );
         drag->setMimeData( mimeData );
@@ -333,7 +331,7 @@ namespace Private
         CustomDialog( parent, OkButton|CancelButton|Separator )
     {
         // layout
-        GridLayout *layout = new GridLayout;
+        auto layout = new GridLayout;
         layout->setMargin(0);
         layout->setMaxCount(2);
         layout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
@@ -367,7 +365,7 @@ namespace Private
         Debug::Throw(  "PlacesToolTipWidget::PlacesToolTipWidget.\n" );
 
         // layout
-        QHBoxLayout* hLayout = new QHBoxLayout;
+        auto hLayout = new QHBoxLayout;
         hLayout->setMargin( 10 );
         hLayout->setSpacing( 10 );
         setLayout( hLayout );
@@ -375,7 +373,7 @@ namespace Private
         hLayout->addWidget( iconLabel_ = new QLabel( this ) );
         iconLabel_->setAlignment( Qt::AlignHCenter|Qt::AlignTop );
 
-        QVBoxLayout* vLayout = new QVBoxLayout;
+        auto vLayout = new QVBoxLayout;
         vLayout->setMargin( 0 );
         vLayout->setSpacing( 5 );
         hLayout->addLayout( vLayout );
@@ -392,7 +390,7 @@ namespace Private
         separator_->setFrameStyle( QFrame::HLine );
 
         // grid layout
-        GridLayout* gridLayout = new GridLayout;
+        auto gridLayout = new GridLayout;
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
         gridLayout->setColumnAlignment( 1, Qt::AlignVCenter|Qt::AlignLeft );
@@ -509,7 +507,7 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     _installActions();
 
     // main layout
-    QVBoxLayout* vLayout = new QVBoxLayout;
+    auto vLayout = new QVBoxLayout;
     vLayout->setMargin(2);
     vLayout->setSpacing(0);
     setLayout( vLayout );
@@ -568,13 +566,10 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 }
 
 //______________________________________________________________________
-QList<BaseFileInfo> PlacesWidget::items() const
+BaseFileInfo::List PlacesWidget::items() const
 {
-    Debug::Throw( "PlacesWidget::items.\n" );
-    QList<BaseFileInfo> out;
-    for( const auto& item:items_ )
-    { out.append( item->fileInfo() );  }
-
+    BaseFileInfo::List out;
+    std::transform( items_.begin(), items_.end(), std::back_inserter( out ), []( Private::PlacesWidgetItem* item ) { return item->fileInfo(); } );
     return out;
 }
 
@@ -605,7 +600,7 @@ bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
         case QEvent::HoverEnter:
         {
 
-            Private::PlacesWidgetItem* item( qobject_cast<Private::PlacesWidgetItem*>( object ) );
+            auto item( qobject_cast<Private::PlacesWidgetItem*>( object ) );
             const QString name( item->text() );
             const QIcon icon( item->icon() );
             BaseFileInfo fileInfo( item->fileInfo() );
@@ -670,7 +665,7 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
     Debug::Throw( "PlacesWidget::add.\n" );
 
     // create new item
-    Private::PlacesWidgetItem* item = new Private::PlacesWidgetItem( this );
+    auto item = new Private::PlacesWidgetItem( this );
     item->installEventFilter( this );
     item->setIcon( icon );
     item->setText( name );
@@ -731,7 +726,7 @@ void PlacesWidget::insert( int position, const QIcon& icon, const QString& const
     if( position < 0 ) position = 0;
 
     // create new item
-    Private::PlacesWidgetItem* item = new Private::PlacesWidgetItem( this );
+    auto item = new Private::PlacesWidgetItem( this );
     item->installEventFilter( this );
     item->setIcon( icon );
     item->setText( name );
@@ -768,8 +763,7 @@ void PlacesWidget::_buttonClicked( QAbstractButton* button )
 {
 
     Debug::Throw( "PlacesWidget::_buttonClicked.\n" );
-
-    Private::PlacesWidgetItem* currentItem( qobject_cast<Private::PlacesWidgetItem*>( button ) );
+    auto currentItem( qobject_cast<Private::PlacesWidgetItem*>( button ) );
     if( currentItem && !currentItem->isSeparator() && currentItem->isValid() ) emit itemSelected( currentItem->fileInfo() );
 
 }
@@ -781,7 +775,7 @@ void PlacesWidget::_updateFocus( QAbstractButton* button )
     Debug::Throw( "PlacesWidget::_updateFocus.\n" );
 
     // cas button to item
-    Private::PlacesWidgetItem* currentItem( qobject_cast<Private::PlacesWidgetItem*>( button ) );
+    auto currentItem( qobject_cast<Private::PlacesWidgetItem*>( button ) );
     if( currentItem ) currentItem->setFocus( true );
 
     // disable focus for all other buttons
@@ -938,7 +932,7 @@ void PlacesWidget::_addSeparator()
     Debug::Throw( "PlacesWidget::_addSeparator.\n" );
 
     // add new item
-    Private::PlacesWidgetItem* item = new Private::PlacesWidgetItem( this );
+    auto item = new Private::PlacesWidgetItem( this );
     item->setIsSeparator( true );
 
     // add to button group, list of items and layout
@@ -957,7 +951,7 @@ void PlacesWidget::_insertSeparator()
     Debug::Throw( "PlacesWidget::_insertSeparator.\n" );
 
     // add new item
-    Private::PlacesWidgetItem* item = new Private::PlacesWidgetItem( this );
+    auto item = new Private::PlacesWidgetItem( this );
     item->setIsSeparator( true );
 
     // add to button group, list of items and layout
@@ -1368,10 +1362,8 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
 //_________________________________________________________________________________
 Private::PlacesWidgetItem* PlacesWidget::_focusItem() const
 {
-    for( const auto& item:items_ )
-    { if( item->hasFocus() ) return item; }
-
-    return nullptr;
+    auto iter = std::find_if( items_.begin(), items_.end(), []( Private::PlacesWidgetItem* item ) { return item->hasFocus(); } );
+    return iter == items_.end() ? nullptr:*iter;
 }
 
 //_________________________________________________________________________________
@@ -1454,15 +1446,14 @@ bool PlacesWidget::_write()
     }
 
     // get list of items and create file info list
-    // auto items( items_ );
     Private::LocalFileInfo::List fileInfoList;
-    for( const auto& item:items_ )
-    {
-        Private::LocalFileInfo fileInfo( item->fileInfo() );
-        fileInfo.setFlags( item->flags() );
-        fileInfo.setAlias( item->text() );
-        fileInfoList.append( fileInfo );
-    }
+    std::transform( items_.begin(), items_.end(), std::back_inserter(fileInfoList),
+        []( Private::PlacesWidgetItem* item ) {
+            Private::LocalFileInfo fileInfo( item->fileInfo() );
+            fileInfo.setFlags( item->flags() );
+            fileInfo.setAlias( item->text() );
+            return fileInfo;
+        });
 
     // create document
     XmlDocument document;
@@ -1499,47 +1490,35 @@ void PlacesWidget::_addDefaultPlaces()
 
     Debug::Throw( "PlacesWidget::_addDefaultPlaces.\n" );
 
-    // get list of existing files
-    File::List currentFiles;
-    for( const auto& item:items_ )
-    { currentFiles.append( item->fileInfo().file() ); }
-
     // loop over default folders, backward and insert front
     const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
     DefaultFolders::FolderMapIterator iterator( folders );
     iterator.toBack();
     while( iterator.hasPrevious() )
     {
+
         iterator.previous();
 
         // skip if file is not set
         if( iterator.key().isEmpty() ) continue;
 
-        // skip if file is already included
-        if( currentFiles.contains( iterator.key() ) )
+        // move existing item to the correct position
+        bool found = false;
+        for( int index = 0; index< items_.size(); ++index )
         {
-
-            // move existing item to the correct position
-            for( int index = 0; index< items_.size(); ++index )
+            if( items_[index]->fileInfo().file() == iterator.key() )
             {
-                if( items_[index]->fileInfo().file() == iterator.key() )
-                {
-                    Private::PlacesWidgetItem* item( items_[index] );
-                    items_.takeAt( index );
-                    buttonLayout_->takeAt( index );
-
-                    items_.insert(0, item );
-                    buttonLayout_->insertWidget( 0, item );
-                    break;
-                }
-
+                items_.insert( 0, items_.takeAt( index ) );
+                buttonLayout_->insertItem( 0, buttonLayout_->takeAt( index ) );
+                found = true;
+                break;
             }
-
-            // pass to next item
-            continue;
 
         }
 
+        if( found ) continue;
+
+        // push front
         BaseFileInfo fileInfo( iterator.key() );
         fileInfo.setIsFolder();
         insert( 0, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), DefaultFolders::get().name( iterator.value() ), fileInfo );
