@@ -26,7 +26,7 @@
 #include <algorithm>
 
 //* Job model. Stores job information for display in lists
-template<typename T, typename EqualTo = std::equal_to<T>, typename LessThan = std::less<T> >
+template<typename T, typename EqualTo = std::equal_to<T>>
 class ListModel : public ItemModel
 {
 
@@ -111,8 +111,8 @@ class ListModel : public ItemModel
     { return index.isValid() && index.row() < values_.size(); }
 
     //* return value for given index
-    ValueType get( const QModelIndex& index ) const
-    { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:ValueType(); }
+    const ValueType& get( const QModelIndex& index ) const
+    { return (index.isValid() && index.row() < values_.size() ) ? values_[index.row()]:default_; }
 
     //* return all values
     List get( const QModelIndexList& indexes ) const
@@ -153,7 +153,10 @@ class ListModel : public ItemModel
     {
         if( !contains( index ) ) return;
         if( value ) selectedItems_.append( values_[index.row()] );
-        else selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), values_[index.row()] ) ), selectedItems_.end() );
+        else selectedItems_.erase(
+            std::remove_if( selectedItems_.begin(), selectedItems_.end(),
+            [this, &index](const ValueType& value) { return EqualTo()( value, values_[index.row()] ); } ),
+            selectedItems_.end() );
     }
 
     //* current index;
@@ -178,7 +181,6 @@ class ListModel : public ItemModel
 
         emit layoutAboutToBeChanged();
         _add( value );
-        _sort();
         emit layoutChanged();
 
     }
@@ -192,17 +194,19 @@ class ListModel : public ItemModel
         if( values.empty() ) return;
 
         emit layoutAboutToBeChanged();
-        for( const auto& value:values ) _add( value );
-        _sort();
+        _add( values );
         emit layoutChanged();
 
     }
 
-    //* insert values
+    //* insert a value
     void insert( const QModelIndex& index, const ValueType& value )
     {
         emit layoutAboutToBeChanged();
-        _insert( index, value );
+
+        if( index.isValid() && index.row() < values_.size() ) _insert( index, value );
+        else _add( value );
+
         emit layoutChanged();
     }
 
@@ -211,16 +215,22 @@ class ListModel : public ItemModel
     {
         emit layoutAboutToBeChanged();
 
-        // need to loop in reverse order so that the "values" ordering is preserved
-        ListIterator iter( values );
-        iter.toBack();
-        while( iter.hasPrevious() )
-        { _insert( index, iter.previous() ); }
+        if( index.isValid() && index.row() < values_.size() )
+        {
+
+            _insert( index, values );
+
+        } else {
+
+            _add( values );
+            return;
+
+        }
 
         emit layoutChanged();
     }
 
-    //* insert values
+    //* replace a value
     void replace( const QModelIndex& index, const ValueType& value )
     {
         if( !contains( index ) ) add( value );
@@ -229,17 +239,14 @@ class ListModel : public ItemModel
             emit layoutAboutToBeChanged();
 
             const ValueType& oldValue( values_[index.row()] );
+            values_[index.row()] = value;
             if( selectedItems_.contains( oldValue ) )
             {
+                selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(),
+                    [&oldValue](const ValueType& value ) { return EqualTo()( value, oldValue ); } ),
+                    selectedItems_.end() );
 
-                selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), oldValue ) ), selectedItems_.end() );
-                values_[index.row()] = value;
                 selectedItems_.append( value );
-
-            } else {
-
-                values_[index.row()] = value;
-
             }
 
             emit layoutChanged();
@@ -308,9 +315,8 @@ class ListModel : public ItemModel
         for( const auto& value:removedValues ) _remove( value );
 
         // add remaining values
-        for( const auto& value:values ) _add( value );
+        _add( values );
 
-        _sort();
         emit layoutChanged();
 
     }
@@ -339,18 +345,37 @@ class ListModel : public ItemModel
     virtual void _add( const ValueType& value )
     {
         auto iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
-        if( iter == values_.end() ) values_.append( value );
-        else *iter = value;
+        if( iter != values_.end() ) { *iter = value; }
+        else values_.append( value );
     }
 
     //* add, without update
+    virtual void _add( const List& values )
+    {
+
+        for( const auto& value: values )
+        {
+            auto iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
+            if( iter != values_.end() ) { *iter = value; }
+            else values_.append( value );
+        }
+
+        _sort();
+    }
+
+    //* insert, without update
     virtual void _insert( const QModelIndex& index, const ValueType& value )
     {
-        if( !index.isValid() ) add( value );
-        int row = 0;
-        auto iter( values_.begin() );
-        for( ;iter != values_.end() && row != index.row(); ++iter, ++row ){}
+        auto iter = values_.begin() + index.row();
         values_.insert( iter, value );
+    }
+
+    //* insert, without update
+    virtual void _insert( const QModelIndex& index, const List& values )
+    {
+        auto iter = values_.begin() + index.row();
+        for( const auto& value:values )
+        { iter = values_.insert( iter, value ); }
     }
 
     //* remove, without update
@@ -370,6 +395,9 @@ class ListModel : public ItemModel
 
     //* true if current item is valid
     bool hasCurrentItem_ = false;
+
+    //* default item
+    ValueType default_;
 
     //* current item
     ValueType currentItem_;
