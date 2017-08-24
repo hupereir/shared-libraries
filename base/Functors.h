@@ -52,45 +52,54 @@ namespace Base
         };
 
         //* generic unary functor that verifies if a given method returns a specific value
-        template <class T, typename R, R (T::*accessor)() const>
+        template <class T, typename R, R (T::*accessor)() const, typename Comparator = std::equal_to<R>>
             class Unary
         {
 
             public:
 
             //* constructor
-            template<class U>
-                explicit Unary( const U& object ):
-                prediction_( (object.*accessor)() )
+            explicit Unary( const R& prediction ):
+                prediction_( prediction )
             {}
 
             //* constructor
-            template<class U>
-                explicit Unary( U* pointer ):
-                prediction_( (pointer->*accessor)() )
+            template<
+                class U,
+                typename = typename std::enable_if<std::is_base_of<T, typename std::decay<U>::type>::value>::type
+             >
+            explicit Unary( const U& object ):
+            prediction_( (object.*accessor)() )
             {}
 
-            //* constructor (specialized)
-            explicit Unary( const R& prediction ):
-                prediction_( prediction )
+            //* constructor
+            template<
+                class U,
+                typename = typename std::enable_if<std::is_base_of<T, typename std::decay<U>::type>::value>::type
+             >
+            explicit Unary( U* object ):
+            prediction_( (object->*accessor)() )
             {}
 
             //* predicate
             template<class U>
                 inline bool operator() (const U& object ) const
-            { return (object.*accessor)() == prediction_; }
+            { return c_((object.*accessor)(), prediction_); }
 
             //* predicate
             template<class U>
                 inline bool operator() ( U* pointer ) const
-            { return (pointer->*accessor)() == prediction_; }
+            { return c_((pointer->*accessor)(), prediction_); }
 
             //* predicate
             template<class U>
                 inline bool operator() (const std::shared_ptr<U>& pointer ) const
-            { return (pointer.get()->*accessor)() == prediction_; }
+            { return c_((pointer.get()->*accessor)(), prediction_); }
 
             private:
+
+            //* comparator
+            Comparator c_;
 
             //* prediction
             R prediction_;
@@ -99,6 +108,12 @@ namespace Base
 
         template <class T, typename R, R (T::*accessor)() const>
         using UnaryEqual = Unary<T, R, accessor>;
+
+        template <class T, typename R, R (T::*accessor)() const>
+        using UnaryLess = Unary<T, R, accessor, std::less<R>>;
+
+        template <class T, typename R, R (T::*accessor)() const>
+        using UnaryMore = Unary<T, R, accessor, std::greater<R>>;
 
         //* generic unary functor that verifies if a given method is satisfied
         template <class T, bool (T::*accessor)() const, bool prediction = true>
