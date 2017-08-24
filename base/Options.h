@@ -193,8 +193,8 @@ class Options: private Base::Counter<Options>
         public:
 
         //* constructor
-        explicit HasFlagFTor( Option::Flag flag ):
-            Option::HasFlagFTor( flag )
+        explicit HasFlagFTor( Option::Flags flags ):
+            Option::HasFlagFTor( flags )
             {}
 
         //* forward Option predicate
