@@ -200,26 +200,7 @@ class FileRecord: private Base::Counter<FileRecord>
     //@}
 
     //* used to retrieve file records that match a given flag
-    class HasFlagFTor
-    {
-
-        public:
-
-        //* constructor
-        explicit HasFlagFTor( int flag ):
-            flag_( flag )
-         {}
-
-        //* predicate
-        bool operator() ( const FileRecord& record ) const
-        { return record.hasFlag( flag_ ); }
-
-        private:
-
-        // predicted flag
-        int flag_;
-
-    };
+    using HasFlagFTor = Base::Functor::Unary<FileRecord, int, &FileRecord::flags, std::bit_and<int>>;
 
     //* used to sort records according to files
     using FileFTor = Base::Functor::BinaryLess<FileRecord, const File&, &FileRecord::file>;

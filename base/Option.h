@@ -187,29 +187,7 @@ class Option:private Base::Counter<Option>
     //@}
 
     //* used to retrieve file records that match a given flag
-    class HasFlagFTor
-    {
-
-        public:
-
-        //* constructor
-        explicit HasFlagFTor( Option::Flag flag ):
-            flag_( flag )
-        {}
-
-        //* destructor
-        virtual ~HasFlagFTor() = default;
-
-        //* predicate
-        bool operator() ( const Option& option ) const
-        { return option.hasFlag( flag_ ); }
-
-        private:
-
-        // predicted flag
-        Option::Flag flag_;
-
-    };
+    using HasFlagFTor = Base::Functor::Unary<Option, Option::Flags, &Option::flags, std::bit_and<Option::Flags>>;
 
     //* used to get options with matching values
     using SameValueFTor = Base::Functor::Unary<Option, const QByteArray&, &Option::raw>;
