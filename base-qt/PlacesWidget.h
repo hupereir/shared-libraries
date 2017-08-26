@@ -217,7 +217,18 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     QAbstractItemView* itemView_ = nullptr;
 
     //* button layout
-    QBoxLayout* buttonLayout_ = nullptr;
+    class VBoxLayout: public QVBoxLayout
+    {
+        public:
+
+        #if QT_VERSION < 0x050000
+        // make insertItem method public for old Qt versions
+        using QVBoxLayout::insertItem;
+        #endif
+
+    };
+
+    VBoxLayout* buttonLayout_ = nullptr;
 
     //* button group
     QButtonGroup* group_ = nullptr;

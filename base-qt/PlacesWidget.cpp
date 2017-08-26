@@ -513,7 +513,7 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     setLayout( vLayout );
 
     // button layout
-    buttonLayout_ = new QVBoxLayout;
+    buttonLayout_ = new VBoxLayout;
     buttonLayout_->setMargin(0);
     buttonLayout_->setSpacing(0);
 
