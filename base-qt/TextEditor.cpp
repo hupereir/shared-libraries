@@ -56,6 +56,8 @@
 #include <QTextStream>
 #include <QToolTip>
 
+#include <numeric>
+
 //______________________________________________
 TextSelection& TextEditor::lastSelection()
 {
