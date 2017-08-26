@@ -304,10 +304,10 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual void createSelectLineWidget( bool compact );
 
     //* changes block background
-    virtual void setBackground( QTextBlock, const QColor& );
+    virtual void setBackground( const QTextBlock&, const QColor& );
 
     //* clear block background
-    virtual void clearBackground( QTextBlock );
+    virtual void clearBackground( const QTextBlock& );
 
     //* clear all blocks background
     virtual void clearAllBackgrounds();

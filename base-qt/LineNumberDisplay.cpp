@@ -20,6 +20,7 @@
 #include "TextEditor.h"
 #include "Debug.h"
 #include "LineNumberDisplay.h"
+#include "TextBlockRange.h"
 #include "XmlOptions.h"
 
 #include <QAbstractTextDocumentLayout>
@@ -166,16 +167,11 @@ void LineNumberDisplay::_updateLineNumberData()
     // get document
     int id( 0 );
     int blockCount( 1 );
-    QTextDocument &document( *editor_->document() );
-    for( auto&& block = document.begin(); block.isValid(); block = block.next(), id++ )
+    for( const auto& block:TextBlockRange( editor_->document() ) )
     {
-
-        // insert new data
         lineNumberData_.append( LineNumberData( id, blockCount, block.position() ) );
-
-        // update block count
         blockCount += editor_->blockCount( block );
-
+        id++;
     }
 
     return;

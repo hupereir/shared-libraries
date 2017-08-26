@@ -38,6 +38,7 @@
 #include "Singleton.h"
 #include "StandardAction.h"
 #include "TextBlockData.h"
+#include "TextBlockRange.h"
 #include "TextEditorMarginWidget.h"
 #include "TextSeparator.h"
 #include "Util.h"
@@ -162,11 +163,10 @@ TextEditor::~TextEditor()
 int TextEditor::blockCount() const
 {
     Debug::Throw( "TextEditor::blockCount.\n" );
-
-    int count = 0;
-    for( QTextBlock block( document()->begin() ); block.isValid(); block = block.next() )
-    { count += blockCount( block ); }
-    return count;
+    TextBlockRange range( document() );
+    return std::accumulate( range.begin(), range.end(), 0,
+        [this]( const int& sum, const QTextBlock& block )
+        { return sum + blockCount( block ); } );
 }
 
 //________________________________________________
@@ -655,10 +655,13 @@ void TextEditor::createSelectLineWidget( bool compact )
 }
 
 //___________________________________________________________________________
-void TextEditor::setBackground( QTextBlock block, const QColor& color )
+void TextEditor::setBackground( const QTextBlock& constBlock, const QColor& color )
 {
 
     Debug::Throw( "TextEditor::setBackground.\n" );
+
+    // local copy
+    auto block( constBlock );
 
     // try retrieve data or create
     auto data( static_cast<TextBlockData*>( block.userData() ) );
@@ -672,7 +675,7 @@ void TextEditor::setBackground( QTextBlock block, const QColor& color )
 }
 
 //___________________________________________________________________________
-void TextEditor::clearBackground( QTextBlock block )
+void TextEditor::clearBackground( const QTextBlock& block )
 {
 
     Debug::Throw( "TextEditor::clearBackground.\n" );
@@ -687,7 +690,7 @@ void TextEditor::clearBackground( QTextBlock block )
 void TextEditor::clearAllBackgrounds()
 {
     Debug::Throw( "TextEditor::clearAllBackgrounds.\n" );
-    for( auto block = document()->begin(); block.isValid(); block = block.next() )
+    for( const auto& block:TextBlockRange( document() ) )
     { clearBackground( block ); }
 }
 
@@ -1062,9 +1065,9 @@ bool TextEditor::event( QEvent* event )
                 auto cursor( cursorForPosition( position ) );
                 auto block( cursor.block() );
 
-                for( auto&& it = block.begin(); !(it.atEnd()); ++it)
+                for( auto&& it = block.begin(); it != block.end(); ++it)
                 {
-                    auto fragment = it.fragment();
+                    const auto fragment = it.fragment();
                     if( !fragment.isValid() ) continue;
                     if( fragment.position() > cursor.position() || fragment.position() + fragment.length() <= cursor.position() )
                     { continue; }
@@ -1674,10 +1677,6 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 void TextEditor::paintEvent( QPaintEvent* event )
 {
 
-    // handle block background
-    QTextBlock first( cursorForPosition( event->rect().topLeft() ).block() );
-    QTextBlock last( cursorForPosition( event->rect().bottomRight() ).block() );
-
     // create painter and translate from widget to viewport coordinates
     QPainter painter( viewport() );
     painter.setClipRect( event->rect() );
@@ -1685,8 +1684,13 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.translate( -scrollbarPosition() );
     painter.setPen( Qt::NoPen );
 
+    // define block range
+    const TextBlockRange range(
+        cursorForPosition( event->rect().topLeft() ).block(),
+        cursorForPosition( event->rect().bottomRight() ).block().next() );
+
     // loop over found blocks
-    for( QTextBlock block( first ); block != last.next() && block.isValid(); block = block.next() )
+    for( const auto& block:range )
     {
 
         // retrieve block data and check background

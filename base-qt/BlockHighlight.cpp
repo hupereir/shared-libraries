@@ -17,19 +17,20 @@
 *
 *******************************************************************************/
 
+#include "BlockHighlight.h"
+#include "TextEditor.h"
+#include "TextBlockData.h"
+#include "TextBlockRange.h"
+
 #include <QAbstractTextDocumentLayout>
 #include <QTextDocument>
 #include <QTextBlock>
 
-#include "BlockHighlight.h"
-#include "TextEditor.h"
-#include "TextBlockData.h"
-
 //_______________________________________________________________________
 BlockHighlight::BlockHighlight( TextEditor* parent ):
-QObject( parent ),
-Counter( "BlockHighlight" ),
-parent_( parent )
+    QObject( parent ),
+    Counter( "BlockHighlight" ),
+    parent_( parent )
 { Debug::Throw( "BlockHighlight::BlockHighlight.\n" ); }
 
 //______________________________________________________________________
@@ -39,12 +40,12 @@ void BlockHighlight::clear()
     if( cleared_ ) return;
 
     // loop over all blocks
-    for( auto&& block = parent_->document()->begin(); block.isValid(); block = block.next() )
+    for( const auto& block:TextBlockRange( parent_->document() ) )
     {
 
         if( parent_->textCursor().block() == block && isEnabled() ) continue;
 
-        TextBlockData* data( static_cast<TextBlockData*>( block.userData() ) );
+        auto data( static_cast<TextBlockData*>( block.userData() ) );
         if( data && data->hasFlag( TextBlock::CurrentBlock ) )
         {
 
@@ -90,13 +91,14 @@ void BlockHighlight::_highlight()
     if( !isEnabled() ) return;
 
     // retrieve current block
-    QTextBlock block( parent_->textCursor().block() );
-
-    TextBlockData* data = static_cast<TextBlockData*>( block.userData() );
+    auto block( parent_->textCursor().block() );
+    auto data = static_cast<TextBlockData*>( block.userData() );
     if( !data )
     {
+
         data = new TextBlockData;
         block.setUserData( data );
+
     } else if( data->hasFlag( TextBlock::CurrentBlock ) ) return;
 
     // need to redo the clear a second time, forced,

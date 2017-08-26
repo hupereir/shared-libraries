@@ -30,7 +30,7 @@ TextPosition::TextPosition( QTextDocument* document, int index ):
     if( !document ) return;
 
     // retrieve block matching position
-    QTextBlock block( document->findBlock( index ) );
+    auto block( document->findBlock( index ) );
     if( block.isValid() ) index_ = index - block.position();
     else {
 
@@ -50,7 +50,7 @@ int TextPosition::index( QTextDocument* document ) const
     if( !document ) return index_;
 
     // advance until paragraph is matched
-    QTextBlock block( document->begin() );
+    auto block( document->begin() );
     int paragraph(0);
     while( paragraph < paragraph_ && block.isValid() )
     {
