@@ -25,6 +25,7 @@
 
 #include <QContextMenuEvent>
 #include <QKeyEvent>
+#include <QLayout>
 #include <QLineEdit>
 #include <QMenu>
 #include <QProxyStyle>
@@ -52,8 +53,8 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     bool hasClearButton() const
     { return clearButton_ && clearButton_->isVisible(); }
 
-    //* return clear button width
-    int clearButtonWidth() const;
+    //* buttons width
+    QSize buttonsSize() const;
 
     //* modification state
     bool isModified() const
@@ -142,7 +143,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //@}
 
     //* toggle clear button
-    void _updateClearButton() const;
+    void _updateButtonsGeometry() const;
 
     private:
 
@@ -186,6 +187,9 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     QAction* lowerCaseAction_ = nullptr;
 
     //@}
+
+    //* buttons layout
+    QHBoxLayout* buttonsLayout_ = nullptr;
 
     //* clear button
     QWidget* clearButton_ = nullptr;

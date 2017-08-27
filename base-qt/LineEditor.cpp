@@ -53,13 +53,12 @@ namespace Private
         if( subElement != SE_LineEditContents ) return QProxyStyle::subElementRect( subElement, option, widget );
 
         // check editor
-        const LineEditor* editor( qobject_cast<const LineEditor*>( widget ) );
-        if( !( editor && editor->hasClearButton() ) )
-        { return QProxyStyle::subElementRect( subElement, option, widget ); }
+        const auto editor( qobject_cast<const LineEditor*>( widget ) );
+        if( !editor ) return QProxyStyle::subElementRect( subElement, option, widget );
 
         // adjust sub element rect
         QRect rect( QProxyStyle::subElementRect( subElement, option, widget ) );
-        return visualRect( option->direction, rect, rect.adjusted( 0, 0, -editor->clearButtonWidth(), 0 ) );
+        return visualRect( option->direction, rect, rect.adjusted( 0, 0, -editor->buttonsSize().width(), 0 ) );
 
     }
 
@@ -70,15 +69,14 @@ namespace Private
         if( contentsType != CT_LineEdit ) return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
 
         // check editor
-        const LineEditor* editor( qobject_cast<const LineEditor*>( widget ) );
-        if( !( editor && editor->hasClearButton() ) )
-        { return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget ); }
+        const auto editor( qobject_cast<const LineEditor*>( widget ) );
+        if( !editor ) return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
 
-        const int buttonWidth( editor->clearButtonWidth() );
+        const auto buttonsSize( editor->buttonsSize() );
 
         QSize size( contentsSize );
-        size.rwidth() += buttonWidth;
-        size.setHeight( qMax( size.height(), buttonWidth ) );
+        size.rwidth() += buttonsSize.width();
+        size.setHeight( qMax( size.height(), buttonsSize.height() ) );
 
         return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
 
@@ -117,6 +115,17 @@ namespace Private
         painter.drawPixmap( iconRect, pixmap );
     }
 
+    //____________________________________________________________
+    QSize LineEditorButton::sizeHint() const
+    {
+        QStyleOptionButton option;
+        option.initFrom( this );
+
+        const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+        const int margin( 2 );
+        const int dimension = iconSize + 2*margin;
+        return QSize( dimension, dimension );
+    }
 }
 
 //____________________________________________________________
@@ -134,6 +143,11 @@ LineEditor::LineEditor( QWidget* parent ):
     // modification state call-back
     connect( this, SIGNAL(textChanged(QString)), SLOT(_modified(QString)) );
 
+    buttonsLayout_ = new QHBoxLayout( this );
+    buttonsLayout_->setMargin(0);
+    buttonsLayout_->setSpacing(0);
+    // setLayout( buttonsLayout_ );
+
     setHasClearButton( true );
     setStyle( proxyStyle_.data() );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
@@ -141,16 +155,16 @@ LineEditor::LineEditor( QWidget* parent ):
 }
 
 //_____________________________________________________________________
-int LineEditor::clearButtonWidth() const
-{
-    // adjust contents size
-    QStyleOptionFrame option;
-    option.initFrom( this );
-    initStyleOption( &option );
-    const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-    const int margin( 2 );
-    return iconSize + 2*margin;
-}
+QSize LineEditor::buttonsSize() const
+{ return buttonsLayout_->sizeHint(); }
+//     // adjust contents size
+//     QStyleOptionFrame option;
+//     option.initFrom( this );
+//     initStyleOption( &option );
+//     const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+//     const int margin( 2 );
+//     return iconSize + 2*margin;
+// }
 
 //_____________________________________________________________________
 void LineEditor::setReadOnly( bool value )
@@ -164,7 +178,7 @@ void LineEditor::setReadOnly( bool value )
     } else if( clearButton_ && !clearButton_->isVisible() && !text().isEmpty() ) {
 
         clearButton_->show();
-        _updateClearButton();
+        _updateButtonsGeometry();
 
     }
 
@@ -193,15 +207,22 @@ void LineEditor::setHasClearButton( bool value )
 
         if( !clearButton_ )
         {
+
+            // create button and add to layout
             clearButton_ = new Private::LineEditorButton( this );
-            connect( clearButton_, SIGNAL(clicked()), SLOT(clear()) );
+            buttonsLayout_->insertWidget(0, clearButton_ );
             clearButton_->hide();
+
+            // setup connections
+            connect( clearButton_, SIGNAL(clicked()), SLOT(clear()) );
+
+
         }
 
         if( !text().isEmpty() && !clearButton_->isVisible() )
         {
             clearButton_->show();
-            _updateClearButton();
+            _updateButtonsGeometry();
         }
 
     } else if( clearButton_ ) {
@@ -292,8 +313,7 @@ bool LineEditor::event( QEvent* event )
         case QEvent::Show:
         case QEvent::Resize:
         {
-            if( clearButton_ )
-            { _updateClearButton(); }
+            _updateButtonsGeometry();
             break;
         }
 
@@ -331,22 +351,23 @@ void LineEditor::keyPressEvent( QKeyEvent* event )
 }
 
 //____________________________________________________________
-void LineEditor::_updateClearButton() const
+void LineEditor::_updateButtonsGeometry() const
 {
     if( !clearButton_ ) return;
 
     QStyleOptionFrame option;
     option.initFrom( this );
     initStyleOption( &option );
-
-    const int buttonWidth( clearButtonWidth() );
-
     const QRect textRect( style()->subElementRect( QStyle::SE_LineEditContents, &option, this ) );
-    QRect buttonRect( textRect.topRight()+QPoint( 1, 0 ), QSize( buttonWidth, textRect.height() ) );
+
+    auto buttonsSize = buttonsLayout_->sizeHint();
+    QRect buttonsRect( textRect.topRight()+QPoint( 1, 0 ), QSize( buttonsSize.width(), textRect.height() ) );
 
     // handle right to left
-    buttonRect = style()->visualRect( option.direction, option.rect, buttonRect );
-    clearButton_->setGeometry( buttonRect );
+    buttonsRect = style()->visualRect( option.direction, option.rect, buttonsRect );
+
+    // assign
+    buttonsLayout_->setGeometry( buttonsRect );
 
 }
 
@@ -369,9 +390,8 @@ void LineEditor::_modified( const QString& text )
         if( !clearEnabled ) clearButton_->hide();
         else if( !clearButton_->isVisible() )
         {
-
             clearButton_->show();
-            _updateClearButton();
+            _updateButtonsGeometry();
         }
     }
 

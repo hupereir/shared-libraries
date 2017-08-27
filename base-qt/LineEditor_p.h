@@ -57,6 +57,9 @@ namespace Private
         //* constructor
         explicit LineEditorButton( QWidget* parent );
 
+        //* size hint
+        QSize sizeHint() const override;
+
         protected:
 
         //* paint
