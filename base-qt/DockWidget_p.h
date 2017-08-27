@@ -54,10 +54,6 @@ namespace Private
             return size.isValid() ? size:QWidget::sizeHint();
         }
 
-        //* size hint
-        QSize minimumSizeHint() const override
-        { return sizeHint(); }
-
         private:
 
         //* window monitor
