@@ -47,11 +47,11 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     ~LineEditor() override
     { delete proxyStyle_.data(); }
 
-    //@!name accessors
+    //*@name accessors
     //@{
 
-    bool hasClearButton() const
-    { return clearButton_ && clearButton_->isVisible(); }
+    bool showClearButton() const
+    { return showClearButton_; }
 
     //* buttons width
     QSize buttonsSize() const;
@@ -72,7 +72,11 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     void setModified( bool value );
 
     //* set clear button
-    void setHasClearButton( bool );
+    void setShowClearButton( bool );
+
+    //* add a button
+    void addWidget( QWidget* widget )
+    { buttonsLayout_->addWidget( widget ); }
 
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu* );
@@ -187,6 +191,9 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     QAction* lowerCaseAction_ = nullptr;
 
     //@}
+
+    //* true if clear button must be shown
+    bool showClearButton_ = false;
 
     //* buttons layout
     QHBoxLayout* buttonsLayout_ = nullptr;

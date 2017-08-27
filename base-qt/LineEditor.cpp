@@ -143,12 +143,20 @@ LineEditor::LineEditor( QWidget* parent ):
     // modification state call-back
     connect( this, SIGNAL(textChanged(QString)), SLOT(_modified(QString)) );
 
+    // button layout
     buttonsLayout_ = new QHBoxLayout( this );
     buttonsLayout_->setMargin(0);
     buttonsLayout_->setSpacing(0);
-    // setLayout( buttonsLayout_ );
 
-    setHasClearButton( true );
+    // clear button
+    clearButton_ = new Private::LineEditorButton( this );
+    buttonsLayout_->insertWidget(0, clearButton_ );
+    clearButton_->hide();
+
+    // setup connections
+    connect( clearButton_, SIGNAL(clicked()), SLOT(clear()) );
+
+    setShowClearButton( true );
     setStyle( proxyStyle_.data() );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
@@ -157,34 +165,13 @@ LineEditor::LineEditor( QWidget* parent ):
 //_____________________________________________________________________
 QSize LineEditor::buttonsSize() const
 { return buttonsLayout_->sizeHint(); }
-//     // adjust contents size
-//     QStyleOptionFrame option;
-//     option.initFrom( this );
-//     initStyleOption( &option );
-//     const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-//     const int margin( 2 );
-//     return iconSize + 2*margin;
-// }
 
 //_____________________________________________________________________
 void LineEditor::setReadOnly( bool value )
 {
-
-    if( value )
-    {
-
-        if( clearButton_ ) clearButton_->hide();
-
-    } else if( clearButton_ && !clearButton_->isVisible() && !text().isEmpty() ) {
-
-        clearButton_->show();
-        _updateButtonsGeometry();
-
-    }
-
+    setShowClearButton( value );
     QLineEdit::setReadOnly( value );
     return;
-
 }
 
 //_____________________________________________________________________
@@ -200,24 +187,15 @@ void LineEditor::setModified( bool value )
 }
 
 //______________________________________________________________
-void LineEditor::setHasClearButton( bool value )
+void LineEditor::setShowClearButton( bool value )
 {
+    
+    // do nothing if unchanged
+    if( showClearButton_ == value ) return;
+    
+    showClearButton_ = value;
     if( value )
     {
-
-        if( !clearButton_ )
-        {
-
-            // create button and add to layout
-            clearButton_ = new Private::LineEditorButton( this );
-            buttonsLayout_->insertWidget(0, clearButton_ );
-            clearButton_->hide();
-
-            // setup connections
-            connect( clearButton_, SIGNAL(clicked()), SLOT(clear()) );
-
-
-        }
 
         if( !text().isEmpty() && !clearButton_->isVisible() )
         {
@@ -225,11 +203,7 @@ void LineEditor::setHasClearButton( bool value )
             _updateButtonsGeometry();
         }
 
-    } else if( clearButton_ ) {
-
-        clearButton_->hide();
-
-    }
+    } else clearButton_->hide();
 }
 
 //______________________________________________________________________________
