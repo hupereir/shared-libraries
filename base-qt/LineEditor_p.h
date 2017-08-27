@@ -26,8 +26,7 @@
 #include <QAbstractButton>
 #include <QProxyStyle>
 
-
-// proxy style for custom line editors
+//* proxy style for custom line editors
 namespace Private
 {
 
