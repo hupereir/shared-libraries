@@ -81,7 +81,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* visual rect for given index
     QRect visualRect( const QModelIndex& ) const override;
 
-    //* minimum size hind
+    //* minimum size hint
     QSize minimumSizeHint() const override;
 
     //@}

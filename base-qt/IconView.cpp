@@ -223,7 +223,7 @@ QSize IconView::minimumSizeHint() const
 {
     return QSize(
         2*margin_ + 2*IconViewItem::margin + qMax( IconViewItem::maxTextWidth, iconSize().width() ) + verticalScrollBar()->width(),
-        QAbstractItemView::minimumSize().height() );
+        QAbstractItemView::minimumSizeHint().height() );
 }
 
 //_____________________________________________________________________
