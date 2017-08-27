@@ -75,8 +75,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     void setShowClearButton( bool );
 
     //* add a button
-    void addWidget( QWidget* widget )
-    { buttonsLayout_->addWidget( widget ); }
+    void addWidget( QWidget* );
 
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu* );
@@ -195,8 +194,8 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //* true if clear button must be shown
     bool showClearButton_ = false;
 
-    //* buttons layout
-    QHBoxLayout* buttonsLayout_ = nullptr;
+    //* buttons container
+    QWidget* container_ = nullptr;
 
     //* clear button
     QWidget* clearButton_ = nullptr;

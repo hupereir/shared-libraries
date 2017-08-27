@@ -89,30 +89,8 @@ namespace Private
     {
         setText( QString() );
         setIcon( IconEngine::get( IconNames::EditClear ) );
-        setAutoFillBackground( false );
         setToolTip( tr( "Clear text" ) );
-        setCursor( Qt::ArrowCursor );
         setFocusPolicy( Qt::NoFocus );
-    }
-
-    //____________________________________________________________
-    void LineEditorButton::paintEvent( QPaintEvent* event )
-    {
-        if( icon().isNull() ) return;
-
-        QStyleOptionButton option;
-        option.initFrom( this );
-
-        const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-        const QSize iconSize( iconWidth, iconWidth );
-        const QPixmap pixmap( icon().pixmap( iconSize ) );
-
-        const QRect rect( this->rect() );
-        const QRect iconRect( QPoint( rect.x() + (rect.width() - iconWidth)/2, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
-
-        QPainter painter( this );
-        painter.setClipRegion( event->region() );
-        painter.drawPixmap( iconRect, pixmap );
     }
 
     //____________________________________________________________
@@ -126,6 +104,27 @@ namespace Private
         const int dimension = iconSize + 2*margin;
         return QSize( dimension, dimension );
     }
+
+    //____________________________________________________________
+    void LineEditorButton::paintEvent( QPaintEvent* event )
+    {
+        if( icon().isNull() ) return;
+
+        QStyleOptionButton option;
+        option.initFrom( this );
+
+        const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+        const QSize iconSize( iconWidth, iconWidth );
+        const auto pixmap( icon().pixmap( iconSize ) );
+
+        const auto rect( this->rect() );
+        const QRect iconRect( QPoint( rect.x() + (rect.width() - iconWidth)/2, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
+
+        QPainter painter( this );
+        painter.setClipRegion( event->region() );
+        painter.drawPixmap( iconRect, pixmap );
+    }
+
 }
 
 //____________________________________________________________
@@ -143,14 +142,21 @@ LineEditor::LineEditor( QWidget* parent ):
     // modification state call-back
     connect( this, SIGNAL(textChanged(QString)), SLOT(_modified(QString)) );
 
+    // buttons container
+    container_ = new QWidget( this );
+    container_->setCursor( Qt::ArrowCursor );
+    container_->show();
+
     // button layout
-    buttonsLayout_ = new QHBoxLayout( this );
-    buttonsLayout_->setMargin(0);
-    buttonsLayout_->setSpacing(0);
+    auto layout = new QHBoxLayout( container_ );
+    layout->setMargin(0);
+    layout->setSpacing(2);
+
+    container_->setLayout( layout );
 
     // clear button
-    clearButton_ = new Private::LineEditorButton( this );
-    buttonsLayout_->insertWidget(0, clearButton_ );
+    clearButton_ = new Private::LineEditorButton( container_ );
+    container_->layout()->addWidget( clearButton_ );
     clearButton_->hide();
 
     // setup connections
@@ -164,7 +170,7 @@ LineEditor::LineEditor( QWidget* parent ):
 
 //_____________________________________________________________________
 QSize LineEditor::buttonsSize() const
-{ return buttonsLayout_->sizeHint(); }
+{ return container_->sizeHint(); }
 
 //_____________________________________________________________________
 void LineEditor::setReadOnly( bool value )
@@ -189,21 +195,35 @@ void LineEditor::setModified( bool value )
 //______________________________________________________________
 void LineEditor::setShowClearButton( bool value )
 {
-    
+
     // do nothing if unchanged
     if( showClearButton_ == value ) return;
-    
+
     showClearButton_ = value;
     if( value )
     {
 
         if( !text().isEmpty() && !clearButton_->isVisible() )
-        {
-            clearButton_->show();
-            _updateButtonsGeometry();
-        }
+        { clearButton_->show(); }
 
-    } else clearButton_->hide();
+    } else {
+
+        clearButton_->hide();
+
+    }
+
+    _updateButtonsGeometry();
+
+}
+
+//______________________________________________________________________________
+void LineEditor::addWidget( QWidget* widget )
+{
+    widget->setParent( container_ );
+    container_->layout()->addWidget( widget );
+
+    widget->setAutoFillBackground( false );
+    widget->setFocusPolicy( Qt::NoFocus );
 }
 
 //______________________________________________________________________________
@@ -327,21 +347,19 @@ void LineEditor::keyPressEvent( QKeyEvent* event )
 //____________________________________________________________
 void LineEditor::_updateButtonsGeometry() const
 {
-    if( !clearButton_ ) return;
-
     QStyleOptionFrame option;
     option.initFrom( this );
     initStyleOption( &option );
     const QRect textRect( style()->subElementRect( QStyle::SE_LineEditContents, &option, this ) );
 
-    auto buttonsSize = buttonsLayout_->sizeHint();
+    auto buttonsSize = container_->sizeHint();
     QRect buttonsRect( textRect.topRight()+QPoint( 1, 0 ), QSize( buttonsSize.width(), textRect.height() ) );
 
     // handle right to left
     buttonsRect = style()->visualRect( option.direction, option.rect, buttonsRect );
 
     // assign
-    buttonsLayout_->setGeometry( buttonsRect );
+    container_->setGeometry( buttonsRect );
 
 }
 
@@ -362,11 +380,8 @@ void LineEditor::_modified( const QString& text )
     if( clearButton_ )
     {
         if( !clearEnabled ) clearButton_->hide();
-        else if( !clearButton_->isVisible() )
-        {
-            clearButton_->show();
-            _updateButtonsGeometry();
-        }
+        else if( !clearButton_->isVisible() ) clearButton_->show();
+        _updateButtonsGeometry();
     }
 
     // emit cleared signal
