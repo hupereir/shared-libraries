@@ -76,9 +76,9 @@ bool BaseCoreApplication::initApplicationManager()
 
     } else if( parser.hasFlag( "--version" ) ) {
 
-        Debug::Throw(0) << "Qt: " << qVersion() << endl;
-        Debug::Throw(0) <<  applicationName() << ": " << applicationVersion();
-        Debug::Throw(0) << "" << endl;
+        QTextStream(stdout)
+            << "Qt: " << qVersion() << endl
+            <<  applicationName() << ": " << applicationVersion() << endl;
         return false;
 
     } else if( parser.hasFlag( "--no-server" ) ) {
