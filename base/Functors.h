@@ -30,7 +30,7 @@ namespace Base
     {
 
         //* generic unary functor that verifies if a value equals a prediction
-        template<class T>
+        template<class T, typename Comparator = std::equal_to<T>>
         class SameFTor
         {
             public:
@@ -43,13 +43,26 @@ namespace Base
             //* predicate
             template<class U>
                 inline bool operator() (const U& object )
-            { return object == prediction_; }
+            { return c_(object,prediction_); }
 
             private:
 
+            //* comparator
+            Comparator c_;
+
+            //* prediction
             T prediction_;
 
         };
+
+        template <class T>
+        using DifferFTor = SameFTor<T, std::not_equal_to<T>>;
+
+        template <class T>
+        using LessFTor = SameFTor<T, std::less<T>>;
+
+        template <class T>
+        using GreaterFTor = SameFTor<T, std::greater<T>>;
 
         //* generic unary functor that verifies if a given method returns a specific value
         template <class T, typename R, R (T::*accessor)() const, typename Comparator = std::equal_to<R>>
