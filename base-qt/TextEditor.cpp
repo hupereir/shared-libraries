@@ -344,30 +344,30 @@ void TextEditor::selectWord()
     int end = localPosition;
 
     // parse text
-    if( TextSeparator::get().base().find( text[begin] ) != TextSeparator::get().base().end() )
+    if( TextSeparator::get().base().contains( text[begin] ) )
     {
 
         // see if cursor is in base separator list
-        while( begin > 0 &&  TextSeparator::get().base().find( text[begin-1] ) != TextSeparator::get().base().end() ) begin--;
-        while( end < text.size() && TextSeparator::get().base().find( text[end] ) != TextSeparator::get().base().end() ) end++;
+        while( begin > 0 &&  TextSeparator::get().base().contains( text[begin-1] ) ) begin--;
+        while( end < text.size() && TextSeparator::get().base().contains( text[end] ) ) end++;
 
-    } else if( TextSeparator::get().extended().find( text[begin] ) != TextSeparator::get().extended().end() ) {
+    } else if( TextSeparator::get().extended().contains( text[begin] ) ) {
 
         // see if cursor is in extended separator list
-        while( begin > 0 &&  TextSeparator::get().extended().find( text[begin-1] ) != TextSeparator::get().extended().end() ) begin--;
-        while( end < text.size() && TextSeparator::get().extended().find( text[end] ) != TextSeparator::get().extended().end() ) end++;
+        while( begin > 0 &&  TextSeparator::get().extended().contains( text[begin-1] ) ) begin--;
+        while( end < text.size() && TextSeparator::get().extended().contains( text[end] ) ) end++;
 
     } else {
 
         // cursor is in word
-        while( begin > 0 &&  TextSeparator::get().all().find( text[begin-1] ) == TextSeparator::get().all().end() ) begin--;
-        while( end < (int)text.size() && TextSeparator::get().all().find( text[end] ) == TextSeparator::get().all().end() ) end++;
+        while( begin > 0 && !TextSeparator::get().all().contains( text[begin-1] ) ) begin--;
+        while( end < (int)text.size() && !TextSeparator::get().all().contains( text[end] ) ) end++;
 
     }
 
     // move cursor to begin of selection
-    for( ;begin < localPosition; localPosition-- ) { cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor ); }
-    for( ;localPosition < end; localPosition++ ) { cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor ); }
+    cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor, localPosition-begin );
+    cursor.movePosition( QTextCursor::Right, QTextCursor::KeepAnchor, end-begin );
 
     // assign cursor to Text editor
     setTextCursor( cursor );
@@ -1732,7 +1732,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
     {
         painter.setPen( boxSelection_.color() );
         painter.setBrush( boxSelection_.brush() );
-        painter.drawRect( boxSelection_.rect().translated( 2, 2 ) );
+        painter.drawRect( boxSelection_.rect() );
     }
 
     painter.end();

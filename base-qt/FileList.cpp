@@ -211,14 +211,8 @@ FileRecord::List FileList::_truncatedList( const FileRecord::List& constRecords 
     }
 
     // shrink list
-    if( maxSize_ > 0 )
-    {
-
-        const int excess = records.size() - maxSize_;
-        if( excess > 0 )
-        { records.erase( records.begin(), records.begin()+excess ); }
-
-    }
+    if( maxSize_ > 0 && records.size() > maxSize_ )
+    { records.erase( records.begin(), records.begin() + (records.size() - maxSize_ )); }
 
     return records;
 }

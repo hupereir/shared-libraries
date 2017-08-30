@@ -162,18 +162,18 @@ TextSelection TreeView::selection() const
     else if( selectionModel() && model() && selectionModel()->currentIndex().isValid() )
     {
 
-        const QModelIndex current( selectionModel()->currentIndex() );
+        const auto current( selectionModel()->currentIndex() );
         if( !(text =  model()->data( current ).toString()).isEmpty() ) out.setText( text );
         else if( allColumnsShowFocus() )
         {
 
-            QModelIndex parent( model()->parent( current ) );
+            const auto parent( model()->parent( current ) );
 
             // loop over all columns, retrieve
             for( int column = 0; column < model()->columnCount( parent ); column++ )
             {
                 // get index from column
-                const QModelIndex index( model()->index( current.row(), column, parent ) );
+                const auto index( model()->index( current.row(), column, parent ) );
                 if( index.isValid() && !(text =  model()->data( index ).toString()).isEmpty() )
                 {
                     out.setText( text );
@@ -196,7 +196,7 @@ TextSelection TreeView::selection() const
 bool TreeView::isVisible( const QModelIndex& index ) const
 {
     if( !( model() && index.isValid() ) ) return false;
-    QModelIndex parent( model()->parent( index ) );
+    const auto parent( model()->parent( index ) );
     return (!parent.isValid() ) || ( isExpanded( parent ) && isVisible( parent ) );
 }
 
@@ -659,8 +659,8 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
     }
 
     // set first index
-    QModelIndex current( selectionModel()->currentIndex() );
-    QModelIndex index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexAfter( current ) );
+    const auto current( selectionModel()->currentIndex() );
+    auto index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexAfter( current ) );
 
     // if index index is invalid and rewind, set index index of the model
     if( (!index.isValid()) && rewind )
@@ -766,8 +766,8 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
     }
 
     // set first index
-    QModelIndex current( selectionModel()->currentIndex() );
-    QModelIndex index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexBefore( current ) );
+    const auto current( selectionModel()->currentIndex() );
+    auto index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexBefore( current ) );
 
     // if index index is invalid and rewind, set index index of the model
     if( (!index.isValid()) && rewind )
@@ -1011,12 +1011,12 @@ QModelIndex TreeView::_lastIndex() const
 
     if( !model()->rowCount() ) return QModelIndex();
 
-    QModelIndex out( model()->index( model()->rowCount()-1, 0 ) );
+    auto out( model()->index( model()->rowCount()-1, 0 ) );
     while( out.isValid() && isExpanded( out ) && model()->hasChildren( out ) )
     { out = model()->index( model()->rowCount( out )-1, 0, out ); }
 
     // select last column
-    QModelIndex parent = model()->parent( out );
+    auto parent = model()->parent( out );
     out = model()->index( out.row(), model()->columnCount( parent )-1, parent );
 
     return out;
@@ -1031,17 +1031,17 @@ QModelIndex TreeView::_indexAfter( const QModelIndex& current ) const
     if( !current.isValid() ) return out;
 
     // get parent
-    QModelIndex parent( model()->parent( current ) );
+    auto parent( model()->parent( current ) );
 
     // assign next column if valid
     if( current.column()+1 < model()->columnCount( parent ) ) out = model()->index( current.row(), current.column()+1, parent );
     else {
 
-        QModelIndex first_column_index( model()->index( current.row(), 0, parent ) );
+        auto firstColumnIndex( model()->index( current.row(), 0, parent ) );
 
         // assign first children if current is expanded and has children
-        if( first_column_index.isValid() && isExpanded( first_column_index ) && model()->hasChildren( first_column_index ) )
-        { out = model()->index( 0, 0, first_column_index ); }
+        if( firstColumnIndex.isValid() && isExpanded( firstColumnIndex ) && model()->hasChildren( firstColumnIndex ) )
+        { out = model()->index( 0, 0, firstColumnIndex ); }
 
         // assign next row if valid
         if( !out.isValid() ) out = model()->index( current.row()+1, 0, parent );
@@ -1063,7 +1063,7 @@ QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
     if( !current.isValid() ) return out;
 
     // get parent
-    QModelIndex parent( model()->parent( current ) );
+    auto parent( model()->parent( current ) );
 
     // assign next column if valid
     if( current.column() > 0 ) out = model()->index( current.row(), current.column()-1, parent );

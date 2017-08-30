@@ -414,15 +414,9 @@ void File::setHidden() const
 File File::version() const
 {
 
-    int version=0;
-    File out( this->expanded() );
-    QString expanded( out.get() );
-    while( out.exists() )
-    {
-        out.value_.clear();
-        QTextStream(&out.value_) << expanded << "_" << version;
-        version++;
-    }
+    File out;
+    for( int version = 0; (out = File( QString( "%1_%2" ).arg( this->expanded().get(), QString::number( version ) ) ) ).exists(); ++version )
+    {}
 
     return out;
 }

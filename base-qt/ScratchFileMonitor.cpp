@@ -50,25 +50,11 @@ void ScratchFileMonitor::deleteScratchFiles()
     ScratchFileRemoveDialog dialog( nullptr, records );
     if( dialog.exec() == QDialog::Rejected  || ( records = dialog.selectedFiles() ).empty() ) return;
 
-    // convert back to QSet
-    FileSet temp;
+    // remove all selected files
+    for( const auto& record:records )
     {
-        FileRecordModel::ListIterator iter( records );
-        iter.toBack();
-        while( iter.hasPrevious() )
-        { temp.insert( iter.previous().file() ); }
-    }
-
-    // remove all files
-    {
-        FileSetIterator iter( temp );
-        iter.toBack();
-        while( iter.hasPrevious() )
-        {
-            const auto& file( iter.previous() );
-            file.remove();
-            files_.remove( file );
-        }
+        record.file().remove();
+        files_.remove( record.file() );
     }
 
     // try remove directories
@@ -78,17 +64,10 @@ void ScratchFileMonitor::deleteScratchFiles()
         if( file.isLink() || !file.isDirectory() ) continue;
 
         // get list of contained files
-        bool empty( true );
-        for( const auto& child:file.listFiles( File::ListFlag::Recursive ) )
-        {
-            if( child.isLink() || !child.isDirectory() )
-            {
-                empty = false;
-                break;
-            }
-        }
+        const auto files( file.listFiles( File::ListFlag::Recursive ) );
+        if( std::none_of( files.begin(), files.end(), []( const File& file ) { return file.isLink() || !file.isDirectory(); } ) )
+        { file.removeRecursive(); }
 
-        if( empty ) file.removeRecursive();
     }
 
 }

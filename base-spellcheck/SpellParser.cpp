@@ -90,12 +90,8 @@ namespace SpellCheck
             // build positions list
             for( const auto& conversion:TexString::conversions() )
             {
-                int position(0);
-                while( (position = constText.indexOf( conversion.second, position )) >= 0 )
-                {
-                    positions.append( Position( position, conversion ) );
-                    position+= conversion.second.size();
-                }
+                for( int position(0); (position = constText.indexOf( conversion.second, position )) >= 0; position+= conversion.second.size() )
+                { positions.append( Position( position, conversion ) ); }
             }
 
             // sort positions

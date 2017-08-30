@@ -1491,7 +1491,7 @@ void PlacesWidget::_addDefaultPlaces()
     Debug::Throw( "PlacesWidget::_addDefaultPlaces.\n" );
 
     // loop over default folders, backward and insert front
-    const DefaultFolders::FolderMap& folders( DefaultFolders::get().folders() );
+    const auto& folders( DefaultFolders::get().folders() );
     DefaultFolders::FolderMapIterator iterator( folders );
     iterator.toBack();
     while( iterator.hasPrevious() )

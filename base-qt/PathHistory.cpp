@@ -73,7 +73,8 @@ void PathHistory::add( const FileRecord& path )
     }
 
     // remove everything that is after index_ from pathList_
-    while( pathList_.size() > index_+1 ) pathList_.removeLast();
+    if( pathList_.size() > index_+1 )
+    { pathList_.erase( pathList_.begin() + index_ + 1, pathList_.end() ); }
 
     // insert new path
     pathList_.append( path );
@@ -114,11 +115,8 @@ void PathHistory::_setMaxSize( int value )
 //___________________________________________________________________
 FileRecord::List PathHistory::_truncatedList( FileRecord::List records ) const
 {
-    if( maxSize_ > 0 )
-    {
-        while( records.size() > maxSize_ )
-        { records.removeFirst(); }
-    }
+    if( maxSize_ > 0 && records.size() > maxSize_ )
+    { records.erase( records.begin(), records.begin() + (records.size()-maxSize_) ); }
 
     return records;
 }

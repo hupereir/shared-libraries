@@ -102,7 +102,7 @@ TextSelection IconView::selection() const
     Debug::Throw( "IconView::selection.\n" );
 
     // copy last selection
-    TextSelection out( "" );
+    TextSelection out;
     out.setFlag( TextSelection::CaseSensitive, TextEditor::lastSelection().flag( TextSelection::CaseSensitive ) );
     out.setFlag( TextSelection::EntireWord, TextEditor::lastSelection().flag( TextSelection::EntireWord ) );
 
@@ -110,7 +110,7 @@ TextSelection IconView::selection() const
     if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
     else if( selectionModel() && model_ && selectionModel()->currentIndex().isValid() )
     {
-        const QModelIndex current( selectionModel()->currentIndex() );
+        const auto current( selectionModel()->currentIndex() );
         if( !(text =  model_->data( current ).toString()).isEmpty() ) out.setText( text );
     }
 
@@ -354,7 +354,7 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
     Debug::Throw() << "IconView::moveCursor - action: " << action << endl;
 
     // current index
-    QModelIndex index = currentIndex();
+    auto index = currentIndex();
     if( !index.isValid() ) index = model_->index( 0, 0 );
     if( !index.isValid() ) return QModelIndex();
 
@@ -448,7 +448,7 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 void IconView::setSelection( const QRect& constRect, QItemSelectionModel::SelectionFlags flags )
 {
 
-    QModelIndexList indexes( _selectedIndexes( constRect ) );
+    const auto indexes( _selectedIndexes( constRect ) );
     if( indexes.empty() ) selectionModel()->select( QItemSelection(), flags );
     else {
 
@@ -614,7 +614,7 @@ void IconView::keyPressEvent( QKeyEvent* event )
 
 
     // update anchor index if not set
-    const QModelIndex oldIndex( this->currentIndex() );
+    const auto oldIndex( currentIndex() );
     if( !( anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) ) && oldIndex.isValid() && selectionModel()->isSelected( oldIndex ) )
     { anchorIndex_ = oldIndex; }
 
@@ -672,7 +672,7 @@ void IconView::mousePressEvent( QMouseEvent* event )
     { return QAbstractItemView::mousePressEvent( event ); }
 
     const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
-    const QModelIndex index = indexAt( event->pos() );
+    const auto index = indexAt( event->pos() );
     if( index.isValid() )
     {
 
@@ -899,12 +899,12 @@ void IconView::_layoutItems()
     int width( 0 );
     columnCount_ = 0;
 
-    for( auto&& iter = items_.constBegin(); iter != items_.constEnd(); ++iter, ++columnCount_ )
+    // estimate number of columns based on first row
+    for( auto&& iter = items_.constBegin(); iter != items_.constEnd() && width <= maxWidth; ++iter, ++columnCount_ )
     {
-        if( columnCount_ ) width += spacing_;
         const auto& item( iter.value() );
+        if( columnCount_ > 0 ) width += spacing_;
         width += item.boundingRect().width();
-        if( width > maxWidth ) break;
     }
 
     // make sure to use at least one column
@@ -915,7 +915,7 @@ void IconView::_layoutItems()
     int totalHeight( 0 );
     int totalWidth( 0 );
     QVector<int> columnSizes;
-    while( columnCount_ >= 1 )
+    for( ; columnCount_ >= 1; columnCount_-- )
     {
 
         int rowHeight( 0 );
@@ -927,9 +927,11 @@ void IconView::_layoutItems()
         {
             // reset column
             const auto& item( iter.value() );
+
+            // start new row
             if( column >= columnCount_ )
             {
-                if( totalHeight ) totalHeight += spacing_;
+                if( totalHeight > 0 ) totalHeight += spacing_;
                 totalHeight += rowHeight;
                 rowHeight = 0;
                 column = 0;
@@ -949,8 +951,7 @@ void IconView::_layoutItems()
         for( const auto& width:columnSizes ) totalWidth += width;
         totalWidth += (columnSizes.size()-1)*spacing_;
 
-        if( totalWidth <= maxWidth || columnCount_ == 1 ) break;
-        columnCount_--;
+        if( totalWidth <= maxWidth ) break;
     }
 
     // evenly distribute extra width if there is more than one row
@@ -976,7 +977,7 @@ void IconView::_layoutItems()
 
         auto& item( iter.value() );
 
-        // reset column
+        // start a new row
         if( column >= columnCount_ )
         {
             column = 0;
@@ -1022,7 +1023,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
     {
 
         // setup option
-        const QModelIndex index( model_->index( iter.key(), 0 ) );
+        const auto index( model_->index( iter.key(), 0 ) );
         QStyleOptionViewItemV4 option = _viewOptions( index );
         option.rect = iter.value().boundingRect();
 
@@ -1112,8 +1113,8 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
     }
 
     // set first index
-    QModelIndex current( selectionModel()->currentIndex() );
-    QModelIndex index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexAfter( current ) );
+    const auto current( selectionModel()->currentIndex() );
+    auto index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexAfter( current ) );
 
     // if index index is invalid and rewind, set index index of the model
     if( (!index.isValid()) && rewind )
@@ -1208,8 +1209,8 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
     }
 
     // set first index
-    QModelIndex current( selectionModel()->currentIndex() );
-    QModelIndex index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexBefore( current ) );
+    const auto current( selectionModel()->currentIndex() );
+    auto index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexBefore( current ) );
 
     // if index index is invalid and rewind, set index index of the model
     if( (!index.isValid()) && rewind ) {

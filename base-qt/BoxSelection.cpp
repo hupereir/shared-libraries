@@ -248,20 +248,20 @@ bool BoxSelection::fromString( QString input )
 
         // if cursor has no selection, one need to make sur that there is enough white spaces in the line before copying the new string
         // this hack is necessary because for some reason cursor.movePosition( QTextCursor::StartOfLine ) fails.
-        int extra_length = cursors_.firstColumn() ;
-        int old_bottom( parent_->cursorRect( cursor ).bottom() );
-        int new_bottom( 0 );
-        while( cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor ) && (new_bottom =  parent_->cursorRect( cursor ).bottom() ) == old_bottom )
+        int extraLength = cursors_.firstColumn() ;
+        int oldBottom( parent_->cursorRect( cursor ).bottom() );
+        int newBottom( 0 );
+        while( cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor ) && (newBottom =  parent_->cursorRect( cursor ).bottom() ) == oldBottom )
         {
-            extra_length--;
-            old_bottom = new_bottom;
+            extraLength--;
+            oldBottom = newBottom;
         }
 
         // move to current cursor end of the selection
         cursor.setPosition( cursors_[i].position(), QTextCursor::KeepAnchor );
 
         // insert new text
-        cursor.insertText( inputList[i].rightJustified( extra_length + inputList[i].size() ).leftJustified( extra_length + columns ) );
+        cursor.insertText( inputList[i].rightJustified( extraLength + inputList[i].size() ).leftJustified( extraLength + columns ) );
 
     }
 
@@ -496,7 +496,7 @@ void BoxSelection::_updateRect()
     int yMax( qMax( begin_.y(), end_.y() ) );
 
     QPoint begin( xMin - (xMin%fontWidth_) + 2, yMin - (yMin%fontHeight_) + 2 );
-    QPoint end( xMax - (xMax%fontWidth_) + 1, yMax + fontHeight_ - (yMax%fontHeight_) );
+    QPoint end( xMax - (xMax%fontWidth_) + 1, yMax + fontHeight_ - (yMax%fontHeight_) + 1 );
 
     // decide location of cursor point
     cursor_.setX( begin_.x() < end_.x() ? end.x() : begin.x() );
