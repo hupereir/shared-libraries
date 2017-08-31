@@ -19,6 +19,9 @@
 
 #include "SshConnectionAttributes.h"
 
+#include "Functors.h"
+
+#include <algorithm>
 
 namespace Ssh
 {
@@ -30,10 +33,7 @@ namespace Ssh
     bool ConnectionAttributes::isValid() const
     {
         if( host_.isEmpty() ) return false;
-        for( const auto& tunnel:tunnels_ )
-        { if( !tunnel.isValid() ) return false; }
-
-        return true;
+        else return std::all_of( tunnels_.begin(), tunnels_.end(), Base::Functor::UnaryTrue<TunnelAttributes, &TunnelAttributes::isValid>() );
     }
 
     //_____________________________________________________________

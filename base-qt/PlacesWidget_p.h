@@ -25,6 +25,7 @@
 #include "BrowsedLineEditor.h"
 #include "Counter.h"
 #include "CustomDialog.h"
+#include "Functors.h"
 #include "LineEditor.h"
 
 #include <QAbstractButton>
@@ -235,6 +236,9 @@ namespace Private
         }
 
         //@}
+
+        // needed to find items that have a given flag
+        using HasFlagFTor = Base::Functor::Unary< PlacesWidgetItem, LocalFileInfo::Flags, &PlacesWidgetItem::flags, std::bit_and<LocalFileInfo::Flags>>;
 
         protected:
 

@@ -920,15 +920,18 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
         auto cursors( boxSelection_.cursorList() );
-        for( auto& cursor:cursors )
-        { counts += _replaceInRange( selection, cursor, CursorMode::Move ); }
+        counts = std::accumulate( cursors.begin(), cursors.end(), counts,
+            [this, &selection]( const int& count, QTextCursor cursor )
+            { return count + _replaceInRange( selection, cursor, CursorMode::Move ); } );
 
         boxSelection_.clear();
 
     } else {
+
         Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
         auto cursor = textCursor();
         counts = _replaceInRange( selection, cursor, CursorMode::Expand );
+
     }
 
     Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
@@ -965,9 +968,8 @@ void TextEditor::selectLine( int index )
 {
 
     Debug::Throw() << "TextEditor::selectLine - index: " << index << endl;
-    int localIndex( 0 );
     auto block = document()->begin();
-    for( ;localIndex < index && block.isValid(); block = block.next(), localIndex++ )
+    for( int localIndex = 0;localIndex < index && block.isValid(); block = block.next(), localIndex++ )
     {}
 
     if( block.isValid() )

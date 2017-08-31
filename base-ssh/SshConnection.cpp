@@ -734,7 +734,7 @@ namespace Ssh
                 continue;
             }
 
-            while( QTcpSocket* tcpSocket = tcpServer->nextPendingConnection() )
+            while( auto tcpSocket = tcpServer->nextPendingConnection() )
             {
                 auto tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );

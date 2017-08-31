@@ -166,8 +166,8 @@ void TextEncodingWidget::_loadTextCodecs()
     QList<TextEncodingString> codecStrings;
     for( const auto& codecId:QTextCodec::availableMibs() )
     {
-        QTextCodec* codec( QTextCodec::codecForMib( codecId ) );
-        if( codec ) codecStrings.append( TextEncodingString( codec->name() ) );
+        if( auto codec = QTextCodec::codecForMib( codecId ) )
+        { codecStrings.append( TextEncodingString( codec->name() ) ); }
     }
 
     model_->set( codecStrings );

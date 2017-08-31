@@ -470,9 +470,16 @@ bool File::removeRecursive() const
 
     if( isLink() || !isDirectory() ) return remove();
 
+
+    // filter
+    QDir::Filters filter = QDir::AllEntries|QDir::Hidden|QDir::System;
+    #if QT_VERSION >= 0x040800
+    filter |= QDir::NoDotDot;
+    #endif
+
     // list content of directory
     QDir dir( *this );
-    for( const auto& value:dir.entryList( QDir::AllEntries|QDir::Hidden|QDir::System ) )
+    for( const auto& value:dir.entryList( filter ) )
     {
         // skip "." and ".."
         if( value == "." || value == ".." ) continue;
@@ -485,6 +492,7 @@ bool File::removeRecursive() const
         } else if( !file.removeRecursive() ) return false;
 
     }
+
     dir.cdUp();
     dir.rmdir( *this );
     return true;
@@ -561,7 +569,8 @@ void File::addPath( QString& value, const QString& path, bool useAbsolute )
 void File::expand( QString& value )
 {
     if( value.isEmpty() ) return;
-    value = QFileInfo(value).absoluteFilePath();
+
+    value = QFileInfo( value ).absoluteFilePath();
     removeTrailingSlash( value );
     return;
 }

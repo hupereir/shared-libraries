@@ -93,7 +93,10 @@ KeyModifier::State KeyModifier::state() const
         for( int i = 0; i<count; ++i )
         {
             if( modifiers[i] == keyCodes.get()[0] )
-            { keyMask = 1 << i; }
+            {
+                keyMask = 1 << i;
+                break;
+            }
         }
 
         keyCodes.reset();

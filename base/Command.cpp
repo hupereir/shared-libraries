@@ -54,6 +54,7 @@ QStringList Command::_parse( const QString &in )
 
     // first split using '"' as separator to get "single string" arguments that contain strings
     // split strings that are not enclosed into quotes using white spaces as separator
+    // by construction, the first part is not enclosed into quotes; the second is; the third is not, etc.
     bool split( true );
     for( const auto& line:in.split( "\"", QString::KeepEmptyParts ) )
     {

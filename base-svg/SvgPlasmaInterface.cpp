@@ -28,7 +28,9 @@
 
 #include <QSettings>
 
+#include <algorithm>
 #include <array>
+#include <iterator>
 
 namespace Svg
 {
@@ -94,8 +96,8 @@ namespace Svg
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
-                for( const auto& path:configurationPath )
-                { configurationFiles.append( File( "plasmarc" ).addPath( File( path ) ) ); }
+                std::transform( configurationPath.begin(), configurationPath.end(), std::back_inserter( configurationFiles ),
+                    []( const QString& path ) { return File( "plasmarc" ).addPath( File( path ) ); } );
 
             }
 
@@ -217,15 +219,15 @@ namespace Svg
             process.start( Command( kdeConfigCommand ) << "--path" << "data" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
-                const auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QRegExp(":") );
+                const auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
+                std::transform( configurationPath.begin(), configurationPath.end(), std::back_inserter( themePathList ),
+                    [&theme]( const QString& path ) { return File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( File( path ) ) ); }
+                    );
 
-                #if QT_VERSION >= 0x050000
-                for( const auto& path:configurationPath )
-                { themePathList.append( File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( File( path ) ) ) ); }
-                #else
-                for( const auto& path:configurationPath )
-                { themePathList.append( File( theme ).addPath( File( "desktoptheme/" ).addPath( File( path ) ) ) ); }
-                #endif
+                // also add kde4 path
+                std::transform( configurationPath.begin(), configurationPath.end(), std::back_inserter( themePathList ),
+                    [&theme]( const QString& path ) { return File( theme ).addPath( File( "desktoptheme/" ).addPath( File( path ) ) ); }
+                    );
 
             }
 
@@ -235,8 +237,8 @@ namespace Svg
         {
             // add local path
             static const std::array<QString,2> localPath = {{ ".kde/share/apps/desktoptheme/", ".kde4/share/apps/desktoptheme/" }};
-            for( const auto& pathName:localPath )
-            { themePathList.append( File( theme ).addPath( File( pathName ).addPath( Util::home() ) ) ); }
+            std::transform( localPath.begin(), localPath.end(), std::back_inserter( themePathList ),
+                [&theme]( const QString& pathName ) { return File( theme ).addPath( File( pathName ).addPath( Util::home() ) ); } );
         }
 
         // add local path

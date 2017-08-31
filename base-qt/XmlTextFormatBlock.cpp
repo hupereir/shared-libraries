@@ -40,10 +40,10 @@ namespace Format
     {
 
         // parse attributes
-        QDomNamedNodeMap attributes( element.attributes() );
+        const auto attributes( element.attributes() );
         for( int i=0; i<attributes.count(); i++ )
         {
-            QDomAttr attribute( attributes.item( i ).toAttr() );
+            const auto attribute( attributes.item( i ).toAttr() );
             if( attribute.isNull() ) continue;
             QString name( attribute.name() );
             QString value( attribute.value() );

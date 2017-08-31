@@ -41,10 +41,10 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     Debug::Throw( "XmlFileRecord::XmlFileRecord.\n" );
 
     // load attributes
-    QDomNamedNodeMap attributes( element.attributes() );
+    const auto attributes( element.attributes() );
     for( int i=0; i<attributes.count(); i++ )
     {
-        QDomAttr attribute( attributes.item( i ).toAttr() );
+        const auto attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() || attribute.name().isEmpty() ) continue;
         if( attribute.name() == Base::Xml::File ) setFile( File( attribute.value() ) );
         else if( attribute.name() == Base::Xml::Time ) setTime( TimeStamp(attribute.value().toInt()) );
@@ -54,23 +54,23 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     }
 
     // parse children elements
-    for(QDomNode childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
+    for( auto childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
     {
-        QDomElement childElement = childNode.toElement();
+        const auto childElement = childNode.toElement();
         if( childElement.isNull() ) continue;
 
-        QString tagName( childElement.tagName() );
+        auto tagName( childElement.tagName() );
         if( tagName == Base::Xml::Property )
         {
 
             std::pair< QString, QString > property;
 
             // load attributes
-            QDomNamedNodeMap attributes( childElement.attributes() );
+            const auto attributes( childElement.attributes() );
             for( int i=0; i<attributes.count(); i++ )
             {
 
-                QDomAttr attribute( attributes.item( i ).toAttr() );
+                auto attribute( attributes.item( i ).toAttr() );
                 if( attribute.isNull() || attribute.name().isEmpty() ) continue;
 
                 if( attribute.name() == Base::Xml::Name ) property.first = attribute.value();
@@ -90,7 +90,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
 QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 {
     Debug::Throw( "XmlFileRecord::domElement.\n" );
-    QDomElement out( parent.createElement( Base::Xml::Record ) );
+    auto out( parent.createElement( Base::Xml::Record ) );
     out.setAttribute( Base::Xml::File, file() );
     out.setAttribute( Base::Xml::Time, QString::number( XmlFileRecord::time().unixTime() ) );
     out.setAttribute( Base::Xml::Valid, QString::number( isValid() ) );
@@ -99,7 +99,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 
     for( auto&& iter = properties().begin(); iter != properties().end(); ++iter )
     {
-        QDomElement property( parent.createElement( Base::Xml::Property ) );
+        auto property( parent.createElement( Base::Xml::Property ) );
         property.setAttribute( Base::Xml::Name, PropertyId::get(iter.key()) );
         property.setAttribute( Base::Xml::Value, iter.value() );
         out.appendChild( property );
@@ -114,10 +114,10 @@ XmlFileRecord::List XmlFileRecord::Helper::list( const QDomElement& element )
     Debug::Throw( "XmlFileRecord::List::List.\n" );
 
     List out;
-    for(QDomNode node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
+    for( auto node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
 
-        QDomElement childElement = node.toElement();
+        const auto childElement = node.toElement();
         if( childElement.isNull() ) continue;
 
         // special options
@@ -136,7 +136,7 @@ XmlFileRecord::List XmlFileRecord::Helper::list( const QDomElement& element )
 QDomElement XmlFileRecord::Helper::domElement( const List& list, QDomDocument& document )
 {
     Debug::Throw( "XmlFileRecord::List::domElement.\n" );
-    QDomElement top = document.appendChild( document.createElement( Base::Xml::FileList ) ).toElement();
+    auto top = document.appendChild( document.createElement( Base::Xml::FileList ) ).toElement();
     for( const auto& record:list )
     {
         if( !record.file().isEmpty() )

@@ -104,11 +104,11 @@ bool XmlFileList::_read( const XmlDocument& document )
 {
 
     // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( tagName_ );
+    const auto topNodes = document.elementsByTagName( tagName_ );
     if( topNodes.isEmpty() ) return false;
-    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
+    for( auto node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
-        QDomElement element = node.toElement();
+        const auto element = node.toElement();
         if( element.isNull() ) continue;
 
         // special options
@@ -141,7 +141,7 @@ bool XmlFileList::write( File file )
     }
 
     // get records truncated list
-    FileRecord::List records( _truncatedList( _records() ) );
+    auto records( _truncatedList( _records() ) );
 
     // read old list and compare to current
     XmlFileList oldList;
@@ -149,7 +149,7 @@ bool XmlFileList::write( File file )
     { return true; }
 
     // create main element and insert records
-    QDomElement top = document.createElement( tagName_ );
+    auto top = document.createElement( tagName_ );
     for( const auto& record:records )
     {
 
@@ -181,8 +181,8 @@ bool XmlFileList::_differs( const FileRecord::List& first, const FileRecord::Lis
     {
 
         // records
-        const FileRecord& firstRecord = first[i];
-        const FileRecord& secondRecord = second[i];
+        const auto& firstRecord = first[i];
+        const auto& secondRecord = second[i];
 
         if( !( firstRecord == secondRecord ) ) return true;
         else if( firstRecord.time() != secondRecord.time() ) return true;

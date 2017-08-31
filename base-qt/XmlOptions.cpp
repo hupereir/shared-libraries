@@ -42,7 +42,7 @@ namespace Private
     {
 
         // check special options
-        for( Options::SpecialMap::const_iterator firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
+        for( auto&& firstIter = first.specialOptions().constBegin(); firstIter != first.specialOptions().constEnd(); ++firstIter )
         {
 
             // skip empty special options
@@ -66,7 +66,7 @@ namespace Private
         }
 
         // loop over options and check existence in other map
-        for( Options::Map::const_iterator firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
+        for( auto&& firstIter = first.options().constBegin(); firstIter != first.options().constEnd(); ++firstIter )
         {
 
             // skip non recordable options

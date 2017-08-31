@@ -95,13 +95,13 @@ bool XmlPathHistory::_read( const XmlDocument& document )
 {
 
     // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( tagName_ );
+    const auto topNodes = document.elementsByTagName( tagName_ );
     if( topNodes.isEmpty() ) return false;
 
     FileRecord::List pathList;
-    for(QDomNode node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
+    for( auto node = topNodes.at(0).firstChild(); !node.isNull(); node = node.nextSibling() )
     {
-        QDomElement element = node.toElement();
+        const auto element = node.toElement();
         if( element.isNull() ) continue;
 
         // special options
@@ -155,7 +155,7 @@ bool XmlPathHistory::write( File file )
     { return true; }
 
     // create main element and insert
-    QDomElement top = document.createElement( tagName_ );
+    auto top = document.createElement( tagName_ );
     for( const auto& path:pathList )
     {
 
@@ -235,8 +235,8 @@ bool XmlPathHistory::_differs( const FileRecord::List& first, const FileRecord::
     {
 
         // records
-        const FileRecord& firstRecord = first[i];
-        const FileRecord& secondRecord = second[i];
+        const auto& firstRecord = first[i];
+        const auto& secondRecord = second[i];
 
         if( !( firstRecord == secondRecord ) ) return true;
         else if( firstRecord.time() != secondRecord.time() ) return true;

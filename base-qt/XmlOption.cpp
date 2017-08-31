@@ -43,10 +43,10 @@ XmlOption::XmlOption( const QDomElement& element )
     if( element.nodeName() != Base::Xml::Option ) setName( element.nodeName() );
 
     // parse attributes
-    QDomNamedNodeMap attributes( element.attributes() );
+    const auto attributes( element.attributes() );
     for( int i=0; i<attributes.count(); i++ )
     {
-        QDomAttr attribute( attributes.item( i ).toAttr() );
+        const auto attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
         if( attribute.name() == Base::Xml::Name ) setName( attribute.value() );
         else if( attribute.name() == Base::Xml::Value ) setRaw( attribute.value() );
@@ -54,9 +54,9 @@ XmlOption::XmlOption( const QDomElement& element )
     }
 
     // parse children elements
-    for(QDomNode childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
+    for( auto childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
     {
-        QDomElement childElement = childNode.toElement();
+        const auto childElement = childNode.toElement();
         if( childElement.tagName() == Base::Xml::Name ) setName( childElement.text() );
         else if( childElement.tagName() == Base::Xml::Value ) setRaw( childElement.text() );
         else if( childElement.tagName() == Base::Xml::Flags ) setFlags( (Option::Flags) childElement.text().toInt() );
@@ -70,7 +70,7 @@ QDomElement XmlOption::domElement( QDomDocument& document ) const
 
     Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
 
-    QDomElement out = document.createElement( Base::Xml::Option );
+    auto out = document.createElement( Base::Xml::Option );
     out.setAttribute( Base::Xml::Name, name() );
     out.setAttribute( Base::Xml::Flags, QString::number( flags() ) );
     out.setAttribute( Base::Xml::Value, QString::fromUtf8( raw() ) );

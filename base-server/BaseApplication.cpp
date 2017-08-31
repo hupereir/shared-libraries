@@ -315,9 +315,8 @@ void BaseApplication::_updateFonts()
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
-                for( const auto& path:configurationPath )
-                { configurationFiles.append( File( "kdeglobals" ).addPath( File( path ) ) ); }
-
+                std::transform( configurationPath.begin(), configurationPath.end(), std::back_inserter( configurationFiles ),
+                    []( const QString& path ) { return File( "kdeglobals" ).addPath( File( path ) ); } );
             }
 
         }

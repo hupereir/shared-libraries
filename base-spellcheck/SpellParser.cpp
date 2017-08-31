@@ -90,7 +90,7 @@ namespace SpellCheck
             // build positions list
             for( const auto& conversion:TexString::conversions() )
             {
-                for( int position(0); (position = constText.indexOf( conversion.second, position )) >= 0; position+= conversion.second.size() )
+                for( int position = 0; (position = constText.indexOf( conversion.second, position )) >= 0; position+= conversion.second.size() )
                 { positions.append( Position( position, conversion ) ); }
             }
 
@@ -130,7 +130,6 @@ namespace SpellCheck
                     if( position.position() < wordPosition ) continue;
                     else if( position.position() - wordPosition > word.size() ) break;
                     else word.replace( position.position() - wordPosition, position.conversion().first.size(), position.conversion().second );
-
                 }
 
             }

@@ -42,8 +42,8 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     QList<TextEncodingString> codecStrings;
     for( const auto& codecId:QTextCodec::availableMibs() )
     {
-        auto codec( QTextCodec::codecForMib( codecId ) );
-        if( codec ) codecStrings.append( TextEncodingString( codec->name() ) );
+        if( auto codec = QTextCodec::codecForMib( codecId ) )
+        { codecStrings.append( TextEncodingString( codec->name() ) ); }
     }
 
     // store in menu

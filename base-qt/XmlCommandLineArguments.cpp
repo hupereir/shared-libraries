@@ -31,12 +31,11 @@ XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
     Debug::Throw( "XmlCommandLineArguments::XmlCommandLineArguments" );
 
     // parse children elements
-    for(QDomNode child_node = element.firstChild(); !child_node.isNull(); child_node = child_node.nextSibling() )
+    for( auto childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
     {
-        QDomElement child_element = child_node.toElement();
-        if( child_element.isNull() ) continue;
-
-        if( child_element.tagName() == Xml::Argument ) { append( child_element.text() ); }
+        const auto childElement = childNode.toElement();
+        if( childElement.isNull() ) continue;
+        if( childElement.tagName() == Xml::Argument ) { append( childElement.text() ); }
 
     }
 
@@ -45,7 +44,7 @@ XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
 //_______________________________________________________
 QDomElement XmlCommandLineArguments::domElement( const QString& name, QDomDocument& parent ) const
 {
-    QDomElement out( parent.createElement( name ) );
+    auto out( parent.createElement( name ) );
     for( const auto& argument:get() )
     {
         out.

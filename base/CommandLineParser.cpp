@@ -315,7 +315,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     // also find true option in group lists and set flag
                     for( auto&& groupIter = groups_.begin(); groupIter != groups_.end(); ++groupIter )
                     {
-                        Group::OptionMap::iterator iter( _findTag( groupIter.value().options_, tagName ) );
+                        auto iter( _findTag( groupIter.value().options_, tagName ) );
                         if( iter != groupIter.value().options_.end() )
                         {
                             iter.value().set_ = true;

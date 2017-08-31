@@ -73,8 +73,13 @@ namespace Svg
         {
 
             SvgId::List svgIdList;
+
+            #if QT_VERSION >= 0x050600
+            std::copy( cache_.keyBegin(), cache_.keyEnd(), std::back_inserter( svgIdList ) );
+            #else
             for( auto&& iter = cache_.begin(); iter != cache_.end(); ++iter )
-            { svgIdList.append( iter.key() ); }
+            { svgIdList.push_back( iter.key() ); }
+            #endif
 
             cache_.clear();
             preload( svgIdList );

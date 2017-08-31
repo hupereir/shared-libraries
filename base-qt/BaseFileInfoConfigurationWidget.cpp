@@ -51,7 +51,7 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
 void BaseFileInfoConfigurationWidget::read( const Options& options )
 {
     const int mask( options.contains( optionName() ) ? options.get<int>( optionName() ) : BaseFileInfoToolTipWidget::Default );
-    for( CheckBoxMap::const_iterator iter = checkboxes_.constBegin(); iter != checkboxes_.constEnd(); ++iter )
+    for( auto&& iter = checkboxes_.constBegin(); iter != checkboxes_.constEnd(); ++iter )
     {
         iter.value()->setChecked( mask&iter.key() );
         if( !_connected() )
@@ -66,7 +66,7 @@ void BaseFileInfoConfigurationWidget::read( const Options& options )
 void BaseFileInfoConfigurationWidget::write( Options& options ) const
 {
     int mask(0);
-    for( CheckBoxMap::const_iterator iter = checkboxes_.constBegin(); iter != checkboxes_.constEnd(); ++iter )
+    for( auto&& iter = checkboxes_.constBegin(); iter != checkboxes_.constEnd(); ++iter )
     { if( iter.value()->isChecked() ) mask |= iter.key(); }
 
     options.set<int>( optionName(), mask );

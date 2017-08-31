@@ -896,14 +896,11 @@ void PathEditor::_updateButtonVisibility()
     bool hasHomePath( false );
     if( truncate_ && !home_.isEmpty() )
     {
-        for( const auto& item:items_ )
+        auto iter = std::find_if( items_.begin(), items_.end(), [this]( Private::PathEditorItem* item ) { return item->path() == home_; } );
+        if( iter != items_.end() )
         {
-            if( item->path() == home_ )
-            {
-                hasHomePath = true;
-                hasHiddenButtons = (item != items_.front());
-                break;
-            }
+            hasHomePath = true;
+            hasHiddenButtons = (iter != items_.begin() );
         }
 
     }

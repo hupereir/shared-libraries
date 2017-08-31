@@ -89,6 +89,6 @@ File::List FileDialog::getFiles()
     if( !(files.empty() || files.front().isEmpty() ) ) _workingDirectory() = File( QFileInfo( files.front() ).path() );
 
     File::List out;
-    for( auto&& file:files ) { out.append( File( file ) ); }
+    std::transform( files.begin(), files.end(), std::back_inserter( out ), []( const QString& file ) { return File( file ); } );
     return out;
 }

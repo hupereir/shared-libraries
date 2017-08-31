@@ -22,6 +22,7 @@
 #include "BaseIconNames.h"
 #include "Color.h"
 #include "CompositeEngine.h"
+#include "CppUtil.h"
 #include "IconEngine.h"
 #include "Singleton.h"
 #include "WinUtil.h"
@@ -327,7 +328,8 @@ namespace Transparency
         blurRegion_ = region;
         auto&& rects = region.rects();
 
-        QVector<uint32_t> data;
+        using Vector = QVector<int32_t>;
+        Vector data;
         for( const auto& r:rects )
         { data << r.x() << r.y() << r.width() << r.height(); }
 

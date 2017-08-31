@@ -80,7 +80,7 @@ void ColumnSortingMenu::_updateActions()
         if( columnName.isNull() || columnName.isEmpty() )
         { columnName = QString( tr( "Column %1" ) ).arg( index+1 ); }
 
-        QAction* action = new QAction( columnName, this );
+        auto action = new QAction( columnName, this );
         action->setCheckable( true );
         action->setChecked( index == header_->sortIndicatorSection() );
 
@@ -105,7 +105,7 @@ void ColumnSortingMenu::_sort( QAction* action )
     Debug::Throw( "ColumnSortingMenu::_sort.\n" );
 
     // retrieve index
-    ActionMap::const_iterator iter = actions_.find( action );
+    auto iter = actions_.find( action );
     if( iter == actions_.end() ) return;
 
     // retrieve parent tree_view

@@ -22,31 +22,38 @@
 #include "File.h"
 
 #include <QDir>
-#include <QProcess>
 #include <QHostInfo>
+#include <QRegExp>
+
+#if QT_VERSION >= 0x040600
+#include <QProcessEnvironment>
+#else
+#include <QProcess>
+#endif
 
 #if QT_VERSION >= 0x050000
 #include <QStandardPaths>
 #endif
 
+#include <algorithm>
 #include <unistd.h>
 
 //______________________________________________________________________
-QString Util::env( const QString& val, const QString& defaultValue )
+QString Util::env( const QString& key, const QString& defaultValue )
 {
 
-    for( const auto& entry:QProcess::systemEnvironment() )
-    {
+    #if QT_VERSION >= 0x040600
+    return QProcessEnvironment::systemEnvironment().value( key, defaultValue );
+    #else
+    static const QRegExp regExp( "(\\S+)=(\\S+)" );
+    const auto entries( QProcess::systemEnvironment() );
+    const auto iter = std::find_if( entries.begin(), entries.end(),
+        [&key]( const QString& entry )
+        { return entry.indexOf( regExp ) >= 0 && regExp.cap(1) == key; }
+        );
 
-        // TODO: should use regular expression
-        int position( entry.indexOf( "=" ) );
-        if( position <= 0 ) continue;
-
-        auto var( entry.left( position ) );
-        if( var == QString( val ) ) return entry.mid( position+1 );
-    }
-
-    return defaultValue;
+    return iter == entries.end() ? defaultValue:regExp.cap(2);
+    #endif
 
 }
 

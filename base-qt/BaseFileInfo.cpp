@@ -40,11 +40,11 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
     Debug::Throw( "BaseFileInfo::BaseFileInfo (dom).\n" );
 
     // parse attributes
-    QDomNamedNodeMap attributes( element.attributes() );
+    const auto attributes( element.attributes() );
     for( int i=0; i<attributes.count(); i++ )
     {
 
-        QDomAttr attribute( attributes.item( i ).toAttr() );
+        const auto attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
         if( attribute.name() == Xml::File ) setFile( File( attribute.value() ) );
         else if( attribute.name() == Xml::Alias || attribute.name() == Xml::Name ) setAlias( attribute.value() );
@@ -64,7 +64,7 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 {
 
     Debug::Throw( "BaseFileInfo::DomElement.\n" );
-    QDomElement out( document.createElement( Xml::FileInfo ) );
+    auto out( document.createElement( Xml::FileInfo ) );
     out.setAttribute( Xml::File, file() );
     out.setAttribute( Xml::Type, QString::number( type() ) );
     out.setAttribute( Xml::Size, QString::number( size() ) );
@@ -101,7 +101,6 @@ QString BaseFileInfo::permissionsString() const
 //________________________________________________________________
 void BaseFileInfo::setPermissions( const QString& value )
 {
-    Q_ASSERT( value.size() == 10 );
 
     // first bit
     if( value[0] == 'l' ) setIsLink();

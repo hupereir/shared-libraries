@@ -37,6 +37,8 @@
 #include <QPaintEvent>
 #include <QStyle>
 
+#include <numeric>
+
 //____________________________________________________________________
 IconView::IconView( QWidget* parent ):
     QAbstractItemView( parent ),
@@ -273,7 +275,7 @@ void IconView::doItemsLayout()
     {
 
         // index
-        const QModelIndex index( model_->index( row, 0 ) );
+        const auto index( model_->index( row, 0 ) );
 
         // make sure row is in map
         auto iter( items_.lowerBound( row ) );
@@ -331,7 +333,7 @@ void IconView::restoreSelectedIndexes()
     if( selectionModel() )
     {
 
-        const QModelIndexList selection( model_->selectedIndexes() );
+        const auto selection( model_->selectedIndexes() );
         selectionModel()->clear();
         for( const auto& index:selection )
         { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
@@ -514,14 +516,10 @@ QRegion IconView::visualRegionForSelection( const QItemSelection& selection ) co
 
     if( selection.empty() ) return QRegion();
 
-    QRegion region;
-    for( const auto& range:selection )
-    {
-        for( const auto& index:range.indexes() )
-        { region += visualRect( index ); }
-    }
-
-    return region;
+    auto indexes( selection.indexes() );
+    return std::accumulate( indexes.begin(), indexes.end(), QRegion(),
+        [this]( const QRegion& region, const QModelIndex& index )
+        { return region + visualRect( index ); } );
 
 }
 
@@ -947,9 +945,9 @@ void IconView::_layoutItems()
         totalHeight += rowHeight;
 
         // compute total width and compare to max
-        totalWidth = 0;
-        for( const auto& width:columnSizes ) totalWidth += width;
-        totalWidth += (columnSizes.size()-1)*spacing_;
+        totalWidth =
+            std::accumulate( columnSizes.begin(), columnSizes.end(), 0 ) +
+            (columnSizes.size()-1)*spacing_;
 
         if( totalWidth <= maxWidth ) break;
     }

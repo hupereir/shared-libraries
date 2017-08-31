@@ -72,15 +72,9 @@ void ErrorHandler::_throw( QtMsgType type, const char* message )
     QString localMessage( message );
 
     // check if message is to be disabled
-    bool disabled( false );
-    for( const auto& message:get()._disabledMessages() )
-    {
-        if( localMessage.indexOf( message ) >= 0 )
-        {
-            disabled = true;
-            break;
-        }
-    }
+    bool disabled = std::any_of( get().disabledMessages_.begin(), get().disabledMessages_.end(),
+        [&localMessage]( const QString& message )
+        { return localMessage.indexOf( message ) >= 0; } );
 
     // check message type
     QTextStream what( stderr );

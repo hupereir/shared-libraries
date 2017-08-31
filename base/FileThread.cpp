@@ -22,6 +22,8 @@
 
 #include <QMetaType>
 
+#include <numeric>
+
 //______________________________________________________
 FileThread::FileThread( QObject* parent ):
     QThread( parent ),
@@ -137,9 +139,9 @@ void FileThread::_listFiles( const File& parent )
 bool FileThread::_updateTotalSize()
 {
 
-    qint64 size(0);
-    for( const auto& file:files_ )
-    { if( !file.isLink() ) size += file.fileSize(); }
+    qint64 size = std::accumulate( files_.begin(), files_.end(), 0,
+        []( const qint64& size, const File& file )
+        { return file.isLink() ? size : (size + file.fileSize()); } );
 
     if( size >= 0 )
     {
@@ -154,10 +156,7 @@ bool FileThread::_updateTotalSize()
 //______________________________________________________
 void FileThread::_computeTotalSize()
 {
-
-    totalSize_ = 0;
-    for( const auto& file:filesRecursive_ )
-    {  if( !file.isLink() ) totalSize_ += file.fileSize(); }
-    return;
-
+    totalSize_ = std::accumulate( files_.begin(), files_.end(), 0,
+        []( const qint64& size, const File& file )
+        { return file.isLink() ? size : (size + file.fileSize()); } );
 }

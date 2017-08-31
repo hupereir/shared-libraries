@@ -77,11 +77,7 @@ void ContextMenu::_showActions()
 
         for( const auto& action:hiddenActions_ )
         {
-            if( action )
-            {
-                Debug::Throw() << "ContextMenu::_hideActions - showing: " << action.data()->text() << endl;
-                action.data()->setVisible( true );
-            }
+            if( action ) action.data()->setVisible( true );
 
         }
 

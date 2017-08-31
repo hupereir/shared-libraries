@@ -223,8 +223,8 @@ void OptionListBox::read( const Options& options )
 
     // add to model.
     OptionModel::List optionList;
-    for( const auto& option:values )
-    { optionList.append( Options::Pair( optionName(), option ) ); }
+    std::transform( values.begin(), values.end(), std::back_inserter( optionList ),
+        [this]( const Option& option ) { return Options::Pair( optionName(), option ); } );
 
     model_->set( optionList );
     list_->resizeColumns();

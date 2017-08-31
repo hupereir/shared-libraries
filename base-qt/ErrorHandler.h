@@ -54,10 +54,6 @@ class ErrorHandler: private Base::NonCopyable<ErrorHandler>
 
     using MessageList = QStringList;
 
-    //* disabled message
-    const MessageList& _disabledMessages() const
-    { return disabledMessages_; }
-
     //* check/display Qt error messages
     #if QT_VERSION >= 0x050000
     static void _throw( QtMsgType, const QMessageLogContext&, const QString& );

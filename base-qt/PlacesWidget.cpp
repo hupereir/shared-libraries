@@ -826,12 +826,9 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
 
     }
 
-    bool hasHiddenItems( false );
-    for( const auto& item:items_ )
-    {
-        if( item->hasFlag( Private::LocalFileInfo::Hidden ) )
-        { hasHiddenItems = true; break; }
-    }
+    bool hasHiddenItems = std::any_of(
+        items_.begin(), items_.end(),
+        Private::PlacesWidgetItem::HasFlagFTor( Private::LocalFileInfo::Hidden) );
 
     if( hasHiddenItems ) menu.addAction( showAllEntriesAction_ );
     else showAllEntriesAction_->setChecked( false );
@@ -1184,14 +1181,10 @@ void PlacesWidget::dropEvent( QDropEvent* event )
     {
 
         // internal dragging. Try re-order items
-        Private::PlacesWidgetItem* dragItem( nullptr );
-        for( const auto& item:items_ )
-        {
-            if( item->dragMonitor().isDragInProgress() )
-            { dragItem = item; break; }
+        auto iter = std::find_if( items_.begin(), items_.end(), []( Private::PlacesWidgetItem* item ) { return item->dragMonitor().isDragInProgress(); } );
+        if( iter == items_.end() ) return;
 
-        }
-        if( !dragItem ) return;
+        auto dragItem = *iter;
         int sourceIndex = items_.indexOf( dragItem );
 
         // find insertion index based on target
@@ -1307,9 +1300,8 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
         QDomDocument document;
         if( !document.setContent( mimeData->data( format ), false ) ) return fileInfoList;
 
-        QDomElement docElement = document.documentElement();
-        QDomNode node = docElement.firstChild();
-        for(QDomNode node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
+        const auto docElement = document.documentElement();
+        for( auto node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
         {
             QDomElement element = node.toElement();
             if( element.isNull() ) continue;

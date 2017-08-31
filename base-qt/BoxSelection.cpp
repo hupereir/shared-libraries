@@ -24,6 +24,8 @@
 #include <QApplication>
 #include <QMimeData>
 
+#include <numeric>
+
 static const int debugLevel = 1;
 
 //________________________________________________________________________
@@ -230,9 +232,8 @@ bool BoxSelection::fromString( QString input )
     auto inputList( input.split( "\n" ) );
 
     // retrieve maximum length
-    int columns(0);
-    for( int i=0; i < inputList.size(); i++ )
-    { columns = qMax( columns, inputList[i].length() ); }
+    int columns = std::accumulate( inputList.begin(), inputList.end(),  0,
+        []( const int& columns, const QString& input ) { return qMax( columns, input.size() ); } );
 
     // if there are more lines in current box than in the selection, fill with blank lines
     for( int i = inputList.size(); i < cursors_.size(); i++ )

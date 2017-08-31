@@ -18,6 +18,8 @@
 *******************************************************************************/
 
 #include "SystemEnvironmentDialog.h"
+
+#include "CppUtil.h"
 #include "TreeView.h"
 
 #if QT_VERSION >= 0x040800
@@ -56,14 +58,15 @@ CustomDialog( parent, CloseButton )
 
     #if QT_VERSION >= 0x040800
     auto environment = QProcessEnvironment::systemEnvironment();
-    for( const auto& key:environment.keys() )
-    { options.append( { key, Option(environment.value( key )) } ); }
+    auto keys = environment.keys();
+    std::transform( keys.begin(), keys.end(), std::back_inserter(options),
+        [&environment]( const QString& key ) { return OptionModel::ValueType( key, Option(environment.value( key ))); } );
     #else
+    static QRegExp regExp( "(\\S+)=(\\S+)" );
     for( const auto& line:QProcess::systemEnvironment())
     {
-        auto parsed( line.split( "=" ) );
-        if( parsed.empty() ) continue;
-        options.append( { parsed[0], parsed.size() > 1 ? Option( parsed[1] ): Option() } );
+        if( line.indexOf( regExp ) >= 0 )
+        { options.append( { regExp.cap(1), Option( regExp.cap(2) ) } ); }
     }
     #endif
 

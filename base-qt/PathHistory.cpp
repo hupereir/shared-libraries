@@ -21,6 +21,8 @@
 
 #include "Debug.h"
 
+#include <algorithm>
+
 //__________________________________________________________________
 PathHistory::PathHistory( QObject* parent ):
     QObject( parent ),
@@ -31,9 +33,7 @@ PathHistory::PathHistory( QObject* parent ):
 FileRecord::List PathHistory::previousPathList() const
 {
     FileRecord::List out;
-    for( int index = 0; index < index_; ++index )
-    { out.append( pathList_[index] ); }
-
+    std::copy( pathList_.begin(), pathList_.begin()+index_, std::back_inserter( out ) );
     return out;
 }
 
@@ -41,8 +41,7 @@ FileRecord::List PathHistory::previousPathList() const
 FileRecord::List PathHistory::nextPathList() const
 {
     FileRecord::List out;
-    for( int index = index_+1; index < pathList_.size(); ++index )
-    { out.append( pathList_[index] ); }
+    std::copy( pathList_.begin() + index_ +1, pathList_.end(), std::back_inserter( out ) );
 
     return out;
 }

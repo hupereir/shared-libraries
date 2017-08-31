@@ -37,6 +37,8 @@
 #include <QScrollBar>
 #include <QUrl>
 
+#include <numeric>
+
 //____________________________________________________________________________
 OpenWithDialog::OpenWithDialog( QWidget* parent ):
     CustomDialog( parent, OkButton|CancelButton|Separator )
@@ -118,8 +120,7 @@ void OpenWithDialog::realizeWidget()
     if( files_.size() > 1 )
     {
         BaseFileInfo::List fileInfoList;
-        for( const auto& file:files_ )
-        { fileInfoList.append( BaseFileInfo( file ) ); }
+        std::transform( files_.begin(), files_.end(), std::back_inserter( fileInfoList ), []( const File& file ){ return BaseFileInfo( file ); } );
 
         // list of multiple files
         using FileInfoModel = BaseFileInfoModel<BaseFileInfo>;
@@ -139,9 +140,9 @@ void OpenWithDialog::realizeWidget()
         treeView->header()->setSortIndicator( FileInfoModel::Filename, Qt::AscendingOrder );
 
         // resize list to accomodate longest item
-        int maxWidth( 0 );
-        for( const auto& fileInfo:fileInfoList )
-        { maxWidth = qMax( maxWidth, treeView->fontMetrics().width( fileInfo.file() ) ); }
+        int maxWidth = std::accumulate( fileInfoList.begin(), fileInfoList.end(), 0,
+            [&treeView]( const int& value, const BaseFileInfo& fileInfo )
+            { return qMax( value, treeView->fontMetrics().width( fileInfo.file() ) ); } );
 
         treeView->verticalScrollBar()->adjustSize();
         treeView->setMinimumSize( QSize(

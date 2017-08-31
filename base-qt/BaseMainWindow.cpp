@@ -212,7 +212,7 @@ ToolBarMenu* BaseMainWindow::toolBarMenu( QWidget* parent )
     const auto actions( _toolBarsActions( menu ) );
     if( actions.size() > 1 )
     {
-        QMenu* toolbarsMenu( menu->addMenu( tr( "Toolbars" ) ) );
+        auto toolbarsMenu( menu->addMenu( tr( "Toolbars" ) ) );
         for( const auto& action:actions )
         { toolbarsMenu->addAction( action ); }
     }

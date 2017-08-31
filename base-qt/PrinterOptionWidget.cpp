@@ -110,11 +110,11 @@ void PrinterOptionWidget::setHelper( BasePrintHelper* helper )
 
     // update orientation
     for( auto&& iter = orientationButtons_.constBegin(); iter != orientationButtons_.constEnd(); ++iter )
-    { if( iter.value() == helper_->orientation() ) iter.key()->setChecked( true ); }
+    { if( iter.value() == helper_->orientation() ) { iter.key()->setChecked( true ); break; } }
 
     // update page mode
     for( auto&& iter = pageModeButtons_.constBegin(); iter != pageModeButtons_.constEnd(); ++iter )
-    { if( iter.value() == helper_->pageMode() ) iter.key()->setChecked( true ); }
+    { if( iter.value() == helper_->pageMode() ) { iter.key()->setChecked( true ); break; } }
 
 }
 

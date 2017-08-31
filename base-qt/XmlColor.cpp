@@ -39,10 +39,10 @@ XmlColor::XmlColor( const QDomElement& element )
 {
 
     // parse attributes
-    QDomNamedNodeMap attributes( element.attributes() );
+    const auto attributes( element.attributes() );
     for( int i=0; i<attributes.count(); i++ )
     {
-        QDomAttr attribute( attributes.item( i ).toAttr() );
+        const auto attribute( attributes.item( i ).toAttr() );
         if( attribute.isNull() ) continue;
         if( attribute.name() == Base::Xml::Name ) get().setNamedColor( attribute.value() );
         else if( attribute.name() == Base::Xml::Red ) get().setRed( attribute.value().toInt() );
@@ -57,7 +57,7 @@ XmlColor::XmlColor( const QDomElement& element )
 QDomElement XmlColor::domElement( QDomDocument& document ) const
 {
 
-    QDomElement element = document.createElement( Base::Xml::Color );
+    auto element = document.createElement( Base::Xml::Color );
     element.setAttribute( Base::Xml::Red, QString::number( get().red() ) );
     element.setAttribute( Base::Xml::Green, QString::number( get().green() ) );
     element.setAttribute( Base::Xml::Blue, QString::number( get().blue() ) );
