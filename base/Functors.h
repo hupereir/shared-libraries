@@ -90,8 +90,17 @@ namespace Base
                 class U,
                 typename = typename std::enable_if<std::is_base_of<T, typename std::decay<U>::type>::value>::type
              >
-            explicit Unary( U* object ):
-            prediction_( (object->*accessor)() )
+            explicit Unary( U* pointer ):
+            prediction_( (pointer->*accessor)() )
+            {}
+
+            //* constructor
+            template<
+                class U,
+                typename = typename std::enable_if<std::is_base_of<T, typename std::decay<U>::type>::value>::type
+             >
+            explicit Unary( const std::shared_ptr<U>& pointer ):
+            prediction_( (pointer.get()->*accessor)() )
             {}
 
             //* predicate
@@ -172,6 +181,12 @@ namespace Base
             template<class U>
                 inline bool operator() ( U* lhs, U* rhs ) const
             { return c_((lhs->*accessor)(), (rhs->*accessor)()); }
+
+
+            //* predicate
+            template<class U>
+                inline bool operator() ( const std::shared_ptr<U>& lhs, const std::shared_ptr<U>& rhs ) const
+            { return c_((lhs.get()->*accessor)(), (rhs.get()->*accessor)()); }
 
             private:
 
