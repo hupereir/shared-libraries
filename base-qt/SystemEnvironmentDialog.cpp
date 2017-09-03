@@ -22,11 +22,7 @@
 #include "CppUtil.h"
 #include "TreeView.h"
 
-#if QT_VERSION >= 0x040800
 #include <QProcessEnvironment>
-#else
-#include <QProcess>
-#endif
 
 #include <QPushButton>
 #include <QLayout>
@@ -56,19 +52,10 @@ CustomDialog( parent, CloseButton )
     // retrieve environment variables from QProcess
     OptionModel::List options;
 
-    #if QT_VERSION >= 0x040800
     auto environment = QProcessEnvironment::systemEnvironment();
     auto keys = environment.keys();
     std::transform( keys.begin(), keys.end(), std::back_inserter(options),
         [&environment]( const QString& key ) { return OptionModel::ValueType( key, Option(environment.value( key ))); } );
-    #else
-    static QRegExp regExp( "(\\S+)=(\\S+)" );
-    for( const auto& line:QProcess::systemEnvironment())
-    {
-        if( line.indexOf( regExp ) >= 0 )
-        { options.append( { regExp.cap(1), Option( regExp.cap(2) ) } ); }
-    }
-    #endif
 
     model_.set( options );
     list->resizeColumns();

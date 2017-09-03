@@ -25,11 +25,7 @@
 #include <QHostInfo>
 #include <QRegExp>
 
-#if QT_VERSION >= 0x040600
 #include <QProcessEnvironment>
-#else
-#include <QProcess>
-#endif
 
 #if QT_VERSION >= 0x050000
 #include <QStandardPaths>
@@ -40,22 +36,7 @@
 
 //______________________________________________________________________
 QString Util::env( const QString& key, const QString& defaultValue )
-{
-
-    #if QT_VERSION >= 0x040600
-    return QProcessEnvironment::systemEnvironment().value( key, defaultValue );
-    #else
-    static const QRegExp regExp( "(\\S+)=(\\S+)" );
-    const auto entries( QProcess::systemEnvironment() );
-    const auto iter = std::find_if( entries.begin(), entries.end(),
-        [&key]( const QString& entry )
-        { return entry.indexOf( regExp ) >= 0 && regExp.cap(1) == key; }
-        );
-
-    return iter == entries.end() ? defaultValue:regExp.cap(2);
-    #endif
-
-}
+{ return QProcessEnvironment::systemEnvironment().value( key, defaultValue ); }
 
 //______________________________________________________________________
 QString Util::user()
