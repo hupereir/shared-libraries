@@ -43,8 +43,18 @@ class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
     //* destructor
     ~CustomProcess() override;
 
+    //* smart pointer deleter
+    class Deleter
+    {
+        public:
+
+        //* delete
+        template<class T>
+            void operator() (T* object ) { object->deleteLater(); }
+    };
+
     //* smart pointer
-    using Pointer = std::unique_ptr<CustomProcess>;
+    using Pointer = std::unique_ptr<CustomProcess, Deleter>;
 
     /**
     \brief
