@@ -26,6 +26,8 @@
 
 #include <QList>
 
+#include <algorithm>
+
 //* generic class to store structure in a model
 template<class T> class TreeModel : public ItemModel
 {
@@ -307,6 +309,10 @@ template<class T> class TreeModel : public ItemModel
         {
 
             item->set( second );
+
+            // update selection
+            std::replace( selectedItems_.begin(), selectedItems_.end(), first, second );
+
             return true;
 
         } else return false;
