@@ -59,7 +59,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* option name
     bool hasOptionName() const
-    { return !maskOptionName().isEmpty(); }
+    { return !maskOptionName_.isEmpty(); }
 
     //* option name
     const QString& maskOptionName() const

@@ -225,7 +225,7 @@ bool TreeView::setOptionName( const QString& value )
     {
         maskOptionName_ = tmp;
         maskChanged = true;
-        if( !XmlOptions::get().contains( maskOptionName() ) ) saveMask();
+        if( !XmlOptions::get().contains( maskOptionName_ ) ) saveMask();
         else updateMask();
 
     }
@@ -256,7 +256,7 @@ bool TreeView::setOptionName( const QString& value )
     {
         showHeaderOptionName_ = tmp;
         showHeaderChanged = true;
-        if( !XmlOptions::get().contains( showHeaderOptionName() ) )
+        if( !XmlOptions::get().contains( showHeaderOptionName_ ) )
         {
 
             XmlOptions::get().set<bool>( showHeaderOptionName_, showHeaderAction().isChecked() );
@@ -268,7 +268,7 @@ bool TreeView::setOptionName( const QString& value )
     // reload sorting
     if( sortChanged )
     {
-        if( !( XmlOptions::get().contains( sortOrderOptionName() ) && XmlOptions::get().contains( sortColumnOptionName() ) ) ) saveSortOrder();
+        if( !( XmlOptions::get().contains( sortOrderOptionName_ ) && XmlOptions::get().contains( sortColumnOptionName_ ) ) ) saveSortOrder();
         else updateSortOrder();
     }
 
@@ -350,10 +350,10 @@ void TreeView::updateMask()
     // check model and option availability
     if( !model() ) return;
     if( !hasOptionName() ) return;
-    if( !XmlOptions::get().contains( maskOptionName() ) ) return;
+    if( !XmlOptions::get().contains( maskOptionName_ ) ) return;
 
     // assign mask from options
-    setMask( XmlOptions::get().get<int>( maskOptionName() ) );
+    setMask( XmlOptions::get().get<int>( maskOptionName_ ) );
     resizeColumns();
 
 }
@@ -364,7 +364,7 @@ void TreeView::saveMask()
 
     Debug::Throw( "TreeView::saveMask.\n" );
     if( !hasOptionName() ) return;
-    XmlOptions::get().set<int>( maskOptionName(), mask() );
+    XmlOptions::get().set<int>( maskOptionName_, mask() );
 
 }
 
@@ -374,14 +374,14 @@ void TreeView::updateSortOrder()
 
     Debug::Throw( "TreeView::updateSortOrder.\n" );
     if( !hasOptionName() ) return;
-    if( XmlOptions::get().contains( sortColumnOptionName() ) && XmlOptions::get().contains( sortColumnOptionName() ) )
+    if( XmlOptions::get().contains( sortColumnOptionName_ ) && XmlOptions::get().contains( sortColumnOptionName_ ) )
     {
         const bool changed(
-            header()->sortIndicatorSection() != XmlOptions::get().get<int>( sortColumnOptionName() ) ||
-            header()->sortIndicatorOrder() != XmlOptions::get().get<int>( sortOrderOptionName() ) );
+            header()->sortIndicatorSection() != XmlOptions::get().get<int>( sortColumnOptionName_ ) ||
+            header()->sortIndicatorOrder() != XmlOptions::get().get<int>( sortOrderOptionName_ ) );
 
         if( changed )
-        { sortByColumn( XmlOptions::get().get<int>( sortColumnOptionName() ), (Qt::SortOrder)(XmlOptions::get().get<int>( sortOrderOptionName() ) ) ); }
+        { sortByColumn( XmlOptions::get().get<int>( sortColumnOptionName_ ), (Qt::SortOrder)(XmlOptions::get().get<int>( sortOrderOptionName_ ) ) ); }
 
     }
 
@@ -395,8 +395,8 @@ void TreeView::saveSortOrder()
 
     // save option
     if( !hasOptionName() ) return;
-    XmlOptions::get().set<int>( sortOrderOptionName(), header()->sortIndicatorOrder() );
-    XmlOptions::get().set<int>( sortColumnOptionName(), header()->sortIndicatorSection() );
+    XmlOptions::get().set<int>( sortOrderOptionName_, header()->sortIndicatorOrder() );
+    XmlOptions::get().set<int>( sortColumnOptionName_, header()->sortIndicatorSection() );
 
 }
 
