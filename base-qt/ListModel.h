@@ -245,14 +245,9 @@ class ListModel : public ItemModel
             values_[index.row()] = value;
 
             // update selection
-            if( selectedItems_.contains( oldValue ) )
-            {
-                selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(),
-                    [&oldValue](const ValueType& value ) { return EqualTo()( value, oldValue ); } ),
-                    selectedItems_.end() );
-
-                selectedItems_.append( value );
-            }
+            std::replace_if( selectedItems_.begin(), selectedItems_.end(),
+                [&oldValue](const ValueType& value) { return EqualTo()( value, oldValue ); },
+                value );
 
             emit layoutChanged();
         }
