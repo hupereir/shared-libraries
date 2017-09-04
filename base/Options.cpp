@@ -47,7 +47,7 @@ void Options::installDefaultOptions()
     add( "PIXMAP_PATH", Option( ":/icons/128x128", Option::Flag::Recordable ) );
 
     set<int>( "DEBUG_LEVEL", 0 );
-    set<bool>( "SORT_FILES_BY_DATE", false );
+    set<bool>( "SORT_FILES_BY_DATE", true );
 
     // style
 
