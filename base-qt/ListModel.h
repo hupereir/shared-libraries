@@ -23,6 +23,7 @@
 #include "ItemModel.h"
 
 #include <QList>
+
 #include <algorithm>
 
 //* Job model. Stores job information for display in lists
