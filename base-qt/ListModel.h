@@ -238,8 +238,13 @@ class ListModel : public ItemModel
 
             emit layoutAboutToBeChanged();
 
-            const ValueType& oldValue( values_[index.row()] );
+            // store old value
+            ValueType oldValue( values_[index.row()] );
+
+            // update
             values_[index.row()] = value;
+
+            // update selection
             if( selectedItems_.contains( oldValue ) )
             {
                 selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(),
