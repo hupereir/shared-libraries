@@ -56,7 +56,7 @@ void FileThread::run()
             if( !file_.copy( destination_ ) )
             {
                 error_ = true;
-                errorString_ = QString( tr("Failed to copy %1 to %2") ).arg( file_ ).arg( destination_ );
+                errorString_ = tr("Failed to copy %1 to %2").arg( file_ ).arg( destination_ );
             }
             break;
         }

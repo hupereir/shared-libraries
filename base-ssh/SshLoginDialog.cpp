@@ -74,7 +74,7 @@ namespace Ssh
     void LoginDialog::setAttributes( const ConnectionAttributes& attributes )
     {
         attributes_ = attributes;
-        if( !attributes.host().isEmpty() ) setWindowTitle( QString( tr( "SSH login into %1" ) ).arg( attributes.host() ) );
+        if( !attributes.host().isEmpty() ) setWindowTitle( tr( "SSH login into %1" ).arg( attributes.host() ) );
         userNameEditor_->setText( attributes.userName() );
         passwordEditor_->setText( attributes.password() );
         rememberPaswordCheckBox_->setChecked( attributes.rememberPassword() );

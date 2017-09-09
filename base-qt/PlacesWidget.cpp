@@ -440,7 +440,7 @@ namespace Private
         {
 
             // type
-            if( fileInfo.isRemote() ) pathItem_->setText( QString( tr( "%1 (remote)" ) ).arg( fileInfo.file() ) );
+            if( fileInfo.isRemote() ) pathItem_->setText( tr( "%1 (remote)" ).arg( fileInfo.file() ) );
             else pathItem_->setText( fileInfo.file() );
 
             // last modified
@@ -806,20 +806,20 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
         menu.addSeparator();
         if( !focusItem_->isSeparator() && !focusItem_->hasFlag( Private::LocalFileInfo::ReadOnly ) )
         {
-            editItemAction_->setText( QString( tr( "Edit '%1'" ) ).arg( focusItem_->text() ) );
+            editItemAction_->setText( tr( "Edit '%1'" ).arg( focusItem_->text() ) );
             menu.addAction( editItemAction_ );
         }
 
         if( !focusItem_->hasFlag( Private::LocalFileInfo::ReadOnly ) )
         {
             if( focusItem_->isSeparator() ) removeItemAction_->setText( tr( "Remove Separator" ) );
-            else removeItemAction_->setText( QString( tr( "Remove '%1'" ) ).arg( focusItem_->text() ) );
+            else removeItemAction_->setText( tr( "Remove '%1'" ).arg( focusItem_->text() ) );
             menu.addAction( removeItemAction_ );
         }
 
         {
             if( focusItem_->isSeparator() ) hideItemAction_->setText( tr( "Hide Separator" ) );
-            else hideItemAction_->setText( QString( tr( "Hide '%1'" ) ).arg( focusItem_->text() ) );
+            else hideItemAction_->setText( tr( "Hide '%1'" ).arg( focusItem_->text() ) );
             hideItemAction_->setChecked( focusItem_->hasFlag( Private::LocalFileInfo::Hidden ) );
             menu.addAction( hideItemAction_ );
         }
@@ -867,7 +867,7 @@ void PlacesWidget::_addItem()
     Debug::Throw( "PlacesWidget::_addItem.\n" );
 
     Private::PlacesWidgetItemDialog dialog( this );
-    dialog.setWindowTitle( QString( tr( "Add Places Entry - %1" ) ).arg( qApp->applicationName() ) );
+    dialog.setWindowTitle( tr( "Add Places Entry" ) );
     dialog.setOptionName( "EDIT_PLACES_ITEM_DIALOG" );
 
     // assign starting point
@@ -981,7 +981,7 @@ void PlacesWidget::_editItem()
     if( !focusItem_ ) return;
 
     Private::PlacesWidgetItemDialog dialog( this );
-    dialog.setWindowTitle( QString( tr( "Edit Places Entry - %1" ) ).arg( qApp->applicationName() ) );
+    dialog.setWindowTitle( tr( "Edit Places Entry" ) );
     dialog.setOptionName( "EDIT_PLACES_ITEM_DIALOG" );
     dialog.setName( focusItem_->text() );
     dialog.setFile( focusItem_->fileInfo() );

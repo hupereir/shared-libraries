@@ -78,7 +78,7 @@ void ColumnSortingMenu::_updateActions()
         // retrieve column name
         QString columnName( header_->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
         if( columnName.isNull() || columnName.isEmpty() )
-        { columnName = QString( tr( "Column %1" ) ).arg( index+1 ); }
+        { columnName = tr( "Column %1" ).arg( index+1 ); }
 
         auto action = new QAction( columnName, this );
         action->setCheckable( true );

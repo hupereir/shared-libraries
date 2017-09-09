@@ -74,7 +74,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 
     // popup dialog if invalid
     if( check )
-    { InformationDialog( this, QString( tr( "Invalid icon file %1" ) ).arg( file ) ).exec(); }
+    { InformationDialog( this, tr( "Invalid icon file %1" ).arg( file ) ).exec(); }
 
     // if file, set pixmap to empty
     if( noIconPixmap_.isNull() ) {

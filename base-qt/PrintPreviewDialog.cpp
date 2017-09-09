@@ -179,9 +179,7 @@ namespace Private
         pages_ = pages;
 
         // update label
-        QString buffer;
-        QTextStream( &buffer ) << " of " << pages;
-        label_->setText( QString( tr( " of %1" ) ).arg( pages ) );
+        label_->setText( tr( " of %1" ).arg( pages ) );
 
         // update validator
         validator_.setTop( pages );

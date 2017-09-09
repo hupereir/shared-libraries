@@ -44,7 +44,7 @@ namespace Base
         Debug::Throw( "HelpManager::HelpManager.\n" );
 
         // actions
-        displayAction_ = new QAction( IconEngine::get( IconNames::Help ), QString( tr( "%1 Handbook" ) ).arg( qApp->applicationName() ), this );
+        displayAction_ = new QAction( IconEngine::get( IconNames::Help ), tr( "%1 Handbook" ).arg( qApp->applicationName() ), this );
         displayAction_->setShortcut( QKeySequence::HelpContents );
         connect( displayAction_, SIGNAL(triggered()), SLOT(_display()) );
 

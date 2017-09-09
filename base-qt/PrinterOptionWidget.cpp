@@ -141,7 +141,7 @@ void PrinterOptionWidget::_preview()
 
     // create dialog, connect and execute
     PrintPreviewDialog dialog( this );
-    dialog.setWindowTitle( QString( tr( "Print Preview - %1" ) ).arg( qApp->applicationName() ) );
+    dialog.setWindowTitle( tr( "Print Preview" ) );
     dialog.setHelper( helper_ );
     dialog.hideMenu();
     dialog.exec();

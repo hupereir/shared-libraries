@@ -67,7 +67,7 @@ void ColumnSelectionMenu::_updateActions()
 
         // retrieve column name
         QString columnName( header->model()->headerData( currentColumn_, Qt::Horizontal, Qt::DisplayRole ).toString() );
-        if( columnName.isNull() || columnName.isEmpty() ) columnName = QString( tr("Column %1") ).arg( currentColumn_+1 );
+        if( columnName.isNull() || columnName.isEmpty() ) columnName = tr( "Column %1" ).arg( currentColumn_+1 );
 
         // disable/hide action for locked columns
         if( !( treeView && treeView->isColumnVisibilityLocked( currentColumn_ ) ) )
@@ -87,7 +87,7 @@ void ColumnSelectionMenu::_updateActions()
 
         // retrieve column name
         QString columnName( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
-        if( columnName.isNull() || columnName.isEmpty() ) columnName = QString( tr("Column %1") ).arg( index+1 );
+        if( columnName.isNull() || columnName.isEmpty() ) columnName = tr( "Column %1" ).arg( index+1 );
 
         QAction* action = new QAction( columnName, this );
         action->setCheckable( true );

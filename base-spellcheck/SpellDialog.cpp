@@ -233,7 +233,7 @@ namespace SpellCheck
         int index( dictionariesComboBox_->findText( dictionary ) );
         if( index < 0 )
         {
-            InformationDialog( this, QString( tr( "Invalid dictionary: %1" ) ).arg( dictionary ) ).exec();
+            InformationDialog( this, tr( "Invalid dictionary: %1" ).arg( dictionary ) ).exec();
             return false;
         }
 
@@ -260,7 +260,7 @@ namespace SpellCheck
         int index( filtersComboBox_->findText( filter ) );
         if( index < 0 )
         {
-            InformationDialog( this, QString( tr( "Invalid filter: %1" ) ).arg( filter ) ).exec();
+            InformationDialog( this, tr( "Invalid filter: %1" ).arg( filter ) ).exec();
             return false;
         }
 

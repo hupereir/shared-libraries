@@ -105,8 +105,8 @@ void ColorDisplay::Editor::setColor( QColor color )
     else {
 
         QString buffer;
-        if( !text().isEmpty() ) buffer = QString( tr( "Invalid color: %1" ) ).arg( text() );
-        else buffer = QString( tr( "Invalid color" ) );
+        if( !text().isEmpty() ) buffer = tr( "Invalid color: %1" ).arg( text() );
+        else buffer = tr( "Invalid color" );
 
         InformationDialog( this, buffer ).exec();
 

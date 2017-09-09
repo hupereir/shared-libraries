@@ -34,7 +34,7 @@ CustomDialog( parent, OkButton, Qt::Window )
 {
 
     Debug::Throw( "CounterDialog::CounterDialog.\n" );
-    setWindowTitle( QString( tr( "Object Counters - %1" ) ).arg( qApp->applicationName() ) );
+    setWindowTitle( tr( "Object Counters" ) );
     setOptionName( "COUNTER_DIALOG" );
 
     layout()->setMargin(0);

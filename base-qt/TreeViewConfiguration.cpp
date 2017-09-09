@@ -51,7 +51,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
         // retrieve column name
         auto columnName( header->model()->headerData( index, Qt::Horizontal, Qt::DisplayRole ).toString() );
         if( columnName.isNull() || columnName.isEmpty() )
-        { columnName = QString( tr( "Column %1" ) ).arg( index+1 ); }
+        { columnName = tr( "Column %1" ).arg( index+1 ); }
 
         // add checkbox
         checkbox = new QCheckBox( columnName, this );
@@ -59,7 +59,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
         checkbox_.append( checkbox );
 
         // add tooltip
-        checkbox->setToolTip( QString( tr( "Show/hide column '%1'" ) ).arg( columnName )  );
+        checkbox->setToolTip( tr( "Show/hide column '%1'" ).arg( columnName )  );
 
     }
 

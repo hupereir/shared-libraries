@@ -512,9 +512,9 @@ void TextEditor::showReplacements( int counts )
     Debug::Throw( "TextEditor::showReplacements.\n" );
 
     QString buffer;
-    if( !counts ) buffer = QString( tr( "String not found." ) );
-    else if( counts == 1 ) buffer = QString( tr( "1 replacement performed" ) );
-    else buffer = QString( tr( "%1 replacements performed" ) ).arg( counts );
+    if( !counts ) buffer = tr( "String not found." );
+    else if( counts == 1 ) buffer = tr( "One replacement performed" );
+    else buffer = tr( "%1 replacements performed" ).arg( counts );
     InformationDialog dialog( this, buffer );
     dialog.setWindowTitle( tr( "Replace in Text" ) );
     dialog.centerOnWidget( qApp->activeWindow() ).exec();

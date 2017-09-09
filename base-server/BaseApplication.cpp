@@ -145,7 +145,7 @@ bool BaseApplication::realizeWidget()
     _updateIconTheme();
 
     // actions
-    aboutAction_ = new QAction( applicationIcon(), QString( tr( "About %1" ) ).arg( applicationName() ), this );
+    aboutAction_ = new QAction( applicationIcon(), tr( "About %1" ).arg( applicationName() ), this );
     connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
 
     aboutQtAction_ = new QAction( IconEngine::get( IconNames::AboutQt, Base::IconCacheItem::Flag::FromCache|Base::IconCacheItem::Flag::FromResource ), tr( "About Qt" ), this );
@@ -155,7 +155,7 @@ bool BaseApplication::realizeWidget()
     closeAction_->setShortcut( QKeySequence::Quit );
     connect( closeAction_, SIGNAL(triggered()), qApp, SLOT(quit()) );
 
-    configurationAction_ = new QAction( IconEngine::get( IconNames::Configure ), QString( tr( "Configure %1..." ) ).arg( applicationName() ), this );
+    configurationAction_ = new QAction( IconEngine::get( IconNames::Configure ), tr( "Configure %1..." ).arg( applicationName() ), this );
     connect( configurationAction_, SIGNAL(triggered()), SLOT(_configuration()) );
 
     return true;
@@ -231,7 +231,7 @@ void BaseApplication::_about()
     QString buffer;
     QTextStream in( &buffer, QIODevice::WriteOnly );
     if( !name.isEmpty() ) { in << "<h3>" << name << "</h3>"; }
-    if( !version.isEmpty() ) { in << QString( tr( "Version %1 " ) ).arg( version ); }
+    if( !version.isEmpty() ) { in << tr( "Version %1 " ).arg( version ); }
 
     in <<
         tr( "<p>This application was written for personal use only. "
@@ -244,7 +244,7 @@ void BaseApplication::_about()
         "<p>License: <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License Version 2</a>");
 
     QMessageBox dialog;
-    dialog.setWindowTitle( QString( tr( "About %1" ).arg( name ) ) );
+    dialog.setWindowTitle( tr( "About %1" ).arg( name ) );
     auto icon( applicationIcon() );
     dialog.setWindowIcon( icon );
 
