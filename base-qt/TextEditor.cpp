@@ -515,7 +515,9 @@ void TextEditor::showReplacements( int counts )
     if( !counts ) buffer = QString( tr( "String not found." ) );
     else if( counts == 1 ) buffer = QString( tr( "1 replacement performed" ) );
     else buffer = QString( tr( "%1 replacements performed" ) ).arg( counts );
-    InformationDialog( this, buffer ).setWindowTitle( QString( tr( "Replace in Text - %1" ) ).arg( qApp->applicationName() ) ).centerOnWidget( qApp->activeWindow() ).exec();
+    InformationDialog dialog( this, buffer );
+    dialog.setWindowTitle( tr( "Replace in Text" ) );
+    dialog.centerOnWidget( qApp->activeWindow() ).exec();
 
     return;
 

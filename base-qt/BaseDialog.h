@@ -55,7 +55,7 @@ class BaseDialog: public QDialog
     //@{
 
     //* window title
-    BaseDialog& setWindowTitle( const QString& );
+    void setWindowTitle( const QString& );
 
     //* center widget on pointer
     BaseDialog& centerOnPointer();

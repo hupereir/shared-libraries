@@ -53,14 +53,8 @@ QSize BaseDialog::sizeHint() const
 }
 
 //__________________________________________________
-BaseDialog& BaseDialog::setWindowTitle( const QString& title )
-{
-
-    Debug::Throw( "BaseDialog::setWindowTitle.\n" );
-    QDialog::setWindowTitle( Util::windowTitle( title ) );
-    return *this;
-
-}
+void BaseDialog::setWindowTitle( const QString& title )
+{ QDialog::setWindowTitle( Util::windowTitle( title ) ); }
 
 //________________________________________________________________
 BaseDialog& BaseDialog::centerOnPointer()
