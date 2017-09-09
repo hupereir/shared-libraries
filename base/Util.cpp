@@ -26,6 +26,7 @@
 #include <QRegExp>
 
 #include <QProcessEnvironment>
+#include <QCoreApplication>
 
 #if QT_VERSION >= 0x050000
 #include <QStandardPaths>
@@ -70,17 +71,17 @@ QString Util::domain()
 }
 
 //_____________________________________________________
+QString Util::windowTitleSeparator()
+{ return QString::fromUtf8( " –– " ); }
+
+//_____________________________________________________
 QString Util::windowTitle( const QString& title )
 {
 
     Debug::Throw( "Util::windowTitle.\n" );
-
-    QString host( Util::host() );
-    if( host.contains( "localhost" ) ) return title;
-    else return QString( "%1 [%2]" ).arg( title, host );
-
-    return title;
-
+    const auto applicationName( qApp->applicationName() );
+    return title.endsWith( applicationName ) ? title:
+        title + windowTitleSeparator() + applicationName;
 }
 
 //______________________________________________________________________

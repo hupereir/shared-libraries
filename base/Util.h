@@ -57,6 +57,9 @@ class Util
     */
     static QString host( bool shortName = false );
 
+    //* window title separator
+    static QString windowTitleSeparator();
+
     //* append host to input string to form window title
     static QString windowTitle( const QString& );
 
