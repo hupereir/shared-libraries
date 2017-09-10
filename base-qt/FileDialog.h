@@ -79,44 +79,17 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     //* get file
     File getFile();
 
-    //* get list of files
-    File::List getFiles();
-
     //* reference to statically scoped working directory
     const File& workingDirectory() const
     { return _workingDirectory(); }
 
-    protected:
+    private:
 
     //* reference to statically scoped working directory
     static File& _workingDirectory();
 
-    //* accept mode
-    QFileDialog::AcceptMode _acceptMode() const
-    { return acceptMode_; }
-
-    //* file mode
-    QFileDialog::FileMode _fileMode() const
-    { return fileMode_; }
-
-    //* caption
-    const QString& _caption() const
-    { return caption_; }
-
-    //* selected file
-    /** it is used as a starting selection when file dialog is opened */
-    const File& _selectedFile() const
-    { return selectedFile_; }
-
-    //* filter
-    const QString& _filter() const
-    { return filter_; }
-
-    //* options
-    QFileDialog::Options _options() const
-    { return options_; }
-
-    private:
+    //* default caption
+    QString _defaultCaption() const;
 
     //* accept mode
     QFileDialog::AcceptMode acceptMode_ = QFileDialog::AcceptOpen;
