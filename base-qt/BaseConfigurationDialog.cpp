@@ -111,7 +111,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
 {
 
     Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
-    setWindowTitle( "Configuration" );
+    setWindowTitle( tr( "Configuration" ) );
     setOptionName( "PREFERENCE_DIALOG" );
 
     // restore default

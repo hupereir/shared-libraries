@@ -48,7 +48,7 @@ namespace SpellCheck
         Debug::Throw( "SpellCheck::SpellDialog::SpellDialog.\n" );
 
         // window title
-        setWindowTitle( QString( readOnly ? tr( "Spell Check (read-only) - %1" ) : tr( "Spell Check - %1" ) ).arg( qApp->applicationName() ) );
+        setWindowTitle( readOnly ? tr( "Spell Check (read-only)" ) : tr( "Spell Check" ) );
         setOptionName( "SPELL_DIALOG" );
 
         // horizontal layout for suggestions and buttons

@@ -33,7 +33,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
 {
 
     Debug::Throw( "IconCacheDialog::IconCacheDialog.\n" );
-    setWindowTitle( "Icon Cache" );
+    setWindowTitle( tr( "Icon Cache" ) );
     setOptionName( "ICON_CACHE_DIALOG" );
 
     layout()->setMargin(0);

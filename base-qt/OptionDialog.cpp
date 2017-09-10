@@ -37,7 +37,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 {
 
     Debug::Throw( "OptionDialog::OptionDialog.\n" );
-    setWindowTitle( "Runtime Options" );
+    setWindowTitle( tr( "Runtime Options" ) );
     setOptionName( "OPTION_DIALOG" );
 
     layout()->setMargin(0);

@@ -33,7 +33,7 @@ namespace Ssh
 
         Debug::Throw( "LoginDialog::LoginDialog.\n" );
         setOptionName( "SSH_LOGIN_DIALOG" );
-        setWindowTitle( tr( "SSH login - Homechat" ) );
+        setWindowTitle( tr( "SSH login" ) );
         auto gridLayout = new GridLayout;
         gridLayout->setMargin(0);
         gridLayout->setMaxCount(2);
