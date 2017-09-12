@@ -124,6 +124,7 @@ XcbUtil::Private::Private()
         { AtomId::_NET_WM_PID, "_NET_WM_PID" },
         { AtomId::_NET_WM_ICON, "_NET_WM_ICON" },
         { AtomId::_NET_WM_NAME, "_NET_WM_NAME" },
+        { AtomId::_NET_NUMBER_OF_DESKTOPS, "_NET_NUMBER_OF_DESKTOPS" },
         { AtomId::_KDE_NET_WM_BLUR_BEHIND_REGION, "_KDE_NET_WM_BLUR_BEHIND_REGION" }
     });
 

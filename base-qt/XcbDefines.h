@@ -54,6 +54,7 @@ class XcbDefines
         _NET_WM_PID,
         _NET_WM_ICON,
         _NET_WM_NAME,
+        _NET_NUMBER_OF_DESKTOPS,
 
         // kde specific atoms
         _KDE_NET_WM_BLUR_BEHIND_REGION
