@@ -98,7 +98,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     hLayout->setMargin( 0 );
     editorLayout_->addLayout( hLayout, 3, 1, 1, 3 );
 
-    hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "Case sensitive" ), this ) );
+    hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "C&ase sensitive" ), this ) );
     hLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
     hLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
     hLayout->addStretch(1);
@@ -128,7 +128,6 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
         closeButton_ = new QToolButton( this );
         static_cast<QToolButton*>(closeButton_)->setAutoRaise( true );
         closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
-        closeButton_->setText( tr( "Close" ) );
         editorLayout_->addWidget( closeButton_, 0, 4, 1, 1 );
         connect( closeButton_, SIGNAL(clicked()),this,  SLOT(hide()) );
 
