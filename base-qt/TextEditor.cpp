@@ -922,7 +922,7 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
         auto cursors( boxSelection_.cursorList() );
-        counts = std::accumulate( cursors.begin(), cursors.end(), counts,
+        counts = std::accumulate( cursors.begin(), cursors.end(), 0,
             [this, &selection]( const int& count, QTextCursor cursor )
             { return count + _replaceInRange( selection, cursor, CursorMode::Move ); } );
 

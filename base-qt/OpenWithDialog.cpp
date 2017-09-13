@@ -140,7 +140,7 @@ void OpenWithDialog::realizeWidget()
         treeView->header()->setSortIndicator( FileInfoModel::Filename, Qt::AscendingOrder );
 
         // resize list to accomodate longest item
-        int maxWidth = std::accumulate( fileInfoList.begin(), fileInfoList.end(), 0,
+        const auto maxWidth = std::accumulate( fileInfoList.begin(), fileInfoList.end(), 0,
             [&treeView]( const int& value, const BaseFileInfo& fileInfo )
             { return qMax( value, treeView->fontMetrics().width( fileInfo.file() ) ); } );
 
