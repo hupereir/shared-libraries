@@ -156,7 +156,7 @@ bool FileThread::_updateTotalSize()
 //______________________________________________________
 void FileThread::_computeTotalSize()
 {
-    totalSize_ = std::accumulate( files_.begin(), files_.end(), qint64(0),
+    totalSize_ = std::accumulate( filesRecursive_.begin(), filesRecursive_.end(), qint64(0),
         []( const qint64& size, const File& file )
         { return file.isLink() ? size : (size + file.fileSize()); } );
 }
