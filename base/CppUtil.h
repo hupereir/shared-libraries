@@ -162,24 +162,4 @@ template<class T,
     inline uint qHash( const T& value )
 { return qHash(Base::toIntegralType(value)); }
 
-//* different from operator
-template<class T, class U>
-    inline bool operator != (const T& lhs, const U& rhs)
-{ return !(lhs == rhs); }
-
-//* more than
-template<class T, class U>
-    inline bool operator > (const T& lhs, const U& rhs)
-{ return rhs < lhs; }
-
-//* less or equal
-template<class T, class U>
-    inline bool operator <= (const T& lhs, const U& rhs)
-{ return !(rhs < lhs); }
-
-//* more or equal
-template<class T, class U>
-    inline bool operator >= (const T& lhs, const U& rhs)
-{ return !(lhs < rhs); }
-
 #endif

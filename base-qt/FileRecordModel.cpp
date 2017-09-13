@@ -22,6 +22,7 @@
 #include "CppUtil.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
+#include "Operators.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 

@@ -19,9 +19,9 @@
 
 #include "XmlPathHistory.h"
 
-#include "CppUtil.h"
 #include "Debug.h"
 #include "Singleton.h"
+#include "Operators.h"
 #include "XmlDocument.h"
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"

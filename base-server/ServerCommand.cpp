@@ -17,8 +17,10 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
+
 #include "ServerCommand.h"
+#include "CppUtil.h"
+#include "Debug.h"
 
 #include <QStringList>
 

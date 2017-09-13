@@ -41,8 +41,7 @@ namespace Base
             {}
 
             //* predicate
-            template<class U>
-                inline bool operator() (const U& object )
+            inline bool operator() (const T& object )
             { return c_(object,prediction_); }
 
             private:
@@ -104,18 +103,15 @@ namespace Base
             {}
 
             //* predicate
-            template<class U>
-                inline bool operator() (const U& object ) const
+            inline bool operator() (const T& object ) const
             { return c_((object.*accessor)(), prediction_); }
 
             //* predicate
-            template<class U>
-                inline bool operator() ( U* pointer ) const
+            inline bool operator() ( T* pointer ) const
             { return c_((pointer->*accessor)(), prediction_); }
 
             //* predicate
-            template<class U>
-                inline bool operator() (const std::shared_ptr<U>& pointer ) const
+            inline bool operator() (const std::shared_ptr<T>& pointer ) const
             { return c_((pointer.get()->*accessor)(), prediction_); }
 
             private:
@@ -145,18 +141,15 @@ namespace Base
             public:
 
             //* predicate
-            template<class U>
-                inline bool operator() (const U& object ) const
+            inline bool operator() (const T& object ) const
             { return (object.*accessor)() == prediction; }
 
             //* predicate
-            template<class U>
-                inline bool operator() ( U* pointer ) const
+            inline bool operator() ( T* pointer ) const
             { return (pointer->*accessor)() == prediction; }
 
             //* predicate
-            template<class U>
-                inline bool operator() (const std::shared_ptr<U>& pointer ) const
+            inline bool operator() (const std::shared_ptr<T>& pointer ) const
             { return (pointer.get()->*accessor)() == prediction; }
 
         };
@@ -173,19 +166,16 @@ namespace Base
             public:
 
             //* predicate
-            template<class U>
-                inline bool operator() (const U& lhs, const U& rhs ) const
+            inline bool operator() (const T& lhs, const T& rhs ) const
             { return c_((lhs.*accessor)(), (rhs.*accessor)()); }
 
             //* predicate
-            template<class U>
-                inline bool operator() ( U* lhs, U* rhs ) const
+            inline bool operator() ( T* lhs, T* rhs ) const
             { return c_((lhs->*accessor)(), (rhs->*accessor)()); }
 
 
             //* predicate
-            template<class U>
-                inline bool operator() ( const std::shared_ptr<U>& lhs, const std::shared_ptr<U>& rhs ) const
+            inline bool operator() ( const std::shared_ptr<T>& lhs, const std::shared_ptr<T>& rhs ) const
             { return c_((lhs.get()->*accessor)(), (rhs.get()->*accessor)()); }
 
             private:

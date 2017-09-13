@@ -24,8 +24,8 @@
 
 #include "CommandLineArguments.h"
 #include "Counter.h"
-#include "CppUtil.h"
 #include "Debug.h"
+#include "Operators.h"
 #include "TimeStamp.h"
 #include "XmlOption.h"
 

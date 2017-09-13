@@ -21,11 +21,11 @@
 #include "BaseConfigurationDialog_p.h"
 
 #include "BaseIconNames.h"
-#include "CppUtil.h"
 #include "GridLayout.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "IconEngine.h"
+#include "Operators.h"
 #include "OptionBrowsedLineEditor.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"

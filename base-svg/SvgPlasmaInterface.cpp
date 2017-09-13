@@ -20,9 +20,9 @@
 #include "SvgPlasmaInterface.h"
 
 #include "Command.h"
-#include "CppUtil.h"
 #include "CustomProcess.h"
 #include "Debug.h"
+#include "Operators.h"
 #include "SvgSystemOptions.h"
 #include "Util.h"
 

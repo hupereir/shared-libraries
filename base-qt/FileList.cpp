@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
-#include "CppUtil.h"
 #include "Debug.h"
 #include "FileList.h"
 #include "File.h"
+#include "Operators.h"
 
 #include <algorithm>
 
