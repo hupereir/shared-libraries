@@ -22,6 +22,7 @@
 #include <QTextStream>
 
 #if defined (Q_OS_WIN)
+#include <winsock2.h>
 #include <windows.h>
 #endif
 
