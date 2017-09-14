@@ -117,6 +117,14 @@ namespace Ssh
         }
 
         // make socket non blocking
+        #if defined(Q_OS_WIN)
+        ulong arg = 1;
+        if( ioctlsocket(sshSocket_, FIONBIO, &arg) != 0 )
+        {
+            _notifyError( tr( "unable to set socket non blocking" ) );
+            return false;
+        }
+        #else
         const int flags( fcntl(sshSocket_, F_GETFL ) );
         if( flags < 0 )
         {
@@ -129,6 +137,7 @@ namespace Ssh
             _notifyError( tr( "unable to set socket flags" ) );
             return false;
         }
+        #endif
 
         // lookup host
         QHostInfo::lookupHost( attributes_.host(), this, SLOT(_saveHost(QHostInfo)) );
