@@ -41,7 +41,7 @@ namespace Base
             {}
 
             //* predicate
-            inline bool operator() (const T& object )
+            bool operator() (const T& object )
             { return c_(object,prediction_); }
 
             private:
@@ -103,15 +103,15 @@ namespace Base
             {}
 
             //* predicate
-            inline bool operator() (const T& object ) const
+            bool operator() (const T& object ) const
             { return c_((object.*accessor)(), prediction_); }
 
             //* predicate
-            inline bool operator() ( T* pointer ) const
+            bool operator() ( T* pointer ) const
             { return c_((pointer->*accessor)(), prediction_); }
 
             //* predicate
-            inline bool operator() (const std::shared_ptr<T>& pointer ) const
+            bool operator() (const std::shared_ptr<T>& pointer ) const
             { return c_((pointer.get()->*accessor)(), prediction_); }
 
             private:
@@ -141,15 +141,15 @@ namespace Base
             public:
 
             //* predicate
-            inline bool operator() (const T& object ) const
+            bool operator() (const T& object ) const
             { return (object.*accessor)() == prediction; }
 
             //* predicate
-            inline bool operator() ( T* pointer ) const
+            bool operator() ( T* pointer ) const
             { return (pointer->*accessor)() == prediction; }
 
             //* predicate
-            inline bool operator() (const std::shared_ptr<T>& pointer ) const
+            bool operator() (const std::shared_ptr<T>& pointer ) const
             { return (pointer.get()->*accessor)() == prediction; }
 
         };
@@ -166,16 +166,16 @@ namespace Base
             public:
 
             //* predicate
-            inline bool operator() (const T& lhs, const T& rhs ) const
+            bool operator() (const T& lhs, const T& rhs ) const
             { return c_((lhs.*accessor)(), (rhs.*accessor)()); }
 
             //* predicate
-            inline bool operator() ( T* lhs, T* rhs ) const
+            bool operator() ( T* lhs, T* rhs ) const
             { return c_((lhs->*accessor)(), (rhs->*accessor)()); }
 
 
             //* predicate
-            inline bool operator() ( const std::shared_ptr<T>& lhs, const std::shared_ptr<T>& rhs ) const
+            bool operator() ( const std::shared_ptr<T>& lhs, const std::shared_ptr<T>& rhs ) const
             { return c_((lhs.get()->*accessor)(), (rhs.get()->*accessor)()); }
 
             private:
