@@ -147,16 +147,16 @@ macro(add_win32_application_icon  sources icon)
 endmacro()
 
 ###################### add apple application icons #########################
-macro(ADD_APPLE_APPLICATION_ICON  sources icon)
+macro(add_apple_application_icon  sources icon)
 
     # check icon EXISTS
     set(_icon ${icon}.icns)
     if(EXISTS "${_icon}")
 
-      GET_FILENAME_COMPONENT(_iconName ${_icon} NAME)
+      get_filename_component(_iconName ${_icon} NAME)
       set(MACOSX_BUNDLE_ICON_FILE  ${_iconName})
-      SET_SOURCE_FILES_PROPERTIES(${_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-      LIST(APPEND ${sources} ${_icon})
+      set_source_files_properties(${_icon} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+      list(APPEND ${sources} ${_icon})
 
     else()
 
@@ -164,7 +164,7 @@ macro(ADD_APPLE_APPLICATION_ICON  sources icon)
 
     endif()
 
-endmacro(ADD_APPLE_APPLICATION_ICON)
+endmacro()
 
 ###################### add unix application icons #########################
 macro(add_unix_application_icon  icon name size)
@@ -205,7 +205,7 @@ macro(add_application_icon  sources icon)
 
   elseif(APPLE)
 
-    ADD_APPLE_APPLICATION_ICON(${sources} ${icon} ${ARGN})
+    add_apple_application_icon(${sources} ${icon} ${ARGN})
 
   else()
 
