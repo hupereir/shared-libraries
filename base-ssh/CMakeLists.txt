@@ -33,6 +33,7 @@ if(LIBSSH2_FOUND)
 
   add_definitions(-DHAVE_SSH=1)
   include_directories(${LIBSSH2_INCLUDE_DIRS})
+  link_directories(${LIBSSH2_LIBRARY_DIRS})
 
 else()
 
