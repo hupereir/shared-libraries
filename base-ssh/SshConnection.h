@@ -191,6 +191,9 @@ namespace Ssh
 
         private:
 
+        //* get ssh error string
+        QString _sshErrorString( int ) const;
+
         //* get message command
         QString _commandMessage( Command ) const;
 

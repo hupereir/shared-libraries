@@ -118,12 +118,12 @@ namespace Ssh
 
         // make socket non blocking
         #if defined(Q_OS_WIN)
-        ulong arg = 1;
-        if( ioctlsocket(sshSocket_, FIONBIO, &arg) != 0 )
-        {
-            _notifyError( tr( "unable to set socket non blocking" ) );
-            return false;
-        }
+//         ulong arg = 1;
+//         if( ioctlsocket(sshSocket_, FIONBIO, &arg) != 0 )
+//         {
+//             _notifyError( tr( "unable to set socket non blocking" ) );
+//             return false;
+//         }
         #else
         const int flags( fcntl(sshSocket_, F_GETFL ) );
         if( flags < 0 )
@@ -228,7 +228,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::addCommand( Command command )
     {
-        Debug::Throw() << "Ssh::Connection::AddCommand: " << command << endl;
+        Debug::Throw() << "Ssh::Connection::AddCommand: " << _commandMessage( command ) << endl;
         commands_.append( command );
         if( !timer_.isActive() ) timer_.start( latency_, this );
     }
@@ -433,7 +433,7 @@ namespace Ssh
                     _abortCommands( tr( "Cannot connect to host %1:%2 - %3" )
                         .arg(attributes_.host())
                         .arg(attributes_.port())
-                        .arg(errno) );
+                        .arg(strerror( errno ) ) );
                     return false;
 
                 }
@@ -444,7 +444,7 @@ namespace Ssh
 
             case Handshake:
             {
-                const int result( libssh2_session_handshake( session, sshSocket_ ) );
+                const auto result( libssh2_session_handshake( session, sshSocket_ ) );
                 if( !result )
                 {
 
@@ -454,7 +454,7 @@ namespace Ssh
 
                 } else if( result != LIBSSH2_ERROR_EAGAIN ) {
 
-                    _abortCommands( tr( "Handshake failed" ) );
+                    _abortCommands( tr( "Handshake failed - %1" ).arg(  _sshErrorString( result ) ) );
                     return false;
 
                 }
@@ -756,6 +756,64 @@ namespace Ssh
 
         }
 
+    }
+
+    //_______________________________________________
+    QString Connection::_sshErrorString( int error ) const
+    {
+        using ErrorHash = QHash<int,QString>;
+        // error codes copied from libssh2.h
+        static const auto errorStrings = Base::makeT<ErrorHash>( {
+            { LIBSSH2_ERROR_SOCKET_NONE, tr( "Invalid socket" ) },
+            { LIBSSH2_ERROR_BANNER_RECV, tr( "Banner from remote host not received" ) },
+            { LIBSSH2_ERROR_BANNER_SEND, tr( "Unable to send banner to remote host" ) },
+            { LIBSSH2_ERROR_INVALID_MAC, tr( "Invalid MAC" ) },
+            { LIBSSH2_ERROR_KEX_FAILURE, tr( "Encryption key exchange with the remote host failed" ) },
+            { LIBSSH2_ERROR_ALLOC, tr( "Bad allocation" ) },
+            { LIBSSH2_ERROR_SOCKET_SEND, tr( "Unable to send data to socket" ) },
+            { LIBSSH2_ERROR_KEY_EXCHANGE_FAILURE, tr(  "Encryption key exchange with the remote host failed" ) },
+            { LIBSSH2_ERROR_TIMEOUT, tr( "Command timed out" ) },
+            { LIBSSH2_ERROR_HOSTKEY_INIT, tr( "Unable to initialize host key" ) },
+            { LIBSSH2_ERROR_HOSTKEY_SIGN, tr( "Unable to sign host key" ) },
+            { LIBSSH2_ERROR_DECRYPT, tr( "Decryption error" ) },
+            { LIBSSH2_ERROR_SOCKET_DISCONNECT, tr( "Socket is disconnected" ) },
+            { LIBSSH2_ERROR_PROTO, tr( "An invalid SSH protocol response was received on the socket" ) },
+            { LIBSSH2_ERROR_PASSWORD_EXPIRED, tr( "Password has expired" ) },
+            { LIBSSH2_ERROR_FILE, tr( "Invalid file" ) },
+            { LIBSSH2_ERROR_METHOD_NONE, tr( "Invalid authentication method" ) },
+            { LIBSSH2_ERROR_AUTHENTICATION_FAILED, tr( "Authentication failed" ) },
+            { LIBSSH2_ERROR_PUBLICKEY_UNVERIFIED, tr( "Unverified public key" ) },
+            { LIBSSH2_ERROR_CHANNEL_OUTOFORDER, tr( "Invalid chanel" ) },
+            { LIBSSH2_ERROR_CHANNEL_FAILURE, tr( "Failed to read/write to ssh channel" ) },
+            { LIBSSH2_ERROR_CHANNEL_REQUEST_DENIED, tr( "Channel request denied" ) },
+            { LIBSSH2_ERROR_CHANNEL_UNKNOWN, tr( "Channel is unknown" ) },
+            { LIBSSH2_ERROR_CHANNEL_WINDOW_EXCEEDED, tr( "Channel window exceed" ) },
+            { LIBSSH2_ERROR_CHANNEL_PACKET_EXCEEDED, tr( "Channel packet exceed" ) },
+            { LIBSSH2_ERROR_CHANNEL_CLOSED, tr( "Channel is closed" ) },
+            { LIBSSH2_ERROR_CHANNEL_EOF_SENT, tr( "Channel has already sent EOF" ) },
+            { LIBSSH2_ERROR_SCP_PROTOCOL, tr( "Invalid scp protocol" ) },
+            { LIBSSH2_ERROR_ZLIB, tr( "ZLib failed" ) },
+            { LIBSSH2_ERROR_SOCKET_TIMEOUT, tr( "Socket timeout" ) },
+            { LIBSSH2_ERROR_SFTP_PROTOCOL, tr( "Invalid sftp protocol" ) },
+            { LIBSSH2_ERROR_REQUEST_DENIED, tr( "Request denied" ) },
+            { LIBSSH2_ERROR_METHOD_NOT_SUPPORTED, tr( "Method not supported" ) },
+            { LIBSSH2_ERROR_INVAL, tr( "Invalid arguments" ) },
+            { LIBSSH2_ERROR_INVALID_POLL_TYPE, tr( "Invalid poll type" ) },
+            { LIBSSH2_ERROR_PUBLICKEY_PROTOCOL, tr( "invalid public key protocol" ) },
+            { LIBSSH2_ERROR_EAGAIN, tr( "Non blocking" ) },
+            { LIBSSH2_ERROR_BUFFER_TOO_SMALL, tr( "Buffer is too small" ) },
+            { LIBSSH2_ERROR_BAD_USE, tr( "Bad use" ) },
+            { LIBSSH2_ERROR_COMPRESS, tr( "Compression error" ) },
+            { LIBSSH2_ERROR_OUT_OF_BOUNDARY, tr( "Out of bound" ) },
+            { LIBSSH2_ERROR_AGENT_PROTOCOL, tr( "Invalid agent protocol" ) },
+            { LIBSSH2_ERROR_SOCKET_RECV, tr( "Unable to read data from socket" ) },
+            { LIBSSH2_ERROR_ENCRYPT, tr( "Encryption error" ) },
+            { LIBSSH2_ERROR_BAD_SOCKET, tr( "Socket is in a bad state" ) },
+            { LIBSSH2_ERROR_KNOWN_HOSTS, tr( "Known hosts error" ) }
+        });
+
+        auto iter = errorStrings.find( error );
+        return iter == errorStrings.end() ? tr( "Unknown error - %1" ).arg( error ) : iter.value();
     }
 
     //_______________________________________________
