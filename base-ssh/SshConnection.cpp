@@ -428,7 +428,7 @@ namespace Ssh
                     commands_.removeFirst();
                     return true;
 
-                } else if( errno != EALREADY && errno != EINPROGRESS ) {
+                } else if( errno != EALREADY && errno != EINPROGRESS && errno != EWOULDBLOCK && errno != EAGAIN ) {
 
                     _abortCommands( tr( "Cannot connect to host %1:%2 - %3" )
                         .arg(attributes_.host())
