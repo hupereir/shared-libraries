@@ -47,7 +47,7 @@ namespace Base
             private:
 
             //* comparator
-            Comparator c_ = Comparator();
+            Comparator c_;
 
             //* prediction
             T prediction_;
@@ -117,7 +117,7 @@ namespace Base
             private:
 
             //* comparator
-            Comparator c_ = Comparator();
+            Comparator c_;
 
             //* prediction
             R prediction_;
@@ -181,7 +181,7 @@ namespace Base
             private:
 
             //* comparator
-            Comparator c_ = Comparator();
+            Comparator c_;
 
         };
 
