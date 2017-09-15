@@ -61,10 +61,14 @@ else()
 
 endif()
 
-target_link_libraries(base-spellcheck ${QT_LIBRARIES} ${ASPELL_LIBRARIES} base base-qt)
+target_link_libraries(base-spellcheck ${ASPELL_LIBRARIES} base base-qt)
 
 if(USE_QT5)
 
   target_link_libraries(base-spellcheck Qt5::Widgets)
+
+else()
+
+  target_link_libraries(base-spellcheck ${QT_LIBRARIES})
 
 endif()

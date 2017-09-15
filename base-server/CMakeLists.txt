@@ -63,7 +63,7 @@ else()
 
 endif()
 
-target_link_libraries(base-server ${QT_LIBRARIES} base base-qt)
+target_link_libraries(base-server base base-qt)
 
 if(USE_QT5)
 
@@ -77,5 +77,9 @@ if(USE_QT5)
     add_definitions("-DQT_NO_DBUS")
 
   endif()
+
+else()
+
+  target_link_libraries(base-server ${QT_LIBRARIES})
 
 endif()

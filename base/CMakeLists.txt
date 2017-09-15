@@ -53,18 +53,20 @@ if(ENABLE_SHARED)
 
   add_library(base SHARED ${base_SOURCES})
   set_target_properties(base PROPERTIES VERSION ${BASE_VERSION} SOVERSION ${BASE_SOVERSION})
-  target_link_libraries(base ${QT_LIBRARIES})
   install(TARGETS base DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 else()
 
   add_library(base STATIC ${base_SOURCES})
-  target_link_libraries(base ${QT_LIBRARIES})
 
 endif()
 
 if(USE_QT5)
 
   target_link_libraries(base Qt5::Widgets Qt5::Network)
+
+else()
+
+  target_link_libraries(base ${QT_LIBRARIES})
 
 endif()

@@ -92,7 +92,7 @@ else()
 
 endif()
 
-target_link_libraries(base-svg ${QT_LIBRARIES} base-transparency)
+target_link_libraries(base-svg base-transparency)
 
 if( ZLIB_FOUND )
 
@@ -103,5 +103,9 @@ endif()
 if(USE_QT5)
 
   target_link_libraries(base-svg Qt5::Widgets Qt5::Svg Qt5::Xml)
+
+else()
+
+  target_link_libraries(base-svg ${QT_LIBRARIES})
 
 endif()

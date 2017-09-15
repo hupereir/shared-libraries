@@ -64,11 +64,15 @@ else()
 
 endif()
 
+target_link_libraries(base-transparency base-qt)
 target_link_libraries(base-transparency ${XCB_LIBRARIES})
-target_link_libraries(base-transparency ${QT_LIBRARIES} base-qt)
 
 if(USE_QT5)
 
   target_link_libraries(base-transparency Qt5::Widgets)
+
+else()
+
+  target_link_libraries(base-transparency ${QT_LIBRARIES})
 
 endif()

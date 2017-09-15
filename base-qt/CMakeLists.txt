@@ -247,14 +247,14 @@ else()
 
 endif()
 
+target_link_libraries(base-qt base)
+
 if(XCB_FOUND)
 
   target_link_libraries(base-qt ${XCB_LIBRARIES})
   target_link_libraries(base-qt ${X11_XCB_LIBRARIES})
 
 endif()
-
-target_link_libraries(base-qt ${QT_LIBRARIES} base)
 
 if(USE_QT5)
 
@@ -266,5 +266,9 @@ if(USE_QT5)
   if(XCB_FOUND)
     target_link_libraries(base-qt Qt5::X11Extras)
   endif()
+
+else()
+
+  target_link_libraries(base-qt ${QT_LIBRARIES})
 
 endif()
