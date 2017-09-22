@@ -52,6 +52,12 @@ class Util
     //* user config path
     static File config();
 
+    //* user data path
+    static File data();
+
+    //* user cache path
+    static File cache();
+
     /** returns the host name.
     \par short_name if true returns only the string located before the first '.'
     */

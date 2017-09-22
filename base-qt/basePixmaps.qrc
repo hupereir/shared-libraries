@@ -34,7 +34,7 @@
     <file alias="icons/32x32/preferences-desktop-font.png">../base-pixmaps/preferences-desktop-font.png</file>
     <file alias="icons/32x32/show-menu.png">../base-pixmaps/show-menu.png</file>
     <file alias="icons/32x32/text-html.png">../base-pixmaps/text-html.png</file>
-    <file alias="icons/32x32/user-trash.png">../base-pixmaps/user-trash.png</file>
+    <file alias="icons/32x32/edit-delete.png">../base-pixmaps/edit-delete.png</file>
     <file alias="icons/32x32/view-refresh.png">../base-pixmaps/view-refresh.png</file>
 
     <!-- find icons -->

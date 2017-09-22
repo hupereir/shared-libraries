@@ -105,6 +105,30 @@ File Util::config()
 }
 
 //______________________________________________________________________
+File Util::data()
+{
+
+    #if QT_VERSION >= 0x050000
+    return File( QStandardPaths::writableLocation( QStandardPaths::GenericDataLocation ) );
+    #else
+    return File( ".local/share/" ).addPath( home() );
+    #endif
+
+}
+
+//______________________________________________________________________
+File Util::cache()
+{
+
+    #if QT_VERSION >= 0x050000
+    return File( QStandardPaths::writableLocation( QStandardPaths::GenericCacheLocation ) );
+    #else
+    return File( ".cache/" ).addPath( home() );
+    #endif
+
+}
+
+//______________________________________________________________________
 QString Util::host( bool shortName )
 {
 

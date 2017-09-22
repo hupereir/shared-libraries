@@ -33,7 +33,7 @@ namespace IconNames
     static const QString Configure = "configure";
     static const QString Copy = "edit-copy";
     static const QString Cut = "edit-cut";
-    static const QString Delete = "user-trash";
+    static const QString Delete = "edit-delete";
     static const QString DialogCancel = "dialog-cancel";
     static const QString DialogClose = "dialog-close";
     static const QString DialogOk = "dialog-ok";
