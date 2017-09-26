@@ -348,7 +348,7 @@ class BaseFileInfo
         };
 
         //* constructor
-        Description( int flags = 0 ):
+        explicit Description( int flags = 0 ):
             flags_( flags )
         {}
 

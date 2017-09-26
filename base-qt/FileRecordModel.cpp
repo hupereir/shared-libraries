@@ -39,7 +39,7 @@ FileRecordModel::IconCache& FileRecordModel::_icons()
 
 //__________________________________________________________________
 FileRecordModel::FileRecordModel( QObject* parent ):
-    ListModel<FileRecord>( parent ),
+    ListModel( parent ),
     Counter( "FileRecordModel" ),
     iconPropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Icon ) ),
     columnTitles_( Base::makeT<QStringList>({ tr( "File" ), tr( "Path" ), tr( "Last Accessed" ) }) )

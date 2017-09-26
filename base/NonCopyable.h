@@ -36,7 +36,7 @@ namespace Base
         {}
 
         //* copy constructor
-        NonCopyable(const NonCopyable &) = delete;
+        explicit NonCopyable(const NonCopyable &) = delete;
 
         //* assignment operator
         NonCopyable& operator = ( const NonCopyable& ) = delete;

@@ -43,7 +43,7 @@ namespace SpellCheck
 
         //* constructor
         explicit SpellItemModel( QObject* parent = nullptr ):
-            ListModel<QString>( parent ),
+            ListModel( parent ),
             Counter( "SpellItemModel" )
         {}
 

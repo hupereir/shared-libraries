@@ -34,7 +34,7 @@ class XcbConnection final: private Base::Counter<XcbConnection>
     public:
 
     //* constructor
-    XcbConnection():
+    explicit XcbConnection():
         Counter( "XcbConnection" )
     {
         #if HAVE_XCB

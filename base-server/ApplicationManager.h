@@ -199,6 +199,7 @@ namespace Server
         //* arguments
         CommandLineArguments arguments_;
 
+        //* object deleter
         class Deleter
         {
 

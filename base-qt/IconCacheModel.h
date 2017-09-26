@@ -46,7 +46,7 @@ class IconCacheModel: public ListModel<Base::IconPair>, private Base::Counter<Ic
 
     //* constructor
     explicit IconCacheModel( QObject* parent = 0 ):
-        ListModel<Base::IconPair>( parent ),
+        ListModel( parent ),
         Counter( "IconCacheModel" )
     {}
 

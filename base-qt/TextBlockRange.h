@@ -37,16 +37,16 @@ class TextBlockRange
         public:
 
         //* constructor
-        iterator()
+        explicit iterator()
         {}
 
         //* constructor
-        iterator( const QTextBlock& block ):
+        explicit iterator( const QTextBlock& block ):
             block_( block )
         {}
 
         //* constructor
-        iterator( QTextBlock&& block ):
+        explicit iterator( QTextBlock&& block ):
             block_( std::move( block ) )
         {}
 

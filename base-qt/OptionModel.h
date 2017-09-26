@@ -60,7 +60,7 @@ class OptionModel: public TreeModel<Options::Pair>, private Base::Counter<Option
 
     //* constructor
     explicit OptionModel( QObject* parent = nullptr ):
-        TreeModel<Options::Pair>( parent ),
+        TreeModel( parent ),
         Counter( "OptionModel" )
     {}
 

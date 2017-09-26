@@ -78,7 +78,7 @@ class File
         bool contains( Args&&... args ) const
     { return value_.contains( args... ); }
 
-    //* true if empty
+    //* true if filename empty
     bool isEmpty() const { return value_.isEmpty(); }
 
     //* returns true if file has absolute pathname

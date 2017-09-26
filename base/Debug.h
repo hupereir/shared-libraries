@@ -61,7 +61,7 @@ class Debug final
         public:
 
         //* constructor
-        Stream( bool enabled );
+        explicit Stream( bool enabled );
 
         //*@name modifiers
         //@{
