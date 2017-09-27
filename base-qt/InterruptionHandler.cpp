@@ -37,23 +37,29 @@ InterruptionHandler& InterruptionHandler::get()
 }
 
 //_____________________________________________________________
+void InterruptionHandler::setInterruptionHandlerFunction( InterruptionHandlerFuntion function )
+{ if( !initialized_ ) function_ = function; }
+
+//_____________________________________________________________
 void InterruptionHandler::initialize()
 {
     if( get().initialized_ ) return;
+    if( !get().function_ ) return;
+
     get().initialized_ = true;
 
     // setup interruptions
     #if !defined(Q_OS_WIN)
     struct sigaction interruptAction;
     memset (&interruptAction, '\0', sizeof(interruptAction));
-    interruptAction.sa_handler = &_handleInterruption;
+    interruptAction.sa_handler = get().function_;
     interruptAction.sa_flags = 0;
 
     sigaction( SIGINT, &interruptAction, nullptr );
     sigaction( SIGTERM, &interruptAction, nullptr );
     #else
-    signal(SIGINT,  InterruptionHandler::_handleInterruption);
-    signal(SIGTERM, InterruptionHandler::_handleInterruption);
+    signal(SIGINT,  get().function_);
+    signal(SIGTERM, get().function_);
     #endif
 }
 

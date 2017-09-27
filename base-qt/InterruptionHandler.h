@@ -33,6 +33,10 @@ class InterruptionHandler: private Base::NonCopyable<InterruptionHandler>
     //* initialize
     static void initialize();
 
+    //* change interruption handler function
+    using InterruptionHandlerFuntion = void (*)( int );
+    void setInterruptionHandlerFunction( InterruptionHandlerFuntion );
+
     private:
 
     //* constructor
@@ -40,6 +44,9 @@ class InterruptionHandler: private Base::NonCopyable<InterruptionHandler>
 
     //* interruption handler
     static void _handleInterruption( int );
+
+    //* default interuption handler function
+    InterruptionHandlerFuntion function_ = _handleInterruption;
 
     //* initialize
     bool initialized_ = false;
