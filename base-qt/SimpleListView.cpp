@@ -255,7 +255,7 @@ void SimpleListView::_adjustSize()
 {
     if( !model() ) return;
 
-    int rows = model()->rowCount();
+    const auto rows = model()->rowCount();
 
     if( orientation_ == Qt::Vertical )
     {
