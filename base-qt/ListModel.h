@@ -85,6 +85,10 @@ class ListModel : public ItemModel
     int rowCount(const QModelIndex &parent = QModelIndex()) const override
     { return parent.isValid() ? 0:values_.size(); }
 
+    //* true if empty
+    bool empty() const
+    { return values_.empty(); }
+
     //* get list of internal selected items
     QModelIndexList selectedIndexes() const override
     {
