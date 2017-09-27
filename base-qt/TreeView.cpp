@@ -98,14 +98,14 @@ void TreeView::setModel( QAbstractItemModel* model )
     model_ = qobject_cast<ItemModel*>( model );
     if( model_ )
     {
-        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(storeSelectedIndexes()) );
+        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(saveSelectedIndexes()) );
         connect( model_, SIGNAL(layoutChanged()), SLOT(restoreSelectedIndexes()) );
     }
 
     // expanded indexes
     if( model_ && model_->supportsExpandedIndexes() )
     {
-        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(storeExpandedIndexes()) );
+        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(saveExpandedIndexes()) );
         connect( model_, SIGNAL(layoutChanged()), SLOT(restoreExpandedIndexes()) );
     }
 
@@ -308,7 +308,7 @@ void TreeView::setMask( int mask )
 }
 
 //______________________________________________________
-void TreeView::storeScrollBarPosition()
+void TreeView::saveScrollBarPosition()
 {
     if( verticalScrollBar() ) vertical_ = verticalScrollBar()->value();
     if( horizontalScrollBar() ) horizontal_ = horizontalScrollBar()->value();
@@ -439,7 +439,7 @@ void TreeView::_setItemMargin( int value )
 }
 
 //__________________________________________________________
-void TreeView::storeSelectedIndexes()
+void TreeView::saveSelectedIndexes()
 {
     if( selectionModel() )
     {
@@ -470,7 +470,7 @@ void TreeView::restoreSelectedIndexes()
 
 
 //__________________________________________________________
-void TreeView::storeExpandedIndexes()
+void TreeView::saveExpandedIndexes()
 {
 
     // clear
@@ -480,7 +480,7 @@ void TreeView::storeExpandedIndexes()
     for( const auto& index:model_->indexes() )
     { if( isExpanded( index ) ) model_->setIndexExpanded( index, true ); }
 
-    storeScrollBarPosition();
+    saveScrollBarPosition();
 
 }
 
@@ -526,7 +526,7 @@ void TreeView::mouseMoveEvent( QMouseEvent *event )
     if( hasMouseTracking() && event->buttons() == Qt::NoButton )
     {
 
-        // when mouse tracking is no, need to intercept mouseMoveEvents
+        // when mouse tracking is on, need to intercept mouseMoveEvents
         // because they break drag and drop
         _setHoverIndex( indexAt( event->pos() ) );
 

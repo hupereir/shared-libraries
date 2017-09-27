@@ -156,7 +156,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     }
 
     //* store scrollbar position
-    void storeScrollBarPosition();
+    void saveScrollBarPosition();
 
     //* restore scrollbar position
     void restoreScrollBarPosition();
@@ -286,13 +286,13 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     void findAgainBackward();
 
     //* store selected indexes in model
-    void storeSelectedIndexes();
+    void saveSelectedIndexes();
 
     //* restore selected indexes from model
     void restoreSelectedIndexes();
 
     //* store expanded indexes in model
-    void storeExpandedIndexes();
+    void saveExpandedIndexes();
 
     //* restore expanded indexes from model
     void restoreExpandedIndexes();

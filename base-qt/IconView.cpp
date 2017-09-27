@@ -81,7 +81,7 @@ void IconView::setModel( QAbstractItemModel* model )
 
     if( (model_ = qobject_cast<ItemModel*>(model)) )
     {
-        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(storeSelectedIndexes()) );
+        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(saveSelectedIndexes()) );
         connect( model_, SIGNAL(layoutChanged()), SLOT(restoreSelectedIndexes()) );
     }
 }
@@ -271,7 +271,7 @@ void IconView::doItemsLayout()
     { if( key >= rowCount ) items_.remove( key ); }
 
     // update existing items and insert new ones
-    for( int row = 0; row < model_->rowCount(); ++row )
+    for( int row = 0; row < rowCount; ++row )
     {
 
         // index
@@ -317,7 +317,7 @@ void IconView::findAgainBackward()
 { _findBackward( TextEditor::lastSelection(), true ); }
 
 //__________________________________________________________
-void IconView::storeSelectedIndexes()
+void IconView::saveSelectedIndexes()
 {
     if( selectionModel() )
     {

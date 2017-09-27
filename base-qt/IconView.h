@@ -231,7 +231,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     void findAgainBackward();
 
     //* store selected indexes in model
-    void storeSelectedIndexes();
+    void saveSelectedIndexes();
 
     //* restore selected indexes from model
     void restoreSelectedIndexes();
