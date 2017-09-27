@@ -369,7 +369,9 @@ File::List File::listFiles( ListFlags flags ) const
         QFileInfo fileInfo;
         fileInfo.setFile( dir, value );
         const File file( fileInfo.absoluteFilePath() );
-        out.append( file );
+
+        if( !( flags&File::FilesOnly && file.isDirectory() ) )
+        { out.append( file ); }
 
         // list subdirectory if recursive
         if( flags & ListFlag::Recursive && file.isDirectory() )

@@ -43,7 +43,8 @@ class File
         None = 0,
         Recursive = 1<<0,
         FollowLinks = 1<<1,
-        ShowHiddenFiles = 1<<2
+        ShowHiddenFiles = 1<<2,
+        FilesOnly = 1<<3
     };
 
     Q_DECLARE_FLAGS(ListFlags, ListFlag)
