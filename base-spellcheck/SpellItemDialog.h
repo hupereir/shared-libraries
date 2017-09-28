@@ -31,7 +31,7 @@ class TreeView;
 namespace SpellCheck
 {
     //* spell checker popup dialog
-    class SpellItemDialog: public CustomDialog
+    class SpellItemDialog final: public CustomDialog
     {
 
         //* Qt meta object declaration
@@ -51,7 +51,7 @@ namespace SpellCheck
         //* disabled items
         QString disabledItems() const;
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* select item
         void _selectItem( const QModelIndex& );
