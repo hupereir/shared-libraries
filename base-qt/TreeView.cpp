@@ -851,6 +851,9 @@ void TreeView::_installActions()
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( selectAllAction_, SIGNAL(triggered()), SLOT(selectAll()) );
 
+    addAction( collapseAllAction_ = new QAction( tr("Collapse All Entries"), this ) );
+    connect( collapseAllAction_, SIGNAL(triggered()), SLOT(collapseAll()) );
+
     addAction( findAction_ = new QAction( IconEngine::get( IconNames::Find ), tr("Find"), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );

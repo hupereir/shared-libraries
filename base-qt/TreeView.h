@@ -174,6 +174,10 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     QAction& selectAllAction() const
     { return *selectAllAction_; }
 
+    //* collapse all
+    QAction& collapseAllAction() const
+    { return *collapseAllAction_; }
+
     //* find from dialog
     QAction& findAction() const
     { return *findAction_; }
@@ -329,7 +333,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* hover index
     void _setHoverIndex( const QModelIndex& );
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* header menu
     void _raiseHeaderMenu( const QPoint& );
@@ -339,8 +343,6 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* hover index
     void _indexEntered( const QModelIndex& );
-
-    private Q_SLOTS:
 
     //* update alternate item color
     void _updateConfiguration();
@@ -379,6 +381,9 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* select all items
     QAction* selectAllAction_ = nullptr;
+
+    //* collapse all items
+    QAction* collapseAllAction_ = nullptr;
 
     //* find from dialog
     QAction* findAction_ = nullptr;
