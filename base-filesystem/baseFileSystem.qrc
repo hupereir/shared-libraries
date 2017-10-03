@@ -1,0 +1,11 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file alias="icons/32x32/application-x-zerosize.png">../base-pixmaps/application-x-zerosize.png</file>              
+<file alias="icons/32x32/folder.png">../base-pixmaps/folder.png</file>                
+<file alias="icons/32x32/go-home.png">../base-pixmaps/go-home.png</file>               
+<file alias="icons/32x32/go-next.png">../base-pixmaps/go-next.png</file>               
+<file alias="icons/32x32/go-previous.png">../base-pixmaps/go-previous.png</file>           
+<file alias="icons/32x32/go-up.png">../base-pixmaps/go-up.png</file>                 
+
+</qresource>
+</RCC>
