@@ -1,5 +1,5 @@
-#ifndef FileSystemIconNames_h
-#define FileSystemIconNames_h
+#ifndef FileSystemDefaultOptions_h
+#define FileSystemDefaultOptions_h
 
 /******************************************************************************
 *
@@ -20,23 +20,23 @@
 *
 *******************************************************************************/
 
-#include "BaseIconNames.h"
+#include "XmlOptions.h"
 
-#include <QString>
+#include "FileSystemModel.h"
 
-//* namespace for icon static name wrappers
-namespace IconNames
+//_____________________________________________________
+//* default options installer
+void installFileSystemOptions()
 {
+    XmlOptions::get().setAutoDefault( true );
+    XmlOptions::get().set<bool>( "SHOW_HIDDEN_FILES", false );
+    XmlOptions::get().set<bool>( "SHOW_NAVIGATOR", false );
 
-    static const QString Document = "application-x-zerosize";
-    static const QString Folder = "folder";
-    static const QString FileSystem = "folder";
+    XmlOptions::get().set<int>( "FILE_SYSTEM_LIST_MASK", 1<<FileSystemModel::Filename );
+    XmlOptions::get().set<int>( "FILE_SYSTEM_LIST_SORT_COLUMN", FileSystemModel::Filename );
+    XmlOptions::get().set<int>( "FILE_SYSTEM_LIST_SORT_ORDER", Qt::AscendingOrder );
 
-    static const QString Parent = "go-up";
-    static const QString PreviousDirectory = "go-previous";
-    static const QString NextDirectory = "go-next";
-    static const QString Home = "go-home";
-
-};
+    XmlOptions::get().setAutoDefault( false );
+}
 
 #endif
