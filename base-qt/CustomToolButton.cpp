@@ -152,8 +152,8 @@ void CustomToolButton::_updateConfiguration()
     setIconSize( QSize( iconSize, iconSize ) );
 
     const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-    if( toolButtonTextPosition < 0 ) setToolButtonStyle( (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
-    else setToolButtonStyle( (Qt::ToolButtonStyle) toolButtonTextPosition );
+    if( toolButtonTextPosition < 0 ) setToolButtonStyle( static_cast<Qt::ToolButtonStyle>( style()->styleHint( QStyle::SH_ToolButtonStyle ) ) );
+    else setToolButtonStyle( static_cast<Qt::ToolButtonStyle>( toolButtonTextPosition ) );
 
     adjustSize();
 
