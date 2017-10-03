@@ -140,6 +140,28 @@ FileSystemWidget::FileSystemWidget( QWidget *parent ):
 }
 
 //_________________________________________________________
+File FileSystemWidget::path() const
+{ return pathEditor_->path(); }
+
+//_________________________________________________________
+void FileSystemWidget::setWorkingPath( const File& path )
+{
+    Debug::Throw( "FileSystemWidget::setHome.\n" );
+    workingPath_ = path;
+    if( pathEditor_->path().isEmpty() )
+    { setPath( path ); }
+}
+
+//_________________________________________________________
+void FileSystemWidget::clear()
+{
+
+    Debug::Throw( "FileSystemWidget::Clear.\n" );
+    model_.clear();
+
+}
+
+//_________________________________________________________
 void FileSystemWidget::setPath( File path, bool forced )
 {
 
@@ -150,7 +172,6 @@ void FileSystemWidget::setPath( File path, bool forced )
     {
         pathEditor_->setPath( path );
         _update();
-        _update();
         _updateNavigationActions();
 
         // reset file system watcher
@@ -159,23 +180,6 @@ void FileSystemWidget::setPath( File path, bool forced )
 
         fileSystemWatcher_.addPath( path );
     }
-
-}
-
-//_________________________________________________________
-void FileSystemWidget::setWorkingPath( const File& path )
-{
-    Debug::Throw( "FileSystemWidget::setHome.\n" );
-    workingPath_ = path;
-    if( pathEditor_->path().isEmpty() ) setPath( path );
-}
-
-//_________________________________________________________
-void FileSystemWidget::clear()
-{
-
-    Debug::Throw( "FileSystemWidget::Clear.\n" );
-    model_.clear();
 
 }
 
@@ -512,6 +516,7 @@ void FileSystemWidget::_installActions()
     addAction( removeAction_ = new QAction( IconEngine::get( IconNames::Delete ), tr( "Delete" ), this ) );
     connect( removeAction_, SIGNAL(triggered()), SLOT(_remove()) );
     removeAction_->setShortcut( QKeySequence::Delete );
+    removeAction_->setShortcutContext( Qt::WidgetWithChildrenShortcut );
 
     // rename
     addAction( renameAction_ = new QAction( IconEngine::get( IconNames::Rename ), tr( "Rename" ), this ) );

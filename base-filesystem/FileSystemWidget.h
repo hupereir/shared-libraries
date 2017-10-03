@@ -44,11 +44,24 @@ class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
     //* constructor
     explicit FileSystemWidget( QWidget* parent );
 
+    //*@name accessors
+    //@{
+
+    //* current path
+    File path() const;
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
     //* working path
     void setWorkingPath( const File& );
 
     //* clear list, add navigator button
     void clear();
+
+    //@}
 
     Q_SIGNALS:
 
