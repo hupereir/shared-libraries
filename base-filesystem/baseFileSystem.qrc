@@ -6,6 +6,6 @@
 <file alias="icons/32x32/go-next.png">../base-pixmaps/go-next.png</file>               
 <file alias="icons/32x32/go-previous.png">../base-pixmaps/go-previous.png</file>           
 <file alias="icons/32x32/go-up.png">../base-pixmaps/go-up.png</file>                 
-
+<file alias="icons/32x32/emblem-symbolic-link.png">../base-pixmaps/emblem-symbolic-link.png</file>  
 </qresource>
 </RCC>

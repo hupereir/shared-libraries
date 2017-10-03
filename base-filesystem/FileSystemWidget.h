@@ -1,5 +1,5 @@
-#ifndef FileSystemFrame_h
-#define FileSystemFrame_h
+#ifndef FileSystemWidget_h
+#define FileSystemWidget_h
 
 /******************************************************************************
 *
@@ -33,7 +33,7 @@ class PathEditor;
 class FileRecordToolTipWidget;
 
 //* customized ListView for file/directory navigation
-class FileSystemFrame: public QWidget, private Base::Counter<FileSystemFrame>
+class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
 {
 
     //* Qt meta object declaration
@@ -42,7 +42,7 @@ class FileSystemFrame: public QWidget, private Base::Counter<FileSystemFrame>
     public:
 
     //* constructor
-    explicit FileSystemFrame( QWidget* parent );
+    explicit FileSystemWidget( QWidget* parent );
 
     //* working path
     void setWorkingPath( const File& );
