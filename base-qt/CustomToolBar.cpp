@@ -119,7 +119,7 @@ void CustomToolBar::_updateConfiguration()
     Debug::Throw( "CustomToolBar::_updateConfiguration.\n" );
 
     // pixmap size
-    if( sizeFromOptions() )
+    if( iconSizeFromOptions_ )
     {
         int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
         if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
@@ -127,12 +127,16 @@ void CustomToolBar::_updateConfiguration()
     }
 
     // text label for toolbars
-    const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-    if( toolButtonTextPosition < 0 ) setToolButtonStyle(  (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
-    else setToolButtonStyle(  (Qt::ToolButtonStyle) toolButtonTextPosition );
+    if( toolButtonStyleFromOptions_ )
+    {
+        const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+        if( toolButtonTextPosition < 0 ) setToolButtonStyle(  (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
+        else setToolButtonStyle(  (Qt::ToolButtonStyle) toolButtonTextPosition );
+    }
 
     // lock
-    if( lockFromOptions() ) {
+    if( lockFromOptions_ )
+    {
 
         BaseMainWindow* mainwindow( qobject_cast<BaseMainWindow*>( window() ) );
         if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().contains( mainwindow->lockToolBarsOptionName() ) )

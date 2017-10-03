@@ -73,9 +73,13 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     bool lockFromOptions() const
     { return lockFromOptions_; }
 
-    //* lock from options
-    bool sizeFromOptions() const
-    { return sizeFromOptions_; }
+    //* icon size from options
+    bool iconSizeFromOptions() const
+    { return iconSizeFromOptions_; }
+
+    //* icon size from options
+    bool toolButtonStyleFromOptions() const
+    { return toolButtonStyleFromOptions_; }
 
     //* true if visible in menu
     /** the flag is ignored if parent is MainWindow */
@@ -104,11 +108,19 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     }
 
     //* icon size
-    /* when called directly from the application, the sizeFromOptions_ flag is set to false */
+    /* when called directly from the application, the iconSizeFromOptions_ flag is set to false */
     void setIconSize( QSize size )
     {
-        sizeFromOptions_ = false;
+        iconSizeFromOptions_ = false;
         return QToolBar::setIconSize( size );
+    }
+
+    //* toolbutton style
+    /* when called directly from the application, the toolButtonStyleFromOptions_ flag is set to false */
+    void setToolButtonStyle( Qt::ToolButtonStyle style )
+    {
+        toolButtonStyleFromOptions_ = false;
+        return QToolBar::setToolButtonStyle( style );
     }
 
     //* true if visible in menu
@@ -177,7 +189,10 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     bool transparent_ = false;
 
     //* use icon size from options
-    bool sizeFromOptions_ = true;
+    bool iconSizeFromOptions_ = true;
+
+    //* toolbutton style from options
+    bool toolButtonStyleFromOptions_ = true;
 
     //* use lock from options
     bool lockFromOptions_ = true;
