@@ -306,6 +306,10 @@ inline bool operator < (const File& first, const File& second)
 inline bool operator == (const File& first, const File& second)
 { return first.get() == second.get(); }
 
+//* equal to operator
+inline bool operator != (const File& first, const File& second)
+{ return first.get() != second.get(); }
+
 //* specialized copy constructor
 template<> File::File( File& );
 template<> File::File( const File& );

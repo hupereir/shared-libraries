@@ -119,7 +119,21 @@ namespace Private
 
         //@}
 
-        protected:
+        private Q_SLOTS:
+
+        //* update context menu
+        void _updateContextMenu( const QPoint& );
+
+        //* toggle stays on top
+        void _toggleStaysOnTop( bool );
+
+        //* toggle sticky
+        void _toggleSticky( bool );
+
+        //* configuration
+        void _updateConfiguration();
+
+        private:
 
         //* update actions
         void _updateActions();
@@ -135,24 +149,6 @@ namespace Private
         //* option name
         const QString& _staysOnTopOptionName() const
         { return staysOnTopOptionName_; }
-
-        protected Q_SLOTS:
-
-        //* update context menu
-        void _updateContextMenu( const QPoint& );
-
-        //* toggle stays on top
-        void _toggleStaysOnTop( bool );
-
-        //* toggle sticky
-        void _toggleSticky( bool );
-
-        private Q_SLOTS:
-
-        //* configuration
-        void _updateConfiguration();
-
-        private:
 
         //* actions
         void _installActions();

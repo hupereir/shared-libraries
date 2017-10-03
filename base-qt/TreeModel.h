@@ -128,6 +128,14 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
+    //* true if empty
+    bool empty() const
+    { return map_.empty(); }
+
+    //* return true if model contains given index
+    bool contains( const QModelIndex& index ) const
+    { return index.isValid() && map_.contains( index.internalId() ); }
+
     //* return index associated to a given value, starting from parent [recursive]
     QModelIndex index( ConstReference value, const QModelIndex& parent = QModelIndex() ) const
     {
@@ -438,7 +446,7 @@ template<class T> class TreeModel : public ItemModel
     //* find item matching id
     const Item& _find( typename Item::Id id ) const
     {
-        typename Item::Map::const_iterator iter( map_.find( id ) );
+        const auto& iter( map_.find( id ) );
         return iter == map_.end() ? root_:*iter.value();
     }
 

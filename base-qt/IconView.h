@@ -345,6 +345,8 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* update geometries
     void updateGeometries() override;
 
+    private Q_SLOTS:
+
     //* sort order
     void sortByColumn( int, Qt::SortOrder );
 
@@ -353,8 +355,6 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     //* update hover index
     void _updateHoverIndex();
-
-    private Q_SLOTS:
 
     //* update alternate item color
     void _updateConfiguration();

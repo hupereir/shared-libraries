@@ -54,12 +54,7 @@ class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidg
 
     //@}
 
-    protected:
-
-    //* load text codecs
-    void _loadTextCodecs();
-
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* update selection
     void _updateSelection();
@@ -68,6 +63,9 @@ class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidg
     void _find(QString);
 
     private:
+
+    //* load text codecs
+    void _loadTextCodecs();
 
     //* list
     TreeView* list_ = nullptr;

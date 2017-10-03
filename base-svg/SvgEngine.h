@@ -98,7 +98,7 @@ namespace Svg
         /** return true if changed */
         bool reload( bool forced = false );
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* process image cache generated from thread
         void _processImageCache( const Svg::ImageCache& );

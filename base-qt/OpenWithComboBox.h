@@ -64,7 +64,7 @@ class OpenWithComboBox: public QComboBox, private Base::Counter<OpenWithComboBox
 
     //@}
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* process item selection
     void _indexActivated( int );

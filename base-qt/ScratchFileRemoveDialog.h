@@ -44,7 +44,7 @@ class ScratchFileRemoveDialog: public CustomDialog
     // return selected files
     FileRecordModel::List selectedFiles() const;
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* update button states
     void _updateActions();

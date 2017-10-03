@@ -56,7 +56,7 @@ namespace Ssh
 
         //@}
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* show/hide password
         void _toggleShowPassword( bool );

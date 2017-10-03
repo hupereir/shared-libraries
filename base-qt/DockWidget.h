@@ -67,15 +67,13 @@ class DockWidget: public QDockWidget
 
     //@}
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* toggle visibility
     void _toggleVisibility( bool );
 
     //* update title bar
     void _updateTitleBarWidget();
-
-    private Q_SLOTS:
 
     //* update configuration
     void _updateConfiguration();

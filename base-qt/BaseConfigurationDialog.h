@@ -103,7 +103,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //* emitted when configuration is changed
     void configurationChanged();
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* show pixmap path dialog
     void _editPixmapPathList();
@@ -129,12 +129,10 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //* restore default options
     void _restoreDefaults();
 
-    protected:
+    private:
 
     //* find modification
     bool _findModification( const Options&, const Options& ) const;
-
-    private:
 
     //* pointer to original options set
     /**

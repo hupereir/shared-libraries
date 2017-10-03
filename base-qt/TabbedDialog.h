@@ -53,11 +53,6 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     //* adds a new Item, returns associated Box
     QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), bool expand = false );
 
-    protected Q_SLOTS:
-
-    //* display item page
-    void _display( const QModelIndex& );
-
     protected:
 
     //* retrieve list
@@ -71,6 +66,11 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     //* button box
     QDialogButtonBox& _buttonBox() const
     { return *buttonBox_; }
+
+    private Q_SLOTS:
+
+    //* display item page
+    void _display( const QModelIndex& );
 
     private:
 

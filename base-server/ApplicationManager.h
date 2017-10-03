@@ -116,6 +116,31 @@ namespace Server
         //* timer event
         void timerEvent( QTimerEvent* ) override;
 
+        private Q_SLOTS:
+
+        //* a new connection is granted
+        void _newConnection();
+
+        //* a connection was closed
+        void _serverConnectionClosed();
+
+        //* a connection was closed
+        void _clientConnectionClosed();
+
+        //* client recieves errors
+        void _error( QAbstractSocket::SocketError );
+
+        //* redistribute message when a connected client sends one
+        void _redirect( Server::ServerCommand );
+
+        //* reads signal from server
+        void _process( Server::ServerCommand );
+
+        //* start timeout
+        void _startTimer();
+
+        private:
+
         //* client pointer
         using ClientPtr = std::shared_ptr<Client>;
 
@@ -158,31 +183,6 @@ namespace Server
 
         //* broadcast a message to all registered clients but the sender (if valid)
         void _broadcast( ServerCommand, ClientPtr sender = ClientPtr() );
-
-        protected Q_SLOTS:
-
-        //* a new connection is granted
-        void _newConnection();
-
-        //* a connection was closed
-        void _serverConnectionClosed();
-
-        //* a connection was closed
-        void _clientConnectionClosed();
-
-        //* client recieves errors
-        void _error( QAbstractSocket::SocketError );
-
-        //* redistribute message when a connected client sends one
-        void _redirect( Server::ServerCommand );
-
-        //* reads signal from server
-        void _process( Server::ServerCommand );
-
-        //* start timeout
-        void _startTimer();
-
-        private:
 
         //* initialize client
         bool _initializeClient();

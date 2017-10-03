@@ -107,7 +107,32 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //* insert item
     void insert( int, const QIcon&, const QString&, const BaseFileInfo& );
 
-    protected Q_SLOTS:
+    protected:
+
+    //*@name event handlers
+    //@{
+
+    //* drag enter event
+    void dragEnterEvent( QDragEnterEvent* ) override;
+
+    //* drag move
+    void dragMoveEvent( QDragMoveEvent* ) override;
+
+    //* drag leave
+    void dragLeaveEvent( QDragLeaveEvent* ) override;
+
+    //* drop
+    void dropEvent( QDropEvent* ) override;
+
+    //* mouse press
+    void mousePressEvent( QMouseEvent* ) override;
+
+    //* paint event
+    void paintEvent( QPaintEvent* ) override;
+
+    //@}
+
+    private Q_SLOTS:
 
     //* button clicked
     void _buttonClicked( QAbstractButton* );
@@ -145,30 +170,13 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //* show all entries
     void _toggleShowAllEntries( bool );
 
-    protected:
+    //* update configuration
+    void _updateConfiguration();
 
-    //*@name event handlers
-    //@{
+    //* save configuration
+    void _saveConfiguration();
 
-    //* drag enter event
-    void dragEnterEvent( QDragEnterEvent* ) override;
-
-    //* drag move
-    void dragMoveEvent( QDragMoveEvent* ) override;
-
-    //* drag leave
-    void dragLeaveEvent( QDragLeaveEvent* ) override;
-
-    //* drop
-    void dropEvent( QDropEvent* ) override;
-
-    //* mouse press
-    void mousePressEvent( QMouseEvent* ) override;
-
-    //* paint event
-    void paintEvent( QPaintEvent* ) override;
-
-    //@}
+    private:
 
     //* Read fileList from file
     bool _read();
@@ -199,16 +207,6 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
 
     //* return item that have focus or none
     Private::PlacesWidgetItem* _focusItem() const;
-
-    private Q_SLOTS:
-
-    //* update configuration
-    void _updateConfiguration();
-
-    //* save configuration
-    void _saveConfiguration();
-
-    private:
 
     //* install actions
     void _installActions();

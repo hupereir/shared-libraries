@@ -176,7 +176,7 @@ namespace Private
         int _arrowWidth() const
         { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* start drag
         void _startDrag( QPoint );

@@ -111,21 +111,6 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //* changes selection to uppercase
     void upperCase();
 
-    protected Q_SLOTS:
-
-    //* update modification state
-    void _modified( const QString& text );
-
-    //* update action status
-    void _updateSelectionActions();
-
-    //* update paste action
-    /** depends on clipboard status and editability */
-    void _updatePasteAction();
-
-    //* update undo/redo actions
-    void _updateUndoRedoActions();
-
     protected:
 
     //*@name event handlers
@@ -145,10 +130,25 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 
     //@}
 
-    //* toggle clear button
-    void _updateButtonsGeometry() const;
+    private Q_SLOTS:
+
+    //* update modification state
+    void _modified( const QString& text );
+
+    //* update action status
+    void _updateSelectionActions();
+
+    //* update paste action
+    /** depends on clipboard status and editability */
+    void _updatePasteAction();
+
+    //* update undo/redo actions
+    void _updateUndoRedoActions();
 
     private:
+
+    //* toggle clear button
+    void _updateButtonsGeometry() const;
 
     //* install actions
     void _installActions();

@@ -35,7 +35,7 @@
 #include <QMenu>
 #include <QHash>
 
-//! dictionary dictionary selection menu
+//* dictionary dictionary selection menu
 namespace SpellCheck
 {
     class DictionaryMenu: public QMenu, private Base::Counter<DictionaryMenu>
@@ -45,33 +45,33 @@ namespace SpellCheck
 
         public:
 
-        //! constructor
+        //* constructor
         explicit DictionaryMenu( QWidget* );
 
-        //! select dictionary manualy
+        //* select dictionary manualy
         void select( const QString& );
 
         Q_SIGNALS:
 
-        //! dictionary changed
+        //* dictionary changed
         void selectionChanged( const QString& );
 
         public Q_SLOTS:
 
-        //! reset dictionary list
+        //* reset dictionary list
         void reset();
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
-        //! dictionary selected from menu
+        //* dictionary selected from menu
         void _selectDictionary( QAction* action );
 
         private:
 
-        //! action group
+        //* action group
         QActionGroup* group_;
 
-        //! map dictionaries and action
+        //* map dictionaries and action
         using ActionMap = QHash<QAction*, QString>;
         ActionMap actions_;
 

@@ -93,7 +93,12 @@ namespace SpellCheck
         //* dictionary has changed
         void dictionaryChanged( QString );
 
-        protected Q_SLOTS:
+        protected:
+
+        //* close
+        void closeEvent( QCloseEvent* ) override;
+
+        private Q_SLOTS:
 
         //* update dictionaries
         void _updateDictionaries();
@@ -134,13 +139,6 @@ namespace SpellCheck
 
         //* update buttons
         void _updateButtons();
-
-        protected:
-
-        //* close
-        void closeEvent( QCloseEvent* ) override;
-
-        protected Q_SLOTS:
 
         //* save word list
         void _saveWordList();

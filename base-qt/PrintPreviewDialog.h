@@ -59,7 +59,7 @@ class PrintPreviewDialog: public CustomDialog
     //* show/hide menu
     void hideMenu();
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* update page
     void _updatePage();

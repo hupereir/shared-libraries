@@ -88,8 +88,6 @@ class BaseCoreApplication: public QObject
     /** returns true if command has been accepted */
     virtual bool _processCommand( Server::ServerCommand );
 
-    //*
-
     private Q_SLOTS:
 
     //* configuration

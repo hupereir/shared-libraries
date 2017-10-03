@@ -140,7 +140,7 @@ namespace Ssh
         //* emited when transfer has failed
         void failed();
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* process error
         void _processError( QAbstractSocket::SocketError );

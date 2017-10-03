@@ -248,20 +248,18 @@ namespace Private
         //* paint event
         void paintEvent( QPaintEvent* ) override;
 
-        //* paint
-        void _paint( QPainter* );
-
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* start drag
         void _startDrag( QPoint );
-
-        private Q_SLOTS:
 
         //* update configuration
         void _updateConfiguration();
 
         private:
+
+        //* paint
+        void _paint( QPainter* );
 
         //* some styles require an item view passed to painting method to have proper selection rendered in items
         QWidget* itemView_ = nullptr;

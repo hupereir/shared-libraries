@@ -106,7 +106,7 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     //* emitted when box is attached
     void attached();
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* toggle dock
     void _toggleDock();

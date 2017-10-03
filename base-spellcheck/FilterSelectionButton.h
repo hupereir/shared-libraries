@@ -57,7 +57,7 @@ namespace SpellCheck
         //* emitted when selection is modified
         void modified();
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* edit filters
         void _edit();

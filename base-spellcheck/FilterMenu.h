@@ -55,7 +55,7 @@ namespace SpellCheck
         //! reset filter list
         void reset();
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //! filter selected from menu
         void _selectFilter( QAction* );

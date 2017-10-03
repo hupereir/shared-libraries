@@ -101,7 +101,7 @@ class OpenWithDialog: public CustomDialog
 
     //@}
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* open file
     void _open();

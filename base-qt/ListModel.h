@@ -285,7 +285,7 @@ class ListModel : public ItemModel
     }
 
     //* clear
-    void clear()
+    virtual void clear()
     { set( List() ); }
 
     //* update values from list

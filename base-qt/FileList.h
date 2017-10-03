@@ -148,7 +148,7 @@ class FileList: public QObject, private Base::Counter<FileList>
     FileRecord::List& _records()
     { return records_; }
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* process records from threads
     void _processRecords( const FileRecord::List&, bool );

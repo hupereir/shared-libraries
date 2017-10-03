@@ -57,7 +57,7 @@ class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSy
     //* timer event
     void timerEvent( QTimerEvent* ) override;
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* add modified directory
     void _addModifiedDirectory( const QString& );

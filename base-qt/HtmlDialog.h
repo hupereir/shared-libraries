@@ -64,7 +64,7 @@ class HtmlDialog: public CustomDialog
     // options
     void setOptionWidgets( QList<QWidget*> );
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* browse print command
     void _browseCommand();

@@ -48,14 +48,6 @@ class SimpleListView: public QListView
     */
     void hovered( const QModelIndex& );
 
-    protected Q_SLOTS:
-
-    //* adjust size
-    void _adjustSize();
-
-    //* hover index
-    void _indexEntered( const QModelIndex& );
-
     protected:
 
     //* generic event
@@ -67,10 +59,18 @@ class SimpleListView: public QListView
     //* mouse press event
     void mousePressEvent( QMouseEvent* ) override;
 
+    private Q_SLOTS:
+
+    //* adjust size
+    void _adjustSize();
+
     //* hover index
-    void _setHoverIndex( const QModelIndex& );
+    void _indexEntered( const QModelIndex& );
 
     private:
+
+    //* hover index
+    void _setHoverIndex( const QModelIndex& );
 
     //* orientation
     Qt::Orientation orientation_ = Qt::Vertical;

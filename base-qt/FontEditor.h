@@ -62,7 +62,7 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
     //* font changed
     void fontChanged( const QFont& );
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* select font from dialog
     void _selectFont()
@@ -77,13 +77,11 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
         return;
     }
 
-    protected:
+    private:
 
     //* update label
     void _updateLabel()
     { label_->setText( QString( tr( "%1, %2pt" ) ).arg( font().family() ).arg( font().pointSize() ) ); }
-
-    private:
 
     //* font name
     QLabel* label_;

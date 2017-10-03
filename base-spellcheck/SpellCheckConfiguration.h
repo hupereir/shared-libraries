@@ -56,7 +56,7 @@ namespace SpellCheck
         //* modified
         void modified();
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* update dictionaries
         void _updateDictionaries();

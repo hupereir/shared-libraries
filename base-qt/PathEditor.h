@@ -140,25 +140,7 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     //* resize events
     void resizeEvent( QResizeEvent* ) override;
 
-    //* prefix
-    void _setUsePrefix( bool value )
-    {
-        if( usePrefix_ == value ) return;
-        usePrefix_ = value;
-        _updatePrefix();
-    }
-
-    //* update prefix
-    void _updatePrefix();
-
-    //* truncation
-    void _setUseTruncation( bool );
-
-    //* reload
-    void _reload()
-    { setPath( path() ); }
-
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* show browser
     void _showBrowser()
@@ -186,12 +168,28 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     //* update previous and next path menus
     void _updatePathMenus();
 
-    private Q_SLOTS:
-
     //* configuration
     void _updateConfiguration();
 
     private:
+
+    //* prefix
+    void _setUsePrefix( bool value )
+    {
+        if( usePrefix_ == value ) return;
+        usePrefix_ = value;
+        _updatePrefix();
+    }
+
+    //* update prefix
+    void _updatePrefix();
+
+    //* truncation
+    void _setUseTruncation( bool );
+
+    //* reload
+    void _reload()
+    { setPath( path() ); }
 
     //* dummy treeview, needed for rendering items
     QAbstractItemView* itemView_ = nullptr;

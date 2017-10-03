@@ -98,10 +98,7 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     //* timer event
     void timerEvent( QTimerEvent* ) override;
 
-    //* get corner from (relative) position
-    XcbDefines::Direction _direction( QWidget* widget, const QPoint& ) const;
-
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* start drag
     bool _startDrag();
@@ -110,6 +107,9 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     void _resetDrag();
 
     private:
+
+    //* get corner from (relative) position
+    XcbDefines::Direction _direction( QWidget* widget, const QPoint& ) const;
 
     //* mode
     Mode mode_;

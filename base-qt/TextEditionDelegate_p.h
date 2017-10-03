@@ -39,7 +39,7 @@ namespace Private
         bool isEditionValid() const
         { return valid_; }
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* validate edition
         /** it is called when returnPressed is triggered */

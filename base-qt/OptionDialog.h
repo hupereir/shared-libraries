@@ -43,7 +43,7 @@ class OptionDialog: public CustomDialog
     //* emitted when options are modified
     void configurationChanged();
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* reload options from backup
     void _reload();

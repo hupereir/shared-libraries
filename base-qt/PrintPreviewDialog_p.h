@@ -56,7 +56,7 @@ namespace Private
 
         void pageModeChanged( BasePrintHelper::PageMode );
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* orientation changed
         void _setOrientation( QAction* );

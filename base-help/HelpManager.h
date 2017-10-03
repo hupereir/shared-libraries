@@ -69,7 +69,7 @@ namespace Base
         QAction& displayAction()
         { return *displayAction_; }
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* opens help dialog
         void _display();

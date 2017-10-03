@@ -66,7 +66,7 @@ namespace Ssh
         //* close
         void close();
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* read from tcp socket
         void _readFromTcpSocket();

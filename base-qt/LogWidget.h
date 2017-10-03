@@ -60,7 +60,7 @@ class LogWidget: public TextEditor
     void clear() override
     { BaseEditor::clear(); }
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* toggle wrap mode
     bool _toggleWrapMode( bool ) override;

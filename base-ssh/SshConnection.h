@@ -163,7 +163,7 @@ namespace Ssh
         //* timer event
         void timerEvent( QTimerEvent* ) override;
 
-        protected Q_SLOTS:
+        private Q_SLOTS:
 
         //* save host info lookup
         void _saveHost( QHostInfo );
