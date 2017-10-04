@@ -48,24 +48,6 @@ namespace Private
 
     };
 
-    class LineEditorButton: public QAbstractButton, private Base::Counter<LineEditorButton>
-    {
-
-        public:
-
-        //* constructor
-        explicit LineEditorButton( QWidget* parent );
-
-        //* size hint
-        QSize sizeHint() const override;
-
-        protected:
-
-        //* paint
-        void paintEvent( QPaintEvent* ) override;
-
-    };
-
 }
 
 #endif

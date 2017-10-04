@@ -58,7 +58,7 @@ namespace Private
 
         // adjust sub element rect
         QRect rect( QProxyStyle::subElementRect( subElement, option, widget ) );
-        return visualRect( option->direction, rect, rect.adjusted( 0, 0, -editor->buttonsSize().width(), 0 ) );
+        return visualRect( option->direction, rect, rect.adjusted( editor->leftButtonsSize().width(), 0, -editor->rightButtonsSize().width(), 0 ) );
 
     }
 
@@ -72,59 +72,61 @@ namespace Private
         const auto editor( qobject_cast<const LineEditor*>( widget ) );
         if( !editor ) return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
 
-        const auto buttonsSize( editor->buttonsSize() );
+        const auto leftButtonsSize( editor->leftButtonsSize() );
+        const auto rightButtonsSize( editor->rightButtonsSize() );
 
         QSize size( contentsSize );
-        size.rwidth() += buttonsSize.width();
-        size.setHeight( qMax( size.height(), buttonsSize.height() ) );
+        size.rwidth() += leftButtonsSize.width() + rightButtonsSize.width();
+        size.setHeight( qMax( size.height(), qMax( leftButtonsSize.height(), rightButtonsSize.height() ) ) );
 
-        return QProxyStyle::sizeFromContents( contentsType, option, contentsSize, widget );
+        return QProxyStyle::sizeFromContents( contentsType, option, size, widget );
 
     }
 
-    //____________________________________________________________
-    LineEditorButton::LineEditorButton( QWidget* parent ):
-        QAbstractButton( parent ),
-        Counter( "Private::LineEditorButton" )
-    {
-        setText( QString() );
-        setIcon( IconEngine::get( IconNames::EditClear ) );
-        setToolTip( tr( "Clear text" ) );
-        setFocusPolicy( Qt::NoFocus );
-    }
+}
 
-    //____________________________________________________________
-    QSize LineEditorButton::sizeHint() const
-    {
-        QStyleOptionButton option;
-        option.initFrom( this );
+//____________________________________________________________
+LineEditorButton::LineEditorButton( QWidget* parent ):
+    QToolButton( parent ),
+    Counter( "LineEditorButton" )
+{
 
-        const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-        const int margin( 2 );
-        const int dimension = iconSize + 2*margin;
-        return QSize( dimension, dimension );
-    }
+    QStyleOptionButton option;
+    option.initFrom( this );
+    const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+    setIconSize( QSize( iconSize, iconSize ) );
+}
 
-    //____________________________________________________________
-    void LineEditorButton::paintEvent( QPaintEvent* event )
-    {
-        if( icon().isNull() ) return;
+//____________________________________________________________
+QSize LineEditorButton::sizeHint() const
+{
+    QStyleOptionButton option;
+    option.initFrom( this );
 
-        QStyleOptionButton option;
-        option.initFrom( this );
+    const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+    const int margin( 2 );
+    const int dimension = iconSize + 2*margin;
+    return QSize( dimension, dimension );
+}
 
-        const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-        const QSize iconSize( iconWidth, iconWidth );
-        const auto pixmap( icon().pixmap( iconSize ) );
+//____________________________________________________________
+void LineEditorButton::paintEvent( QPaintEvent* event )
+{
+    if( icon().isNull() ) return;
 
-        const auto rect( this->rect() );
-        const QRect iconRect( QPoint( rect.x() + (rect.width() - iconWidth)/2, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
+    QStyleOptionButton option;
+    option.initFrom( this );
 
-        QPainter painter( this );
-        painter.setClipRegion( event->region() );
-        painter.drawPixmap( iconRect, pixmap );
-    }
+    const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
+    const QSize iconSize( iconWidth, iconWidth );
+    const auto pixmap( icon().pixmap( iconSize ) );
 
+    const auto rect( this->rect() );
+    const QRect iconRect( QPoint( rect.x() + (rect.width() - iconWidth)/2, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
+
+    QPainter painter( this );
+    painter.setClipRegion( event->region() );
+    painter.drawPixmap( iconRect, pixmap );
 }
 
 //____________________________________________________________
@@ -142,21 +144,31 @@ LineEditor::LineEditor( QWidget* parent ):
     // modification state call-back
     connect( this, SIGNAL(textChanged(QString)), SLOT(_modified(QString)) );
 
-    // buttons container
-    container_ = new QWidget( this );
-    container_->setCursor( Qt::ArrowCursor );
-    container_->show();
+    // rigtht buttons container
+    auto createContainer = []( QWidget* parent )
+    {
+        auto container = new QWidget(parent);
+        container->setCursor( Qt::ArrowCursor );
+        container->show();
 
-    // button layout
-    auto layout = new QHBoxLayout( container_ );
-    layout->setMargin(0);
-    layout->setSpacing(2);
+        // button layout
+        auto layout = new QHBoxLayout;
+        layout->setMargin(0);
+        layout->setSpacing(2);
 
-    container_->setLayout( layout );
+        container->setLayout( layout );
+        return container;
+    };
+
+    leftContainer_ = createContainer( this );
+    rightContainer_ = createContainer( this );
 
     // clear button
-    clearButton_ = new Private::LineEditorButton( container_ );
-    container_->layout()->addWidget( clearButton_ );
+    auto button = new LineEditorButton;
+    button->setIcon( IconEngine::get( IconNames::EditClear ) );
+    button->setToolTip( tr( "Clear text" ) );
+
+    addRightWidget( clearButton_ = button );
     clearButton_->hide();
 
     // setup connections
@@ -169,8 +181,12 @@ LineEditor::LineEditor( QWidget* parent ):
 }
 
 //_____________________________________________________________________
-QSize LineEditor::buttonsSize() const
-{ return container_->sizeHint(); }
+QSize LineEditor::leftButtonsSize() const
+{ return leftContainer_->sizeHint(); }
+
+//_____________________________________________________________________
+QSize LineEditor::rightButtonsSize() const
+{ return rightContainer_->sizeHint(); }
 
 //_____________________________________________________________________
 void LineEditor::setReadOnly( bool value )
@@ -214,16 +230,6 @@ void LineEditor::setShowClearButton( bool value )
 
     _updateButtonsGeometry();
 
-}
-
-//______________________________________________________________________________
-void LineEditor::addWidget( QWidget* widget )
-{
-    widget->setParent( container_ );
-    container_->layout()->addWidget( widget );
-
-    widget->setAutoFillBackground( false );
-    widget->setFocusPolicy( Qt::NoFocus );
 }
 
 //______________________________________________________________________________
@@ -344,6 +350,16 @@ void LineEditor::keyPressEvent( QKeyEvent* event )
 
 }
 
+//______________________________________________________________________________
+void LineEditor::_addWidget( QWidget* widget, QWidget* parent )
+{
+    widget->setParent( parent );
+    parent->layout()->addWidget( widget );
+
+    widget->setAutoFillBackground( false );
+    widget->setFocusPolicy( Qt::NoFocus );
+}
+
 //____________________________________________________________
 void LineEditor::_updateButtonsGeometry() const
 {
@@ -352,14 +368,29 @@ void LineEditor::_updateButtonsGeometry() const
     initStyleOption( &option );
     const QRect textRect( style()->subElementRect( QStyle::SE_LineEditContents, &option, this ) );
 
-    auto buttonsSize = container_->sizeHint();
-    QRect buttonsRect( textRect.topRight()+QPoint( 1, 0 ), QSize( buttonsSize.width(), textRect.height() ) );
+    {
+        // left container
+        const auto buttonsSize = leftContainer_->sizeHint();
+        const auto buttonsRect =  style()->visualRect(
+            option.direction,
+            option.rect,
+            QRect( textRect.topLeft() - QPoint( buttonsSize.width(), 0 ), QSize( buttonsSize.width(), textRect.height() ) ) );
 
-    // handle right to left
-    buttonsRect = style()->visualRect( option.direction, option.rect, buttonsRect );
+        // assign
+        leftContainer_->setGeometry( buttonsRect );
+    }
 
-    // assign
-    container_->setGeometry( buttonsRect );
+    {
+        // right container
+        const auto buttonsSize = rightContainer_->sizeHint();
+        const auto buttonsRect = style()->visualRect(
+            option.direction,
+            option.rect,
+            QRect( textRect.topRight()+QPoint( 1, 0 ), QSize( buttonsSize.width(), textRect.height() ) ) );
+
+        // assign
+        rightContainer_->setGeometry( buttonsRect );
+    }
 
 }
 

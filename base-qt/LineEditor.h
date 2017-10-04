@@ -28,9 +28,31 @@
 #include <QLayout>
 #include <QLineEdit>
 #include <QMenu>
+#include <QPainter>
 #include <QProxyStyle>
+#include <QStyleOptionButton>
+#include <QToolButton>
 
 class BaseContextMenu;
+
+//* used to insert buttons into a line editor
+class LineEditorButton: public QToolButton, private Base::Counter<LineEditorButton>
+{
+
+    public:
+
+    //* constructor
+    explicit LineEditorButton( QWidget* = nullptr );
+
+    //* size hint
+    QSize sizeHint() const override;
+
+    protected:
+
+    //* paint
+    void paintEvent( QPaintEvent* ) override;
+
+};
 
 class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 {
@@ -50,11 +72,19 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //*@name accessors
     //@{
 
+    //* clear button
     bool showClearButton() const
     { return showClearButton_; }
 
+    //* clear button
+    QWidget& clearButton() const
+    { return *clearButton_; }
+
     //* buttons width
-    QSize buttonsSize() const;
+    QSize leftButtonsSize() const;
+
+    //* buttons width
+    QSize rightButtonsSize() const;
 
     //* modification state
     bool isModified() const
@@ -75,7 +105,12 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     void setShowClearButton( bool );
 
     //* add a button
-    void addWidget( QWidget* );
+    void addLeftWidget( QWidget* widget )
+    { return _addWidget( widget, leftContainer_ ); }
+
+    //* add a button
+    void addRightWidget( QWidget* widget )
+    { return _addWidget( widget, rightContainer_ ); }
 
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu* );
@@ -147,6 +182,9 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 
     private:
 
+    //* add widget to parent
+    void _addWidget( QWidget*, QWidget* );
+
     //* toggle clear button
     void _updateButtonsGeometry() const;
 
@@ -194,8 +232,11 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //* true if clear button must be shown
     bool showClearButton_ = false;
 
-    //* buttons container
-    QWidget* container_ = nullptr;
+    //* left buttons container
+    QWidget* leftContainer_ = nullptr;
+
+    //* right buttons container
+    QWidget* rightContainer_ = nullptr;
 
     //* clear button
     QWidget* clearButton_ = nullptr;
