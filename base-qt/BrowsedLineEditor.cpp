@@ -45,7 +45,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
 
     // insert horizontal layout
-    QHBoxLayout *layout = new QHBoxLayout;
+    auto layout = new QHBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(2);
     setLayout( layout );
