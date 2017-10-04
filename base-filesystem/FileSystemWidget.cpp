@@ -92,6 +92,9 @@ FileSystemWidget::FileSystemWidget( QWidget *parent ):
     toolbar->addAction( workingDirectoryAction_ );
     toolbar->addAction( reloadAction_ );
 
+    // by default, hide parent directory action
+    parentDirectoryAction_->setVisible( false );
+
     // file list
     layout->addWidget( list_ = new TreeView( this ), 1);
     if( list_->itemDelegateForColumn(0) ) list_->itemDelegateForColumn(0)->deleteLater();
@@ -144,9 +147,18 @@ File FileSystemWidget::path() const
 { return pathEditor_->path(); }
 
 //_________________________________________________________
+void FileSystemWidget::setHomePath( const File& path )
+{
+    Debug::Throw( "FileSystemWidget::setHomePath.\n" );
+    homePath_ = path;
+    if( pathEditor_->path().isEmpty() )
+    { setPath( path ); }
+}
+
+//_________________________________________________________
 void FileSystemWidget::setWorkingPath( const File& path )
 {
-    Debug::Throw( "FileSystemWidget::setHome.\n" );
+    Debug::Throw( "FileSystemWidget::setWorkingPath.\n" );
     workingPath_ = path;
     if( pathEditor_->path().isEmpty() )
     { setPath( path ); }

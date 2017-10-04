@@ -52,8 +52,36 @@ class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
 
     //@}
 
+    //*@name actions
+    //@{
+
+    //* previous directory action
+    QAction&  previousDirectoryAction() const
+    { return *previousDirectoryAction_; }
+
+    //* next directory action
+    QAction& nextDirectoryAction() const
+    { return *nextDirectoryAction_; }
+
+    //* parent directory action
+    QAction& parentDirectoryAction() const
+    { return *parentDirectoryAction_; }
+
+    //* home directory action
+    QAction& homeDirectoryAction() const
+    { return *homeDirectoryAction_; }
+
+    //* working directory action
+    QAction& workingDirectoryAction() const
+    { return *workingDirectoryAction_; }
+
+    //@}
+
     //*@name modifiers
     //@{
+
+    //* home path
+    void setHomePath( const File& );
 
     //* working path
     void setWorkingPath( const File& );
