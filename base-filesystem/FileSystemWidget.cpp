@@ -329,7 +329,7 @@ void FileSystemWidget::_updateActions()
 void FileSystemWidget::_showToolTip( const QModelIndex& index )
 {
 
-    if( !index.isValid() ) toolTipWidget_->hide();
+    if( !( index.isValid()  && window()->isActiveWindow() ) ) toolTipWidget_->hide();
     else {
 
         // fileInfo
@@ -340,7 +340,7 @@ void FileSystemWidget::_showToolTip( const QModelIndex& index )
         QVariant iconVariant( model_.data( index, Qt::DecorationRole ) );
         if( iconVariant.canConvert( QVariant::Icon ) ) icon = iconVariant.value<QIcon>();
 
-        // rect
+        // move tooltip
         toolTipWidget_->setIndexRect(
             list_->visualRect( index ).translated( list_->viewport()->mapToGlobal( QPoint( 0, 0 ) ) ) );
 

@@ -73,7 +73,7 @@ class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
     //* base directory
     void setPath( File, bool forced = false );
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* custom event, used to retrieve file validity check event
     void _processFiles( const File::List& );
