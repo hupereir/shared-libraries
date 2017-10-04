@@ -30,7 +30,7 @@ namespace Base
     {
 
         //* generic unary functor that verifies if a value equals a prediction
-        template<class T, typename Comparator = std::equal_to<T>>
+        template<class T, typename Comparator = std::equal_to<T> >
         class SameFTor
         {
             public:
@@ -55,16 +55,16 @@ namespace Base
         };
 
         template <class T>
-        using DifferFTor = SameFTor<T, std::not_equal_to<T>>;
+        using DifferFTor = SameFTor<T, std::not_equal_to<T> >;
 
         template <class T>
-        using LessFTor = SameFTor<T, std::less<T>>;
+        using LessFTor = SameFTor<T, std::less<T> >;
 
         template <class T>
-        using GreaterFTor = SameFTor<T, std::greater<T>>;
+        using GreaterFTor = SameFTor<T, std::greater<T> >;
 
         //* generic unary functor that verifies if a given method returns a specific value
-        template <class T, typename R, R (T::*accessor)() const, typename Comparator = std::equal_to<R>>
+        template <class T, typename R, R (T::*accessor)() const, typename Comparator = std::equal_to<R> >
             class Unary
         {
 
@@ -128,10 +128,13 @@ namespace Base
         using UnaryEqual = Unary<T, R, accessor>;
 
         template <class T, typename R, R (T::*accessor)() const>
-        using UnaryLess = Unary<T, R, accessor, std::less<R>>;
+        using UnaryDiffer = Unary<T, R, accessor, std::not_equal_to<R> >;
 
         template <class T, typename R, R (T::*accessor)() const>
-        using UnaryMore = Unary<T, R, accessor, std::greater<R>>;
+        using UnaryLess = Unary<T, R, accessor, std::less<R> >;
+
+        template <class T, typename R, R (T::*accessor)() const>
+        using UnaryMore = Unary<T, R, accessor, std::greater<R> >;
 
         //* generic unary functor that verifies if a given method is satisfied
         template <class T, bool (T::*accessor)() const, bool prediction = true>
@@ -189,10 +192,10 @@ namespace Base
         using BinaryEqual = Binary<T, R, accessor>;
 
         template <class T, typename R, R (T::*accessor)() const>
-        using BinaryLess = Binary<T, R, accessor, std::less<R>>;
+        using BinaryLess = Binary<T, R, accessor, std::less<R> >;
 
         template <class T, typename R, R (T::*accessor)() const>
-        using BinaryMore = Binary<T, R, accessor, std::greater<R>>;
+        using BinaryMore = Binary<T, R, accessor, std::greater<R> >;
 
     }
 
