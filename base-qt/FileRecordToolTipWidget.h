@@ -86,10 +86,10 @@ class FileRecordToolTipWidget: public BaseToolTipWidget
     private:
 
     //* pixmap size
-    int pixmapSize_;
+    int pixmapSize_ = 96;
 
     //* information mask
-    int mask_;
+    int mask_ = Default;
 
     //* local icon copy
     QIcon icon_;
