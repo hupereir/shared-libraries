@@ -60,6 +60,8 @@ else()
 
 endif()
 
+target_link_libraries(base-filesystem base-qt)
+
 if(USE_QT5)
 
   target_link_libraries(base-filesystem Qt5::Widgets Qt5::Xml)

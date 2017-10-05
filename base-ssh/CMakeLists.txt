@@ -77,6 +77,8 @@ else()
 
 endif()
 
+target_link_libraries(base-ssh base-qt)
+
 if(WIN32)
 
   # add needed libraries for sockets and inet on windows
