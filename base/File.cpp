@@ -370,8 +370,16 @@ File::List File::listFiles( ListFlags flags ) const
         fileInfo.setFile( dir, value );
         const File file( fileInfo.absoluteFilePath() );
 
-        if( !( flags&File::FilesOnly && file.isDirectory() ) )
-        { out.append( file ); }
+        if( flags&File::FilesOnly )
+        {
+
+            if( !file.isDirectory() ) out.append( file );
+
+        } else if( flags&File::FoldersOnly ) {
+
+            if( file.isDirectory() ) out.append( file );
+
+        } else out.append( file );
 
         // list subdirectory if recursive
         if( flags & ListFlag::Recursive && file.isDirectory() )
