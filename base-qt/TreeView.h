@@ -321,6 +321,10 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* paint event
     void paintEvent( QPaintEvent* ) override;
 
+    //* set use embedded widget
+    void _setUseEmbeddedWidgets( bool value )
+    { useEmbeddedWidgets_ = value; }
+
     private Q_SLOTS:
 
     //* header menu
@@ -339,9 +343,6 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* install actions
     void _installActions();
-
-
-    private:
 
     //* find dialog
     void _createFindDialog();
@@ -426,7 +427,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* header visibility
     QString showHeaderOptionName_;
 
-    //* true if use dialog for finding
+    //* false if use dialog for finding
     bool useEmbeddedWidgets_ = false;
 
     //* true if item margins are to be set from options
