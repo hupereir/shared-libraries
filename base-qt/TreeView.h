@@ -321,24 +321,6 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* paint event
     void paintEvent( QPaintEvent* ) override;
 
-    //* find dialog
-    void _createFindDialog();
-
-    //* find widget
-    void _createFindWidget( bool compact );
-
-    //* find selection in forward direction
-    bool _findForward( const TextSelection& selection, bool rewind );
-
-    //* find selection in backward direction
-    bool _findBackward( const TextSelection& selection, bool rewind );
-
-    //* set item margin
-    void _setItemMargin( int );
-
-    //* hover index
-    void _setHoverIndex( const QModelIndex& );
-
     private Q_SLOTS:
 
     //* header menu
@@ -357,6 +339,27 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* install actions
     void _installActions();
+
+
+    private:
+
+    //* find dialog
+    void _createFindDialog();
+
+    //* find widget
+    void _createFindWidget( bool compact );
+
+    //* find selection in forward direction
+    bool _findForward( const TextSelection& selection, bool rewind );
+
+    //* find selection in backward direction
+    bool _findBackward( const TextSelection& selection, bool rewind );
+
+    //* set item margin
+    void _setItemMargin( int );
+
+    //* hover index
+    void _setHoverIndex( const QModelIndex& );
 
     //* return first index
     QModelIndex _firstIndex() const;
