@@ -37,9 +37,11 @@
 #include <QScrollBar>
 #include <QStyleOptionViewItemV4>
 
+#include <memory>
+
 // forward declaration
+class AbstractFindWidget;
 class BaseFindDialog;
-class BaseFindWidget;
 class ItemModel;
 
 //* icon view
@@ -52,6 +54,9 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     //* constructor
     explicit IconView( QWidget* = nullptr );
+
+    //* destructor
+    ~IconView() override;
 
     //*@name accessors
     //@{
@@ -91,6 +96,9 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     //* set model
     void setModel( QAbstractItemModel* ) override;
+
+    //* find widget
+    void setFindWidget( AbstractFindWidget* );
 
     //* enable list finding
     void setFindEnabled( bool value );
@@ -386,7 +394,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     BaseFindDialog* findDialog_ = nullptr;
 
     //* find widget
-    BaseFindWidget* findWidget_ = nullptr;
+    AbstractFindWidget* findWidget_ = nullptr;
 
     //* model
     ItemModel* model_ = nullptr;

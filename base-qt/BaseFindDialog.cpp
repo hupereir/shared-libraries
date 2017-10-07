@@ -19,6 +19,10 @@
 
 #include "BaseFindDialog.h"
 
+#include "BaseFindWidget.h"
+
+#include <QLayout>
+
 //________________________________________________________________________
 BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     BaseDialog( parent, flags ),
@@ -39,12 +43,12 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 }
 
 //________________________________________________________________________
-void BaseFindDialog::setBaseFindWidget( BaseFindWidget* baseFindWidget )
+void BaseFindDialog::setBaseFindWidget( AbstractFindWidget* baseFindWidget )
 {
     Debug::Throw( "BaseFindDialog::setBaseFindWidget.\n" );
 
     // assign new widget and change parent
-    baseFindWidget_.reset( baseFindWidget );
+    baseFindWidget_ = baseFindWidget;
     if( baseFindWidget_->parent() != this )
     {
         baseFindWidget_->setParent( this );
@@ -52,10 +56,10 @@ void BaseFindDialog::setBaseFindWidget( BaseFindWidget* baseFindWidget )
     }
 
     // append to layout
-    layout()->addWidget( baseFindWidget_.get() );
+    layout()->addWidget( baseFindWidget_ );
 
     // setup connections
-    connect( baseFindWidget_.get(), SIGNAL(find(TextSelection)), this, SIGNAL(find(TextSelection)) );
+    connect( baseFindWidget_, SIGNAL(find(TextSelection)), this, SIGNAL(find(TextSelection)) );
     connect( &baseFindWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()) );
 
 }

@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
+#include "AbstractFindWidget.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
-#include "EmbeddedWidget.h"
 #include "TextSelection.h"
 #include "QOrderedSet.h"
 
@@ -33,11 +33,10 @@
 #include <QList>
 #include <QPalette>
 
-//* find dialog for text editor widgets
-class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidget>
+//* find widget for text editors and lists
+class BaseFindWidget: public AbstractFindWidget, private Base::Counter<BaseFindWidget>
 {
 
-    //* Qt meta object declaration
     Q_OBJECT
 
     public:
@@ -49,18 +48,18 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     //@{
 
     //* string to find
-    virtual QString text() const
+    QString text() const override
     { return editor_->currentText(); }
 
     //* get selection
-    virtual TextSelection selection( bool ) const;
+    TextSelection selection( bool ) const override;
 
     //* retrieve editor
-    CustomComboBox& editor() const
+    QWidget& editor() const override
     { return *editor_; }
 
     //* close button
-    QAbstractButton& closeButton() const
+    QAbstractButton& closeButton() const override
     { return *closeButton_; }
 
     //* list of disabled buttons
@@ -73,31 +72,26 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     //@{
 
     //* string to find
-    virtual void setText( const QString& );
-
-    //* enable/disable entire word
-    virtual void enableEntireWord( bool );
-
-    //* enable/disable RegExp
-    virtual void enableRegExp( bool );
+    void setText( const QString& ) override;
 
     //* synchronize searched strings and ComboBox
-    virtual void synchronize();
+    void synchronize() override;
+
+    //* enable/disable entire word
+    void enableEntireWord( bool );
+
+    //* enable/disable RegExp
+    void enableRegExp( bool );
 
     //@}
-
-    Q_SIGNALS:
-
-    //* emitted when Find is pressed
-    void find( TextSelection );
 
     public Q_SLOTS:
 
     //* take action when at least one match is found
-    void matchFound();
+    void matchFound() override;
 
     //* take action when no match is found
-    void noMatchFound();
+    void noMatchFound() override;
 
     protected Q_SLOTS:
 
@@ -172,7 +166,6 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
     CustomComboBox* editor_ = nullptr;
 
     //* backward search if checked
-    // QCheckBox* backwardCheckbox_ = nullptr;
     bool findBackward_ = false;
 
     //* case sensitive search if checked
@@ -186,6 +179,8 @@ class BaseFindWidget: public EmbeddedWidget, private Base::Counter<BaseFindWidge
 
     //* find button
     QAbstractButton* findNextButton_ = nullptr;
+
+    //* find button
     QAbstractButton* findPreviousButton_ = nullptr;
 
     //* close button

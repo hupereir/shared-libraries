@@ -46,7 +46,9 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     label->setBuddy( replaceEditor_ );
 
     // disable callbacks on find editor
-    disconnect( editor().lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_findNoIncrement()) );
+    const auto editor = qobject_cast<CustomComboBox*>( &this->editor() );
+    if( editor )
+    { disconnect( editor->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_findNoIncrement()) ); }
 
     replaceEditor_->setEditable( true );
     replaceEditor_->setAutoCompletion( true, Qt::CaseSensitive );
@@ -57,7 +59,7 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateReplaceComboBox()) );
     connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), this, SIGNAL(replaceTextChanged(QString)) );
 
-    setTabOrder( &editor(), replaceEditor_ );
+    setTabOrder( &this->editor(), replaceEditor_ );
 
     // replace buttons
     QPushButton* button = new QPushButton( tr( "Replace" ), this );

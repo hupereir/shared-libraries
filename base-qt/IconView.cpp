@@ -73,6 +73,9 @@ IconView::IconView( QWidget* parent ):
 }
 
 //_______________________________________________
+IconView::~IconView() = default;
+
+//_______________________________________________
 void IconView::setModel( QAbstractItemModel* model )
 {
     Debug::Throw( "IconView::setModel.\n" );
@@ -84,6 +87,22 @@ void IconView::setModel( QAbstractItemModel* model )
         connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(saveSelectedIndexes()) );
         connect( model_, SIGNAL(layoutChanged()), SLOT(restoreSelectedIndexes()) );
     }
+}
+
+//______________________________________________________________________
+void IconView::setFindWidget( AbstractFindWidget* widget )
+{
+
+    Debug::Throw( "IconView::setFindWidget.\n" );
+
+    if( findWidget_ ) findWidget_->deleteLater();
+    findWidget_ = widget;
+
+    // connections
+    connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+    connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
+    connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
+
 }
 
 //_______________________________________________
@@ -1041,17 +1060,13 @@ void IconView::_createFindDialog()
 {
 
     Debug::Throw( "IconView::_createFindDialog.\n" );
-    if( !findDialog_ )
-    {
 
-        // create dialog
-        findDialog_ = new BaseFindDialog( this );
-        findDialog_->setWindowTitle( tr( "Find in List" ) );
+    // create dialog
+    findDialog_ =  new BaseFindDialog( this );
+    findDialog_->setWindowTitle( tr( "Find in List" ) );
 
-        if( !findWidget_ ) _createFindWidget( false );
-        findDialog_->setBaseFindWidget( findWidget_ );
-
-    }
+    if( !findWidget_ ) _createFindWidget( false );
+    findDialog_->setBaseFindWidget( findWidget_ );
 
     return;
 
@@ -1062,23 +1077,13 @@ void IconView::_createFindWidget( bool compact )
 {
 
     Debug::Throw( "IconView::_createFindWidget.\n" );
-    if( !findWidget_ )
-    {
 
-        // create Widget
-        findWidget_ = new BaseFindWidget( this, compact );
+    // create Widget
+    auto findWidget = new BaseFindWidget( this, compact );
+    findWidget->enableEntireWord( false );
+    findWidget->enableRegExp( true );
 
-        // for now entire word is disabled, because it is unclear how to handle it
-        findWidget_->enableEntireWord( false );
-
-        // connections
-        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
-    }
-
-    return;
-
+    setFindWidget( findWidget );
 }
 
 //______________________________________________________________________
@@ -1360,7 +1365,6 @@ void IconView::_findFromDialog()
 
     }
 
-    findWidget_->enableRegExp( true );
     findWidget_->synchronize();
     findWidget_->matchFound();
     findWidget_->setText( text );

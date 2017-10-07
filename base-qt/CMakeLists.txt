@@ -64,6 +64,7 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
 ########### next target ###############
 set(base_qt_SOURCES
+  AbstractFindWidget.cpp
   BaseContextMenu.cpp
   BaseFileIconProvider.cpp
   BaseFileInfo.cpp

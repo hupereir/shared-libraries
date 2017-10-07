@@ -38,7 +38,7 @@ QOrderedSet<QString>& BaseFindWidget::_searchedStrings()
 
 //________________________________________________________________________
 BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
-    EmbeddedWidget( parent ),
+    AbstractFindWidget( parent ),
     Counter( "BaseFindWidget" )
 {
     Debug::Throw( "BaseFindWidget::BaseFindWidget.\n" );
@@ -47,8 +47,8 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     _updateNotFoundPalette();
 
     // create vbox layout
-    QVBoxLayout* vLayout;
-    setLayout( vLayout = new QVBoxLayout );
+    auto vLayout = new QVBoxLayout;
+    setLayout( vLayout );
     vLayout->setMargin( compact ? 2:0 );
     vLayout->setSpacing( 5 );
 
@@ -254,7 +254,7 @@ void BaseFindWidget::_updateButtons( const QString& text )
 {
     Debug::Throw( "BaseFindWidget::_updateButtons.\n" );
 
-    const bool enabled( !( text.isNull() || text.isEmpty() ) );
+    const bool enabled( !( text.isEmpty() ) );
     for( const auto& button:buttons_ )
     { button->setEnabled( enabled ); }
 

@@ -30,7 +30,7 @@
 
 // forward declaration
 class BaseFindDialog;
-class BaseFindWidget;
+class AbstractFindWidget;
 class ItemModel;
 
 //* customized tree view
@@ -44,6 +44,9 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* constructor
     explicit TreeView( QWidget* = nullptr );
+
+    //* destructor
+    ~TreeView() override;
 
     //*@name accessors
     //@{
@@ -97,6 +100,9 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* delegate
     void setItemDelegateForColumn( int, QAbstractItemDelegate* );
+
+    //* assign find widget
+    void setFindWidget( AbstractFindWidget* );
 
     //* enable list finding
     void setFindEnabled( bool value );
@@ -368,7 +374,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     BaseFindDialog* findDialog_ = nullptr;
 
     //* find widget
-    BaseFindWidget* findWidget_ = nullptr;
+    AbstractFindWidget* findWidget_ = nullptr;
 
     //* model
     ItemModel* model_ = nullptr;

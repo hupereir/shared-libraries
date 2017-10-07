@@ -1,5 +1,5 @@
-#ifndef BaseFindDialog_h
-#define BaseFindDialog_h
+#ifndef AbstractFindWidget_h
+#define AbstractFindWidget_h
 
 /******************************************************************************
 *
@@ -20,40 +20,39 @@
 *
 *******************************************************************************/
 
-#include "AbstractFindWidget.h"
-#include "BaseDialog.h"
-#include "Counter.h"
+#include "EmbeddedWidget.h"
+#include "TextSelection.h"
 
-//* find dialog for text editor widgets
-class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
+#include <QAbstractButton>
+#include <QWidget>
+
+//* abstract find widget class
+class AbstractFindWidget: public EmbeddedWidget
 {
 
-    //* Qt meta object declaration
     Q_OBJECT
 
     public:
 
     //* constructor
-    explicit BaseFindDialog( QWidget* = nullptr, Qt::WindowFlags = 0 );
+    explicit AbstractFindWidget( QWidget* parent = nullptr ):
+    EmbeddedWidget( parent )
+    {}
 
     //*@name accessors
     //@{
 
     //* string to find
-    QString text() const
-    { return baseFindWidget_->text(); }
+    virtual QString text() const = 0;
 
-    //* get selection
-    virtual TextSelection selection( bool value ) const
-    { return baseFindWidget_->selection( value ); }
+    //* selection
+    virtual TextSelection selection( bool ) const = 0;
 
-    //* find widget
-    AbstractFindWidget& baseFindWidget() const
-    { return *baseFindWidget_; }
+    //* editor
+    virtual QWidget& editor() const = 0;
 
-    //* retrieve editor
-    QWidget& editor() const
-    { return baseFindWidget_->editor(); }
+    //* close button
+    virtual QAbstractButton& closeButton() const = 0;
 
     //@}
 
@@ -61,15 +60,12 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     //@{
 
     //* string to find
-    void setText( const QString& text )
-    { baseFindWidget_->setText( text ); }
+    virtual void setText( const QString& )
+    {}
 
     //* synchronize searched strings and ComboBox
     virtual void synchronize()
-    { baseFindWidget_->synchronize(); }
-
-    //* set base find widget
-    void setBaseFindWidget( AbstractFindWidget* widget );
+    {}
 
     //@}
 
@@ -81,17 +77,13 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     public Q_SLOTS:
 
     //* take action when at least one match is found
-    void matchFound()
-    { baseFindWidget_->matchFound(); }
+    virtual void matchFound()
+    {}
 
     //* take action when no match is found
-    void noMatchFound()
-    { baseFindWidget_->noMatchFound(); }
-
-    private:
-
-    //* find widget
-    AbstractFindWidget* baseFindWidget_;
+    virtual void noMatchFound()
+    {}
 
 };
+
 #endif
