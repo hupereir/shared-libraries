@@ -30,7 +30,7 @@ include_directories(${CMAKE_SOURCE_DIR}/base-qt)
 set(base_filesystem_SOURCES
   FileIconProvider.cpp
   FileInformationDialog.cpp
-  FileSystemWidget.cpp
+  BaseFileSystemWidget.cpp
   FileSystemModel.cpp
   RemoveFilesDialog.cpp
   RenameFileDialog.cpp

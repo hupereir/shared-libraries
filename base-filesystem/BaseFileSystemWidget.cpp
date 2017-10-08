@@ -17,7 +17,7 @@
 *
 *******************************************************************************/
 
-#include "FileSystemWidget.h"
+#include "BaseFileSystemWidget.h"
 
 #include "BaseFileInfo.h"
 #include "BaseFileInfoItemDelegate.h"
@@ -44,9 +44,9 @@
 #include <QDir>
 
 //_____________________________________________
-FileSystemWidget::FileSystemWidget( QWidget *parent ):
+BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     QWidget( parent ),
-    Counter( "FileSystemWidget" ),
+    Counter( "BaseFileSystemWidget" ),
     sizePropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Size ) ),
     showNavigator_( false ),
     homePath_( Util::home() ),
@@ -54,7 +54,7 @@ FileSystemWidget::FileSystemWidget( QWidget *parent ):
     thread_( this )
 {
 
-    Debug::Throw( "FileSystemWidget::FileSystemWidget.\n" );
+    Debug::Throw( "BaseFileSystemWidget::BaseFileSystemWidget.\n" );
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setSpacing(2);
@@ -110,7 +110,7 @@ FileSystemWidget::FileSystemWidget( QWidget *parent ):
     // list menu
     // should move to proper _updateMenu method, and only show relevant actions
     // also, should use baseFileInfo model
-    QMenu* menu( new ContextMenu( list_ ) );
+    auto menu = new ContextMenu( list_ );
     menu->addMenu( new ColumnSortingMenu( menu, list_ ) );
     menu->addMenu( new ColumnSelectionMenu( menu, list_ ) );
     menu->addSeparator();
@@ -121,6 +121,9 @@ FileSystemWidget::FileSystemWidget( QWidget *parent ):
     menu->addAction( removeAction_ );
     menu->addSeparator();
     menu->addAction( filePropertiesAction_ );
+
+    // assign
+    contextMenu_ = menu;
 
     // connections
     connect( &model_, SIGNAL(layoutChanged()), list_, SLOT(updateMask()) );
@@ -143,41 +146,41 @@ FileSystemWidget::FileSystemWidget( QWidget *parent ):
 }
 
 //_________________________________________________________
-File FileSystemWidget::path() const
+File BaseFileSystemWidget::path() const
 { return pathEditor_->path(); }
 
 //_________________________________________________________
-void FileSystemWidget::setHomePath( const File& path )
+void BaseFileSystemWidget::setHomePath( const File& path )
 {
-    Debug::Throw( "FileSystemWidget::setHomePath.\n" );
+    Debug::Throw( "BaseFileSystemWidget::setHomePath.\n" );
     homePath_ = path;
     if( pathEditor_->path().isEmpty() )
     { setPath( path ); }
 }
 
 //_________________________________________________________
-void FileSystemWidget::setWorkingPath( const File& path )
+void BaseFileSystemWidget::setWorkingPath( const File& path )
 {
-    Debug::Throw( "FileSystemWidget::setWorkingPath.\n" );
+    Debug::Throw( "BaseFileSystemWidget::setWorkingPath.\n" );
     workingPath_ = path;
     if( pathEditor_->path().isEmpty() )
     { setPath( path ); }
 }
 
 //_________________________________________________________
-void FileSystemWidget::clear()
+void BaseFileSystemWidget::clear()
 {
 
-    Debug::Throw( "FileSystemWidget::Clear.\n" );
+    Debug::Throw( "BaseFileSystemWidget::Clear.\n" );
     model_.clear();
 
 }
 
 //_________________________________________________________
-void FileSystemWidget::setPath( File path, bool forced )
+void BaseFileSystemWidget::setPath( File path, bool forced )
 {
 
-    Debug::Throw() << "FileSystemWidget::setPath - path: " << path << endl;
+    Debug::Throw() << "BaseFileSystemWidget::setPath - path: " << path << endl;
 
     // check if changed
     if( forced || pathEditor_->path() != path )
@@ -196,7 +199,7 @@ void FileSystemWidget::setPath( File path, bool forced )
 }
 
 //______________________________________________________
-void FileSystemWidget::_processFiles( const File::List& files )
+void BaseFileSystemWidget::_processFiles( const File::List& files )
 {
 
     // check path
@@ -251,9 +254,9 @@ void FileSystemWidget::_processFiles( const File::List& files )
 }
 
 //______________________________________________________
-void FileSystemWidget::_itemActivated( const QModelIndex& index )
+void BaseFileSystemWidget::_itemActivated( const QModelIndex& index )
 {
-    Debug::Throw( "FileSystemWidget::_itemActivated.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_itemActivated.\n" );
 
     if( !index.isValid() ) return;
 
@@ -277,9 +280,9 @@ void FileSystemWidget::_itemActivated( const QModelIndex& index )
 }
 
 //______________________________________________________
-void FileSystemWidget::_updateConfiguration()
+void BaseFileSystemWidget::_updateConfiguration()
 {
-    Debug::Throw( "FileSystemWidget::_updateConfiguration.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_updateConfiguration.\n" );
     hiddenFilesAction_->setChecked( XmlOptions::get().get<bool>( "SHOW_HIDDEN_FILES" ) );
 
     // show navigator in list
@@ -288,9 +291,9 @@ void FileSystemWidget::_updateConfiguration()
 }
 
 //______________________________________________________
-void FileSystemWidget::_updateNavigationActions()
+void BaseFileSystemWidget::_updateNavigationActions()
 {
-    Debug::Throw( "FileSystemWidget::_updateNavigationActions.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_updateNavigationActions.\n" );
     previousDirectoryAction_->setEnabled( pathEditor_->hasPrevious() );
     nextDirectoryAction_->setEnabled( pathEditor_->hasNext() );
     parentDirectoryAction_->setEnabled( pathEditor_->hasParent() );
@@ -298,11 +301,11 @@ void FileSystemWidget::_updateNavigationActions()
 }
 
 //______________________________________________________
-void FileSystemWidget::_update( const QString& value )
+void BaseFileSystemWidget::_update( const QString& value )
 { if( isVisible() && value == pathEditor_->path() ) _update(); }
 
 //______________________________________________________
-void FileSystemWidget::_update()
+void BaseFileSystemWidget::_update()
 {
 
     const File path( pathEditor_->path() );
@@ -320,9 +323,9 @@ void FileSystemWidget::_update()
 }
 
 //______________________________________________________________________
-void FileSystemWidget::_updateActions()
+void BaseFileSystemWidget::_updateActions()
 {
-    Debug::Throw( "FileSystemWidget:_updateActions.\n" );
+    Debug::Throw( "BaseFileSystemWidget:_updateActions.\n" );
     FileRecord::List selection( model_.get( list_->selectionModel()->selectedRows() ) );
 
     const bool hasEditableSelection = std::any_of( selection.begin(), selection.end(), FileRecord::HasFlagFTor( BaseFileInfo::Document ) );
@@ -338,7 +341,7 @@ void FileSystemWidget::_updateActions()
 }
 
 //______________________________________________________
-void FileSystemWidget::_showToolTip( const QModelIndex& index )
+void BaseFileSystemWidget::_showToolTip( const QModelIndex& index )
 {
 
     if( !( index.isValid()  && window()->isActiveWindow() ) ) toolTipWidget_->hide();
@@ -367,24 +370,24 @@ void FileSystemWidget::_showToolTip( const QModelIndex& index )
 }
 
 //______________________________________________________
-void FileSystemWidget::_toggleShowHiddenFiles( bool state )
+void BaseFileSystemWidget::_toggleShowHiddenFiles( bool state )
 {
-    Debug::Throw( "FileSystemWidget::_toggleShowHiddenFiles.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_toggleShowHiddenFiles.\n" );
     XmlOptions::get().set( "SHOW_HIDDEN_FILES", state );
 }
 
 //______________________________________________________
-void FileSystemWidget::_reload()
+void BaseFileSystemWidget::_reload()
 {
-    Debug::Throw( "FileSystemWidget::_reload.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_reload.\n" );
     setPath( pathEditor_->path(), true );
 }
 
 //______________________________________________________________________
-void FileSystemWidget::_open()
+void BaseFileSystemWidget::_open()
 {
 
-    Debug::Throw( "FileSystemWidget:_open.\n" );
+    Debug::Throw( "BaseFileSystemWidget:_open.\n" );
     FileSystemModel::List selection( model_.get( list_->selectionModel()->selectedRows() ) );
     FileSystemModel::List validSelection;
     for( const auto& record:selection )
@@ -401,10 +404,10 @@ void FileSystemWidget::_open()
 }
 
 //______________________________________________________________________
-void FileSystemWidget::_remove()
+void BaseFileSystemWidget::_remove()
 {
 
-    Debug::Throw( "FileSystemWidget::_remove.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_remove.\n" );
 
     // get selection
     FileSystemModel::List selection( model_.get( list_->selectionModel()->selectedRows() ) );
@@ -432,10 +435,10 @@ void FileSystemWidget::_remove()
 }
 
 //________________________________________
-void FileSystemWidget::_rename()
+void BaseFileSystemWidget::_rename()
 {
 
-    Debug::Throw( "FileSystemWidget::_rename.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_rename.\n" );
     QModelIndex index( list_->selectionModel()->currentIndex() );
     if( !index.isValid() ) return;
 
@@ -455,10 +458,10 @@ void FileSystemWidget::_rename()
 }
 
 //________________________________________
-void FileSystemWidget::_fileProperties()
+void BaseFileSystemWidget::_fileProperties()
 {
 
-    Debug::Throw( "FileSystemWidget::_fileProperties.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_fileProperties.\n" );
     QModelIndex index( list_->selectionModel()->currentIndex() );
     if( !index.isValid() ) return;
 
@@ -479,10 +482,10 @@ void FileSystemWidget::_fileProperties()
 }
 
 //_____________________________________________
-void FileSystemWidget::_installActions()
+void BaseFileSystemWidget::_installActions()
 {
 
-    Debug::Throw( "FileSystemWidget::_installActions.\n" );
+    Debug::Throw( "BaseFileSystemWidget::_installActions.\n" );
 
     // hidden files
     addAction( hiddenFilesAction_ = new QAction( tr( "Show Hidden Files" ), this ) );

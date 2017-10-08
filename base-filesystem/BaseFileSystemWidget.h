@@ -1,5 +1,5 @@
-#ifndef FileSystemWidget_h
-#define FileSystemWidget_h
+#ifndef BaseFileSystemWidget_h
+#define BaseFileSystemWidget_h
 
 /******************************************************************************
 *
@@ -24,16 +24,17 @@
 #include "FileSystemModel.h"
 #include "FileThread.h"
 
-#include <QIcon>
-#include <QWidget>
 #include <QFileSystemWatcher>
+#include <QIcon>
+#include <QMenu>
+#include <QWidget>
 
 class TreeView;
 class PathEditor;
 class FileRecordToolTipWidget;
 
 //* customized ListView for file/directory navigation
-class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
+class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystemWidget>
 {
 
     //* Qt meta object declaration
@@ -42,7 +43,7 @@ class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
     public:
 
     //* constructor
-    explicit FileSystemWidget( QWidget* parent );
+    explicit BaseFileSystemWidget( QWidget* parent );
 
     //*@name accessors
     //@{
@@ -100,6 +101,12 @@ class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
 
     //* base directory
     void setPath( File, bool forced = false );
+
+    protected:
+
+    //* context menu
+    QMenu& _contextMenu() const
+    { return *contextMenu_; }
 
     private Q_SLOTS:
 
@@ -169,6 +176,9 @@ class FileSystemWidget: public QWidget, private Base::Counter<FileSystemWidget>
 
     //* list of files
     TreeView* list_ = nullptr;
+
+    //* context menu
+    QMenu* contextMenu_ = nullptr;
 
     //* size property id
     FileRecord::PropertyId::Id sizePropertyId_ = 0;
