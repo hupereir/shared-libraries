@@ -22,7 +22,7 @@
 
 #include <QElapsedTimer>
 
-#if HAVE_SSH
+#if WITH_SSH
 #include <libssh2.h>
 #endif
 
@@ -168,7 +168,7 @@ namespace Ssh
 
         Debug::Throw( "FileWriteSocket::_tryConnect.\n" );
 
-        #if HAVE_SSH
+        #if WITH_SSH
         const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {
@@ -208,7 +208,7 @@ namespace Ssh
 
         Debug::Throw( "FileWriteSocket::_trySendEof.\n" );
 
-        #if HAVE_SSH
+        #if WITH_SSH
         const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {
@@ -245,7 +245,7 @@ namespace Ssh
 
         Debug::Throw( "FileWriteSocket::_tryWaitEof.\n" );
 
-        #if HAVE_SSH
+        #if WITH_SSH
         const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {
@@ -281,7 +281,7 @@ namespace Ssh
 
         Debug::Throw( "FileWriteSocket::_tryClose.\n" );
 
-        #if HAVE_SSH
+        #if WITH_SSH
         const auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         if( !session )
         {

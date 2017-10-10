@@ -22,7 +22,7 @@
 
 #include <QElapsedTimer>
 
-#if HAVE_SSH
+#if WITH_SSH
 #include <libssh2.h>
 #endif
 
@@ -46,7 +46,7 @@ namespace Ssh
         // check channel
         if( !isConnected() ) return true;
 
-        #if HAVE_SSH
+        #if WITH_SSH
         return libssh2_channel_eof( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
         #else
         return true;
@@ -61,7 +61,7 @@ namespace Ssh
         // stop timer
         if( timer_.isActive() ) timer_.stop();
 
-        #if HAVE_SSH
+        #if WITH_SSH
         // close channel
         if( isConnected() )
         {
@@ -107,7 +107,7 @@ namespace Ssh
         }
 
         if( !isConnected() ) return -1;
-        #if HAVE_SSH
+        #if WITH_SSH
 
         qint64 bytesWritten = 0;
         LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
@@ -142,7 +142,7 @@ namespace Ssh
         // check timer id
         if( event->timerId() != timer_.timerId() ) return QIODevice::timerEvent( event );
 
-        #if HAVE_SSH
+        #if WITH_SSH
 
         if( isConnected() ) _tryRead();
         return;
@@ -193,7 +193,7 @@ namespace Ssh
 
         if( !isConnected() ) return false;
 
-        #if HAVE_SSH
+        #if WITH_SSH
 
         // read from channel
         LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);

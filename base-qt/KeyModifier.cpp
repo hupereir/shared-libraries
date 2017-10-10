@@ -26,7 +26,7 @@
 #include <windows.h>
 #endif
 
-#if HAVE_XCB
+#if WITH_XCB
 #include <xcb/xcb.h>
 #include <xcb/xcb_keysyms.h>
 #include <X11/Xutil.h>
@@ -53,7 +53,7 @@ KeyModifier::State KeyModifier::state() const
 
     #endif
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     if( !XcbUtil::isX11() ) return State::Unknown;
 

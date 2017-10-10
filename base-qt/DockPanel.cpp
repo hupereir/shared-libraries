@@ -303,7 +303,7 @@ namespace Private
         // check that widget is top level
         if( !widgetDragMonitor_.isEnabled() ) return;
 
-        #if HAVE_XCB
+        #if WITH_XCB
 
         XcbUtil::get().changeState( window(), XcbDefines::_NET_WM_STATE_STAYS_ON_TOP, state );
         XcbUtil::get().changeState( window(), XcbDefines::_NET_WM_STATE_ABOVE, state );
@@ -335,7 +335,7 @@ namespace Private
         // check that widget is top level
         if( !widgetDragMonitor_.isEnabled() ) return;
 
-        #if HAVE_XCB
+        #if WITH_XCB
         if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
         {
 

@@ -22,7 +22,7 @@
 
 #include <QElapsedTimer>
 
-#if HAVE_SSH
+#if WITH_SSH
 #include <libssh2.h>
 #endif
 
@@ -74,7 +74,7 @@ namespace Ssh
         // check timer id
         if( event->timerId() == timer_.timerId() )
         {
-            #if HAVE_SSH
+            #if WITH_SSH
             if( _tryConnect() ) timer_.stop();
             return;
 
@@ -98,7 +98,7 @@ namespace Ssh
 
         Debug::Throw( "FileReadSocket::_tryConnect.\n" );
 
-        #if HAVE_SSH
+        #if WITH_SSH
         auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         auto channel = libssh2_scp_recv( session, qPrintable( path_ ), &stat_ );
         if( channel )

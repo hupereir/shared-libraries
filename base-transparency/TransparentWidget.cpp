@@ -31,7 +31,7 @@
 
 #include <QPainter>
 
-#if HAVE_XCB
+#if WITH_XCB
 #include <xcb/xcb.h>
 #include <xcb/shape.h>
 #endif
@@ -268,7 +268,7 @@ namespace Transparency
     void TransparentWidget::_updateInputShape()
     {
 
-        #if HAVE_XCB
+        #if WITH_XCB
 
         if( !XcbUtil::isX11() ) return;
 
@@ -320,7 +320,7 @@ namespace Transparency
 
         Debug::Throw() << "TransparentWidget::_updateBlurRegion" << endl;
 
-        #if HAVE_XCB
+        #if WITH_XCB
 
         if( !XcbUtil::isX11() ) return;
 

@@ -166,7 +166,7 @@ void TabWidget::_toggleStaysOnTop( bool state )
     // make sure that detached
     if( !isDetached() ) return;
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // change property
     XcbUtil::get().changeState( this, XcbDefines::_NET_WM_STATE_STAYS_ON_TOP, state );
@@ -196,7 +196,7 @@ void TabWidget::_toggleSticky( bool state )
     // make sure that detached
     if( !isDetached() ) return;
 
-    #if HAVE_XCB
+    #if WITH_XCB
     if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
     {
 

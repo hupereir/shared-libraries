@@ -22,7 +22,7 @@
 
 #include <QList>
 
-#if HAVE_XCB
+#if WITH_XCB
 
 #if QT_VERSION >= 0x050000
 #include <QWindow>
@@ -46,7 +46,7 @@ class XcbUtil::Private
     //* constructor
     Private();
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     //* xcb connection
     xcb_connection_t* connection();
@@ -81,7 +81,7 @@ class XcbUtil::Private
 
     private:
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     //* xcb connection
     xcb_connection_t* connection_ = nullptr;
@@ -131,7 +131,7 @@ XcbUtil::Private::Private()
 }
 
 
-#if HAVE_XCB
+#if WITH_XCB
 //_______________________________________________________
 xcb_connection_t* XcbUtil::Private::connection()
 {
@@ -240,7 +240,7 @@ XcbUtil::XcbUtil():
 //________________________________________________________________________
 bool XcbUtil::isX11()
 {
-    #if HAVE_XCB
+    #if WITH_XCB
     #if QT_VERSION >= 0x050000
     static const bool isX11 = QX11Info::isPlatformX11();
     return isX11;
@@ -256,7 +256,7 @@ bool XcbUtil::isX11()
 //________________________________________________________________________
 int XcbUtil::defaultScreenNumber() const
 {
-    #if HAVE_XCB
+    #if WITH_XCB
     if( isX11() ) d->connection();
     #endif
     return d->defaultScreenNumber_;
@@ -265,7 +265,7 @@ int XcbUtil::defaultScreenNumber() const
 //_______________________________________________________
 WId XcbUtil::appRootWindow() const
 {
-    #if HAVE_XCB
+    #if WITH_XCB
     if( isX11() ) return d->appRootWindow();
     #endif
 
@@ -276,7 +276,7 @@ WId XcbUtil::appRootWindow() const
 //________________________________________________________________________
 Qt::HANDLE XcbUtil::_connection() const
 {
-    #if HAVE_XCB
+    #if WITH_XCB
     return Qt::HANDLE( d->connection() );
     #else
     return 0;
@@ -286,7 +286,7 @@ Qt::HANDLE XcbUtil::_connection() const
 //________________________________________________________________________
 Qt::HANDLE XcbUtil::_atom( const QString& atomName ) const
 {
-    #if HAVE_XCB
+    #if WITH_XCB
     return Qt::HANDLE( d->atom( atomName ) );
     #else
     return 0;
@@ -296,7 +296,7 @@ Qt::HANDLE XcbUtil::_atom( const QString& atomName ) const
 //________________________________________________________________________
 Qt::HANDLE XcbUtil::_atom( AtomId atom ) const
 {
-    #if HAVE_XCB
+    #if WITH_XCB
     return Qt::HANDLE( d->atom( atom ) );
     #else
     return 0;
@@ -307,7 +307,7 @@ Qt::HANDLE XcbUtil::_atom( AtomId atom ) const
 bool XcbUtil::isSupported( AtomId atomId ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
     if( !isX11() ) return false;
 
     Private::SupportedAtomHash::const_iterator iter( d->supportedAtomId_.find( atomId ) );
@@ -356,7 +356,7 @@ bool XcbUtil::isSupported( AtomId atomId ) const
 bool XcbUtil::isRealWindow( WId window ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
     if( !isX11() ) return false;
 
     xcb_connection_t* connection( d->connection() );
@@ -377,7 +377,7 @@ bool XcbUtil::isRealWindow( WId window ) const
 bool XcbUtil::hasState( WId window, AtomId atomId ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // make sure atoms are supported
     if( !( isSupported( _NET_WM_STATE ) && isSupported( atomId ) ) ) return false;
@@ -411,7 +411,7 @@ bool XcbUtil::hasState( WId window, AtomId atomId ) const
 void XcbUtil::printState( WId window ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // make sure atom is supported
     if( !isSupported( _NET_WM_STATE ) ) return;
@@ -451,7 +451,7 @@ void XcbUtil::printState( WId window ) const
 uint32_t XcbUtil::cardinal( WId window, AtomId atom ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -472,7 +472,7 @@ uint32_t XcbUtil::cardinal( WId window, AtomId atom ) const
 //________________________________________________________________________
 QIcon XcbUtil::icon( WId window ) const
 {
-    #if HAVE_XCB
+    #if WITH_XCB
 
     if( isX11() )
     {
@@ -578,7 +578,7 @@ bool XcbUtil::moveResizeWidget(
     Qt::MouseButton button )
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     if( !widget->isWindow() ) return false;
     if( !isX11() ) return false;
@@ -634,7 +634,7 @@ bool XcbUtil::moveResizeWidget(
 bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // make sure atoms are supported
     if( !( isSupported( _NET_WM_STATE ) && isSupported( atom ) ) ) return false;
@@ -690,7 +690,7 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
 bool XcbUtil::_requestStateChange( QWidget* widget, AtomId atom, bool value ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // make sure atoms are supported
     if( !( isSupported( _NET_WM_STATE ) && isSupported( atom ) ) ) return false;
@@ -728,7 +728,7 @@ bool XcbUtil::_requestStateChange( QWidget* widget, AtomId atom, bool value ) co
 bool XcbUtil::_changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;
@@ -747,7 +747,7 @@ bool XcbUtil::_changeCardinal( QWidget* widget, AtomId atom, uint32_t value ) co
 bool XcbUtil::_requestCardinalChange( QWidget* widget, AtomId atom, uint32_t value ) const
 {
 
-    #if HAVE_XCB
+    #if WITH_XCB
 
     // make sure atom is supported
     if( !isSupported( atom ) ) return false;

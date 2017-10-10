@@ -38,19 +38,19 @@ if(UNIX AND NOT APPLE)
   find_package(X11_XCB)
   if( XCB_XCB_FOUND AND XCB_KEYSYMS_FOUND AND X11_XCB_FOUND )
 
-    add_definitions(-DHAVE_XCB=1)
+    add_definitions(-DWITH_XCB=1)
 
     if(USE_QT5)
       find_package(Qt5X11Extras REQUIRED)
     endif()
 
   else()
-    add_definitions(-DHAVE_XCB=0)
+    add_definitions(-DWITH_XCB=0)
   endif()
 
 else()
 
-  add_definitions(-DHAVE_XCB=0)
+  add_definitions(-DWITH_XCB=0)
 
 endif()
 

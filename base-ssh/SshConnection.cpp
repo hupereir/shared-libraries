@@ -46,7 +46,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#if HAVE_SSH
+#if WITH_SSH
 #include <libssh2.h>
 #endif
 
@@ -107,7 +107,7 @@ namespace Ssh
         Debug::Throw( "Ssh::Connection::connect.\n" );
         if( !Singleton::get().initialized() ) return false;
 
-        #if HAVE_SSH
+        #if WITH_SSH
         // initialize socket
         sshSocket_ = socket( PF_INET, SOCK_STREAM, IPPROTO_TCP);
         if( sshSocket_ == -1 )
@@ -276,7 +276,7 @@ namespace Ssh
 
         Debug::Throw( "Ssh::Connection::_disconnectSession.\n" );
 
-        #if HAVE_SSH
+        #if WITH_SSH
         if( state_ & (Connected|SessionCreated) )
         {
 
@@ -333,7 +333,7 @@ namespace Ssh
     //_______________________________________________
     bool Connection::isSupported()
     {
-        #if HAVE_SSH
+        #if WITH_SSH
         return true;
         #else
         return false;
@@ -378,7 +378,7 @@ namespace Ssh
             _notifyMessage( _commandMessage( lastCommand_ ) );
         }
 
-        #if HAVE_SSH
+        #if WITH_SSH
 
         Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << " (" << commands_.front() << ")" << endl;
 

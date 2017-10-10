@@ -24,14 +24,14 @@ if(UNIX AND NOT APPLE)
 
   find_package(XCB COMPONENTS XCB SHAPE)
   if( XCB_XCB_FOUND AND XCB_SHAPE_FOUND )
-    add_definitions(-DHAVE_XCB=1)
+    add_definitions(-DWITH_XCB=1)
   else()
-    add_definitions(-DHAVE_XCB=0)
+    add_definitions(-DWITH_XCB=0)
   endif()
 
 else()
 
-  add_definitions(-DHAVE_XCB=0)
+  add_definitions(-DWITH_XCB=0)
 
 endif()
 

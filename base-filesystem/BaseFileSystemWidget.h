@@ -43,7 +43,7 @@ class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystem
     public:
 
     //* constructor
-    explicit BaseFileSystemWidget( QWidget* parent );
+    explicit BaseFileSystemWidget( QWidget* = nullptr );
 
     //*@name accessors
     //@{
@@ -104,9 +104,30 @@ class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystem
 
     protected:
 
+    //* file list
+    TreeView& _list() const
+    { return *list_; }
+
+    //* model
+    const FileSystemModel& _model() const
+    { return model_; }
+
+    //* model
+    FileSystemModel& _model()
+    { return model_; }
+
     //* context menu
     QMenu& _contextMenu() const
     { return *contextMenu_; }
+
+    //* open action
+    QAction& _openAction() const
+    { return *openAction_; }
+
+    protected Q_SLOTS:
+
+    //* update actions
+    virtual void _updateActions();
 
     private Q_SLOTS:
 
@@ -133,9 +154,6 @@ class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystem
 
     //* update directory
     void _update();
-
-    //* update actions
-    void _updateActions();
 
     //* working directory
     void _workingDirectory()

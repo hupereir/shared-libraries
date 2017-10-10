@@ -216,7 +216,7 @@ bool WidgetDragMonitor::_startDrag()
 
     isDragging_ = true;
 
-    #if HAVE_XCB
+    #if WITH_XCB
     if( XcbUtil::get().moveWidget( target_->window(), target_->mapToGlobal( dragPosition_ ) ) )
     {
 

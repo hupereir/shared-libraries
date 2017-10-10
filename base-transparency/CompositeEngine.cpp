@@ -22,7 +22,7 @@
 #include "Debug.h"
 #include "XcbUtil.h"
 
-#if HAVE_XCB
+#if WITH_XCB
 #include <xcb/xcb.h>
 #endif
 
@@ -66,7 +66,7 @@ namespace Transparency
         return true;
         #endif
 
-        #if HAVE_XCB
+        #if WITH_XCB
 
         if( !XcbUtil::isX11() ) return false;
 

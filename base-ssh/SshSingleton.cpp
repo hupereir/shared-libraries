@@ -26,7 +26,7 @@
 #include <windows.h>
 #endif
 
-#if HAVE_SSH
+#if WITH_SSH
 #include <libssh2.h>
 #endif
 
@@ -51,7 +51,7 @@ namespace Ssh
         WSAStartup(MAKEWORD(2,0), &wsadata);
         #endif
 
-        #if HAVE_SSH
+        #if WITH_SSH
         initialized_ = !libssh2_init(0);
         #endif
     }
@@ -59,7 +59,7 @@ namespace Ssh
     //_______________________________________________
     Singleton::~Singleton()
     {
-        #if HAVE_SSH
+        #if WITH_SSH
         if( initialized_ ) libssh2_exit();
         #endif
     }

@@ -110,7 +110,7 @@ BaseDialog& BaseDialog::toggleSticky( bool state )
 
     Debug::Throw( "BaseDialog::toggleSticky.\n" );
 
-    #if HAVE_XCB
+    #if WITH_XCB
     if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
     {
 
