@@ -83,21 +83,21 @@ namespace SpellCheck
     void SpellInterface::listDictionaries() const
     {
         if( dictionaries_.isEmpty() ) return;
-        Debug::Throw(0) << QObject::tr( "Available dictionaries: " ) << endl;
+        QTextStream(stdout) << QObject::tr( "Available dictionaries: " ) << endl;
         for( const auto& dictionary:dictionaries_ )
-        { Debug::Throw(0) << "  " << dictionary << endl; }
+        { QTextStream(stdout) << "  " << dictionary << endl; }
     }
 
     //____________________________________________________
     void SpellInterface::listFilters() const
     {
         if( dictionaries_.isEmpty() ) return;
-        Debug::Throw(0) << QObject::tr( "Available filters: " ) << endl;
+        QTextStream(stdout) << QObject::tr( "Available filters: " ) << endl;
 
         // maximum length
         const int maxLength = std::max_element( filters_.constBegin(), filters_.constEnd(), MinLengthFTor() )->size();
         for( auto iter = filterMap_.constBegin(); iter != filterMap_.constEnd(); ++iter )
-        { Debug::Throw(0) << "  " << iter.key().leftJustified( maxLength + 1 ) <<  iter.value() << endl; }
+        { QTextStream(stdout) << "  " << iter.key().leftJustified( maxLength + 1 ) <<  iter.value() << endl; }
 
     }
 
