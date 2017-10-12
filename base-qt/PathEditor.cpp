@@ -821,6 +821,7 @@ void PathEditor::_menuButtonClicked()
         {
 
             QAction* action = menu->addAction( path );
+            action->setData( path.get() );
 
             // mark current disk as bold, in case there is no other item hidden
             if( pathList.isEmpty() && currentPath.startsWith( path ) )
@@ -838,7 +839,10 @@ void PathEditor::_menuButtonClicked()
 
     // add path
     for( const auto& path:pathList )
-    { menu->addAction( path ); }
+    {
+        Debug::Throw() << "PathEditor::_menuButtonClicked - adding " << path << endl;
+        menu->addAction( path )->setData( path.get() );
+    }
 
     connect( menu, SIGNAL(triggered(QAction*)), SLOT(_updatePath(QAction*)) );
     menu->exec( menuButton_->mapToGlobal( menuButton_->rect().bottomLeft() ) );
@@ -849,7 +853,8 @@ void PathEditor::_menuButtonClicked()
 //____________________________________________________________________________
 void PathEditor::_updatePath( QAction* action )
 {
-    File path( action->text() );
+    File path( action->data().toString() );
+    Debug::Throw() << "PathEditor::_updatePath - path: " << path << endl;
     setPath( path );
     emit pathChanged( path );
 }
