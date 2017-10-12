@@ -146,6 +146,9 @@ class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystem
     //* update navigation actions based on current location and history
     void _updateNavigationActions();
 
+    //* update filesystem watcher
+    void _updateFileSystemWatcher();
+
     //* show tooltip
     void _showToolTip( const QModelIndex& );
 

@@ -82,6 +82,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
 
     connect( pathEditor_, SIGNAL(pathChanged(File)), SLOT(_update()) );
     connect( pathEditor_, SIGNAL(pathChanged(File)), SLOT(_updateNavigationActions()) );
+    connect( pathEditor_, SIGNAL(pathChanged(File)), SLOT(_updateFileSystemWatcher()) );
 
     // install actions
     _installActions();
@@ -188,12 +189,7 @@ void BaseFileSystemWidget::setPath( File path, bool forced )
         pathEditor_->setPath( path );
         _update();
         _updateNavigationActions();
-
-        // reset file system watcher
-        const auto directories( fileSystemWatcher_.directories() );
-        if( !directories.isEmpty() ) fileSystemWatcher_.removePaths( directories );
-
-        fileSystemWatcher_.addPath( path );
+        _updateFileSystemWatcher();
     }
 
 }
@@ -298,6 +294,19 @@ void BaseFileSystemWidget::_updateNavigationActions()
     nextDirectoryAction_->setEnabled( pathEditor_->hasNext() );
     parentDirectoryAction_->setEnabled( pathEditor_->hasParent() );
     return;
+}
+
+//______________________________________________________
+void BaseFileSystemWidget::_updateFileSystemWatcher()
+{
+    const File path( pathEditor_->path() );
+    if( path.isEmpty() || !( path.exists() && path.isDirectory() ) ) return;
+
+    // reset file system watcher
+    const auto directories( fileSystemWatcher_.directories() );
+    if( !directories.isEmpty() ) fileSystemWatcher_.removePaths( directories );
+
+    fileSystemWatcher_.addPath( path );
 }
 
 //______________________________________________________
