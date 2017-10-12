@@ -500,8 +500,17 @@ void TreeView::saveExpandedIndexes()
     model_->clearExpandedIndexes();
 
     // retrieve selected indexes in list
+    bool hasExpandedIndexes( false );
     for( const auto& index:model_->indexes() )
-    { if( isExpanded( index ) ) model_->setIndexExpanded( index, true ); }
+    {
+        if( isExpanded( index ) )
+        {
+            hasExpandedIndexes = true;
+            model_->setIndexExpanded( index, true );
+        }
+    }
+
+    collapseAllAction_->setEnabled(hasExpandedIndexes);
 
     saveScrollBarPosition();
 
