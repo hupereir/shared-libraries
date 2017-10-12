@@ -72,7 +72,7 @@ void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSens
 
     } else {
 
-        setCompleter(0);
+        setCompleter( nullptr );
 
     }
 
