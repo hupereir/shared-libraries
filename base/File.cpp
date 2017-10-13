@@ -579,7 +579,6 @@ void File::addPath( QString& value, const QString& path, bool useAbsolute )
 void File::expand( QString& value )
 {
     if( value.isEmpty() ) return;
-
     value = QFileInfo( value ).absoluteFilePath();
     removeTrailingSlash( value );
     return;
