@@ -113,17 +113,12 @@ template<class T> class TreeItem: public TreeItemBase
     ~TreeItem() override
     { _eraseFromMap(); }
 
-    //* clear children
-    void clear()
-    { children_.clear(); }
+    //*@name accessors
+    //@{
 
     //* value
     const ValueType& get() const
     { return value_; }
-
-    //* value
-    void set( ConstReference value )
-    { value_ = value; }
 
     //* parent
     bool hasParent() const
@@ -138,11 +133,43 @@ template<class T> class TreeItem: public TreeItemBase
     { return children_.size(); }
 
     //* get child at given row
-    TreeItem& child( int row )
+    const TreeItem& child( int row ) const
     { return children_[row]; }
 
+    //* retrieve all children in list [recursive]
+    ValueList childValues() const
+    {
+
+        ValueList out;
+        for( const auto& item:children_ )
+        {
+            out.append( item.get() );
+            out.append( item.childValues() );
+        }
+
+        return out;
+
+    }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* clear children
+    void clear()
+    { children_.clear(); }
+
+    //* value
+    ValueType& get()
+    { return value_; }
+
+    //* value
+    void set( ConstReference value )
+    { value_ = value; }
+
     //* get child at given row
-    const TreeItem& child( int row ) const
+    TreeItem& child( int row )
     { return children_[row]; }
 
     //* find item matching value
@@ -158,21 +185,6 @@ template<class T> class TreeItem: public TreeItemBase
 
         // not found. return null_ptr
         return nullptr;
-
-    }
-
-    //* retrieve all children in list [recursive]
-    ValueList childValues() const
-    {
-
-        ValueList out;
-        for( const auto& item:children_ )
-        {
-            out.append( item.get() );
-            out.append( item.childValues() );
-        }
-
-        return out;
 
     }
 
@@ -233,7 +245,7 @@ template<class T> class TreeItem: public TreeItemBase
         // remove children that are not found
         for( auto iter = children_.begin(); iter != children_.end(); )
         {
-            int found( values.indexOf( iter->get() ) );
+            const int found( values.indexOf( iter->get() ) );
             if( found < 0 ) iter = children_.erase( iter );
             else if( Base::isChild( values.at(found), get() ) )
             {
@@ -274,7 +286,7 @@ template<class T> class TreeItem: public TreeItemBase
         for( auto&& iter = children_.begin(); iter != children_.end(); )
         {
 
-            int found( values.indexOf( iter->get() ) );
+            const int found( values.indexOf( iter->get() ) );
             if( found >= 0 )
             {
 
@@ -332,6 +344,8 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
+    //@}
+
     protected:
 
     //* constructor
@@ -374,7 +388,7 @@ template<class T> class TreeItem: public TreeItemBase
     {
 
         // indent 2 space characters per parent
-        const TreeItem* parent( item.parent_ );
+        const auto parent( item.parent_ );
         while( parent )
         {
             out << "  ";
