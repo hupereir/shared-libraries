@@ -79,7 +79,7 @@ template<class T> class TreeModel : public ItemModel
         if( !hasIndex( row, column, parent ) ) return QModelIndex();
 
         // fid parent item
-        const Item& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
+        const auto& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
 
         // return new index if matching child is found, or invalid index
         return (row < (int)parentItem.childCount()) ?
@@ -96,14 +96,14 @@ template<class T> class TreeModel : public ItemModel
         if (!index.isValid()) return QModelIndex();
 
         // retrieve associated job item
-        const Item& childItem( _find(index.internalId() ) );
+        const auto& childItem( _find(index.internalId() ) );
 
         // if no parent return invalid index
         if( !( childItem.hasParent() && childItem.parent().hasParent() ) ) return QModelIndex();
 
         // if parent is root return invalid index
-        const Item& parentItem( childItem.parent() );
-        const Item& grandParentItem( parentItem.parent() );
+        const auto& parentItem( childItem.parent() );
+        const auto& grandParentItem( parentItem.parent() );
 
         // find parent position in list of grand parent
         int row(0);
@@ -123,7 +123,7 @@ template<class T> class TreeModel : public ItemModel
         if (parent.column() > 0) return 0;
 
         // store parent Job
-        const Item& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
+        const auto& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
         return parentItem.childCount();
 
     }
@@ -147,7 +147,7 @@ template<class T> class TreeModel : public ItemModel
         for( int row=0; row<rowCount( parent ); row++ )
         {
             // get child index
-            QModelIndex found( index( value, index( row, 0, parent ) ) );
+            const auto found( index( value, index( row, 0, parent ) ) );
             if( found.isValid() ) return found;
         }
 
@@ -161,7 +161,7 @@ template<class T> class TreeModel : public ItemModel
     {
 
         // retrieve parent item
-        const Item& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
+        const auto& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
         return parentItem.childValues();
 
     }
@@ -170,7 +170,7 @@ template<class T> class TreeModel : public ItemModel
     List children( ConstReference value ) const
     {
 
-        const QModelIndex& index( this->index( value ) );
+        const auto& index( this->index( value ) );
         return index.isValid() ? children( index ):List();
     }
 
@@ -312,7 +312,7 @@ template<class T> class TreeModel : public ItemModel
     //* replace
     bool replace( ConstReference first, ConstReference second )
     {
-        Item* item( root_.find( first ) );
+        auto item( root_.find( first ) );
         if( item )
         {
 
@@ -461,7 +461,7 @@ template<class T> class TreeModel : public ItemModel
         // remove children that are found in list, and remove from list
         for( int row = 0; row < parent.childCount(); )
         {
-            int found( values.indexOf( parent.child(row).get() ) );
+            const int found( values.indexOf( parent.child(row).get() ) );
             if( found >= 0 )
             {
                 parent.remove( row );
@@ -483,7 +483,7 @@ template<class T> class TreeModel : public ItemModel
     /** private version, with no signal emitted */
     void _resetTree()
     {
-        List children( TreeModel::children() );
+        const auto children( TreeModel::children() );
         map_.clear();
         root_ = Item( map_ );
         _add( root_, children );
