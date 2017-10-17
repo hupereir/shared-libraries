@@ -55,7 +55,6 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     //*@name modifiers
     //@{
 
-
     //* set target application
     /** it is used to browse application path and update, if not found */
     void setTargetApplication( File );
