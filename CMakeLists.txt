@@ -8,7 +8,7 @@ SET(SHARED_LIBRARIES_VERSION_PATCH 3)
 set(SHARED_LIBRARIES_VERSION ${SHARED_LIBRARIES_VERSION_MAJOR}.${SHARED_LIBRARIES_VERSION_MINOR}.${SHARED_LIBRARIES_VERSION_PATCH})
 
 ########### modules #################
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/base-cmake")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/base-cmake")
 include(Macros)
 setup_cmake_settings()
 setup_compiler_flags()
