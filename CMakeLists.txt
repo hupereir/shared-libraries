@@ -46,3 +46,6 @@ add_subdirectory(base-svg)
 add_subdirectory(base-notifications)
 add_subdirectory(base-filesystem)
 add_subdirectory(tests)
+
+feature_summary(WHAT PACKAGES_FOUND DESCRIPTION "Found packages:")
+feature_summary(WHAT PACKAGES_NOT_FOUND DESCRIPTION "Not found packages:")
