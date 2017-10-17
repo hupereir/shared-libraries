@@ -20,7 +20,6 @@ else()
 endif()
 
 ########### aspell ###############
-find_package(ASPELL REQUIRED)
 include_directories(${ASPELL_INCLUDE_DIR})
 
 ########### includes ###############
