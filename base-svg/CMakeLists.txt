@@ -27,13 +27,7 @@ endif()
 find_program(KDE_CONFIG NAMES kf5-config kde4-config)
 
 ########### zlib ###############
-find_package(PkgConfig)
-if(${PKG_CONFIG_FOUND})
-
-  pkg_check_modules(ZLIB zlib )
-
-endif()
-
+find_package(ZLIB)
 if(ZLIB_FOUND)
 
   include_directories(${ZLIB_INCLUDE_DIRS})
