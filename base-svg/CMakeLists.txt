@@ -31,7 +31,7 @@ find_package(ZLIB)
 if(ZLIB_FOUND)
 
   include_directories(${ZLIB_INCLUDE_DIRS})
-  add_definitions(-DWITH_ZLIB=${ZLIB_FOUND})
+  add_definitions(-DWITH_ZLIB=1)
 
 else()
 
