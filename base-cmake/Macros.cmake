@@ -274,3 +274,9 @@ macro(register_protocol protocol application)
   endif()
 
 endmacro()
+
+###################### register a protocol #########################
+include(FeatureSummary)
+macro(write_feature_summary)
+  feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+endmacro()
