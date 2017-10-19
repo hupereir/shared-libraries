@@ -455,7 +455,7 @@ namespace Server
 
         serverInitialized_ = true;
 
-        server_.reset( new QTcpServer( this ) ),
+        server_.reset( new QTcpServer( this ) );
         connect( server_.get(), SIGNAL(newConnection()), SLOT(_newConnection()) );
 
         return server_->listen( host_, port_ );
