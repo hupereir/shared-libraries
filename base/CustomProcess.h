@@ -23,6 +23,7 @@
 
 #include "Counter.h"
 #include "Command.h"
+#include "ObjectDeleter.h"
 
 #include <QProcess>
 #include <QObject>
@@ -43,18 +44,8 @@ class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
     //* destructor
     ~CustomProcess() override;
 
-    //* smart pointer deleter
-    class Deleter
-    {
-        public:
-
-        //* delete
-        template<class T>
-            void operator() (T* object ) { object->deleteLater(); }
-    };
-
     //* smart pointer
-    using Pointer = std::unique_ptr<CustomProcess, Deleter>;
+    using Pointer = std::unique_ptr<CustomProcess, Base::ObjectDeleter>;
 
     /**
     \brief

@@ -24,6 +24,7 @@
 #include "CommandLineArguments.h"
 #include "CommandLineParser.h"
 #include "Counter.h"
+#include "ObjectDeleter.h"
 #include "ServerCommand.h"
 
 #include <QBasicTimer>
@@ -199,26 +200,14 @@ namespace Server
         //* arguments
         CommandLineArguments arguments_;
 
-        //* object deleter
-        class Deleter
-        {
-
-            public:
-
-            template<class T>
-            void operator() (T* t) const
-            { t->deleteLater(); }
-
-        };
-
         //* Server
-        std::unique_ptr<QTcpServer, Deleter> server_;
+        std::unique_ptr<QTcpServer, Base::ObjectDeleter> server_;
 
         //* true if initializeServer was called
         bool serverInitialized_ = false;
 
         //* Client
-        std::unique_ptr<Client, Deleter> client_;
+        std::unique_ptr<Client, Base::ObjectDeleter> client_;
 
         //* list of connected clients
         ClientList connectedClients_;
