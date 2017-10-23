@@ -40,7 +40,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     //* column type enumeration
     enum ColumnType
     {
-        Filename,
+        FileName,
         Path,
         Time
     };

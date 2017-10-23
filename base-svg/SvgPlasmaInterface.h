@@ -64,7 +64,7 @@ namespace Svg
 
     //* theme palette
     bool hasThemePalette() const
-    { return !themePaletteFilename_.isEmpty() && themePaletteFilename_.exists(); }
+    { return !themePaletteFileName_.isEmpty() && themePaletteFileName_.exists(); }
 
     //* theme palette
     QPalette themePalette() const;
@@ -139,7 +139,7 @@ namespace Svg
     File path_;
 
     //* theme color file name
-    File themePaletteFilename_;
+    File themePaletteFileName_;
 
     //* filename
     File filename_;

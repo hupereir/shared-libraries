@@ -23,7 +23,7 @@
 #include "CustomComboBox.h"
 #include "OptionWidget.h"
 
-//! QComboBox associated to an option for configuration dialogs
+//* QComboBox associated to an option for configuration dialogs
 class OptionComboBox: public CustomComboBox, public OptionWidget
 {
 
@@ -31,17 +31,17 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
 
     public:
 
-    //! constructor
+    //* constructor
     explicit OptionComboBox( QWidget* parent, const QString& optionName ):
         CustomComboBox( parent ),
         OptionWidget( optionName, this )
     {}
 
-    //! use value for option
+    //* use value for option
     void setUseValue( bool value )
     { useValue_ = value; }
 
-    //! read value from option
+    //* read value from option
     void read( const Options& options ) override
     {
         if( useValue_ )
@@ -66,7 +66,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
         }
     }
 
-    //! write value to option
+    //* write value to option
     void write( Options& options ) const override
     {
         if( useValue_ ) options.setRaw( optionName(), currentText() );
@@ -75,12 +75,12 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
 
     Q_SIGNALS:
 
-    //! modified
+    //* modified
     void modified();
 
     private:
 
-    //! use value for option
+    //* use value for option
     bool useValue_ = true;
 
 };

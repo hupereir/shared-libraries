@@ -31,10 +31,10 @@ namespace Ssh
 {
 
     //____________________________________________________________________________
-    FileTransferObject::FileTransferObject( QObject* parent, QString remoteFilename ):
+    FileTransferObject::FileTransferObject( QObject* parent, QString remoteFileName ):
         QObject( parent ),
         Counter( "Ssh::FiletransferObject" ),
-        remoteFilename_( remoteFilename )
+        remoteFileName_( remoteFileName )
     { buffer_.resize(maxSize_ ); }
 
     //____________________________________________________________________________
@@ -51,7 +51,7 @@ namespace Ssh
             sshSocket_ = new FileReadSocket( this );
             connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), SLOT( _processError(QAbstractSocket::SocketError)) );
             connect( sshSocket_, SIGNAL(connected()), SLOT(_setConnected()) );
-            qobject_cast<FileReadSocket*>(sshSocket_)->connectToFile( session, remoteFilename_ );
+            qobject_cast<FileReadSocket*>(sshSocket_)->connectToFile( session, remoteFileName_ );
             return true;
 
         } else if( mode == QIODevice::WriteOnly ) {
@@ -59,7 +59,7 @@ namespace Ssh
             sshSocket_ = new FileWriteSocket( this );
             connect( sshSocket_, SIGNAL(error(QAbstractSocket::SocketError)), SLOT( _processError(QAbstractSocket::SocketError)) );
             connect( sshSocket_, SIGNAL(connected()), SLOT(_setConnected()) );
-            qobject_cast<FileWriteSocket*>(sshSocket_)->connectToFile( session, remoteFilename_, fileSize_ );
+            qobject_cast<FileWriteSocket*>(sshSocket_)->connectToFile( session, remoteFileName_, fileSize_ );
             return true;
 
         } else {
@@ -73,18 +73,18 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    bool FileTransferObject::fromRemote( void* session, QString localFilename)
+    bool FileTransferObject::fromRemote( void* session, QString localFileName)
     {
 
         deviceOwned_ = true;
-        auto device = new QFile( localFilename, this );
+        auto device = new QFile( localFileName, this );
 
-        emit debug( tr( "Transfering remote file %1 to local file %2" ).arg( remoteFilename_ ).arg( localFilename ) );
+        emit debug( tr( "Transfering remote file %1 to local file %2" ).arg( remoteFileName_ ).arg( localFileName ) );
 
         if( device->open( QIODevice::WriteOnly ) ) return fromRemote( session, device );
         else
         {
-            emit error( error_ = tr( "cannot open file %1 for writting" ).arg( localFilename ) );
+            emit error( error_ = tr( "cannot open file %1 for writting" ).arg( localFileName ) );
             _setFailed();
             return false;
         }
@@ -103,7 +103,7 @@ namespace Ssh
         if( !sshSocket_ ) connect( session, QIODevice::ReadOnly );
         else if( !qobject_cast<FileReadSocket*>(sshSocket_) )
         {
-            emit error( error_ = tr( "file %1 not opended for reading" ).arg( remoteFilename_ ) );
+            emit error( error_ = tr( "file %1 not opended for reading" ).arg( remoteFileName_ ) );
             _setFailed();
             return false;
         }
@@ -122,19 +122,19 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    bool FileTransferObject::toRemote( void* session, QString localFilename )
+    bool FileTransferObject::toRemote( void* session, QString localFileName )
     {
 
         deviceOwned_ = true;
 
-        emit debug( tr( "Transfering local file %1 to remote file %2" ).arg( localFilename ).arg( remoteFilename_ ) );
+        emit debug( tr( "Transfering local file %1 to remote file %2" ).arg( localFileName ).arg( remoteFileName_ ) );
 
-        auto device = new QFile( localFilename, this );
+        auto device = new QFile( localFileName, this );
         if( device->open( QIODevice::ReadOnly ) ) return toRemote( session, device );
         else
         {
 
-            emit error( error_ = tr( "cannot open file %1 for reading" ).arg( localFilename ) );
+            emit error( error_ = tr( "cannot open file %1 for reading" ).arg( localFileName ) );
             _setFailed();
             return false;
 
@@ -159,7 +159,7 @@ namespace Ssh
         if( !sshSocket_ ) connect( session, QIODevice::WriteOnly );
         else if( !qobject_cast<FileWriteSocket*>(sshSocket_) )
         {
-            emit error( error_ = tr( "file %1 not opended for writing" ).arg( remoteFilename_ ) );
+            emit error( error_ = tr( "file %1 not opended for writing" ).arg( remoteFileName_ ) );
             _setFailed();
             return false;
         }
@@ -227,7 +227,7 @@ namespace Ssh
     void FileTransferObject::_setConnected()
     {
         state_ |= Connected;
-        emit debug( tr( "Succesfully connected to %1" ).arg( remoteFilename_ ) );
+        emit debug( tr( "Succesfully connected to %1" ).arg( remoteFileName_ ) );
     }
 
     //____________________________________________________________________________

@@ -56,7 +56,7 @@ Qt::ItemFlags FileSystemModel::flags(const QModelIndex &index) const
 
         const FileRecord& record( get(index) );
         if( record.isValid() ) flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
-        if( record.isValid() && index.column() == Filename ) flags |= Qt::ItemIsDragEnabled;
+        if( record.isValid() && index.column() == FileName ) flags |= Qt::ItemIsDragEnabled;
 
     }
 
@@ -81,7 +81,7 @@ QVariant FileSystemModel::data( const QModelIndex& index, int role ) const
             switch( index.column() )
             {
 
-                case Filename:
+                case FileName:
                 {
                     // store local nmae
                     const FileRecord& record( get(index) );
@@ -111,7 +111,7 @@ QVariant FileSystemModel::data( const QModelIndex& index, int role ) const
         }
 
         case Qt::DecorationRole:
-        if( showIcons_ && index.column() == Filename )
+        if( showIcons_ && index.column() == FileName )
         {
 
             const FileRecord& record( get(index) );
@@ -243,7 +243,7 @@ bool FileSystemModel::SortFTor::operator () ( FileRecord first, FileRecord secon
     switch( type_ )
     {
 
-        case Filename:
+        case FileName:
         {
             if( first.hasFlag( BaseFileInfo::Navigator ) ) return true;
             if( second.hasFlag( BaseFileInfo::Navigator ) ) return false;

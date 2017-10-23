@@ -127,7 +127,7 @@ void OpenWithDialog::realizeWidget()
         FileInfoModel* model = new FileInfoModel( this );
         model->setShowIcons( false );
         model->set( fileInfoList );
-        model->sort( FileInfoModel::Filename, Qt::DescendingOrder );
+        model->sort( FileInfoModel::FileName, Qt::DescendingOrder );
 
         // file list
         TreeView* treeView = new TreeView;
@@ -136,8 +136,8 @@ void OpenWithDialog::realizeWidget()
 
         treeView->setModel( model );
         treeView->toggleShowHeader( false );
-        treeView->setMask( 1<<FileInfoModel::Filename );
-        treeView->header()->setSortIndicator( FileInfoModel::Filename, Qt::AscendingOrder );
+        treeView->setMask( 1<<FileInfoModel::FileName );
+        treeView->header()->setSortIndicator( FileInfoModel::FileName, Qt::AscendingOrder );
 
         // resize list to accomodate longest item
         const auto maxWidth = std::accumulate( fileInfoList.begin(), fileInfoList.end(), 0,

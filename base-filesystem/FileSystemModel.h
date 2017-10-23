@@ -42,7 +42,7 @@ class FileSystemModel: public ListModel<FileRecord>, private Base::Counter<FileS
     //* column type enumeration
     enum ColumnType
     {
-        Filename,
+        FileName,
         Size,
         Time,
         nColumns

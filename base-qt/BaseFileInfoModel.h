@@ -62,7 +62,7 @@ class BaseFileInfoModel : public ListModel<T>
     //* column type enumeration
     enum ColumnType
     {
-        Filename,
+        FileName,
         Path,
         Size,
         User,
@@ -137,11 +137,11 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
             // retrieve associated file info
             const T& fileInfo( ListModel<T>::get()[index.row()] );
 
-            if( fileInfo.type() & BaseFileInfo::Navigator ) return (index.column() == Filename ) ? fileInfo.file().get() : QVariant();
+            if( fileInfo.type() & BaseFileInfo::Navigator ) return (index.column() == FileName ) ? fileInfo.file().get() : QVariant();
 
             switch( index.column() )
             {
-                case Filename: return fileInfo.file().localName().get();
+                case FileName: return fileInfo.file().localName().get();
                 case Path: return fileInfo.file().path().get();
                 case Size: return (fileInfo.isFolder() || !fileInfo.size() ) ? "" : File::sizeString( fileInfo.size() );
                 case User: return fileInfo.user();
@@ -232,7 +232,7 @@ QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientati
         {
             switch( column )
             {
-                case Filename: return ItemModel::tr( "File" );
+                case FileName: return ItemModel::tr( "File" );
                 case Path: return ItemModel::tr( "Path" );
                 case Size: return ItemModel::tr( "Size " );
                 case User: return ItemModel::tr( "Owner" );
@@ -303,7 +303,7 @@ bool BaseFileInfoModel<T>::SortFTor::operator() ( const T& constFirst, const T& 
         break;
 
         default:
-        case Filename:
+        case FileName:
         { return first.file().localName().get().compare( second.file().localName(), Qt::CaseInsensitive ) < 0; }
         break;
 

@@ -46,7 +46,7 @@ namespace Svg
 
         QPalette out;
 
-        QSettings settings( themePaletteFilename_, QSettings::IniFormat );
+        QSettings settings( themePaletteFileName_, QSettings::IniFormat );
         settings.sync();
 
         auto updateColor = [&out,&settings](QPalette::ColorRole role, QString name)
@@ -143,16 +143,16 @@ namespace Svg
 
         Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
 
-        // reset colorFilename
-        auto oldThemePaletteFilename = themePaletteFilename_;
-        themePaletteFilename_.clear();
+        // reset colorFileName
+        auto oldThemePaletteFileName = themePaletteFileName_;
+        themePaletteFileName_.clear();
 
         // assign theme
         bool modified = _setTheme( theme );
-        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using color scheme: " << themePaletteFilename_ << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using color scheme: " << themePaletteFileName_ << endl;
 
         // set as modified if themePaletteFile has changed
-        modified |= (themePaletteFilename_ != oldThemePaletteFilename);
+        modified |= (themePaletteFileName_ != oldThemePaletteFileName);
         Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - modified: " << modified << endl;
 
         // return modified state
@@ -250,10 +250,10 @@ namespace Svg
             {
 
                 // try load color palette
-                if( themePaletteFilename_.isEmpty() )
+                if( themePaletteFileName_.isEmpty() )
                 {
                     File file = File( "colors" ).addPath( themePath );
-                    if( file.exists() ) themePaletteFilename_ = file;
+                    if( file.exists() ) themePaletteFileName_ = file;
                 }
 
                 if( !_findImage( themePath, WidgetBackground ).isEmpty() )

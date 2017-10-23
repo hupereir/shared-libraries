@@ -60,17 +60,17 @@ CustomDialog( parent )
     // file list
     mainLayout().addWidget( list_ = new TreeView( this ), 1 );
     list_->setModel( &model_ );
-    list_->sortByColumn( FileRecordModel::Filename );
+    list_->sortByColumn( FileRecordModel::FileName );
     list_->setSelectionMode( QAbstractItemView::MultiSelection );
     list_->setContextMenuPolicy( Qt::CustomContextMenu );
     list_->setMask(
-        (1<<FileRecordModel::Filename)|
+        (1<<FileRecordModel::FileName)|
         (1<<FileRecordModel::Path) );
     list_->showHeaderAction().setChecked( false );
     list_->setOptionName( "SCRATCH_FILE_LIST" );
 
     model_.add( files );
-    model_.sort( FileRecordModel::Filename, Qt::DescendingOrder );
+    model_.sort( FileRecordModel::FileName, Qt::DescendingOrder );
     list_->resizeColumns();
     list_->selectAll();
 

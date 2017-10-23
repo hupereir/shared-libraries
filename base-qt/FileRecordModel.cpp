@@ -74,7 +74,7 @@ Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
 
     // default flags
     flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
-    if( index.column() == Filename ) flags |= Qt::ItemIsDragEnabled;
+    if( index.column() == FileName ) flags |= Qt::ItemIsDragEnabled;
 
     return flags;
 
@@ -96,7 +96,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         switch( index.column() )
         {
 
-            case Filename:
+            case FileName:
             {
                 // store local nmae
                 const QString localName( useLocalNames_ ? record.file().localName(): record.file() );
@@ -106,8 +106,8 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
                 for( int row = 0; row < index.row(); row++ )
                 {
                     const QString rowName( useLocalNames_ ?
-                        get( this->index( row, Filename ) ).file().localName() :
-                        get( this->index( row, Filename ) ).file() );
+                        get( this->index( row, FileName ) ).file().localName() :
+                        get( this->index( row, FileName ) ).file() );
                     if( localName == rowName ) version++;
                 }
 
@@ -129,7 +129,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 
         }
 
-    } else if( showIcons_ && role == Qt::DecorationRole && index.column() == Filename ) {
+    } else if( showIcons_ && role == Qt::DecorationRole && index.column() == FileName ) {
 
         // icon
         return record.hasProperty( iconPropertyId_ ) ? _icon( record.property( iconPropertyId_ ) ):_icon();
@@ -244,7 +244,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
     switch( type_ )
     {
 
-        case Filename: return first.file().localName().get().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
+        case FileName: return first.file().localName().get().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
         case Path: return first.file().path() < second.file().path();
         case Time: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
         default:

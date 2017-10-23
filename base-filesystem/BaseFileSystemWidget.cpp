@@ -243,7 +243,7 @@ void BaseFileSystemWidget::_processFiles( const File::List& files )
 
     // update list
     list_->updateMask();
-    list_->resizeColumnToContents( FileSystemModel::Filename );
+    list_->resizeColumnToContents( FileSystemModel::FileName );
 
     unsetCursor();
 

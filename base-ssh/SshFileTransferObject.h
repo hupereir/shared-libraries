@@ -186,7 +186,7 @@ namespace Ssh
         }
 
         //* destination
-        QString remoteFilename_;
+        QString remoteFileName_;
 
         //* file size
         qint64 fileSize_ = 0;
