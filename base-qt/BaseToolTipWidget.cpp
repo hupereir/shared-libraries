@@ -121,14 +121,14 @@ void BaseToolTipWidget::showDelayed( int delay )
 
     if( hiddenTimer_.isActive() )
     {
-
-        timer_.stop();
+        hiddenTimer_.stop();
         _adjustPosition();
         QWidget::show();
 
     } else {
 
         if( isVisible() ) hide();
+        if( timer_.isActive() ) timer_.stop();
         timer_.start( delay >= 0 ? delay:defaultDelay_, this );
 
     }
