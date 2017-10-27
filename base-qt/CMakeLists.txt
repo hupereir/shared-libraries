@@ -182,6 +182,7 @@ set(base_qt_SOURCES
   RoundedRegion.cpp
   ScratchFileMonitor.cpp
   ScratchFileRemoveDialog.cpp
+  ScrollBarMonitor.cpp
   SelectLineDialog.cpp
   SelectLineWidget.cpp
   SingleTimeDialog.cpp

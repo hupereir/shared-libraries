@@ -31,6 +31,7 @@
 // forward declaration
 class BaseFindDialog;
 class AbstractFindWidget;
+class ScrollBarMonitor;
 class ItemModel;
 
 //* customized tree view
@@ -373,6 +374,9 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* return previous index
     QModelIndex _indexBefore( const QModelIndex& ) const;
+
+    //* scrollbar monitor
+    ScrollBarMonitor* scrollBarMonitor_ = nullptr;
 
     //* find dialog
     BaseFindDialog* findDialog_ = nullptr;

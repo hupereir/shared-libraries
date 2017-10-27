@@ -30,6 +30,7 @@
 #include "InformationDialog.h"
 #include "ItemModel.h"
 #include "Singleton.h"
+#include "ScrollBarMonitor.h"
 #include "TextEditor.h"
 #include "XmlOptions.h"
 
@@ -47,6 +48,9 @@ TreeView::TreeView( QWidget* parent ):
     Counter( "TreeView" )
 {
     Debug::Throw( "TreeView::TreeView.\n" );
+
+    // scrollbar monitor
+    scrollBarMonitor_ = new ScrollBarMonitor( this );
 
     // replace item delegate
     if( itemDelegate() ) itemDelegate()->deleteLater();
@@ -332,17 +336,11 @@ void TreeView::setMask( int mask )
 
 //______________________________________________________
 void TreeView::saveScrollBarPosition()
-{
-    if( verticalScrollBar() ) vertical_ = verticalScrollBar()->value();
-    if( horizontalScrollBar() ) horizontal_ = horizontalScrollBar()->value();
-}
+{ scrollBarMonitor_->save(); }
 
 //______________________________________________________
 void TreeView::restoreScrollBarPosition()
-{
-    if( verticalScrollBar() ) verticalScrollBar()->setValue( vertical_ );
-    if( horizontalScrollBar() ) horizontalScrollBar()->setValue( horizontal_ );
-}
+{ scrollBarMonitor_->restore(); }
 
 //______________________________________________________
 void TreeView::resizeColumns( int mask )
