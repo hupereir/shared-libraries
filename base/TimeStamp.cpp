@@ -30,8 +30,8 @@ const QString TimeStamp::TimeStampUnknown( QObject::tr("Unknown") );
 TimeStamp TimeStamp::now()
 {
     TimeStamp out;
-    out.time_ = time(0);
-    out.tm_   = *localtime(&out.time_);
+    out.time_ = std::time(0);
+    out.tm_   = *std::localtime(&out.time_);
     out.valid_ = ( out.time_>=0 );
     return out;
 }
