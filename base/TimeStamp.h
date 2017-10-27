@@ -24,7 +24,7 @@
 
 #include <QDataStream>
 #include <QDateTime>
-#include <time.h>
+#include <ctime>
 
 //* time manipulation object
 class TimeStamp:private Base::Counter<TimeStamp>
@@ -53,14 +53,14 @@ class TimeStamp:private Base::Counter<TimeStamp>
     {
         valid_ = time >= 0;
         time_ = time;
-        if( valid_ ) tm_ = *localtime( &time );
+        if( valid_ ) tm_ = *std::localtime( &time );
         return valid_;
     }
 
     //* convert tm_ into time_
     bool makeTime()
     {
-        valid_ = (time_ = mktime( &tm_ ) ) >= 0;
+        valid_ = (time_ = std::mktime( &tm_ ) ) >= 0;
         return valid_;
     }
 
@@ -185,24 +185,24 @@ class TimeStamp:private Base::Counter<TimeStamp>
         return *this;
     }
 
-    //* retrieves day (between 1 and 31)
+    //* set day (between 1 and 31)
     TimeStamp& setDay( int value )
     {
         tm_.tm_mday = value;
         return *this;
     }
 
-    //* retrieves month (between 1 and 12)
+    //* set month (between 1 and 12)
     TimeStamp& setMonth( int value )
     {
         tm_.tm_mon = value - 1;
         return *this;
     }
 
-    //* retrieves month (from string)
+    //* set month (from string)
     TimeStamp& setMonth( const QString& );
 
-    //* retrieves year (between 1 and 12)
+    //* set year
     TimeStamp& setYear( int value )
     {
         tm_.tm_year = value - 1900;
@@ -224,10 +224,10 @@ class TimeStamp:private Base::Counter<TimeStamp>
     bool valid_ = false;
 
     //* unix time in second
-    time_t time_ = -1;
+    std::time_t time_ = -1;
 
     //* time structure from localtime()
-    struct tm tm_;
+    struct std::tm tm_;
 
     //*@name serializer
     //@{
