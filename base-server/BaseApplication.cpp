@@ -311,7 +311,7 @@ void BaseApplication::_updateFonts()
             const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
 
             CustomProcess process( this );
-            process.start( Command( kde4ConfigCommand ) << "--path" << "config" );
+            process.start( Base::Command( kde4ConfigCommand ) << "--path" << "config" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );

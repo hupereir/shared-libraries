@@ -220,7 +220,7 @@ void OpenWithDialog::_open()
             }
 
             // execute
-            for( const auto& file:files_ ) { ( Command( command ) << file ).run(); }
+            for( const auto& file:files_ ) { ( Base::Command( command ) << file ).run(); }
 
         }
 

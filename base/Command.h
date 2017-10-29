@@ -25,70 +25,74 @@
 #include <QString>
 #include <QStringList>
 
-class Command final: private Base::Counter<Command>
+namespace Base
 {
-
-    public:
-
-    #if QT_VERSION < 0x040800
-    //* constructor
-    explicit Command( std::initializer_list<QString>&& );
-    #endif
-
-    //* constructor
-    explicit Command( const QStringList& other = QStringList() ):
-        Counter( "Command" ),
-        values_( other )
-    {}
-
-    //* constructor
-    explicit Command( QStringList&& other ):
-        Counter( "Command" ),
-        values_( std::move( other ) )
-    {}
-
-    //* constructor
-    explicit Command( const QString& in ):
-        Counter( "Command" ),
-        values_( _parse( in ) )
-    {}
-
-    //*@name accessors
-    //@{
-
-    const QStringList& get() const { return values_; }
-
-    //* run
-    bool run( const QString& = QString() ) const;
-
-    //@}
-
-    //*@name modifiers
-    //@{
-
-    //* streamers
-    template<class T>
-    Command& operator<< ( const T& t )
+    class Command final: private Base::Counter<Command>
     {
-        values_ << t;
-        return *this;
-    }
 
-    //@}
+        public:
 
-    private:
+        #if QT_VERSION < 0x040800
+        //* constructor
+        explicit Command( std::initializer_list<QString>&& );
+        #endif
 
-    //* parse command
-    /**
-    parse command so that first string in the list
-    is the command name and following strings are all arguments
-    first argument must start with a "-"
-    */
-    static QStringList _parse( const QString& );
+        //* constructor
+        explicit Command( const QStringList& other = QStringList() ):
+            Counter( "Command" ),
+            values_( other )
+        {}
 
-    //* values
-    QStringList values_;
+        //* constructor
+        explicit Command( QStringList&& other ):
+            Counter( "Command" ),
+            values_( std::move( other ) )
+        {}
 
-};
+        //* constructor
+        explicit Command( const QString& in ):
+            Counter( "Command" ),
+            values_( _parse( in ) )
+        {}
+
+        //*@name accessors
+        //@{
+
+        const QStringList& get() const { return values_; }
+
+        //* run
+        bool run( const QString& = QString() ) const;
+
+        //@}
+
+        //*@name modifiers
+        //@{
+
+        //* streamers
+        template<class T>
+            Command& operator<< ( const T& t )
+        {
+            values_ << t;
+            return *this;
+        }
+
+        //@}
+
+        private:
+
+        //* parse command
+        /**
+        parse command so that first string in the list
+        is the command name and following strings are all arguments
+        first argument must start with a "-"
+        */
+        static QStringList _parse( const QString& );
+
+        //* values
+        QStringList values_;
+
+    };
+
+}
 
 #endif

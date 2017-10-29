@@ -58,7 +58,7 @@ class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
     void start( const QStringList&, OpenMode = ReadWrite );
 
     //* run
-    void start( const Command& command, OpenMode mode = ReadWrite )
+    void start( const Base::Command& command, OpenMode mode = ReadWrite )
     { start( command.get(), mode ); }
 
     //* ensure object is deleted at job completion

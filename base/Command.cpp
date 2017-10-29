@@ -24,56 +24,60 @@
 
 #include <QProcess>
 
-#if QT_VERSION < 0x040800
-//____________________________________________
-Command::Command( std::initializer_list<QString>&& arguments ):
-Command( Base::makeT<QStringList>(std::move( arguments) ) )
-{}
-#endif
-
-//____________________________________________
-bool Command::run( const QString& path ) const
+namespace Base
 {
+    #if QT_VERSION < 0x040800
+    //____________________________________________
+    Command::Command( std::initializer_list<QString>&& arguments ):
+        Command( Base::makeT<QStringList>(std::move( arguments) ) )
+    {}
+    #endif
 
-    Debug::Throw( "Command::run.\n" );
-    if( values_.empty() ) return false;
-
-    const auto program( values_.front() );
-    auto arguments( values_ );
-    arguments.removeFirst();
-    return QProcess::startDetached( program, arguments, path );
-
-}
-
-//_________________________________________________________
-QStringList Command::_parse( const QString &in )
-{
-
-    Debug::Throw( "Command::parse.\n" );
-    QStringList out;
-
-    // first split using '"' as separator to get "single string" arguments that contain strings
-    // split strings that are not enclosed into quotes using white spaces as separator
-    // by construction, the first part is not enclosed into quotes; the second is; the third is not, etc.
-    bool split( true );
-    for( const auto& line:in.split( "\"", QString::KeepEmptyParts ) )
+    //____________________________________________
+    bool Command::run( const QString& path ) const
     {
-        if( !line.isEmpty() )
+
+        Debug::Throw( "Command::run.\n" );
+        if( values_.empty() ) return false;
+
+        const auto program( values_.front() );
+        auto arguments( values_ );
+        arguments.removeFirst();
+        return QProcess::startDetached( program, arguments, path );
+
+    }
+
+    //_________________________________________________________
+    QStringList Command::_parse( const QString &in )
+    {
+
+        Debug::Throw( "Command::parse.\n" );
+        QStringList out;
+
+        // first split using '"' as separator to get "single string" arguments that contain strings
+        // split strings that are not enclosed into quotes using white spaces as separator
+        // by construction, the first part is not enclosed into quotes; the second is; the third is not, etc.
+        bool split( true );
+        for( const auto& line:in.split( "\"", QString::KeepEmptyParts ) )
         {
-            if( split ) out.append( line.split( QRegExp( "\\s+" ), QString::SkipEmptyParts ) );
-            else out.append( QString("\"") + line + "\"" );
+            if( !line.isEmpty() )
+            {
+                if( split ) out.append( line.split( QRegExp( "\\s+" ), QString::SkipEmptyParts ) );
+                else out.append( QString("\"") + line + "\"" );
+            }
+
+            split = !split;
         }
 
-        split = !split;
-    }
+        // print output
+        if( Debug::level() >= 1 )
+        {
+            for( const auto& line:out )
+            { Debug::Throw(0) << "Command::parse - \"" << line << "\"" << endl; }
+        }
 
-    // print output
-    if( Debug::level() >= 1 )
-    {
-        for( const auto& line:out )
-        { Debug::Throw(0) << "Command::parse - \"" << line << "\"" << endl; }
-    }
+        return out;
 
-    return out;
+    }
 
 }

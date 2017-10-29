@@ -92,7 +92,7 @@ namespace Svg
             const QString kdeConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
 
             CustomProcess process( this );
-            process.start( Command( kdeConfigCommand ) << "--path" << "config" );
+            process.start( Base::Command( kdeConfigCommand ) << "--path" << "config" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
@@ -216,7 +216,7 @@ namespace Svg
             const QString kdeConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
 
             CustomProcess process( this );
-            process.start( Command( kdeConfigCommand ) << "--path" << "data" );
+            process.start( Base::Command( kdeConfigCommand ) << "--path" << "data" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
                 const auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );

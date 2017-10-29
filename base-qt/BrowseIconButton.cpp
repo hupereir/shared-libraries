@@ -126,7 +126,11 @@ void BrowseIconButton::_browse()
         return;
     }
 
-    setFile( files.front(), true );
+    const File file( files.front() );
+    if( file.exists() )
+    { dialog.saveWorkingDirectory( file.path().get() ); }
+
+    setFile( file.get(), true );
     return;
 }
 

@@ -32,6 +32,7 @@ FileDialog::FileDialog( QWidget* parent ):
 //_______________________________________________________
 FileDialog& FileDialog::selectFile( const File& file )
 {
+    Debug::Throw( "FileDialog::selectFile.\n" );
     selectedFile_ = file;
     _workingDirectory() = QFileInfo( file ).isDir() ? File( file ): File( file ).path();
     return *this;
@@ -70,6 +71,13 @@ File FileDialog::getFile()
     if( !out.isEmpty() ) _workingDirectory() = File( QFileInfo( out ).path() );
     return out;
 
+}
+
+//_______________________________________________________
+void FileDialog::setWorkingDirectory( const File& value )
+{
+    Debug::Throw( "FileDialog::setWorkingDirectory.\n" );
+    _workingDirectory() = value;
 }
 
 //_______________________________________________________

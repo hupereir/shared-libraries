@@ -48,16 +48,16 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     { setDirectory( QDir( FileDialog::_workingDirectory() ) ); }
 
     Debug::Throw() << "ImageFileDialog::ImageFileDialog - working directory: " << FileDialog::_workingDirectory() << endl;
-
-    connect( this, SIGNAL(directoryEntered(QString)), SLOT(_saveWorkingDirectory(QString)) );
+    connect( this, SIGNAL(directoryEntered(QString)), SLOT(saveWorkingDirectory(QString)) );
 
     // add image display
-    QSplitter* splitter = findChild<QSplitter*>( "splitter" );
+    auto splitter = findChild<QSplitter*>( "splitter" );
     if( splitter )
     {
-        QWidget *main( new QWidget );
+        auto main( new QWidget );
         splitter->addWidget( main );
-        QVBoxLayout *vLayout = new QVBoxLayout;
+
+        auto vLayout = new QVBoxLayout;
         main->setLayout( vLayout );
         vLayout->setSpacing(5);
         vLayout->setMargin(0);
@@ -65,7 +65,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
         preview_->setAlignment( Qt::AlignCenter );
         preview_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
 
-        QHBoxLayout *hLayout = new QHBoxLayout;
+        auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(5);
         hLayout->setMargin(0);
         vLayout->addLayout( hLayout );
@@ -73,11 +73,11 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
         hLayout->addWidget( automaticPreview_ = new QCheckBox( tr( "Automatic preview" ), main ) );
         automaticPreview_->setChecked( true );
 
-        QPushButton* button = new QPushButton( tr( "Preview" ), main );
+        auto button = new QPushButton( tr( "Preview" ), main );
         hLayout->addWidget( button );
         connect( button, SIGNAL(clicked()), SLOT(_preview()) );
 
-    } else Debug::Throw(0) << "ImageFileDialog::ImageFileDialog - unable to find splitter." << endl;
+    } else Debug::Throw() << "ImageFileDialog::ImageFileDialog - unable to find splitter." << endl;
 
     connect( this, SIGNAL(currentChanged (QString)), SLOT(_currentChanged(QString)) );
 
@@ -111,14 +111,14 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
         QFileInfo fileInfo( url.toLocalFile() );
         if( fileInfo.exists() )
         {
-            ImageFileDialog& dialog( *static_cast<ImageFileDialog*>( window() ) );
-            if( fileInfo.isDir() ) dialog.setDirectory( fileInfo.filePath() );
+            auto dialog( static_cast<ImageFileDialog*>( window() ) );
+            if( fileInfo.isDir() ) dialog->setDirectory( fileInfo.filePath() );
             else {
 
-                dialog.setDirectory( fileInfo.path() );
-                dialog.selectFile( File( fileInfo.fileName() ) );
-                if( dialog.automaticPreview_ && dialog.automaticPreview_->isChecked() )
-                { dialog._currentChanged( fileInfo.filePath() ); }
+                dialog->setDirectory( fileInfo.path() );
+                dialog->selectFile( File( fileInfo.fileName() ) );
+                if( dialog->automaticPreview_ && dialog->automaticPreview_->isChecked() )
+                { dialog->_currentChanged( fileInfo.filePath() ); }
 
             }
             event->acceptProposedAction();
@@ -129,10 +129,10 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 }
 
 //______________________________________________________________________
-void ImageFileDialog::_saveWorkingDirectory( QString directory )
+void ImageFileDialog::saveWorkingDirectory( QString directory )
 {
-    Debug::Throw() << "ImageFileDialog::_saveWorkingDirectory - directory: " << directory << endl;
-    FileDialog::_workingDirectory() = File( QFileInfo( directory ).absolutePath() );
+    Debug::Throw() << "ImageFileDialog::saveWorkingDirectory - directory: " << directory << endl;
+    FileDialog::setWorkingDirectory( File( QFileInfo( directory ).absolutePath() ) );
 }
 
 //______________________________________________________________________

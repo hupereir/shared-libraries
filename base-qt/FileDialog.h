@@ -37,6 +37,22 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     //* creator
     explicit FileDialog( QWidget* parent );
 
+    //*@name accessors
+    //@{
+
+    //* get file
+    File getFile();
+
+    //* reference to statically scoped working directory
+    static const File& workingDirectory()
+    { return _workingDirectory(); }
+
+    //@}
+
+
+    //*@name modifiers
+    //@{
+
     //* open mode
     FileDialog& setAcceptMode( const QFileDialog::AcceptMode mode )
     {
@@ -76,12 +92,10 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
         return *this;
     }
 
-    //* get file
-    File getFile();
+    //* working directory
+    static void setWorkingDirectory( const File& );
 
-    //* reference to statically scoped working directory
-    const File& workingDirectory() const
-    { return _workingDirectory(); }
+    //@}
 
     private:
 

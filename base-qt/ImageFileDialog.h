@@ -46,13 +46,10 @@ class ImageFileDialog: public QFileDialog
         QFileDialog::selectFile( filename );
     }
 
-    private Q_SLOTS:
+    public Q_SLOTS:
 
-    //* update current
-    void _currentChanged( const QString& path );
-
-    //* display current image
-    void _preview();
+    //* stores working directory when changed
+    void saveWorkingDirectory( QString directory );
 
     protected:
 
@@ -64,8 +61,11 @@ class ImageFileDialog: public QFileDialog
 
     private Q_SLOTS:
 
-    //* stores working directory when changed
-    void _saveWorkingDirectory( QString directory );
+    //* update current
+    void _currentChanged( const QString& path );
+
+    //* display current image
+    void _preview();
 
     private:
 
