@@ -30,7 +30,7 @@ class ScrollBarMonitor: public QObject, private Base::Counter<ScrollBarMonitor>
     public:
 
     //* constructor
-    ScrollBarMonitor( QAbstractScrollArea* );
+    explicit ScrollBarMonitor( QAbstractScrollArea* );
 
     //* save scrollbar positions
     void save();
