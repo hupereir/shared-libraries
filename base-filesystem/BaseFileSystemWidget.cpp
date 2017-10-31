@@ -86,15 +86,15 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
 
     // install actions
     _installActions();
-    toolbar->addAction( parentDirectoryAction_ );
     toolbar->addAction( previousDirectoryAction_ );
     toolbar->addAction( nextDirectoryAction_ );
+    toolbar->addAction( parentDirectoryAction_ );
     toolbar->addAction( homeDirectoryAction_ );
     toolbar->addAction( workingDirectoryAction_ );
     toolbar->addAction( reloadAction_ );
 
     // by default, hide parent directory action
-    parentDirectoryAction_->setVisible( false );
+    // parentDirectoryAction_->setVisible( false );
 
     // file list
     layout->addWidget( list_ = new TreeView( this ), 1);
