@@ -90,7 +90,7 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     //* emitted when panel is detached
     void detached();
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     //* toggle dock
     void _toggleDock();

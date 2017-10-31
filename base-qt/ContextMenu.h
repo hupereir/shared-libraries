@@ -37,9 +37,9 @@ class ContextMenu: public BaseContextMenu
     //* contructor
     explicit ContextMenu( QWidget* );
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
-    //* add actions
+    //* hide actions
     void _hideActions();
 
     //* show actions

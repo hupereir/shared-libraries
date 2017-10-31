@@ -44,7 +44,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
 
     void colorSelected( QColor );
 
-    protected Q_SLOTS:
+    private Q_SLOTS:
 
     void _grabColor();
 
