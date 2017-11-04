@@ -111,7 +111,7 @@ void BusyWidget::start()
     else {
 
         if( animation_->state() == QAbstractAnimation::Stopped ) animation_->start();
-        if( !isVisible() ) show();
+        show();
 
     }
 
@@ -123,7 +123,7 @@ void BusyWidget::stop()
     Debug::Throw( "BusyWidget::stop.\n" );
     if( timer_.isActive() ) timer_.stop();
     if( animation_->state() != QAbstractAnimation::Stopped ) animation_->stop();
-    if( isVisible() ) hide();
+    hide();
 }
 
 //__________________________________________________________________________
