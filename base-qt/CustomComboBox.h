@@ -49,7 +49,7 @@ class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
     void setEditable( bool value );
 
     //* auto completion
-    void setAutoCompletion( bool value, Qt::CaseSensitivity  = Qt::CaseInsensitive);
+    void setAutoCompletion( bool value, Qt::CaseSensitivity = Qt::CaseInsensitive);
 
     //* set navigation enabled
     void setNavigationEnabled( bool value )
