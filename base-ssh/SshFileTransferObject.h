@@ -134,10 +134,10 @@ namespace Ssh
         //* debug message
         void debug( QString );
 
-        //* emited when transfer is completed
+        //* emitted when transfer is completed
         void completed();
 
-        //* emited when transfer has failed
+        //* emitted when transfer has failed
         void failed();
 
         private Q_SLOTS:

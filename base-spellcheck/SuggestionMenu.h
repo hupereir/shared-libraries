@@ -51,7 +51,7 @@ namespace SpellCheck {
 
         Q_SIGNALS:
 
-        //* signal emited when a file is selected
+        //* signal emitted when a file is selected
         void suggestionSelected( QString );
 
         //* ignore word

@@ -62,7 +62,7 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
 
     Q_SIGNALS:
 
-    //* signal emited when a file is selected
+    //* signal emitted when a file is selected
     void fileSelected( FileRecord );
 
     public Q_SLOTS:

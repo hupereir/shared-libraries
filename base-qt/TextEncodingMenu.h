@@ -33,25 +33,25 @@ class TextEncodingMenu: public QMenu, private Base::Counter<TextEncodingMenu>
 
     public:
 
-    //! constructor
+    //* constructor
     explicit TextEncodingMenu( QWidget* = 0 );
 
-    //! select
+    //* select
     void select( const QByteArray& );
 
     Q_SIGNALS:
 
-    //! emitted when encoding is changed
+    //* emitted when encoding is changed
     void encodingChanged( const QByteArray& );
 
     private Q_SLOTS:
 
-    //! size selected from action
+    //* size selected from action
     void _selected( QAction* );
 
     private:
 
-    //! map action to encoding
+    //* map action to encoding
     using ActionMap = QHash<QAction*, QByteArray>;
     ActionMap actions_;
 

@@ -28,7 +28,7 @@
 #include <QMenu>
 #include <QHash>
 
-//! provides icon size selection menu
+//* provides icon size selection menu
 class IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
 {
 
@@ -36,28 +36,28 @@ class IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
 
     public:
 
-    //! constructor
+    //* constructor
     explicit IconSizeMenu( QWidget* parent = 0, bool custom = false );
 
-    //! select size
+    //* select size
     void select( IconSize::Size );
 
     Q_SIGNALS:
 
-    //! emitted when a new size is selected
+    //* emitted when a new size is selected
     void iconSizeSelected( IconSize::Size );
 
     private Q_SLOTS:
 
-    //! size selected from action
+    //* size selected from action
     void _selected( QAction* );
 
     private:
 
-    //! action map
+    //* action map
     using ActionMap = QHash<QAction*, IconSize::Size >;
 
-    //! toolbar text action map
+    //* toolbar text action map
     ActionMap actions_;
 
 };

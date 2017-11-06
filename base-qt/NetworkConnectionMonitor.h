@@ -75,7 +75,7 @@ namespace Network
 
         Q_SIGNALS:
 
-        //* emmitted when a device is connected
+        //* emitted when a device is connected
         void deviceConnected( QString );
 
         protected:
