@@ -47,7 +47,7 @@ void ValidFileThread::run()
     }
 
     // look for duplicated records
-    if( checkDuplicates_ )
+    if( checkDuplicates_ && records_.size() > 1 )
     {
 
         std::sort( records_.begin(), records_.end(), FileRecord::CanonicalFileFTor() );
