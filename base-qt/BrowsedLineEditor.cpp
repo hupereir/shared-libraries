@@ -95,14 +95,34 @@ void BrowsedLineEditor::_browse()
 {
 
     Debug::Throw( "BrowsedLineEditor::_browse.\n" );
-    FileDialog dialog( this );
-    dialog.setAcceptMode( acceptMode_ );
-    dialog.setFileMode( fileMode_ );
-    if( !editor().text().isNull() ) dialog.selectFile( File( editor().text() ) );
 
-    QString file( dialog.getFile() );
-    if( !file.isNull() ) setFile( file );
-    return;
+    if( useNativeFileDialog_ )
+    {
+
+        Debug::Throw( 0, "BrowsedLineEditor::_browse - using FileDialog.\n" );
+
+        FileDialog dialog( this );
+        dialog.setAcceptMode( acceptMode_ );
+        dialog.setFileMode( fileMode_ );
+        if( !editor().text().isNull() ) dialog.selectFile( File( editor().text() ) );
+        QString file( dialog.getFile() );
+        if( !file.isNull() ) setFile( file );
+
+    } else {
+
+        Debug::Throw( 0, "BrowsedLineEditor::_browse - using QFileDialog.\n" );
+
+        QFileDialog dialog(this);
+        dialog.setAcceptMode( acceptMode_ );
+        dialog.setFileMode( fileMode_ );
+        if( !editor().text().isNull() ) dialog.selectFile( File( editor().text() ) );
+        if( !dialog.exec() ) return;
+
+        auto filenames( dialog.selectedFiles() );
+        if( filenames.size() == 1 ) setFile( filenames.front() );
+
+    }
+
 }
 
 //_____________________________________________________________

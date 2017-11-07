@@ -59,6 +59,10 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     /** it is used to browse application path and update, if not found */
     void setTargetApplication( File );
 
+    //* native dialogs
+    void setUseNativeFileDialog( bool value )
+    { useNativeFileDialog_ = value; }
+
     //* open mode
     void setAcceptMode( const QFileDialog::AcceptMode mode )
     { acceptMode_ = mode; }
@@ -96,6 +100,9 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
 
     //* line editor widget
     Editor *lineEditor_ = nullptr;
+
+    //* use native dialogs
+    bool useNativeFileDialog_ = true;
 
     //* accept mode
     QFileDialog::AcceptMode acceptMode_ = QFileDialog::AcceptOpen;
