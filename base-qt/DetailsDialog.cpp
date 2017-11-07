@@ -30,7 +30,7 @@ void DetailsDialog::setDetails( const QString& details )
     if( details.isEmpty() ) return;
 
     // create text editor assign text and set as details
-    TextEditor* editor = new TextEditor;
+    auto editor = new TextEditor;
     editor->setReadOnly( true );
     editor->setWrapFromOptions( false );
     editor->setLineWrapMode( TextEditor::WidgetWidth );
@@ -53,7 +53,6 @@ void DetailsDialog::setDetails( QWidget* widget )
         mainLayout().addWidget( detailsLabel_ );
 
         connect( detailsLabel_, SIGNAL(linkActivated(QString)), SLOT(showDetails()) );
-
     }
 
     // assign widget

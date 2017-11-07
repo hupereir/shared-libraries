@@ -32,7 +32,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     Debug::Throw( "CustomDialog::CustomDialog.\n" );
 
     // create vbox layout
-    QVBoxLayout* layout( new QVBoxLayout );
+    auto layout = new QVBoxLayout;
     setLayout( layout );
     layout->setSpacing(5);
     layout->setMargin(10);
@@ -45,7 +45,7 @@ CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags
     // separator
     if( flags & Separator )
     {
-        QFrame* frame( new QFrame( this ) );
+        auto frame = new QFrame( this );
         frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
         layout->addWidget( frame );
         separator_ = frame;
