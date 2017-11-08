@@ -92,6 +92,9 @@ class OptionSpinBox: public QWidget, public OptionWidget
     void setToolTip( const QString& value )
     { spinBox_->setToolTip( value ); }
 
+    void setSingleStep( int value )
+    { spinBox_->setSingleStep( value ); }
+
     //@}
 
     Q_SIGNALS:
