@@ -138,7 +138,7 @@ qint64 File::fileSize() const
 QString File::sizeString( qint64 sizeInt )
 {
     if( sizeInt < 0 ) return QString();
-    if( sizeInt == 0 ) return "0";
+    if( sizeInt == 0 ) return "0 B";
 
     qreal size = sizeInt;
     static const QString unit[] =
