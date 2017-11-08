@@ -386,8 +386,10 @@ class ListModel : public ItemModel
     //* remove, without update
     virtual void _remove( const ValueType& value )
     {
-        values_.erase( std::remove_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value )), values_.end() );
-        selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), value ) ), selectedItems_.end() );
+        // need a copy of the passed value as it can be invalidated by the first erase, before comming to the second
+        const auto copy( value );
+        values_.erase( std::remove_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), copy )), values_.end() );
+        selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), copy ) ), selectedItems_.end() );
     }
 
     private:
