@@ -27,7 +27,10 @@ endif()
 find_program(KDE_CONFIG NAMES kf5-config kde4-config)
 
 ########### zlib ###############
+if(NOT WIN32)
 find_package(ZLIB)
+endif()
+
 if(ZLIB_FOUND)
 
   include_directories(${ZLIB_INCLUDE_DIRS})
