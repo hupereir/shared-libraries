@@ -18,18 +18,19 @@
 *******************************************************************************/
 
 #include "BaseConfigurationDialog.h"
-#include "BaseConfigurationDialog_p.h"
 
 #include "BaseIconNames.h"
 #include "GridLayout.h"
 #include "CustomDialog.h"
 #include "Debug.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 #include "Operators.h"
 #include "OptionBrowsedLineEditor.h"
 #include "OptionCheckBox.h"
 #include "OptionColorDisplay.h"
 #include "OptionFontEditor.h"
+#include "OptionIconSizeComboBox.h"
 #include "OptionLineEditor.h"
 #include "OptionListBox.h"
 #include "OptionModel.h"
@@ -49,6 +50,24 @@
 
 namespace Private
 {
+
+    //_________________________________________________________
+    class IconThemeDialog: public CustomDialog, public OptionWidgetList
+    {
+
+        Q_OBJECT
+
+            public:
+
+            //* constructor
+            explicit IconThemeDialog( QWidget* = nullptr );
+
+        Q_SIGNALS:
+
+        //* modified
+        void modified();
+
+    };
 
     //_________________________________________________________
     IconThemeDialog::IconThemeDialog( QWidget* parent ):
@@ -334,20 +353,22 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     // icon size in lists
     auto gridLayout = new GridLayout;
     gridLayout->setMargin(0);
-    gridLayout->setMaxCount(2);
+    gridLayout->setMaxCount(3);
+    gridLayout->setColumnStretch( 2, 1 );
     vLayout->addLayout( gridLayout );
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
 
     {
         // icon size in lists
         gridLayout->addWidget( label = new QLabel( tr( "List items icon size:" ), box ) );
-        gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ICON_SIZE" ) );
-        spinbox->setToolTip( tr( "Default size of the icons displayed in lists" ) );
-        spinbox->setSuffix( tr( "px" ) );
-        spinbox->setMinimum(8);
-        spinbox->setMaximum(96);
-        addOptionWidget( spinbox );
-        label->setBuddy( spinbox );
+        auto comboBox = new OptionIconSizeComboBox( box, "LIST_ICON_SIZE" );
+        gridLayout->addWidget( comboBox );
+        comboBox->setToolTip( tr( "Default size of the icons displayed in lists" ) );
+        addOptionWidget( comboBox );
+        label->setBuddy( comboBox );
+
+        gridLayout->increment();
+
     }
 
 
@@ -525,9 +546,14 @@ void BaseConfigurationDialog::_editIconTheme()
     Debug::Throw( "BaseConfigurationDialog::_editIconTheme.\n" );
     if( !iconThemeDialog_ )
     {
-        iconThemeDialog_ = new Private::IconThemeDialog( this );
-        iconThemeDialog_->read( XmlOptions::get() );
-        addOptionWidget( iconThemeDialog_ );
+        // create
+        auto dialog =  new Private::IconThemeDialog( this );
+        dialog->read( XmlOptions::get() );
+        addOptionWidget( dialog );
+
+        // assign
+        iconThemeDialog_ = dialog;
+
     }
 
     iconThemeDialog_->exec();
@@ -717,3 +743,5 @@ void BaseConfigurationDialog::_restoreDefaults()
     read();
     emit configurationChanged();
 }
+
+#include "BaseConfigurationDialog.moc"

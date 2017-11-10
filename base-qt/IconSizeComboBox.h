@@ -1,5 +1,6 @@
-#ifndef BaseConfigurationDialog_p_h
-#define BaseConfigurationDialog_p_h
+#ifndef IconSizeComboBox_h
+#define IconSizeComboBox_h
+
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -19,37 +20,39 @@
 *
 *******************************************************************************/
 
-#include "CustomDialog.h"
-#include "GridLayout.h"
-#include "OptionBrowsedLineEditor.h"
-#include "OptionCheckBox.h"
-#include "OptionLineEditor.h"
-#include "OptionWidgetList.h"
+#include "Counter.h"
+#include "IconSize.h"
 
-#include <QFileDialog>
-#include <QLabel>
+#include <QComboBox>
 
-namespace Private
+class IconSizeComboBox: public QComboBox, private Base::Counter<IconSizeComboBox>
 {
 
-    //_________________________________________________________
-    class IconThemeDialog: public CustomDialog, public OptionWidgetList
-    {
+    //* Qt meta object declaration
+    Q_OBJECT
 
-        Q_OBJECT
+    public:
 
-        public:
 
-        //* constructor
-        explicit IconThemeDialog( QWidget* = nullptr );
+    //* constructor
+    explicit IconSizeComboBox( QWidget* = nullptr, bool custom = false );
 
-        Q_SIGNALS:
+    //*@name accessors
+    //@{
 
-        //* modified
-        void modified();
+    //* current color
+    IconSize::Size iconSize() const;
 
-    };
+    //@}
 
-}
+    //*@name modifiers
+    //@{
+
+    //* select icon size
+    void selectIconSize( const IconSize::Size& );
+
+    //@}
+
+};
 
 #endif

@@ -120,7 +120,7 @@ void ColorComboBox::selectColor( const QColor&  color )
         bool found( false );
         for( int index = 2; index < QComboBox::count(); ++index )
         {
-            const QColor local( itemData( index ).value<QColor>() );
+            const auto local( itemData( index ).value<QColor>() );
             if( local == color )
             {
                 setCurrentIndex( index );
@@ -148,7 +148,7 @@ void ColorComboBox::_updateActiveIndex( int index )
     {
 
         // select a new color
-        QColor color( QColorDialog::getColor( Qt::white, this ) );
+        const auto color( QColorDialog::getColor( Qt::white, this ) );
         if( color.isValid() )
         {
 

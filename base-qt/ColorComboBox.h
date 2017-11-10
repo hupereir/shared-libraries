@@ -23,9 +23,6 @@
 #include "Color.h"
 #include "Counter.h"
 
-#include "Debug.h"
-#include "QOrderedSet.h"
-
 #include <QComboBox>
 
 class ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
@@ -38,7 +35,7 @@ class ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
 
 
     //* constructor
-    explicit ColorComboBox( QWidget* );
+    explicit ColorComboBox( QWidget* = nullptr );
 
     //*@name accessors
     //@{

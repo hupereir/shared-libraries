@@ -45,6 +45,7 @@ const IconSize::Map& IconSize::map()
     static const auto sizeMap = Base::makeT<Map>(
     {
         { Default, QObject::tr( "System Default" ) },
+        { Minimum, QObject::tr( "Very Small (8x8)" ) },
         { Small, QObject::tr( "Small (16x16)" ) },
         { Medium, QObject::tr( "Medium (22x22)" ) },
         { Large, QObject::tr( "Large (32x32)" ) },

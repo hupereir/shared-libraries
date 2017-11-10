@@ -84,7 +84,8 @@ void Options::installDefaultOptions()
     set<bool>( "USE_ALTERNATE_COLOR", false );
     set<bool>( "USE_SELECTED_COLUMN_COLOR", true );
 
-    set<int>( "LIST_ICON_SIZE", 24 );
+    /* warning: this must match one of the default icon size */
+    set<int>( "LIST_ICON_SIZE", 22 );
     set<int>( "LIST_ITEM_MARGIN", 0 );
 
     // dock widgets

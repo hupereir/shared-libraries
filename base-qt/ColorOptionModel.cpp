@@ -24,6 +24,7 @@
 #include "IconSize.h"
 
 #include <QPainter>
+#include <QPalette>
 
 //_______________________________________________
 ColorOptionModel::IconCache& ColorOptionModel::_icons()

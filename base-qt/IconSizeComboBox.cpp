@@ -17,62 +17,55 @@
 *
 *******************************************************************************/
 
-#include "IconSizeMenu.h"
+#include "IconSizeComboBox.h"
+
 #include "CppUtil.h"
 #include "Debug.h"
 
-//_____________________________________________________________________________
-IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
-    QMenu( tr( "Icon size" ), parent ),
-    Counter( "IconSizeMenu" )
+//_________________________________________________________
+IconSizeComboBox::IconSizeComboBox( QWidget* parent, bool custom ):
+    QComboBox( parent ),
+    Counter( "IconSizeComboBox" )
 {
-    Debug::Throw( "IconSizeMenu::IconSizeMenu.\n" );
+    Debug::Throw( "IconSizeComboBox::IconSizeComboBox.\n" );
+    setEditable( false );
 
-    QActionGroup *group = new QActionGroup( this );
-    connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
-
+    // insert items
     const auto& sizes( IconSize::map() );
 
     // custom sizes
     static const auto customSizes = Base::makeT<QList<IconSize::Size> >(
         { IconSize::Minimum, IconSize::Maximum, IconSize::Oversized });
 
-    // generic action
-    QAction* action;
     for( auto&& iter = sizes.begin(); iter != sizes.end(); ++iter )
     {
-
         // skip some items depending on custom flags
         if( custom && iter.key() == IconSize::Default ) continue;
         if( !custom && customSizes.contains( iter.key() ) ) continue;
-
-        addAction( action = new QAction( iter.value(), this ) );
-        action->setCheckable( true );
-        actions_.insert( action, iter.key() );
-        group->addAction( action );
+        insertItem( QComboBox::count(), iter.value(), iter.key() );
     }
 
 }
 
-//_____________________________________________________________________________
-void IconSizeMenu::select( IconSize::Size size )
+//_________________________________________________________
+IconSize::Size IconSizeComboBox::iconSize() const
+{ return static_cast<IconSize::Size>( itemData( currentIndex() ).value<int>() ); }
+
+//_________________________________________________________
+void IconSizeComboBox::selectIconSize( const IconSize::Size& iconSize )
 {
 
-    Debug::Throw( "IconSizeMenu::select.\n" );
-    const auto iter = Base::findByValue( actions_, size );
-    if( iter != actions_.end() ) iter.key()->setChecked( true );
+    Debug::Throw() << "IconSizeComboBox::selectIconSize - size: " << iconSize << endl;
+    for( int index = 0; index < QComboBox::count(); ++index )
+    {
 
-}
+        const auto local( static_cast<IconSize::Size>( itemData( index ).value<int>() ) );
+        if( local == iconSize )
+        {
+            setCurrentIndex( index );
+            break;
+        }
 
-//_____________________________________________________________________________
-void IconSizeMenu::_selected( QAction* action )
-{
-
-    Debug::Throw( "IconSizeMenu::_selected.\n" );
-
-    // find matching actions
-    const auto iter = actions_.find( action );
-    Q_ASSERT( iter != actions_.end() );
-    emit iconSizeSelected( iter.value() );
+    }
 
 }

@@ -28,11 +28,6 @@
 
 class CustomDialog;
 
-namespace Private
-{
-    class IconThemeDialog;
-};
-
 //* configuration dialog
 class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
 {
@@ -145,7 +140,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     CustomDialog* pixmapPathDialog_ = nullptr;
 
     //* icon theme dialog
-    Private::IconThemeDialog* iconThemeDialog_ = nullptr;
+    CustomDialog* iconThemeDialog_ = nullptr;
 
 };
 

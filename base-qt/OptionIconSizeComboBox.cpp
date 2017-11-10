@@ -1,6 +1,3 @@
-#ifndef IconSizeMenu_h
-#define IconSizeMenu_h
-
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -20,46 +17,4 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "CustomToolButton.h"
-#include "Debug.h"
-#include "IconSize.h"
-
-#include <QMenu>
-#include <QHash>
-
-//* provides icon size selection menu
-class IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
-{
-
-    Q_OBJECT
-
-    public:
-
-    //* constructor
-    explicit IconSizeMenu( QWidget* = nullptr, bool custom = false );
-
-    //* select size
-    void select( IconSize::Size );
-
-    Q_SIGNALS:
-
-    //* emitted when a new size is selected
-    void iconSizeSelected( IconSize::Size );
-
-    private Q_SLOTS:
-
-    //* size selected from action
-    void _selected( QAction* );
-
-    private:
-
-    //* action map
-    using ActionMap = QHash<QAction*, IconSize::Size >;
-
-    //* toolbar text action map
-    ActionMap actions_;
-
-};
-
-#endif
+#include "OptionIconSizeComboBox.h"

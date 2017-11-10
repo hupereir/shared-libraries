@@ -136,6 +136,7 @@ set(base_qt_SOURCES
   IconCacheModel.cpp
   IconEngine.cpp
   IconSize.cpp
+  IconSizeComboBox.cpp
   IconSizeMenu.cpp
   IconView.cpp
   IconViewItem.cpp
@@ -159,6 +160,7 @@ set(base_qt_SOURCES
   OptionDialog.cpp
   OptionFontEditor.cpp
   OptionFontInfo.cpp
+  OptionIconSizeComboBox.cpp
   OptionLineEditor.cpp
   OptionListBox.cpp
   OptionModel.cpp

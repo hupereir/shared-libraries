@@ -20,7 +20,6 @@
 *
 *******************************************************************************/
 
-#include <QWidget>
 #include <QSize>
 #include <QMap>
 
@@ -34,6 +33,7 @@ class IconSize final
     enum Size
     {
         Default = 0,
+        Minimum = 8,
         Small = 16,
         Medium = 22,
         Large = 32,
