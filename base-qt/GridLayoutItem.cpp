@@ -37,15 +37,19 @@ GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, Flags flags
     palette.setColor( QPalette::WindowText, color );
     key_->setPalette( palette );
 
-    // create correct value label
+    // elision flag
     if( flags & Flag::Elide ) value_ = new ElidedLabel( parent );
     else value_ = new QLabel( parent );
 
+    // selectable flag
     if( flags & Flag::Selectable )
     {
         auto defaultFlags( QLabel().textInteractionFlags() );
         value_->setTextInteractionFlags( Qt::TextSelectableByMouse | defaultFlags );
     }
+
+    // wrap flag
+    if( flags & Flag::Wrap ) value_->setWordWrap( true );
 
     // add to layout
     layout->addWidget( value_, layout->currentRow(), layout->currentColumn(), Qt::AlignLeft|Qt::AlignTop );

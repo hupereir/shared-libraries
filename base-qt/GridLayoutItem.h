@@ -42,6 +42,7 @@ class GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
         None = 0,
         Elide = 1<<0,
         Selectable = 1<<2,
+        Wrap = 1<<3,
         All = Elide|Selectable
     };
 
