@@ -117,7 +117,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
         increment();
     }
 
-    //* add widget
+    //* add layout
     void addLayout( QLayout* layout, Qt::Alignment alignment = 0 )
     {
         Q_ASSERT( maxCount_ > 0 );
@@ -125,6 +125,31 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
         QGridLayout::addLayout( layout, row_, column_, alignment );
         increment();
     }
+
+    //* add LayoutIttem
+    void addItem( QLayoutItem* item, int row, int column, Qt::Alignment alignment = 0 )
+    { GridLayout::addItem( item, row, column, 1, 1, alignment ); }
+
+    //* add LayoutItem
+    void addItem( QLayoutItem* item, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
+    {
+        Q_ASSERT( rowSpan > 0 );
+        Q_ASSERT( columnSpan > 0 );
+        if( alignment == 0 && _boundCheck( column ) && columnSpan == 1 ) alignment = columnAlignments_[column];
+        QGridLayout::addItem( item, row, column, rowSpan, columnSpan, alignment );
+        setLocation( row+rowSpan-1, column+columnSpan-1 );
+        increment();
+    }
+
+    //* add LayoutItem
+    void addItem( QLayoutItem* item, Qt::Alignment alignment = 0 )
+    {
+        Q_ASSERT( maxCount_ > 0 );
+        if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = columnAlignments_[column_];
+        QGridLayout::addItem( item, row_, column_, alignment );
+        increment();
+    }
+
 
     //* increment from last position
     void increment()
