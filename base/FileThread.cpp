@@ -74,8 +74,7 @@ void FileThread::run()
         break;
 
         case Command::List:
-        if( !files_.empty() )
-        { emit filesAvailable( files_ ); }
+        emit filesAvailable( files_ );
         break;
 
         default: break;
