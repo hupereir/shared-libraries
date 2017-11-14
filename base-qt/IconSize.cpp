@@ -49,8 +49,9 @@ const IconSize::Map& IconSize::map()
         { Small, QObject::tr( "Small (16x16)" ) },
         { Medium, QObject::tr( "Medium (22x22)" ) },
         { Large, QObject::tr( "Large (32x32)" ) },
-        { Huge, QObject::tr( "Huge (48x48)" ) },
-        { Oversized, QObject::tr( "Oversized (128x128)" ) },
+        { VeryLarge, QObject::tr( "Very Large (48x48)" ) },
+        { Huge, QObject::tr( "Huge (64x64)" ) },
+        { VeryHuge, QObject::tr( "Very Huge (128x128)" ) },
         { Maximum, QObject::tr( "Maximum (256x256)" ) }
     } );
 

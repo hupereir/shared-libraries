@@ -35,7 +35,7 @@ IconSizeComboBox::IconSizeComboBox( QWidget* parent, bool custom ):
 
     // custom sizes
     static const auto customSizes = Base::makeT<QList<IconSize::Size> >(
-        { IconSize::Minimum, IconSize::Maximum, IconSize::Oversized });
+        { IconSize::Minimum, IconSize::VeryHuge, IconSize::Maximum });
 
     for( auto&& iter = sizes.begin(); iter != sizes.end(); ++iter )
     {

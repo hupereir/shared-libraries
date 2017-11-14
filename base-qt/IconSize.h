@@ -37,9 +37,9 @@ class IconSize final
         Small = 16,
         Medium = 22,
         Large = 32,
-        Huge = 48,
-        VeryHuge = 64,
-        Oversized = 128,
+        VeryLarge = 48,
+        Huge = 64,
+        VeryHuge = 128,
         Maximum = 256
     };
 
