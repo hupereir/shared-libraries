@@ -23,13 +23,12 @@
 #include "Counter.h"
 #include "ImageData.h"
 #include "Notification.h"
+#include "TimeStamp.h"
 
 #include <QIcon>
-#include <QBasicTimer>
 #include <QObject>
 #include <QStringList>
 #include <QSet>
-#include <QTimerEvent>
 
 #ifndef QT_NO_DBUS
 #include <QDBusInterface>
@@ -121,14 +120,17 @@ namespace Private
         //* image data
         Notifications::ImageData imageData_;
 
-        //* image data type id
-        int typeId_ = 0;
-
         //* notifications and associated actions
         QHash<quint32, QStringList> notificationIds_;
 
         //* action list
         QStringList lastNotificationActions_;
+
+        //* last notification id
+        quint32 lastNotificationId_ = 0;
+
+        //* last notification time
+        TimeStamp lastNotificationTime_;
 
     };
 

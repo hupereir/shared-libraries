@@ -30,7 +30,6 @@
 #endif
 
 #ifndef QT_NO_DBUS
-
 //____________________________________________________________
 QDBusArgument &operator << (QDBusArgument &argument, const Notifications::ImageData &imageData)
 {
@@ -67,11 +66,14 @@ const QDBusArgument & operator >>(const QDBusArgument &argument, Notifications::
 namespace Private
 {
 
+    // timeout
+    static const int constTimeout=5000;
+
     //____________________________________________
     SystemNotificationsP::SystemNotificationsP( QObject* parent ):
         QObject( parent ),
         Counter( "SystemNotificationsP" )
-    {}
+    { qDBusRegisterMetaType<Notifications::ImageData>(); }
 
     //____________________________________________
     SystemNotificationsP::~SystemNotificationsP() = default;
@@ -113,9 +115,6 @@ namespace Private
             "org.freedesktop.Notifications",
             dbus ) );
 
-        // setup type for image transfer
-        if( !typeId_ ) typeId_ = qDBusRegisterMetaType<Notifications::ImageData>();
-
         #endif
 
     }
@@ -144,7 +143,7 @@ namespace Private
 
         // setup hints
         QVariantMap hints;
-        const QString iconDataString( "icon_data" );
+        static const QString iconDataString( "icon_data" );
         if( !notification.icon().isNull() )
         {
 
@@ -168,14 +167,21 @@ namespace Private
         // store actions
         lastNotificationActions_ = notification.actionList();
 
+        const auto currentTime( TimeStamp::now() );
+
+        // reuse old id if existing popup is still visible
+        quint32 id = 0;
+        if( lastNotificationTime_.isValid() && (currentTime.unixTime() - lastNotificationTime_.unixTime()) * 1000 < constTimeout )
+        { id = lastNotificationId_; }
+
         // send
-        auto pendingCall = dbusInterface_->asyncCall( "Notify", "Notification", (uint)0,
+        auto pendingCall = dbusInterface_->asyncCall( "Notify", "Notification", (uint) id,
             notification.applicationName(),
             notification.summary(),
             notification.body(),
             notification.actionList(),
             hints,
-            notification.timeout() );
+            constTimeout );
 
         auto watcher = new QDBusPendingCallWatcher( pendingCall, this );
         connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
@@ -193,6 +199,9 @@ namespace Private
         {
             notificationIds_.insert( reply.value(), lastNotificationActions_ );
             emit notificationSent( reply.value() );
+
+            lastNotificationId_ = reply.value();
+            lastNotificationTime_ = TimeStamp::now();
         }
         lastNotificationActions_.clear();
         watcher->deleteLater();

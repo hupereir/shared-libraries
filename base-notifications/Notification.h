@@ -65,9 +65,6 @@ class Notification
     const QStringList& actionList() const
     { return actionList_; }
 
-    int timeout() const
-    { return timeout_; }
-
     //* flags
     Flags flags() const
     { return flags_; }
@@ -83,8 +80,7 @@ class Notification
             applicationName_ == other.applicationName_ &&
             icon_.isNull() && other.icon_.isNull() &&
             summary_ == other.summary_ &&
-            actionList_ == other.actionList_ &&
-            timeout_ == other.timeout_;
+            actionList_ == other.actionList_;
     }
 
     //@}
@@ -109,9 +105,6 @@ class Notification
 
     void setActionList( const QStringList& value )
     { actionList_ = value; }
-
-    void setTimeout( int value )
-    { timeout_ = value; }
 
     //* merge two notifications
     void merge( const Notification& other )
@@ -145,9 +138,6 @@ class Notification
 
     //* actiosn
     QStringList actionList_;
-
-    //* timeout
-    int timeout_ = -1;
 
     //* flags
     Flags flags_ = None;
