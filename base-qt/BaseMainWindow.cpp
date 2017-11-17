@@ -303,8 +303,7 @@ bool BaseMainWindow::_hasStatusBar() const
 bool BaseMainWindow::_hasToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
-    auto toolbars( findChildren<QToolBar*>() );
-    for( const auto& toolbar:toolbars )
+    for( const auto& toolbar:findChildren<QToolBar*>() )
     {
 
         // skip toolbars with no names
@@ -392,6 +391,18 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
     }
 
     return actions;
+
+}
+
+//________________________________________________________________
+void BaseMainWindow::_updateStatusBarVisibility()
+{
+
+    Debug::Throw( "BaseMainWindow::_updateStatusBarVisibility" );
+
+    // loop over statusbar and adjust visibility
+    for( auto statusBar:findChildren<QStatusBar*>() )
+    { statusBar->setVisible( showStatusBarAction_->isChecked() ); }
 
 }
 

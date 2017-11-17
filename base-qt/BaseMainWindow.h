@@ -49,30 +49,14 @@ class BaseMainWindow: public QMainWindow
     //* constructor
     explicit BaseMainWindow( QWidget*, Qt::WindowFlags = 0);
 
+    //*@name accessors
+    //@{
+
     //* restore window size
     QSize minimumSizeHint() const override;
 
     //* restore window size
     QSize sizeHint() const override;
-
-    //* center widget on argument widget
-    void centerOnDesktop();
-
-    //* center on parent widget
-    void centerOnParent()
-    { centerOnWidget( parentWidget() ); }
-
-    //* center widget on argument widget
-    void centerOnWidget( QWidget* );
-
-    //* window title
-    virtual void setWindowTitle( const QString& );
-
-    //* set menu bar (overloaded)
-    void setMenuBar( QMenuBar* );
-
-    //* set status bar (overloaded)
-    void setStatusBar( QStatusBar* );
 
     //* lock toolbars
     QAction& lockToolBarsAction() const
@@ -89,15 +73,6 @@ class BaseMainWindow: public QMainWindow
     //* show status bar
     QAction& showStatusBarAction() const
     { return *showStatusBarAction_; }
-
-    //* create context menu (overloaded)
-    QMenu* createPopupMenu() override;
-
-    //* toolbar menu
-    ToolBarMenu* toolBarMenu( QWidget* = nullptr );
-
-    //* option name
-    void setOptionName( const QString& name );
 
     //* menu option name
     bool hasOptionName() const
@@ -118,6 +93,41 @@ class BaseMainWindow: public QMainWindow
     //* status bar option name
     const QString& showStatusBarOptionName() const
     { return showStatusBarOptionName_; }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* center widget on argument widget
+    void centerOnDesktop();
+
+    //* center on parent widget
+    void centerOnParent()
+    { centerOnWidget( parentWidget() ); }
+
+    //* center widget on argument widget
+    void centerOnWidget( QWidget* );
+
+    //* window title
+    virtual void setWindowTitle( const QString& );
+
+    //* set menu bar (overloaded)
+    void setMenuBar( QMenuBar* );
+
+    //* set status bar (overloaded)
+    void setStatusBar( QStatusBar* );
+
+    //* create context menu (overloaded)
+    QMenu* createPopupMenu() override;
+
+    //* toolbar menu
+    ToolBarMenu* toolBarMenu( QWidget* = nullptr );
+
+    //* option name
+    void setOptionName( const QString& name );
+
+    //@}
 
     Q_SIGNALS:
 
@@ -162,6 +172,9 @@ class BaseMainWindow: public QMainWindow
     //* maximize state prior to minimization
     void _setWasMaximized( bool value )
     { wasMaximized_ = value; }
+
+    //* update statusbar visibility
+    void _updateStatusBarVisibility();
 
     private Q_SLOTS:
 
