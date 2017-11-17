@@ -33,7 +33,6 @@ BaseStatusBar::BaseStatusBar( QWidget* parent ):
     Counter( "BaseStatusBar" )
 {
     Debug::Throw( "BaseStatusBar::BaseStatusBar.\n" );
-    Q_CHECK_PTR( qobject_cast<QMainWindow*>( parent ) );
     setSizeGripEnabled( false );
 
     // if no size grip, still leaves some space to the right of the widget
@@ -51,8 +50,7 @@ BaseStatusBar::BaseStatusBar( QWidget* parent ):
 void BaseStatusBar::addClock()
 {
     Debug::Throw( "BaseStatusBar::addClock.\n" );
-    ClockLabel* clock = new ClockLabel( this );
-    addPermanentWidget( clock );
+    addPermanentWidget( new ClockLabel( this ) );
 }
 
 //____________________________________________
@@ -60,7 +58,7 @@ void BaseStatusBar::addLabel( int stretch )
 {
     Debug::Throw( "BaseStatusBar::addLabel.\n" );
 
-    StatusBarLabel* label(new StatusBarLabel( this ) );
+    auto label = new StatusBarLabel( this );
     label->setMargin(2);
 
     addPermanentWidget( label, stretch );
@@ -71,9 +69,14 @@ void BaseStatusBar::addLabel( int stretch )
 void BaseStatusBar::contextMenuEvent( QContextMenuEvent *event )
 {
     Debug::Throw( "BaseStatusBar::contextMenuEvent.\n" );
-    std::unique_ptr<QMenu> menu( static_cast<QMainWindow*>(parent())->createPopupMenu() );
-    if( !menu ) return;
-    menu->exec( event->globalPos() );
+
+    // get main window
+    auto mainWindow = qobject_cast<QMainWindow*>( window() );
+    if( !mainWindow ) return;
+
+    // get menu
+    std::unique_ptr<QMenu> menu( mainWindow->createPopupMenu() );
+    if( menu ) menu->exec( event->globalPos() );
 }
 
 //__________________________________________________________________

@@ -180,8 +180,11 @@ void BaseMainWindow::centerOnWidget( QWidget* parent )
 QMenu* BaseMainWindow::createPopupMenu()
 {
     Debug::Throw( "BaseMainWindow::createPopupMenu.\n" );
+
     if( !_hasToolBars() )
     {
+
+        _updateLayoutActions();
 
         auto menu = new QMenu( this );
         if( _hasPanels() ) menu->addAction( lockPanelsAction_ );
@@ -207,8 +210,10 @@ ToolBarMenu* BaseMainWindow::toolBarMenu( QWidget* parent )
 {
 
     Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
-    auto menu = new ToolBarMenu( parent );
 
+    _updateLayoutActions();
+
+    auto menu = new ToolBarMenu( parent );
     const auto actions( _toolBarsActions( menu ) );
     if( actions.size() > 1 )
     {
@@ -442,11 +447,18 @@ void BaseMainWindow::_updateToolButtonStyle( int style )
 //____________________________________________________________
 void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 {
-
     Debug::Throw( "BaseMainWindow::_updateToolButtonIconSize.\n" );
     XmlOptions::get().set<int>( "TOOLBUTTON_ICON_SIZE", size );
     emit toolbarConfigurationChanged();
+}
 
+//____________________________________________________________
+void BaseMainWindow::_updateLayoutActions()
+{
+    Debug::Throw( "BaseMainWindow::_updateLayoutActions.\n" );
+    lockPanelsAction_->setEnabled( _hasPanels() );
+    showMenuBarAction_->setEnabled( _hasMenuBar() );
+    showStatusBarAction_->setEnabled( _hasStatusBar() );
 }
 
 //____________________________________________________________
@@ -501,8 +513,9 @@ void BaseMainWindow::_toggleStatusBar( bool value )
 {
     Debug::Throw( "BaseMainWindow::_toggleStatusBar.\n" );
 
-    if( !statusBar() ) return;
-    statusBar()->setVisible( value );
+    // loop over statusbar and adjust visibility
+    for( auto statusBar:findChildren<QStatusBar*>() )
+    { statusBar->setVisible( value ); }
 
     // save option
     if( hasOptionName() ) XmlOptions::get().set<bool>( showStatusBarOptionName_, value );

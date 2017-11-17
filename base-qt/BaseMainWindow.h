@@ -71,7 +71,7 @@ class BaseMainWindow: public QMainWindow
     //* set menu bar (overloaded)
     void setMenuBar( QMenuBar* );
 
-    //* set menu bar (overloaded)
+    //* set status bar (overloaded)
     void setStatusBar( QStatusBar* );
 
     //* lock toolbars
@@ -173,6 +173,9 @@ class BaseMainWindow: public QMainWindow
 
     //* toolbar text position
     void _updateToolButtonIconSize( IconSize::Size );
+
+    //* update layout actions
+    void _updateLayoutActions();
 
     //* lock toolbars
     void _lockToolBars( bool );
