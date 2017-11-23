@@ -58,6 +58,15 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
 }
 
 //_______________________________________________________________
+void CustomToolBar::setForcedVisible( bool value )
+{
+    forcedVisible_ = value;
+    visibilityAction_->setEnabled( !value );
+    visibilityAction_->setVisible( !value );
+    if( value ) appearsInMenu_ = false;
+}
+
+//_______________________________________________________________
 void CustomToolBar::paintEvent( QPaintEvent* event )
 { if( !transparent_ ) return QToolBar::paintEvent( event ); }
 
@@ -95,6 +104,10 @@ void CustomToolBar::_toggleVisibility( bool state )
 {
 
     Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << optionName_ << " state: " << state << endl;
+
+    // do nothing if forced visible
+    if( forcedVisible_ ) return;
+
     if( !optionName_.isEmpty() )
     {
 
@@ -147,7 +160,7 @@ void CustomToolBar::_updateConfiguration()
 
     // visibility
     bool currentVisibility( isVisible() );
-    bool visibility( !optionName_.isEmpty() ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
+    bool visibility( !( optionName_.isEmpty() || forcedVisible_ ) ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
 
     // position
     // try cast parent to QMainWindow
@@ -196,11 +209,8 @@ void CustomToolBar::_updateConfiguration()
         << " optionName: " << optionName_
         << " visibility: " << visibility << endl;
 
-    if( appearsInMenu_ )
-    {
-        visibilityAction_->setChecked( visibility );
-        setVisible( visibility );
-    }
+    visibilityAction_->setChecked( visibility );
+    setVisible( visibility );
 
 }
 
