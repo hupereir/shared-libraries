@@ -313,7 +313,7 @@ bool BaseMainWindow::_hasToolBars() const
         auto customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
 
         // skip toolbars that are not direct children
-        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
+        if( !(customToolbar && customToolbar->appearsInMenu() ))
         { continue; }
 
         return true;
@@ -337,7 +337,7 @@ bool BaseMainWindow::_hasLockableToolBars() const
 
         // skip toolbars that are not direct children
         // or should not appear in menu
-        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
+        if( !(customToolbar && customToolbar->appearsInMenu() ))
         { continue; }
 
         if( customToolbar && customToolbar->lockFromOptions() )
@@ -370,7 +370,7 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
 
         // skip toolbars that are not direct children
         // or should not appear in menu
-        if( toolbar->parentWidget() != this && !(customToolbar && customToolbar->appearsInMenu() ))
+        if( !(customToolbar && customToolbar->appearsInMenu() ))
         { continue; }
 
         if( customToolbar ) {
@@ -480,7 +480,7 @@ void BaseMainWindow::_lockToolBars( bool value )
     {
 
         // skip if parent is not this
-        if( !(toolbar->window() == this) ) continue;
+        if( toolbar->window() != this ) continue;
 
         // try cast to CustomToolBar and check for 'lock from options'
         auto customtoolbar( qobject_cast<CustomToolBar*>( toolbar ) );

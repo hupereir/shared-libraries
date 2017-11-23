@@ -181,7 +181,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     QString locationOptionName_;
 
     //* visibility action
-    QAction* visibilityAction_;
+    QAction* visibilityAction_ = nullptr;
 
     //* true if toolbar should be transparent (no frame; no extra background)
     bool transparent_ = false;
@@ -196,8 +196,8 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     bool lockFromOptions_ = true;
 
     //* true if toolbar must appear in menu
-    /** the flag is ignored if parent is MainWindow */
-    bool appearsInMenu_ = false;
+    //* by default it is set to false in constructor if parent is either null or not a MainWindow
+    bool appearsInMenu_ = true;
 
     //* map name and toolbar are
     static const AreaMap& _toolbarAreas();

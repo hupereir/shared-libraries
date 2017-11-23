@@ -42,7 +42,8 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     QToolBar( title, parent ),
     Counter( "CustomToolBar" ),
     optionName_( optionName ),
-    locationOptionName_( optionName + "_LOCATION" )
+    locationOptionName_( optionName + "_LOCATION" ),
+    appearsInMenu_( parent && qobject_cast<QMainWindow*>( parent ) )
 {
     Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
 
@@ -64,7 +65,7 @@ void CustomToolBar::paintEvent( QPaintEvent* event )
 void CustomToolBar::showEvent( QShowEvent* event )
 {
     Debug::Throw() << "CustomToolBar::showEvent - name: " << optionName_ << endl;
-    if( !isHidden() ) visibilityAction().setChecked( true );
+    if( !isHidden() ) visibilityAction_->setChecked( true );
     QToolBar::showEvent(event);
 }
 
@@ -73,7 +74,7 @@ void CustomToolBar::hideEvent( QHideEvent* event )
 {
 
     Debug::Throw() << "CustomToolBar::hideEvent - name: " << optionName_ << endl;
-    if( isHidden() ) visibilityAction().setChecked( false );
+    if( isHidden() ) visibilityAction_->setChecked( false );
     QToolBar::hideEvent(event);
 
 }
@@ -195,9 +196,9 @@ void CustomToolBar::_updateConfiguration()
         << " optionName: " << optionName_
         << " visibility: " << visibility << endl;
 
-    if( appearsInMenu() )
+    if( appearsInMenu_ )
     {
-        visibilityAction().setChecked( visibility );
+        visibilityAction_->setChecked( visibility );
         setVisible( visibility );
     }
 
@@ -210,13 +211,13 @@ void CustomToolBar::_installActions()
     QString buffer;
     QTextStream( &buffer) << "&" << windowTitle();
     visibilityAction_ = new QAction( buffer, this );
-    visibilityAction().setCheckable( true );
+    visibilityAction_->setCheckable( true );
 
     // set default visibility option
     if( !( optionName_.isEmpty() || XmlOptions::get().contains( optionName_ ) ) )
     {
         XmlOptions::get().set<bool>( optionName_, true );
-        visibilityAction().setChecked( true );
+        visibilityAction_->setChecked( true );
     }
 
     connect( visibilityAction_, SIGNAL(toggled(bool)), SLOT(_toggleVisibility(bool)) );
