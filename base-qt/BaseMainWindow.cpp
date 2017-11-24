@@ -222,10 +222,15 @@ ToolBarMenu* BaseMainWindow::toolBarMenu( QWidget* parent )
         { toolbarsMenu->addAction( action ); }
     }
 
-    const bool hasLockableToolbars( _hasLockableToolBars() );
-    const bool needSeparator( hasLockableToolbars || _hasPanels() || _hasMenuBar() || _hasStatusBar() || actions.size() == 1 );
+    const bool hasToolButtonStyleToolBars( _hasToolButtonStyleToolBars() );
+    const bool hasIconSizeToolBars( _hasIconSizeToolBars() );
+    if( !hasToolButtonStyleToolBars ) menu->toolButtonStyleAction().setVisible( false );
+    if( !hasIconSizeToolBars ) menu->iconSizeAction().setVisible( false );
+
+    const bool hasLockableToolBars( _hasLockableToolBars() );
+    const bool needSeparator( hasToolButtonStyleToolBars || hasIconSizeToolBars || hasLockableToolBars || _hasPanels() || _hasMenuBar() || _hasStatusBar() || actions.size() == 1 );
     if( needSeparator ) menu->addSeparator();
-    if( hasLockableToolbars ) menu->addAction( lockToolBarsAction_ );
+    if( hasLockableToolBars ) menu->addAction( lockToolBarsAction_ );
 
     if( _hasPanels() ) menu->addAction( lockPanelsAction_ );
     if( _hasMenuBar() ) menu->addAction( showMenuBarAction_ );
@@ -303,50 +308,87 @@ bool BaseMainWindow::_hasStatusBar() const
 bool BaseMainWindow::_hasToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
-    for( const auto& toolbar:findChildren<QToolBar*>() )
+    return !findChildren<QToolBar*>().isEmpty();
+}
+
+//________________________________________________________________
+bool BaseMainWindow::_hasHideableToolBars() const
+{
+    Debug::Throw( "BaseMainWindow::_hasHideableToolBars.\n" );
+    const auto toolbars( findChildren<QToolBar*>() );
+    return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
-
-        // skip toolbars with no names
-        if( toolbar->windowTitle().isEmpty() ) continue;
-
-        // cast to custom
-        auto customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
-
-        // skip toolbars that are not direct children
-        if( !(customToolbar && customToolbar->appearsInMenu() ))
-        { continue; }
+        if( toolbar->windowTitle().isEmpty() ) return false;
+        else {
+            auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+            if( !(customToolbar && customToolbar->appearsInMenu() ) ) return false;
+        }
 
         return true;
-    }
-
-    return false;
-
+    } );
 }
 
 //________________________________________________________________
 bool BaseMainWindow::_hasLockableToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasLockableToolBars.\n" );
-
-    auto toolbars( findChildren<QToolBar*>() );
-    for( const auto& toolbar:toolbars )
+    const auto toolbars( findChildren<QToolBar*>() );
+    return std::any_of( toolbars.begin(), toolbars.end(), [this]( const QToolBar* toolbar )
     {
-
-        // try cast to custom
-        auto customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
-
         // skip toolbars that are not direct children
-        // or should not appear in menu
-        if( !(customToolbar && customToolbar->appearsInMenu() ))
-        { continue; }
+        if( toolbar->parentWidget() != this ) return false;
+        else {
 
-        if( customToolbar && customToolbar->lockFromOptions() )
-        { continue; }
+            auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+            if( customToolbar && customToolbar->lockFromOptions() )
+            { return false; }
+        }
 
         return true;
-    }
+    } );
 
-    return false;
+}
+
+//________________________________________________________________
+bool BaseMainWindow::_hasIconSizeToolBars() const
+{
+    Debug::Throw( "BaseMainWindow::_hasIconSizeToolBars.\n" );
+    const auto toolbars( findChildren<QToolBar*>() );
+    return std::any_of( toolbars.begin(), toolbars.end(), [this]( const QToolBar* toolbar )
+    {
+        // skip toolbars that are not direct children
+        if( toolbar->parentWidget() != this ) return false;
+        else {
+
+            auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+            if( customToolbar && !customToolbar->iconSizeFromOptions() )
+            { return false; }
+        }
+
+        return true;
+    } );
+
+}
+
+
+//________________________________________________________________
+bool BaseMainWindow::_hasToolButtonStyleToolBars() const
+{
+    Debug::Throw( "BaseMainWindow::_hasToolButtonStyleToolBars.\n" );
+    const auto toolbars( findChildren<QToolBar*>() );
+    return std::any_of( toolbars.begin(), toolbars.end(), [this]( const QToolBar* toolbar )
+    {
+        // skip toolbars that are not direct children
+        if( toolbar->parentWidget() != this ) return false;
+        else {
+
+            auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+            if( customToolbar && !customToolbar->toolButtonStyleFromOptions() )
+            { return false; }
+        }
+
+        return true;
+    } );
 
 }
 

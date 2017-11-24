@@ -153,8 +153,17 @@ class BaseMainWindow: public QMainWindow
     //* true if main window has toolbars
     bool _hasToolBars() const;
 
+    //* returns true if hideable toolbars are found
+    bool _hasHideableToolBars() const;
+
     //* returns true if lockable toolbars are found
     bool _hasLockableToolBars() const;
+
+    //* returns true if toolbars with customizable icon size are found
+    bool _hasIconSizeToolBars() const;
+
+    //* returns true if toolbars with customizable toolbutton style are found
+    bool _hasToolButtonStyleToolBars() const;
 
     //* true if main window has dock widgets
     bool _hasPanels() const;

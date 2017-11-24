@@ -36,20 +36,33 @@ class ToolBarMenu: public QMenu, private Base::Counter<ToolBarMenu>
     //* constructor
     explicit ToolBarMenu( QWidget* = nullptr );
 
+    //*@name accessors
+    //@{
+
+    //* tool button action
+    QAction& toolButtonStyleAction() const
+    { return *toolButtonStyleAction_; }
+
+    //* icons size action
+    QAction& iconSizeAction() const
+    { return *iconSizeAction_; }
+
     //* tool button style menu
-    ToolButtonStyleMenu &toolButtonStyleMenu() const
+    ToolButtonStyleMenu& toolButtonStyleMenu() const
     { return *toolButtonStyleMenu_; }
 
     //* icon size menu
-    IconSizeMenu &iconSizeMenu() const
+    IconSizeMenu& iconSizeMenu() const
     { return *iconSizeMenu_; }
 
     private:
 
     //* tool button style
+    QAction* toolButtonStyleAction_ = nullptr;
     ToolButtonStyleMenu* toolButtonStyleMenu_ = nullptr;
 
     //* icon size
+    QAction* iconSizeAction_ = nullptr;
     IconSizeMenu* iconSizeMenu_ = nullptr;
 
 };

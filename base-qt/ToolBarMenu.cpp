@@ -35,8 +35,8 @@ Counter( "ToolBarMenu" )
     setAttribute( Qt::WA_DeleteOnClose, true );
 
     // add tool buttons and icon size submenus
-    addMenu( toolButtonStyleMenu_ = new ToolButtonStyleMenu( this ) );
-    addMenu( iconSizeMenu_ = new IconSizeMenu( this ) );
+    toolButtonStyleAction_ = addMenu( toolButtonStyleMenu_ = new ToolButtonStyleMenu( this ) );
+    iconSizeAction_ = addMenu( iconSizeMenu_ = new IconSizeMenu( this ) );
 
     ensurePolished();
 
