@@ -334,8 +334,17 @@ bool BaseMainWindow::_hasLockableToolBars() const
     Debug::Throw( "BaseMainWindow::_hasLockableToolBars.\n" );
     const auto toolbars( findChildren<QToolBar*>() );
     return std::any_of( toolbars.begin(), toolbars.end(), [this]( const QToolBar* toolbar )
-    { return toolbar->parentWidget() == this; }
-    );
+    {
+        // skip toolbars that are not direct children
+        if( toolbar->parentWidget() != this ) return false;
+        else {
+
+            auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+            return !customToolbar || customToolbar->lockFromOptions();
+
+        }
+
+    } );
 
 }
 
@@ -513,6 +522,10 @@ void BaseMainWindow::_lockToolBars( bool value )
 
         // skip if parent is not this
         if( toolbar->window() != this ) continue;
+
+        // try cast to custom toolbar and check lock
+        auto customToolBar( qobject_cast<CustomToolBar*>( toolbar ) );
+        if( customToolBar && !customToolBar->lockFromOptions() ) continue;
 
         // update movability
         toolbar->setMovable( !value );

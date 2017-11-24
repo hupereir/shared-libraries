@@ -149,9 +149,12 @@ void CustomToolBar::_updateConfiguration()
     }
 
     // lock
-    BaseMainWindow* mainwindow( qobject_cast<BaseMainWindow*>( window() ) );
-    if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().contains( mainwindow->lockToolBarsOptionName() ) )
-    { setMovable( !XmlOptions::get().get<bool>( mainwindow->lockToolBarsOptionName() ) ); }
+    if( lockFromOptions_ )
+    {
+        BaseMainWindow* mainwindow( qobject_cast<BaseMainWindow*>( window() ) );
+        if( mainwindow && mainwindow->hasOptionName() && XmlOptions::get().contains( mainwindow->lockToolBarsOptionName() ) )
+        { QToolBar::setMovable( !XmlOptions::get().get<bool>( mainwindow->lockToolBarsOptionName() ) ); }
+    }
 
     // visibility
     bool currentVisibility( isVisible() );
