@@ -158,7 +158,7 @@ void CustomToolBar::_updateConfiguration()
 
     // visibility
     bool currentVisibility( isVisible() );
-    bool visibility( !( optionName_.isEmpty() || forcedVisible_ ) ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
+    bool visibility = forcedVisible_ || ( !optionName_.isEmpty() ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
 
     // position
     // try cast parent to QMainWindow
