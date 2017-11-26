@@ -34,14 +34,57 @@
 #include "RemoveFilesDialog.h"
 #include "RenameFileDialog.h"
 #include "Singleton.h"
+#include "ToolBarMenu.h"
 #include "TreeView.h"
 #include "Util.h"
 #include "XmlOptions.h"
 
 #include <QApplication>
+#include <QContextMenuEvent>
+#include <QDir>
 #include <QHeaderView>
 #include <QLayout>
-#include <QDir>
+#include <QMainWindow>
+
+namespace
+{
+    namespace Local
+    {
+
+        class ToolBar: public CustomToolBar
+        {
+
+            public:
+
+            //* constructor
+            ToolBar( const QString& title, QWidget* parent, const QString& option ):
+                CustomToolBar( title, parent, option )
+            {}
+
+            protected:
+
+            //* context menu
+            void contextMenuEvent( QContextMenuEvent* event ) override
+            {
+
+
+                QMainWindow* mainwindow( qobject_cast<QMainWindow*>( window() ) );
+                if( !mainwindow ) return;
+                std::unique_ptr<QMenu> menu( mainwindow->createPopupMenu() );
+
+                if( menu )
+                {
+                    // move and show menu
+                    menu->adjustSize();
+                    menu->exec( event->globalPos() );
+                }
+            }
+
+
+        };
+
+    }
+}
 
 //_____________________________________________
 BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
@@ -62,7 +105,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     setLayout( layout );
 
     // toolbar
-    CustomToolBar* toolbar = new CustomToolBar( tr( "Navigation Toolbar" ), this, "NAVIGATION_TOOLBAR" );
+    auto toolbar = new Local::ToolBar( tr( "Navigation Toolbar" ), this, "NAVIGATION_TOOLBAR" );
     layout->addWidget( toolbar );
 
     // path editor
@@ -92,9 +135,6 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     toolbar->addAction( homeDirectoryAction_ );
     toolbar->addAction( workingDirectoryAction_ );
     toolbar->addAction( reloadAction_ );
-
-    // by default, hide parent directory action
-    // parentDirectoryAction_->setVisible( false );
 
     // file list
     layout->addWidget( list_ = new TreeView( this ), 1);
