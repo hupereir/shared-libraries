@@ -53,6 +53,16 @@ namespace Private
     //___________________________________________________________________
     const qreal PathEditorButton::BorderWidth = 1.5;
 
+    //___________________________________________________________________
+    PathEditorButton::PathEditorButton( QWidget* parent ):
+        QAbstractButton( parent )
+    {
+        Debug::Throw( "PathEditorButton::PathEditorButton.\n" );
+        setAttribute( Qt::WA_Hover );
+        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
+        setMinimumHeight(parent->minimumHeight());
+    }
+
     //____________________________________________________________________________
     bool PathEditorButton::event( QEvent* event )
     {
@@ -103,6 +113,10 @@ namespace Private
         updateMinimumSize();
 
     }
+
+    //____________________________________________________________________________
+    QSize PathEditorItem::sizeHint() const
+    { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
 
     //____________________________________________________________________________
     void PathEditorItem::updateMinimumSize()

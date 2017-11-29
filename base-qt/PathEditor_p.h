@@ -45,14 +45,7 @@ namespace Private
         public:
 
         //* constructor
-        explicit PathEditorButton( QWidget* parent ):
-        QAbstractButton( parent )
-        {
-            Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
-            setAttribute( Qt::WA_Hover );
-            setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
-            setMinimumHeight(parent->minimumHeight());
-        }
+        explicit PathEditorButton( QWidget* );
 
         //* some styles require an item view passed to painting method to have proper selection rendered in items
         void setItemView( QWidget* widget )
@@ -115,8 +108,7 @@ namespace Private
         { return path_; }
 
         //* size hint
-        QSize sizeHint() const override
-        { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
+        QSize sizeHint() const override;
 
         //* drag monitor
         DragMonitor& dragMonitor() const
