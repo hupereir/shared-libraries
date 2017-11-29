@@ -62,6 +62,16 @@ class Option:private Base::Counter<Option>
     //* constructor
     explicit Option( const QString&, Flags = Flag::Recordable );
 
+    //* static constructor
+    template <typename T>
+    static Option create( const T& value, Flags flags = Flag::Recordable )
+    {
+        Option out;
+        out.setFlags( flags );
+        out.set<T>( value );
+        return out;
+    }
+
     //* destructor
     virtual ~Option() = default;
 
@@ -97,7 +107,7 @@ class Option:private Base::Counter<Option>
     { return defaultValue_; }
 
     //* generic accessor
-    template < typename T >
+    template <typename T>
         T get() const
     {
 
@@ -165,7 +175,7 @@ class Option:private Base::Counter<Option>
     }
 
     //* generic modifier
-    template < typename T >
+    template <typename T>
         Option& set( const T& value )
     {
 
