@@ -215,31 +215,30 @@ namespace Private
 
         }
 
-        // save layout direction
         const bool isRightToLeft( qApp->isRightToLeft() );
 
         // render text
-        auto textRect( rect().adjusted( 0, 2*BorderWidth, 0, -2*BorderWidth ) );
+        auto textRect( rect().adjusted( 3*BorderWidth, 2*BorderWidth, -3*BorderWidth, -2*BorderWidth ) );
+        const auto arrowWidth( _arrowWidth() + 2*BorderWidth );
         if( !isLast_ )
         {
-            if( isRightToLeft ) textRect.adjust(_arrowWidth()-2*BorderWidth, 0, 0, 0 );
-            else textRect.adjust( 0, 0, -_arrowWidth()-2*BorderWidth, 0 );
+            if( isRightToLeft ) textRect.adjust( arrowWidth, 0, 0, 0 );
+            else textRect.adjust( 0, 0, -arrowWidth, 0 );
         }
 
         auto adjustedFont(font());
         adjustedFont.setBold( isLast_ );
         painter->setFont( adjustedFont );
-        painter->drawText( QRectF( textRect ), Qt::AlignHCenter|Qt::AlignBottom|Qt::TextHideMnemonic, text() );
+        painter->drawText( QRectF( textRect ), Qt::AlignLeft|Qt::AlignVCenter|Qt::TextHideMnemonic, text() );
 
         // render arrow
         if( !isLast_ )
         {
             QStyleOption option;
             option.initFrom(this);
-
-            if( isRightToLeft ) option.rect = QRect( 0, 0, textRect.left()+BorderWidth, rect().height() );
-            else option.rect = QRect( textRect.width(), 0, rect().width()-textRect.width()-BorderWidth, rect().height() );
-
+            option.rect = isRightToLeft ?
+                QRect( 0, 0, arrowWidth, rect().height() ):
+                QRect( rect().right() - arrowWidth, 0, arrowWidth, rect().height() );
             option.palette = palette();
             style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, painter, this );
         }
