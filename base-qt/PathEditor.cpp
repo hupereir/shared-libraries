@@ -116,7 +116,21 @@ namespace Private
 
     //____________________________________________________________________________
     QSize PathEditorItem::sizeHint() const
-    { return minimumSize() + QSize( 4*BorderWidth, 0 ); }
+    {
+        auto size( minimumSize() );
+        if( isLast_ )
+        {
+            QFont adjustedFont(font());
+            adjustedFont.setBold( isLast_ );
+            size.rwidth() += QFontMetrics( adjustedFont ).boundingRect( text() ).width();
+        }
+
+        return size;
+    }
+
+    //____________________________________________________________________________
+    QSize PathEditorItem::minimumSizeHint() const
+    { return minimumSize(); }
 
     //____________________________________________________________________________
     void PathEditorItem::updateMinimumSize()
@@ -127,9 +141,10 @@ namespace Private
 
         // text size
         QSize size( QFontMetrics( adjustedFont ).boundingRect( text() ).size() );
+        if( isLast_ ) size.setWidth( 0 );
 
         // margins
-        size.rwidth() += 2*BorderWidth;
+        size.rwidth() += 6*BorderWidth;
         size.rheight() += 4*BorderWidth;
 
         // arrow width
@@ -228,8 +243,13 @@ namespace Private
 
         auto adjustedFont(font());
         adjustedFont.setBold( isLast_ );
+
+        const auto text = isLast_ ?
+            QFontMetrics( adjustedFont ).elidedText( this->text(), Qt::ElideRight, textRect.width() ):
+            this->text();
+
         painter->setFont( adjustedFont );
-        painter->drawText( QRectF( textRect ), Qt::AlignLeft|Qt::AlignVCenter|Qt::TextHideMnemonic, text() );
+        painter->drawText( QRectF( textRect ), Qt::AlignLeft|Qt::AlignVCenter|Qt::TextHideMnemonic, text );
 
         // render arrow
         if( !isLast_ )
@@ -464,7 +484,7 @@ QSize PathEditor::minimumSizeHint() const
     { minWidth += menuButton_->width(); }
 
     if( !items_.empty() )
-    { minWidth += items_.back()->width(); }
+    { minWidth += items_.back()->minimumSizeHint().width(); }
 
     return QSize( minWidth, QStackedWidget::minimumSizeHint().height() );
 }

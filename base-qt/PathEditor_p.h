@@ -110,6 +110,9 @@ namespace Private
         //* size hint
         QSize sizeHint() const override;
 
+        //* size hint
+        QSize minimumSizeHint() const override;
+
         //* drag monitor
         DragMonitor& dragMonitor() const
         { return *dragMonitor_; }
