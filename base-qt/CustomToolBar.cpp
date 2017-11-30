@@ -158,7 +158,7 @@ void CustomToolBar::_updateConfiguration()
 
     // visibility
     bool currentVisibility( isVisible() );
-    bool visibility = forcedVisible_ || ( !optionName_.isEmpty() ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility );
+    bool visibility = !optionName_.isEmpty() ? XmlOptions::get().get<bool>( optionName_ ):currentVisibility;
 
     // position
     // try cast parent to QMainWindow
@@ -175,17 +175,15 @@ void CustomToolBar::_updateConfiguration()
 
         Qt::ToolBarArea currentLocation = parent->toolBarArea( this );
 
-        // some dump
-        Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " currentVisibility: " << currentVisibility << " currentLocation: " << areaToName( currentLocation ) << endl;
-        Debug::Throw() << "CustomToolBar::_updateConfiguration - " << optionName_ << " visibility: " << visibility << " location: " << areaToName( location ) << endl;
-        Debug::Throw() << endl;
-
         // set hidden if location is not specified
         if( location == Qt::NoToolBarArea ) visibility = false;
 
         // show toolbar
-        if( visibility )
+        if( forcedVisible_ )
         {
+            if( location != Qt::NoToolBarArea ) parent->addToolBar( location, this );
+
+        } else if( visibility ) {
 
             if( !( currentVisibility && (location == currentLocation) ) ) { parent->addToolBar( location, this ); }
 
@@ -202,13 +200,11 @@ void CustomToolBar::_updateConfiguration()
 
     }
 
-    // update visibility action according to state for CustomToolbars
-    Debug::Throw() << "CustomToolBar::_updateConfiguration -"
-        << " optionName: " << optionName_
-        << " visibility: " << visibility << endl;
-
-    visibilityAction_->setChecked( visibility );
-    setVisible( visibility );
+    if( !forcedVisible_ )
+    {
+        visibilityAction_->setChecked( visibility );
+        setVisible( visibility );
+    }
 
 }
 
