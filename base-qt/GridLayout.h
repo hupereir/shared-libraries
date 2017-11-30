@@ -126,7 +126,9 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
         increment();
     }
 
-    //* add LayoutIttem
+    using QGridLayout::addItem;
+
+    //* add LayoutItem
     void addItem( QLayoutItem* item, int row, int column, Qt::Alignment alignment = 0 )
     { GridLayout::addItem( item, row, column, 1, 1, alignment ); }
 
