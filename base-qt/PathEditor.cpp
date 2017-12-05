@@ -121,7 +121,7 @@ namespace Private
         if( isLast_ )
         {
             QFont adjustedFont(font());
-            adjustedFont.setBold( isLast_ );
+            adjustedFont.setBold( true );
             size.rwidth() += QFontMetrics( adjustedFont ).boundingRect( text() ).width();
         }
 
@@ -245,7 +245,7 @@ namespace Private
         adjustedFont.setBold( isLast_ );
 
         const auto text = isLast_ ?
-            QFontMetrics( adjustedFont ).elidedText( this->text(), Qt::ElideRight, textRect.width() ):
+            QFontMetrics( adjustedFont ).elidedText( this->text(), Qt::ElideRight, textRect.width()+1 ):
             this->text();
 
         painter->setFont( adjustedFont );
