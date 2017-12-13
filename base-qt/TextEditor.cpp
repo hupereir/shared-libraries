@@ -1690,13 +1690,10 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.translate( -scrollbarPosition() );
     painter.setPen( Qt::NoPen );
 
-    // define block range
-    const TextBlockRange range(
-        cursorForPosition( event->rect().topLeft() ).block(),
-        cursorForPosition( event->rect().bottomRight() ).block().next() );
-
     // loop over found blocks
-    for( const auto& block:range )
+    const auto first( cursorForPosition( event->rect().topLeft() ).block() );
+    const auto last( cursorForPosition( event->rect().bottomRight() ).block() );
+    for( auto block( first ); block != last.next() && block.isValid(); block = block.next() )
     {
 
         // retrieve block data and check background
