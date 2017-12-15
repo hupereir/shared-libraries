@@ -118,6 +118,12 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
 
     protected:
 
+    //* enter
+    void enterEvent( QEvent* ) override;
+
+    //* leave
+    void leaveEvent( QEvent* ) override;
+
     //* paint
     void paintEvent( QPaintEvent* ) override;
 

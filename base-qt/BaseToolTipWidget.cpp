@@ -119,15 +119,18 @@ void BaseToolTipWidget::showDelayed( int delay )
 {
     if( !enabled_ ) return;
 
-    if( hiddenTimer_.isActive() )
+    if( isVisible() )
     {
+        _adjustPosition();
+        return;
+
+    } else if( hiddenTimer_.isActive() ) {
         hiddenTimer_.stop();
         _adjustPosition();
         QWidget::show();
 
     } else {
 
-        if( isVisible() ) hide();
         if( timer_.isActive() ) timer_.stop();
         timer_.start( delay >= 0 ? delay:defaultDelay_, this );
 
@@ -136,6 +139,14 @@ void BaseToolTipWidget::showDelayed( int delay )
     return;
 
 }
+
+//_______________________________________________________
+void BaseToolTipWidget::enterEvent( QEvent* )
+{ hide(); }
+
+//_______________________________________________________
+void BaseToolTipWidget::leaveEvent( QEvent* )
+{ hide(); }
 
 //_______________________________________________________
 void BaseToolTipWidget::paintEvent( QPaintEvent* event )
@@ -151,12 +162,7 @@ void BaseToolTipWidget::paintEvent( QPaintEvent* event )
 
 //_______________________________________________________
 void BaseToolTipWidget::mousePressEvent( QMouseEvent* event )
-{
-
-    hide();
-    return QWidget::mousePressEvent( event );
-
-}
+{ hide(); }
 
 //_____________________________________________
 void BaseToolTipWidget::timerEvent( QTimerEvent* event )
