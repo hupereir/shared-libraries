@@ -19,10 +19,7 @@
 
 #include "BaseToolTipWidget.h"
 #include "Debug.h"
-#include "GridLayout.h"
 #include "Singleton.h"
-#include "TimeStamp.h"
-#include "GridLayoutItem.h"
 #include "XmlOptions.h"
 
 #include <QApplication>
