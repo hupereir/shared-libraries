@@ -1690,11 +1690,16 @@ void TextEditor::paintEvent( QPaintEvent* event )
     painter.translate( -scrollbarPosition() );
     painter.setPen( Qt::NoPen );
 
-    // loop over found blocks
-    const auto first( cursorForPosition( event->rect().topLeft() ).block() );
-    const auto last( cursorForPosition( event->rect().bottomRight() ).block() );
-    for( auto block( first ); block != last.next() && block.isValid(); block = block.next() )
+    // loop over blocks that match the event rect
+    TextBlockRange range(
+        cursorForPosition( event->rect().topLeft() ).block(),
+        cursorForPosition( event->rect().bottomRight() ).block().next() );
+
+    for( const auto& block:range )
     {
+
+        // check block
+        if( !block.isValid() ) break;
 
         // retrieve block data and check background
         // static cast is use because should be faster and safe enough here
