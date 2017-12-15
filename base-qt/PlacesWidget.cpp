@@ -600,17 +600,21 @@ bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
         case QEvent::HoverEnter:
         {
 
+            // update tooltip content
             auto item( qobject_cast<Private::PlacesWidgetItem*>( object ) );
-            const QString name( item->text() );
-            const QIcon icon( item->icon() );
-            BaseFileInfo fileInfo( item->fileInfo() );
+            const auto name( item->text() );
+            const auto icon( item->icon() );
+            auto fileInfo( item->fileInfo() );
             if( fileInfo.isLocal() ) fileInfo.update();
 
             toolTipWidget_->setFileInfo( name, fileInfo, icon );
 
+            // rect
+            toolTipWidget_->setIndexRect(
+                item->geometry().
+                translated( mapToGlobal( QPoint(0,0) ) ) );
+
             // show
-            const QRect rect( item->geometry().translated( mapToGlobal( QPoint(0,0) ) ) );
-            toolTipWidget_->setIndexRect( rect );
             toolTipWidget_->showDelayed();
             break;
 
