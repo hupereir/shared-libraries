@@ -1101,15 +1101,9 @@ bool TextEditor::event( QEvent* event )
 //________________________________________________
 void TextEditor::enterEvent( QEvent* event )
 {
-
-    #if QT_VERSION < 0x040200
-    Debug::Throw( "TextEditor::enterEvent.\n" );
     _updateClipboardActions( QClipboard::Clipboard );
     _updateClipboardActions( QClipboard::Selection );
-    #endif
-
     BaseEditor::enterEvent( event );
-
 }
 
 //________________________________________________
@@ -1803,7 +1797,6 @@ void TextEditor::_installActions()
 
     addAction( pasteAction_ = new StandardAction( StandardAction::Type::Paste, this ) );
     connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
-    connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );
     _updatePasteAction();
 
     addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
@@ -1913,12 +1906,6 @@ void TextEditor::_installActions()
 
     // update actions that depend on the presence of a selection
     _updateSelectionActions( textCursor().hasSelection() );
-
-    #if QT_VERSION >= 0x040200
-    // update actions that depend on the content of the clipboard
-    // this is available only starting from Qt 4.2
-    connect( qApp->clipboard(), SIGNAL(changed(QClipboard::Mode)), SLOT(_updateClipboardActions(QClipboard::Mode)) );
-    #endif
 
 }
 
@@ -2564,26 +2551,17 @@ void TextEditor::_updateSelectionActions( bool hasSelection )
     upperCaseAction_->setEnabled( hasSelection && editable );
     lowerCaseAction_->setEnabled( hasSelection && editable );
 
-    #if QT_VERSION < 0x040200
-    // update clipboard actions, based on the clipboard content
-    // this is done only for QT versions < 4.2. For higher versions
-    // this is called directly from a QClipboard signal
     _updateClipboardActions( QClipboard::Clipboard );
     _updateClipboardActions( QClipboard::Selection );
-    #endif
+
 }
 
 //________________________________________________
 void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 {
     Debug::Throw( "TextEditor::_updateClipboardActions.\n" );
-    if( mode == QClipboard::Clipboard )
+    if( mode == QClipboard::Selection )
     {
-
-        const bool hasClipboard( !qApp->clipboard()->text( QClipboard::Clipboard ).isEmpty() );
-        pasteAction_->setEnabled( hasClipboard && !isReadOnly() );
-
-    } else if( mode == QClipboard::Selection ) {
 
         const bool hasSelection( !qApp->clipboard()->text( QClipboard::Selection ).isEmpty() );
         findSelectionAction_->setEnabled( hasSelection );
@@ -2624,8 +2602,7 @@ void TextEditor::_updatePasteAction()
 {
 
     Debug::Throw( "TextEditor::_updatePasteAction.\n" );
-    const bool hasClipboard( !qApp->clipboard()->text().isEmpty() );
-    pasteAction_->setEnabled( hasClipboard && !isReadOnly() );
+    pasteAction_->setEnabled( !isReadOnly() );
 
 }
 
