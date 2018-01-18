@@ -252,7 +252,7 @@ File File::localName() const
 File File::canonicalName() const
 {
     if( value_.isEmpty() ) return File();
-    QString canonicalName( QFileInfo(*this).canonicalFilePath() );
+    const auto canonicalName( QFileInfo(*this).canonicalFilePath() );
     return canonicalName.isEmpty() ? File():File( canonicalName );
 }
 
@@ -263,8 +263,8 @@ File File::extension() const
     if( value_.isEmpty() ) return File();
 
     // loop over characters
-    QString local( localName() );
-    int dotpos = local.lastIndexOf(".");
+    const auto local( localName().get() );
+    const int dotpos = local.lastIndexOf(".");
     return File( dotpos < 0 ? "" : local.mid( dotpos+1 ) );
 
 }
@@ -301,7 +301,7 @@ File File::find( const File& file, bool caseSensitive ) const
     }
 
     // get subdirectories
-    QString fullname( value_ );
+    auto fullname( value_ );
     addTrailingSlash( fullname );
 
     // filter
@@ -438,8 +438,8 @@ File File::backup() const
     // check filename is valid and file exists
     if( !exists() ) return File();
 
-    QString expanded( this->expanded() );
-    QString backup( expanded+"~" );
+    const auto expanded( this->expanded() );
+    const auto backup( expanded+"~" );
 
     // open this file
     QFile in( expanded );
@@ -488,7 +488,7 @@ bool File::removeRecursive() const
     #endif
 
     // list content of directory
-    QDir dir( *this );
+    QDir dir( value_ );
     for( const auto& value:dir.entryList( filter ) )
     {
         // skip "." and ".."
