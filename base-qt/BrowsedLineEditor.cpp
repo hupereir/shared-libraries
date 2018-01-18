@@ -55,7 +55,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     layout->addWidget( lineEditor_, 1 );
 
     // create button
-    QToolButton *button = new QToolButton( this );
+    auto button = new QToolButton( this );
     button->setAutoRaise( true );
 
     button->setIcon( IconEngine::get( IconNames::Open ) );
