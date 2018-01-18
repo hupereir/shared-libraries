@@ -74,6 +74,7 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
         { "flac", "audio-x-generic" },
         { "wav", "audio-x-generic" },
         { "ogg", "audio-x-generic" },
+        { "cue", "application-x-cue" },
 
         // text formats
         { "txt", "text-plain" },
