@@ -30,7 +30,6 @@
 #include <QToolBar>
 #include <QHash>
 
-
 //* customized tool bar to handle position and visibility from Options
 class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
 {
@@ -82,17 +81,12 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     { return toolButtonStyleFromOptions_; }
 
     //* true if visible in menu
-    /** the flag is ignored if parent is MainWindow */
     bool appearsInMenu() const
     { return appearsInMenu_; }
 
     //* visibility action
     QAction& visibilityAction() const
     { return *visibilityAction_; }
-
-    //* forced visible
-    bool forcedVisible() const
-    { return forcedVisible_; }
 
     //@}
 
@@ -131,9 +125,6 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     /** the flag is ignored if parent is MainWindow */
     void setAppearsInMenu( bool value )
     { appearsInMenu_ = value; }
-
-    //* force visible
-    void setForcedVisible( bool );
 
     //@}
 
@@ -205,9 +196,6 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     //* true if toolbar must appear in menu
     //* by default it is set to false in constructor if parent is either null or not a MainWindow
     bool appearsInMenu_ = true;
-
-    //* forced visible
-    bool forcedVisible_ = false;
 
     //* map name and toolbar are
     static const AreaMap& _toolbarAreas();

@@ -58,15 +58,6 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
 }
 
 //_______________________________________________________________
-void CustomToolBar::setForcedVisible( bool value )
-{
-    forcedVisible_ = value;
-    visibilityAction_->setEnabled( !value );
-    visibilityAction_->setVisible( !value );
-    if( value ) appearsInMenu_ = false;
-}
-
-//_______________________________________________________________
 void CustomToolBar::paintEvent( QPaintEvent* event )
 { if( !transparent_ ) return QToolBar::paintEvent( event ); }
 
@@ -104,9 +95,6 @@ void CustomToolBar::_toggleVisibility( bool state )
 {
 
     Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << optionName_ << " state: " << state << endl;
-
-    // do nothing if forced visible
-    if( forcedVisible_ ) return;
 
     if( !optionName_.isEmpty() )
     {
@@ -178,12 +166,7 @@ void CustomToolBar::_updateConfiguration()
         // set hidden if location is not specified
         if( location == Qt::NoToolBarArea ) visibility = false;
 
-        // show toolbar
-        if( forcedVisible_ )
-        {
-            if( location != Qt::NoToolBarArea ) parent->addToolBar( location, this );
-
-        } else if( visibility ) {
+        if( visibility ) {
 
             if( !( currentVisibility && (location == currentLocation) ) ) { parent->addToolBar( location, this ); }
 
@@ -200,11 +183,8 @@ void CustomToolBar::_updateConfiguration()
 
     }
 
-    if( !forcedVisible_ )
-    {
-        visibilityAction_->setChecked( visibility );
-        setVisible( visibility );
-    }
+    visibilityAction_->setChecked( visibility );
+    setVisible( visibility );
 
 }
 
