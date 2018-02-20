@@ -104,7 +104,7 @@ void CustomToolBar::_toggleVisibility( bool state )
 
         // save position
         // try cast parent to QMainWindow
-        QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
+        auto parent( qobject_cast<QMainWindow*>( parentWidget() ) );
         if( parent )
         { XmlOptions::get().set<int>( locationOptionName_, parent->toolBarArea( this ) ); }
 

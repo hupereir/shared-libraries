@@ -68,7 +68,7 @@ namespace
             {
 
 
-                QMainWindow* mainwindow( qobject_cast<QMainWindow*>( window() ) );
+                auto mainwindow( qobject_cast<QMainWindow*>( window() ) );
                 if( !mainwindow ) return;
                 std::unique_ptr<QMenu> menu( mainwindow->createPopupMenu() );
 
@@ -99,7 +99,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
 
     Debug::Throw( "BaseFileSystemWidget::BaseFileSystemWidget.\n" );
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    auto layout = new QVBoxLayout;
     layout->setSpacing(2);
     layout->setMargin(0);
     setLayout( layout );
@@ -434,7 +434,7 @@ void BaseFileSystemWidget::_open()
 {
 
     Debug::Throw( "BaseFileSystemWidget:_open.\n" );
-    FileSystemModel::List selection( model_.get( list_->selectionModel()->selectedRows() ) );
+    const auto selection( model_.get( list_->selectionModel()->selectedRows() ) );
     FileSystemModel::List validSelection;
     for( const auto& record:selection )
     {
@@ -485,10 +485,10 @@ void BaseFileSystemWidget::_rename()
 {
 
     Debug::Throw( "BaseFileSystemWidget::_rename.\n" );
-    QModelIndex index( list_->selectionModel()->currentIndex() );
+    const auto index( list_->selectionModel()->currentIndex() );
     if( !index.isValid() ) return;
 
-    FileRecord record( model_.get( index ) );
+    const auto record( model_.get( index ) );
     if( record.hasFlag( BaseFileInfo::Navigator ) ) return;
     RenameFileDialog dialog( this, record );
     dialog.setWindowTitle( tr( "Rename Item" ) );
@@ -508,7 +508,7 @@ void BaseFileSystemWidget::_fileProperties()
 {
 
     Debug::Throw( "BaseFileSystemWidget::_fileProperties.\n" );
-    QModelIndex index( list_->selectionModel()->currentIndex() );
+    const auto index( list_->selectionModel()->currentIndex() );
     if( !index.isValid() ) return;
 
     FileRecord record( model_.get( index ) );
@@ -517,7 +517,7 @@ void BaseFileSystemWidget::_fileProperties()
 
     // icon
     QIcon icon;
-    QVariant iconVariant( model_.data( index, Qt::DecorationRole ) );
+    const auto iconVariant( model_.data( index, Qt::DecorationRole ) );
     if( iconVariant.canConvert( QVariant::Icon ) ) icon = iconVariant.value<QIcon>();
 
     FileInformationDialog dialog( this, record );
