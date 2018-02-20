@@ -42,14 +42,6 @@ class FileRecordToolTipWidget: public BaseToolTipWidget
     //* set data
     void setRecord( const FileRecord&, const QIcon& = QIcon() );
 
-    //* mask
-    void setPixmapSize( int value )
-    {
-        if( pixmapSize_ == value ) return;
-        pixmapSize_ = value;
-        _reload();
-    }
-
     //* information mask
     enum Type
     {
@@ -63,14 +55,6 @@ class FileRecordToolTipWidget: public BaseToolTipWidget
     };
 
     Q_DECLARE_FLAGS(Types, Type)
-
-    //* mask
-    void setMask( int value )
-    {
-        if( mask_ == value ) return;
-        mask_ = value;
-        _reload();
-    }
 
     protected:
 

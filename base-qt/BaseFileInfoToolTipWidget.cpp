@@ -175,6 +175,32 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
 void BaseFileInfoToolTipWidget::_updateConfiguration()
 {
     Debug::Throw( "BaseFileInfoToolTipWidget::_updateConfiguration.\n" );
-    if( XmlOptions::get().contains( "TOOLTIPS_PIXMAP_SIZE" ) ) setPixmapSize( XmlOptions::get().get<int>( "TOOLTIPS_PIXMAP_SIZE" ) );
-    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) ) setMask( Types(XmlOptions::get().get<int>( "TOOLTIPS_MASK" )) );
+    bool modified( false );
+
+    // mask from options
+    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) )
+    {
+        auto mask( static_cast<Types>( XmlOptions::get().get<int>( "TOOLTIPS_MASK" ) ) );
+        if( mask != mask_ )
+        {
+            mask_ = mask;
+            modified = true;
+        }
+    }
+
+    // get bits from mask
+    int lineCount( 1 );
+    for( const auto& bit:{ Size, Modified, User, Group, Permissions } )
+    { if( mask_ & bit ) ++lineCount; }
+
+    // compute pixmap size
+    const int pixmapSize = QFontMetrics( QtUtil::titleFont( font() ) ).height() + lineCount*( fontMetrics().height() + 5 ) + 15;
+    if( pixmapSize_ != pixmapSize )
+    {
+        pixmapSize_ = pixmapSize;
+        modified = true;
+    }
+
+    if( modified ) _reload();
+
 }
