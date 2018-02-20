@@ -59,7 +59,7 @@ namespace
             //* constructor
             ToolBar( const QString& title, QWidget* parent, const QString& option ):
                 CustomToolBar( title, parent, option )
-            {}
+            { setTransparent( true ); }
 
             protected:
 
