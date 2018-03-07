@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "CppUtil.h"
 #include "Debug.h"
 #include "ItemModel.h"
 #include "TreeItem.h"
@@ -186,7 +187,7 @@ template<class T> class TreeModel : public ItemModel
     {
         List out;
         for( const auto& index:indexes )
-        { if( index.isValid() ) out << get( index ); }
+        { if( index.isValid() ) out.append( get( index ) ); }
         return out;
     }
 
@@ -197,7 +198,7 @@ template<class T> class TreeModel : public ItemModel
         for( const auto& value:selectedItems_ )
         {
             QModelIndex index( this->index( value ) );
-            if( index.isValid() ) out << index;
+            if( index.isValid() ) out.append( index );
         }
         return out;
     }
@@ -217,7 +218,7 @@ template<class T> class TreeModel : public ItemModel
         for( const auto& value:expandedItems_ )
         {
             QModelIndex index( this->index( value ) );
-            if( index.isValid() ) out << index;
+            if( index.isValid() ) out.append( index );
         }
         return out;
     }
@@ -240,14 +241,14 @@ template<class T> class TreeModel : public ItemModel
     {
         selectedItems_.clear();
         for( const auto& index:indexes )
-        { if( index.isValid() ) selectedItems_ << get( index ); }
+        { if( index.isValid() ) selectedItems_.append( get( index ) ); }
     }
 
     //* store index internal selection state
     void setIndexSelected( const QModelIndex& index, bool value ) override
     {
         if( !index.isValid() ) return;
-        if( value ) selectedItems_ << get( index );
+        if( value ) selectedItems_.append( get( index ) );
         else { selectedItems_.removeAll( get( index ) ); }
     }
 
@@ -276,20 +277,20 @@ template<class T> class TreeModel : public ItemModel
     {
         expandedItems_.clear();
         for( const auto& index:indexes )
-        { if( index.isValid() ) expandedItems_ << get( index ); }
+        { if( index.isValid() ) expandedItems_.append( get( index ) ); }
     }
 
     //* store index internal selection state
     void setIndexExpanded( const QModelIndex& index, bool value ) override
     {
         if( !index.isValid() ) return;
-        if( value ) expandedItems_ << get( index );
+        if( value ) expandedItems_.append( get( index ) );
         else { expandedItems_.removeAll( get( index ) ); }
     }
 
     //* add values
     void add( ConstReference value )
-    { add( List() << value ); }
+    { add( Base::makeT<List>( { value } ) ); }
 
     //* add values
     void add( List values )
@@ -386,7 +387,7 @@ template<class T> class TreeModel : public ItemModel
 
     //* remove
     void remove( ConstReference value )
-    { remove( List() << value ); }
+    { remove( Base::makeT<List>( { value } ) ); }
 
     //* remove
     void remove( List values )
@@ -411,7 +412,6 @@ template<class T> class TreeModel : public ItemModel
         _resetTree();
         emit layoutChanged();
     }
-
 
     //* clear
     void clear()
