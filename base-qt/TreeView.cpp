@@ -494,6 +494,8 @@ void TreeView::restoreSelectedIndexes()
 void TreeView::saveExpandedIndexes()
 {
 
+    Debug::Throw( "TreeView::saveExpandedIndexes.\n" );
+
     // clear
     model_->clearExpandedIndexes();
 
