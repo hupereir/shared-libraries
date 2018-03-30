@@ -293,6 +293,10 @@ template<class T> class TreeModel : public ItemModel
     { add( Base::makeT<List>( { value } ) ); }
 
     //* add values
+    void add( ConstReference parent, ConstReference value )
+    { add( parent, Base::makeT<List>( { value } ) ); }
+
+    //* add values
     void add( List values )
     {
 
@@ -310,23 +314,27 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //* replace
-    bool replace( ConstReference first, ConstReference second )
+    //* add values
+    void add( ConstReference parent, List values )
     {
-        auto item( root_.find( first ) );
-        if( item )
-        {
 
-            item->set( second );
+        // check if not empty
+        // this avoids sending useless signals
+        if( values.empty() ) return;
 
-            // update selection
-            std::replace( selectedItems_.begin(), selectedItems_.end(), first, second );
+        // find item matching value
+        auto item( root_.find( parent ) );
+        if( !item ) return;
 
-            return true;
+        emit layoutAboutToBeChanged();
+        item->update( values );
+        _add( *item, values );
+        _sort();
+        emit layoutChanged();
 
-        } else return false;
+        return;
 
-    };
+    }
 
     //* update values
     /**
@@ -361,11 +369,11 @@ template<class T> class TreeModel : public ItemModel
     items that are not found in list are removed
     items that are found are updated
     */
-    void set( ConstReference value, List values )
+    void set( ConstReference parent, List values )
     {
 
         // find item matching value
-        Item* item( root_.find( value ) );
+        auto item( root_.find( parent ) );
         if( !item ) return;
 
         emit layoutAboutToBeChanged();
@@ -390,6 +398,10 @@ template<class T> class TreeModel : public ItemModel
     { remove( Base::makeT<List>( { value } ) ); }
 
     //* remove
+    void remove( ConstReference parent, ConstReference value )
+    { remove( parent, Base::makeT<List>( { value } ) ); }
+
+    //* remove
     void remove( List values )
     {
 
@@ -399,11 +411,47 @@ template<class T> class TreeModel : public ItemModel
 
         emit layoutAboutToBeChanged();
         _remove( root_, values );
-        _resetTree();
         emit layoutChanged();
         return;
 
     }
+
+    //* remove
+    void remove( ConstReference parent, List values )
+    {
+
+        // check if not empty
+        // this avoids sending useless signals
+        if( values.empty() ) return;
+
+        // find item matching value
+        auto item( root_.find( parent ) );
+        if( !item ) return;
+
+        emit layoutAboutToBeChanged();
+        _remove( *item, values );
+        emit layoutChanged();
+        return;
+
+    }
+
+    //* replace
+    bool replace( ConstReference first, ConstReference second )
+    {
+        auto item( root_.find( first ) );
+        if( item )
+        {
+
+            item->set( second );
+
+            // update selection
+            std::replace( selectedItems_.begin(), selectedItems_.end(), first, second );
+
+            return true;
+
+        } else return false;
+
+    };
 
     //* reset tree
     void resetTree()
@@ -420,6 +468,20 @@ template<class T> class TreeModel : public ItemModel
         emit layoutAboutToBeChanged();
         map_.clear();
         root_ = Item( map_ );
+        emit layoutChanged();
+
+    }
+
+    //* clear
+    void clear( ConstReference parent )
+    {
+
+        // find item matching value
+        auto item( root_.find( parent ) );
+        if( !item ) return;
+
+        emit layoutAboutToBeChanged();
+        item->clear();
         emit layoutChanged();
 
     }
@@ -483,7 +545,7 @@ template<class T> class TreeModel : public ItemModel
     /** private version, with no signal emitted */
     void _resetTree()
     {
-        const auto children( TreeModel::children() );
+        const auto children( this->children() );
         map_.clear();
         root_ = Item( map_ );
         _add( root_, children );

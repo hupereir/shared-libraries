@@ -282,7 +282,6 @@ template<class T> class TreeItem: public TreeItemBase
         // check if there are remainig values
         if( values.isEmpty() ) return;
 
-        // first update children that are found in set
         for( auto&& iter = children_.begin(); iter != children_.end(); )
         {
 
