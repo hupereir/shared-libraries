@@ -304,10 +304,6 @@ template<class T> class TreeModel : public ItemModel
         // this avoids sending useless signals
         if( values.empty() ) return;
 
-        // sort values if requested
-        if( sortValues_ )
-        { std::sort( values.begin(), values.end() ); }
-
         emit layoutAboutToBeChanged();
         root_.update( values );
         _add( root_, values );
@@ -329,10 +325,6 @@ template<class T> class TreeModel : public ItemModel
         // find item matching value
         auto item( root_.find( parent ) );
         if( !item ) return;
-
-        // sort values if requested
-        if( sortValues_ )
-        { std::sort( values.begin(), values.end() ); }
 
         emit layoutAboutToBeChanged();
         item->update( values );
@@ -357,10 +349,6 @@ template<class T> class TreeModel : public ItemModel
         else {
 
             emit layoutAboutToBeChanged();
-
-            // sort values if requested
-            if( sortValues_ )
-            { std::sort( values.begin(), values.end() ); }
 
             root_.set( values );
             _add( root_, values );
@@ -387,10 +375,6 @@ template<class T> class TreeModel : public ItemModel
         emit layoutAboutToBeChanged();
         if( values.empty() ) item->clear();
         else {
-
-            // sort values if requested
-            if( sortValues_ )
-            { std::sort( values.begin(), values.end() ); }
 
             item->set( values );
             _add( *item, values );
@@ -494,10 +478,6 @@ template<class T> class TreeModel : public ItemModel
 
     }
 
-    //* sort values
-    void setSortValues( bool value )
-    { sortValues_ = value; }
-
     //@}
 
     protected:
@@ -574,9 +554,6 @@ template<class T> class TreeModel : public ItemModel
 
     //* expanded indexes
     List expandedItems_;
-
-    //* true if values should be sorted when retrieved
-    bool sortValues_ = true;
 
     //* true if current item is valid
     bool hasCurrentItem_ = false;
