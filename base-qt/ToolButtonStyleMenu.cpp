@@ -37,7 +37,7 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     // install values
     actions_ = Base::makeT<ActionMap>(
     {
-        { addAction( tr( "System Default" ) ), -1 },
+        { addAction( tr( "System Default" ) ), Qt::ToolButtonFollowStyle },
         { addAction( tr( "No Text" ) ), Qt::ToolButtonIconOnly },
         { addAction( tr( "Text Only" ) ), Qt::ToolButtonTextOnly },
         { addAction( tr( "Text Alongside icons" ) ), Qt::ToolButtonTextBesideIcon },
@@ -57,8 +57,16 @@ void ToolButtonStyleMenu::select( int style )
 {
 
     Debug::Throw() << "ToolButtonStyleMenu::select - style: " << style << endl;
+
+    // adjust style
+    if( style < 0 ) style = Qt::ToolButtonFollowStyle;
+
+    // find in actions
     const auto iter = Base::findByValue( actions_, style );
+
+    // assign
     if( iter != actions_.end() ) iter.key()->setChecked( true );
+
 }
 
 //_____________________________________________________________________________
