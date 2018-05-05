@@ -135,7 +135,11 @@ void ElidedLabel::resizeEvent( QResizeEvent* e )
 //___________________________________________________
 void ElidedLabel::updateElidedText()
 {
-    if( fullText_.isEmpty() ) return;
+    if( fullText_.isEmpty() )
+    {
+        QLabel::clear();
+        return;
+    }
 
     auto fontMetrics( this->fontMetrics() );
     int labelWidth = size().width();
