@@ -68,6 +68,9 @@ class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
     //* set text
     void setText( const QString& );
 
+    //* clear
+    void clear();
+
     //@}
 
     //* minimum size hint

@@ -59,10 +59,19 @@ ElidedLabel::ElidedLabel(  QWidget* parent ):
 }
 
 //___________________________________________________
+//___________________________________________________
 void ElidedLabel::setText( const QString& text )
 {
     fullText_ = text;
     updateElidedText();
+}
+
+//___________________________________________________
+void ElidedLabel::clear()
+{
+    Debug::Throw( "ElidedLabel::clear.\n" );
+    fullText_.clear();
+    QLabel::clear();
 }
 
 //___________________________________________________
