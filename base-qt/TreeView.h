@@ -322,6 +322,9 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* paint event
     void paintEvent( QPaintEvent* ) override;
 
+    //* update geometries
+    void updateGeometries() override;
+
     //* set use embedded widget
     void _setUseEmbeddedWidgets( bool value )
     { useEmbeddedWidgets_ = value; }
