@@ -79,6 +79,11 @@ TreeView::TreeView( QWidget* parent ):
     // hover
     connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
 
+    // horizontal scrollbar range bug
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 )
+    connect( horizontalScrollBar(), SIGNAL(rangeChanged(int,int)), SLOT(_updateHorizontalScrollBarRange()) );
+    #endif
+
     // configuration
     connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
@@ -871,6 +876,35 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
     return false;
 
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 )
+//__________________________________________________________
+void TreeView::_updateHorizontalScrollBarRange()
+{
+    /* this hack fixes a bug that the header lenght is not properly calculated
+    Qt version 5.10, resulting in horizontal scrollbars being shown in all tree views */
+
+    Debug::Throw( "TreeView::_installActions.\n" );
+    if( scrollBarRecursionLock_ ) return;
+    if( !( model() && header() ) ) return;
+
+    scrollBarRecursionLock_ = true;
+
+    // get viewport size
+    auto viewportWidth( viewport()->size().width() );
+
+    // get section width
+    int headerWidth = 0;
+    for( int i = 0; i < model()->columnCount(); i++ )
+    { if( !isColumnHidden(i) ) headerWidth += columnWidth(i); }
+
+    // update scrollbar range
+    horizontalScrollBar()->setRange( 0, qMax(headerWidth - viewportWidth, 0) );
+
+    scrollBarRecursionLock_ = false;
+
+}
+#endif
 
 //__________________________________________________________
 void TreeView::_installActions()

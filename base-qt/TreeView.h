@@ -343,6 +343,11 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* update alternate item color
     void _updateConfiguration();
 
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 )
+    //* update horizontal scrollbar range
+    void _updateHorizontalScrollBarRange();
+    #endif
+
     private:
 
     //* install actions
@@ -460,6 +465,11 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* locked columns
     int lockedColumns_ = 0;
+
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 )
+    //* scrollbar recursion lock
+    bool scrollBarRecursionLock_ = false;
+    #endif
 
     friend class Container;
 
