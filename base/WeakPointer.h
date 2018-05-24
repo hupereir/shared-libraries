@@ -20,7 +20,7 @@
 *
 *******************************************************************************/
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
 #include <QPointer>
 #else
 #include <QWeakPointer>
@@ -29,7 +29,7 @@
 namespace Base
 {
 
-    #if QT_VERSION >= 0x050000
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
     //* scoped pointer convenience typedef
     template <typename T> using WeakPointer = QPointer<T>;
     #else

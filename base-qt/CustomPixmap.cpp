@@ -32,14 +32,14 @@
 
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QSize& size, Flags flags ):
-    #if QT_VERSION >= 0x050300
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 3, 0 )
     QPixmap( flags&Flag::HighDpi ? size*qApp->devicePixelRatio() : size ),
     #else
     QPixmap( size ),
     #endif
     Counter( "CustomPixmap" )
 {
-    #if QT_VERSION >= 0x050300
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 3, 0 )
     if( flags&Flag::HighDpi ) setDevicePixelRatio( qApp->devicePixelRatio() );
     #endif
 
@@ -185,7 +185,7 @@ CustomPixmap CustomPixmap::merged( const QPixmap& pixmap, Corner corner ) const
 
     QSize size( this->size()/devicePixelRatio() );
 
-    #if QT_VERSION >= 0x050300
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 3, 0 )
     QSize pixmapSize( pixmap.size()/pixmap.devicePixelRatio() );
     #else
     QSize pixmapSize( pixmap.size() );
@@ -265,7 +265,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 //______________________________________________________________________________________
 qreal CustomPixmap::devicePixelRatio() const
 {
-    #if QT_VERSION >= 0x050300
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 3, 0 )
     return QPixmap::devicePixelRatio();
     #else
     return 1;
@@ -275,7 +275,7 @@ qreal CustomPixmap::devicePixelRatio() const
 //______________________________________________________________________________________
 void CustomPixmap::setDevicePixelRatio( qreal value )
 {
-    #if QT_VERSION >= 0x050300
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 3, 0 )
     return QPixmap::setDevicePixelRatio( value );
     #else
     Q_UNUSED( value );

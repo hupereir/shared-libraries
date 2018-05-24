@@ -152,7 +152,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
         {
             QTreeView::setIconSize( size );
 
-            #if QT_VERSION < 0x050000
+            #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
             emit iconSizeChanged( size );
             #endif
 
@@ -245,7 +245,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* emitted when selection could be found
     void matchFound();
 
-    #if QT_VERSION < 0x050000
+    #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
     //* icon size changed signal
     void iconSizeChanged( const QSize& );
     #endif

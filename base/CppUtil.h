@@ -22,7 +22,7 @@
 
 #include <QtGlobal>
 
-#if QT_VERSION >= 0x050100
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 1, 0 )
 #include <QHashFunctions>
 #else
 #include <QHash>
@@ -52,7 +52,7 @@ namespace Base
     template<class T>
         inline T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
     {
-        #if QT_VERSION >= 0x050100
+        #if QT_VERSION >= QT_VERSION_CHECK( 5, 1, 0 )
         return T( std::move( reference ) );
         #else
         // for old QT versions there is no container constructor from initializer_list
@@ -66,7 +66,7 @@ namespace Base
     template<class T>
         inline T makeT( std::initializer_list<typename T::key_type>&& reference )
     {
-        #if QT_VERSION >= 0x050100
+        #if QT_VERSION >= QT_VERSION_CHECK( 5, 1, 0 )
         return T( std::move( reference ) );
         #else
         // for old QT versions there is no container constructor from initializer_list
@@ -86,7 +86,7 @@ namespace Base
         >
         inline T makeT( std::initializer_list<typename T::value_type>&& reference )
     {
-        #if QT_VERSION >= 0x040800
+        #if QT_VERSION >= QT_VERSION_CHECK( 4, 8, 0 )
         return T( std::move(reference) );
         #else
         T out;
@@ -99,7 +99,7 @@ namespace Base
     template<class T>
         inline void append( T& first, std::initializer_list<typename T::value_type>&& second )
     {
-        #if QT_VERSION >= 0x050500
+        #if QT_VERSION >= QT_VERSION_CHECK( 5, 5, 0 )
         first.append( std::move( second ) );
         #else
         std::copy( second.begin(), second.end(), std::back_inserter(first) );
@@ -121,7 +121,7 @@ namespace Base
         const typename T::mapped_type& value )
     {
 
-        #if QT_VERSION >= 0x050100
+        #if QT_VERSION >= QT_VERSION_CHECK( 5, 1, 0 )
         return map.insert( iterator, key, value );
         #else
         Q_UNUSED( iterator );

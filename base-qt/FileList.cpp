@@ -76,7 +76,7 @@ FileRecord FileList::lastValidFile()
     // sort list
     std::sort( records_.begin(), records_.end(), FileRecord::FirstOpenFTor() );
 
-    #if QT_VERSION >= 0x050600
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 6, 0 )
     // use std::find_if with reverse_iterators
     auto iter = std::find_if( records_.rbegin(), records_.rend(), [this]( const FileRecord& record ) { return (!check_) || record.isValid(); } );
     return iter == records_.rend() ? FileRecord():*iter;

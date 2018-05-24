@@ -1394,7 +1394,7 @@ void IconView::_updateConfiguration()
     {
         QAbstractItemView::setIconSize( QSize( iconSize, iconSize ) );
 
-        #if QT_VERSION < 0x050000
+        #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
         emit iconSizeChanged( this->iconSize() );
         #endif
 

@@ -26,7 +26,7 @@
 
 namespace Base
 {
-    #if QT_VERSION < 0x040800
+    #if QT_VERSION < QT_VERSION_CHECK( 4, 8, 0 )
     //____________________________________________
     Command::Command( std::initializer_list<QString>&& arguments ):
         Command( Base::makeT<QStringList>(std::move( arguments) ) )

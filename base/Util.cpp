@@ -28,7 +28,7 @@
 #include <QProcessEnvironment>
 #include <QCoreApplication>
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
 #include <QStandardPaths>
 #endif
 
@@ -58,7 +58,7 @@ QString Util::domain()
 {
     Debug::Throw( "Util::domain.\n" );
 
-    #if QT_VERSION >= 0x040500
+    #if QT_VERSION >= QT_VERSION_CHECK( 4, 5, 0 )
 
     return QHostInfo::localDomainName();
 
@@ -96,7 +96,7 @@ File Util::tmp()
 File Util::config()
 {
 
-    #if QT_VERSION >= 0x050000
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
     return File( QStandardPaths::writableLocation( QStandardPaths::ConfigLocation ) );
     #else
     return File( ".config/" ).addPath( home() );
@@ -108,7 +108,7 @@ File Util::config()
 File Util::data()
 {
 
-    #if QT_VERSION >= 0x050000
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
     return File( QStandardPaths::writableLocation( QStandardPaths::GenericDataLocation ) );
     #else
     return File( ".local/share/" ).addPath( home() );
@@ -120,7 +120,7 @@ File Util::data()
 File Util::cache()
 {
 
-    #if QT_VERSION >= 0x050000
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
     return File( QStandardPaths::writableLocation( QStandardPaths::GenericCacheLocation ) );
     #else
     return File( ".cache/" ).addPath( home() );

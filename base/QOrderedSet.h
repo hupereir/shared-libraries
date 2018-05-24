@@ -266,7 +266,7 @@ class QOrderedSet
 
     inline iterator insert(const_iterator i, const T &value)
     {
-        #if QT_VERSION >= 0x050100
+        #if QT_VERSION >= QT_VERSION_CHECK( 5, 1, 0 )
         return q_map.insert( reinterpret_cast<typename Map::const_iterator &>(i), value, QOrderedSetDummyValue());
         #else
         Q_UNUSED( i );
@@ -349,7 +349,7 @@ class QOrderedSet
     inline QOrderedSet<T> operator-(const QOrderedSet<T> &other) const
     { QOrderedSet<T> result = *this; result -= other; return result; }
 
-    #if QT_VERSION < 0x050000
+    #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
     // ### Qt 5: remove
     inline QOrderedSet<T> operator|(const QOrderedSet<T> &other)
     { QOrderedSet<T> result = *this; result |= other; return result; }

@@ -66,7 +66,7 @@ TreeView::TreeView( QWidget* parent ):
     setSortingEnabled( true );
     setAnimated( false );
 
-    #if QT_VERSION >= 0x040400
+    #if QT_VERSION >= QT_VERSION_CHECK( 4, 4, 0 )
     setExpandsOnDoubleClick( false );
     #endif
 
@@ -1046,7 +1046,7 @@ void TreeView::_updateConfiguration()
         int iconSize( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
         QTreeView::setIconSize( QSize( iconSize, iconSize )  );
 
-        #if QT_VERSION < 0x050000
+        #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
         emit iconSizeChanged( this->iconSize() );
         #endif
 

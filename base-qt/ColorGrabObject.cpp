@@ -25,7 +25,7 @@
 #include <QCursor>
 #include <QMouseEvent>
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
 #include <QScreen>
 #include <QWindow>
 #endif
@@ -53,7 +53,7 @@ void ColorGrabObject::_grabColor()
     captureWidget_->show();
     captureWidget_->grabMouse( Qt::CrossCursor );
 
-    #if QT_VERSION >= 0x050000
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
     // need to explicitely override cursor for Qt5
     qApp->setOverrideCursor( Qt::CrossCursor );
     #endif
@@ -89,7 +89,7 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
             // delete grabber
             _clearCapture();
 
-            #if QT_VERSION >= 0x050000
+            #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
             // need to explicitely release cursor for Qt5
             qApp->restoreOverrideCursor();
             #endif
@@ -114,10 +114,10 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
 
     // grab desktop window under cursor
     // convert to image.
-    #if QT_VERSION >= 0x050000
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
     QPoint globalPosition( event->globalPos() );
 
-    #if QT_VERSION >= 0x050300
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 3, 0 )
     const qreal dpiRatio( QGuiApplication::primaryScreen()->devicePixelRatio() );
     globalPosition.rx()*=dpiRatio;
     globalPosition.ry()*=dpiRatio;

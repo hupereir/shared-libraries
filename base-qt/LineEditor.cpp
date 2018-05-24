@@ -426,7 +426,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
     // base class method
     QLineEdit::paintEvent( event );
 
-    #if QT_VERSION < 0x050000
+    #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
     if( text().isEmpty() && !placeholderText().isEmpty() && hasFocus() )
     {
 

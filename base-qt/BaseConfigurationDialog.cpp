@@ -232,7 +232,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
             gridLayout->addWidget( button, row, 1, 1, 1 );
 
             // icon path
-            #if QT_VERSION >= 0x040600
+            #if QT_VERSION >= QT_VERSION_CHECK( 4, 6, 0 )
             gridLayout->addWidget( label = new QLabel( tr( "Icons:" ), box ), ++row, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 

@@ -1351,7 +1351,7 @@ QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
         for( const auto& url:mimeData->urls() )
         {
 
-            #if QT_VERSION >= 0x040800
+            #if QT_VERSION >= QT_VERSION_CHECK( 4, 8, 0 )
             // check that local file
             if( !url.isLocalFile() ) continue;
             #endif

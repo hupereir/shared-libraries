@@ -22,7 +22,7 @@
 #include "Debug.h"
 #include "Util.h"
 
-#if QT_VERSION >= 0x050000
+#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
 #include <QStandardPaths>
 #else
 #include <QDesktopServices>
@@ -86,7 +86,7 @@ DefaultFolders::DefaultFolders()
     // path map
     folders_.insert( Util::home(), Type::Home );
 
-    #if QT_VERSION >= 0x050000
+    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
     _insert( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), Type::Desktop );
     _insert( QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation ), Type::Documents );
     _insert( QStandardPaths::writableLocation( QStandardPaths::MusicLocation ), Type::Music );

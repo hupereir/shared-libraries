@@ -63,7 +63,7 @@ namespace SpellCheck
 
         // store selected filter
         QString selection;
-        #if QT_VERSION >= 0x050600
+        #if QT_VERSION >= QT_VERSION_CHECK( 5, 6, 0 )
         auto iter = std::find_if( actions_.keyBegin(), actions_.keyEnd(), [](QAction* current){ return current->isChecked(); } );
         if( iter != actions_.keyEnd() ) selection = iter.base().value();
         #else
