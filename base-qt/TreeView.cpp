@@ -619,20 +619,6 @@ void TreeView::paintEvent( QPaintEvent* event )
 
 }
 
-//__________________________________________________________
-void TreeView::updateGeometries()
-{
-
-    QTreeView::updateGeometries();
-
-    if( model() && !model()->rowCount() )
-    {
-        if( verticalScrollBar() ) verticalScrollBar()->setRange(0,0);
-        if( horizontalScrollBar() ) horizontalScrollBar()->setRange(0,0);
-    }
-
-}
-
 //______________________________________________________________________
 void TreeView::_createFindDialog()
 {
