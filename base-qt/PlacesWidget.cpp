@@ -297,8 +297,17 @@ namespace Private
                 else iconRect.setRight( iconRect.left() + iconSize().width() );
             }
 
+            QIcon::Mode iconMode;
+            if( valid_ && !hasFlag( Private::LocalFileInfo::Hidden ) )
+            {
+
+                if( hasFocus_ ) iconMode = QIcon::Selected;
+                else iconMode = QIcon::Active;
+
+            } else iconMode = QIcon::Disabled;
+
             // get pixmap
-            const CustomPixmap pixmap( icon().pixmap( iconSize(), ( valid_ && !hasFlag( Private::LocalFileInfo::Hidden ) ) ? QIcon::Normal:QIcon::Disabled ) );
+            const CustomPixmap pixmap( icon().pixmap( iconSize(), iconMode ) );
             const QPoint position(
                 iconRect.x() + 0.5*(iconRect.width() - pixmap.width()/pixmap.devicePixelRatio() ),
                 iconRect.y() + 0.5*(iconRect.height() - pixmap.height()/pixmap.devicePixelRatio() ) );
