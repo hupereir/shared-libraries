@@ -39,7 +39,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     public:
 
     //* constructor
-    explicit CustomToolBar( const QString& = QString(), QWidget* = nullptr, const QString& = QString() );
+    explicit CustomToolBar( const QString&, QWidget*, const QString& );
 
     // map toolbar area and name
     using AreaMap = QHash<QString, Qt::ToolBarArea>;
