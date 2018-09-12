@@ -30,7 +30,7 @@
 #include <QLayout>
 #include <QToolButton>
 
-#if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
+#if QT_VERSION < 0x050000
 #include <QProcessEnvironment>
 #else
 #include <QStandardPaths>
@@ -134,7 +134,7 @@ void BrowsedLineEditor::_findTargetApplication()
     if( current.exists() ) return;
 
     // path list
-    #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
+    #if QT_VERSION < 0x050000
 
     // get path list from environment
     auto environment = QProcessEnvironment::systemEnvironment();

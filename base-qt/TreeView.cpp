@@ -66,7 +66,7 @@ TreeView::TreeView( QWidget* parent ):
     setSortingEnabled( true );
     setAnimated( false );
 
-    #if QT_VERSION >= QT_VERSION_CHECK( 4, 4, 0 )
+    #if QT_VERSION >= 0x040400
     setExpandsOnDoubleClick( false );
     #endif
 
@@ -80,7 +80,7 @@ TreeView::TreeView( QWidget* parent ):
     connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
 
     // horizontal scrollbar range bug
-    #if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 )
+    #if QT_VERSION >= 0x051000
     connect( horizontalScrollBar(), SIGNAL(rangeChanged(int,int)), SLOT(_updateHorizontalScrollBarRange()) );
     #endif
 
@@ -863,7 +863,7 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
 
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK( 5, 10, 0 )
+#if QT_VERSION >= 0x051000
 //__________________________________________________________
 void TreeView::_updateHorizontalScrollBarRange()
 {
@@ -1046,7 +1046,7 @@ void TreeView::_updateConfiguration()
         int iconSize( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
         QTreeView::setIconSize( QSize( iconSize, iconSize )  );
 
-        #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
+        #if QT_VERSION < 0x050000
         emit iconSizeChanged( this->iconSize() );
         #endif
 

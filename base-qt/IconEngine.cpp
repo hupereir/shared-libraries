@@ -88,7 +88,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
 
     } else {
 
-        #if QT_VERSION >= QT_VERSION_CHECK( 4, 6, 0 )
+        #if QT_VERSION >= 0x040600
         QString truncatedName( File( file ).truncatedName() );
         if( (flags&Base::IconCacheItem::Flag::FromTheme) && QIcon::hasThemeIcon( truncatedName ) )
         {

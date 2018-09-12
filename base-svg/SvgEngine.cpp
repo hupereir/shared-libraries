@@ -74,7 +74,7 @@ namespace Svg
 
             SvgId::List svgIdList;
 
-            #if QT_VERSION >= QT_VERSION_CHECK( 5, 6, 0 )
+            #if QT_VERSION >= 0x050600
             std::copy( cache_.keyBegin(), cache_.keyEnd(), std::back_inserter( svgIdList ) );
             #else
             for( auto&& iter = cache_.begin(); iter != cache_.end(); ++iter )

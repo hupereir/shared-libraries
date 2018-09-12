@@ -32,7 +32,7 @@ namespace Base
 
         public:
 
-        #if QT_VERSION < QT_VERSION_CHECK( 4, 8, 0 )
+        #if QT_VERSION < 0x040800
         //* constructor
         explicit Command( std::initializer_list<QString>&& );
         #endif

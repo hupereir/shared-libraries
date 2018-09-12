@@ -127,7 +127,7 @@ bool BaseApplication::realizeWidget()
     if( !BaseCoreApplication::realizeWidget() ) return false;
 
     // parse user argument
-    #if QT_VERSION >= QT_VERSION_CHECK( 5, 4, 0 )
+    #if QT_VERSION >= 0x050400
     auto parser( commandLineParser( _arguments() ) );
     if( parser.hasFlag( "--highdpi" ) )
     {
@@ -177,7 +177,7 @@ CommandLineParser BaseApplication::commandLineParser( CommandLineArguments argum
     out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (native|raster)" ) );
     out.registerOption( "-platform", "string", QObject::tr( "Qt platform" ) );
 
-    #if QT_VERSION >= QT_VERSION_CHECK( 5, 4, 0 )
+    #if QT_VERSION >= 0x050400
     out.setGroup( CommandLineParser::applicationGroupName );
     out.registerFlag( "--highdpi", QObject::tr( "enable high-dpi support" ) );
     #endif
@@ -388,7 +388,7 @@ void BaseApplication::_updateIconTheme()
 {
 
     Debug::Throw( "BaseApplication::_updateIconTheme.\n" );
-    #if QT_VERSION >= QT_VERSION_CHECK( 4, 6, 0 )
+    #if QT_VERSION >= 0x040600
     if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
     {
         QIcon::setThemeSearchPaths( Base::makeT<QStringList>({ XmlOptions::get().raw( "ICON_THEME_PATH" ) }) );

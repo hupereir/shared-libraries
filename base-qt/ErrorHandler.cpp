@@ -26,7 +26,7 @@
 //_____________________________________________________________
 void ErrorHandler::initialize()
 {
-    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+    #if QT_VERSION >= 0x050000
     qInstallMessageHandler( _throw );
     #else
     qInstallMsgHandler( _throw );
@@ -44,7 +44,7 @@ ErrorHandler& ErrorHandler::get()
 //_____________________________________________________________
 void ErrorHandler::exit()
 {
-    #if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+    #if QT_VERSION >= 0x050000
     qInstallMessageHandler( 0 );
     #else
     qInstallMsgHandler( 0 );
@@ -52,7 +52,7 @@ void ErrorHandler::exit()
 }
 
 //_____________________________________________________________
-#if QT_VERSION >= QT_VERSION_CHECK( 5, 0, 0 )
+#if QT_VERSION >= 0x050000
 void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, const QString& message )
 {
 

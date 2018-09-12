@@ -219,7 +219,7 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     {
         public:
 
-        #if QT_VERSION < QT_VERSION_CHECK( 5, 0, 0 )
+        #if QT_VERSION < 0x050000
         // make insertItem method public for old Qt versions
         using QVBoxLayout::insertItem;
         #endif
