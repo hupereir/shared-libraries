@@ -73,7 +73,11 @@ namespace Private
     SystemNotificationsP::SystemNotificationsP( QObject* parent ):
         QObject( parent ),
         Counter( "SystemNotificationsP" )
-    { qDBusRegisterMetaType<Notifications::ImageData>(); }
+    {
+        #ifndef QT_NO_DBUS
+        qDBusRegisterMetaType<Notifications::ImageData>();
+        #endif
+    }
 
     //____________________________________________
     SystemNotificationsP::~SystemNotificationsP() = default;
