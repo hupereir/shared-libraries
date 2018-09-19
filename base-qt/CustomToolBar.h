@@ -152,12 +152,6 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     //* paint events
     void paintEvent( QPaintEvent* ) override;
 
-    //* show event
-    void showEvent( QShowEvent* ) override;
-
-    //* hide event
-    void hideEvent( QHideEvent* ) override;
-
     //* move event
     void moveEvent( QMoveEvent* ) override;
 

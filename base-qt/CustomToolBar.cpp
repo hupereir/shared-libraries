@@ -62,29 +62,11 @@ void CustomToolBar::paintEvent( QPaintEvent* event )
 { if( !transparent_ ) return QToolBar::paintEvent( event ); }
 
 //_______________________________________________________________
-void CustomToolBar::showEvent( QShowEvent* event )
-{
-    Debug::Throw() << "CustomToolBar::showEvent - name: " << optionName_ << endl;
-    if( !isHidden() ) visibilityAction_->setChecked( true );
-    QToolBar::showEvent(event);
-}
-
-//_______________________________________________________________
-void CustomToolBar::hideEvent( QHideEvent* event )
-{
-
-    Debug::Throw() << "CustomToolBar::hideEvent - name: " << optionName_ << endl;
-    if( isHidden() ) visibilityAction_->setChecked( false );
-    QToolBar::hideEvent(event);
-
-}
-
-//_______________________________________________________________
 void CustomToolBar::moveEvent( QMoveEvent* event )
 {
     if( isFloating() || optionName_.isEmpty() ) return QToolBar::moveEvent( event );
 
-    QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
+    auto parent( qobject_cast<QMainWindow*>( parentWidget() ) );
     if( parent )
     { XmlOptions::get().set<int>( locationOptionName_, parent->toolBarArea( this ) ); }
 
@@ -150,7 +132,7 @@ void CustomToolBar::_updateConfiguration()
 
     // position
     // try cast parent to QMainWindow
-    QMainWindow* parent( qobject_cast<QMainWindow*>( parentWidget() ) );
+    auto parent( qobject_cast<QMainWindow*>( parentWidget() ) );
     if( parent && !optionName_.isEmpty() )
     {
 
