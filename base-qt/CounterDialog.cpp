@@ -27,6 +27,7 @@
 #include <QApplication>
 #include <QLayout>
 #include <QPushButton>
+#include <QShortcut>
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
@@ -46,6 +47,8 @@ CustomDialog( parent, OkButton, Qt::Window )
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
     connect( button, SIGNAL(clicked()), SLOT(update()) );
     button->setAutoDefault( false );
+
+    new QShortcut( QKeySequence::Refresh, this, SLOT(update()) );
 
 }
 
