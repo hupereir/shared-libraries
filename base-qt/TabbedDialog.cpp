@@ -95,7 +95,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     hLayout->addWidget( label, 1 );
 
     // create scroll area
-    QScrollArea* scrollArea = new QScrollArea;
+    auto scrollArea = new QScrollArea;
     scrollArea->setWidgetResizable ( true );
     scrollArea->setFrameStyle( QFrame::NoFrame );
 
