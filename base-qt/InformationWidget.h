@@ -22,6 +22,7 @@
 
 #include "Counter.h"
 
+#include <QIcon>
 #include <QLabel>
 #include <QLayout>
 #include <QPaintEvent>
@@ -51,6 +52,8 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     //*@name modifiers
     //@{
 
+    void setIcon( const QIcon& );
+
     void setText( const QString& value )
     { label_->setText( value ); }
 
@@ -62,6 +65,9 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     void paintEvent( QPaintEvent* ) override;
 
     private:
+
+    //* icon label
+    QLabel* iconLabel_ = nullptr;
 
     //* label
     QLabel* label_ = nullptr;

@@ -18,7 +18,11 @@
 *******************************************************************************/
 
 #include "InformationWidget.h"
+
 #include "Color.h"
+#include "Debug.h"
+#include "IconSize.h"
+
 #include <QPainter>
 
 //___________________________________________________________
@@ -27,25 +31,55 @@ QWidget( parent ),
 Counter( "InformationWidget" )
 {
 
+    Debug::Throw( "InformationWidget::InformationWidget.\n" );
+
     // create vbox layout
     auto layout=new QVBoxLayout;
     layout->setSpacing(10);
     layout->setMargin(10);
     setLayout( layout );
 
+    auto hLayout = new QHBoxLayout;
+    hLayout->setSpacing(10);
+    hLayout->setMargin(0);
+    layout->addLayout( hLayout, 1 );
+
+    // icon label
+    hLayout->addWidget( iconLabel_ = new QLabel( this ), 0 );
+    iconLabel_->hide();
+
     // create message
-    layout->addWidget( label_ = new QLabel( this ) );
+    hLayout->addWidget( label_ = new QLabel( this ), 1 );
     label_->setTextInteractionFlags( Qt::TextSelectableByMouse );
+    label_->setWordWrap( true );
     label_->setText( text );
 
     // button layout
     buttonLayout_ = new QHBoxLayout;
     buttonLayout_->setMargin(0);
     buttonLayout_->setSpacing( 5 );
-    layout->addLayout( buttonLayout_ );
+    layout->addLayout( buttonLayout_, 0 );
     buttonLayout_->addStretch( 1 );
 
     adjustSize();
+
+}
+
+//___________________________________________________________
+void InformationWidget::setIcon( const QIcon& icon )
+{
+
+    Debug::Throw( "InformationWidget::setIcon.\n" );
+    if( icon.isNull() )
+    {
+        iconLabel_->clear();
+        iconLabel_->hide();
+    } else {
+
+        iconLabel_->setPixmap( icon.pixmap( IconSize( IconSize::Large ).get() ) );
+        iconLabel_->show();
+
+    }
 
 }
 
