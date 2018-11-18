@@ -61,7 +61,7 @@ namespace Base
         bool isValid() const { return value_.isValid(); }
 
         //* merge color with intensity to this one
-        Color merged( const QColor& color, qreal intensity = 0.5 )
+        Color merged( const QColor& color, qreal intensity = 0.5 ) const
         {
             Color copy( *this );
             return copy.merge( color, intensity );
