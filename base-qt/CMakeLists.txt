@@ -142,6 +142,7 @@ set(base_qt_SOURCES
   IconViewItem.cpp
   ImageFileDialog.cpp
   InformationDialog.cpp
+  InformationWidget.cpp
   InterruptionHandler.cpp
   ItemModel.cpp
   KeyModifier.cpp
