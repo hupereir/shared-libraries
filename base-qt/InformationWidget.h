@@ -26,8 +26,13 @@
 #include <QLabel>
 #include <QLayout>
 #include <QPaintEvent>
+#include <QPushButton>
 #include <QString>
 #include <QWidget>
+
+#include <memory>
+
+class InformationWidgetPrivate;
 
 //* QDialog used to ask if a new file should be created
 class InformationWidget: public QWidget, private Base::Counter<InformationWidget>
@@ -40,40 +45,30 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     //* constructor
     explicit InformationWidget( QWidget*, const QString& = QString() );
 
-    //*@name accessors
-    //@{
-
-    //* retrieve button layout
-    QBoxLayout& buttonLayout() const
-    { return *buttonLayout_; }
-
-    //@}
+    //* destructor
+    ~InformationWidget() override;
 
     //*@name modifiers
     //@{
 
+    //* icon
     void setIcon( const QIcon& );
 
-    void setText( const QString& value )
-    { label_->setText( value ); }
+    //* text
+    void setText( const QString& );
+
+    //* buttons
+    QPushButton* addButton( const QIcon& = QIcon(), const QString& = QString() );
+
+    //* direction
+    void setDirection( QBoxLayout::Direction );
 
     //@}
 
-    protected:
-
-    //* paint
-    void paintEvent( QPaintEvent* ) override;
-
     private:
 
-    //* icon label
-    QLabel* iconLabel_ = nullptr;
-
-    //* label
-    QLabel* label_ = nullptr;
-
-    //* button layouy
-    QBoxLayout* buttonLayout_ = nullptr;
+    //* private
+    std::unique_ptr<InformationWidgetPrivate> private_;
 
 };
 
