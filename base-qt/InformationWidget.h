@@ -60,6 +60,10 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     //* buttons
     QPushButton* addButton( const QIcon& = QIcon(), const QString& = QString() );
 
+    //* buttons
+    QPushButton* addButton( const QString& value )
+    { return addButton( QIcon(), value ); }
+
     //* direction
     void setDirection( QBoxLayout::Direction );
 
