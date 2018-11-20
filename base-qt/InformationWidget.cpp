@@ -23,6 +23,7 @@
 #include "Debug.h"
 #include "IconSize.h"
 
+#include <QPropertyAnimation>
 #include <QPainter>
 
 //___________________________________________________________
@@ -32,10 +33,7 @@ class ContentWidget: public QWidget, private Base::Counter<ContentWidget>
     public:
 
     //* constructor
-    ContentWidget( QWidget* parent ):
-        QWidget( parent ),
-        Counter( "ContentWidget" )
-    {}
+    ContentWidget( QWidget* );
 
     protected:
 
@@ -45,14 +43,44 @@ class ContentWidget: public QWidget, private Base::Counter<ContentWidget>
 };
 
 //___________________________________________________________
-class InformationWidgetPrivate
+class InformationWidgetPrivate: public QObject, private Base::Counter<InformationWidgetPrivate>
 {
 
+    Q_OBJECT
+
     public:
+
+    //* constructor
+    InformationWidgetPrivate( QWidget* );
+
+    //* setup animation
+    void setupAnimation();
+
+    //* get contents preferred height
+    int preferredHeight() const;
+
+    //* parent
+    QWidget* parent_ = nullptr;
+
+    //* content
     QWidget* content_ = nullptr;
+
+    //* icon
     QLabel* iconLabel_ = nullptr;
+
+    //* label
     QLabel* textLabel_ = nullptr;
+
+    //* buttons layout
     QBoxLayout* buttonLayout_ = nullptr;
+
+    //* animation
+    QPropertyAnimation* animation_ = nullptr;
+
+    public Q_SLOTS:
+
+    //* animation finished
+    void animationFinished();
 
 };
 
@@ -60,7 +88,7 @@ class InformationWidgetPrivate
 InformationWidget::InformationWidget( QWidget* parent, const QString& text ):
 QWidget( parent ),
 Counter( "InformationWidget" ),
-private_( new InformationWidgetPrivate )
+private_( new InformationWidgetPrivate( this ) )
 {
 
     Debug::Throw( "InformationWidget::InformationWidget.\n" );
@@ -97,8 +125,6 @@ private_( new InformationWidgetPrivate )
     private_->buttonLayout_->setSpacing( 5 );
     layout->addLayout( private_->buttonLayout_, 0 );
     private_->buttonLayout_->addStretch( 1 );
-
-    adjustSize();
 
 }
 
@@ -142,6 +168,113 @@ void InformationWidget::setDirection( QBoxLayout::Direction direction )
 { static_cast<QBoxLayout*>( private_->content_->layout() )->setDirection( direction ); }
 
 //___________________________________________________________
+void InformationWidget::showAnimated()
+{
+
+    Debug::Throw( "InformationWidget::showAnimated.\n" );
+
+    // check animation
+    if( private_->animation_ &&
+        private_->animation_->state() == QPropertyAnimation::Running )
+    {
+
+        if( private_->animation_->direction() == QPropertyAnimation::Backward )
+        { private_->animation_->setDirection( QPropertyAnimation::Forward ); }
+
+        return;
+    }
+
+    // check visibility
+    if( isVisible() ) return;
+
+    // setup animation
+    private_->setupAnimation();
+    private_->animation_->setDirection( QPropertyAnimation::Forward );
+
+    // changed policy
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+    show();
+
+    // animate
+    private_->animation_->start();
+
+}
+
+//___________________________________________________________
+void InformationWidget::hideAnimated()
+{
+
+    Debug::Throw( "InformationWidget::hideAnimated.\n" );
+
+    // check animation
+    if( private_->animation_ &&
+        private_->animation_->state() == QPropertyAnimation::Running )
+    {
+
+        if( private_->animation_->direction() == QPropertyAnimation::Forward )
+        { private_->animation_->setDirection( QPropertyAnimation::Backward ); }
+
+        return;
+    }
+
+    // check visibility
+    if( isHidden() ) return;
+
+    // setup animation
+    private_->setupAnimation();
+    private_->animation_->setDirection( QPropertyAnimation::Backward );
+
+    // change policy
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+
+    // animate
+    private_->animation_->start();
+
+}
+
+//___________________________________________________________
+InformationWidgetPrivate::InformationWidgetPrivate( QWidget* parent ):
+    QObject( parent ),
+    Counter( "InformationWidgetPrivate" ),
+    parent_( parent )
+{ Debug::Throw( "InformationWidgetPrivate::InformationWidgetPrivate.\n" ); }
+
+//___________________________________________________________
+int InformationWidgetPrivate::preferredHeight() const
+{ return content_->sizeHint().height(); }
+
+//___________________________________________________________
+void InformationWidgetPrivate::setupAnimation()
+{
+    if( !animation_ )
+    {
+        animation_ = new QPropertyAnimation( parent_, "height", this );
+        connect( animation_, SIGNAL(finished()), SLOT(animationFinished()) );
+    }
+
+    // setup
+    content_->ensurePolished();
+    animation_->setStartValue(0);
+    animation_->setEndValue( preferredHeight() );
+    animation_->setDuration( 100 );
+}
+
+//___________________________________________________________
+void InformationWidgetPrivate::animationFinished()
+{
+    if( animation_ && animation_->direction() == QPropertyAnimation::Backward )
+    { parent_->hide(); }
+
+    parent_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
+}
+
+//___________________________________________________________
+ContentWidget::ContentWidget( QWidget* parent ):
+    QWidget( parent ),
+    Counter( "ContentWidget" )
+{ Debug::Throw( "ContentWidget::ContentWidget.\n" ); }
+
+//___________________________________________________________
 void ContentWidget::paintEvent( QPaintEvent* event )
 {
 
@@ -166,3 +299,5 @@ void ContentWidget::paintEvent( QPaintEvent* event )
     painter.drawRoundedRect( rect, radius, radius );
 
 }
+
+#include "InformationWidget.moc"

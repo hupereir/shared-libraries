@@ -39,6 +39,7 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
 {
 
     Q_OBJECT
+    Q_PROPERTY( qreal height READ height WRITE setFixedHeight )
 
     public:
 
@@ -68,6 +69,14 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     void setDirection( QBoxLayout::Direction );
 
     //@}
+
+    public Q_SLOTS:
+
+    //* show animated
+    void showAnimated();
+
+    //* show animated
+    void hideAnimated();
 
     private:
 
