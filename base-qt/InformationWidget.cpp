@@ -51,7 +51,7 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     public:
 
     //* constructor
-    InformationWidgetPrivate( QWidget* );
+    InformationWidgetPrivate( InformationWidget* );
 
     //* setup animation
     void setupAnimation();
@@ -60,7 +60,7 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     int preferredHeight() const;
 
     //* parent
-    QWidget* parent_ = nullptr;
+    InformationWidget* parent_ = nullptr;
 
     //* content
     QWidget* content_ = nullptr;
@@ -86,8 +86,8 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
 
 //___________________________________________________________
 InformationWidget::InformationWidget( QWidget* parent, const QString& text ):
-QWidget( parent ),
-Counter( "InformationWidget" ),
+    QWidget( parent ),
+    Counter( "InformationWidget" ),
 private_( new InformationWidgetPrivate( this ) )
 {
 
@@ -116,7 +116,6 @@ private_( new InformationWidgetPrivate( this ) )
     // create message
     hLayout->addWidget( private_->textLabel_ = new QLabel( private_->content_ ), 1 );
     private_->textLabel_->setTextInteractionFlags( Qt::TextSelectableByMouse );
-    private_->textLabel_->setWordWrap( true );
     private_->textLabel_->setText( text );
 
     // button layout
@@ -233,7 +232,7 @@ void InformationWidget::hideAnimated()
 }
 
 //___________________________________________________________
-InformationWidgetPrivate::InformationWidgetPrivate( QWidget* parent ):
+InformationWidgetPrivate::InformationWidgetPrivate( InformationWidget* parent ):
     QObject( parent ),
     Counter( "InformationWidgetPrivate" ),
     parent_( parent )
@@ -263,9 +262,19 @@ void InformationWidgetPrivate::setupAnimation()
 void InformationWidgetPrivate::animationFinished()
 {
     if( animation_ && animation_->direction() == QPropertyAnimation::Backward )
-    { parent_->hide(); }
+    {
+
+        parent_->hide();
+        emit parent_->hideAnimationFinished();
+
+    } else {
+
+        emit parent_->showAnimationFinished();
+
+    }
 
     parent_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
+
 }
 
 //___________________________________________________________

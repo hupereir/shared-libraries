@@ -70,6 +70,14 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
 
     //@}
 
+    Q_SIGNALS:
+
+    //* showAnimated finished
+    void showAnimationFinished();
+
+    //* hideAnimated finished
+    void hideAnimationFinished();
+
     public Q_SLOTS:
 
     //* show animated
