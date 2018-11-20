@@ -72,19 +72,24 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
 
     Q_SIGNALS:
 
-    //* showAnimated finished
+    //* animatedShow finished
     void showAnimationFinished();
 
-    //* hideAnimated finished
+    //* animatedHide finished
     void hideAnimationFinished();
 
     public Q_SLOTS:
 
     //* show animated
-    void showAnimated();
+    void animatedShow();
 
     //* show animated
-    void hideAnimated();
+    void animatedHide();
+
+    protected:
+
+    //* paint
+    void paintEvent( QPaintEvent* ) override;
 
     private:
 

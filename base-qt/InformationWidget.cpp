@@ -27,22 +27,6 @@
 #include <QPainter>
 
 //___________________________________________________________
-class ContentWidget: public QWidget, private Base::Counter<ContentWidget>
-{
-
-    public:
-
-    //* constructor
-    ContentWidget( QWidget* );
-
-    protected:
-
-    //* paint
-    void paintEvent( QPaintEvent* ) override;
-
-};
-
-//___________________________________________________________
 class InformationWidgetPrivate: public QObject, private Base::Counter<InformationWidgetPrivate>
 {
 
@@ -96,7 +80,7 @@ private_( new InformationWidgetPrivate( this ) )
     setLayout( new QVBoxLayout );
     layout()->setSpacing(0);
     layout()->setMargin(0);
-    layout()->addWidget( private_->content_ = new ContentWidget( this ) );
+    layout()->addWidget( private_->content_ = new QWidget( this ) );
 
     // create vbox layout
     auto layout=new QVBoxLayout;
@@ -167,10 +151,10 @@ void InformationWidget::setDirection( QBoxLayout::Direction direction )
 { static_cast<QBoxLayout*>( private_->content_->layout() )->setDirection( direction ); }
 
 //___________________________________________________________
-void InformationWidget::showAnimated()
+void InformationWidget::animatedShow()
 {
 
-    Debug::Throw( "InformationWidget::showAnimated.\n" );
+    Debug::Throw( "InformationWidget::animatedShow.\n" );
 
     // check animation
     if( private_->animation_ &&
@@ -195,15 +179,16 @@ void InformationWidget::showAnimated()
     show();
 
     // animate
+    private_->content_->hide();
     private_->animation_->start();
 
 }
 
 //___________________________________________________________
-void InformationWidget::hideAnimated()
+void InformationWidget::animatedHide()
 {
 
-    Debug::Throw( "InformationWidget::hideAnimated.\n" );
+    Debug::Throw( "InformationWidget::animatedHide.\n" );
 
     // check animation
     if( private_->animation_ &&
@@ -227,7 +212,34 @@ void InformationWidget::hideAnimated()
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
     // animate
+    private_->content_->hide();
     private_->animation_->start();
+
+}
+
+//___________________________________________________________
+void InformationWidget::paintEvent( QPaintEvent* event )
+{
+
+    const auto baseColor = palette().color( QPalette::Active, QPalette::Window );
+    const auto outlineColor = palette().color( QPalette::Active, QPalette::Highlight );
+    Base::Color backgroundColor( outlineColor );
+
+    const qreal alpha = 0.2;
+    backgroundColor.merge( baseColor, alpha );
+
+    QPainter painter( this );
+    painter.setClipRegion( event->region() );
+    painter.setRenderHints( QPainter::Antialiasing );
+
+    const qreal penWidth = 2;
+    painter.setPen( QPen( outlineColor, penWidth ) );
+    painter.setBrush( backgroundColor.get() );
+
+    const qreal margin = penWidth/2 + 1;
+    const qreal radius = 4;
+    const auto rect = QRectF( this->rect() ).adjusted( margin, margin, -margin, -margin );
+    painter.drawRoundedRect( rect, radius, radius );
 
 }
 
@@ -269,43 +281,12 @@ void InformationWidgetPrivate::animationFinished()
 
     } else {
 
+        content_->show();
         emit parent_->showAnimationFinished();
 
     }
 
     parent_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
-
-}
-
-//___________________________________________________________
-ContentWidget::ContentWidget( QWidget* parent ):
-    QWidget( parent ),
-    Counter( "ContentWidget" )
-{ Debug::Throw( "ContentWidget::ContentWidget.\n" ); }
-
-//___________________________________________________________
-void ContentWidget::paintEvent( QPaintEvent* event )
-{
-
-    const auto baseColor = palette().color( QPalette::Active, QPalette::Window );
-    const auto outlineColor = palette().color( QPalette::Active, QPalette::Highlight );
-    Base::Color backgroundColor( outlineColor );
-
-    const qreal alpha = 0.2;
-    backgroundColor.merge( baseColor, alpha );
-
-    QPainter painter( this );
-    painter.setClipRegion( event->region() );
-    painter.setRenderHints( QPainter::Antialiasing );
-
-    const qreal penWidth = 2;
-    painter.setPen( QPen( outlineColor, penWidth ) );
-    painter.setBrush( backgroundColor.get() );
-
-    const qreal margin = penWidth/2 + 1;
-    const qreal radius = 4;
-    const auto rect = QRectF( this->rect() ).adjusted( margin, margin, -margin, -margin );
-    painter.drawRoundedRect( rect, radius, radius );
 
 }
 
