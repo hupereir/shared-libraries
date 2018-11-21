@@ -105,6 +105,8 @@ InformationWidget::InformationWidget( QWidget* parent, MessageType type, const Q
     private_->textLabel_->setTextInteractionFlags( Qt::TextSelectableByMouse );
     private_->textLabel_->setText( text );
 
+    private_->textLabel_->setWordWrap( true );
+
     // button layout
     private_->buttonLayout_ = new QHBoxLayout;
     private_->buttonLayout_->setMargin(0);
@@ -175,13 +177,14 @@ void InformationWidget::animatedShow()
     // check visibility
     if( isVisible() ) return;
 
+    // change policy
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+    setFixedHeight(0);
+    show();
+
     // setup animation
     private_->setupAnimation();
     private_->animation_->setDirection( QPropertyAnimation::Forward );
-
-    // changed policy
-    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
-    show();
 
     // animate
     private_->content_->hide();
@@ -280,7 +283,10 @@ InformationWidgetPrivate::InformationWidgetPrivate( InformationWidget* parent ):
 
 //___________________________________________________________
 int InformationWidgetPrivate::preferredHeight() const
-{ return content_->sizeHint().height(); }
+{
+    const auto height = content_->heightForWidth( parent_->width() );
+    return height >= 0 ? height : content_->sizeHint().height();
+}
 
 //___________________________________________________________
 void InformationWidgetPrivate::setupAnimation()
@@ -292,8 +298,6 @@ void InformationWidgetPrivate::setupAnimation()
     }
 
     // setup
-    content_->ensurePolished();
-    content_->adjustSize();
     animation_->setStartValue(0);
     animation_->setEndValue( preferredHeight() );
     animation_->setDuration( 100 );
