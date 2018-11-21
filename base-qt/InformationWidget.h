@@ -111,6 +111,10 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     //* private
     std::unique_ptr<InformationWidgetPrivate> private_;
 
+    #if QT_VERSION < 0x050000
+    friend class InformationWidgetPrivate;
+    #endif
+
 };
 
 #endif
