@@ -61,6 +61,9 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     //* animation
     QPropertyAnimation* animation_ = nullptr;
 
+    //* message type
+    InformationWidget::MessageType messageType_ = InformationWidget::MessageType::Information;
+
     public Q_SLOTS:
 
     //* animation finished
@@ -69,10 +72,10 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
 };
 
 //___________________________________________________________
-InformationWidget::InformationWidget( QWidget* parent, const QString& text ):
+InformationWidget::InformationWidget( QWidget* parent, MessageType type, const QString& text ):
     QWidget( parent ),
     Counter( "InformationWidget" ),
-private_( new InformationWidgetPrivate( this ) )
+    private_( new InformationWidgetPrivate( this ) )
 {
 
     Debug::Throw( "InformationWidget::InformationWidget.\n" );
@@ -108,6 +111,8 @@ private_( new InformationWidgetPrivate( this ) )
     private_->buttonLayout_->setSpacing( 5 );
     layout->addLayout( private_->buttonLayout_, 0 );
     private_->buttonLayout_->addStretch( 1 );
+
+    private_->messageType_ = type;
 
 }
 
@@ -222,12 +227,35 @@ void InformationWidget::paintEvent( QPaintEvent* event )
 {
 
     const auto baseColor = palette().color( QPalette::Active, QPalette::Window );
-    const auto outlineColor = palette().color( QPalette::Active, QPalette::Highlight );
+
+    QColor outlineColor;
+    switch( private_->messageType_ )
+    {
+        case MessageType::Positive:
+        outlineColor.setRgb( 39, 174,  96 );
+        break;
+
+        case MessageType::Information:
+        outlineColor = palette().color( QPalette::Active, QPalette::Highlight );
+        break;
+
+        case MessageType::Warning:
+        outlineColor.setRgb( 246, 116, 0 );
+        break;
+
+        case MessageType::Error:
+        outlineColor.setRgb( 218, 68, 83 );
+        break;
+
+    }
+
+    // background color
     Base::Color backgroundColor( outlineColor );
 
     const qreal alpha = 0.2;
     backgroundColor.merge( baseColor, alpha );
 
+    // paint
     QPainter painter( this );
     painter.setClipRegion( event->region() );
     painter.setRenderHints( QPainter::Antialiasing );

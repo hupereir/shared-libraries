@@ -43,14 +43,29 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
 
     public:
 
+    enum class MessageType
+    {
+        Positive,
+        Information,
+        Warning,
+        Error
+    };
+
     //* constructor
-    explicit InformationWidget( QWidget*, const QString& = QString() );
+    explicit InformationWidget( QWidget*, MessageType = MessageType::Information, const QString& = QString() );
+
+    explicit InformationWidget( QWidget* parent, const QString& text ):
+        InformationWidget( parent, MessageType::Information, text )
+    {}
 
     //* destructor
     ~InformationWidget() override;
 
     //*@name modifiers
     //@{
+
+    //* set message type
+    void setMessageType( MessageType );
 
     //* icon
     void setIcon( const QIcon& );
