@@ -265,6 +265,7 @@ void InformationWidgetPrivate::setupAnimation()
 
     // setup
     content_->ensurePolished();
+    content_->adjustSize();
     animation_->setStartValue(0);
     animation_->setEndValue( preferredHeight() );
     animation_->setDuration( 100 );
@@ -286,7 +287,10 @@ void InformationWidgetPrivate::animationFinished()
 
     }
 
-    parent_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
+    // reset policy and constrains
+    parent_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Preferred );
+    parent_->setMinimumHeight(0);
+    parent_->setMaximumHeight( QWIDGETSIZE_MAX );
 
 }
 
