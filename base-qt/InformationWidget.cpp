@@ -43,8 +43,6 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     //* get contents preferred height
     int preferredHeight() const;
 
-    static const int duration_ = 150;
-
     //* parent
     InformationWidget* parent_ = nullptr;
 
@@ -65,6 +63,9 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
 
     //* message type
     InformationWidget::MessageType messageType_ = InformationWidget::MessageType::Information;
+
+    //* animation duration
+    int duration_ = 150;
 
     public Q_SLOTS:
 
@@ -158,6 +159,10 @@ QPushButton* InformationWidget::addButton( const QIcon& icon, const QString& tex
 //___________________________________________________________
 void InformationWidget::setDirection( QBoxLayout::Direction direction )
 { static_cast<QBoxLayout*>( private_->content_->layout() )->setDirection( direction ); }
+
+//___________________________________________________________
+void InformationWidget::setDuration( int duration )
+{ private_->duration_ = duration; }
 
 //___________________________________________________________
 void InformationWidget::animatedShow()

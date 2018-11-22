@@ -83,6 +83,9 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     //* direction
     void setDirection( QBoxLayout::Direction );
 
+    //* set duration
+    void setDuration( int value );
+
     //@}
 
     Q_SIGNALS:
