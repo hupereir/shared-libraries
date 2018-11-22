@@ -43,6 +43,8 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     //* get contents preferred height
     int preferredHeight() const;
 
+    static const int duration_ = 150;
+
     //* parent
     InformationWidget* parent_ = nullptr;
 
@@ -300,7 +302,7 @@ void InformationWidgetPrivate::setupAnimation()
     // setup
     animation_->setStartValue(0);
     animation_->setEndValue( preferredHeight() );
-    animation_->setDuration( 100 );
+    animation_->setDuration( duration_ );
 }
 
 //___________________________________________________________
