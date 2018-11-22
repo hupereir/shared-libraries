@@ -194,8 +194,8 @@ void InformationWidget::animatedShow()
     private_->animation_->setDirection( QPropertyAnimation::Forward );
 
     // animate
-    private_->content_->hide();
     private_->animation_->start();
+    private_->content_->hide();
 
 }
 
@@ -227,8 +227,8 @@ void InformationWidget::animatedHide()
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
     // animate
-    private_->content_->hide();
     private_->animation_->start();
+    private_->content_->hide();
 
 }
 
