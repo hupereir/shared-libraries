@@ -17,7 +17,7 @@
 *
 *******************************************************************************/
 
-#include "InformationWidget.h"
+#include "MessageWidget.h"
 
 #include "Color.h"
 #include "Debug.h"
@@ -27,7 +27,7 @@
 #include <QPainter>
 
 //___________________________________________________________
-class InformationWidgetPrivate: public QObject, private Base::Counter<InformationWidgetPrivate>
+class MessageWidgetPrivate: public QObject, private Base::Counter<MessageWidgetPrivate>
 {
 
     Q_OBJECT
@@ -35,7 +35,7 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     public:
 
     //* constructor
-    InformationWidgetPrivate( InformationWidget* );
+    MessageWidgetPrivate( MessageWidget* );
 
     //* setup animation
     void setupAnimation();
@@ -44,7 +44,7 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     int preferredHeight() const;
 
     //* parent
-    InformationWidget* parent_ = nullptr;
+    MessageWidget* parent_ = nullptr;
 
     //* content
     QWidget* content_ = nullptr;
@@ -62,7 +62,7 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
     QPropertyAnimation* animation_ = nullptr;
 
     //* message type
-    InformationWidget::MessageType messageType_ = InformationWidget::MessageType::Information;
+    MessageWidget::MessageType messageType_ = MessageWidget::MessageType::Information;
 
     //* animation duration
     int duration_ = 150;
@@ -75,13 +75,13 @@ class InformationWidgetPrivate: public QObject, private Base::Counter<Informatio
 };
 
 //___________________________________________________________
-InformationWidget::InformationWidget( QWidget* parent, MessageType type, const QString& text ):
+MessageWidget::MessageWidget( QWidget* parent, MessageType type, const QString& text ):
     QWidget( parent ),
-    Counter( "InformationWidget" ),
-    private_( new InformationWidgetPrivate( this ) )
+    Counter( "MessageWidget" ),
+    private_( new MessageWidgetPrivate( this ) )
 {
 
-    Debug::Throw( "InformationWidget::InformationWidget.\n" );
+    Debug::Throw( "MessageWidget::MessageWidget.\n" );
 
     // reset policy and constrains
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
@@ -127,13 +127,13 @@ InformationWidget::InformationWidget( QWidget* parent, MessageType type, const Q
 }
 
 //___________________________________________________________
-InformationWidget::~InformationWidget() = default;
+MessageWidget::~MessageWidget() = default;
 
 //___________________________________________________________
-void InformationWidget::setIcon( const QIcon& icon )
+void MessageWidget::setIcon( const QIcon& icon )
 {
 
-    Debug::Throw( "InformationWidget::setIcon.\n" );
+    Debug::Throw( "MessageWidget::setIcon.\n" );
     if( icon.isNull() )
     {
 
@@ -150,11 +150,11 @@ void InformationWidget::setIcon( const QIcon& icon )
 }
 
 //___________________________________________________________
-void InformationWidget::setText( const QString& text )
+void MessageWidget::setText( const QString& text )
 { private_->textLabel_->setText( text ); }
 
 //___________________________________________________________
-QPushButton* InformationWidget::addButton( const QIcon& icon, const QString& text )
+QPushButton* MessageWidget::addButton( const QIcon& icon, const QString& text )
 {
     auto button = new QPushButton( icon, text, private_->content_ );
     private_->buttonLayout_->addWidget( button );
@@ -162,18 +162,18 @@ QPushButton* InformationWidget::addButton( const QIcon& icon, const QString& tex
 }
 
 //___________________________________________________________
-void InformationWidget::setDirection( QBoxLayout::Direction direction )
+void MessageWidget::setDirection( QBoxLayout::Direction direction )
 { static_cast<QBoxLayout*>( private_->content_->layout() )->setDirection( direction ); }
 
 //___________________________________________________________
-void InformationWidget::setDuration( int duration )
+void MessageWidget::setDuration( int duration )
 { private_->duration_ = duration; }
 
 //___________________________________________________________
-void InformationWidget::animatedShow()
+void MessageWidget::animatedShow()
 {
 
-    Debug::Throw( "InformationWidget::animatedShow.\n" );
+    Debug::Throw( "MessageWidget::animatedShow.\n" );
 
     // check animation
     if( private_->animation_ &&
@@ -205,10 +205,10 @@ void InformationWidget::animatedShow()
 }
 
 //___________________________________________________________
-void InformationWidget::animatedHide()
+void MessageWidget::animatedHide()
 {
 
-    Debug::Throw( "InformationWidget::animatedHide.\n" );
+    Debug::Throw( "MessageWidget::animatedHide.\n" );
 
     // check animation
     if( private_->animation_ &&
@@ -238,7 +238,7 @@ void InformationWidget::animatedHide()
 }
 
 //___________________________________________________________
-void InformationWidget::paintEvent( QPaintEvent* event )
+void MessageWidget::paintEvent( QPaintEvent* event )
 {
 
     const auto baseColor = palette().color( QPalette::Active, QPalette::Window );
@@ -287,21 +287,21 @@ void InformationWidget::paintEvent( QPaintEvent* event )
 }
 
 //___________________________________________________________
-InformationWidgetPrivate::InformationWidgetPrivate( InformationWidget* parent ):
+MessageWidgetPrivate::MessageWidgetPrivate( MessageWidget* parent ):
     QObject( parent ),
-    Counter( "InformationWidgetPrivate" ),
+    Counter( "MessageWidgetPrivate" ),
     parent_( parent )
-{ Debug::Throw( "InformationWidgetPrivate::InformationWidgetPrivate.\n" ); }
+{ Debug::Throw( "MessageWidgetPrivate::MessageWidgetPrivate.\n" ); }
 
 //___________________________________________________________
-int InformationWidgetPrivate::preferredHeight() const
+int MessageWidgetPrivate::preferredHeight() const
 {
     const auto height = content_->heightForWidth( parent_->width() );
     return height >= 0 ? height : content_->sizeHint().height();
 }
 
 //___________________________________________________________
-void InformationWidgetPrivate::setupAnimation()
+void MessageWidgetPrivate::setupAnimation()
 {
     if( !animation_ )
     {
@@ -316,7 +316,7 @@ void InformationWidgetPrivate::setupAnimation()
 }
 
 //___________________________________________________________
-void InformationWidgetPrivate::animationFinished()
+void MessageWidgetPrivate::animationFinished()
 {
     if( animation_ && animation_->direction() == QPropertyAnimation::Backward )
     {
@@ -338,4 +338,4 @@ void InformationWidgetPrivate::animationFinished()
 
 }
 
-#include "InformationWidget.moc"
+#include "MessageWidget.moc"

@@ -1,5 +1,5 @@
-#ifndef InformationWidget_h
-#define InformationWidget_h
+#ifndef MessageWidget_h
+#define MessageWidget_h
 
 /******************************************************************************
 *
@@ -32,10 +32,10 @@
 
 #include <memory>
 
-class InformationWidgetPrivate;
+class MessageWidgetPrivate;
 
 //* QDialog used to ask if a new file should be created
-class InformationWidget: public QWidget, private Base::Counter<InformationWidget>
+class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
 {
 
     Q_OBJECT
@@ -52,14 +52,14 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     };
 
     //* constructor
-    explicit InformationWidget( QWidget*, MessageType = MessageType::Information, const QString& = QString() );
+    explicit MessageWidget( QWidget*, MessageType = MessageType::Information, const QString& = QString() );
 
-    explicit InformationWidget( QWidget* parent, const QString& text ):
-        InformationWidget( parent, MessageType::Information, text )
+    explicit MessageWidget( QWidget* parent, const QString& text ):
+        MessageWidget( parent, MessageType::Information, text )
     {}
 
     //* destructor
-    ~InformationWidget() override;
+    ~MessageWidget() override;
 
     //*@name modifiers
     //@{
@@ -112,10 +112,10 @@ class InformationWidget: public QWidget, private Base::Counter<InformationWidget
     private:
 
     //* private
-    std::unique_ptr<InformationWidgetPrivate> private_;
+    std::unique_ptr<MessageWidgetPrivate> private_;
 
     #if QT_VERSION < 0x050000
-    friend class InformationWidgetPrivate;
+    friend class MessageWidgetPrivate;
     #endif
 
 };
