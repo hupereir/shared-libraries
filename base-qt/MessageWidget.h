@@ -28,6 +28,7 @@
 #include <QPaintEvent>
 #include <QPushButton>
 #include <QString>
+#include <QToolButton>
 #include <QWidget>
 
 #include <memory>
@@ -72,6 +73,9 @@ class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
 
     //* text
     void setText( const QString& );
+
+    //* buttons
+    QToolButton* addDefaultCloseButton();
 
     //* buttons
     QPushButton* addButton( const QIcon& = QIcon(), const QString& = QString() );

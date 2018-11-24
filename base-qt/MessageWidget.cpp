@@ -19,8 +19,10 @@
 
 #include "MessageWidget.h"
 
+#include "BaseIconNames.h"
 #include "Color.h"
 #include "Debug.h"
+#include "IconEngine.h"
 #include "IconSize.h"
 
 #include <QPropertyAnimation>
@@ -54,6 +56,9 @@ class MessageWidgetPrivate: public QObject, private Base::Counter<MessageWidgetP
 
     //* label
     QLabel* textLabel_ = nullptr;
+
+    //* text layout
+    QBoxLayout* textLayout_ = nullptr;
 
     //* buttons layout
     QBoxLayout* buttonLayout_ = nullptr;
@@ -99,17 +104,17 @@ MessageWidget::MessageWidget( QWidget* parent, MessageType type, const QString& 
     layout->setMargin(10);
     private_->content_->setLayout( layout );
 
-    auto hLayout = new QHBoxLayout;
-    hLayout->setSpacing(10);
-    hLayout->setMargin(0);
-    layout->addLayout( hLayout, 1 );
+    private_->textLayout_ = new QHBoxLayout;
+    private_->textLayout_->setSpacing(10);
+    private_->textLayout_->setMargin(0);
+    layout->addLayout( private_->textLayout_, 1 );
 
     // icon label
-    hLayout->addWidget( private_->iconLabel_ = new QLabel( private_->content_ ), 0 );
+    private_->textLayout_->addWidget( private_->iconLabel_ = new QLabel( private_->content_ ), 0 );
     private_->iconLabel_->hide();
 
     // create message
-    hLayout->addWidget( private_->textLabel_ = new QLabel( private_->content_ ), 1 );
+    private_->textLayout_->addWidget( private_->textLabel_ = new QLabel( private_->content_ ), 1 );
     private_->textLabel_->setTextInteractionFlags( Qt::TextSelectableByMouse );
     private_->textLabel_->setText( text );
 
@@ -152,6 +157,21 @@ void MessageWidget::setIcon( const QIcon& icon )
 //___________________________________________________________
 void MessageWidget::setText( const QString& text )
 { private_->textLabel_->setText( text ); }
+
+
+//___________________________________________________________
+QToolButton* MessageWidget::addDefaultCloseButton()
+{
+
+    Debug::Throw( "InformationWidget::addDefaultCloseButton.\n" );
+    auto button = new QToolButton( private_->content_ );
+    button->setIcon( IconEngine::get( IconNames::DialogClose ) );
+    button->setAutoRaise( true );
+    private_->textLayout_->addWidget( button, 0 );
+
+    connect( button, SIGNAL(clicked()), this, SLOT(animatedHide()) );
+    return button;
+}
 
 //___________________________________________________________
 QPushButton* MessageWidget::addButton( const QIcon& icon, const QString& text )
