@@ -167,7 +167,7 @@ QToolButton* MessageWidget::addDefaultCloseButton()
     auto button = new QToolButton( private_->content_ );
     button->setIcon( IconEngine::get( IconNames::DialogClose ) );
     button->setAutoRaise( true );
-    private_->textLayout_->addWidget( button, 0 );
+    private_->textLayout_->addWidget( button, 0, Qt::AlignTop );
 
     connect( button, SIGNAL(clicked()), this, SLOT(animatedHide()) );
     return button;
