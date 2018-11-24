@@ -83,6 +83,11 @@ InformationWidget::InformationWidget( QWidget* parent, MessageType type, const Q
 
     Debug::Throw( "InformationWidget::InformationWidget.\n" );
 
+    // reset policy and constrains
+    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
+    setMinimumHeight(0);
+    setMaximumHeight( QWIDGETSIZE_MAX );
+
     setLayout( new QVBoxLayout );
     layout()->setSpacing(0);
     layout()->setMargin(0);
@@ -327,7 +332,7 @@ void InformationWidgetPrivate::animationFinished()
     }
 
     // reset policy and constrains
-    parent_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Preferred );
+    parent_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
     parent_->setMinimumHeight(0);
     parent_->setMaximumHeight( QWIDGETSIZE_MAX );
 
