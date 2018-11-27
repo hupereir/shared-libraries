@@ -295,12 +295,12 @@ void MessageWidget::paintEvent( QPaintEvent* event )
     painter.setClipRegion( event->region() );
     painter.setRenderHints( QPainter::Antialiasing );
 
-    const qreal penWidth = 2;
+    const qreal penWidth = 1;
     painter.setPen( QPen( outlineColor, penWidth ) );
     painter.setBrush( backgroundColor.get() );
 
     const qreal margin = penWidth/2 + 1;
-    const qreal radius = 4;
+    const qreal radius = 2;
     const auto rect = QRectF( this->rect() ).adjusted( margin, margin, -margin, -margin );
     painter.drawRoundedRect( rect, radius, radius );
 
