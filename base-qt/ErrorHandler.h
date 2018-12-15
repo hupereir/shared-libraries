@@ -38,7 +38,7 @@ class ErrorHandler: private Base::NonCopyable<ErrorHandler>
 
     //* adds a disabled message in the list
     void disableMessage( QString message )
-    { disabledMessages_ << message; }
+    { disabledMessages_.append( message ); }
 
     //* adds a disabled message in the list
     void clearDisabledMessages()
