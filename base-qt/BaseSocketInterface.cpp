@@ -54,7 +54,7 @@ void BaseSocketInterface::_sendPendingBuffers()
 //_______________________________________________________
 void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 {
-    quint64 bufferSize( buffer.size() );
+    buffersize_t bufferSize( buffer.size() );
     Debug::Throw(debugLevel) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << endl;
     socket_->write( reinterpret_cast<const char*>( &type ), sizeof( buffertype_t ) );
     socket_->write( reinterpret_cast<const char*>( &bufferSize ), sizeof( buffersize_t ) );
