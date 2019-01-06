@@ -86,7 +86,7 @@ class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
     //* ok button pressed
     void ok();
 
-    //* canceled button pressed
+    //* cancel button pressed
     void cancel();
 
     //* reset button pressed

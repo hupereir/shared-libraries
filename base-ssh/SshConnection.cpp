@@ -510,7 +510,7 @@ namespace Ssh
 
                 } else {
 
-                    _abortCommands( tr( "Login cancelled" ) );
+                    _abortCommands( tr( "Login canceled" ) );
                     return false;
 
                 }
