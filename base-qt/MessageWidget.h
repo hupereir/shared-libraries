@@ -84,6 +84,16 @@ class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
     QPushButton* addButton( const QString& value )
     { return addButton( QIcon(), value ); }
 
+    //* clear buttons
+    void clearButtons();
+
+    //* buttons
+    using ButtonList = QList<QPushButton*>;
+    ButtonList addButtons( const QStringList& );
+
+    //* buttons
+    ButtonList setButtons( const QStringList& );
+
     //* direction
     void setDirection( QBoxLayout::Direction );
 

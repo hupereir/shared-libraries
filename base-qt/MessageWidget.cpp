@@ -176,9 +176,43 @@ QToolButton* MessageWidget::addDefaultCloseButton()
 //___________________________________________________________
 QPushButton* MessageWidget::addButton( const QIcon& icon, const QString& text )
 {
+    Debug::Throw( "MessageWidget::addButton.\n" );
     auto button = new QPushButton( icon, text, private_->content_ );
     private_->buttonLayout_->addWidget( button );
     return button;
+}
+
+//___________________________________________________________
+void MessageWidget::clearButtons()
+{
+    Debug::Throw( "MessageWidget::clearButtons.\n" );
+    for( auto&& button:private_->content_->findChildren<QAbstractButton*>() )
+    {
+        if( button->parentWidget() == private_->content_ )
+        {
+            button->hide();
+            button->deleteLater();
+        }
+    }
+
+}
+
+//___________________________________________________________
+MessageWidget::ButtonList MessageWidget::addButtons( const QStringList& textList )
+{
+    Debug::Throw( "MessageWidget::addButtons.\n" );
+    ButtonList out;
+    for( const auto& text:textList )
+    { out.append( addButton( text ) ); }
+    return out;
+}
+
+//___________________________________________________________
+MessageWidget::ButtonList MessageWidget::setButtons( const QStringList& textList )
+{
+    Debug::Throw( "MessageWidget::setButtons.\n" );
+    clearButtons();
+    return addButtons( textList );
 }
 
 //___________________________________________________________
