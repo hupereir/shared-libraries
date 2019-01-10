@@ -49,7 +49,7 @@ class MessageBuffer
     //* move to new position
     void flush( int position )
     {
-        text_ = text_.mid( position );
+        text_.remove( 0, position );
         position_ = 0;
     }
 
