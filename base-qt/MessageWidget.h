@@ -62,6 +62,17 @@ class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
     //* destructor
     ~MessageWidget() override;
 
+    //*@name accessors
+    //@{
+
+    //* message type
+    MessageType messageType() const;
+
+    //* text
+    QString text() const;
+
+    //@}
+
     //*@name modifiers
     //@{
 

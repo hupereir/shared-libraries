@@ -135,6 +135,14 @@ MessageWidget::MessageWidget( QWidget* parent, MessageType type, const QString& 
 MessageWidget::~MessageWidget() = default;
 
 //___________________________________________________________
+MessageWidget::MessageType MessageWidget::messageType() const
+{ return private_->messageType_; }
+
+//___________________________________________________________
+QString MessageWidget::text() const
+{ return private_->textLabel_ ? private_->textLabel_->text() : QString(); }
+
+//___________________________________________________________
 void MessageWidget::setIcon( const QIcon& icon )
 {
 
