@@ -143,9 +143,19 @@ QString MessageWidget::text() const
 { return private_->textLabel_ ? private_->textLabel_->text() : QString(); }
 
 //___________________________________________________________
+void MessageWidget::setMessageType( MessageWidget::MessageType messageType )
+{
+    Debug::Throw( "MessageWidget::setMessageType.\n" );
+    if( private_->messageType_ != messageType )
+    {
+        private_->messageType_ = messageType;
+        update();
+    }
+}
+
+//___________________________________________________________
 void MessageWidget::setIcon( const QIcon& icon )
 {
-
     Debug::Throw( "MessageWidget::setIcon.\n" );
     if( icon.isNull() )
     {
