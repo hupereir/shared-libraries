@@ -33,7 +33,6 @@
 #include <QTcpServer>
 #include <QTextStream>
 #include <QTimer>
-#include <QThread>
 
 #if defined(Q_OS_WIN)
 #include <ws2tcpip.h>
@@ -117,14 +116,7 @@ namespace Ssh
         }
 
         // make socket non blocking
-        #if defined(Q_OS_WIN)
-//         ulong arg = 1;
-//         if( ioctlsocket(sshSocket_, FIONBIO, &arg) != 0 )
-//         {
-//             _notifyError( tr( "unable to set socket non blocking" ) );
-//             return false;
-//         }
-        #else
+        #if !defined(Q_OS_WIN)
         const int flags( fcntl(sshSocket_, F_GETFL ) );
         if( flags < 0 )
         {
