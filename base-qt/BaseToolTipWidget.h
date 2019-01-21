@@ -81,27 +81,16 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     void setEnabled( bool );
 
     //* follow mouse
-    void setFollowMouse( bool value )
-    { followMouse_ = value; }
+    void setFollowMouse( bool );
 
     //* default delay
-    void setDefaultDelay( int value )
-    { if( value >= 0 ) defaultDelay_ = value; }
+    void setDefaultDelay( int );
 
     //* set index rect
-    void setIndexRect( const QRect& rect )
-    {
-        rect_ = rect;
-        if( isVisible() ) _adjustPosition();
-    }
+    void setIndexRect( const QRect& );
 
     //* preferred position
-    void setPreferredPosition( Position value )
-    {
-        if( preferredPosition_ == value ) return;
-        preferredPosition_ = value;
-        if( isVisible() ) _adjustPosition();
-    }
+    void setPreferredPosition( Position );
 
     //@}
 

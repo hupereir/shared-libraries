@@ -68,6 +68,29 @@ void BaseToolTipWidget::setEnabled( bool value )
 
 }
 
+//_____________________________________________
+void BaseToolTipWidget::setFollowMouse( bool value )
+{ followMouse_ = value; }
+
+//_____________________________________________
+void BaseToolTipWidget::setDefaultDelay( int value )
+{ if( value >= 0 ) defaultDelay_ = value; }
+
+//_____________________________________________
+void BaseToolTipWidget::setIndexRect( const QRect& rect )
+{
+    rect_ = rect;
+    if( isVisible() && !hiddenTimer_.isActive() ) _adjustPosition();
+}
+
+//_____________________________________________
+void BaseToolTipWidget::setPreferredPosition( Position value )
+{
+    if( preferredPosition_ == value ) return;
+    preferredPosition_ = value;
+    if( isVisible() && !hiddenTimer_.isActive() ) _adjustPosition();
+}
+
 //_______________________________________________________
 bool BaseToolTipWidget::eventFilter( QObject* object, QEvent* event )
 {
@@ -89,7 +112,7 @@ bool BaseToolTipWidget::eventFilter( QObject* object, QEvent* event )
 //_______________________________________________________
 void BaseToolTipWidget::setVisible( bool visible )
 {
-    Debug::Throw( "BaseToolTipWidget::hide.\n" );
+    Debug::Throw() << "BaseToolTipWidget::setVisible - visible: " << visible << endl;
     timer_.stop();
 
     if( !visible )
@@ -116,22 +139,9 @@ void BaseToolTipWidget::showDelayed( int delay )
 {
     if( !enabled_ ) return;
 
-    if( isVisible() )
-    {
-        _adjustPosition();
-        return;
-
-    } else if( hiddenTimer_.isActive() ) {
-        hiddenTimer_.stop();
-        _adjustPosition();
-        QWidget::show();
-
-    } else {
-
-        if( timer_.isActive() ) timer_.stop();
-        timer_.start( delay >= 0 ? delay:defaultDelay_, this );
-
-    }
+    if( hiddenTimer_.isActive() ) hiddenTimer_.stop();
+    if( isVisible() ) hide();
+    timer_.start( delay >= 0 ? delay:defaultDelay_, this );
 
     return;
 
