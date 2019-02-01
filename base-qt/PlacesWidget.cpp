@@ -302,7 +302,7 @@ namespace Private
             {
 
                 if( hasFocus_ ) iconMode = QIcon::Selected;
-                else iconMode = QIcon::Active;
+                else iconMode = QIcon::Normal;
 
             } else iconMode = QIcon::Disabled;
 
