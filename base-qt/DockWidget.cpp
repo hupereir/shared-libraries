@@ -52,6 +52,9 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     // no scroll area by default
     setUseScrollArea( false );
 
+    // default features
+    setFeatures( DockWidgetClosable|DockWidgetMovable );
+
     // configuration
     connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     _updateConfiguration();
@@ -95,6 +98,14 @@ void DockWidget::setUseScrollArea( bool value )
 }
 
 //_________________________________________________________
+void DockWidget::setFeatures( QDockWidget::DockWidgetFeatures features )
+{
+    Debug::Throw( "DockWidget::setFeatures.\n" );
+    features_ = features;
+    if( !locked_ ) QDockWidget::setFeatures( features );
+}
+
+//_________________________________________________________
 void DockWidget::setLocked( bool locked )
 {
 
@@ -105,13 +116,13 @@ void DockWidget::setLocked( bool locked )
     locked_ = locked;
     if( locked )
     {
-        setFeatures(QDockWidget::NoDockWidgetFeatures);
+
+        QDockWidget::setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     } else {
 
-        DockWidgetFeatures features( QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetClosable );
-        if( XmlOptions::get().get<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED" ) ) features |= DockWidgetFloatable;
-        setFeatures( features );
+        // restore saved features
+        QDockWidget::setFeatures( features_ );
 
     }
 
@@ -199,15 +210,6 @@ void DockWidget::_updateConfiguration()
 
     if( !optionName_.isEmpty() && XmlOptions::get().contains( optionName_ ) )
     { visibilityAction_->setChecked( XmlOptions::get().get<bool>( optionName_ ) ); }
-
-    // floatable state
-    if( !locked_ )
-    {
-        DockWidgetFeatures features( this->features() );
-        if( XmlOptions::get().get<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED" ) ) features |= DockWidgetFloatable;
-        else features &= ~DockWidgetFloatable;
-        setFeatures( features );
-    }
 
 }
 

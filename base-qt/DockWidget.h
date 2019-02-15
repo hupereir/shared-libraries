@@ -56,6 +56,9 @@ class DockWidget: public QDockWidget
     //* use scroll area
     void setUseScrollArea( bool );
 
+    //* features
+    void setFeatures( DockWidgetFeatures );
+
     //* lock
     void setLocked( bool );
 
@@ -94,6 +97,9 @@ class DockWidget: public QDockWidget
 
     //* lock
     bool locked_ = false;
+
+    //* features
+    DockWidgetFeatures features_ = DockWidgetClosable|DockWidgetMovable;
 
     //* auto hide title bar
     bool autoHideTitleBar_ = false;

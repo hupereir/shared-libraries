@@ -88,9 +88,6 @@ void Options::installDefaultOptions()
     set<int>( "LIST_ICON_SIZE", 22 );
     set<int>( "LIST_ITEM_MARGIN", 0 );
 
-    // dock widgets
-    set<bool>( "FLOATABLE_DOCK_WIDGETS_ENABLED", false );
-
     // box selection
     set<int>( "BOX_SELECTION_ALPHA", 20 );
 
