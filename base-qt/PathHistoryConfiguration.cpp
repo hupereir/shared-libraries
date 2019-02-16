@@ -55,7 +55,7 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
     hLayout->addWidget( spinbox = new OptionSpinBox( this, "HISTORY_SIZE" ) );
     spinbox->setMinimum(0);
     spinbox->setMaximum(100);
-    spinbox->setSpecialValueText( tr( " Unlimited" ) );
+    spinbox->setSpecialValueText( tr( "Unlimited" ) );
     addOptionWidget( spinbox );
     label->setBuddy( spinbox );
 

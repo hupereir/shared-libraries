@@ -246,7 +246,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             auto spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
-            spinbox->setSpecialValueText( tr( " Silent" ) );
+            spinbox->setSpecialValueText( tr( "Silent" ) );
             spinbox->setMinimum( 0 );
             spinbox->setMaximum( 5 );
             spinbox->setToolTip( tr( "Debug verbosity level" ) );
@@ -505,7 +505,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         spinbox->setSuffix( tr( "s" ) );
         addOptionWidget( spinbox );
 
-        spinbox->setSpecialValueText( tr( " Never" ) );
+        spinbox->setSpecialValueText( tr( "Never" ) );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 10 );
         out = box;
