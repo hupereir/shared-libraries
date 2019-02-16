@@ -72,7 +72,6 @@ void CursorMonitor::timerEvent( QTimerEvent* e )
     if( e->timerId() == autoHideTimer_.timerId() )
     {
 
-        autoHideTimer_.stop();
         _setCursorState( CursorState::Hidden );
 
     } else QObject::timerEvent( e );
@@ -82,9 +81,15 @@ void CursorMonitor::timerEvent( QTimerEvent* e )
 //_________________________________________________________
 void CursorMonitor::_setCursorState( CursorMonitor::CursorState state )
 {
+
+    // always stop timer
+    autoHideTimer_.stop();
+
+    // check if cursor state has changed
     if( state == cursorState_ ) return;
 
-    QWidget* widget( qobject_cast<QWidget*>( parent() ) );
+    // getp arent
+    auto widget( qobject_cast<QWidget*>( parent() ) );
     if( !widget ) return;
 
     switch( state )
