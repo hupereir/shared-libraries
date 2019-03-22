@@ -39,10 +39,6 @@ void BaseFileInfoItemDelegate::initStyleOption( QStyleOptionViewItem* option, co
     QStyleOptionViewItemV4 *optionV4 = qstyleoption_cast<QStyleOptionViewItemV4*>( option );
     if( !optionV4 || optionV4->icon.isNull() ) return;
 
-//     // item view
-//     QAbstractItemView* itemView( qobject_cast<QAbstractItemView*>(parent()) );
-//     if( !itemView ) return;
-
     // check type
     QVariant fileTypeVariant( index.data( Base::FileTypeRole ) );
     if( fileTypeVariant.canConvert( QVariant::Int ) )
