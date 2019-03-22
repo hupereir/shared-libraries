@@ -188,6 +188,20 @@ template<class T> class TreeItem: public TreeItemBase
 
     }
 
+    //* find item matching value
+    template<class Pred>
+    TreeItem* findIf( const Pred& predicate )
+    {
+        if( predicate( get() ) ) return this;
+
+        // check against children
+        for( auto& child:children_ )
+        { if( TreeItem* out = child.findIf( predicate ) ) return out; }
+
+        return nullptr;
+    }
+
+
     //* remove child at given row
     bool remove( int row )
     {
