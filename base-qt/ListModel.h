@@ -136,6 +136,15 @@ class ListModel : public ItemModel
         return QModelIndex();
     }
 
+    //* return index associated to a given value
+    template<class Pred>
+    QModelIndex indexIf( const Pred& predicate, int column = 0 ) const
+    {
+        for( int row=0; row<values_.size(); ++row )
+        { if( predicate(values_[row]) ) return index( row, column ); }
+        return QModelIndex();
+    }
+
     //@}
 
     //*@name modifiers
