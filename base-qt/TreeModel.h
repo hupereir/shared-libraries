@@ -486,6 +486,10 @@ template<class T> class TreeModel : public ItemModel
     Item& _root()
     { return root_; }
 
+    //* root item
+    const Item& _root() const
+    { return root_; }
+
     //* add
     void _add( Item& item, List values )
     {
@@ -539,6 +543,9 @@ template<class T> class TreeModel : public ItemModel
         _add( root_, children );
         _sort();
     }
+
+    const typename Item::Map& _map() const
+    { return map_; }
 
     private:
 
