@@ -1351,6 +1351,26 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 }
 
 //________________________________________________
+void TextEditor::wheelEvent( QWheelEvent* event )
+{
+    Debug::Throw( "TextEditor::wheelEvent.\n" );
+
+    const auto modifiers = event->modifiers();
+    if( modifiers == Qt::ControlModifier )
+    {
+
+        event->ignore();
+        return;
+
+    } else {
+
+        return BaseEditor::wheelEvent( event );
+
+    }
+
+}
+
+//________________________________________________
 void TextEditor::dropEvent( QDropEvent* event )
 {
 

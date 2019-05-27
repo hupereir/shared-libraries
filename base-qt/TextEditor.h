@@ -42,6 +42,7 @@
 #include <QTextBlockFormat>
 #include <QTextCursor>
 #include <QTimerEvent>
+#include <QWheelEvent>
 
 class BaseContextMenu;
 class BaseFindDialog;
@@ -546,6 +547,9 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
 
     //* mouse press event [overloaded]
     void mouseReleaseEvent( QMouseEvent* ) override;
+
+    //* wheel event
+    void wheelEvent( QWheelEvent* ) override;
 
     //* drop event
     void dropEvent( QDropEvent* event ) override;
