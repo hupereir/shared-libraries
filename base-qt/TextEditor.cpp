@@ -144,6 +144,7 @@ TextEditor::~TextEditor()
 
     // need to reset Text document
     // to avoid deletion while deleting this editor
+    setSynchronized( false );
     setDocument( new QTextDocument );
 
     // keep reference to first associate
@@ -1353,13 +1354,20 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 //________________________________________________
 void TextEditor::wheelEvent( QWheelEvent* event )
 {
-    Debug::Throw( "TextEditor::wheelEvent.\n" );
-
     const auto modifiers = event->modifiers();
     if( modifiers == Qt::ControlModifier )
     {
 
-        event->ignore();
+        event->accept();
+
+        // calculate delta
+        auto delta = event->angleDelta().y();
+        delta = (delta > 0) ? qMax( 1, delta/120 ) : qMin( -1, delta/120 );
+
+        // change font size
+        auto font( this->font() );
+        font.setPointSize( qMax( 4, font.pointSize() + delta ) );
+        setFont( font );
         return;
 
     } else {
