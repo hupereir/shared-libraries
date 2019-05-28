@@ -456,6 +456,9 @@ void TextEditor::synchronize( TextEditor* editor )
     // retrieve and cast old document
     auto document( qobject_cast<CustomTextDocument*>( BaseEditor::document() ) );
 
+    // set font
+    setFont( editor->font() );
+
     // assign new document and associate
     setDocument( editor->document() );
     Base::Key::associate( this, qobject_cast<CustomTextDocument*>( editor->document() ) );
@@ -486,7 +489,6 @@ void TextEditor::synchronize( TextEditor* editor )
     connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
     connect( TextEditor::document(), SIGNAL(contentsChanged()), SLOT(_updateContentActions()) );
     connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
-
 
     // margin
     _setLeftMargin( editor->_leftMargin() );
@@ -1369,7 +1371,13 @@ void TextEditor::wheelEvent( QWheelEvent* event )
         // change font size
         auto font( this->font() );
         font.setPointSize( qMax( 4, font.pointSize() + delta ) );
+
         setFont( font );
+
+        // also update associated displays
+        for( auto&& editor:Base::KeySet<TextEditor>( this ) )
+        { editor->setFont( font ); }
+
         return;
 
     } else {
