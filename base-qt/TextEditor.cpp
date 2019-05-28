@@ -142,16 +142,18 @@ TextEditor::~TextEditor()
     int position( textCursor().position() );
     int anchor( textCursor().anchor() );
 
-    // need to reset Text document
-    // to avoid deletion while deleting this editor
+    // clear associations to other text editors
+    // and reset synchronization flag
+    clearAssociations<TextEditor>();
     setSynchronized( false );
+
+    // reset Text document to avoid deletion while deleting this editor
     setDocument( new QTextDocument );
 
     // keep reference to first associate
     TextEditor &editor( **editors.begin() );
 
     // recreate an appropriate cursor
-    // this is dangerous
     QTextCursor cursor( editor.document() );
     cursor.setPosition( anchor );
     cursor.setPosition( position, QTextCursor::KeepAnchor );
