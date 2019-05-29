@@ -190,9 +190,13 @@ QWidget* QtUtil::uniconify( QWidget *widget )
 }
 
 //____________________________________________________________
+int QtUtil::titleFontPointSize( const QFont& font )
+{ return qRound(font.pointSize() * 1.4); }
+
+//____________________________________________________________
 QFont QtUtil::titleFont( QFont font )
 {
-    font.setPointSize( qRound(font.pointSize() * 1.4) );
+    font.setPointSize( titleFontPointSize( font ) );
     return font;
 }
 

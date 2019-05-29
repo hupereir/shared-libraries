@@ -59,6 +59,9 @@ class QtUtil
     //* uniconify a top level widget
     static QWidget* uniconify( QWidget* widget );
 
+    //* title font point size
+    static int titleFontPointSize( const QFont& );
+
     //* get 'title' font matching argument
     static QFont titleFont( QFont );
 
