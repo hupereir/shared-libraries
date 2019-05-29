@@ -1366,17 +1366,10 @@ void TextEditor::wheelEvent( QWheelEvent* event )
 
         // calculate delta
         auto delta = event->angleDelta().y();
-        delta = (delta > 0) ? qMax( 1, delta/120 ) : qMin( -1, delta/120 );
+        if( !delta ) return;
 
-        // change font size
-        auto font( this->font() );
-        font.setPointSize( qMax( 4, font.pointSize() + delta ) );
-
-        setFont( font );
-
-        // also update associated displays
-        for( auto&& editor:Base::KeySet<TextEditor>( this ) )
-        { editor->setFont( font ); }
+        // update font size
+        _incrementFontSize( (delta > 0) ? qMax( 1, delta/120 ) : qMin( -1, delta/120 ) );
 
         return;
 
@@ -1806,15 +1799,23 @@ void TextEditor::changeEvent(QEvent *event)
     BaseEditor::changeEvent( event );
 
     // update margin
-    if( event->type() == QEvent::FontChange && lineNumberDisplay_ )
+    if( event->type() == QEvent::FontChange )
     {
-        // update margins
-        lineNumberDisplay_->updateWidth( document()->blockCount() );
-        lineNumberDisplay_->needUpdate();
-        _updateMargin();
-        marginWidget_->setDirty();
-    }
 
+        // update minimum font size
+        minimumFontSize_ = qMin( 4, font().pointSize() );
+
+        // update line number display
+        if( lineNumberDisplay_ )
+        {
+            // update margins
+            lineNumberDisplay_->updateWidth( document()->blockCount() );
+            lineNumberDisplay_->needUpdate();
+            _updateMargin();
+            marginWidget_->setDirty();
+        }
+
+    }
 }
 
 //______________________________________________________________
@@ -1957,9 +1958,23 @@ void TextEditor::_installActions()
     showLineNumberAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( showLineNumberAction_, SIGNAL(toggled(bool)), SLOT(_toggleShowLineNumbers(bool)) );
 
-    // copy link
     addAction( copyLinkAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy Link Location" ), this ) );
     connect( copyLinkAction_, SIGNAL(triggered()), SLOT(_copyLinkLocation()) );
+
+    addAction( incrementFontSizeAction_ = new QAction( tr( "Increase Font Size" ), this ) );
+    incrementFontSizeAction_->setShortcut( Qt::CTRL + Qt::Key_Plus );
+    incrementFontSizeAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( incrementFontSizeAction_, SIGNAL(triggered()), SLOT(_incrementFontSize()) );
+
+    addAction( decrementFontSizeAction_ = new QAction( tr( "Decrease Font Size" ), this ) );
+    decrementFontSizeAction_->setShortcut( Qt::CTRL + Qt::Key_Minus );
+    decrementFontSizeAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( decrementFontSizeAction_, SIGNAL(triggered()), SLOT(_decrementFontSize()) );
+
+    addAction( restoreDefaultFontAction_ = new QAction( tr( "Restore Default Font Size" ), this ) );
+    restoreDefaultFontAction_->setShortcut( Qt::CTRL + Qt::Key_0 );
+    restoreDefaultFontAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( restoreDefaultFontAction_, SIGNAL(triggered()), SLOT(_restoreDefaultFont()) );
 
     // update actions that depend on the presence of a selection
     _updateSelectionActions( textCursor().hasSelection() );
@@ -2873,6 +2888,35 @@ void TextEditor::_replaceFromDialog()
 //_____________________________________________
 void TextEditor::_updateReplaceInSelection()
 { if( replaceWidget_ ) replaceWidget_->enableReplaceInSelection( hasSelection() ); }
+
+//________________________________________________
+void TextEditor::_incrementFontSize( int delta )
+{
+
+    // change font size
+    auto font( this->font() );
+    font.setPointSize( qMax( minimumFontSize_, font.pointSize() + delta ) );
+
+    setFont( font );
+
+    // also update associated displays
+    for( auto&& editor:Base::KeySet<TextEditor>( this ) )
+    { editor->setFont( font ); }
+
+}
+
+//________________________________________________
+void TextEditor::_restoreDefaultFont()
+{
+
+    const auto font( qApp->font( this ) );
+    setFont( font );
+
+    // also update associated displays
+    for( auto&& editor:Base::KeySet<TextEditor>( this ) )
+    { editor->setFont( font ); }
+
+}
 
 //________________________________________________
 void TextEditor::_selectLineFromDialog()

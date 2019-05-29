@@ -784,6 +784,16 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //* update replace in selection action
     void _updateReplaceInSelection();
 
+    //* increment font size
+    void _incrementFontSize( int = 1 );
+
+    //* decrement font size
+    void _decrementFontSize( int delta = 1 )
+    { _incrementFontSize( -delta ); }
+
+    //* restore default font
+    void _restoreDefaultFont();
+
     private Q_SLOTS:
 
     //* update configuration
@@ -877,6 +887,9 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //* multi tab regExp
     QRegExp tabRegexp_;
 
+    //* min font size
+    int minimumFontSize_ = 4;
+
     //@}
 
     //*@name default actions
@@ -949,7 +962,16 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     QAction* showLineNumberAction_ = nullptr;
 
     //* copy link
-    QAction* copyLinkAction_;
+    QAction* copyLinkAction_ = nullptr;
+
+    //* increment font size
+    QAction* incrementFontSizeAction_ = nullptr;
+
+    //* decrement font size
+    QAction* decrementFontSizeAction_ = nullptr;
+
+    //* restore default font size
+    QAction* restoreDefaultFontAction_ = nullptr;
 
     //@}
 
