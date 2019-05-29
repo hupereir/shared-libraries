@@ -69,11 +69,11 @@ bool LineNumberDisplay::updateWidth( int count )
 {
     Debug::Throw( "LineNumberDisplay::updateWidth.\n" );
 
-    int new_width( editor_->fontMetrics().width( QString::number( count ) ) + 14 );
-    if( width() == new_width ) return false;
-    width_ = new_width;
+    int newWidth( editor_->fontMetrics().width( QString::number( count ) ) + 14 );
+    if( width() == newWidth ) return false;
+    width_ = newWidth;
 
-    Debug::Throw() << "LineNumberDisplay::updateWidth - count: " << count << " new_width: " << new_width << endl;
+    Debug::Throw() << "LineNumberDisplay::updateWidth - count: " << count << " newWidth: " << newWidth << endl;
     return true;
 }
 
