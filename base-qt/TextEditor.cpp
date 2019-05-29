@@ -1799,6 +1799,25 @@ void TextEditor::timerEvent(QTimerEvent *event)
 }
 
 //______________________________________________________________
+void TextEditor::changeEvent(QEvent *event)
+{
+
+    // base class
+    BaseEditor::changeEvent( event );
+
+    // update margin
+    if( event->type() == QEvent::FontChange && lineNumberDisplay_ )
+    {
+        // update margins
+        lineNumberDisplay_->updateWidth( document()->blockCount() );
+        lineNumberDisplay_->needUpdate();
+        _updateMargin();
+        marginWidget_->setDirty();
+    }
+
+}
+
+//______________________________________________________________
 void TextEditor::scrollContentsBy( int dx, int dy )
 {
 
@@ -2478,11 +2497,6 @@ void TextEditor::_updateConfiguration()
         blockHighlightAction_->setEnabled( true );
         blockHighlightAction_->setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
     }
-
-    // update margins
-    lineNumberDisplay_->updateWidth( document()->blockCount() );
-    _updateMargin();
-    marginWidget_->setDirty();
 
     // update box configuration
     // clear

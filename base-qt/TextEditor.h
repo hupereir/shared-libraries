@@ -571,7 +571,10 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     void paintEvent( QPaintEvent* ) override;
 
     //* timer event
-    void timerEvent( QTimerEvent* event ) override;
+    void timerEvent( QTimerEvent* ) override;
+
+    //* change event
+    void changeEvent( QEvent* ) override;
 
     //@}
 
