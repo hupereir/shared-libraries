@@ -1962,12 +1962,12 @@ void TextEditor::_installActions()
     connect( copyLinkAction_, SIGNAL(triggered()), SLOT(_copyLinkLocation()) );
 
     addAction( incrementFontSizeAction_ = new QAction( tr( "Increase Font Size" ), this ) );
-    incrementFontSizeAction_->setShortcut( Qt::CTRL + Qt::Key_Plus );
+    incrementFontSizeAction_->setShortcut( QKeySequence::ZoomIn );
     incrementFontSizeAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( incrementFontSizeAction_, SIGNAL(triggered()), SLOT(_incrementFontSize()) );
 
     addAction( decrementFontSizeAction_ = new QAction( tr( "Decrease Font Size" ), this ) );
-    decrementFontSizeAction_->setShortcut( Qt::CTRL + Qt::Key_Minus );
+    decrementFontSizeAction_->setShortcut( QKeySequence::ZoomOut );
     decrementFontSizeAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( decrementFontSizeAction_, SIGNAL(triggered()), SLOT(_decrementFontSize()) );
 
