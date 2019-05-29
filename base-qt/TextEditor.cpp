@@ -111,7 +111,7 @@ TextEditor::TextEditor( QWidget *parent ):
     // track changes of block counts
     connect( TextEditor::document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged(int)) );
     connect( TextEditor::document(), SIGNAL(contentsChanged()), SLOT(_updateContentActions()) );
-    connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
+    connect( TextEditor::document(), SIGNAL(contentsChanged()), marginWidget_, SLOT(setDirty()) );
 
     // update configuration
     _updateConfiguration();
@@ -298,7 +298,7 @@ void TextEditor::paintMargin( QPainter& painter )
     if( horizontalScrollBar()->isVisible() ) { height -= horizontalScrollBar()->height() + 2; }
 
     // clip
-    painter.setClipRect( QRect( 0, 0, _leftMargin(), height ), Qt::IntersectClip );
+    painter.setClipRect( QRect( 0, 0, leftMargin_, height ), Qt::IntersectClip );
     painter.setPen( Qt::NoPen );
 
     painter.translate( 0, -verticalScrollBar()->value() );
@@ -314,7 +314,7 @@ void TextEditor::paintMargin( QPainter& painter )
 
     if( marginWidget_->drawVerticalLine() ) {
         painter.setBrush( QBrush( marginWidget_->foregroundColor(), Qt::Dense4Pattern ) );
-        painter.drawRect( _leftMargin()-1, verticalScrollBar()->value(), 1, height+verticalScrollBar()->value() );
+        painter.drawRect( leftMargin_-1, verticalScrollBar()->value(), 1, height+verticalScrollBar()->value() );
     }
 
     // set brush and pen suitable to further painting
@@ -491,7 +491,7 @@ void TextEditor::synchronize( TextEditor* editor )
     connect( TextEditor::document(), SIGNAL(contentsChanged()), &_marginWidget(), SLOT(setDirty()) );
 
     // margin
-    _setLeftMargin( editor->_leftMargin() );
+    _setLeftMargin( editor->leftMargin_ );
 
     return;
 
@@ -2370,11 +2370,11 @@ bool TextEditor::_setLeftMargin( int margin )
 {
 
     Debug::Throw() << "TextEditor::_setLeftMargin - margin: " << margin << endl;
-    if( margin == _leftMargin() ) return false;
+    if( margin == leftMargin_ ) return false;
 
     leftMargin_ = margin;
-    setViewportMargins( _leftMargin(), 0, 0, 0 );
-    marginWidget_->resize( _leftMargin(), marginWidget_->height() );
+    setViewportMargins( leftMargin_, 0, 0, 0 );
+    marginWidget_->resize( leftMargin_, marginWidget_->height() );
     return true;
 
 }
