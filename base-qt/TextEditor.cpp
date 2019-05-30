@@ -1358,8 +1358,9 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 //________________________________________________
 void TextEditor::wheelEvent( QWheelEvent* event )
 {
+
     const auto modifiers = event->modifiers();
-    if( modifiers == Qt::ControlModifier )
+    if( modifiers & Qt::ControlModifier )
     {
 
         event->accept();
