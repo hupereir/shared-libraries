@@ -33,18 +33,17 @@
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QSize& size, Flags flags ):
     #if QT_VERSION >= 0x050300
-    QPixmap( flags&Flag::HighDpi ? size*qApp->devicePixelRatio() : size ),
+    QPixmap( size*qApp->devicePixelRatio() ),
     #else
     QPixmap( size ),
     #endif
     Counter( "CustomPixmap" )
 {
     #if QT_VERSION >= 0x050300
-    if( flags&Flag::HighDpi ) setDevicePixelRatio( qApp->devicePixelRatio() );
+    setDevicePixelRatio( qApp->devicePixelRatio() );
     #endif
 
     if( flags&Flag::Transparent ) fill( Qt::transparent );
-
 }
 
 //_________________________________________________
