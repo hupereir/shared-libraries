@@ -126,20 +126,8 @@ bool BaseApplication::realizeWidget()
     // check if the method has already been called.
     if( !BaseCoreApplication::realizeWidget() ) return false;
 
-    // parse user argument
-    #if QT_VERSION >= 0x050400
-    auto parser( commandLineParser( _arguments() ) );
-    if( parser.hasFlag( "--highdpi" ) )
-    {
-
-        qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, true );
-
-    } else {
-
-        qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, false );
-
-    }
-    #endif
+    // always enable high dpi
+    qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, true );
 
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
@@ -176,11 +164,6 @@ CommandLineParser BaseApplication::commandLineParser( CommandLineArguments argum
     out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
     out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (native|raster)" ) );
     out.registerOption( "-platform", "string", QObject::tr( "Qt platform" ) );
-
-    #if QT_VERSION >= 0x050400
-    out.setGroup( CommandLineParser::applicationGroupName );
-    out.registerFlag( "--highdpi", QObject::tr( "enable high-dpi support" ) );
-    #endif
 
     if( !arguments.isEmpty() )
     { out.parse( arguments, ignoreWarnings ); }
