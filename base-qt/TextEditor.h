@@ -981,6 +981,9 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //* true if use dialog for finding
     bool useEmbeddedWidgets_ = false;
 
+    //* wheel offset accumulated
+    qreal offsetAccumulated_ = 0;
+
     //* box selection
     BoxSelection boxSelection_;
 

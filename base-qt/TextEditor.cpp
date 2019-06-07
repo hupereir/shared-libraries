@@ -1356,6 +1356,13 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 }
 
 //________________________________________________
+namespace
+{
+    template <typename T> int sign(T val)
+    { return (T(0) < val) - (val < T(0)); }
+}
+
+//________________________________________________
 void TextEditor::wheelEvent( QWheelEvent* event )
 {
 
@@ -1366,16 +1373,21 @@ void TextEditor::wheelEvent( QWheelEvent* event )
         event->accept();
 
         // calculate delta
-        auto delta = event->angleDelta().y();
-        if( !delta ) return;
+        const auto offset = qreal(  event->angleDelta().y() )/120;
 
-        // update font size
-        _incrementFontSize( (delta > 0) ? qMax( 1, delta/120 ) : qMin( -1, delta/120 ) );
+        // check if direction has changed
+        if( offsetAccumulated_ != 0 && sign(offset) != sign( offsetAccumulated_ ) )
+        { offsetAccumulated_ = 0; }
+
+        const auto offsetInt = int( offsetAccumulated_ + offset );
+        if( offsetInt != 0 ) _incrementFontSize( offsetInt );
+        offsetAccumulated_ += offset - offsetInt;
 
         return;
 
     } else {
 
+        offsetAccumulated_ = 0;
         return BaseEditor::wheelEvent( event );
 
     }
