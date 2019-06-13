@@ -154,6 +154,10 @@ namespace Base
         inline typename T::const_iterator findByValue( const T& map, const typename T::mapped_type& value )
     { return std::find_if( map.begin(), map.end(), [&value](const typename T::mapped_type& current) { return current == value; } ); }
 
+    //* get the sign of a quantity
+    template <typename T> int sign(T val)
+    { return (T(0) < val) - (val < T(0)); }
+
 }
 
 //* fancy qhash for all enum types

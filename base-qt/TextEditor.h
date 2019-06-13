@@ -982,7 +982,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     bool useEmbeddedWidgets_ = false;
 
     //* wheel offset accumulated
-    qreal offsetAccumulated_ = 0;
+    double wheelOffsetAccumulated_ = 0;
 
     //* box selection
     BoxSelection boxSelection_;
@@ -990,7 +990,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //* cursor monitor
     CursorMonitor cursorMonitor_;
 
-    //* remove_line buffer
+    //* remove line buffer
     RemoveLineBuffer removeLineBuffer_;
 
     //* multiple click counter

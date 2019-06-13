@@ -27,6 +27,7 @@
 #include "BaseReplaceWidget.h"
 #include "InformationDialog.h"
 #include "Color.h"
+#include "CppUtil.h"
 #include "CustomTextDocument.h"
 #include "IconEngine.h"
 #include "KeyModifier.h"
@@ -1356,38 +1357,30 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 }
 
 //________________________________________________
-namespace
-{
-    template <typename T> int sign(T val)
-    { return (T(0) < val) - (val < T(0)); }
-}
-
-//________________________________________________
 void TextEditor::wheelEvent( QWheelEvent* event )
 {
 
-    const auto modifiers = event->modifiers();
-    if( modifiers & Qt::ControlModifier )
+    if( event->modifiers() & Qt::ControlModifier )
     {
 
         event->accept();
 
         // calculate delta
-        const auto offset = qreal(  event->angleDelta().y() )/120;
+        const auto offset = double(  event->delta() )/120;
 
         // check if direction has changed
-        if( offsetAccumulated_ != 0 && sign(offset) != sign( offsetAccumulated_ ) )
-        { offsetAccumulated_ = 0; }
+        if( wheelOffsetAccumulated_ != 0 && Base::sign(offset) != Base::sign( wheelOffsetAccumulated_ ) )
+        { wheelOffsetAccumulated_ = 0; }
 
-        const auto offsetInt = int( offsetAccumulated_ + offset );
+        const auto offsetInt = int( wheelOffsetAccumulated_ + offset );
         if( offsetInt != 0 ) _incrementFontSize( offsetInt );
-        offsetAccumulated_ += offset - offsetInt;
+        wheelOffsetAccumulated_ += offset - offsetInt;
 
         return;
 
     } else {
 
-        offsetAccumulated_ = 0;
+        wheelOffsetAccumulated_ = 0;
         return BaseEditor::wheelEvent( event );
 
     }
