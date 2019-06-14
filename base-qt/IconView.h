@@ -437,6 +437,12 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* find again backward
     QAction* findAgainBackwardAction_ = nullptr;
 
+    //* increment font size
+    QAction* incrementIconSizeAction_ = nullptr;
+
+    //* decrement font size
+    QAction* decrementIconSizeAction_ = nullptr;
+
     //@}
 
     //* available icon sizes

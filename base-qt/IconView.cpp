@@ -1507,6 +1507,15 @@ void IconView::_installActions()
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, SIGNAL(triggered()), SLOT(findSelectionBackward()) );
 
+    addAction( incrementIconSizeAction_ = new QAction( tr( "Increase Icon Size" ), this ) );
+    incrementIconSizeAction_->setShortcut( QKeySequence::ZoomIn );
+    incrementIconSizeAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( incrementIconSizeAction_, SIGNAL(triggered()), SLOT(_incrementIconSize()) );
+
+    addAction( decrementIconSizeAction_ = new QAction( tr( "Decrease Icon Size" ), this ) );
+    decrementIconSizeAction_->setShortcut( QKeySequence::ZoomOut );
+    decrementIconSizeAction_->setShortcutContext( Qt::WidgetShortcut );
+    connect( decrementIconSizeAction_, SIGNAL(triggered()), SLOT(_decrementIconSize()) );
 }
 
 
