@@ -784,20 +784,20 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //* update replace in selection action
     void _updateReplaceInSelection();
 
-    //* increment font size
-    void _incrementFontSize( int = 1 );
-
-    //* decrement font size
-    void _decrementFontSize( int delta = 1 )
-    { _incrementFontSize( -delta ); }
-
-    //* restore default font
-    void _restoreDefaultFont();
-
     private Q_SLOTS:
 
     //* update configuration
     void _updateConfiguration();
+
+    //* increment font size
+    void _incrementFontSize( int = 1 );
+
+    //* decrement font size
+    void _decrementFontSize()
+    { _incrementFontSize( -1 ); }
+
+    //* restore default font
+    void _restoreDefaultFont();
 
     private:
 

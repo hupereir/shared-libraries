@@ -2538,6 +2538,35 @@ void TextEditor::_updateConfiguration()
 }
 
 //________________________________________________
+void TextEditor::_incrementFontSize( int delta )
+{
+
+    // change font size
+    auto font( this->font() );
+    font.setPointSize( qMax( minimumFontSize_, font.pointSize() + delta ) );
+
+    setFont( font );
+
+    // also update associated displays
+    for( auto&& editor:Base::KeySet<TextEditor>( this ) )
+    { editor->setFont( font ); }
+
+}
+
+//________________________________________________
+void TextEditor::_restoreDefaultFont()
+{
+
+    const auto font( qApp->font( this ) );
+    setFont( font );
+
+    // also update associated displays
+    for( auto&& editor:Base::KeySet<TextEditor>( this ) )
+    { editor->setFont( font ); }
+
+}
+
+//________________________________________________
 void TextEditor::_synchronizeSelection()
 {
 
@@ -2894,35 +2923,6 @@ void TextEditor::_replaceFromDialog()
 //_____________________________________________
 void TextEditor::_updateReplaceInSelection()
 { if( replaceWidget_ ) replaceWidget_->enableReplaceInSelection( hasSelection() ); }
-
-//________________________________________________
-void TextEditor::_incrementFontSize( int delta )
-{
-
-    // change font size
-    auto font( this->font() );
-    font.setPointSize( qMax( minimumFontSize_, font.pointSize() + delta ) );
-
-    setFont( font );
-
-    // also update associated displays
-    for( auto&& editor:Base::KeySet<TextEditor>( this ) )
-    { editor->setFont( font ); }
-
-}
-
-//________________________________________________
-void TextEditor::_restoreDefaultFont()
-{
-
-    const auto font( qApp->font( this ) );
-    setFont( font );
-
-    // also update associated displays
-    for( auto&& editor:Base::KeySet<TextEditor>( this ) )
-    { editor->setFont( font ); }
-
-}
 
 //________________________________________________
 void TextEditor::_selectLineFromDialog()
