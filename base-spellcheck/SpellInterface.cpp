@@ -398,7 +398,7 @@ namespace SpellCheck
         const auto lines( QString( process.readAllStandardOutput() ).split( "\n" ) );
         for( const auto& line:lines )
         {
-            QRegExp regExp( "\\s+" );
+            static QRegExp regExp( "\\s+" );
             const int position( line.indexOf( regExp ) );
             if( position > 0 )
             {

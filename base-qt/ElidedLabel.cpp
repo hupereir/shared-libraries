@@ -114,7 +114,8 @@ void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
             if (textFormat() == Qt::RichText )
             {
 
-                text.replace(QRegExp("<[^>]*>"), "");
+                static QRegExp regExp( "<[^>]*>" );
+                text.replace( regExp, "" );
 
                 // account for stripped characters
                 charsAfterSelection -= fullText_.length() - text.length();

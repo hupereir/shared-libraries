@@ -25,6 +25,8 @@ might cause the application to hang, notably when process crashes
 
 #include "CustomProcess.h"
 
+#include <QRegExp>
+
 //____________________________________________________
 CustomProcess::CustomProcess( QObject* parent ):
 QProcess( parent ),
@@ -37,7 +39,10 @@ CustomProcess::~CustomProcess()
 
 //____________________________________________________
 void CustomProcess::start( QString arguments, OpenMode mode )
-{ return start( arguments.split( QRegExp("\\s"), QString::SkipEmptyParts ), mode ); }
+{
+    static const QRegExp regExp("\\s");
+    return start( arguments.split( regExp, QString::SkipEmptyParts ), mode );
+}
 
 //____________________________________________________
 void CustomProcess::start( const QStringList& arguments, OpenMode mode )
