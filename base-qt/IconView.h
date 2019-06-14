@@ -36,6 +36,7 @@
 #include <QRubberBand>
 #include <QScrollBar>
 #include <QStyleOptionViewItemV4>
+#include <QWheelEvent>
 
 #include <memory>
 
@@ -132,6 +133,9 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
             #if QT_VERSION < 0x050000
             emit iconSizeChanged( size );
             #endif
+
+            // update list of icon sizes
+            _updateIconSizes( size.width() );
 
         }
 
@@ -291,6 +295,9 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* mouse release
     void mouseReleaseEvent( QMouseEvent* ) override;
 
+    //* wheel event
+    void wheelEvent( QWheelEvent* ) override;
+
     //* drag enter
     void dragEnterEvent( QDragEnterEvent* ) override;
 
@@ -367,6 +374,13 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* update alternate item color
     void _updateConfiguration();
 
+    //* increment icon size
+    void _incrementIconSize( int = 1 );
+
+    //* decrement icon size
+    void _decrementIconSize()
+    { _incrementIconSize( -1 ); }
+
     private:
 
     //* install actions
@@ -383,6 +397,9 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     //* return previous index
     QModelIndex _indexBefore( const QModelIndex& ) const;
+
+    //* update internal icon sizes
+    void _updateIconSizes( int );
 
     //* headerView
     QHeaderView* header_ = nullptr;
@@ -422,8 +439,15 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     //@}
 
+    //* available icon sizes
+    using IconSizeList = QList<int>;
+    IconSizeList iconSizes_;
+
     //* true if icon size is to be set from options
     bool iconSizeFromOptions_ = true;
+
+    //* wheel offset accumulated
+    double wheelOffsetAccumulated_ = 0;
 
     //* margin
     int margin_ = 15;

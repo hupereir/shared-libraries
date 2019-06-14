@@ -25,6 +25,7 @@
 #include "CppUtil.h"
 #include "Debug.h"
 #include "IconEngine.h"
+#include "IconSize.h"
 #include "InformationDialog.h"
 #include "ItemModel.h"
 #include "Singleton.h"
@@ -45,6 +46,27 @@ IconView::IconView( QWidget* parent ):
     Counter( "IconView" )
 {
     Debug::Throw( "IconView::IconView.\n" );
+
+    iconSizes_ = Base::makeT<IconSizeList>(
+    {
+        IconSize::Size::Small,
+        IconSize::Size::Medium,
+        IconSize::Size::Large,
+        IconSize::Size::VeryLarge,
+        IconSize::Size::Huge,
+        80,
+        96,
+        112,
+        IconSize::Size::VeryHuge,
+        144,
+        160,
+        176,
+        192,
+        208,
+        224,
+        240,
+        IconSize::Size::Maximum
+    } );
 
     // actions
     _installActions();
@@ -798,6 +820,37 @@ void IconView::mouseReleaseEvent( QMouseEvent *event )
     dragButton_ = Qt::NoButton;
 }
 
+//________________________________________________
+void IconView::wheelEvent( QWheelEvent* event )
+{
+
+    if( event->modifiers() & Qt::ControlModifier )
+    {
+
+        event->accept();
+
+        // calculate delta
+        const auto offset = double(  event->delta() )/120;
+
+        // check if direction has changed
+        if( wheelOffsetAccumulated_ != 0 && Base::sign(offset) != Base::sign( wheelOffsetAccumulated_ ) )
+        { wheelOffsetAccumulated_ = 0; }
+
+        const auto offsetInt = int( wheelOffsetAccumulated_ + offset );
+        if( offsetInt != 0 ) _incrementIconSize( offsetInt );
+        wheelOffsetAccumulated_ += offset - offsetInt;
+
+        return;
+
+    } else {
+
+        wheelOffsetAccumulated_ = 0;
+        return QAbstractItemView::wheelEvent( event );
+
+    }
+
+}
+
 //____________________________________________________________________
 void IconView::dragEnterEvent( QDragEnterEvent *event )
 {
@@ -1389,7 +1442,7 @@ void IconView::_updateConfiguration()
     updateSortOrder();
 
     // update pixmap size
-    int iconSize( 0 );
+    int iconSize( IconSize::Size::VeryLarge );
     if( iconSizeFromOptions_ && XmlOptions::get().contains( "ICON_VIEW_ICON_SIZE" ) && (iconSize = XmlOptions::get().get<int>( "ICON_VIEW_ICON_SIZE" )) != this->iconSize().width() )
     {
         QAbstractItemView::setIconSize( QSize( iconSize, iconSize ) );
@@ -1398,8 +1451,25 @@ void IconView::_updateConfiguration()
         emit iconSizeChanged( this->iconSize() );
         #endif
 
+        // update list of icon sizes
+        _updateIconSizes( iconSize );
+
         if( model_ ) doItemsLayout();
     }
+}
+
+//________________________________________________
+void IconView::_incrementIconSize( int delta )
+{
+
+    // get current iconsize
+    auto index = iconSizes_.indexOf( iconSize().width() );
+    if( index < 0 ) return;
+
+    // update icon size
+    const auto newSize( iconSizes_[qBound( 0, index+delta, iconSizes_.size()-1 )] );
+    setIconSize( QSize( newSize, newSize ) );
+
 }
 
 //__________________________________________________________
@@ -1493,5 +1563,17 @@ void IconView::Container::_initialize()
     iconView_->findWidget_->hide();
 
     connect( &iconView_->findWidget_->closeButton(), SIGNAL(clicked()), iconView_, SLOT(setFocus()) );
+
+}
+
+//___________________________________________________
+void IconView::_updateIconSizes( int iconSize )
+{
+    Debug::Throw( "IconView::_updateIconSizes.\n" );
+
+    // update available iconSizes
+    auto iter = std::lower_bound( iconSizes_.begin(), iconSizes_.end(), iconSize );
+    if( iter == iconSizes_.end() || *iter != iconSize )
+    { iconSizes_.insert( iter, iconSize ); }
 
 }
