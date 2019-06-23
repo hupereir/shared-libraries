@@ -56,10 +56,10 @@ namespace SpellCheck
 
     //* font format
     /* returns true if changed */
-    bool setFontFormat( Format::TextFormatFlags );
+    bool setFontFormat( TextFormat::Flags );
 
     //* font format
-    Format::TextFormatFlags fontFormat() const
+    TextFormat::Flags fontFormat() const
     { return fontFormat_; }
 
     //* enabled. Returns true if changed.
@@ -94,7 +94,7 @@ namespace SpellCheck
     QColor color_;
 
     //* font format (is a bitwise or of TextFormatInfo bits)
-    Format::TextFormatFlags fontFormat_ = Format::Default;
+    TextFormat::Flags fontFormat_ = TextFormat::Default;
 
   };
 

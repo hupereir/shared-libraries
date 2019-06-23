@@ -21,7 +21,7 @@
 #include "XmlColor.h"
 #include "Debug.h"
 
-namespace Format
+namespace TextFormat
 {
 
     namespace Xml
@@ -36,7 +36,7 @@ namespace Format
     }
 
     //____________________________________
-    XmlTextFormatBlock::XmlTextFormatBlock( const QDomElement& element )
+    XmlBlock::XmlBlock( const QDomElement& element )
     {
 
         // parse attributes
@@ -53,7 +53,7 @@ namespace Format
             else if( name == Xml::End ) setEnd( value.toInt() );
 
             // format
-            else if( name == Xml::Format ) setFormat( (TextFormatFlags) value.toInt() );
+            else if( name == Xml::Format ) setFormat( static_cast<Flags>(value.toInt()) );
             else if( name == Xml::Color ) setColor( value );
             else if( name == Xml::HRef ) setHRef( value );
 
@@ -62,7 +62,7 @@ namespace Format
     }
 
     //__________________________________________________________
-    QDomElement XmlTextFormatBlock::domElement( QDomDocument& parent ) const
+    QDomElement XmlBlock::domElement( QDomDocument& parent ) const
     {
         QDomElement out( parent.createElement( Xml::Tag ) );
         out.setAttribute( Xml::Begin, QString::number(begin()) );

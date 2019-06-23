@@ -29,23 +29,16 @@
 #include <QString>
 #include <QTextStream>
 
-namespace Format
+namespace TextFormat
 {
-    //* text format
-    /**
-    starting with Qt4, text blocks are no longer referenced by paragraph and index separately, but
-    by an absolute index in document. However one must keep the possibility to handle paragraph id
-    and convert them to absolute indexes in order to read old formats generated with Qt3.
-    As a result parBegin and parEnd are still available but cannot be modified from outside of the class.
-    */
-    class TextFormatBlock: private Base::Counter<TextFormatBlock>
+    class Block: private Base::Counter<Block>
     {
 
         public:
 
         //* constructor
-        explicit TextFormatBlock( int begin = 0, int end = 0, TextFormatFlags format = 0, const QColor& color = QColor() ):
-            Counter( "TextFormatBlock" ),
+        explicit Block( int begin = 0, int end = 0, Flags format = 0, const QColor& color = QColor() ):
+            Counter( "TextFormat::Block" ),
             begin_( begin ),
             end_( end ),
             format_( format ),
@@ -53,7 +46,7 @@ namespace Format
         {}
 
         //* destructor
-        virtual ~TextFormatBlock() = default;
+        virtual ~Block() = default;
 
         //*@name accessors
         //@{
@@ -71,7 +64,7 @@ namespace Format
         { return end_; }
 
         //* format
-        TextFormatFlags format() const
+        Flags format() const
         { return format_; }
 
         //* color
@@ -96,7 +89,7 @@ namespace Format
         { end_ = value; }
 
         //* format
-        void setFormat( TextFormatFlags value )
+        void setFormat( Flags value )
         { format_ = value; }
 
         //* color
@@ -113,13 +106,13 @@ namespace Format
 
         //@}
 
-        //* get TextFormatBlock matching a given begin position
-        using SamePositionBeginFTor = Base::Functor::Unary<TextFormatBlock, int, &TextFormatBlock::begin>;
+        //* get block matching a given begin position
+        using SamePositionBeginFTor = Base::Functor::Unary<Block, int, &Block::begin>;
 
-        //* get TextFormatBlock matching a given end position
-        using SamePositionEndFTor = Base::Functor::Unary<TextFormatBlock, int, &TextFormatBlock::end>;
+        //* get block matching a given end position
+        using SamePositionEndFTor = Base::Functor::Unary<Block, int, &Block::end>;
 
-        //* get TextFormatBlock containing a given position
+        //* get block containing a given position
         class ContainsFTor
         {
 
@@ -131,7 +124,7 @@ namespace Format
             {}
 
             //* predicate
-            bool operator() (const TextFormatBlock& format ) const
+            bool operator() (const Block& format ) const
             { return position_ >= format.begin() && position_ < format.end(); }
 
             private:
@@ -143,7 +136,7 @@ namespace Format
 
 
         //* format list
-        using List = QList<Format::TextFormatBlock>;
+        using List = QList<Block>;
 
         private:
 
@@ -154,7 +147,7 @@ namespace Format
         int end_ = 0;
 
         //* format (a bitwise or of the format bits above)
-        TextFormatFlags format_ = 0;
+        Flags format_ = 0;
 
         //* color
         QColor color_;
@@ -163,7 +156,7 @@ namespace Format
         QString href_;
 
         //* streamer
-        friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock& format )
+        friend QTextStream& operator << ( QTextStream& out, const Block& format )
         {
             out
                 << "begin: " << format.begin()
@@ -177,7 +170,7 @@ namespace Format
         }
 
         //* streamer
-        friend QTextStream& operator << ( QTextStream& out, const TextFormatBlock::List& formats )
+        friend QTextStream& operator << ( QTextStream& out, const Block::List& formats )
         {
             out << "TextFormatList: " << endl;
             for( const auto& block:formats )
@@ -189,7 +182,7 @@ namespace Format
     };
 
     //* less than operator (based on Begin position)
-    inline bool operator < (const TextFormatBlock& first, const TextFormatBlock& second )
+    inline bool operator < (const Block& first, const Block& second )
     { return first.begin() < second.begin(); }
 
 }

@@ -154,7 +154,7 @@ namespace SpellCheck
     }
 
     //___________________________________________________________
-    bool SpellParser::setFontFormat( Format::TextFormatFlags format )
+    bool SpellParser::setFontFormat( TextFormat::Flags format )
     {
 
         Debug::Throw( "SpellParser::setFontFormat.\n" );

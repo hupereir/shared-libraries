@@ -40,7 +40,7 @@ class OptionFontInfo: public FontInfo, public OptionWidget
 
     //! read value from option
     void read( const Options& options ) override
-    { setFormat( (Format::TextFormatFlags) options.get<int>( optionName() ) ); }
+    { setFormat( static_cast<TextFormat::Flags>( options.get<int>( optionName() ) ) ); }
 
     //! write value to option
     void write( Options& options ) const override

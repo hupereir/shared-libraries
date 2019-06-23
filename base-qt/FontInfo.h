@@ -37,10 +37,10 @@ class FontInfo: public QWidget
     explicit FontInfo( QWidget* parent );
 
     //! set checkboxes from from
-    void setFormat( Format::TextFormatFlags format );
+    void setFormat( TextFormat::Flags format );
 
     //! get format
-    Format::TextFormatFlags format() const;
+    TextFormat::Flags format() const;
 
     Q_SIGNALS:
 
@@ -50,7 +50,7 @@ class FontInfo: public QWidget
     private:
 
     //! checkbox map
-    using CheckBoxMap = QMap<Format::TextFormat, QCheckBox*>;
+    using CheckBoxMap = QMap<TextFormat::Flag, QCheckBox*>;
 
     //! checkboxes
     CheckBoxMap checkBoxes_;

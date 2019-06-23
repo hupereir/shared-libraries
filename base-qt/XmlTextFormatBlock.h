@@ -24,7 +24,7 @@
 #include <QDomElement>
 #include <QDomDocument>
 
-namespace Format
+namespace TextFormat
 {
     namespace Xml
     {
@@ -32,17 +32,17 @@ namespace Format
     }
 
     //* text format with Xml abilities
-    class XmlTextFormatBlock:public TextFormatBlock
+    class XmlBlock:public Block
     {
 
         public:
 
         //* constructor
-        explicit XmlTextFormatBlock( const QDomElement& );
+        explicit XmlBlock( const QDomElement& );
 
         //* constructor
-        explicit XmlTextFormatBlock( const TextFormatBlock& format ):
-            TextFormatBlock( format )
+        explicit XmlBlock( const Block& format ):
+            Block( format )
         {}
 
         //* get dom element

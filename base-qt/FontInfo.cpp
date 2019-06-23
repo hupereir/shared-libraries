@@ -33,11 +33,11 @@ QWidget( parent )
     // create checkboxes
     setLayout( new QVBoxLayout );
     checkBoxes_ = Base::makeT<CheckBoxMap>( {
-        {  Format::Bold, new QCheckBox( tr( "Bold" ), this ) },
-        {  Format::Italic, new QCheckBox( tr( "Italic" ), this ) },
-        {  Format::Underline, new QCheckBox( tr( "Underline" ), this ) },
-        {  Format::Strike, new QCheckBox( tr( "Strike" ), this ) },
-        {  Format::Overline, new QCheckBox( tr( "Overline" ), this ) },
+        {  TextFormat::Bold, new QCheckBox( tr( "Bold" ), this ) },
+        {  TextFormat::Italic, new QCheckBox( tr( "Italic" ), this ) },
+        {  TextFormat::Underline, new QCheckBox( tr( "Underline" ), this ) },
+        {  TextFormat::Strike, new QCheckBox( tr( "Strike" ), this ) },
+        {  TextFormat::Overline, new QCheckBox( tr( "Overline" ), this ) },
     });
 
     for( auto&& iterator = checkBoxes_.begin(); iterator != checkBoxes_.end(); ++iterator )
@@ -49,7 +49,7 @@ QWidget( parent )
 }
 
 //__________________________________________________
-void FontInfo::setFormat( Format::TextFormatFlags format )
+void FontInfo::setFormat( TextFormat::Flags format )
 {
     Debug::Throw( "FontInfo::setFormat.\n" );
     for( CheckBoxMap::iterator iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
@@ -57,11 +57,11 @@ void FontInfo::setFormat( Format::TextFormatFlags format )
 }
 
 //__________________________________________________
-Format::TextFormatFlags FontInfo::format() const
+TextFormat::Flags FontInfo::format() const
 {
     Debug::Throw( "FontInfo::format.\n" );
 
-    Format::TextFormatFlags out = Format::Default;
+    TextFormat::Flags out = TextFormat::Default;
     for( CheckBoxMap::const_iterator iter = checkBoxes_.constBegin(); iter != checkBoxes_.constEnd(); ++iter )
     { if( iter.value()->isChecked() ) out |= iter.key(); }
 

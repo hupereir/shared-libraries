@@ -22,11 +22,11 @@
 
 #include <QFlags>
 
-namespace Format
+namespace TextFormat
 {
 
     //* format bit enumaration
-    enum TextFormat
+    enum Flag
     {
         Default = 0,
         Bold = 1<<0,
@@ -38,11 +38,11 @@ namespace Format
 
     };
 
-    Q_DECLARE_FLAGS( TextFormatFlags, TextFormat )
+    Q_DECLARE_FLAGS( Flags, Flag )
 
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( Format::TextFormatFlags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( TextFormat::Flags )
 
 
 #endif
