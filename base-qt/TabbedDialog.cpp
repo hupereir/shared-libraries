@@ -41,24 +41,27 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     Debug::Throw( "TabbedDialog::TabbedDialog.\n" );
 
-    QVBoxLayout* layout( new QVBoxLayout );
+    auto layout = new QVBoxLayout;
     layout->setMargin(0);
     setLayout( layout );
 
     // horizontal layout
-    QHBoxLayout* hLayout = new QHBoxLayout;
+    auto hLayout = new QHBoxLayout;
     layout->addLayout( hLayout );
 
     // add widgets
     hLayout->addWidget( list_ = new SimpleListView( this ) );
-    hLayout->addWidget( stackedWidget_ = new QStackedWidget(this) );
+
+    auto stackedLayout = new QVBoxLayout;
+    hLayout->addLayout( stackedLayout );
+    stackedLayout->addWidget( stackedWidget_ = new QStackedWidget(this) );
 
     // configure list
     list_->setProperty( "_kde_side_panel_view", true );
     list_->setModel( &model_ );
 
     // button box
-    layout->addWidget( buttonBox_ = new QDialogButtonBox( this ), 0 );
+    stackedLayout->addWidget( buttonBox_ = new QDialogButtonBox( this ), 0 );
     buttonBox_->layout()->setMargin(5);
 
     // connections
