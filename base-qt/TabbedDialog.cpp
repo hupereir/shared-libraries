@@ -47,6 +47,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // horizontal layout
     auto hLayout = new QHBoxLayout;
+    hLayout->setSpacing(0);
     layout->addLayout( hLayout );
 
     // add widgets
@@ -76,18 +77,18 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
 {
 
     // base widget
-    QWidget* base = new QWidget;
+    auto base = new QWidget;
     base->setLayout( new QVBoxLayout );
-    base->layout()->setMargin(0);
+    base->layout()->setMargin(5);
     base->layout()->setSpacing(10);
 
-    QHBoxLayout* hLayout = new QHBoxLayout;
+    auto hLayout = new QHBoxLayout;
     hLayout->setMargin(0);
     hLayout->setSpacing(5);
     base->layout()->addItem( hLayout );
 
     // tooltip label
-    QLabel *label( new QLabel( base ) );
+    auto label = new QLabel( base );
     label->setText( tooltip.isEmpty() ? title:tooltip );
     label->setMargin(5);
 
@@ -105,7 +106,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     base->layout()->addWidget( scrollArea );
 
     // create main widget
-    QWidget* main( new QWidget );
+    auto main = new QWidget;
     scrollArea->setWidget( main );
 
     // add to stack
@@ -120,7 +121,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     if( (!list_->selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) )
     { list_->selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
 
-    QVBoxLayout* layout( new QVBoxLayout );
+    auto layout = new QVBoxLayout;
     layout->setSpacing( 5 );
     layout->setMargin( 0 );
     main->setLayout( layout );
@@ -132,7 +133,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
         // in non-expanded mode (the default)
         // a widget is created inside main, and a stretch is added at the bottom
         // the created widget is return
-        QWidget* contents( new QWidget( main ) );
+        auto contents = new QWidget( main );
         contents->setLayout( new QVBoxLayout );
         contents->layout()->setSpacing(5);
         contents->layout()->setMargin(0);
