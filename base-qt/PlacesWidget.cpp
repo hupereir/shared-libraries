@@ -542,7 +542,7 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
 
     // main layout
     auto vLayout = new QVBoxLayout;
-    vLayout->setMargin(2);
+    vLayout->setMargin(0);
     vLayout->setSpacing(0);
     setLayout( vLayout );
 
