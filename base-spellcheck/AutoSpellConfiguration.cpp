@@ -32,9 +32,9 @@ namespace SpellCheck
 {
     //___________________________________________
     AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
-        QGroupBox( "Automatic Spell Check", parent ),
+        QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "AutoSpellConfiguration" )
+        Counter( "SpellCheck::AutoSpellConfiguration" )
     {
         Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
 
@@ -51,6 +51,7 @@ namespace SpellCheck
         gridLayout->addWidget( spinbox);
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 50 );
+        spinbox->setSpecialValueText( tr( "Unlimited" ) );
         spinbox->setToolTip( tr( "Maximum number of suggestions in suggestion menu.\n 0 means no limit." ) );
         addOptionWidget( spinbox );
 

@@ -1,6 +1,5 @@
-#ifndef AutoSpellConfiguration_h
-#define AutoSpellConfiguration_h
-
+#ifndef SpellCheckConfigurationDialog_h
+#define SpellCheckConfigurationDialog_h
 /******************************************************************************
 *
 * Copyright (C) 2002 Hugo PEREIRA <mailto: hugo.pereira@free.fr>
@@ -20,29 +19,23 @@
 *
 *******************************************************************************/
 
-#include "Counter.h"
-#include "OptionWidgetList.h"
+#include "BaseConfigurationDialog.h"
 
-#include <QWidget>
+class OptionCheckBox;
 
+//* configuration dialog
 namespace SpellCheck
 {
 
-    //* Spell common configuration
-    class AutoSpellConfiguration: public QWidget, public OptionWidgetList, private Base::Counter<AutoSpellConfiguration>
+    class ConfigurationDialog: public BaseConfigurationDialog
     {
 
         Q_OBJECT
 
         public:
 
-        //* constructor
-        explicit AutoSpellConfiguration( QWidget* );
-
-        Q_SIGNALS:
-
-        //* modified
-        void modified();
+        //* creator
+        explicit ConfigurationDialog( QWidget* = nullptr );
 
     };
 

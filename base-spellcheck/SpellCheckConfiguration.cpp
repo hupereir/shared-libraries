@@ -37,9 +37,9 @@ namespace SpellCheck
 
     //___________________________________________
     SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent, Flags flags ):
-        QGroupBox( "Spell Check", parent ),
+        QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "SpellCheckConfiguration" )
+        Counter( "SpellCheck::SpellCheckConfiguration" )
     {
         Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
 

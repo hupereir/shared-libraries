@@ -39,6 +39,7 @@ set(base_spellcheck_SOURCES
   FilterMenu.cpp
   FilterSelectionButton.cpp
   SpellCheckConfiguration.cpp
+  SpellCheckConfigurationDialog.cpp
   SpellDialog.cpp
   SpellInterface.cpp
   SpellItemDialog.cpp
