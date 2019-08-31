@@ -66,7 +66,7 @@ if(ENABLE_SHARED)
 
 else()
 
-  add_library(base-ssh STATIC ${base_ssh_SOURCES} ${base_ssh_RESOURCES_RCC})
+  add_library(base-ssh STATIC ${base_ssh_SOURCES})
 
 endif()
 

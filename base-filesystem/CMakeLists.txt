@@ -38,25 +38,15 @@ set(base_filesystem_SOURCES
 
 set(base_filesystem_RESOURCES baseFileSystem.qrc)
 
-if(USE_QT5)
-
-  qt5_add_resources(base_filesystem_RESOURCES_RCC ${base_filesystem_RESOURCES})
-
-else()
-
-  qt4_add_resources(base_filesystem_RESOURCES_RCC ${base_filesystem_RESOURCES})
-
-endif()
-
 if(ENABLE_SHARED)
 
-  add_library(base-filesystem SHARED ${base_filesystem_SOURCES} ${base_filesystem_RESOURCES_RCC})
+  add_library(base-filesystem SHARED ${base_filesystem_SOURCES} ${base_filesystem_RESOURCES})
   set_target_properties(base-filesystem PROPERTIES VERSION ${BASE_FILESYSTEM_VERSION} SOVERSION ${BASE_FILESYSTEM_SOVERSION})
   install(TARGETS base-filesystem DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 else()
 
-  add_library(base-filesystem STATIC ${base_filesystem_SOURCES} ${base_filesystem_RESOURCES_RCC})
+  add_library(base-filesystem STATIC ${base_filesystem_SOURCES} ${base_filesystem_RESOURCES})
 
 endif()
 

@@ -67,25 +67,15 @@ set(base_svg_SOURCES
 
 set(base_svg_RESOURCES baseSvg.qrc)
 
-if(USE_QT5)
-
-  qt5_add_resources(base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
-
-else()
-
-  qt4_add_resources(base_svg_RESOURCES_RCC ${base_svg_RESOURCES})
-
-endif()
-
 if(ENABLE_SHARED)
 
-  add_library(base-svg SHARED ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC})
+  add_library(base-svg SHARED ${base_svg_SOURCES} ${base_svg_RESOURCES})
   set_target_properties(base-svg PROPERTIES VERSION ${BASE_SVG_VERSION} SOVERSION ${BASE_SVG_SOVERSION})
   install(TARGETS base-svg DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 else()
 
-  add_library(base-svg STATIC ${base_svg_SOURCES} ${base_svg_RESOURCES_RCC})
+  add_library(base-svg STATIC ${base_svg_SOURCES} ${base_svg_RESOURCES})
 
 endif()
 

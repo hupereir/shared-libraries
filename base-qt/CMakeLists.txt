@@ -226,30 +226,20 @@ set(base_qt_SOURCES
   XmlPathHistory.cpp
   XmlTextFormatBlock.cpp
   XmlTimeStamp.cpp
+  basePixmaps.qrc
 )
 
 set(base_qt_RESOURCES basePixmaps.qrc)
 
-if(USE_QT5)
-
-  qt5_add_resources(base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
-
-else()
-
-  qt4_add_resources(base_qt_RESOURCES_RCC ${base_qt_RESOURCES})
-
-endif()
-
-
 if(ENABLE_SHARED)
 
-  add_library(base-qt SHARED ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC})
+  add_library(base-qt SHARED ${base_qt_SOURCES} ${base_qt_RESOURCES})
   set_target_properties(base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION})
   install(TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
 else()
 
-  add_library(base-qt STATIC ${base_qt_SOURCES} ${base_qt_RESOURCES_RCC})
+  add_library(base-qt STATIC ${base_qt_SOURCES} ${base_qt_RESOURCES})
 
 endif()
 

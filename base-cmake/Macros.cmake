@@ -2,6 +2,7 @@
 ###################### setup cmake policy #########################
 macro(setup_cmake_settings)
     set(CMAKE_AUTOMOC TRUE)
+    set(CMAKE_AUTORCC TRUE)
     if(COMMAND CMAKE_POLICY)
         cmake_policy(SET CMP0003 NEW)
         # cmake_policy(SET CMP0028 OLD)
