@@ -394,7 +394,7 @@ void CommandLineParser::_discardOrphans( bool ignoreWarnings )
 
 //_______________________________________________________
 bool CommandLineParser::_isTag( const QString& tag ) const
-{ return (!tag.isEmpty()) && tag.left(1) == "-"; }
+{ return tag.startsWith( '-' ); }
 
 //_______________________________________________________
 CommandLineParser::Group::FlagMap CommandLineParser::_allFlags() const

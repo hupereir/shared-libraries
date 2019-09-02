@@ -281,10 +281,9 @@ File File::truncatedName() const
     int slashpos = value_.lastIndexOf( '/' );
 
     if( dotpos < 0 ) return *this;
-    if( slashpos < 0 ) return File( dotpos >= 0 ? value_.left(dotpos):"");
-    if( slashpos < dotpos ) return File( value_.left(dotpos) );
-
-    return *this;
+    else if( slashpos < 0 ) return File( dotpos >= 0 ? value_.left(dotpos):"");
+    else if( slashpos < dotpos ) return File( value_.left(dotpos) );
+    else return *this;
 
 }
 

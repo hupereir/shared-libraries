@@ -450,7 +450,7 @@ File PathEditor::path() const
     {
         const QString prefix( prefix_+"//" );
         if( path.startsWith( prefix ) )
-        { path = path.mid( prefix.size() ); }
+        { path.remove( 0, prefix.size() ); }
     }
 
     return File( path );
@@ -565,7 +565,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
             {
                 // store root file and truncate
                 root = file;
-                path = path.mid( root.size() );
+                path.remove( 0, root.size() );
                 break;
             }
         }
@@ -790,7 +790,7 @@ void PathEditor::_updatePrefix()
             if( item.trimmed().isEmpty() ) continue;
 
             if( usePrefix ) { if( !item.startsWith( prefix ) ) item.prepend( prefix ); }
-            else if( item.startsWith( prefix ) ) item = item.mid( prefix.size() );
+            else if( item.startsWith( prefix ) ) item.remove( 0, prefix.size() );
 
             if( item.trimmed().isEmpty() ) continue;
             items.append( item );

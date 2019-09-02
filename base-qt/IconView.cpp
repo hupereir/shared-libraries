@@ -1398,8 +1398,8 @@ void IconView::_findFromDialog()
     QString text( selection().text() );
     if( !text.isEmpty() )
     {
-        const int max_length( 1024 );
-        text = text.left( max_length );
+        const int maxLength( 1024 );
+        text.truncate( maxLength );
     }
 
     // create

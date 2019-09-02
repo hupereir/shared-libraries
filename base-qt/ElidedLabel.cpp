@@ -122,7 +122,8 @@ void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
 
             }
 
-            text = text.mid( selectionStart(), text.length() - start - charsAfterSelection );
+            text.remove( 0, selectionStart() );
+            text.truncate( text.length() - start - charsAfterSelection );
 
         }
 

@@ -88,7 +88,7 @@ namespace Ssh
 
         const qint64 bytesRead = qMin( maxSize, bytesAvailable_ );
         memcpy( data, buffer_.data(), bytesRead );
-        buffer_ = buffer_.mid( bytesRead );
+        buffer_.remove( 0, bytesRead );
         buffer_.resize( maxSize_ );
         bytesAvailable_ -= bytesRead;
 

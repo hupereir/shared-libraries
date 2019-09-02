@@ -2850,7 +2850,7 @@ void TextEditor::_findFromDialog()
     if( !text.isEmpty() )
     {
         const int maxLength( 1024 );
-        text = text.left( maxLength );
+        text.truncate( maxLength );
     }
 
     // create

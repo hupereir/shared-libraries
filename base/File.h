@@ -200,6 +200,10 @@ class File
     //* accessor
     QString& get() { return value_; }
 
+    //* setter
+    void set( const QString& value )
+    { value_ = value; }
+
     //* clear
     void clear() { value_.clear(); }
 
