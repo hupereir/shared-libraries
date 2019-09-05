@@ -215,7 +215,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 
         // see if tag contains "=" string
         QString value;
-        auto values( tagName.split( "=" ) );
+        auto values( tagName.split( QLatin1Char( '=' ) ) );
         if( values.size() == 2 )
         {
 

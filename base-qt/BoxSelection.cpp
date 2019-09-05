@@ -229,7 +229,7 @@ bool BoxSelection::fromString( QString input )
     input.replace( "\t", parent_->emulatedTabCharacter() );
 
     // try split
-    auto inputList( input.split( "\n" ) );
+    auto inputList( input.split( QLatin1Char('\n') ) );
 
     // retrieve maximum length
     const auto columns = std::accumulate( inputList.begin(), inputList.end(),  0,

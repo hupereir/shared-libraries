@@ -144,7 +144,7 @@ void BrowsedLineEditor::_findTargetApplication()
 
     // split
     File::List pathList;
-    auto list = path.split(":", QString::SkipEmptyParts);
+    auto list = path.split( QLatin1Char( ':' ), QString::SkipEmptyParts);
     std::transform( list.begin(), list.end(), std::back_inserter( pathList ),
         []( const QString& item ) { return File( item ); } );
 

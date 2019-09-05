@@ -58,7 +58,7 @@ namespace Base
         // split strings that are not enclosed into quotes using white spaces as separator
         // by construction, the first part is not enclosed into quotes; the second is; the third is not, etc.
         bool split( true );
-        for( const auto& line:in.split( "\"", QString::KeepEmptyParts ) )
+        for( const auto& line:in.split( QLatin1Char('\"'), QString::KeepEmptyParts ) )
         {
             if( !line.isEmpty() )
             {

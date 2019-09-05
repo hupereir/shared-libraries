@@ -53,7 +53,7 @@ namespace SpellCheck
 
     //_______________________________________________
     void SpellItemDialog::setDisabledItems( const QString& items )
-    { model_.setDisabledItems( QSet<QString>::fromList( items.split( " " ) ) ); }
+    { model_.setDisabledItems( QSet<QString>::fromList( items.split( QLatin1Char(' ') ) ) ); }
 
     //_______________________________________________
     QString SpellItemDialog::disabledItems() const

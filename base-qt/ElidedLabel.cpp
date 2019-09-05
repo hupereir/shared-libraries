@@ -158,7 +158,7 @@ void ElidedLabel::updateElidedText()
     QStringList elidedLines;
     bool elided = false;
 
-    for( const auto& fullLine:fullText_.split( '\n' ) )
+    for( const auto& fullLine:fullText_.split( QLatin1Char('\n') ) )
     {
 
         // attempt at dealing with rich text

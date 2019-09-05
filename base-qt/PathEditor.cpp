@@ -602,7 +602,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
         index++;
 
         // create path items
-        const int sectionCount( path.split( '/', QString::SkipEmptyParts ).size() );
+        const int sectionCount( path.split( QLatin1Char('/'), QString::SkipEmptyParts ).size() );
         for( int i=0; i < sectionCount; i++ )
         {
 

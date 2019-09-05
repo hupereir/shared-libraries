@@ -95,7 +95,7 @@ namespace Svg
             process.start( Base::Command( kdeConfigCommand ) << "--path" << "config" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
-                auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
+                auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QLatin1Char(':') );
                 std::transform( configurationPath.begin(), configurationPath.end(), std::back_inserter( configurationFiles ),
                     []( const QString& path ) { return File( "plasmarc" ).addPath( File( path ) ); } );
 
@@ -219,7 +219,7 @@ namespace Svg
             process.start( Base::Command( kdeConfigCommand ) << "--path" << "data" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
-                const auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
+                const auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QLatin1Char(':') );
                 std::transform( configurationPath.begin(), configurationPath.end(), std::back_inserter( themePathList ),
                     [&theme]( const QString& path ) { return File( theme ).addPath( File( "plasma/desktoptheme/" ).addPath( File( path ) ) ); }
                     );

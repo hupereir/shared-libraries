@@ -67,7 +67,7 @@ QTextStream& operator >> (QTextStream& in, Base::Color& color )
 {
     QString colorString;
     in >> colorString;
-    const auto stringList( colorString.split( "," ) );
+    const auto stringList( colorString.split( QLatin1Char(',') ) );
     if( stringList.size() >= 3 )
     {
         color.get().setRed( stringList[0].toInt() );

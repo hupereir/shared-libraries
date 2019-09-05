@@ -85,7 +85,7 @@ namespace SpellCheck
         // load disabled dictionaries from options
         QStringList disabledDictionaries;
         if( XmlOptions::get().contains( "SPELLCHECK_DISABLED_DICTIONARIES" ) )
-        { disabledDictionaries = QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( " " ); }
+        { disabledDictionaries = QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( QLatin1Char(' ') ); }
 
         // populate list
         bool first( true );

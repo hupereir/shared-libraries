@@ -297,7 +297,7 @@ void BaseApplication::_updateFonts()
             process.start( Base::Command( kde4ConfigCommand ) << "--path" << "config" );
             if( process.waitForFinished() && process.exitStatus() == QProcess::NormalExit )
             {
-                auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( ':' );
+                auto configurationPath = QString( process.readAllStandardOutput() ).trimmed().split( QLatin1Char(':') );
                 std::transform( configurationPath.begin(), configurationPath.end(), std::back_inserter( configurationFiles ),
                     []( const QString& path ) { return File( "kdeglobals" ).addPath( File( path ) ); } );
             }
