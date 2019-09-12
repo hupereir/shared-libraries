@@ -169,8 +169,8 @@ void TabWidget::_toggleStaysOnTop( bool state )
     #if WITH_XCB
 
     // change property
-    XcbUtil::get().changeState( this, XcbDefines::_NET_WM_STATE_STAYS_ON_TOP, state );
-    XcbUtil::get().changeState( this, XcbDefines::_NET_WM_STATE_ABOVE, state );
+    XcbUtil::get().changeState( this, XcbDefines::AtomId::_NET_WM_STATE_STAYS_ON_TOP, state );
+    XcbUtil::get().changeState( this, XcbDefines::AtomId::_NET_WM_STATE_ABOVE, state );
 
     #else
 
@@ -197,15 +197,15 @@ void TabWidget::_toggleSticky( bool state )
     if( !isDetached() ) return;
 
     #if WITH_XCB
-    if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_STATE_STICKY ) )
+    if( XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_STICKY ) )
     {
 
-        XcbUtil::get().changeState( this, XcbDefines::_NET_WM_STATE_STICKY, state );
+        XcbUtil::get().changeState( this, XcbDefines::AtomId::_NET_WM_STATE_STICKY, state );
 
-    } else if( XcbUtil::get().isSupported( XcbDefines::_NET_WM_DESKTOP ) ) {
+    } else if( XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_DESKTOP ) ) {
 
-        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), XcbDefines::_NET_CURRENT_DESKTOP );
-        XcbUtil::get().changeCardinal( this, XcbDefines::_NET_WM_DESKTOP, state ? XcbDefines::ALL_DESKTOPS:desktop );
+        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), XcbDefines::AtomId::_NET_CURRENT_DESKTOP );
+        XcbUtil::get().changeCardinal( this, XcbDefines::AtomId::_NET_WM_DESKTOP, state ? XcbDefines::ALL_DESKTOPS:desktop );
 
     }
     #endif

@@ -154,12 +154,12 @@ bool BaseCoreApplication::_processCommand( Server::ServerCommand command )
     switch( command.command() )
     {
 
-        case Server::ServerCommand::Accepted:
+        case Server::ServerCommand::CommandType::Accepted:
         realizeWidget();
         return true;
 
-        case Server::ServerCommand::Abort:
-        case Server::ServerCommand::Denied:
+        case Server::ServerCommand::CommandType::Abort:
+        case Server::ServerCommand::CommandType::Denied:
         qApp->quit();
         return true;
 

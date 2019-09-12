@@ -24,6 +24,7 @@
 
 #include "CommandLineArguments.h"
 #include "Counter.h"
+#include "CppUtil.h"
 #include "Debug.h"
 #include "Operators.h"
 #include "TimeStamp.h"
@@ -45,7 +46,7 @@ namespace Server
         public:
 
         //* command type
-        enum CommandType
+        enum class CommandType
         {
             None,
             Accepted,
@@ -67,7 +68,7 @@ namespace Server
         using List = QList<ServerCommand>;
 
         //* constructor
-        explicit ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = None );
+        explicit ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = CommandType::None );
 
         //*@name accessors
         //@{
@@ -103,10 +104,7 @@ namespace Server
 
         //* option
         const XmlOption& option() const
-        {
-            Q_ASSERT( command() == ServerCommand::Option );
-            return option_;
-        }
+        { return option_; }
 
         //@}
 
@@ -131,10 +129,7 @@ namespace Server
 
         //* option
         void setXmlOption( const XmlOption& option )
-        {
-            Q_ASSERT( command() == ServerCommand::Option );
-            option_ = option;
-        }
+        { option_ = option; }
 
         //@}
 
@@ -170,6 +165,8 @@ namespace Server
         friend QDataStream& operator >> (QDataStream&, ServerCommand& );
         //@}
     };
+
+    using ::qHash;
 
     //* equal-to operator
     inline bool operator == ( const ServerCommand& first, const ServerCommand& second )

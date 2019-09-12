@@ -139,14 +139,14 @@ namespace Svg
         OverlayHints overlayHints_ = OverlayNone;
 
         //* painting hints
-        enum Hint
+        enum class Hint
         {
             HintNone,
             HintComposeOverBorder,
         };
 
         //* painting hints
-        Hint hints_ = HintNone;
+        Hint hints_ = Hint::HintNone;
 
         //* prefix for loading mask
         QString maskPrefix_;

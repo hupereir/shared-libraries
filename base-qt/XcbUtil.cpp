@@ -315,7 +315,7 @@ bool XcbUtil::isSupported( AtomId atomId ) const
     { return iter.value(); }
 
     bool found( false );
-    xcb_atom_t netSupported( *d->atom( _NET_SUPPORTED ) );
+    xcb_atom_t netSupported( *d->atom( AtomId::_NET_SUPPORTED ) );
     xcb_atom_t searched( *d->atom( atomId ) );
 
     uint32_t offset(0);
@@ -360,7 +360,7 @@ bool XcbUtil::isRealWindow( WId window ) const
     if( !isX11() ) return false;
 
     xcb_connection_t* connection( d->connection() );
-    xcb_atom_t atom( *d->atom( XcbDefines::WM_STATE ) );
+    xcb_atom_t atom( *d->atom( XcbDefines::AtomId::WM_STATE ) );
 
     xcb_get_property_cookie_t cookie = xcb_get_property( connection, 0, window, atom,  XCB_ATOM_ANY, 0, XcbDefines::MAX_PROP_SIZE );
     XcbUtil::ScopedPointer<xcb_get_property_reply_t> reply( xcb_get_property_reply( connection, cookie, nullptr ) );
@@ -380,9 +380,9 @@ bool XcbUtil::hasState( WId window, AtomId atomId ) const
     #if WITH_XCB
 
     // make sure atoms are supported
-    if( !( isSupported( _NET_WM_STATE ) && isSupported( atomId ) ) ) return false;
+    if( !( isSupported( AtomId::_NET_WM_STATE ) && isSupported( atomId ) ) ) return false;
 
-    xcb_atom_t netWMState( *d->atom(_NET_WM_STATE) );
+    xcb_atom_t netWMState( *d->atom(AtomId::_NET_WM_STATE) );
     xcb_atom_t searched( *d->atom( atomId ) );
 
     uint32_t offset(0);
@@ -414,8 +414,8 @@ void XcbUtil::printState( WId window ) const
     #if WITH_XCB
 
     // make sure atom is supported
-    if( !isSupported( _NET_WM_STATE ) ) return;
-    xcb_atom_t netWMState( *d->atom(_NET_WM_STATE) );
+    if( !isSupported( AtomId::_NET_WM_STATE ) ) return;
+    xcb_atom_t netWMState( *d->atom(AtomId::_NET_WM_STATE) );
 
     uint32_t offset(0);
     QStringList atomNames;
@@ -480,7 +480,7 @@ QIcon XcbUtil::icon( WId window ) const
 
         // connection and atom
         auto connection( d->connection() );
-        auto atom( *d->atom( _NET_WM_ICON ) );
+        auto atom( *d->atom( AtomId::_NET_WM_ICON ) );
 
         uint32_t offset(0);
         ScopedPointer<xcb_get_property_reply_t> reply;
@@ -584,7 +584,7 @@ bool XcbUtil::moveResizeWidget(
     if( !isX11() ) return false;
 
     // check
-    if( !isSupported( _NET_WM_MOVERESIZE ) ) return false;
+    if( !isSupported( AtomId::_NET_WM_MOVERESIZE ) ) return false;
 
     #if QT_VERSION >= 0x050300
     auto localPosition( widget->mapFromGlobal( position ) );
@@ -603,7 +603,7 @@ bool XcbUtil::moveResizeWidget(
     xcb_ungrab_pointer( d->connection(), XCB_TIME_CURRENT_TIME );
 
     // move resize event
-    auto moveWMResize( *d->atom( _NET_WM_MOVERESIZE ) );
+    auto moveWMResize( *d->atom( AtomId::_NET_WM_MOVERESIZE ) );
     xcb_client_message_event_t clientMessageEvent;
     memset(&clientMessageEvent, 0, sizeof(clientMessageEvent));
 
@@ -613,7 +613,7 @@ bool XcbUtil::moveResizeWidget(
     clientMessageEvent.window = widget->winId();
     clientMessageEvent.data.data32[0] = position.x();
     clientMessageEvent.data.data32[1] = position.y();
-    clientMessageEvent.data.data32[2] = direction;
+    clientMessageEvent.data.data32[2] = Base::toIntegralType( direction );
     clientMessageEvent.data.data32[3] = button;
     clientMessageEvent.data.data32[4] = 0;
 
@@ -637,9 +637,9 @@ bool XcbUtil::_changeState( QWidget* widget, AtomId atom, bool state ) const
     #if WITH_XCB
 
     // make sure atoms are supported
-    if( !( isSupported( _NET_WM_STATE ) && isSupported( atom ) ) ) return false;
+    if( !( isSupported( AtomId::_NET_WM_STATE ) && isSupported( atom ) ) ) return false;
 
-    xcb_atom_t netWMState( *d->atom(_NET_WM_STATE) );
+    xcb_atom_t netWMState( *d->atom(AtomId::_NET_WM_STATE) );
     xcb_atom_t searched( *d->atom( atom ) );
 
     QVector<xcb_atom_t> atoms;
@@ -693,9 +693,9 @@ bool XcbUtil::_requestStateChange( QWidget* widget, AtomId atom, bool value ) co
     #if WITH_XCB
 
     // make sure atoms are supported
-    if( !( isSupported( _NET_WM_STATE ) && isSupported( atom ) ) ) return false;
+    if( !( isSupported( AtomId::_NET_WM_STATE ) && isSupported( atom ) ) ) return false;
 
-    xcb_atom_t netWMState( *d->atom(_NET_WM_STATE) );
+    xcb_atom_t netWMState( *d->atom(AtomId::_NET_WM_STATE) );
     xcb_atom_t requested( *d->atom( atom ) );
 
     // create event

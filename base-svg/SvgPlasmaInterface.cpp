@@ -172,7 +172,7 @@ namespace Svg
         File filename;
         const bool found =
             !( filename = _findImage( path_, imagePath_ ) ).isEmpty() ||
-            !( filename = _findImage( path_, WidgetBackground ) ).isEmpty();
+            !( filename = _findImage( path_, ImagePath::WidgetBackground ) ).isEmpty();
 
         // construct full filename base on theme and transparency setting
         bool changed( false );
@@ -256,7 +256,7 @@ namespace Svg
                     if( file.exists() ) themePaletteFileName_ = file;
                 }
 
-                if( !_findImage( themePath, WidgetBackground ).isEmpty() )
+                if( !_findImage( themePath, ImagePath::WidgetBackground ).isEmpty() )
                 { return _setPath( themePath ); }
 
             }
@@ -298,9 +298,9 @@ namespace Svg
         switch( id )
         {
             default:
-            case WidgetBackground: return File( "widgets/background" );
-            case DialogBackground: return File( "dialogs/background" );
-            case WidgetTranslucentBackground: return  File( "widgets/translucentbackground" );
+            case ImagePath::WidgetBackground: return File( "widgets/background" );
+            case ImagePath::DialogBackground: return File( "dialogs/background" );
+            case ImagePath::WidgetTranslucentBackground: return  File( "widgets/translucentbackground" );
         }
 
     }

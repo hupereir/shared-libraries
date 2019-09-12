@@ -70,7 +70,7 @@ namespace Ssh
         private:
 
         //* command list
-        enum Command
+        enum class Command
         {
             None,
             Connect,

@@ -121,7 +121,7 @@ class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
     //* move widget using X11 window manager
     /** returns true on success */
     bool moveWidget( QWidget* widget, QPoint position )
-    { return moveResizeWidget( widget, position, XcbUtil::_NET_WM_MOVERESIZE_MOVE ); }
+    { return moveResizeWidget( widget, position, XcbUtil::Direction::_NET_WM_MOVERESIZE_MOVE ); }
 
     //* move/resize widget using X11 window manager
     /** returns true on success */

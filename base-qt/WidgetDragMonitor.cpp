@@ -31,7 +31,7 @@ WidgetDragMonitor::WidgetDragMonitor( QWidget* parent ):
     clickCounter_( this, 2 ),
     button_( Qt::NoButton ),
     target_( nullptr ),
-    direction_( XcbDefines::_NET_WM_MOVERESIZE_MOVE ),
+    direction_( XcbDefines::Direction::_NET_WM_MOVERESIZE_MOVE ),
     isDragging_( false )
 { parent->installEventFilter(this); }
 
@@ -66,7 +66,7 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
 
                 } else if( mode_ & ModeFlag::DragMove ) {
 
-                    direction_ = XcbDefines::_NET_WM_MOVERESIZE_MOVE;
+                    direction_ = XcbDefines::Direction::_NET_WM_MOVERESIZE_MOVE;
                     timer_.start( QApplication::doubleClickInterval(), this );
 
                     // handle multiple clicks
@@ -125,7 +125,7 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
 
             } else {
 
-                if( (mode_ & ModeFlag::DragMove) && direction_ == XcbDefines::_NET_WM_MOVERESIZE_MOVE )
+                if( (mode_ & ModeFlag::DragMove) && direction_ == XcbDefines::Direction::_NET_WM_MOVERESIZE_MOVE )
                 {
 
                     // drag
@@ -147,22 +147,22 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
                     {
 
                         default:
-                        case XcbDefines::_NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT:
+                        case XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT:
                         newRect.setWidth( dragSize_.width() + offset.x() );
                         newRect.setHeight( dragSize_.height() + offset.y() );
                         break;
 
-                        case XcbDefines::_NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT:
+                        case XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT:
                         newRect.setLeft( mouseEvent->globalPos().x() );
                         newRect.setHeight( dragSize_.height() + offset.y() );
                         break;
 
-                        case XcbDefines::_NET_WM_MOVERESIZE_SIZE_TOPRIGHT:
+                        case XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_TOPRIGHT:
                         newRect.setWidth( dragSize_.width() + offset.x() );
                         newRect.setTop( mouseEvent->globalPos().y() );
                         break;
 
-                        case XcbDefines::_NET_WM_MOVERESIZE_SIZE_TOPLEFT:
+                        case XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_TOPLEFT:
                         newRect.setLeft( mouseEvent->globalPos().x() );
                         newRect.setTop( mouseEvent->globalPos().y() );
                         break;
@@ -204,8 +204,8 @@ XcbDefines::Direction WidgetDragMonitor::_direction( QWidget* widget, const QPoi
 {
     const int halfWidth( widget->width()/2 );
     const int halfHeight( widget->height()/2 );
-    if( point.x() < halfWidth ) return point.y() < halfHeight ?  XcbDefines::_NET_WM_MOVERESIZE_SIZE_TOPLEFT: XcbDefines::_NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT;
-    else return point.y() < halfHeight ? XcbDefines::_NET_WM_MOVERESIZE_SIZE_TOPRIGHT: XcbDefines::_NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT;
+    if( point.x() < halfWidth ) return point.y() < halfHeight ?  XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_TOPLEFT: XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_BOTTOMLEFT;
+    else return point.y() < halfHeight ? XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_TOPRIGHT: XcbDefines::Direction::_NET_WM_MOVERESIZE_SIZE_BOTTOMRIGHT;
 }
 
 //___________________________________________________________
@@ -235,7 +235,7 @@ void WidgetDragMonitor::_resetDrag()
 {
     if( target_ ) target_->unsetCursor();
     target_ = nullptr;
-    direction_ = XcbDefines::_NET_WM_MOVERESIZE_MOVE;
+    direction_ = XcbDefines::Direction::_NET_WM_MOVERESIZE_MOVE;
     button_ = Qt::NoButton;
     dragPosition_ = QPoint();
     timer_.stop();

@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "SshFileWriteSocket.h"
+#include "CppUtil.h"
 #include "Debug.h"
 
 #include <QElapsedTimer>
@@ -48,16 +49,16 @@ namespace Ssh
 
         // make sure timer is running
         if( timer_.isActive() ) timer_.stop();
-        _addCommand( Connect );
+        _addCommand( Command::Connect );
 
     }
 
     //_______________________________________________________________________
     void FileWriteSocket::sendEof()
     {
-        _addCommand( SendEof );
-        _addCommand( WaitForEof );
-        _addCommand( WaitForClosed );
+        _addCommand( Command::SendEof );
+        _addCommand( Command::WaitForEof );
+        _addCommand( Command::WaitForClosed );
     }
 
     //_______________________________________________________________________
@@ -108,7 +109,7 @@ namespace Ssh
     //_______________________________________________
     void FileWriteSocket::_addCommand( Command command )
     {
-        Debug::Throw() << "Ssh::FileWriteSocket::_AddCommand: " << command << endl;
+        Debug::Throw() << "Ssh::FileWriteSocket::_AddCommand: " << Base::toIntegralType( command ) << endl;
         commands_.append( command );
         if( !timer_.isActive() ) timer_.start( _latency(), this );
     }
@@ -124,26 +125,26 @@ namespace Ssh
         switch( commands_.front() )
         {
 
-            case Connect:
+            case Command::Connect:
             {
                 if( _tryConnect() && !commands_.empty() ) commands_.removeFirst();
                 return true;
             }
 
-            case SendEof:
+            case Command::SendEof:
             {
                 if( _trySendEof() && !commands_.empty() ) commands_.removeFirst();
                 return true;
             }
 
 
-            case WaitForEof:
+            case Command::WaitForEof:
             {
                 if( _tryWaitEof() && !commands_.empty() ) commands_.removeFirst();
                 return true;
             }
 
-            case WaitForClosed:
+            case Command::WaitForClosed:
             {
                 if( _tryClose() && !commands_.empty() ) commands_.removeFirst();
                 return true;

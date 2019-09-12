@@ -126,8 +126,8 @@ namespace Server
             // its expiration means it could not recieve acceptation/denial
             // from the server it is connected to.
             // the application is then set to Alive
-            if( state_ == AwaitingReply && setState( Alive ) )
-            { emit commandRecieved( ServerCommand( id_, ServerCommand::Accepted ) ); }
+            if( state_ == State::AwaitingReply && setState( State::Alive ) )
+            { emit commandRecieved( ServerCommand( id_, ServerCommand::CommandType::Accepted ) ); }
 
         }
 
@@ -164,7 +164,7 @@ namespace Server
         switch( command.command() )
         {
 
-            case ServerCommand::Unlock:
+            case ServerCommand::CommandType::Unlock:
             {
 
                 // unlock request. Clear list of registered applications
@@ -173,7 +173,7 @@ namespace Server
 
             }
 
-            case ServerCommand::Request:
+            case ServerCommand::CommandType::Request:
             {
 
                 // server request
@@ -191,28 +191,28 @@ namespace Server
                     {
 
                         // abort existing client
-                        sender->sendCommand( ServerCommand( command.id(), ServerCommand::Denied ) );
-                        _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
+                        sender->sendCommand( ServerCommand( command.id(), ServerCommand::CommandType::Denied ) );
+                        _broadcast( ServerCommand( command.id(), ServerCommand::CommandType::Identify ), sender );
                         _register( command.id(), sender, true );
 
                     } else {
 
                         // tell client it is accepted
-                        sender->sendCommand( ServerCommand( command.id(), ServerCommand::Accepted ) );
-                        _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
+                        sender->sendCommand( ServerCommand( command.id(), ServerCommand::CommandType::Accepted ) );
+                        _broadcast( ServerCommand( command.id(), ServerCommand::CommandType::Identify ), sender );
 
                     }
 
                 } else if( parser.hasFlag( "--replace" ) ) {
 
                     // tell existing client to die
-                    ServerCommand abortCommand( command.id(), ServerCommand::Abort );
+                    ServerCommand abortCommand( command.id(), ServerCommand::CommandType::Abort );
                     existingClient->sendCommand( abortCommand );
-                    _broadcast( ServerCommand( command.id(), ServerCommand::Killed ), existingClient );
+                    _broadcast( ServerCommand( command.id(), ServerCommand::CommandType::Killed ), existingClient );
 
                     // tell new client it is accepted
-                    sender->sendCommand( ServerCommand( command.id(), ServerCommand::Accepted ) );
-                    _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
+                    sender->sendCommand( ServerCommand( command.id(), ServerCommand::CommandType::Accepted ) );
+                    _broadcast( ServerCommand( command.id(), ServerCommand::CommandType::Identify ), sender );
                     _register( command.id(), sender, true );
 
                     // update iterator pid
@@ -221,19 +221,19 @@ namespace Server
                 } else if( parser.hasFlag( "--abort" ) ) {
 
                     // tell existing client to die
-                    ServerCommand abortCommand( command.id(), ServerCommand::Abort );
+                    ServerCommand abortCommand( command.id(), ServerCommand::CommandType::Abort );
                     existingClient->sendCommand( abortCommand );
-                    _broadcast( ServerCommand( command.id(), ServerCommand::Killed ), existingClient );
+                    _broadcast( ServerCommand( command.id(), ServerCommand::CommandType::Killed ), existingClient );
 
                     // tell new client it is denied too
-                    sender->sendCommand( ServerCommand( command.id(), ServerCommand::Denied ) );
-                    _broadcast( ServerCommand( command.id(), ServerCommand::Identify ), sender );
+                    sender->sendCommand( ServerCommand( command.id(), ServerCommand::CommandType::Denied ) );
+                    _broadcast( ServerCommand( command.id(), ServerCommand::CommandType::Identify ), sender );
                     _register( command.id(), sender, true );
 
                 } else {
 
                     // tell existing client to raise itself
-                    ServerCommand raiseCommand( command.id(), ServerCommand::Raise );
+                    ServerCommand raiseCommand( command.id(), ServerCommand::CommandType::Raise );
                     raiseCommand.setArguments( command.arguments() );
                     existingClient->sendCommand( raiseCommand );
 
@@ -242,19 +242,19 @@ namespace Server
                 return;
             }
 
-            case ServerCommand::Alive:
+            case ServerCommand::CommandType::Alive:
             {
                 // client exist and is alive. Deny current
-                _broadcast( ServerCommand( command.id(), ServerCommand::Denied ) );
+                _broadcast( ServerCommand( command.id(), ServerCommand::CommandType::Denied ) );
                 return;
 
             }
 
-            case ServerCommand::Identify:
+            case ServerCommand::CommandType::Identify:
             {
 
                 // identify the server
-                sender->sendCommand( ServerCommand( id_, ServerCommand::IdentifyServer ) );
+                sender->sendCommand( ServerCommand( id_, ServerCommand::CommandType::IdentifyServer ) );
 
                 /*
                 identification request. Loop over registered clients
@@ -262,7 +262,7 @@ namespace Server
                 */
 
                 for( auto&& it=acceptedClients_.begin(); it!=acceptedClients_.end(); it++ )
-                { sender->sendCommand( ServerCommand( it.key(), ServerCommand::Identify ) ); }
+                { sender->sendCommand( ServerCommand( it.key(), ServerCommand::CommandType::Identify ) ); }
 
                 return;
             }
@@ -324,7 +324,7 @@ namespace Server
             {
 
                 // broadcast client as dead and erase from list
-                _broadcast( ServerCommand( iter.key(), ServerCommand::Killed ), iter.value() );
+                _broadcast( ServerCommand( iter.key(), ServerCommand::CommandType::Killed ), iter.value() );
                 iter = acceptedClients_.erase( iter );
 
             } else ++iter;
@@ -349,7 +349,7 @@ namespace Server
             timer_.stop();
 
             // do nothing if client has already been denied connection
-            if( state_ == Dead ) return;
+            if( state_ == State::Dead ) return;
 
             // try initialize server
             if( !serverInitialized_ )
@@ -358,9 +358,9 @@ namespace Server
                 _initializeServer();
                 _initializeClient();
 
-            } else if( setState( Alive  ) ) {
+            } else if( setState( State::Alive  ) ) {
 
-                emit commandRecieved( ServerCommand( id_, ServerCommand::Accepted ) );
+                emit commandRecieved( ServerCommand( id_, ServerCommand::CommandType::Accepted ) );
 
             }
 
@@ -400,38 +400,38 @@ namespace Server
         switch( command.command() )
         {
 
-            case ServerCommand::Raise:
-            if( state_ == Alive )
+            case ServerCommand::CommandType::Raise:
+            if( state_ == State::Alive )
             {
 
-                client_->sendCommand( ServerCommand( id_, ServerCommand::Alive ) );
+                client_->sendCommand( ServerCommand( id_, ServerCommand::CommandType::Alive ) );
                 emit commandRecieved( command );
 
             }
             break;
 
-            case ServerCommand::Denied:
-            if( state_ == AwaitingReply )
+            case ServerCommand::CommandType::Denied:
+            if( state_ == State::AwaitingReply )
             {
                 timer_.stop();
-                if( setState( Dead ) ) emit commandRecieved( command );
+                if( setState( State::Dead ) ) emit commandRecieved( command );
             }
             break;
 
 
-            case ServerCommand::Abort:
-            if( state_ == Alive )
+            case ServerCommand::CommandType::Abort:
+            if( state_ == State::Alive )
             {
                 timer_.stop();
-                if( setState( Dead ) ) emit commandRecieved( command );
+                if( setState( State::Dead ) ) emit commandRecieved( command );
             }
             break;
 
-            case ServerCommand::Accepted:
-            if( state_ == AwaitingReply )
+            case ServerCommand::CommandType::Accepted:
+            if( state_ == State::AwaitingReply )
             {
                 timer_.stop();
-                if( setState( Alive ) ) emit commandRecieved( command );
+                if( setState( State::Alive ) ) emit commandRecieved( command );
             }
             break;
 
@@ -478,10 +478,10 @@ namespace Server
 
         // emit initialization signal
         emit initialized();
-        setState( AwaitingReply );
+        setState( State::AwaitingReply );
 
         // create request command
-        ServerCommand command( id_, ServerCommand::Request );
+        ServerCommand command( id_, ServerCommand::CommandType::Request );
 
         // add command line arguments if any
         command.setArguments( arguments_ );

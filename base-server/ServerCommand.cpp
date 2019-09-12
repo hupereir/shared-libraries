@@ -31,20 +31,20 @@ namespace Server
     const ServerCommand::CommandMap& ServerCommand::_commandNames()
     {
         static const auto names = Base::makeT<CommandMap>( {
-            { None, "" },
-            { Accepted, QObject::tr( "Accepted" ) },
-            { Denied, QObject::tr( "Denied" ) },
-            { Abort, QObject::tr( "Abort" ) },
-            { Identify, QObject::tr( "Identify" ) },
-            { IdentifyServer, QObject::tr( "Server" ) },
-            { Killed, QObject::tr( "Killed" ) },
-            { Raise, QObject::tr( "Raise" ) },
-            { Alive, QObject::tr( "Alive" ) },
-            { Request, QObject::tr( "Request" ) },
-            { Unlock, QObject::tr( "Unlock" ) },
-            { GeometryRequest, QObject::tr(  "Request geometry" ) },
-            { Geometry, QObject::tr( "Send geometry" ) },
-            { Option, QObject::tr( "Option" ) }
+            { CommandType::None, "" },
+            { CommandType::Accepted, QObject::tr( "Accepted" ) },
+            { CommandType::Denied, QObject::tr( "Denied" ) },
+            { CommandType::Abort, QObject::tr( "Abort" ) },
+            { CommandType::Identify, QObject::tr( "Identify" ) },
+            { CommandType::IdentifyServer, QObject::tr( "Server" ) },
+            { CommandType::Killed, QObject::tr( "Killed" ) },
+            { CommandType::Raise, QObject::tr( "Raise" ) },
+            { CommandType::Alive, QObject::tr( "Alive" ) },
+            { CommandType::Request, QObject::tr( "Request" ) },
+            { CommandType::Unlock, QObject::tr( "Unlock" ) },
+            { CommandType::GeometryRequest, QObject::tr(  "Request geometry" ) },
+            { CommandType::Geometry, QObject::tr( "Send geometry" ) },
+            { CommandType::Option, QObject::tr( "Option" ) }
         });
         return names;
     }

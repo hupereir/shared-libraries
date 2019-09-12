@@ -47,7 +47,7 @@ namespace Svg
     //@{
 
     //* image path
-    enum ImagePath
+    enum class ImagePath
     {
         DialogBackground,
         WidgetBackground,
@@ -132,7 +132,7 @@ namespace Svg
     bool valid_ = false;
 
     //* type of svg to be loaded
-    ImagePath imagePath_ = WidgetBackground;
+    ImagePath imagePath_ = ImagePath::WidgetBackground;
 
     //* path to file name
     /** loaded from plasma configuration */

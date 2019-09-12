@@ -160,9 +160,9 @@ namespace Ssh
         libssh2_session_set_blocking(session, 0);
 
         // request handshake and agent connection
-        addCommand( Connect );
-        addCommand( Handshake );
-        addCommand( ConnectAgent );
+        addCommand( Command::Connect );
+        addCommand( Command::Handshake );
+        addCommand( Command::ConnectAgent );
 
         return true;
         #else
@@ -178,16 +178,16 @@ namespace Ssh
         Debug::Throw( "Ssh::Connection::authenticate.\n" );
 
         // authentication
-        if( forceRequestIdentity ) addCommand(Connection::RequestIdentity);
+        if( forceRequestIdentity ) addCommand(Command::RequestIdentity);
 
-        addCommand(Connection::LoadAuthenticationMethods);
-        addCommand(Connection::ListIdentities);
-        addCommand(Connection::AuthenticateWithAgent);
+        addCommand(Command::LoadAuthenticationMethods);
+        addCommand(Command::ListIdentities);
+        addCommand(Command::AuthenticateWithAgent);
 
         if( !( forceRequestIdentity || attributes_.rememberPassword() ) )
-        { addCommand(Connection::RequestIdentity); }
+        { addCommand(Command::RequestIdentity); }
 
-        addCommand(Connection::AuthenticateWithPassword);
+        addCommand(Command::AuthenticateWithPassword);
         return true;
 
     }
@@ -372,14 +372,14 @@ namespace Ssh
 
         #if WITH_SSH
 
-        Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << " (" << commands_.front() << ")" << endl;
+        Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << " (" << Base::toIntegralType( commands_.front() ) << ")" << endl;
 
         // cast session. It is used for almost all commands
         auto session( static_cast<LIBSSH2_SESSION*>(session_) );
         switch( commands_.front() )
         {
 
-            case Connect:
+            case Command::Connect:
             {
 
                 // check host
@@ -434,7 +434,7 @@ namespace Ssh
             break;
 
 
-            case Handshake:
+            case Command::Handshake:
             {
                 const auto result( libssh2_session_handshake( session, sshSocket_ ) );
                 if( !result )
@@ -454,7 +454,7 @@ namespace Ssh
             }
             break;
 
-            case ConnectAgent:
+            case Command::ConnectAgent:
             if( !agent_ )
             {
 
@@ -477,7 +477,7 @@ namespace Ssh
             }
             break;
 
-            case RequestIdentity:
+            case Command::RequestIdentity:
             {
                 // login dialog
                 LoginDialog dialog( nullptr );
@@ -510,7 +510,7 @@ namespace Ssh
             }
             break;
 
-            case LoadAuthenticationMethods:
+            case Command::LoadAuthenticationMethods:
             {
                 if( !(authenticationMethods_ = libssh2_userauth_list( session, qPrintable( attributes_.userName() ), attributes_.userName().size() )).isNull() )
                 {
@@ -529,7 +529,7 @@ namespace Ssh
             }
             break;
 
-            case ListIdentities:
+            case Command::ListIdentities:
             if( !agent_ )
             {
 
@@ -559,7 +559,7 @@ namespace Ssh
             }
             break;
 
-            case AuthenticateWithAgent:
+            case Command::AuthenticateWithAgent:
             if( !agent_ )
             {
 
@@ -624,7 +624,7 @@ namespace Ssh
             }
             break;
 
-            case AuthenticateWithPassword:
+            case Command::AuthenticateWithPassword:
             if( !authenticationMethods_.contains( "password" ) )
             {
 
@@ -813,14 +813,14 @@ namespace Ssh
     {
         using CommandHash = QHash<Command,QString>;
         static const auto commandNames = Base::makeT<CommandHash>( {
-            { Connect, tr( "Connecting to host" ) },
-            { Handshake, tr( "Performing SSH handshake" ) },
-            { ConnectAgent, tr( "Connecting to SSH agent" ) },
-            { RequestIdentity, tr( "Waiting for user authentication" ) },
-            { LoadAuthenticationMethods, tr( "Loading authentication methods" ) },
-            { ListIdentities, tr( "Loading existing identities" ) },
-            { AuthenticateWithAgent, tr( "Trying to authenticate using SSH agent" ) },
-            { AuthenticateWithPassword, tr( "Trying to authenticate using password" ) }
+            { Command::Connect, tr( "Connecting to host" ) },
+            { Command::Handshake, tr( "Performing SSH handshake" ) },
+            { Command::ConnectAgent, tr( "Connecting to SSH agent" ) },
+            { Command::RequestIdentity, tr( "Waiting for user authentication" ) },
+            { Command::LoadAuthenticationMethods, tr( "Loading authentication methods" ) },
+            { Command::ListIdentities, tr( "Loading existing identities" ) },
+            { Command::AuthenticateWithAgent, tr( "Trying to authenticate using SSH agent" ) },
+            { Command::AuthenticateWithPassword, tr( "Trying to authenticate using password" ) }
         });
 
         return commandNames[command];

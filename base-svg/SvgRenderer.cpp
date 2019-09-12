@@ -68,8 +68,8 @@ namespace Svg
             else if( elementExists( "hint-overlay-tile-horizontal" ) ) overlayHints_ |= OverlayTileHorizontal;
             else if( elementExists( "hint-overlay-tile-vertical") ) overlayHints_ |= OverlayTileVertical;
 
-            hints_ = HintNone;
-            if( elementExists( "hint-compose-over-border" ) ) hints_ = HintComposeOverBorder;
+            hints_ = Hint::HintNone;
+            if( elementExists( "hint-compose-over-border" ) ) hints_ = Hint::HintComposeOverBorder;
 
             if( _hasPrefix( "mask-overlay" ) ) maskPrefix_ = "mask-overlay";
             else if( _hasPrefix( "mask" ) ) maskPrefix_ = "mask";
@@ -263,7 +263,7 @@ namespace Svg
         }
 
         // center
-        if( hints_ & HintComposeOverBorder )
+        if( hints_ == Hint::HintComposeOverBorder )
         {
             QImage centerImage( size, QImage::Format_ARGB32_Premultiplied );
             centerImage.fill( Qt::transparent );
@@ -272,7 +272,7 @@ namespace Svg
         }
 
         // set mask
-        if( !maskPrefix_.isEmpty() && ((hints_ & HintComposeOverBorder) || (drawOverlay_ && hasOverlay_ )) )
+        if( !maskPrefix_.isEmpty() && ((hints_ == Hint::HintComposeOverBorder) || (drawOverlay_ && hasOverlay_ )) )
         {
             // create mask
             QImage maskImage( size, QImage::Format_ARGB32_Premultiplied );
@@ -291,7 +291,7 @@ namespace Svg
         mainImage.fill( Qt::transparent );
 
         //
-        if( hints_ & HintComposeOverBorder ) _render( mainImage, "", Ring );
+        if( hints_ == Hint::HintComposeOverBorder ) _render( mainImage, "", Ring );
         else  _render( mainImage );
 
         painter.drawImage( QPoint(0,0), mainImage );

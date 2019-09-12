@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "CppUtil.h"
 #include "SshConnectionAttributes.h"
 #include "SshTunnelAttributes.h"
 #include "WeakPointer.h"
@@ -113,7 +114,7 @@ namespace Ssh
         bool authenticate( bool forceRequestIdentity = false );
 
         //* command list
-        enum Command
+        enum class Command
         {
             None,
             Connect,
@@ -233,7 +234,7 @@ namespace Ssh
         //* command list
         using CommandList = QList<Command>;
         CommandList commands_;
-        Command lastCommand_ = None;
+        Command lastCommand_ = Command::None;
 
         //* timer
         QBasicTimer timer_;
@@ -242,6 +243,9 @@ namespace Ssh
         int latency_ = 10;
 
     };
+
+    using ::qHash;
+
 }
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( Ssh::Connection::StateMask );

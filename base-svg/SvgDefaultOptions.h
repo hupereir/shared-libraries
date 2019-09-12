@@ -20,8 +20,9 @@
 *
 *******************************************************************************/
 
-#include "XmlOptions.h"
+#include "CppUtil.h"
 #include "SvgPlasmaInterface.h"
+#include "XmlOptions.h"
 
 //_____________________________________________________
 //* default options installer
@@ -35,7 +36,7 @@ void installSvgOptions()
     XmlOptions::get().set<bool>( "USE_SVG", true );
     XmlOptions::get().set<bool>( "SVG_USE_PLASMA_INTERFACE", true );
     XmlOptions::get().set<bool>( "SVG_DRAW_OVERLAY", false );
-    XmlOptions::get().set<int>( "SVG_PLASMA_IMAGE_PATH", Svg::SvgPlasmaInterface::WidgetBackground );
+    XmlOptions::get().set<int>( "SVG_PLASMA_IMAGE_PATH", Base::toIntegralType( Svg::SvgPlasmaInterface::ImagePath::WidgetBackground ) );
     XmlOptions::get().setAutoDefault( false );
 }
 

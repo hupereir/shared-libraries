@@ -80,7 +80,7 @@ namespace Server
         void setApplicationName( const QString& );
 
         //* application state enumeration
-        enum State
+        enum class State
         {
 
             StateUnknown,
@@ -219,7 +219,7 @@ namespace Server
         ApplicationId id_;
 
         //* manager status
-        State state_ = AwaitingReply;
+        State state_ = State::AwaitingReply;
 
         //* reply timeout
         QBasicTimer timer_;

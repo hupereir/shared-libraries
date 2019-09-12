@@ -37,7 +37,7 @@ class XcbDefines
     static const uint32_t ALL_DESKTOPS = ~0;
 
     //* Atoms enumeration
-    enum AtomId {
+    enum class AtomId {
         WM_STATE,
 
         _NET_SUPPORTED,
@@ -60,7 +60,7 @@ class XcbDefines
         _KDE_NET_WM_BLUR_BEHIND_REGION
     };
 
-    enum Direction {
+    enum class Direction {
         _NET_WM_MOVERESIZE_SIZE_TOPLEFT=0,
         _NET_WM_MOVERESIZE_SIZE_TOP=1,
         _NET_WM_MOVERESIZE_SIZE_TOPRIGHT=2,
