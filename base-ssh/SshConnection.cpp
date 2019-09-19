@@ -175,7 +175,7 @@ namespace Ssh
     bool Connection::authenticate( bool forceRequestIdentity )
     {
 
-        Debug::Throw( "Ssh::Connection::authenticate.\n" );
+        Debug::Throw() << "Ssh::Connection::authenticate - forceRequestIdentity: " << forceRequestIdentity << endl;
 
         // authentication
         if( forceRequestIdentity ) addCommand(Command::RequestIdentity);
@@ -199,6 +199,16 @@ namespace Ssh
         // do nothing if already connected
         if( isConnected() ) return true;
 
+        /*
+        indicate that timer should not be restarted
+        and commands not processed from timerEvent
+        this prevents some race conditions
+        */
+        timerLocked_ = true;
+
+        // stop timer
+        if( timer_.isActive() ) timer_.stop();
+
         // setup host manually if not already set
         if( sshHost_.lookupId() < 0 )
         {
@@ -213,6 +223,9 @@ namespace Ssh
         while( (msecs < 0 || timer.elapsed() < msecs) && _processCommands() )
         { qApp->processEvents(); }
 
+        // reset flag
+        timerLocked_ = false;
+
         return isConnected();
 
     }
@@ -222,7 +235,9 @@ namespace Ssh
     {
         Debug::Throw() << "Ssh::Connection::AddCommand: " << _commandMessage( command ) << endl;
         commands_.append( command );
-        if( !timer_.isActive() ) timer_.start( latency_, this );
+        if( !( timer_.isActive() || timerLocked_ ) )
+        { timer_.start( latency_, this ); }
+
     }
 
     //_______________________________________________
@@ -339,7 +354,8 @@ namespace Ssh
         if( event->timerId() == timer_.timerId() )
         {
 
-            if( !_processCommands() && timer_.isActive() ) timer_.stop();
+            if( ( timerLocked_ || !_processCommands() ) && timer_.isActive() )
+            { timer_.stop(); }
 
         } else {
 
@@ -372,7 +388,7 @@ namespace Ssh
 
         #if WITH_SSH
 
-        Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << " (" << Base::toIntegralType( commands_.front() ) << ")" << endl;
+        Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << endl;
 
         // cast session. It is used for almost all commands
         auto session( static_cast<LIBSSH2_SESSION*>(session_) );
@@ -479,6 +495,7 @@ namespace Ssh
 
             case Command::RequestIdentity:
             {
+
                 // login dialog
                 LoginDialog dialog( nullptr );
                 dialog.setAttributes( attributes_ );

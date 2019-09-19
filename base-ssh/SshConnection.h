@@ -236,6 +236,9 @@ namespace Ssh
         CommandList commands_;
         Command lastCommand_ = Command::None;
 
+        //* true when inside waitForConnected
+        bool timerLocked_ = false;
+
         //* timer
         QBasicTimer timer_;
 
