@@ -770,6 +770,8 @@ namespace Ssh
     //_______________________________________________
     QString Connection::_sshErrorString( int error ) const
     {
+
+        #if WITH_SSH
         using ErrorHash = QHash<int,QString>;
         // error codes copied from libssh2.h
         static const auto errorStrings = Base::makeT<ErrorHash>( {
@@ -823,6 +825,9 @@ namespace Ssh
 
         auto iter = errorStrings.find( error );
         return iter == errorStrings.end() ? tr( "Unknown error - %1" ).arg( error ) : iter.value();
+        #else
+        return tr("Unknown error");
+        #endif
     }
 
     //_______________________________________________
