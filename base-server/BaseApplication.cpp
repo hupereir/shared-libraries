@@ -127,7 +127,9 @@ bool BaseApplication::realizeWidget()
     if( !BaseCoreApplication::realizeWidget() ) return false;
 
     // always enable high dpi
+    #if QT_VERSION >= 0x050000
     qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, true );
+    #endif
 
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
