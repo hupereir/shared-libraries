@@ -94,7 +94,9 @@ namespace Ssh
         //*@name modifiers
         //@{
 
-        using QObject::connect;
+        //* change latency
+        void setLatency( int latency )
+        { latency_ = latency; }
 
         //* set connection attributes
         void setAttributes( const ConnectionAttributes& attributes )
@@ -102,6 +104,8 @@ namespace Ssh
 
         //* tunnels
         bool createTunnels();
+
+        using QObject::connect;
 
         //* connect
         bool connect();
@@ -243,7 +247,7 @@ namespace Ssh
         QBasicTimer timer_;
 
         //* latency
-        int latency_ = 10;
+        int latency_ = 0;
 
     };
 
