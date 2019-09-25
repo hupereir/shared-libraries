@@ -755,6 +755,7 @@ namespace Ssh
             while( auto tcpSocket = tcpServer->nextPendingConnection() )
             {
                 auto tunnel = new Tunnel( this, tcpSocket );
+                tunnel->sshSocket()->setLatency( tunnelLatency_);
                 tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
 
                 connect( tunnel, SIGNAL(error(QString)), SLOT(_notifyError(QString)) );

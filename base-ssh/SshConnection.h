@@ -98,6 +98,10 @@ namespace Ssh
         void setLatency( int latency )
         { latency_ = latency; }
 
+        //* change tunnel latency
+        void setTunnelLatency( int latency )
+        { tunnelLatency_ = latency; }
+
         //* set connection attributes
         void setAttributes( const ConnectionAttributes& attributes )
         { attributes_ = attributes; }
@@ -248,6 +252,9 @@ namespace Ssh
 
         //* latency
         int latency_ = 10;
+
+        //* tunnel latency
+        int tunnelLatency_ = 10;
 
     };
 
