@@ -47,7 +47,7 @@ namespace Ssh
         if( !isConnected() ) return true;
 
         #if WITH_SSH
-        return libssh2_channel_eof( reinterpret_cast<LIBSSH2_CHANNEL*>(channel_) );
+        return libssh2_channel_eof( static_cast<LIBSSH2_CHANNEL*>(channel_) );
         #else
         return true;
         #endif
@@ -65,7 +65,7 @@ namespace Ssh
         // close channel
         if( isConnected() )
         {
-            auto channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
+            auto channel = static_cast<LIBSSH2_CHANNEL*>(channel_);
             libssh2_channel_close( channel );
             libssh2_channel_free( channel );
             channel_ = nullptr;
@@ -110,7 +110,7 @@ namespace Ssh
         #if WITH_SSH
 
         qint64 bytesWritten = 0;
-        LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
+        auto channel = static_cast<LIBSSH2_CHANNEL*>(channel_);
         while( bytesWritten < maxSize )
         {
 
@@ -196,8 +196,8 @@ namespace Ssh
         #if WITH_SSH
 
         // read from channel
-        LIBSSH2_CHANNEL* channel = reinterpret_cast<LIBSSH2_CHANNEL*>(channel_);
-        qint64 length =  libssh2_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_ );
+        auto channel = static_cast<LIBSSH2_CHANNEL*>(channel_);
+        auto length =  libssh2_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_ );
         if( length == LIBSSH2_ERROR_EAGAIN ) return false ;
         else if( length < 0 )
         {
