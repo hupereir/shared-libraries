@@ -139,8 +139,8 @@ bool FileThread::_updateTotalSize()
 {
 
     const auto size = std::accumulate( files_.begin(), files_.end(), qint64(0),
-        []( const qint64& size, const File& file )
-        { return file.isLink() ? size : (size + file.fileSize()); } );
+        []( qint64 size, const File& file )
+        { return file.isLink() ? std::move(size) : (std::move(size) + file.fileSize()); } );
 
     if( size >= 0 )
     {
@@ -156,6 +156,6 @@ bool FileThread::_updateTotalSize()
 void FileThread::_computeTotalSize()
 {
     totalSize_ = std::accumulate( filesRecursive_.begin(), filesRecursive_.end(), qint64(0),
-        []( const qint64& size, const File& file )
-        { return file.isLink() ? size : (size + file.fileSize()); } );
+        []( qint64 size, const File& file )
+        { return file.isLink() ? std::move(size) : (std::move(size) + file.fileSize()); } );
 }

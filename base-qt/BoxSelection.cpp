@@ -233,7 +233,7 @@ bool BoxSelection::fromString( QString input )
 
     // retrieve maximum length
     const auto columns = std::accumulate( inputList.begin(), inputList.end(),  0,
-        []( const int& columns, const QString& input ) { return qMax( columns, input.size() ); } );
+        []( int columns, const QString& input ) { return qMax( std::move(columns), input.size() ); } );
 
     // if there are more lines in current box than in the selection, fill with blank lines
     for( int i = inputList.size(); i < cursors_.size(); i++ )

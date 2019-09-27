@@ -171,8 +171,8 @@ int TextEditor::blockCount() const
     Debug::Throw( "TextEditor::blockCount.\n" );
     TextBlockRange range( document() );
     return std::accumulate( range.begin(), range.end(), 0,
-        [this]( const int& sum, const QTextBlock& block )
-        { return sum + blockCount( block ); } );
+        [this]( int sum, const QTextBlock& block )
+        { return std::move(sum) + blockCount( block ); } );
 }
 
 //________________________________________________
@@ -929,8 +929,8 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
         Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
         auto cursors( boxSelection_.cursorList() );
         counts = std::accumulate( cursors.begin(), cursors.end(), 0,
-            [this, &selection]( const int& count, QTextCursor cursor )
-            { return count + _replaceInRange( selection, cursor, CursorMode::Move ); } );
+            [this, &selection]( int count, QTextCursor cursor )
+            { return std::move(count) + _replaceInRange( selection, cursor, CursorMode::Move ); } );
 
         boxSelection_.clear();
 

@@ -141,8 +141,8 @@ void OpenWithDialog::realizeWidget()
 
         // resize list to accomodate longest item
         const auto maxWidth = std::accumulate( fileInfoList.begin(), fileInfoList.end(), 0,
-            [&treeView]( const int& value, const BaseFileInfo& fileInfo )
-            { return qMax( value, treeView->fontMetrics().width( fileInfo.file() ) ); } );
+            [&treeView]( int value, const BaseFileInfo& fileInfo )
+            { return qMax( std::move(value), treeView->fontMetrics().width( fileInfo.file() ) ); } );
 
         treeView->verticalScrollBar()->adjustSize();
         treeView->setMinimumSize( QSize(

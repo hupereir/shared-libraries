@@ -559,8 +559,8 @@ QRegion IconView::visualRegionForSelection( const QItemSelection& selection ) co
 
     auto indexes( selection.indexes() );
     return std::accumulate( indexes.begin(), indexes.end(), QRegion(),
-        [this]( const QRegion& region, const QModelIndex& index )
-        { return region + visualRect( index ); } );
+        [this]( QRegion region, const QModelIndex& index )
+        { return std::move(region) + visualRect( index ); } );
 
 }
 
