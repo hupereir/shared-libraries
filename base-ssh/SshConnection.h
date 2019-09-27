@@ -135,8 +135,13 @@ namespace Ssh
             AuthenticateWithPassword
         };
 
+        using CommandList = QList<Command>;
+
         //* add command
         void addCommand( Command );
+
+        //* add commands
+        void addCommands( const CommandList& );
 
         //* abort commands
         /* warning, if happens while SshInterface is in timer event, this might cause crash */
@@ -206,6 +211,9 @@ namespace Ssh
         //* get message command
         QString _commandMessage( Command ) const;
 
+        //* get message command
+        QString _commandMessage( const CommandList& ) const;
+
         //* process pending commands
         bool _processCommands();
 
@@ -240,7 +248,6 @@ namespace Ssh
         QString error_;
 
         //* command list
-        using CommandList = QList<Command>;
         CommandList commands_;
         Command lastCommand_ = Command::None;
 

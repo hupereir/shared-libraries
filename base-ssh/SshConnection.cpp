@@ -42,8 +42,9 @@
 #include <netinet/in.h>
 #endif
 
-#include <unistd.h>
+#include <numeric>
 #include <fcntl.h>
+#include <unistd.h>
 
 #if WITH_SSH
 #include <libssh2.h>
@@ -160,9 +161,7 @@ namespace Ssh
         libssh2_session_set_blocking(session, 0);
 
         // request handshake and agent connection
-        addCommand( Command::Connect );
-        addCommand( Command::Handshake );
-        addCommand( Command::ConnectAgent );
+        addCommands( Base::makeT<CommandList>( {  Command::Connect, Command::Handshake, Command::ConnectAgent } ) );
 
         return true;
         #else
@@ -177,17 +176,20 @@ namespace Ssh
 
         Debug::Throw() << "Ssh::Connection::authenticate - forceRequestIdentity: " << forceRequestIdentity << endl;
 
-        // authentication
-        if( forceRequestIdentity ) addCommand(Command::RequestIdentity);
+        CommandList commands;
+        if( forceRequestIdentity ) commands.append(Command::RequestIdentity);
 
-        addCommand(Command::LoadAuthenticationMethods);
-        addCommand(Command::ListIdentities);
-        addCommand(Command::AuthenticateWithAgent);
+        commands.append( Base::makeT<CommandList>( {
+            Command::LoadAuthenticationMethods,
+            Command::ListIdentities,
+            Command::AuthenticateWithAgent } ));
 
         if( !( forceRequestIdentity || attributes_.rememberPassword() ) )
-        { addCommand(Command::RequestIdentity); }
+        { commands.append(Command::RequestIdentity); }
 
-        addCommand(Command::AuthenticateWithPassword);
+        commands.append(Command::AuthenticateWithPassword);
+
+        addCommands( commands );
         return true;
 
     }
@@ -228,6 +230,15 @@ namespace Ssh
 
         return isConnected();
 
+    }
+
+    //_______________________________________________
+    void Connection::addCommands( const CommandList& commands )
+    {
+        Debug::Throw() << "Ssh::Connection::AddCommand: " << _commandMessage( commands ) << endl;
+        commands_.append( commands );
+        if( !( timer_.isActive() || timerLocked_ ) )
+        { timer_.start( latency_, this ); }
     }
 
     //_______________________________________________
@@ -832,9 +843,16 @@ namespace Ssh
     }
 
     //_______________________________________________
+    QString Connection::_commandMessage( const CommandList& commands ) const
+    {
+        return std::accumulate( commands.begin(), commands.end(), QString(),
+            [this]( QString in, const Command& command ) { return std::move( in ) + _commandMessage( command ) + '\n'; } );
+    }
+
+    //_______________________________________________
     QString Connection::_commandMessage( Command command ) const
     {
-        using CommandHash = QHash<Command,QString>;
+       using CommandHash = QHash<Command,QString>;
         static const auto commandNames = Base::makeT<CommandHash>( {
             { Command::Connect, tr( "Connecting to host" ) },
             { Command::Handshake, tr( "Performing SSH handshake" ) },
