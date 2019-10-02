@@ -85,9 +85,7 @@ class BaseFileInfo
     //* constructor
     explicit BaseFileInfo( const QString& file = QString(), TypeFlags type = None ):
         file_( file ),
-        type_( type ),
-        size_( 0 ),
-        lastModified_( -1 )
+        type_( type )
     {}
 
     //* constructor from DOM element
@@ -377,7 +375,7 @@ class BaseFileInfo
     TypeFlags type_;
 
     //* file size
-    qint64 size_;
+    qint64 size_ = 0;
 
     //* last modification
     TimeStamp lastModified_;

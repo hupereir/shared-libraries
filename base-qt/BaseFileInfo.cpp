@@ -49,7 +49,7 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
         if( attribute.name() == Xml::File ) setFile( File( attribute.value() ) );
         else if( attribute.name() == Xml::Alias || attribute.name() == Xml::Name ) setAlias( attribute.value() );
         else if( attribute.name() == Xml::Type ) setType( TypeFlags( attribute.value().toInt() ) );
-        else if( attribute.name() == Xml::Size ) setSize( attribute.value().toInt() );
+        else if( attribute.name() == Xml::Size ) setSize( attribute.value().toLongLong() );
         else if( attribute.name() == Xml::LastModified ) setLastModified( TimeStamp( attribute.value().toInt() ) );
         else if( attribute.name() == Xml::User ) setUser( attribute.value() );
         else if( attribute.name() == Xml::Group ) setGroup( attribute.value() );
