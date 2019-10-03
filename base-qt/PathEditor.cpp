@@ -457,6 +457,21 @@ File PathEditor::path() const
 }
 
 //____________________________________________________________________________
+QString PathEditor::prettyPath() const
+{
+    auto path = this->path().removeTrailingSlash();
+    if( ( truncate_ || path.isEmpty() ) )
+    {
+        if( path == File( home_ ).removeTrailingSlash() ) return "Home";
+        else if( std::any_of( rootPathList_.begin(), rootPathList_.end(), [&path]( File root )
+        { return path == root.removeTrailingSlash(); } ) ) return "Root";
+    }
+
+    return path;
+
+}
+
+//____________________________________________________________________________
 bool PathEditor::hasParent() const
 {
     if( items_.isEmpty() ) return false;

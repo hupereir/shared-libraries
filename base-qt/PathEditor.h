@@ -64,6 +64,9 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     //* path
     File path() const;
 
+    //* pretty path (for window title)
+    QString prettyPath() const;
+
     //* true if parent directory is available
     bool hasParent() const;
 
