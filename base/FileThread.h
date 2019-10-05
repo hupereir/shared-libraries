@@ -46,7 +46,8 @@ class FileThread: public QThread, private Base::Counter<FileThread>
         ListRecursive,
         SizeRecursive,
         Remove,
-        Copy
+        Copy,
+        ForceCopy
     };
 
     //*@name accessors

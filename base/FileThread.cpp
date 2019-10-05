@@ -61,6 +61,16 @@ void FileThread::run()
             break;
         }
 
+        case Command::ForceCopy:
+        {
+            if( !file_.copy( destination_, true ) )
+            {
+                error_ = true;
+                errorString_ = tr("Failed to copy %1 to %2").arg( file_ ).arg( destination_ );
+            }
+            break;
+        }
+
         default: break;
     }
 
