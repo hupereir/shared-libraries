@@ -39,6 +39,8 @@ class BaseContextMenu;
 class LineEditorButton: public QToolButton, private Base::Counter<LineEditorButton>
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

@@ -345,6 +345,16 @@ void LineEditor::_addWidget( QWidget* widget, QWidget* parent )
 
     widget->setAutoFillBackground( false );
     widget->setFocusPolicy( Qt::NoFocus );
+
+    if( auto button = qobject_cast<LineEditorButton*>( widget ) )
+    {
+        const bool empty( text().isEmpty() );
+        const bool readOnly( isReadOnly() );
+        button->setVisible(
+            ((button->flags()&LineEditorButton::ShowWhenEmpty) || !empty ) &&
+            ((button->flags()&LineEditorButton::ShowWhenReadOnly) || !readOnly ) );
+    }
+
 }
 
 //____________________________________________________________
