@@ -164,19 +164,19 @@ LineEditor::LineEditor( QWidget* parent ):
     rightContainer_ = createContainer( this );
 
     // clear button
-    auto button = new LineEditorButton;
-    button->setIcon( IconEngine::get( IconNames::EditClear ) );
-    button->setToolTip( tr( "Clear text" ) );
-
-    addRightWidget( clearButton_ = button );
-    clearButton_->hide();
+    clearButton_ = new LineEditorButton;
+    clearButton_->setIcon( IconEngine::get( IconNames::EditClear ) );
+    clearButton_->setToolTip( tr( "Clear text" ) );
+    addRightWidget( clearButton_ );
 
     // setup connections
     connect( clearButton_, SIGNAL(clicked()), SLOT(clear()) );
 
-    setShowClearButton( true );
     setStyle( proxyStyle_.data() );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+
+    _updateButtonsVisibility();
+    _updateButtonsGeometry();
 
 }
 
@@ -191,8 +191,9 @@ QSize LineEditor::rightButtonsSize() const
 //_____________________________________________________________________
 void LineEditor::setReadOnly( bool value )
 {
-    setShowClearButton( value );
     QLineEdit::setReadOnly( value );
+    _updateButtonsVisibility();
+    _updateButtonsGeometry();
     return;
 }
 
@@ -212,22 +213,8 @@ void LineEditor::setModified( bool value )
 void LineEditor::setShowClearButton( bool value )
 {
 
-    // do nothing if unchanged
-    if( showClearButton_ == value ) return;
-
     showClearButton_ = value;
-    if( value )
-    {
-
-        if( !text().isEmpty() && !clearButton_->isVisible() )
-        { clearButton_->show(); }
-
-    } else {
-
-        clearButton_->hide();
-
-    }
-
+    _updateButtonsVisibility();
     _updateButtonsGeometry();
 
 }
@@ -361,7 +348,26 @@ void LineEditor::_addWidget( QWidget* widget, QWidget* parent )
 }
 
 //____________________________________________________________
-void LineEditor::_updateButtonsGeometry() const
+void LineEditor::_updateButtonsVisibility()
+{
+
+    const bool empty( text().isEmpty() );
+    const bool readOnly( isReadOnly() );
+
+    for( auto& button:findChildren<LineEditorButton*>() )
+    {
+        bool isVisible =
+            ((button->flags()&LineEditorButton::ShowWhenEmpty) || !empty ) &&
+            ((button->flags()&LineEditorButton::ShowWhenReadOnly) || !readOnly );
+
+        if( button == clearButton_ ) isVisible &= showClearButton_;
+        button->setVisible( isVisible );
+    }
+
+}
+
+//____________________________________________________________
+void LineEditor::_updateButtonsGeometry()
 {
     QStyleOptionFrame option;
     option.initFrom( this );
@@ -405,15 +411,12 @@ void LineEditor::_modified( const QString& text )
         emit modificationChanged( modified_ );
     }
 
-    // clear actions enability
-    const bool clearEnabled = !(isReadOnly() || text.isEmpty() );
-    clearAction_->setEnabled( clearEnabled );
-    if( clearButton_ )
-    {
-        if( !clearEnabled ) clearButton_->hide();
-        else if( !clearButton_->isVisible() ) clearButton_->show();
-        _updateButtonsGeometry();
-    }
+    // clear actions enable state
+    clearAction_->setEnabled( isReadOnly() || text.isEmpty() );
+
+    // update buttons
+    _updateButtonsVisibility();
+    _updateButtonsGeometry();
 
     // emit cleared signal
     if( text.isEmpty() ) emit cleared();

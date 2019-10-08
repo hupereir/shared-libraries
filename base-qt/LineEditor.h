@@ -44,13 +44,44 @@ class LineEditorButton: public QToolButton, private Base::Counter<LineEditorButt
     //* constructor
     explicit LineEditorButton( QWidget* = nullptr );
 
+    //*@name accessors
+    //@{
+
     //* size hint
     QSize sizeHint() const override;
+
+    //* flags
+    enum Flag
+    {
+        None = 0,
+        ShowWhenEmpty = 1<<0,
+        ShowWhenReadOnly = 1<<1
+    };
+
+    Q_DECLARE_FLAGS( Flags, Flag );
+    Flags flags() const
+    { return flags_; }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* flags
+    void setFlags( Flags value )
+    { flags_ = value; }
+
+    //@}
 
     protected:
 
     //* paint
     void paintEvent( QPaintEvent* ) override;
+
+    private:
+
+    //* flags
+    Flags flags_ = None;
 
 };
 
@@ -185,8 +216,11 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //* add widget to parent
     void _addWidget( QWidget*, QWidget* );
 
-    //* toggle clear button
-    void _updateButtonsGeometry() const;
+    //* update inline buttons visibility
+    void _updateButtonsVisibility();
+
+    //* update inline buttons geometry
+    void _updateButtonsGeometry();
 
     //* install actions
     void _installActions();
@@ -230,7 +264,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //@}
 
     //* true if clear button must be shown
-    bool showClearButton_ = false;
+    bool showClearButton_ = true;
 
     //* left buttons container
     QWidget* leftContainer_ = nullptr;
@@ -239,11 +273,13 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     QWidget* rightContainer_ = nullptr;
 
     //* clear button
-    QWidget* clearButton_ = nullptr;
+    LineEditorButton* clearButton_ = nullptr;
 
     //* style proxy
     Base::WeakPointer<QProxyStyle> proxyStyle_;
 
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( LineEditorButton::Flags )
 
 #endif
