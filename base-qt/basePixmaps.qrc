@@ -37,6 +37,9 @@
     <file alias="icons/32x32/edit-delete.png">../base-pixmaps/edit-delete.png</file>
     <file alias="icons/32x32/view-refresh.png">../base-pixmaps/view-refresh.png</file>
 
+    <file alias="icons/32x32/password-show-on.png">../base-pixmaps/password-show-on.png</file>
+    <file alias="icons/32x32/password-show-off.png">../base-pixmaps/password-show-off.png</file>
+
     <!-- find icons -->
     <file alias="icons/128x128/edit-find.png">../base-pixmaps/edit-find-large.png</file>
     <file alias="icons/32x32/edit-find.png">../base-pixmaps/edit-find.png</file>

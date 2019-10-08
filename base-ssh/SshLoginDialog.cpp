@@ -19,6 +19,7 @@
 
 #include "SshLoginDialog.h"
 #include "GridLayout.h"
+#include "PasswordEditor.h"
 #include "QtUtil.h"
 
 #include <QLabel>
@@ -49,15 +50,12 @@ namespace Ssh
 
         // password
         gridLayout->addWidget( label = new QLabel( tr( "Password:" ), this ) );
-        gridLayout->addWidget( passwordEditor_ = new LineEditor( this ) );
-        passwordEditor_->setEchoMode( QLineEdit::Password );
+        gridLayout->addWidget( passwordEditor_ = new PasswordEditor( this ) );
         label->setBuddy( passwordEditor_ );
         gridLayout->setColumnStretch( 1, 1 );
 
         // remember password
         gridLayout->addWidget( rememberPaswordCheckBox_ = new QCheckBox( tr( "Remember password" ) ), gridLayout->currentRow(), 1, 1, 1 );
-        gridLayout->addWidget( showPasswordCheckBox_ = new QCheckBox( tr( "Show password" ) ), gridLayout->currentRow(), 1, 1, 1 );
-        connect( showPasswordCheckBox_, SIGNAL(toggled(bool)), SLOT(_toggleShowPassword(bool)) );
     }
 
     //______________________________________________________________________
@@ -83,9 +81,5 @@ namespace Ssh
         else passwordEditor_->setFocus();
 
     }
-
-    //______________________________________________________________________
-    void LoginDialog::_toggleShowPassword( bool value )
-    { passwordEditor_->setEchoMode( value ? QLineEdit::Normal:QLineEdit::Password); }
 
 }

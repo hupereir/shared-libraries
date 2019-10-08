@@ -61,6 +61,9 @@ namespace IconNames
     static const QString ShowMenu = "show-menu";
     static const QString Undo = "edit-undo";
 
+    static const QString ShowPassword = "password-show-on";
+    static const QString HidePassword = "password-show-off";
+
     static const QString Information = "help-about";
     static const QString DialogInformation = "dialog-information";
     static const QString DialogWarning = "dialog-warning";

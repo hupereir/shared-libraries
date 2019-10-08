@@ -27,6 +27,8 @@
 #include <QCheckBox>
 #include <QSpinBox>
 
+class PasswordEditor;
+
 namespace Ssh
 {
     class LoginDialog: public CustomDialog
@@ -56,20 +58,14 @@ namespace Ssh
 
         //@}
 
-        private Q_SLOTS:
-
-        //* show/hide password
-        void _toggleShowPassword( bool );
-
         private:
 
         //* connection attributes
         ConnectionAttributes attributes_;
 
         LineEditor* userNameEditor_ = nullptr;
-        LineEditor* passwordEditor_ = nullptr;
+        PasswordEditor* passwordEditor_ = nullptr;
         QCheckBox* rememberPaswordCheckBox_ = nullptr;
-        QCheckBox* showPasswordCheckBox_ = nullptr;
 
     };
 

@@ -169,6 +169,7 @@ set(base_qt_SOURCES
   OptionSlider.cpp
   OptionSpinBox.cpp
   OptionWidgetList.cpp
+  PasswordEditor.cpp
   PathEditor.cpp
   PathHistory.cpp
   PathHistoryConfiguration.cpp
