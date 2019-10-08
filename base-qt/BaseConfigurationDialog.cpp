@@ -59,10 +59,10 @@ namespace
 
             Q_OBJECT
 
-                public:
+            public:
 
-                //* constructor
-                explicit IconThemeDialog( QWidget* = nullptr );
+            //* constructor
+            explicit IconThemeDialog( QWidget* = nullptr );
 
             Q_SIGNALS:
 

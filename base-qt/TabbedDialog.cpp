@@ -115,11 +115,11 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     // add to item
     Item item( title, base );
     if( !icon.isNull() ) item.setIcon( icon );
-    _model().add( item );
+    model_.add( item );
 
     // set current index
-    if( (!list_->selectionModel()->currentIndex().isValid()) && _model().hasIndex(0,0) )
-    { list_->selectionModel()->setCurrentIndex( _model().index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
+    if( (!list_->selectionModel()->currentIndex().isValid()) && model_.hasIndex(0,0) )
+    { list_->selectionModel()->setCurrentIndex( model_.index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
 
     auto layout = new QVBoxLayout;
     layout->setSpacing( 5 );
@@ -146,11 +146,20 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
 }
 
 //__________________________________________________
+void TabbedDialog::_clear()
+{
+    Debug::Throw( "TabbedDialog::_clear.\n" );
+    model_.clear();
+    while( stackedWidget_->currentWidget() )
+    { delete  stackedWidget_->currentWidget(); }
+}
+
+//__________________________________________________
 void TabbedDialog::_display( const QModelIndex& index )
 {
     Debug::Throw( "TabbedDialog::_display.\n" );
     if( !index.isValid() ) return;
-    stackedWidget_->setCurrentWidget( _model().get( index ).widget() );
+    stackedWidget_->setCurrentWidget( model_.get( index ).widget() );
 }
 
 //_______________________________________________________________________________________

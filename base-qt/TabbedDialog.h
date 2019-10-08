@@ -60,12 +60,16 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     { return *list_; }
 
     //* retrieve stack
-    QStackedWidget& _stackedWidget()
+    QStackedWidget& _stackedWidget() const
     { return *stackedWidget_; }
 
     //* button box
     QDialogButtonBox& _buttonBox() const
     { return *buttonBox_; }
+
+    //* clear
+    /** this will clear the model and delete all pages */
+    void _clear();
 
     private Q_SLOTS:
 
@@ -168,10 +172,6 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
         //@}
 
     };
-
-    //* model
-    Model& _model()
-    { return model_; }
 
     //* model
     Model model_;
