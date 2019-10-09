@@ -30,6 +30,7 @@
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
 #include "PathEditor.h"
+#include "PlacesWidgetItemInfo.h"
 #include "QtUtil.h"
 #include "Singleton.h"
 #include "TimeStamp.h"
@@ -45,71 +46,8 @@
 #include <QPainter>
 #include <QUrl>
 
-namespace Xml
-{ static const QString Flags = "flags"; };
-
 namespace Private
 {
-    //___________________________________________________________________
-    LocalFileInfo::LocalFileInfo( const QDomElement& element ):
-        BaseFileInfo( element )
-    {
-        Debug::Throw( "LocalFileInfo::LocalFileInfo (dom).\n" );
-
-        // parse attributes
-        auto attributes( element.attributes() );
-        for( int i=0; i<attributes.count(); i++ )
-        {
-            auto attribute( attributes.item( i ).toAttr() );
-            if( attribute.isNull() ) continue;
-            if( attribute.name() == Xml::Flags ) setFlags( (Flags) attribute.value().toInt() );
-        }
-
-    }
-
-    //________________________________________________________________
-    QDomElement LocalFileInfo::domElement( QDomDocument& document ) const
-    {
-        Debug::Throw( "BaseFileInfo::DomElement.\n" );
-        auto out( BaseFileInfo::domElement( document ) );
-        if( flags_ ) out.setAttribute( Xml::Flags, flags_ );
-        return out;
-    }
-
-    //___________________________________________________________________
-    LocalFileInfo::List LocalFileInfo::Helper::list( const QDomElement& element )
-    {
-
-        LocalFileInfo::List out;
-
-        // read records
-        for( auto node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
-        {
-            auto element = node.toElement();
-            if( element.isNull() ) continue;
-
-            // children
-            if( element.tagName() == Xml::FileInfo )
-            {
-                LocalFileInfo fileInfo( element );
-                if( fileInfo.file().isEmpty() ) fileInfo.setFlag( LocalFileInfo::Separator, true );
-                out.append( fileInfo );
-            }
-        }
-
-        return out;
-
-    }
-
-    //___________________________________________________________________
-    QDomElement LocalFileInfo::Helper::domElement( const LocalFileInfo::List& list, QDomDocument& document )
-    {
-        // create main element
-        auto top = document.createElement( Xml::FileInfoList );
-        for( const auto& fileInfo:list )
-        { top.appendChild( fileInfo.domElement( document ) );  }
-        return top;
-    }
 
     //___________________________________________________________________
     const QString PlacesWidgetItem::MimeType( "internal/places-widget-item" );
@@ -280,7 +218,7 @@ namespace Private
 
             // change text color if focus
             if( valid_ && ( hasFocus_ || dragInProgress ) ) painter->setPen( palette().color( QPalette::HighlightedText ) );
-            else painter->setPen( palette().color( ( valid_ && !hasFlag( Private::LocalFileInfo::Hidden ) ) ? QPalette::Normal:QPalette::Disabled, QPalette::WindowText  ) );
+            else painter->setPen( palette().color( ( valid_ && !hasFlag( PlacesWidgetItemInfo::Hidden ) ) ? QPalette::Normal:QPalette::Disabled, QPalette::WindowText  ) );
 
             int textFlags( Qt::AlignVCenter | (isRightToLeft ? Qt::AlignRight : Qt::AlignLeft ) | Qt::TextHideMnemonic );
             painter->drawText( QRectF( textRect ), textFlags, text() );
@@ -298,7 +236,7 @@ namespace Private
             }
 
             QIcon::Mode iconMode;
-            if( valid_ && !hasFlag( Private::LocalFileInfo::Hidden ) )
+            if( valid_ && !hasFlag( PlacesWidgetItemInfo::Hidden ) )
             {
 
                 if( hasFocus_ ) iconMode = QIcon::Selected;
@@ -615,14 +553,14 @@ bool PlacesWidget::read()
     QDomNodeList topNodes = document.elementsByTagName( Xml::FileInfoList );
     if( topNodes.isEmpty() ) return false;
 
-    const Private::LocalFileInfo::List fileInfoList( Private::LocalFileInfo::Helper::list( topNodes.at(0).toElement() ) );
+    const PlacesWidgetItemInfo::List fileInfoList( PlacesWidgetItemInfo::Helper::list( topNodes.at(0).toElement() ) );
     for( const auto& fileInfo:fileInfoList )
     {
 
         // skip if does not match mask
         if( localOnly_ && fileInfo.isRemote() ) continue;
 
-        if( fileInfo.hasFlag( Private::LocalFileInfo::Separator ) ) _addSeparator();
+        if( fileInfo.hasFlag( PlacesWidgetItemInfo::Separator ) ) _addSeparator();
         else {
 
             const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
@@ -634,7 +572,7 @@ bool PlacesWidget::read()
         items_.back()->setFlags( fileInfo.flags() );
 
         // hide item if needed
-        if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( Private::LocalFileInfo::Hidden ) )
+        if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( PlacesWidgetItemInfo::Hidden ) )
         { items_.back()->hide(); }
 
     }
@@ -896,13 +834,13 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
     if( ( focusItem_ = _focusItem() ) )
     {
         menu.addSeparator();
-        if( !focusItem_->isSeparator() && !focusItem_->hasFlag( Private::LocalFileInfo::ReadOnly ) )
+        if( !focusItem_->isSeparator() && !focusItem_->hasFlag( PlacesWidgetItemInfo::ReadOnly ) )
         {
             editItemAction_->setText( tr( "Edit '%1'" ).arg( focusItem_->text() ) );
             menu.addAction( editItemAction_ );
         }
 
-        if( !focusItem_->hasFlag( Private::LocalFileInfo::ReadOnly ) )
+        if( !focusItem_->hasFlag( PlacesWidgetItemInfo::ReadOnly ) )
         {
             if( focusItem_->isSeparator() ) removeItemAction_->setText( tr( "Remove Separator" ) );
             else removeItemAction_->setText( tr( "Remove '%1'" ).arg( focusItem_->text() ) );
@@ -912,7 +850,7 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
         {
             if( focusItem_->isSeparator() ) hideItemAction_->setText( tr( "Hide Separator" ) );
             else hideItemAction_->setText( tr( "Hide '%1'" ).arg( focusItem_->text() ) );
-            hideItemAction_->setChecked( focusItem_->hasFlag( Private::LocalFileInfo::Hidden ) );
+            hideItemAction_->setChecked( focusItem_->hasFlag( PlacesWidgetItemInfo::Hidden ) );
             menu.addAction( hideItemAction_ );
         }
 
@@ -920,7 +858,7 @@ void PlacesWidget::_updateContextMenu( const QPoint& position )
 
     bool hasHiddenItems = std::any_of(
         items_.begin(), items_.end(),
-        Private::PlacesWidgetItem::HasFlagFTor( Private::LocalFileInfo::Hidden) );
+        Private::PlacesWidgetItem::HasFlagFTor( PlacesWidgetItemInfo::Hidden) );
 
     if( hasHiddenItems ) menu.addAction( showAllEntriesAction_ );
     else showAllEntriesAction_->setChecked( false );
@@ -1195,8 +1133,8 @@ void PlacesWidget::_toggleHideItem( bool value )
 
     Debug::Throw( "PlacesWidget::_toggleHideItem.\n" );
     if( !focusItem_ ) return;
-    if( value == focusItem_->hasFlag( Private::LocalFileInfo::Hidden ) ) return;
-    focusItem_->setFlag( Private::LocalFileInfo::Hidden, value );
+    if( value == focusItem_->hasFlag( PlacesWidgetItemInfo::Hidden ) ) return;
+    focusItem_->setFlag( PlacesWidgetItemInfo::Hidden, value );
     if( value && !showAllEntriesAction_->isChecked() )
     {
         focusItem_->hide();
@@ -1220,7 +1158,7 @@ void PlacesWidget::_toggleShowAllEntries( bool value )
     } else {
 
         for( const auto& item:items_ )
-        { if( item->hasFlag( Private::LocalFileInfo::Hidden ) ) item->hide(); }
+        { if( item->hasFlag( PlacesWidgetItemInfo::Hidden ) ) item->hide(); }
 
     }
 
@@ -1478,10 +1416,10 @@ bool PlacesWidget::_write()
     }
 
     // get list of items and create file info list
-    Private::LocalFileInfo::List fileInfoList;
+    PlacesWidgetItemInfo::List fileInfoList;
     std::transform( items_.begin(), items_.end(), std::back_inserter(fileInfoList),
         []( Private::PlacesWidgetItem* item ) {
-            Private::LocalFileInfo fileInfo( item->fileInfo() );
+            PlacesWidgetItemInfo fileInfo( item->fileInfo() );
             fileInfo.setFlags( item->flags() );
             fileInfo.setAlias( item->text() );
             return fileInfo;
@@ -1502,12 +1440,12 @@ bool PlacesWidget::_write()
     auto topNodes = document.elementsByTagName( Xml::FileInfoList );
     if( !topNodes.isEmpty() )
     {
-        const Private::LocalFileInfo::List oldFileInfoList( Private::LocalFileInfo::Helper::list( topNodes.at(0).toElement() ) );
+        const PlacesWidgetItemInfo::List oldFileInfoList( PlacesWidgetItemInfo::Helper::list( topNodes.at(0).toElement() ) );
         if( oldFileInfoList == fileInfoList ) return true;
     }
 
     // create main element
-    auto top = Private::LocalFileInfo::Helper::domElement( fileInfoList, document.get() );
+    auto top = PlacesWidgetItemInfo::Helper::domElement( fileInfoList, document.get() );
 
     // append top node to document and write
     document.replaceChild( top );
@@ -1558,7 +1496,7 @@ void PlacesWidget::_addDefaultPlaces()
         BaseFileInfo fileInfo( iterator.key() );
         fileInfo.setIsFolder();
         insert( 0, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), DefaultFolders::get().name( iterator.value() ), fileInfo );
-        items_.front()->setFlag( Private::LocalFileInfo::ReadOnly, true );
+        items_.front()->setFlag( PlacesWidgetItemInfo::ReadOnly, true );
 
     }
 

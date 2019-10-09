@@ -27,6 +27,7 @@
 #include "CustomDialog.h"
 #include "Functors.h"
 #include "LineEditor.h"
+#include "PlacesWidgetItemInfo.h"
 
 #include <QAbstractButton>
 #include <QCheckBox>
@@ -39,93 +40,6 @@ class DragMonitor;
 
 namespace Private
 {
-
-    //* local file info, needed to store flags
-    class LocalFileInfo: public BaseFileInfo
-    {
-
-        public:
-
-        enum Flag
-        {
-            ReadOnly = 1<<0,
-            Hidden = 1<<1,
-            Separator = 1<<2
-        };
-
-        Q_DECLARE_FLAGS( Flags, Flag );
-
-        //* default constructor
-        explicit LocalFileInfo()
-        {}
-
-        //* copy constructor
-        explicit LocalFileInfo( const BaseFileInfo& other ):
-            BaseFileInfo( other )
-        {}
-
-        //* constructor from DOM element
-        explicit LocalFileInfo( const QDomElement& );
-
-        //*@name accessors
-        //@{
-
-        //* dump to dom element
-        QDomElement domElement( QDomDocument& ) const;
-
-        //* flags
-        Flags flags() const
-        { return flags_; }
-
-        //* has flag
-        bool hasFlag( Flag flag ) const
-        { return flags_&flag; }
-
-        //@}
-
-        //*@name modifiers
-        //@{
-
-        //* set flags
-        void setFlags( Flags flags )
-        { flags_ = flags; }
-
-        //* set flag
-        void setFlag( Flag flag, bool value )
-        {
-            if( value ) flags_ |= flag;
-            else flags_ &= ~flag;
-        }
-
-        //@}
-
-
-        //* read/write file info list to xml
-        using List = QList<LocalFileInfo>;
-        class Helper
-        {
-
-            public:
-
-            static List list( const QDomElement& );
-            static QDomElement domElement( const List&, QDomDocument& );
-
-        };
-
-        private:
-
-        //* flags
-        Flags flags_ = 0;
-
-    };
-
-    //* equal to operator
-    inline bool operator == (const LocalFileInfo& first, const LocalFileInfo& second)
-    {
-        return ( operator == ( *static_cast<const BaseFileInfo*>(&first), *static_cast<const BaseFileInfo*>(&second) ) ) &&
-            first.alias() == second.alias() &&
-            first.flags() == second.flags();
-    }
 
     //* places widget item
     class PlacesWidgetItem: public QAbstractButton
@@ -150,7 +64,7 @@ namespace Private
 
         //* true if is separator
         bool isSeparator() const
-        { return hasFlag( LocalFileInfo::Separator ); }
+        { return hasFlag( PlacesWidgetItemInfo::Separator ); }
 
         //* true if valid
         bool isValid() const
@@ -165,11 +79,11 @@ namespace Private
         { return minimumSize(); }
 
         //* flags
-        LocalFileInfo::Flags flags() const
+        PlacesWidgetItemInfo::Flags flags() const
         { return flags_; }
 
         //* has flag
-        bool hasFlag( LocalFileInfo::Flag flag ) const
+        bool hasFlag( PlacesWidgetItemInfo::Flag flag ) const
         { return flags_&flag; }
 
         //* drag monitor
@@ -183,7 +97,7 @@ namespace Private
 
         //* set is separator
         void setIsSeparator( bool value )
-        { setFlag( LocalFileInfo::Separator, true ); updateMinimumSize(); update(); }
+        { setFlag( PlacesWidgetItemInfo::Separator, true ); updateMinimumSize(); update(); }
 
         //* icon
         void setIcon( const QIcon& icon )
@@ -225,11 +139,11 @@ namespace Private
         }
 
         //* set flags
-        void setFlags( LocalFileInfo::Flags flags )
+        void setFlags( PlacesWidgetItemInfo::Flags flags )
         { flags_ = flags; }
 
         //* set flag
-        void setFlag( LocalFileInfo::Flag flag, bool value )
+        void setFlag( PlacesWidgetItemInfo::Flag flag, bool value )
         {
             if( value ) flags_ |= flag;
             else flags_ &= ~flag;
@@ -238,7 +152,7 @@ namespace Private
         //@}
 
         // needed to find items that have a given flag
-        using HasFlagFTor = Base::Functor::Unary< PlacesWidgetItem, LocalFileInfo::Flags, &PlacesWidgetItem::flags, std::bit_and<LocalFileInfo::Flags>>;
+        using HasFlagFTor = Base::Functor::Unary< PlacesWidgetItem, PlacesWidgetItemInfo::Flags, &PlacesWidgetItem::flags, std::bit_and<PlacesWidgetItemInfo::Flags>>;
 
         protected:
 
@@ -271,7 +185,7 @@ namespace Private
         BaseFileInfo fileInfo_;
 
         //* flags
-        LocalFileInfo::Flags flags_ = 0;
+        PlacesWidgetItemInfo::Flags flags_ = 0;
 
         //* true if valid (true by default)
         bool valid_ = false;
@@ -419,7 +333,6 @@ namespace Private
 
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( Private::LocalFileInfo::Flags )
 Q_DECLARE_OPERATORS_FOR_FLAGS( Private::PlacesToolTipWidget::Types )
 
 #endif
