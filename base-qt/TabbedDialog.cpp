@@ -69,7 +69,6 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     connect( list_->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex)) );
     new QShortcut( QKeySequence::Quit, this, SLOT(close()) );
 
-
 }
 
 //_________________________________________________________
@@ -144,6 +143,10 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     }
 
 }
+
+//__________________________________________________
+QWidget* TabbedDialog::_findPage( const QModelIndex& index ) const
+{ return index.isValid() ? model_.get( index ).widget():nullptr; }
 
 //__________________________________________________
 void TabbedDialog::_clear()

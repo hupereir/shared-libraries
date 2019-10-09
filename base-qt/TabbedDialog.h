@@ -56,16 +56,31 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     protected:
 
     //* retrieve list
+    const SimpleListView& _list() const
+    { return *list_; }
+
+    //* retrieve list
     SimpleListView& _list()
     { return *list_; }
 
     //* retrieve stack
-    QStackedWidget& _stackedWidget() const
+    const QStackedWidget& _stackedWidget() const
+    { return *stackedWidget_; }
+
+    //* retrieve stack
+    QStackedWidget& _stackedWidget()
     { return *stackedWidget_; }
 
     //* button box
-    QDialogButtonBox& _buttonBox() const
+    const QDialogButtonBox& _buttonBox() const
     { return *buttonBox_; }
+
+    //* button box
+    QDialogButtonBox& _buttonBox()
+    { return *buttonBox_; }
+
+    //* get page matching a given index
+    QWidget* _findPage( const QModelIndex& ) const;
 
     //* clear
     /** this will clear the model and delete all pages */
