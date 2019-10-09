@@ -577,7 +577,69 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
     // configuration
     connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     connect( qApp, SIGNAL(aboutToQuit()), SLOT(_saveConfiguration()) );
-    _updateConfiguration();
+
+}
+
+//______________________________________________________________________
+BaseFileInfo::List PlacesWidget::items() const
+{
+    BaseFileInfo::List out;
+    std::transform( items_.begin(), items_.end(), std::back_inserter( out ), []( Private::PlacesWidgetItem* item ) { return item->fileInfo(); } );
+    return out;
+}
+
+//______________________________________________________________________
+bool PlacesWidget::read()
+{
+    Debug::Throw( "PlacesWidget::read.\n" );
+
+    // clear existing entries
+    clear();
+
+    const File file( dbFile_ );
+    if( file.isEmpty() || !file.exists() ) return false;
+
+    // dom document
+    XmlDocument document;
+    {
+
+        QFile qfile( file );
+        if( !document.setContent( &qfile ) )
+        {
+            Debug::Throw() << document.error() << endl;
+            return false;
+        }
+    }
+
+    // look for relevant element
+    QDomNodeList topNodes = document.elementsByTagName( Xml::FileInfoList );
+    if( topNodes.isEmpty() ) return false;
+
+    const Private::LocalFileInfo::List fileInfoList( Private::LocalFileInfo::Helper::list( topNodes.at(0).toElement() ) );
+    for( const auto& fileInfo:fileInfoList )
+    {
+
+        // skip if does not match mask
+        if( localOnly_ && fileInfo.isRemote() ) continue;
+
+        if( fileInfo.hasFlag( Private::LocalFileInfo::Separator ) ) _addSeparator();
+        else {
+
+            const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
+            add( name, fileInfo );
+
+        }
+
+        // assign flags to last item
+        items_.back()->setFlags( fileInfo.flags() );
+
+        // hide item if needed
+        if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( Private::LocalFileInfo::Hidden ) )
+        { items_.back()->hide(); }
+
+    }
+
+    return true;
 
 }
 
@@ -597,14 +659,6 @@ void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
         { item->setIcon( iconProvider_->icon( item->fileInfo() ) ); }
     }
 
-}
-
-//______________________________________________________________________
-BaseFileInfo::List PlacesWidget::items() const
-{
-    BaseFileInfo::List out;
-    std::transform( items_.begin(), items_.end(), std::back_inserter( out ), []( Private::PlacesWidgetItem* item ) { return item->fileInfo(); } );
-    return out;
 }
 
 //______________________________________________________________________
@@ -1412,58 +1466,6 @@ void PlacesWidget::paintEvent( QPaintEvent* event )
 }
 
 //______________________________________________________________________
-bool PlacesWidget::_read()
-{
-    Debug::Throw( "PlacesWidget::_read.\n" );
-
-    // clear existing entries
-    clear();
-
-    const File file( dbFile_ );
-    if( file.isEmpty() || !file.exists() ) return false;
-
-    // dom document
-    XmlDocument document;
-    {
-
-        QFile qfile( file );
-        if( !document.setContent( &qfile ) )
-        {
-            Debug::Throw() << document.error() << endl;
-            return false;
-        }
-    }
-
-    // look for relevant element
-    QDomNodeList topNodes = document.elementsByTagName( Xml::FileInfoList );
-    if( topNodes.isEmpty() ) return false;
-
-    const Private::LocalFileInfo::List fileInfoList( Private::LocalFileInfo::Helper::list( topNodes.at(0).toElement() ) );
-    for( const auto& fileInfo:fileInfoList )
-    {
-
-        if( fileInfo.hasFlag( Private::LocalFileInfo::Separator ) ) _addSeparator();
-        else {
-
-            const QString name( fileInfo.hasAlias() ? fileInfo.alias() : fileInfo.file().localName() );
-            add( name, fileInfo );
-
-        }
-
-        // assign flags to last item
-        items_.back()->setFlags( fileInfo.flags() );
-
-        // hide item if needed
-        if( !showAllEntriesAction_->isChecked() && items_.back()->hasFlag( Private::LocalFileInfo::Hidden ) )
-        { items_.back()->hide(); }
-
-    }
-
-    return true;
-
-}
-
-//______________________________________________________________________
 bool PlacesWidget::_write()
 {
     Debug::Throw( "PlacesWidget::_write.\n" );
@@ -1484,6 +1486,10 @@ bool PlacesWidget::_write()
             fileInfo.setAlias( item->text() );
             return fileInfo;
         });
+
+    // skip if does not match mask
+    if( localOnly_ )
+    { fileInfoList.erase( std::remove_if( fileInfoList.begin(), fileInfoList.end(), BaseFileInfo::IsRemoteFTor() ), fileInfoList.end() ); }
 
     // create document
     XmlDocument document;
@@ -1574,7 +1580,7 @@ bool PlacesWidget::_setDBFile( const File& file )
     if( dbFile_.localName().startsWith( '.' ) )
     { dbFile_.setHidden(); }
 
-    _read();
+    read();
 
     return true;
 

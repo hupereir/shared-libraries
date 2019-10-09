@@ -60,8 +60,8 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //* constructor
     explicit PlacesWidget( QWidget* = nullptr );
 
-    //* set icon provider
-    void setIconProvider( BaseFileIconProvider* );
+    //*@name accessors
+    //@{
 
     //* true if empty
     bool isEmpty() const
@@ -70,11 +70,28 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //* list of items
     BaseFileInfo::List items() const;
 
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* read/write only local items
+    void setLocalOnly( bool value = true )
+    { localOnly_ = value; }
+
+    //* read items from files
+    bool read();
+
+    //* set icon provider
+    void setIconProvider( BaseFileIconProvider* );
+
     //* set item enabled
     bool setItemIsValid( const BaseFileInfo&, bool );
 
     //* event filter
     bool eventFilter( QObject*, QEvent* ) override;
+
+    //@}
 
     Q_SIGNALS:
 
@@ -178,9 +195,6 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
 
     private:
 
-    //* Read fileList from file
-    bool _read();
-
     //* write fileList to file
     bool _write();
 
@@ -251,6 +265,9 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
 
     //* file system watcher, for local selection frame
     FileSystemWatcher fileSystemWatcher_;
+
+    //* true if only local files are to be saved
+    bool localOnly_ = false;
 
     //* file from/to wich the files are saved
     File dbFile_;
