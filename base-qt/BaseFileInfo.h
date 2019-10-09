@@ -313,6 +313,9 @@ class BaseFileInfo
     //* used to retrieve documents
     using IsDocumentFTor = Base::Functor::UnaryTrue<BaseFileInfo, &BaseFileInfo::isDocument>;
 
+    //* used to retrieve remote files
+    using IsRemoteFTor = Base::Functor::UnaryTrue<BaseFileInfo, &BaseFileInfo::isRemote>;
+
     //* used to retrieve folders
     class IsFolderFTor
     {
