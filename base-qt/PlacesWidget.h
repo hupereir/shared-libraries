@@ -89,6 +89,9 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //* set item enabled
     bool setItemIsValid( const BaseFileInfo&, bool );
 
+    //* add items from list
+    void add( const PlacesWidgetItemInfo::List& );
+
     //* event filter
     bool eventFilter( QObject*, QEvent* ) override;
 
@@ -213,12 +216,6 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
 
     //* return item index based on position
     int _index( const QPoint& ) const;
-
-    //* true if mime data can be decoded
-    bool _canDecode( const QMimeData* ) const;
-
-    //* decode mime data
-    QList<BaseFileInfo> _decode( const QMimeData* ) const;
 
     //* return item that have focus or none
     Private::PlacesWidgetItem* _focusItem() const;

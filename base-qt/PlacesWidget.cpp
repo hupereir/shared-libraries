@@ -45,6 +45,90 @@
 #include <QPainter>
 #include <QUrl>
 
+namespace
+{
+    namespace Local
+    {
+        //_________________________________________________________________________________
+        QList<BaseFileInfo> decode( const QMimeData* mimeData )
+        {
+            QList<BaseFileInfo> fileInfoList;
+            if( !mimeData ) return fileInfoList;
+
+            QString format;
+            if( mimeData->hasFormat( BaseFileInfo::MimeType ) ) format = BaseFileInfo::MimeType;
+            else if( mimeData->hasFormat( PathEditor::MimeType ) ) format = PathEditor::MimeType;
+            if( !format.isEmpty() )
+            {
+
+                // get dropped file info (use XML)
+                // dom document
+                QDomDocument document;
+                if( !document.setContent( mimeData->data( format ), false ) ) return fileInfoList;
+
+                const auto docElement = document.documentElement();
+                for( auto node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
+                {
+                    QDomElement element = node.toElement();
+                    if( element.isNull() ) continue;
+
+                    // special options
+                    if( element.tagName() == Xml::FileInfo )
+                    {
+
+                        BaseFileInfo fileInfo( element );
+                        if( fileInfo.file().isEmpty() || fileInfo.isNavigator() || !fileInfo.isFolder() ) continue;
+                        fileInfoList.append( fileInfo );
+
+                    }
+                }
+
+            } else if( mimeData->hasUrls() ) {
+
+                for( const auto& url:mimeData->urls() )
+                {
+
+                    #if QT_VERSION >= 0x040800
+                    // check that local file
+                    if( !url.isLocalFile() ) continue;
+                    #endif
+
+                    // get file and check existence
+                    const File file( url.path() );
+                    if( !( file.exists() && file.isDirectory() ) ) continue;
+
+                    BaseFileInfo fileInfo( file );
+                    fileInfo.update();
+
+                    fileInfo.setLocal();
+                    if( file.isDirectory() ) fileInfo.setIsFolder();
+                    else fileInfo.setIsDocument();
+                    if( file.isLink() ) fileInfo.setIsLink();
+                    if( file.isBrokenLink() ) fileInfo.setIsBrokenLink();
+                    if( file.isHidden() ) fileInfo.setIsHidden();
+
+                    fileInfoList.append( fileInfo );
+
+                }
+
+            }
+
+            return fileInfoList;
+
+        }
+
+        //_________________________________________________________________________________
+        bool canDecode( const QMimeData* data )
+        {
+            return
+                data->hasFormat( Private::PlacesWidgetItem::MimeType ) ||
+                data->hasFormat( PathEditor::MimeType ) ||
+                !decode( data ).isEmpty();
+        }
+    }
+}
+
+
 namespace Private
 {
 
@@ -620,6 +704,60 @@ bool PlacesWidget::setItemIsValid( const BaseFileInfo& fileInfo, bool value )
     return changed;
 }
 
+//___________________________________________________________________
+void PlacesWidget::add( const PlacesWidgetItemInfo::List& fileInfoList )
+{
+
+    Debug::Throw( "PlacesWidget::add.\n" );
+
+    for( const auto& fileInfo:fileInfoList )
+    {
+
+        // create new item
+        auto item = new Private::PlacesWidgetItem( this );
+        item->installEventFilter( this );
+        item->setItemView( itemView_ );
+
+        if( !item->hasFlag( PlacesWidgetItemInfo::Separator ) )
+        {
+
+            if( iconProvider_ ) item->setIcon( iconProvider_->icon( fileInfo ) );
+
+            const auto alias( fileInfo.hasAlias() ? fileInfo.alias():fileInfo.file().localName() );
+            item->setText( alias );
+            item->setFileInfo( fileInfo );
+            item->setFlags( fileInfo.flags() );
+
+            // set item validity
+            if( !fileInfo.file().isEmpty() && fileInfo.isLocal() )
+            {
+
+                const bool exists( fileInfo.file().exists() );
+                item->setIsValid( exists );
+                if( exists && !fileSystemWatcher_.directories().contains( fileInfo.file() ) )
+                { fileSystemWatcher_.addPath( fileInfo.file() ); }
+
+            }
+
+        }
+
+        // add to button group, list of items and layout
+        group_->addButton( item );
+        buttonLayout_->addWidget( item );
+        items_.append( item );
+
+        // hide item if needed
+        if( !showAllEntriesAction_->isChecked() && item->hasFlag( PlacesWidgetItemInfo::Hidden ) )
+        { item->hide(); }
+
+
+    }
+
+    // emit signal
+    _updateDragState();
+
+}
+
 //_______________________________________________________
 bool PlacesWidget::eventFilter( QObject* object, QEvent* event )
 {
@@ -687,7 +825,10 @@ void PlacesWidget::clear()
 
 //______________________________________________________________________
 void PlacesWidget::add( const BaseFileInfo& fileInfo )
-{ add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), fileInfo.file().localName(), fileInfo ); }
+{
+    const auto alias( fileInfo.hasAlias() ? fileInfo.alias():fileInfo.file().localName() );
+    add( iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), alias, fileInfo );
+}
 
 //______________________________________________________________________
 void PlacesWidget::add( const QString& name, const BaseFileInfo& fileInfo )
@@ -735,7 +876,7 @@ void PlacesWidget::add( const QIcon& icon, const QString& name, const BaseFileIn
 //______________________________________________________________________
 void PlacesWidget::insert( int position, const BaseFileInfo& fileInfo )
 {
-    const QString alias( fileInfo.hasAlias() ? fileInfo.alias():fileInfo.file().localName() );
+    const auto alias( fileInfo.hasAlias() ? fileInfo.alias():fileInfo.file().localName() );
     insert( position, iconProvider_ ? iconProvider_->icon( fileInfo ):QIcon(), alias, fileInfo );
 }
 
@@ -1173,7 +1314,7 @@ void PlacesWidget::_toggleShowAllEntries( bool value )
 void PlacesWidget::dragEnterEvent( QDragEnterEvent* event )
 {
     Debug::Throw( "PlacesWidget::dragEnterEvent.\n" );
-    if( _canDecode( event->mimeData() ) )
+    if( Local::canDecode( event->mimeData() ) )
     {
         event->accept();
         dragInProgress_ = true;
@@ -1240,7 +1381,7 @@ void PlacesWidget::dropEvent( QDropEvent* event )
     } else {
 
         // external source. Try copy items to list of favorites
-        QList<BaseFileInfo> fileInfoList( _decode( event->mimeData() ) );
+        QList<BaseFileInfo> fileInfoList( Local::decode( event->mimeData() ) );
         if( fileInfoList.isEmpty() ) return;
 
         // find insertion index based on target
@@ -1306,83 +1447,6 @@ int PlacesWidget::_index( const QPoint& position ) const
     }
 
     return index;
-
-}
-
-//_________________________________________________________________________________
-bool PlacesWidget::_canDecode( const QMimeData* data ) const
-{
-    return
-        data->hasFormat( Private::PlacesWidgetItem::MimeType ) ||
-        data->hasFormat( PathEditor::MimeType ) ||
-        !_decode( data ).isEmpty();
-}
-
-//_________________________________________________________________________________
-QList<BaseFileInfo> PlacesWidget::_decode( const QMimeData* mimeData ) const
-{
-    QList<BaseFileInfo> fileInfoList;
-    if( !mimeData ) return fileInfoList;
-
-    QString format;
-    if( mimeData->hasFormat( BaseFileInfo::MimeType ) ) format = BaseFileInfo::MimeType;
-    else if( mimeData->hasFormat( PathEditor::MimeType ) ) format = PathEditor::MimeType;
-    if( !format.isEmpty() )
-    {
-
-        // get dropped file info (use XML)
-        // dom document
-        QDomDocument document;
-        if( !document.setContent( mimeData->data( format ), false ) ) return fileInfoList;
-
-        const auto docElement = document.documentElement();
-        for( auto node = docElement.firstChild(); !node.isNull(); node = node.nextSibling() )
-        {
-            QDomElement element = node.toElement();
-            if( element.isNull() ) continue;
-
-            // special options
-            if( element.tagName() == Xml::FileInfo )
-            {
-
-                BaseFileInfo fileInfo( element );
-                if( fileInfo.file().isEmpty() || fileInfo.isNavigator() || !fileInfo.isFolder() ) continue;
-                fileInfoList.append( fileInfo );
-
-            }
-        }
-
-    } else if( mimeData->hasUrls() ) {
-
-        for( const auto& url:mimeData->urls() )
-        {
-
-            #if QT_VERSION >= 0x040800
-            // check that local file
-            if( !url.isLocalFile() ) continue;
-            #endif
-
-            // get file and check existence
-            const File file( url.path() );
-            if( !( file.exists() && file.isDirectory() ) ) continue;
-
-            BaseFileInfo fileInfo( file );
-            fileInfo.update();
-
-            fileInfo.setLocal();
-            if( file.isDirectory() ) fileInfo.setIsFolder();
-            else fileInfo.setIsDocument();
-            if( file.isLink() ) fileInfo.setIsLink();
-            if( file.isBrokenLink() ) fileInfo.setIsBrokenLink();
-            if( file.isHidden() ) fileInfo.setIsHidden();
-
-            fileInfoList.append( fileInfo );
-
-        }
-
-    }
-
-    return fileInfoList;
 
 }
 
