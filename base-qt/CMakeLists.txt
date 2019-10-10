@@ -174,8 +174,6 @@ set(base_qt_SOURCES
   PathHistory.cpp
   PathHistoryConfiguration.cpp
   PixmapEngine.cpp
-  PlacesWidget.cpp
-  PlacesWidgetItemInfo.cpp
   PrinterOptionWidget.cpp
   PrintPreviewDialog.cpp
   ProgressStatusBar.cpp
