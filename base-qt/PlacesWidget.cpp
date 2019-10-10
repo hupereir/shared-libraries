@@ -30,7 +30,6 @@
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
 #include "PathEditor.h"
-#include "PlacesWidgetItemInfo.h"
 #include "QtUtil.h"
 #include "Singleton.h"
 #include "TimeStamp.h"
@@ -519,10 +518,16 @@ PlacesWidget::PlacesWidget( QWidget* parent ):
 }
 
 //______________________________________________________________________
-BaseFileInfo::List PlacesWidget::items() const
+PlacesWidgetItemInfo::List PlacesWidget::items() const
 {
-    BaseFileInfo::List out;
-    std::transform( items_.begin(), items_.end(), std::back_inserter( out ), []( Private::PlacesWidgetItem* item ) { return item->fileInfo(); } );
+    PlacesWidgetItemInfo::List out;
+    std::transform( items_.begin(), items_.end(), std::back_inserter(out),
+        []( Private::PlacesWidgetItem* item ) {
+            PlacesWidgetItemInfo fileInfo( item->fileInfo() );
+            fileInfo.setFlags( item->flags() );
+            fileInfo.setAlias( item->text() );
+            return fileInfo;
+        });
     return out;
 }
 
@@ -1416,14 +1421,7 @@ bool PlacesWidget::_write()
     }
 
     // get list of items and create file info list
-    PlacesWidgetItemInfo::List fileInfoList;
-    std::transform( items_.begin(), items_.end(), std::back_inserter(fileInfoList),
-        []( Private::PlacesWidgetItem* item ) {
-            PlacesWidgetItemInfo fileInfo( item->fileInfo() );
-            fileInfo.setFlags( item->flags() );
-            fileInfo.setAlias( item->text() );
-            return fileInfo;
-        });
+    PlacesWidgetItemInfo::List fileInfoList = std::move( items() );
 
     // skip if does not match mask
     if( localOnly_ )

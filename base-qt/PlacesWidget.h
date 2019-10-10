@@ -24,6 +24,7 @@
 #include "BaseFileInfo.h"
 #include "IconSize.h"
 #include "FileSystemWatcher.h"
+#include "PlacesWidgetItemInfo.h"
 
 #include <QList>
 #include <QMimeData>
@@ -68,7 +69,7 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     { return group_->buttons().isEmpty(); }
 
     //* list of items
-    BaseFileInfo::List items() const;
+    PlacesWidgetItemInfo::List items() const;
 
     //@}
 
