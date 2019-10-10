@@ -671,6 +671,54 @@ bool PlacesWidget::read()
 }
 
 //______________________________________________________________________
+bool PlacesWidget::write() const
+{
+    Debug::Throw( "PlacesWidget::write.\n" );
+
+    const File file( dbFile_ );
+    if( file.isEmpty() )
+    {
+        Debug::Throw( "PlacesWidget::write - no file.\n" );
+        return false;
+    }
+
+    // get list of items and create file info list
+    PlacesWidgetItemInfo::List fileInfoList = std::move( items() );
+
+    // skip if does not match mask
+    if( localOnly_ )
+    { fileInfoList.erase( std::remove_if( fileInfoList.begin(), fileInfoList.end(), BaseFileInfo::IsRemoteFTor() ), fileInfoList.end() ); }
+
+    // create document
+    XmlDocument document;
+    {
+        QFile qtfile( file );
+        document.setContent( &qtfile );
+    }
+
+    // read old list of files
+    auto topNodes = document.elementsByTagName( Xml::FileInfoList );
+    if( !topNodes.isEmpty() )
+    {
+        const PlacesWidgetItemInfo::List oldFileInfoList( PlacesWidgetItemInfo::Helper::list( topNodes.at(0).toElement() ) );
+        if( oldFileInfoList == fileInfoList ) return true;
+    }
+
+    // create main element
+    auto top = PlacesWidgetItemInfo::Helper::domElement( fileInfoList, document.get() );
+
+    // append top node to document and write
+    document.replaceChild( top );
+    {
+        QFile qfile( file );
+        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
+        qfile.write( document.toByteArray() );
+    }
+
+    return true;
+}
+
+//______________________________________________________________________
 void PlacesWidget::setIconProvider( BaseFileIconProvider* provider )
 {
 
@@ -1472,54 +1520,6 @@ void PlacesWidget::paintEvent( QPaintEvent* event )
 
 }
 
-//______________________________________________________________________
-bool PlacesWidget::_write()
-{
-    Debug::Throw( "PlacesWidget::_write.\n" );
-
-    const File file( dbFile_ );
-    if( file.isEmpty() )
-    {
-        Debug::Throw( "PlacesWidget::write - no file.\n" );
-        return false;
-    }
-
-    // get list of items and create file info list
-    PlacesWidgetItemInfo::List fileInfoList = std::move( items() );
-
-    // skip if does not match mask
-    if( localOnly_ )
-    { fileInfoList.erase( std::remove_if( fileInfoList.begin(), fileInfoList.end(), BaseFileInfo::IsRemoteFTor() ), fileInfoList.end() ); }
-
-    // create document
-    XmlDocument document;
-    {
-        QFile qtfile( file );
-        document.setContent( &qtfile );
-    }
-
-    // read old list of files
-    auto topNodes = document.elementsByTagName( Xml::FileInfoList );
-    if( !topNodes.isEmpty() )
-    {
-        const PlacesWidgetItemInfo::List oldFileInfoList( PlacesWidgetItemInfo::Helper::list( topNodes.at(0).toElement() ) );
-        if( oldFileInfoList == fileInfoList ) return true;
-    }
-
-    // create main element
-    auto top = PlacesWidgetItemInfo::Helper::domElement( fileInfoList, document.get() );
-
-    // append top node to document and write
-    document.replaceChild( top );
-    {
-        QFile qfile( file );
-        if( !qfile.open( QIODevice::WriteOnly ) ) return false;
-        qfile.write( document.toByteArray() );
-    }
-
-    return true;
-}
-
 //_________________________________________________________________________________
 void PlacesWidget::_addDefaultPlaces()
 {
@@ -1620,7 +1620,7 @@ void PlacesWidget::_updateConfiguration()
 void PlacesWidget::_saveConfiguration()
 {
     Debug::Throw( "PlacesWidget::_saveConfiguration.\n" );
-    _write();
+    write();
 }
 
 //_________________________________________________________________________________

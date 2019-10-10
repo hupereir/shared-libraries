@@ -83,6 +83,9 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     //* read items from files
     bool read();
 
+    //* write fileList to file
+    bool write() const;
+
     //* set icon provider
     void setIconProvider( BaseFileIconProvider* );
 
@@ -198,9 +201,6 @@ class PlacesWidget: public QWidget, private Base::Counter<PlacesWidget>
     void _saveConfiguration();
 
     private:
-
-    //* write fileList to file
-    bool _write();
 
     //* install default folders
     void _addDefaultPlaces();
