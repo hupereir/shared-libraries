@@ -501,7 +501,7 @@ void LineEditor::_installActions()
     pasteAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
     connect( qApp->clipboard(), SIGNAL(dataChanged()), SLOT(_updatePasteAction()) );
-    _updatePasteAction();
+    pasteAction_->setEnabled( !isReadOnly() );
 
     addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
     connect( clearAction_, SIGNAL(triggered()), SLOT(clear()) );
