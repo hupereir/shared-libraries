@@ -41,9 +41,6 @@ namespace Ssh
         bool initialized() const
         { return initialized_; }
 
-        //* initialize
-        void initialize();
-
         private:
 
         //* constructor
