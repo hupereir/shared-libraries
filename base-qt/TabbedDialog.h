@@ -53,6 +53,41 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     //* adds a new Item, returns associated Box
     QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), bool expand = false );
 
+    //* button box
+    QDialogButtonBox& buttonBox() const
+    { return *buttonBox_; }
+
+    //* retrieve button layout
+    QBoxLayout& buttonLayout() const
+    { return *(qobject_cast<QBoxLayout*>(buttonBox_->layout())); }
+
+    //* returns true if OK button is valid
+    bool hasOkButton() const
+    { return buttonBox_->button(QDialogButtonBox::Ok)||buttonBox_->button(QDialogButtonBox::Close); }
+
+    //* retrieve OK button
+    QPushButton& okButton() const
+    {
+        if( QPushButton* button = buttonBox_->button(QDialogButtonBox::Ok) ) return *button;
+        else return *buttonBox_->button(QDialogButtonBox::Close);
+    }
+
+    //* returns true if close button is valid
+    bool hasCloseButton() const
+    { return hasOkButton(); }
+
+    //* retrieve close button
+    QPushButton& closeButton() const
+    { return okButton(); }
+
+    //* returns true if Cancel button is valid
+    bool hasCancelButton() const
+    { return buttonBox_->button(QDialogButtonBox::Cancel); }
+
+    //* retrieve CANCEL button
+    QPushButton& cancelButton() const
+    { return *buttonBox_->button(QDialogButtonBox::Cancel); }
+
     protected:
 
     //* retrieve list
@@ -70,14 +105,6 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     //* retrieve stack
     QStackedWidget& _stackedWidget()
     { return *stackedWidget_; }
-
-    //* button box
-    const QDialogButtonBox& _buttonBox() const
-    { return *buttonBox_; }
-
-    //* button box
-    QDialogButtonBox& _buttonBox()
-    { return *buttonBox_; }
 
     //* get page matching a given index
     QWidget* _findPage( const QModelIndex& ) const;

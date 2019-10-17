@@ -138,46 +138,46 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
     setOptionName( "PREFERENCE_DIALOG" );
 
     // restore default
-    _buttonBox().addButton( QDialogButtonBox::RestoreDefaults );
-    _buttonBox().button( QDialogButtonBox::RestoreDefaults )->setText( tr( "Defaults" ) );
-    _buttonBox().button( QDialogButtonBox::RestoreDefaults )->setIcon( IconEngine::get( IconNames::Revert ) );
-    _buttonBox().button( QDialogButtonBox::RestoreDefaults )->setToolTip( tr( "Restore default value for all options" ) );
+    buttonBox().addButton( QDialogButtonBox::RestoreDefaults );
+    buttonBox().button( QDialogButtonBox::RestoreDefaults )->setText( tr( "Defaults" ) );
+    buttonBox().button( QDialogButtonBox::RestoreDefaults )->setIcon( IconEngine::get( IconNames::Revert ) );
+    buttonBox().button( QDialogButtonBox::RestoreDefaults )->setToolTip( tr( "Restore default value for all options" ) );
 
-    connect( _buttonBox().button( QDialogButtonBox::RestoreDefaults ), SIGNAL(clicked()), SLOT(_restoreDefaults()) );
-    connect( _buttonBox().button( QDialogButtonBox::RestoreDefaults ), SIGNAL(clicked()), SIGNAL(restoreDefaults()) );
+    connect( buttonBox().button( QDialogButtonBox::RestoreDefaults ), SIGNAL(clicked()), SLOT(_restoreDefaults()) );
+    connect( buttonBox().button( QDialogButtonBox::RestoreDefaults ), SIGNAL(clicked()), SIGNAL(restoreDefaults()) );
 
     // reset
-    _buttonBox().addButton( QDialogButtonBox::Reset );
-    _buttonBox().button( QDialogButtonBox::Reset )->setToolTip( tr( "Reset configuration" ) );
-    _buttonBox().button( QDialogButtonBox::Reset )->setIcon( IconEngine::get( IconNames::Undo ) );
-    connect( _buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SLOT(_reset()) );
-    connect( _buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SIGNAL(reset()) );
+    buttonBox().addButton( QDialogButtonBox::Reset );
+    buttonBox().button( QDialogButtonBox::Reset )->setToolTip( tr( "Reset configuration" ) );
+    buttonBox().button( QDialogButtonBox::Reset )->setIcon( IconEngine::get( IconNames::Undo ) );
+    connect( buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SLOT(_reset()) );
+    connect( buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SIGNAL(reset()) );
 
     // ok button
-    _buttonBox().addButton( QDialogButtonBox::Ok );
-    connect( _buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SLOT(_save()) );
-    connect( _buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SIGNAL(ok()) );
-    connect( _buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SLOT(accept()) );
-    _buttonBox().button( QDialogButtonBox::Ok )->setToolTip(
+    buttonBox().addButton( QDialogButtonBox::Ok );
+    connect( buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SLOT(_save()) );
+    connect( buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SIGNAL(ok()) );
+    connect( buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SLOT(accept()) );
+    buttonBox().button( QDialogButtonBox::Ok )->setToolTip(
         tr( "Apply changes to options and close window.\n"
         "Note: the application may have to be restarted so that\n"
         "all changes are taken into account" ) );
 
     // apply button
-    _buttonBox().addButton( QDialogButtonBox::Apply );
-    connect( _buttonBox().button( QDialogButtonBox::Apply ), SIGNAL(clicked()), SLOT(_apply()) );
-    connect( _buttonBox().button( QDialogButtonBox::Apply ), SIGNAL(clicked()), SIGNAL(apply()) );
-    _buttonBox().button( QDialogButtonBox::Apply )->setToolTip(
+    buttonBox().addButton( QDialogButtonBox::Apply );
+    connect( buttonBox().button( QDialogButtonBox::Apply ), SIGNAL(clicked()), SLOT(_apply()) );
+    connect( buttonBox().button( QDialogButtonBox::Apply ), SIGNAL(clicked()), SIGNAL(apply()) );
+    buttonBox().button( QDialogButtonBox::Apply )->setToolTip(
         tr( "Apply changes to options.\n"
         "Note: the application may have to be restarted so that\n"
         "all changes are taken into account" ) );
 
     // cancel button
-    _buttonBox().addButton( QDialogButtonBox::Cancel );
-    connect( _buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SLOT(_cancel()) );
-    connect( _buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SIGNAL(cancel()) );
-    connect( _buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SLOT(reject()) );
-    _buttonBox().button( QDialogButtonBox::Cancel )->setToolTip( tr( "Discard changes to options and close window" ) );
+    buttonBox().addButton( QDialogButtonBox::Cancel );
+    connect( buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SLOT(_cancel()) );
+    connect( buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SIGNAL(cancel()) );
+    connect( buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SLOT(reject()) );
+    buttonBox().button( QDialogButtonBox::Cancel )->setToolTip( tr( "Discard changes to options and close window" ) );
 
     // connection
     connect( this, SIGNAL(modified()), SLOT(_checkModified()));
@@ -577,8 +577,8 @@ bool BaseConfigurationDialog::_checkModified()
     const bool modified( !(modifiedOptions == XmlOptions::get() ) );
 
     // update button state
-    _buttonBox().button( QDialogButtonBox::Apply )->setEnabled( modified );
-    _buttonBox().button( QDialogButtonBox::Reset )->setEnabled( modified );
+    buttonBox().button( QDialogButtonBox::Apply )->setEnabled( modified );
+    buttonBox().button( QDialogButtonBox::Reset )->setEnabled( modified );
 
     Debug::Throw()
         << "BaseConfigurationDialog::_checkModified -"
@@ -668,8 +668,8 @@ void BaseConfigurationDialog::_apply()
         emit configurationChanged();
 
         // disable buttons
-        _buttonBox().button( QDialogButtonBox::Apply )->setEnabled( false );
-        _buttonBox().button( QDialogButtonBox::Reset )->setEnabled( false );
+        buttonBox().button( QDialogButtonBox::Apply )->setEnabled( false );
+        buttonBox().button( QDialogButtonBox::Reset )->setEnabled( false );
 
     }
 
