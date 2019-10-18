@@ -23,7 +23,7 @@ endif()
 
 ########### ssh #########
 find_package(LibSSH2)
-if(LIBSSH2_FOUND)
+if(LibSSH2_FOUND)
 
   add_definitions(-DWITH_SSH=1)
   include_directories(${LIBSSH2_INCLUDE_DIR})
@@ -79,7 +79,7 @@ if(WIN32)
 
 endif()
 
-if(${LIBSSH2_FOUND})
+if(LibSSH2_FOUND)
 
   target_link_libraries(base-ssh ${LIBSSH2_LIBRARY})
 
