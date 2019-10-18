@@ -22,11 +22,11 @@ else()
 endif()
 
 ########### ssh #########
-find_package(LibSSH2)
-if(LibSSH2_FOUND)
+find_package(LibSSH)
+if(LibSSH_FOUND)
 
   add_definitions(-DWITH_SSH=1)
-  include_directories(${LIBSSH2_INCLUDE_DIR})
+  include_directories(${LIBSSH_INCLUDE_DIR})
 
 else()
 
@@ -48,14 +48,12 @@ set(base_ssh_SOURCES
   SshBaseSocket.cpp
   SshConnection.cpp
   SshConnectionAttributes.cpp
-  SshFileReadSocket.cpp
-  SshFileTransferObject.cpp
-  SshFileWriteSocket.cpp
+#   SshFileReadSocket.cpp
+#   SshFileTransferObject.cpp
+#   SshFileWriteSocket.cpp
   SshLoginDialog.cpp
-  SshSingleton.cpp
   SshSocket.cpp
   SshTunnel.cpp
-  SshUtil.cpp
 )
 
 if(ENABLE_SHARED)
@@ -79,9 +77,9 @@ if(WIN32)
 
 endif()
 
-if(LibSSH2_FOUND)
+if(LibSSH_FOUND)
 
-  target_link_libraries(base-ssh ${LIBSSH2_LIBRARY})
+  target_link_libraries(base-ssh ${LIBSSH_LIBRARIES})
 
 endif()
 

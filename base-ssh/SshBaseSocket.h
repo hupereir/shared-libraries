@@ -50,7 +50,7 @@ namespace Ssh
 
         //* true if connected
         bool isConnected() const
-        { return channel_; }
+        { return channel_ && connected_; }
 
         //* true if channel is closed
         bool atEnd() const override;
@@ -109,6 +109,9 @@ namespace Ssh
         //* channel
         void _setChannel( void*, QIODevice::OpenMode );
 
+        //* connection
+        void _setConnected();
+
         private:
 
         //* try connect channel, returns true on success
@@ -119,6 +122,9 @@ namespace Ssh
 
         //* ssh channel
         void* channel_ = nullptr;
+
+        //* connected
+        bool connected_ = false;
 
         //* timer
         QBasicTimer timer_;

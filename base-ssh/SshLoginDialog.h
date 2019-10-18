@@ -63,7 +63,7 @@ namespace Ssh
         //* connection attributes
         ConnectionAttributes attributes_;
 
-        LineEditor* userNameEditor_ = nullptr;
+        LineEditor* userEditor_ = nullptr;
         PasswordEditor* passwordEditor_ = nullptr;
         QCheckBox* rememberPaswordCheckBox_ = nullptr;
 

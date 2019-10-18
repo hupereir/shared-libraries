@@ -24,7 +24,6 @@
 #include "File.h"
 #include "Sleep.h"
 #include "SshLoginDialog.h"
-#include "SshSingleton.h"
 #include "SshSocket.h"
 #include "SshTunnel.h"
 
@@ -34,20 +33,20 @@
 #include <QTextStream>
 #include <QTimer>
 
-#if defined(Q_OS_WIN)
-#include <ws2tcpip.h>
-#else
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#endif
+// #if defined(Q_OS_WIN)
+// #include <ws2tcpip.h>
+// #else
+// #include <sys/types.h>
+// #include <sys/socket.h>
+// #include <netinet/in.h>
+// #endif
 
 #include <numeric>
 #include <fcntl.h>
 #include <unistd.h>
 
 #if WITH_SSH
-#include <libssh2.h>
+#include <libssh/libssh.h>
 #endif
 
 
@@ -69,10 +68,9 @@ namespace Ssh
     {
 
         Debug::Throw( "Ssh::Connection::createTunnels.\n" );
-        if( !Singleton::get().initialized() ) return false;
 
         // loop over tunnel attributes
-        for( const auto& attributes:attributes_.tunnels() )
+        for( const auto& attributes:connectionAttributes_.tunnels() )
         {
 
             // create Tcp server
@@ -105,38 +103,12 @@ namespace Ssh
     {
 
         Debug::Throw( "Ssh::Connection::connect.\n" );
-        if( !Singleton::get().initialized() ) return false;
 
         #if WITH_SSH
-        // initialize socket
-        sshSocket_ = socket( PF_INET, SOCK_STREAM, IPPROTO_TCP);
-        if( sshSocket_ == -1 )
-        {
-            _notifyError( tr( "unable to create ssh socket" ) );
-            return false;
-        }
-
-        // make socket non blocking
-        #if !defined(Q_OS_WIN)
-        const int flags( fcntl(sshSocket_, F_GETFL ) );
-        if( flags < 0 )
-        {
-            _notifyError( tr( "unable to get socket flags" ) );
-            return false;
-        }
-
-        if( fcntl( sshSocket_, F_SETFL, flags|O_NONBLOCK ) < 0 )
-        {
-            _notifyError( tr( "unable to set socket flags" ) );
-            return false;
-        }
-        #endif
-
-        // lookup host
-        QHostInfo::lookupHost( attributes_.host(), this, SLOT(_saveHost(QHostInfo)) );
 
         // session
-        if(!( session_ = libssh2_session_init() ))
+        auto session = ssh_new();
+        if( !session )
         {
             Debug::Throw() << "Ssh::Connection::connect - Cannot initialize session" << endl;
             _notifyError( tr( "cannot initialize ssh session" ) );
@@ -144,24 +116,16 @@ namespace Ssh
         }
 
         // cast session
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
-
-        // initialize agent
-        agent_ = libssh2_agent_init(session);
-        if( !agent_ )
-        {
-            // do not throw error because one can connect without the agent
-            Debug::Throw(0, "Ssh::Connection::connect - failed initializing agent.\n" );
-        }
+        session_ = session;
 
         // update state and return
         state_ |= SessionCreated;
 
         // mark as non blocking
-        libssh2_session_set_blocking(session, 0);
+        ssh_set_blocking(session, false);
 
-        // request handshake and agent connection
-        addCommands( Base::makeT<CommandList>( {  Command::Connect, Command::Handshake, Command::ConnectAgent } ) );
+        // request command
+        addCommand( Command::Connect );
 
         return true;
         #else
@@ -180,11 +144,10 @@ namespace Ssh
         if( forceRequestIdentity ) commands.append(Command::RequestIdentity);
 
         commands.append( Base::makeT<CommandList>( {
-            Command::LoadAuthenticationMethods,
-            Command::ListIdentities,
+            Command::AuthenticateWithGssAPI,
             Command::AuthenticateWithAgent } ));
 
-        if( !( forceRequestIdentity || attributes_.rememberPassword() ) )
+        if( !( forceRequestIdentity || connectionAttributes_.rememberPassword() ) )
         { commands.append(Command::RequestIdentity); }
 
         commands.append(Command::AuthenticateWithPassword);
@@ -210,13 +173,6 @@ namespace Ssh
 
         // stop timer
         if( timer_.isActive() ) timer_.stop();
-
-        // setup host manually if not already set
-        if( sshHost_.lookupId() < 0 )
-        {
-            sshHost_ = QHostInfo::fromName( attributes_.host() );
-            sshHost_.setLookupId( 0 );
-        }
 
         // start timer
         QElapsedTimer timer;
@@ -270,10 +226,6 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_saveHost( QHostInfo host )
-    { sshHost_ = host; }
-
-    //_______________________________________________
     void Connection::_disconnectChannels()
     {
 
@@ -298,30 +250,18 @@ namespace Ssh
         if( state_ & (Connected|SessionCreated) )
         {
 
-            // disconnect agent
-            if( agent_ )
-            {
-                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
-                libssh2_agent_disconnect(agent);
-                libssh2_agent_free(agent);
-                agent_ = nullptr;
-                identity_ = nullptr;
-            };
-
             // close session
             if( session_ )
             {
-                auto session( static_cast<LIBSSH2_SESSION*>(session_) );
-                libssh2_session_disconnect( session, "Client disconnecting normally" );
-                libssh2_session_free( session );
-                session_ = nullptr;
-            }
+                auto session( static_cast<ssh_session>(session_) );
 
-            // close socket
-            if( sshSocket_ >= 0 )
-            {
-                close( sshSocket_ );
-                sshSocket_ = -1;
+                // disconnect
+                if( ssh_is_connected( session ) )
+                { ssh_disconnect( session ); }
+
+                // free and reset
+                ssh_free( session );
+                session_ = nullptr;
             }
 
             state_ &= ~(Connected|SessionCreated);
@@ -402,102 +342,39 @@ namespace Ssh
         Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << endl;
 
         // cast session. It is used for almost all commands
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
+        auto session( static_cast<ssh_session>(session_) );
         switch( commands_.front() )
         {
 
             case Command::Connect:
             {
 
-                // check host
-                if( sshHost_.lookupId() < 0 )
-                {
-                    Debug::Throw() << "Ssh::Connection::_processCommands - lookup failed" << endl;
-                    break;
-                }
-
-                // initialize socket address structure
-                QHostAddress address;
-                if( !sshHost_.addresses().isEmpty() ) address = sshHost_.addresses().front();
-                if( address.isNull() )
-                {
-
-                    _abortCommands( tr( "Invalid host: %1" ).arg( attributes_.host() ) );
-                    return false;
-
-                }
+                auto port( connectionAttributes_.port() );
+                ssh_options_set( session, SSH_OPTIONS_HOST, qPrintable( connectionAttributes_.host() ) );
+                ssh_options_set( session, SSH_OPTIONS_PORT, &port );
+                ssh_options_set( session, SSH_OPTIONS_USER, qPrintable( connectionAttributes_.user() ) );
 
                 Debug::Throw() << "Ssh::Connection::_processCommands - connection."
-                    << " Host: " << attributes_.host()
-                    << " Port: " << attributes_.port()
+                    << " Host: " << connectionAttributes_.host()
+                    << " Port: " << connectionAttributes_.port()
                     << endl;
 
-                // initialize socket address
-                struct sockaddr_in socketAddress;
-                socketAddress.sin_family = AF_INET;
-                socketAddress.sin_port = htons(attributes_.port());
-                socketAddress.sin_addr.s_addr = htonl(address.toIPv4Address());
-
-                // try connect
-                auto result( ::connect( sshSocket_, reinterpret_cast<struct sockaddr*>(&socketAddress), sizeof(struct sockaddr_in) ) );
-                if( !result )
+                auto result = ssh_connect(session);
+                if( result == SSH_OK )
                 {
 
                     // success
                     commands_.removeFirst();
                     return true;
 
-                } else if( errno != EALREADY && errno != EINPROGRESS && errno != EWOULDBLOCK && errno != EAGAIN ) {
+                } else if( result == SSH_ERROR ) {
 
                     _abortCommands( tr( "Cannot connect to host %1:%2 - %3" )
-                        .arg(attributes_.host())
-                        .arg(attributes_.port())
-                        .arg(strerror( errno ) ) );
+                        .arg( connectionAttributes_.host() )
+                        .arg( connectionAttributes_.port() )
+                        .arg( ssh_get_error( session ) ) );
+
                     return false;
-
-                }
-
-            }
-            break;
-
-
-            case Command::Handshake:
-            {
-                const auto result( libssh2_session_handshake( session, sshSocket_ ) );
-                if( !result )
-                {
-
-                    // success
-                    commands_.removeFirst();
-                    return true;
-
-                } else if( result != LIBSSH2_ERROR_EAGAIN ) {
-
-                    _abortCommands( tr( "Handshake failed - %1" ).arg(  _sshErrorString( result ) ) );
-                    return false;
-
-                }
-
-            }
-            break;
-
-            case Command::ConnectAgent:
-            if( !agent_ )
-            {
-
-                // skip if no agent is defined
-                commands_.removeFirst();
-                return true;
-
-            } else {
-
-                // accept in all cases except EAGAIN
-                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
-                if( libssh2_agent_connect(agent) != LIBSSH2_ERROR_EAGAIN  )
-                {
-
-                    commands_.removeFirst();
-                    return true;
 
                 }
 
@@ -509,7 +386,7 @@ namespace Ssh
 
                 // login dialog
                 LoginDialog dialog( nullptr );
-                dialog.setAttributes( attributes_ );
+                dialog.setAttributes( connectionAttributes_ );
                 if( dialog.exec() )
                 {
 
@@ -517,11 +394,11 @@ namespace Ssh
                     const auto attributes( dialog.attributes() );
 
                     // detect changes, save, and emit signal if needed
-                    if( ( attributes_.userName() != attributes.userName() ) ||
-                        ( attributes_.password() != attributes.password() ) ||
-                        ( attributes_.rememberPassword() != attributes.rememberPassword() ) )
+                    if( ( connectionAttributes_.user() != attributes.user() ) ||
+                        ( connectionAttributes_.password() != attributes.password() ) ||
+                        ( connectionAttributes_.rememberPassword() != attributes.rememberPassword() ) )
                     {
-                        attributes_ = attributes;
+                        connectionAttributes_ = attributes;
                         emit attributesChanged();
                     }
 
@@ -538,150 +415,83 @@ namespace Ssh
             }
             break;
 
-            case Command::LoadAuthenticationMethods:
-            {
-                if( !(authenticationMethods_ = libssh2_userauth_list( session, qPrintable( attributes_.userName() ), attributes_.userName().size() )).isNull() )
-                {
-
-                    // success
-                    commands_.removeFirst();
-                    return true;
-
-                } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
-
-                    _abortCommands( tr( "Failed retrieving authentication methods" ) );
-                    return false;
-
-                }
-
-            }
-            break;
-
-            case Command::ListIdentities:
-            if( !agent_ )
+            case Command::AuthenticateWithGssAPI:
             {
 
-                // skip if no agent is defined
-                commands_.removeFirst();
-                return true;
-
-            } else if( !authenticationMethods_.contains( "publickey" ) ) {
-
-                Debug::Throw( 0, "Ssh::Connection::_processCommands - public key authentication is not supported.\n" );
-                commands_.removeFirst();
-                return true;
-
-            } else {
-
-                // accept in all cases except EAGAIN
-                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
-                if( libssh2_agent_list_identities( agent ) != LIBSSH2_ERROR_EAGAIN  )
+                auto result = ssh_userauth_gssapi( session );
+                if( result == SSH_AUTH_SUCCESS )
                 {
 
-                    identity_ = nullptr;
-                    commands_.removeFirst();
-                    return true;
-
-                }
-
-            }
-            break;
-
-            case Command::AuthenticateWithAgent:
-            if( !agent_ )
-            {
-
-                // skip if no agent is defined
-                commands_.removeFirst();
-                return true;
-
-            } else if( !authenticationMethods_.contains( "publickey" ) ) {
-
-                Debug::Throw( 0, "Ssh::Connection::_processCommands - public key authentication is not supported.\n" );
-                commands_.removeFirst();
-                return true;
-
-            } else {
-
-                Debug::Throw() << "Ssh::Connection::_processCommands - identity: " << identity_ << endl;
-
-                auto agent( static_cast<LIBSSH2_AGENT*>(agent_) );
-                auto identity( static_cast<struct libssh2_agent_publickey*>( identity_ ) );
-                if( identity )
-                {
-
-                    // cast
-                    const int result( libssh2_agent_userauth( agent, qPrintable( attributes_.userName() ), identity ) );
-                    if( !result )
-                    {
-
-                        // success
-                        commands_.removeFirst();
-                        state_ |= Connected;
-                        commands_.clear();
-                        emit connected();
-                        return false;
-
-                    } else if( result == LIBSSH2_ERROR_EAGAIN ) {
-
-                        // try again
-                        break;
-
-                    } else {
-
-                        Debug::Throw()
-                            << "Ssh::Connection::authenticateWithAgent -"
-                            << " User: " << attributes_.userName()
-                            << " Key: " << identity->comment << " failed"
-                            << endl;
-
-                    }
-
-                }
-
-                // load next identity
-                struct libssh2_agent_publickey* nextIdentity;
-                if( libssh2_agent_get_identity( agent, &nextIdentity, identity ) )
-                {
-                    identity_ = nullptr;
-                    commands_.removeFirst();
-                    return true;
-
-                } else identity_ = nextIdentity;
-
-            }
-            break;
-
-            case Command::AuthenticateWithPassword:
-            if( !authenticationMethods_.contains( "password" ) )
-            {
-
-                // check authentication methods
-                Debug::Throw( 0, "Ssh::Connection::_processCommands - password authentication is not supported.\n" );
-                commands_.removeFirst();
-                return true;
-
-            } else {
-
-                Debug::Throw() << "Ssh::Connection::_processCommands - password authentication."
-                    << " Host: " << attributes_.host()
-                    << " User: " << attributes_.userName()
-                    << " Password: " << attributes_.password()
-                    << endl;
-
-                const int result( libssh2_userauth_password( session, qPrintable( attributes_.userName() ), qPrintable( attributes_.password() ) ) );
-                if( !result )
-                {
+                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
 
                     // success
                     commands_.removeFirst();
                     state_ |= Connected;
                     commands_.clear();
                     emit connected();
-
                     return false;
 
-                }  else if( result != LIBSSH2_ERROR_EAGAIN ) {
+                } else if( result != SSH_AUTH_AGAIN ) {
+
+                    // ignore error, move to next command
+                    commands_.removeFirst();
+                    return true;
+
+                }
+
+                break;
+            }
+
+            case Command::AuthenticateWithAgent:
+            {
+
+                auto result = ssh_userauth_agent( session, qPrintable( connectionAttributes_.user() ) );
+                if( result == SSH_AUTH_SUCCESS )
+                {
+
+                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
+
+                    // success
+                    commands_.removeFirst();
+                    state_ |= Connected;
+                    commands_.clear();
+                    emit connected();
+                    return false;
+
+                } else if( result != SSH_AUTH_AGAIN ) {
+
+                    // ignore error, move to next command
+                    commands_.removeFirst();
+                    return true;
+
+                }
+
+                break;
+            }
+
+            case Command::AuthenticateWithPassword:
+            {
+
+                Debug::Throw() << "Ssh::Connection::_processCommands - password authentication."
+                    << " Host: " << connectionAttributes_.host()
+                    << " User: " << connectionAttributes_.user()
+                    << " Password: " << connectionAttributes_.password()
+                    << endl;
+
+                auto result = ssh_userauth_password( session, qPrintable( connectionAttributes_.user() ), qPrintable( connectionAttributes_.password() ) );
+                if( result == SSH_AUTH_SUCCESS )
+                {
+
+                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
+
+                    // success
+                    commands_.removeFirst();
+                    state_ |= Connected;
+                    commands_.clear();
+                    emit connected();
+                    return false;
+
+                } else if( result != SSH_AUTH_AGAIN ) {
 
                     commands_.clear();
                     emit loginFailed();
@@ -694,8 +504,8 @@ namespace Ssh
 
                 }
 
+                break;
             }
-            break;
 
             default:
             commands_.removeFirst();
@@ -756,8 +566,8 @@ namespace Ssh
             // find tunnel attributes matching host
             TunnelAttributes attributes;
             attributes.setLocalPort( tcpServer->serverPort() );
-            auto iter( attributes_.tunnels().constFind( attributes ) );
-            if( iter == attributes_.tunnels().end() )
+            auto iter( connectionAttributes_.tunnels().constFind( attributes ) );
+            if( iter == connectionAttributes_.tunnels().end() )
             {
                 Debug::Throw(0) << "Ssh::Connection::_newConnection - unable to find tunnel attributes matching port " << tcpServer->serverPort() << endl;
                 continue;
@@ -780,69 +590,6 @@ namespace Ssh
     }
 
     //_______________________________________________
-    QString Connection::_sshErrorString( int error ) const
-    {
-
-        #if WITH_SSH
-        using ErrorHash = QHash<int,QString>;
-        // error codes copied from libssh2.h
-        static const auto errorStrings = Base::makeT<ErrorHash>( {
-            { LIBSSH2_ERROR_SOCKET_NONE, tr( "Invalid socket" ) },
-            { LIBSSH2_ERROR_BANNER_RECV, tr( "Banner from remote host not received" ) },
-            { LIBSSH2_ERROR_BANNER_SEND, tr( "Unable to send banner to remote host" ) },
-            { LIBSSH2_ERROR_INVALID_MAC, tr( "Invalid MAC" ) },
-            { LIBSSH2_ERROR_KEX_FAILURE, tr( "Encryption key exchange with the remote host failed" ) },
-            { LIBSSH2_ERROR_ALLOC, tr( "Bad allocation" ) },
-            { LIBSSH2_ERROR_SOCKET_SEND, tr( "Unable to send data to socket" ) },
-            { LIBSSH2_ERROR_KEY_EXCHANGE_FAILURE, tr(  "Encryption key exchange with the remote host failed" ) },
-            { LIBSSH2_ERROR_TIMEOUT, tr( "Command timed out" ) },
-            { LIBSSH2_ERROR_HOSTKEY_INIT, tr( "Unable to initialize host key" ) },
-            { LIBSSH2_ERROR_HOSTKEY_SIGN, tr( "Unable to sign host key" ) },
-            { LIBSSH2_ERROR_DECRYPT, tr( "Decryption error" ) },
-            { LIBSSH2_ERROR_SOCKET_DISCONNECT, tr( "Socket is disconnected" ) },
-            { LIBSSH2_ERROR_PROTO, tr( "An invalid SSH protocol response was received on the socket" ) },
-            { LIBSSH2_ERROR_PASSWORD_EXPIRED, tr( "Password has expired" ) },
-            { LIBSSH2_ERROR_FILE, tr( "Invalid file" ) },
-            { LIBSSH2_ERROR_METHOD_NONE, tr( "Invalid authentication method" ) },
-            { LIBSSH2_ERROR_AUTHENTICATION_FAILED, tr( "Authentication failed" ) },
-            { LIBSSH2_ERROR_PUBLICKEY_UNVERIFIED, tr( "Unverified public key" ) },
-            { LIBSSH2_ERROR_CHANNEL_OUTOFORDER, tr( "Invalid chanel" ) },
-            { LIBSSH2_ERROR_CHANNEL_FAILURE, tr( "Failed to read/write to ssh channel" ) },
-            { LIBSSH2_ERROR_CHANNEL_REQUEST_DENIED, tr( "Channel request denied" ) },
-            { LIBSSH2_ERROR_CHANNEL_UNKNOWN, tr( "Channel is unknown" ) },
-            { LIBSSH2_ERROR_CHANNEL_WINDOW_EXCEEDED, tr( "Channel window exceed" ) },
-            { LIBSSH2_ERROR_CHANNEL_PACKET_EXCEEDED, tr( "Channel packet exceed" ) },
-            { LIBSSH2_ERROR_CHANNEL_CLOSED, tr( "Channel is closed" ) },
-            { LIBSSH2_ERROR_CHANNEL_EOF_SENT, tr( "Channel has already sent EOF" ) },
-            { LIBSSH2_ERROR_SCP_PROTOCOL, tr( "Invalid scp protocol" ) },
-            { LIBSSH2_ERROR_ZLIB, tr( "ZLib failed" ) },
-            { LIBSSH2_ERROR_SOCKET_TIMEOUT, tr( "Socket timeout" ) },
-            { LIBSSH2_ERROR_SFTP_PROTOCOL, tr( "Invalid sftp protocol" ) },
-            { LIBSSH2_ERROR_REQUEST_DENIED, tr( "Request denied" ) },
-            { LIBSSH2_ERROR_METHOD_NOT_SUPPORTED, tr( "Method not supported" ) },
-            { LIBSSH2_ERROR_INVAL, tr( "Invalid arguments" ) },
-            { LIBSSH2_ERROR_INVALID_POLL_TYPE, tr( "Invalid poll type" ) },
-            { LIBSSH2_ERROR_PUBLICKEY_PROTOCOL, tr( "invalid public key protocol" ) },
-            { LIBSSH2_ERROR_EAGAIN, tr( "Non blocking" ) },
-            { LIBSSH2_ERROR_BUFFER_TOO_SMALL, tr( "Buffer is too small" ) },
-            { LIBSSH2_ERROR_BAD_USE, tr( "Bad use" ) },
-            { LIBSSH2_ERROR_COMPRESS, tr( "Compression error" ) },
-            { LIBSSH2_ERROR_OUT_OF_BOUNDARY, tr( "Out of bound" ) },
-            { LIBSSH2_ERROR_AGENT_PROTOCOL, tr( "Invalid agent protocol" ) },
-            { LIBSSH2_ERROR_SOCKET_RECV, tr( "Unable to read data from socket" ) },
-            { LIBSSH2_ERROR_ENCRYPT, tr( "Encryption error" ) },
-            { LIBSSH2_ERROR_BAD_SOCKET, tr( "Socket is in a bad state" ) },
-            { LIBSSH2_ERROR_KNOWN_HOSTS, tr( "Known hosts error" ) }
-        });
-
-        auto iter = errorStrings.find( error );
-        return iter == errorStrings.end() ? tr( "Unknown error - %1" ).arg( error ) : iter.value();
-        #else
-        return tr("Unknown error");
-        #endif
-    }
-
-    //_______________________________________________
     QString Connection::_commandMessage( const CommandList& commands ) const
     {
         return std::accumulate( commands.begin(), commands.end(), QString(),
@@ -855,11 +602,8 @@ namespace Ssh
        using CommandHash = QHash<Command,QString>;
         static const auto commandNames = Base::makeT<CommandHash>( {
             { Command::Connect, tr( "Connecting to host" ) },
-            { Command::Handshake, tr( "Performing SSH handshake" ) },
-            { Command::ConnectAgent, tr( "Connecting to SSH agent" ) },
             { Command::RequestIdentity, tr( "Waiting for user authentication" ) },
-            { Command::LoadAuthenticationMethods, tr( "Loading authentication methods" ) },
-            { Command::ListIdentities, tr( "Loading existing identities" ) },
+            { Command::AuthenticateWithGssAPI, tr( "Trying to authenticate using GssAPI" ) },
             { Command::AuthenticateWithAgent, tr( "Trying to authenticate using SSH agent" ) },
             { Command::AuthenticateWithPassword, tr( "Trying to authenticate using password" ) }
         });

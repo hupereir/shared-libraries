@@ -45,6 +45,6 @@ add_subdirectory(base-transparency)
 add_subdirectory(base-svg)
 add_subdirectory(base-notifications)
 add_subdirectory(base-filesystem)
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
 write_feature_summary()

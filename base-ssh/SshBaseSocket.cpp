@@ -23,7 +23,7 @@
 #include <QElapsedTimer>
 
 #if WITH_SSH
-#include <libssh2.h>
+#include <libssh/libssh.h>
 #endif
 
 namespace Ssh
@@ -47,7 +47,7 @@ namespace Ssh
         if( !isConnected() ) return true;
 
         #if WITH_SSH
-        return libssh2_channel_eof( static_cast<LIBSSH2_CHANNEL*>(channel_) );
+        return ssh_channel_is_eof( static_cast<ssh_channel>(channel_) );
         #else
         return true;
         #endif
@@ -65,9 +65,9 @@ namespace Ssh
         // close channel
         if( isConnected() )
         {
-            auto channel = static_cast<LIBSSH2_CHANNEL*>(channel_);
-            libssh2_channel_close( channel );
-            libssh2_channel_free( channel );
+            auto channel = static_cast<ssh_channel>( channel_);
+            ssh_channel_close( channel );
+            ssh_channel_free( channel );
             channel_ = nullptr;
         }
         #endif
@@ -110,15 +110,15 @@ namespace Ssh
         #if WITH_SSH
 
         qint64 bytesWritten = 0;
-        auto channel = static_cast<LIBSSH2_CHANNEL*>(channel_);
+        auto channel = static_cast<ssh_channel>(channel_);
         while( bytesWritten < maxSize )
         {
 
-            const qint64 i = libssh2_channel_write( channel, data + bytesWritten, maxSize - bytesWritten );
+            const qint64 i = ssh_channel_write( channel, data + bytesWritten, maxSize - bytesWritten );
             if( i >= 0 ) bytesWritten += i;
-            else if( i != LIBSSH2_ERROR_EAGAIN )
+            else if( i == SSH_ERROR )
             {
-                setErrorString( tr( "invalid write: %1" ).arg( i ) );
+                setErrorString( tr( "invalid write" ) );
                 return -1;
             }
 
@@ -168,22 +168,26 @@ namespace Ssh
         // stop timer
         if( timer_.isActive() ) timer_.stop();
 
+        connected_ = false;
+
         // assign open mode
         setOpenMode( openMode );
 
         // assign new channel
         channel_ = channel;
 
-        if( isConnected() )
-        {
+    }
 
-            // start timer
-            if( openMode&QIODevice::ReadOnly ) timer_.start( latency_, this );
+    //_______________________________________________________________________
+    void BaseSocket::_setConnected()
+    {
+        connected_ = true;
 
-            // emit signal
-            emit connected();
+        // start timer
+        if( openMode()&QIODevice::ReadOnly ) timer_.start( latency_, this );
 
-        }
+        // emit signal
+        emit connected();
 
     }
 
@@ -196,13 +200,13 @@ namespace Ssh
         #if WITH_SSH
 
         // read from channel
-        auto channel = static_cast<LIBSSH2_CHANNEL*>(channel_);
-        auto length =  libssh2_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_ );
-        if( length == LIBSSH2_ERROR_EAGAIN ) return false ;
+        auto channel = static_cast<ssh_channel>(channel_);
+        auto length =  ssh_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_, false );
+        if( length == SSH_AGAIN ) return false ;
         else if( length < 0 )
         {
 
-            setErrorString( tr( "invalid read: %1" ).arg( length ) );
+            setErrorString( tr( "invalid read" ) );
             timer_.stop();
             bytesAvailable_ = -1;
 

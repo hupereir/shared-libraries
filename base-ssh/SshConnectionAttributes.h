@@ -60,8 +60,8 @@ namespace Ssh
         { return host_; }
 
         //* user name
-        const QString& userName() const
-        { return userName_; }
+        const QString& user() const
+        { return user_; }
 
         //* password
         const QString& password() const
@@ -100,8 +100,8 @@ namespace Ssh
         { host_ = host; }
 
         //* user name
-        void setUserName( const QString& userName )
-        { userName_ = userName; }
+        void setUser( const QString& user )
+        { user_ = user; }
 
         //* password
         void setPassword( const QString& password )
@@ -139,7 +139,7 @@ namespace Ssh
         QString host_;
 
         //* user
-        QString userName_;
+        QString user_;
 
         //* password
         QString password_;

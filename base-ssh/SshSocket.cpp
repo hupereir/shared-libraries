@@ -23,7 +23,7 @@
 #include <QElapsedTimer>
 
 #if WITH_SSH
-#include <libssh2.h>
+#include <libssh/libssh.h>
 #endif
 
 namespace Ssh
@@ -97,30 +97,41 @@ namespace Ssh
     bool Socket::_tryConnect()
     {
 
+        // Debug::Throw(0, "SSh::Socket::_tryConnect.\n" );
         if( isConnected() ) return true;
 
         #if WITH_SSH
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
-        auto channel = libssh2_channel_direct_tcpip( session, qPrintable( host_ ), port_ );
 
-        if( channel )
+        auto session( static_cast<ssh_session>(session_) );
+        auto channel = static_cast<ssh_channel>( _channel() );
+        if( !channel )
+        {
+            channel = ssh_channel_new(session);
+            if( channel ) _setChannel( channel, QIODevice::ReadWrite );
+            else
+            {
+                timer_.stop();
+                setErrorString( ssh_get_error(session) );
+                emit error( QAbstractSocket::ConnectionRefusedError );
+                return true;
+            }
+        }
+
+        auto result = ssh_channel_open_forward( channel, qPrintable( host_ ), port_, "localhost", 5555 );
+        if( result == SSH_OK )
         {
 
-            _setChannel( channel, QIODevice::ReadWrite );
+            _setConnected();
             return true;
 
-        } else if( libssh2_session_last_errno( session ) != LIBSSH2_ERROR_EAGAIN ) {
+        } else if( result != SSH_AGAIN ) {
 
             timer_.stop();
-            char *errMsg(nullptr);
-            libssh2_session_last_error(session, &errMsg, NULL, 0);
-            setErrorString( tr( "error getting direct tcp channel: %1" ).arg( errMsg ) );
+            setErrorString( ssh_get_error(session) );
             emit error( QAbstractSocket::ConnectionRefusedError );
             return true;
 
-        }
-
-        return false;
+        } else return false;
 
         #else
         return true;

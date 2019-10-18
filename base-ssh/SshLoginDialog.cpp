@@ -45,8 +45,8 @@ namespace Ssh
 
         // user name
         gridLayout->addWidget( label = new QLabel( tr( "User name:" ), this ) );
-        gridLayout->addWidget( userNameEditor_ = new LineEditor( this ) );
-        label->setBuddy( userNameEditor_ );
+        gridLayout->addWidget( userEditor_ = new LineEditor( this ) );
+        label->setBuddy( userEditor_ );
 
         // password
         gridLayout->addWidget( label = new QLabel( tr( "Password:" ), this ) );
@@ -62,7 +62,7 @@ namespace Ssh
     ConnectionAttributes LoginDialog::attributes() const
     {
         auto attributes( attributes_ );
-        attributes.setUserName( userNameEditor_->text() );
+        attributes.setUser( userEditor_->text() );
         attributes.setPassword( passwordEditor_->text() );
         attributes.setRememberPassword( rememberPaswordCheckBox_->isChecked() );
         return attributes;
@@ -73,11 +73,11 @@ namespace Ssh
     {
         attributes_ = attributes;
         if( !attributes.host().isEmpty() ) setWindowTitle( tr( "SSH login into %1" ).arg( attributes.host() ) );
-        userNameEditor_->setText( attributes.userName() );
+        userEditor_->setText( attributes.user() );
         passwordEditor_->setText( attributes.password() );
         rememberPaswordCheckBox_->setChecked( attributes.rememberPassword() );
 
-        if( attributes.userName().isEmpty() ) userNameEditor_->setFocus();
+        if( attributes.user().isEmpty() ) userEditor_->setFocus();
         else passwordEditor_->setFocus();
 
     }

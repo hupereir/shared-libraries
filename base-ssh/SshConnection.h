@@ -52,8 +52,8 @@ namespace Ssh
         //@{
 
         //* connection attributes
-        const ConnectionAttributes& attributes() const
-        { return attributes_; }
+        const ConnectionAttributes& connectionAttributes() const
+        { return connectionAttributes_; }
 
         //* session
         void* session() const
@@ -103,8 +103,8 @@ namespace Ssh
         { tunnelLatency_ = latency; }
 
         //* set connection attributes
-        void setAttributes( const ConnectionAttributes& attributes )
-        { attributes_ = attributes; }
+        void setConnectionAttributes( const ConnectionAttributes& connectionAttributes )
+        { connectionAttributes_ = connectionAttributes; }
 
         //* tunnels
         bool createTunnels();
@@ -126,11 +126,8 @@ namespace Ssh
         {
             None,
             Connect,
-            Handshake,
-            ConnectAgent,
             RequestIdentity,
-            LoadAuthenticationMethods,
-            ListIdentities,
+            AuthenticateWithGssAPI,
             AuthenticateWithAgent,
             AuthenticateWithPassword
         };
@@ -179,9 +176,6 @@ namespace Ssh
 
         private Q_SLOTS:
 
-        //* save host info lookup
-        void _saveHost( QHostInfo );
-
         //* disconnect channels
         void _disconnectChannels();
 
@@ -220,26 +214,11 @@ namespace Ssh
         //* abort all commands
         void _abortCommands( const QString& );
 
-        //* ssh socket
-        int sshSocket_ = -1;
-
         //* ssh session
         void* session_ = nullptr;
 
-        //* agent
-        void* agent_ = nullptr;
-
-        //* identity
-        void* identity_ = nullptr;
-
-        //* ssh host
-        QHostInfo sshHost_;
-
         //* connection attributes
-        ConnectionAttributes attributes_;
-
-        //* authentication methods
-        QString authenticationMethods_;
+        ConnectionAttributes connectionAttributes_;
 
         //* state
         StateMask state_ = Uninitialized;

@@ -58,7 +58,7 @@ namespace Ssh
         return
             first.name_ == second.name_ &&
             first.host_ == second.host_ &&
-            first.userName_ == second.userName_ &&
+            first.user_ == second.user_ &&
             first.tunnels_ == second.tunnels_;
     }
 
