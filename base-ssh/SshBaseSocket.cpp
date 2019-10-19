@@ -47,7 +47,7 @@ namespace Ssh
         if( !isConnected() ) return true;
 
         #if WITH_SSH
-        return ssh_channel_is_eof( static_cast<ssh_channel>(channel_) );
+        return ssh_channel_is_eof( static_cast<ssh_channel>(channel_.get()) );
         #else
         return true;
         #endif
@@ -60,17 +60,7 @@ namespace Ssh
 
         // stop timer
         if( timer_.isActive() ) timer_.stop();
-
-        #if WITH_SSH
-        // close channel
-        if( isConnected() )
-        {
-            auto channel = static_cast<ssh_channel>( channel_);
-            ssh_channel_close( channel );
-            ssh_channel_free( channel );
-            channel_ = nullptr;
-        }
-        #endif
+        channel_.reset();
 
     }
 
@@ -110,7 +100,7 @@ namespace Ssh
         #if WITH_SSH
 
         qint64 bytesWritten = 0;
-        auto channel = static_cast<ssh_channel>(channel_);
+        auto channel = static_cast<ssh_channel>(channel_.get());
         while( bytesWritten < maxSize )
         {
 
@@ -162,9 +152,6 @@ namespace Ssh
     void BaseSocket::_setChannel( void* channel, QIODevice::OpenMode openMode )
     {
 
-        // close existing channel if any
-        if( isConnected() ) close();
-
         // stop timer
         if( timer_.isActive() ) timer_.stop();
 
@@ -174,7 +161,7 @@ namespace Ssh
         setOpenMode( openMode );
 
         // assign new channel
-        channel_ = channel;
+        channel_.reset(channel);
 
     }
 
@@ -200,7 +187,7 @@ namespace Ssh
         #if WITH_SSH
 
         // cash channel
-        auto channel = static_cast<ssh_channel>(channel_);
+        auto channel = static_cast<ssh_channel>(channel_.get());
 
         // pol the channel, assuming this is faster than reading
         auto available = ssh_channel_poll( channel, false );
@@ -258,4 +245,13 @@ namespace Ssh
 
     }
 
+    //______________________________________________________
+    void BaseSocket::ChannelDeleter::operator() (void* ptr) const
+    {
+        #if WITH_SSH
+        auto channel( static_cast<ssh_channel>(ptr) );
+        if( ssh_channel_is_open( channel ) ) ssh_channel_close( channel );
+        ssh_channel_free( channel );
+        #endif
+    }
 }

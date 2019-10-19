@@ -116,7 +116,7 @@ namespace Ssh
         }
 
         // cast session
-        session_ = session;
+        session_.reset( session );
 
         // update state and return
         state_ |= SessionCreated;
@@ -245,30 +245,8 @@ namespace Ssh
     {
 
         Debug::Throw( "Ssh::Connection::_disconnectSession.\n" );
-
-        #if WITH_SSH
-        if( state_ & (Connected|SessionCreated) )
-        {
-
-            // close session
-            if( session_ )
-            {
-                auto session( static_cast<ssh_session>(session_) );
-
-                // disconnect
-                if( ssh_is_connected( session ) )
-                { ssh_disconnect( session ); }
-
-                // free and reset
-                ssh_free( session );
-                session_ = nullptr;
-            }
-
-            state_ &= ~(Connected|SessionCreated);
-
-        }
-        #endif
-
+        session_.reset();
+        state_ &= ~(Connected|SessionCreated);
     }
 
     //_______________________________________________
@@ -342,7 +320,7 @@ namespace Ssh
         Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << endl;
 
         // cast session. It is used for almost all commands
-        auto session( static_cast<ssh_session>(session_) );
+        auto session( static_cast<ssh_session>(session_.get()) );
         switch( commands_.front() )
         {
 
@@ -578,7 +556,7 @@ namespace Ssh
                 auto tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->setLatency( tunnelLatency_);
                 tunnel->sshSocket()->setLocalHost( "localhost", iter->localPort() );
-                tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
+                tunnel->sshSocket()->connectToHost( session_.get(), iter->host(), iter->remotePort() );
 
                 connect( tunnel, SIGNAL(error(QString)), SLOT(_notifyError(QString)) );
                 connect( tunnel, SIGNAL(debug(QString)), SLOT(_notifyDebug(QString)) );
@@ -619,6 +597,22 @@ namespace Ssh
         if( timer_.isActive() ) timer_.stop();
         commands_.clear();
         _notifyError( errorMessage );
+    }
+
+    //______________________________________________________
+    void Connection::SessionDeleter::operator() (void* ptr) const
+    {
+        #if WITH_SSH
+        auto session( static_cast<ssh_session>(ptr) );
+
+        // disconnect
+        if( ssh_is_connected( session ) )
+        { ssh_disconnect( session ); }
+
+        // free and reset
+        ssh_free( session );
+
+        #endif
     }
 
 }

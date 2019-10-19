@@ -23,7 +23,7 @@
 #include <QElapsedTimer>
 
 #if WITH_SSH
-#include <libssh2.h>
+#include <libssh/libssh.h>
 #endif
 
 namespace Ssh
@@ -99,7 +99,7 @@ namespace Ssh
         Debug::Throw( "FileReadSocket::_tryConnect.\n" );
 
         #if WITH_SSH
-        auto session( static_cast<LIBSSH2_SESSION*>(session_) );
+        auto session( static_cast<ssh_session>(session_) );
         auto channel = libssh2_scp_recv( session, qPrintable( path_ ), &stat_ );
         if( channel )
         {

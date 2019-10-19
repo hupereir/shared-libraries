@@ -28,6 +28,9 @@
 #include <QHostAddress>
 #include <QIODevice>
 #include <QTimerEvent>
+
+#include <memory>
+
 namespace Ssh
 {
 
@@ -104,7 +107,7 @@ namespace Ssh
 
         //* channel
         void* _channel()
-        { return channel_; }
+        { return channel_.get(); }
 
         //* channel
         void _setChannel( void*, QIODevice::OpenMode );
@@ -120,8 +123,15 @@ namespace Ssh
         //* try read data from channel
         bool _tryRead();
 
+        //* ssh session
+        class ChannelDeleter
+        {
+            public:
+            void operator() (void*) const;
+        };
+
         //* ssh channel
-        void* channel_ = nullptr;
+        std::unique_ptr<void,ChannelDeleter> channel_;
 
         //* connected
         bool connected_ = false;

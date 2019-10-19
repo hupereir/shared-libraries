@@ -32,6 +32,8 @@
 #include <QTimerEvent>
 #include <QHostInfo>
 
+#include <memory>
+
 namespace Ssh
 {
     //_________________________________________________________
@@ -57,7 +59,7 @@ namespace Ssh
 
         //* session
         void* session() const
-        { return session_; }
+        { return session_.get(); }
 
         //* connection state
         enum State
@@ -215,7 +217,12 @@ namespace Ssh
         void _abortCommands( const QString& );
 
         //* ssh session
-        void* session_ = nullptr;
+        class SessionDeleter
+        {
+            public:
+            void operator() (void*) const;
+        };
+        std::unique_ptr<void, SessionDeleter> session_;
 
         //* connection attributes
         ConnectionAttributes connectionAttributes_;
