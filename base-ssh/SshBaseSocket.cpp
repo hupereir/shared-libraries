@@ -199,8 +199,31 @@ namespace Ssh
 
         #if WITH_SSH
 
-        // read from channel
+        // cash channel
         auto channel = static_cast<ssh_channel>(channel_);
+
+        // pol the channel, assuming this is faster than reading
+        auto available = ssh_channel_poll( channel, false );
+        if( available == 0 ) return false;
+        else if( available == SSH_EOF )
+        {
+
+            timer_.stop();
+            setErrorString( "channel closed" );
+            emit readChannelFinished();
+            return true;
+
+        } else if( available == SSH_ERROR ) {
+
+
+            setErrorString( tr( "invalid read" ) );
+            timer_.stop();
+            bytesAvailable_ = -1;
+            return false;
+
+        }
+
+        // read from channel
         auto length =  ssh_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_, false );
         if( length == SSH_AGAIN ) return false ;
         else if( length < 0 )
