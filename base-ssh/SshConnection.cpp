@@ -577,6 +577,7 @@ namespace Ssh
             {
                 auto tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->setLatency( tunnelLatency_);
+                tunnel->sshSocket()->setLocalHost( "localhost", iter->localPort() );
                 tunnel->sshSocket()->connectToHost( session_, iter->host(), iter->remotePort() );
 
                 connect( tunnel, SIGNAL(error(QString)), SLOT(_notifyError(QString)) );

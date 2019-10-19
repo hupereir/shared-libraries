@@ -117,7 +117,7 @@ namespace Ssh
             }
         }
 
-        auto result = ssh_channel_open_forward( channel, qPrintable( host_ ), port_, "localhost", 5555 );
+        auto result = ssh_channel_open_forward( channel, qPrintable( host_ ), port_, qPrintable( localHost_ ), localPort_ );
         if( result == SSH_OK )
         {
 

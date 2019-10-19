@@ -44,8 +44,16 @@ namespace Ssh
         //*@name modifiers
         //@{
 
+        //* set local port
+        /* it is not really necessary but libssh asks for it, for book keeping */
+        void setLocalHost( QString host, quint16 port )
+        {
+            localHost_ = host;
+            localPort_ = port;
+        }
+
         //* connect to host
-        void connectToHost( void*, const QString&, quint16 );
+        void connectToHost( void*, const QString&, quint16 port );
 
         //* wait for connected
         /** warning, this method is blocking */
@@ -65,6 +73,12 @@ namespace Ssh
 
         //* session pointer
         void* session_ = nullptr;
+
+        //* local host
+        QString localHost_;
+
+        //* port
+        quint16 localPort_ = 0;
 
         //* host
         QString host_;
