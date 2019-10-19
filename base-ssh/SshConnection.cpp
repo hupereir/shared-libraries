@@ -33,14 +33,6 @@
 #include <QTextStream>
 #include <QTimer>
 
-// #if defined(Q_OS_WIN)
-// #include <ws2tcpip.h>
-// #else
-// #include <sys/types.h>
-// #include <sys/socket.h>
-// #include <netinet/in.h>
-// #endif
-
 #include <numeric>
 #include <fcntl.h>
 #include <unistd.h>
@@ -335,6 +327,7 @@ namespace Ssh
                 Debug::Throw() << "Ssh::Connection::_processCommands - connection."
                     << " Host: " << connectionAttributes_.host()
                     << " Port: " << connectionAttributes_.port()
+                    << " User: " << connectionAttributes_.user()
                     << endl;
 
                 auto result = ssh_connect(session);
