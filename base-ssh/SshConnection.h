@@ -114,14 +114,14 @@ namespace Ssh
         using QObject::connect;
 
         //* connect
-        bool connect();
+        bool connect( bool forceRequestIdentity = false );
+
+        //* authenticate
+        bool authenticate( bool forceRequestIdentity = false );
 
         //* wait for connected
         /** warning, this method is blocking */
         bool waitForConnected( int msecs = 30000 );
-
-        //* authenticate
-        bool authenticate( bool forceRequestIdentity = false );
 
         //* command list
         enum class Command

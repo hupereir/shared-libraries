@@ -91,7 +91,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    bool Connection::connect()
+    bool Connection::connect( bool forceRequestIdentity )
     {
 
         Debug::Throw( "Ssh::Connection::connect.\n" );
@@ -116,8 +116,15 @@ namespace Ssh
         // mark as non blocking
         ssh_set_blocking(session, false);
 
+        // request commands
+        /* must request identity first because some authentication
+        requires the user name to be set before connecting */
+        CommandList commands;
+        if( forceRequestIdentity ) commands.append(Command::RequestIdentity);
+        commands.append(Command::Connect);
+
         // request command
-        addCommand( Command::Connect );
+        addCommands( commands );
 
         return true;
         #else
@@ -132,12 +139,9 @@ namespace Ssh
 
         Debug::Throw() << "Ssh::Connection::authenticate - forceRequestIdentity: " << forceRequestIdentity << endl;
 
-        CommandList commands;
-        if( forceRequestIdentity ) commands.append(Command::RequestIdentity);
-
-        commands.append( Base::makeT<CommandList>( {
+        auto commands = Base::makeT<CommandList>( {
             Command::AuthenticateWithGssAPI,
-            Command::AuthenticateWithAgent } ));
+            Command::AuthenticateWithAgent } );
 
         if( !( forceRequestIdentity || connectionAttributes_.rememberPassword() ) )
         { commands.append(Command::RequestIdentity); }
@@ -469,7 +473,7 @@ namespace Ssh
 
                     // start over
                     _disconnectSession();
-                    connect();
+                    connect( true );
                     authenticate( true );
                     return true;
 
