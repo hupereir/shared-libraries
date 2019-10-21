@@ -52,7 +52,8 @@ namespace Ssh
         //@{
 
         //* true if connected
-        bool isConnected() const;
+        bool isConnected() const
+        { return channel_ && connected_; }
 
         //* sequencial mode
         bool isSequential() const override
@@ -110,7 +111,7 @@ namespace Ssh
         void* session_ = nullptr;
 
         //* file
-        QString RemoteFileName_;
+        QString remoteFileName_;
 
         //* ssh session
         class ChannelDeleter
