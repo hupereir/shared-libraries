@@ -1,5 +1,5 @@
-#ifndef SshBaseSocket_h
-#define SshBaseSocket_h
+#ifndef SshSocket_h
+#define SshSocket_h
 
 /******************************************************************************
 *
@@ -158,9 +158,6 @@ namespace Ssh
 
         //* buffer
         QByteArray buffer_;
-
-        //* max buffer size
-        qint64 maxSize_ = 1<<16;
 
         //* bytes available
         qint64 bytesAvailable_ = 0;

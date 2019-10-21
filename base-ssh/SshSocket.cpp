@@ -29,12 +29,15 @@
 namespace Ssh
 {
 
+    //* max buffer size
+    static const qint64 maxBufferSize = 1<<16;
+
     //_______________________________________________________________________
     Socket::Socket( QObject* parent ):
         QIODevice( parent ),
         Counter( "Ssh::Socket" )
     {
-        buffer_.resize( maxSize_ );
+        buffer_.resize( maxBufferSize );
         setOpenMode(QIODevice::ReadWrite);
     }
 
@@ -110,7 +113,7 @@ namespace Ssh
         const qint64 bytesRead = qMin( maxSize, bytesAvailable_ );
         memcpy( data, buffer_.data(), bytesRead );
         buffer_.remove( 0, bytesRead );
-        buffer_.resize( maxSize_ );
+        buffer_.resize( maxBufferSize );
         bytesAvailable_ -= bytesRead;
 
         return bytesRead;
@@ -253,7 +256,7 @@ namespace Ssh
         }
 
         // read from channel
-        auto length =  ssh_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_, false );
+        auto length =  ssh_channel_read( channel, buffer_.data()+bytesAvailable_, maxBufferSize-bytesAvailable_, false );
         if( length == SSH_AGAIN ) return false ;
         else if( length < 0 )
         {
