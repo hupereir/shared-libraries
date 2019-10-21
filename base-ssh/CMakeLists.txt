@@ -48,6 +48,7 @@ set(base_ssh_SOURCES
   SshConnection.cpp
   SshConnectionAttributes.cpp
   SshLoginDialog.cpp
+  SshReadFileSocket.cpp
   SshSocket.cpp
   SshTunnel.cpp
 )
