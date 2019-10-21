@@ -216,7 +216,7 @@ namespace Ssh
     {
         if( remoteDevice_ )
         {
-            Debug::Throw() << remoteDevice_->errorString() << endl;
+            Debug::Throw() << "Ssh::FileTransferObject::_processError - " << remoteDevice_->errorString() << endl;
             emit error( error_ = remoteDevice_->errorString() );
         }
 
