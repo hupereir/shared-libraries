@@ -86,10 +86,6 @@ namespace Ssh
         //* connect to host
         void connectToHost( void*, const QString&, quint16 port );
 
-        //* wait for connected
-        /** warning, this method is blocking */
-        bool waitForConnected( int msecs = 30000 );
-
         //@}
 
         Q_SIGNALS:

@@ -71,25 +71,7 @@ namespace Ssh
         port_ = port;
 
         // make sure timer is running
-        if( timer_.isActive() ) timer_.stop();
-        if( !_tryConnect() ) timer_.start( latency_, this );
-
-    }
-
-    //_______________________________________________________________________
-    bool Socket::waitForConnected( int msecs )
-    {
-
-        // do nothing if already connected
-        if( isConnected() ) return true;
-
-        QElapsedTimer timer;
-        timer.start();
-
-        while( msecs < 0 || timer.elapsed() < msecs )
-        { if( _tryConnect() ) return true; }
-
-        return false;
+        if( !timer_.isActive() ) timer_.start( latency_, this );
 
     }
 
