@@ -420,6 +420,7 @@ namespace Ssh
             case Command::AuthenticateWithAgent:
             {
 
+                #if !defined(Q_OS_WIN)
                 auto result = ssh_userauth_agent( session, qPrintable( connectionAttributes_.user() ) );
                 if( result == SSH_AUTH_SUCCESS )
                 {
@@ -440,7 +441,13 @@ namespace Ssh
                     return true;
 
                 }
+                #else
 
+                // ignore error, move to next command
+                commands_.removeFirst();
+                return true;
+
+                #endif
                 break;
             }
 
