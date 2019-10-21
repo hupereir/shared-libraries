@@ -51,6 +51,7 @@ set(base_ssh_SOURCES
   SshReadFileSocket.cpp
   SshSocket.cpp
   SshTunnel.cpp
+  SshWriteFileSocket.cpp
 )
 
 if(ENABLE_SHARED)
