@@ -151,7 +151,7 @@ namespace Ssh
         {
 
             // create channel
-            channel = ssh_scp_new(session, SSH_SCP_WRITE, qPrintable( remoteFile_ ) );
+            channel = ssh_scp_new(session, SSH_SCP_READ, qPrintable( remoteFile_ ) );
             if( !channel )
             {
                 timer_.stop();
