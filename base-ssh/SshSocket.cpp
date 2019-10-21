@@ -31,8 +31,30 @@ namespace Ssh
 
     //_______________________________________________________________________
     Socket::Socket( QObject* parent ):
-        BaseSocket( parent )
-        {}
+        QIODevice( parent ),
+        Counter( "Ssh::Socket" )
+    {
+        buffer_.resize( maxSize_ );
+        setOpenMode(QIODevice::ReadWrite);
+    }
+
+    //_______________________________________________________________________
+    Socket::~Socket()
+    { close(); }
+
+    //_______________________________________________________________________
+    bool Socket::atEnd() const
+    {
+
+        // check channel
+        if( !isConnected() ) return true;
+
+        #if WITH_SSH
+        return ssh_channel_is_eof( static_cast<ssh_channel>(channel_.get()) );
+        #else
+        return true;
+        #endif
+    }
 
     //_______________________________________________________________________
     void Socket::connectToHost( void* session, const QString& host, quint16 port )
@@ -47,7 +69,7 @@ namespace Ssh
 
         // make sure timer is running
         if( timer_.isActive() ) timer_.stop();
-        if( !_tryConnect() ) timer_.start( _latency(), this );
+        if( !_tryConnect() ) timer_.start( latency_, this );
 
     }
 
@@ -69,27 +91,86 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
+    void Socket::close()
+    {
+        Debug::Throw( "Ssh::Socket:close.\n" );
+
+        // stop timer
+        if( timer_.isActive() ) timer_.stop();
+        channel_.reset();
+
+    }
+
+    //_______________________________________________________________________
+    qint64 Socket::readData( char* data, qint64 maxSize )
+    {
+
+        if( bytesAvailable_ <= 0 ) return bytesAvailable_;
+
+        const qint64 bytesRead = qMin( maxSize, bytesAvailable_ );
+        memcpy( data, buffer_.data(), bytesRead );
+        buffer_.remove( 0, bytesRead );
+        buffer_.resize( maxSize_ );
+        bytesAvailable_ -= bytesRead;
+
+        return bytesRead;
+
+    }
+
+    //_______________________________________________________________________
+    qint64 Socket::writeData( const char* data, qint64 maxSize )
+    {
+
+        if( !isConnected() ) return -1;
+        #if WITH_SSH
+
+        qint64 bytesWritten = 0;
+        auto channel = static_cast<ssh_channel>(channel_.get());
+        while( bytesWritten < maxSize )
+        {
+
+            const qint64 i = ssh_channel_write( channel, data + bytesWritten, maxSize - bytesWritten );
+            if( i >= 0 ) bytesWritten += i;
+            else if( i == SSH_ERROR )
+            {
+                setErrorString( tr( "invalid write" ) );
+                return -1;
+            }
+
+        }
+
+        return bytesWritten;
+
+        #else
+
+        setErrorString( "invalid channel" );
+        return -1;
+
+        #endif
+
+    }
+
+    //_______________________________________________________________________
     void Socket::timerEvent( QTimerEvent* event )
     {
 
         // check timer id
-        if( event->timerId() == timer_.timerId() )
-        {
+        if( event->timerId() != timer_.timerId() ) return QIODevice::timerEvent( event );
 
-            #if WITH_SSH
+        #if WITH_SSH
 
-            if( _tryConnect() ) timer_.stop();
-            return;
+        if( !isConnected() ) _tryConnect();
+        else _tryRead();
+        return;
 
-            #else
+        #else
 
-            timer_.stop();
-            setErrorString( "no ssh" );
-            return;
+        timer_.stop();
+        bytesAvailable_ = -1;
+        setErrorString( "no ssh" );
+        return;
 
-            #endif
-
-        } else return BaseSocket::timerEvent( event );
+        #endif
 
     }
 
@@ -97,17 +178,16 @@ namespace Ssh
     bool Socket::_tryConnect()
     {
 
-        // Debug::Throw(0, "SSh::Socket::_tryConnect.\n" );
         if( isConnected() ) return true;
 
         #if WITH_SSH
 
         auto session( static_cast<ssh_session>(session_) );
-        auto channel = static_cast<ssh_channel>( _channel() );
+        auto channel( static_cast<ssh_channel>(channel_.get()) );
         if( !channel )
         {
             channel = ssh_channel_new(session);
-            if( channel ) _setChannel( channel, QIODevice::ReadWrite );
+            if( channel ) channel_.reset( channel );
             else
             {
                 timer_.stop();
@@ -121,7 +201,8 @@ namespace Ssh
         if( result == SSH_OK )
         {
 
-            _setConnected();
+            connected_ = true;
+            emit connected();
             return true;
 
         } else if( result != SSH_AGAIN ) {
@@ -139,4 +220,80 @@ namespace Ssh
 
     }
 
+    //_______________________________________________________________________
+    bool Socket::_tryRead()
+    {
+
+        if( !isConnected() ) return false;
+
+        #if WITH_SSH
+
+        // cash channel
+        auto channel = static_cast<ssh_channel>(channel_.get());
+
+        // pol the channel, assuming this is faster than reading
+        auto available = ssh_channel_poll( channel, false );
+        if( available == 0 ) return false;
+        else if( available == SSH_EOF )
+        {
+
+            timer_.stop();
+            setErrorString( "channel closed" );
+            emit readChannelFinished();
+            return true;
+
+        } else if( available == SSH_ERROR ) {
+
+
+            setErrorString( tr( "invalid read" ) );
+            timer_.stop();
+            bytesAvailable_ = -1;
+            return false;
+
+        }
+
+        // read from channel
+        auto length =  ssh_channel_read( channel, buffer_.data()+bytesAvailable_, maxSize_-bytesAvailable_, false );
+        if( length == SSH_AGAIN ) return false ;
+        else if( length < 0 )
+        {
+
+            setErrorString( tr( "invalid read" ) );
+            timer_.stop();
+            bytesAvailable_ = -1;
+
+            return false;
+
+        } else {
+
+            bytesAvailable_ += length;
+            emit readyRead();
+
+        }
+
+        // check at end
+        if( atEnd() )
+        {
+            timer_.stop();
+            setErrorString( "channel closed" );
+            emit readChannelFinished();
+        }
+
+        return true;
+
+        #else
+        return false;
+        #endif
+
+    }
+
+    //______________________________________________________
+    void Socket::ChannelDeleter::operator() (void* ptr) const
+    {
+        #if WITH_SSH
+        auto channel( static_cast<ssh_channel>(ptr) );
+        if( ssh_channel_is_open( channel ) ) ssh_channel_close( channel );
+        ssh_channel_free( channel );
+        #endif
+    }
 }
