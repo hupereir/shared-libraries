@@ -61,6 +61,10 @@ namespace Ssh
         bool isSequential() const override
         { return true; }
 
+        //* file size
+        qint64 fileSize() const
+        { return fileSize_; }
+
         //* bytes available
         qint64 bytesAvailable() const override
         { return bytesAvailable_; }
@@ -104,6 +108,10 @@ namespace Ssh
         //* read
         qint64 readData( char*, qint64 maxSize ) override;
 
+        //* write
+        qint64 writeData( const char*, qint64 ) override
+        { return -1; }
+
         private:
 
         //* try connect channel, returns true on success
@@ -116,7 +124,7 @@ namespace Ssh
         void* session_ = nullptr;
 
         //* file
-        QString remoteFile_;
+        QString RemoteFileName_;
 
         //* ssh session
         class ChannelDeleter

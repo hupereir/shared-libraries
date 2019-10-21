@@ -47,6 +47,7 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 set(base_ssh_SOURCES
   SshConnection.cpp
   SshConnectionAttributes.cpp
+  SshFileTransferObject.cpp
   SshLoginDialog.cpp
   SshReadFileSocket.cpp
   SshSocket.cpp

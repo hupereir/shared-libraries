@@ -72,7 +72,7 @@ namespace Ssh
 
         // store session, host and port
         session_ = session;
-        remoteFile_ = file;
+        RemoteFileName_ = file;
         fileSize_ = size;
 
         // run timer and try connect
@@ -183,7 +183,7 @@ namespace Ssh
         {
 
             // create channel
-            channel = ssh_scp_new( session, SSH_SCP_WRITE, qPrintable( remoteFile_ ) );
+            channel = ssh_scp_new( session, SSH_SCP_WRITE, qPrintable( RemoteFileName_ ) );
             if( !channel )
             {
                 timer_.stop();
@@ -206,7 +206,7 @@ namespace Ssh
         }
 
         // open connection to file
-        if( ssh_scp_push_file64( channel, qPrintable( remoteFile_ ), fileSize_, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH ) != SSH_OK )
+        if( ssh_scp_push_file64( channel, qPrintable( RemoteFileName_ ), fileSize_, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH ) != SSH_OK )
         {
             timer_.stop();
             setErrorString( ssh_get_error(session) );

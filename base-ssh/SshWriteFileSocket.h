@@ -94,6 +94,10 @@ namespace Ssh
         //* timer event
         void timerEvent( QTimerEvent* );
 
+        //* read
+        qint64 readData( char*, qint64 ) override
+        { return -1; }
+
         //* write
         qint64 writeData( const char*, qint64 maxSize ) override;
 
@@ -106,7 +110,7 @@ namespace Ssh
         void* session_ = nullptr;
 
         //* file
-        QString remoteFile_;
+        QString RemoteFileName_;
 
         //* ssh session
         class ChannelDeleter
