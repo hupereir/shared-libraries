@@ -52,6 +52,7 @@ namespace Ssh
     //_______________________________________________________________________
     void ReadFileSocket::connect( void* session, const QString& file )
     {
+        Debug::Throw() << "Ssh::ReadFileSocket::connect - file: " << file << endl;
 
         /*
         TODO
@@ -61,16 +62,19 @@ namespace Ssh
 
         // store session, host and port
         session_ = session;
-        RemoteFileName_ = file;
+        remoteFileName_ = file;
 
         // run timer and try connect
-        if( timer_.isActive() ) timer_.stop();
-        if( !_tryConnect() ) timer_.start( latency_, this );
+        if( !timer_.isActive() )
+        { timer_.start( latency_, this ); }
+
     }
 
     //_______________________________________________________________________
     bool ReadFileSocket::waitForConnected( int msecs )
     {
+
+        Debug::Throw( "Ssh::ReadFileSocket::waitForConnected.\n" );
 
         // do nothing if already connected
         if( isConnected() ) return true;
@@ -119,7 +123,6 @@ namespace Ssh
         if( event->timerId() != timer_.timerId() ) return QIODevice::timerEvent( event );
 
         #if WITH_SSH
-
         if( !isConnected() ) _tryConnect();
         else _tryRead();
         return;
@@ -138,6 +141,7 @@ namespace Ssh
     bool ReadFileSocket::_tryConnect()
     {
 
+        Debug::Throw( "Ssh::ReadFileSocket::_tryConnect.\n" );
         if( isConnected() ) return true;
 
         #if WITH_SSH
@@ -151,7 +155,7 @@ namespace Ssh
         {
 
             // create channel
-            channel = ssh_scp_new(session, SSH_SCP_READ, qPrintable( RemoteFileName_ ) );
+            channel = ssh_scp_new(session, SSH_SCP_READ, qPrintable( remoteFileName_ ) );
             if( !channel )
             {
                 timer_.stop();
@@ -159,6 +163,8 @@ namespace Ssh
                 emit error( QAbstractSocket::ConnectionRefusedError );
                 return true;
             }
+
+            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - channel created.\n" );
 
             // initialize
             if( ssh_scp_init( channel ) != SSH_OK )
@@ -169,12 +175,16 @@ namespace Ssh
                 return true;
             }
 
+            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - channel initialized.\n" );
+
             // assign
             channel_.reset( channel );
         }
 
         // open connection to file
-        if( ssh_scp_pull_request( channel ) != SSH_OK )
+        auto result = ssh_scp_pull_request( channel );
+        Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - channel: " << channel << " pull request result: " << result << endl;
+        if( result != SSH_SCP_REQUEST_NEWFILE )
         {
             timer_.stop();
             setErrorString( ssh_get_error(session) );
@@ -187,6 +197,8 @@ namespace Ssh
 
         // accept transfer
         ssh_scp_accept_request( channel );
+
+        Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - file size: " << fileSize_ << endl;
 
         // mark as connected
         connected_ = true;
@@ -202,6 +214,8 @@ namespace Ssh
     //_______________________________________________________________________
     bool ReadFileSocket::_tryRead()
     {
+
+        Debug::Throw( "Ssh::ReadFileSocket::_tryRead.\n" );
 
         if( !isConnected() ) return false;
 

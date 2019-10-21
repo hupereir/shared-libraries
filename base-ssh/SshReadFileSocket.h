@@ -52,7 +52,8 @@ namespace Ssh
         //@{
 
         //* true if connected
-        bool isConnected() const;
+        bool isConnected() const
+        { return channel_ && connected_; }
 
         //* true if channel is closed
         bool atEnd() const override;
@@ -124,7 +125,7 @@ namespace Ssh
         void* session_ = nullptr;
 
         //* file
-        QString RemoteFileName_;
+        QString remoteFileName_;
 
         //* ssh session
         class ChannelDeleter
