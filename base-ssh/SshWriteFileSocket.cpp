@@ -76,8 +76,7 @@ namespace Ssh
         fileSize_ = size;
 
         // run timer and try connect
-        if( timer_.isActive() ) timer_.stop();
-        if( !_tryConnect() ) timer_.start( latency_, this );
+        if( !timer_.isActive() ) timer_.start( latency_, this );
     }
 
     //_______________________________________________________________________
@@ -140,22 +139,14 @@ namespace Ssh
 
         auto session( static_cast<ssh_session>(session_) );
         auto channel = static_cast<ssh_scp>(channel_.get());
-
-        qint64 bytesWritten = 0;
-        while( bytesWritten < maxSize )
+        auto result = ssh_scp_write( channel, data, maxSize );
+        if( result == SSH_OK ) return maxSize;
+        else
         {
-
-            const qint64 result = ssh_scp_write( channel, data + bytesWritten, maxSize - bytesWritten );
-            if( result >= 0 ) bytesWritten += result;
-            else if( result == SSH_ERROR )
-            {
-                setErrorString( tr( "invalid write - %1" ).arg( ssh_get_error(session) ) );
-                return -1;
-            }
-
+            setErrorString( tr( "invalid write - %1" ).arg( ssh_get_error(session) ) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return -1;
         }
-
-        return bytesWritten;
 
         #else
 
