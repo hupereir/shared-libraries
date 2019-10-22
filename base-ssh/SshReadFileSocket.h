@@ -53,7 +53,7 @@ namespace Ssh
 
         //* true if connected
         bool isConnected() const
-        { return channel_ && connected_; }
+        { return sftp_ && handle_ && connected_; }
 
         //* true if channel is closed
         bool atEnd() const override;
@@ -128,12 +128,20 @@ namespace Ssh
         QString remoteFileName_;
 
         //* ssh session
-        class ChannelDeleter
+        class SftpDeleter
         {
             public:
             void operator() (void*) const;
         };
-        std::unique_ptr<void,ChannelDeleter> channel_;
+        std::unique_ptr<void,SftpDeleter> sftp_;
+
+        //* file handle
+        class FileHandleDeleter
+        {
+            public:
+            void operator() (void*) const;
+        };
+        std::unique_ptr<void,FileHandleDeleter> handle_;
 
         //* connected
         bool connected_ = false;

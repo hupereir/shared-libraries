@@ -96,10 +96,6 @@ namespace Ssh
         //*@name modifiers
         //@{
 
-        //* set blocking (default is false)
-        void setBlocking( bool blocking = true )
-        { blocking_ = blocking; }
-
         //* change latency
         void setLatency( int latency )
         { latency_ = latency; }
@@ -240,9 +236,6 @@ namespace Ssh
         //* command list
         CommandList commands_;
         Command lastCommand_ = Command::None;
-
-        //* true in blocking mode
-        bool blocking_ = false;
 
         //* true when inside waitForConnected
         bool timerLocked_ = false;

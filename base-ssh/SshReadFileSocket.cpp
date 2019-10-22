@@ -24,7 +24,10 @@
 
 #if WITH_SSH
 #include <libssh/libssh.h>
+#include <libssh/sftp.h>
 #endif
+
+#include <fcntl.h>
 
 namespace Ssh
 {
@@ -53,12 +56,6 @@ namespace Ssh
     void ReadFileSocket::connect( void* session, const QString& file )
     {
         Debug::Throw() << "Ssh::ReadFileSocket::connect - file: " << file << endl;
-
-        /*
-        TODO
-        TryConnect always return true (either succeeds or fails but never require rerun
-        One can therefore call it directly, remove it from the timer and remove the "waitForConnected" method
-        */
 
         // store session, host and port
         session_ = session;
@@ -96,7 +93,10 @@ namespace Ssh
 
         // stop timer
         if( timer_.isActive() ) timer_.stop();
-        channel_.reset();
+        handle_.reset();
+        sftp_.reset();
+        fileSize_ = 0;
+        remoteFileName_.clear();
 
     }
 
@@ -146,17 +146,35 @@ namespace Ssh
 
         #if WITH_SSH
 
+        class SessionBlocker
+        {
+            public:
+
+            SessionBlocker( ssh_session session ):
+                session_( session )
+            { ssh_set_blocking(session_, true); }
+
+            ~SessionBlocker()
+            { ssh_set_blocking(session_, false); }
+
+            private:
+
+            ssh_session session_;
+
+        };
+
         // cast session
         auto session( static_cast<ssh_session>(session_) );
+        SessionBlocker blocker( session );
 
-        // create and initialize channel if not already done
-        auto channel( static_cast<ssh_scp>(channel_.get()) );
-        if( !channel )
+        // create sftp
+        auto sftp( static_cast<sftp_session>(sftp_.get()) );
+        if( !sftp )
         {
 
-            // create channel
-            channel = ssh_scp_new(session, SSH_SCP_READ, qPrintable( remoteFileName_ ) );
-            if( !channel )
+            // create session
+            sftp = sftp_new( session );
+            if( !sftp )
             {
                 timer_.stop();
                 setErrorString( ssh_get_error(session) );
@@ -164,10 +182,10 @@ namespace Ssh
                 return true;
             }
 
-            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - channel created.\n" );
+            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - sftp new done.\n" );
 
             // initialize
-            if( ssh_scp_init( channel ) != SSH_OK )
+            if( sftp_init( sftp ) != SSH_OK  )
             {
                 timer_.stop();
                 setErrorString( ssh_get_error(session) );
@@ -175,30 +193,50 @@ namespace Ssh
                 return true;
             }
 
-            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - channel initialized.\n" );
+            sftp_.reset( sftp );
+            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - sftp created.\n" );
 
-            // assign
-            channel_.reset( channel );
         }
 
-        // open connection to file
-        auto result = ssh_scp_pull_request( channel );
-        Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - channel: " << channel << " pull request result: " << result << endl;
-        if( result != SSH_SCP_REQUEST_NEWFILE )
+        // file handle
+        auto handle = static_cast<sftp_file>( handle_.get() );
+        if( !handle )
         {
-            timer_.stop();
-            setErrorString( ssh_get_error(session) );
-            emit error( QAbstractSocket::ConnectionRefusedError );
-            return true;
+            // open
+            handle = sftp_open( sftp, qPrintable( remoteFileName_ ), O_RDONLY, 0 );
+            if( !handle )
+            {
+                timer_.stop();
+                setErrorString( ssh_get_error(session) );
+                emit error( QAbstractSocket::ConnectionRefusedError );
+                return true;
+            }
+
+            // store
+            handle_.reset( handle );
+            fileSize_ = 0;
+
+            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - handle created.\n" );
+
         }
 
-        // get file size
-        fileSize_ = ssh_scp_request_get_size64( channel );
+        // file size
+        if( !fileSize_ )
+        {
+            auto attributes = sftp_stat( sftp, qPrintable( remoteFileName_ ) );
+            if( !attributes )
+            {
+                timer_.stop();
+                setErrorString( ssh_get_error(session) );
+                emit error( QAbstractSocket::ConnectionRefusedError );
+                return true;
+            }
 
-        // accept transfer
-        ssh_scp_accept_request( channel );
+            fileSize_ = attributes->size;
+            sftp_attributes_free( attributes );
+            Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - file size: " << fileSize_ << endl;
 
-        Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - file size: " << fileSize_ << endl;
+        }
 
         // mark as connected
         connected_ = true;
@@ -223,12 +261,11 @@ namespace Ssh
 
         // cash channel
         auto session( static_cast<ssh_session>(session_) );
-        auto channel = static_cast<ssh_scp>(channel_.get());
+        auto handle = static_cast<sftp_file>(handle_.get());
 
         // read from channel
-        auto length =  ssh_scp_read( channel, buffer_.data()+bytesAvailable_, maxBufferSize-bytesAvailable_ );
-        if( length == 0 ) return false ;
-        else if( length == SSH_ERROR )
+        auto read =  sftp_read( handle, buffer_.data()+bytesAvailable_, maxBufferSize-bytesAvailable_ );
+        if( read == SSH_ERROR )
         {
 
             setErrorString( tr( "invalid read - %1" ).arg( ssh_get_error( session ) ) );
@@ -236,22 +273,23 @@ namespace Ssh
             bytesAvailable_ = -1;
             return false;
 
+        } else if( read == SSH_AGAIN ) {
+
+            return false;
+
+        } else if( read == 0 ) {
+
+            timer_.stop();
+            setErrorString( "completed" );
+            emit readChannelFinished();
+
         } else {
 
-            bytesAvailable_ += length;
-            bytesRead_ += length;
+            bytesAvailable_ += read;
+            bytesRead_ += read;
             emit readyRead();
 
         }
-
-        // check at end
-        if( atEnd() )
-        {
-            timer_.stop();
-            setErrorString( "channel closed" );
-            emit readChannelFinished();
-        }
-
         return true;
 
         #else
@@ -261,12 +299,21 @@ namespace Ssh
     }
 
     //______________________________________________________
-    void ReadFileSocket::ChannelDeleter::operator() (void* ptr) const
+    void ReadFileSocket::SftpDeleter::operator() (void* ptr) const
     {
         #if WITH_SSH
-        auto channel( static_cast<ssh_scp>(ptr) );
-        ssh_scp_close( channel );
-        ssh_scp_free( channel );
+        auto sftp = static_cast<sftp_session>( ptr );
+        sftp_free( sftp );
         #endif
     }
+
+    //______________________________________________________
+    void ReadFileSocket::FileHandleDeleter::operator() (void* ptr) const
+    {
+        #if WITH_SSH
+        auto file = static_cast<sftp_file>( ptr );
+        sftp_close( file );
+        #endif
+    }
+
 }

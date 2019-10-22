@@ -114,7 +114,7 @@ namespace Ssh
         state_ |= SessionCreated;
 
         // mark as non blocking
-        ssh_set_blocking(session, blocking_);
+        ssh_set_blocking(session, false);
 
         // request commands
         /* must request identity first because some authentication

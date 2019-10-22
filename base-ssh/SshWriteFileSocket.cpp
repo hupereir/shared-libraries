@@ -24,9 +24,14 @@
 
 #if WITH_SSH
 #include <libssh/libssh.h>
+#include <libssh/sftp.h>
 #endif
 
-#if defined(Q_OS_WIN)
+#include <fcntl.h>
+
+#if !defined(Q_OS_WIN)
+#include <sys/stat.h>
+#else
 /* File mode */
 /* Read, write, execute/search by owner */
 #define S_IRWXU 0000700 /* RWX mask for owner */
@@ -43,8 +48,6 @@
 #define S_IROTH 0000004 /* R for other */
 #define S_IWOTH 0000002 /* W for other */
 #define S_IXOTH 0000001 /* X for other */
-#else
-#include <sys/stat.h>
 #endif
 
 namespace Ssh
@@ -76,7 +79,9 @@ namespace Ssh
         fileSize_ = size;
 
         // run timer and try connect
-        if( !timer_.isActive() ) timer_.start( latency_, this );
+        if( !timer_.isActive() )
+        { timer_.start( latency_, this ); }
+
     }
 
     //_______________________________________________________________________
@@ -103,7 +108,10 @@ namespace Ssh
 
         // stop timer
         if( timer_.isActive() ) timer_.stop();
-        channel_.reset();
+        handle_.reset();
+        sftp_.reset();
+        fileSize_ = 0;
+        remoteFileName_.clear();
 
     }
 
@@ -117,7 +125,6 @@ namespace Ssh
 
         if( !isConnected() ) _tryConnect();
         else timer_.stop();
-
         return;
 
         #else
@@ -138,15 +145,16 @@ namespace Ssh
         #if WITH_SSH
 
         auto session( static_cast<ssh_session>(session_) );
-        auto channel = static_cast<ssh_scp>(channel_.get());
-        auto result = ssh_scp_write( channel, data, maxSize );
-        if( result == SSH_OK ) return maxSize;
-        else
+        auto handle = static_cast<sftp_file>(handle_.get());
+        auto result = sftp_write( handle, data, maxSize );
+        if( result == SSH_ERROR )
         {
+
             setErrorString( tr( "invalid write - %1" ).arg( ssh_get_error(session) ) );
             emit error( QAbstractSocket::ConnectionRefusedError );
             return -1;
-        }
+
+        } else return result;
 
         #else
 
@@ -165,17 +173,35 @@ namespace Ssh
 
         #if WITH_SSH
 
+        class SessionBlocker
+        {
+            public:
+
+            SessionBlocker( ssh_session session ):
+                session_( session )
+            { ssh_set_blocking(session_, true); }
+
+            ~SessionBlocker()
+            { ssh_set_blocking(session_, false); }
+
+            private:
+
+            ssh_session session_;
+
+        };
+
         // cast session
         auto session( static_cast<ssh_session>(session_) );
+        SessionBlocker blocker( session );
 
-        // create and initialize channel if not already done
-        auto channel( static_cast<ssh_scp>(channel_.get()) );
-        if( !channel )
+        // create sftp
+        auto sftp( static_cast<sftp_session>(sftp_.get()) );
+        if( !sftp )
         {
 
-            // create channel
-            channel = ssh_scp_new( session, SSH_SCP_WRITE, qPrintable( remoteFileName_ ) );
-            if( !channel )
+            // create
+            sftp = sftp_new( session );
+            if( !sftp )
             {
                 timer_.stop();
                 setErrorString( ssh_get_error(session) );
@@ -184,7 +210,7 @@ namespace Ssh
             }
 
             // initialize
-            if( ssh_scp_init( channel ) != SSH_OK )
+            if( sftp_init( sftp ) != SSH_OK  )
             {
                 timer_.stop();
                 setErrorString( ssh_get_error(session) );
@@ -192,17 +218,31 @@ namespace Ssh
                 return true;
             }
 
-            // assign
-            channel_.reset( channel );
+            sftp_.reset( sftp );
+
         }
 
-        // open connection to file
-        if( ssh_scp_push_file64( channel, qPrintable( remoteFileName_ ), fileSize_, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH ) != SSH_OK )
+        // create and initialize channel if not already done
+        auto handle( static_cast<sftp_file>(handle_.get()) );
+        if( !handle )
         {
-            timer_.stop();
-            setErrorString( ssh_get_error(session) );
-            emit error( QAbstractSocket::ConnectionRefusedError );
-            return true;
+
+
+            // open destination
+            auto handle = sftp_open( sftp, qPrintable( remoteFileName_ ),
+                O_WRONLY|O_CREAT|O_TRUNC,
+                S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH );
+            if( !handle )
+            {
+                timer_.stop();
+                setErrorString( ssh_get_error(session) );
+                emit error( QAbstractSocket::ConnectionRefusedError );
+                return true;
+            }
+
+            // store
+            handle_.reset( handle );
+
         }
 
         // mark as connected
@@ -217,12 +257,21 @@ namespace Ssh
     }
 
     //______________________________________________________
-    void WriteFileSocket::ChannelDeleter::operator() (void* ptr) const
+    void WriteFileSocket::SftpDeleter::operator() (void* ptr) const
     {
         #if WITH_SSH
-        auto channel( static_cast<ssh_scp>(ptr) );
-        ssh_scp_close( channel );
-        ssh_scp_free( channel );
+        auto sftp = static_cast<sftp_session>( ptr );
+        sftp_free( sftp );
         #endif
     }
+
+    //______________________________________________________
+    void WriteFileSocket::FileHandleDeleter::operator() (void* ptr) const
+    {
+        #if WITH_SSH
+        auto file = static_cast<sftp_file>( ptr );
+        sftp_close( file );
+        #endif
+    }
+
 }
