@@ -29,6 +29,7 @@
 #include <QIODevice>
 #include <QTimerEvent>
 
+#include <array>
 #include <memory>
 
 namespace Ssh
@@ -163,6 +164,12 @@ namespace Ssh
 
         //* bytes available
         qint64 bytesAvailable_ = 0;
+
+        enum
+        { nParallel = 16 };
+
+        std::array<int, nParallel> idList_;
+        int currentIndex_ = 0;
 
     };
 

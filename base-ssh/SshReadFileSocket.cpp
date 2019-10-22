@@ -33,6 +33,7 @@ namespace Ssh
 {
 
     //* max buffer size
+    static const qint64 bufferSize = 1024*64;
     static const qint64 maxBufferSize = 1<<16;
 
     //_______________________________________________________________________
@@ -238,6 +239,21 @@ namespace Ssh
 
         }
 
+        // create ids
+        for( int i = 0; i < nParallel; ++i )
+        {
+            if( fileSize_ < i*bufferSize ) break;
+            if( ( idList_[i] = sftp_async_read_begin( handle, bufferSize ) ) == SSH_ERROR )
+            {
+                timer_.stop();
+                setErrorString( ssh_get_error(session) );
+                emit error( QAbstractSocket::ConnectionRefusedError );
+                return true;
+            }
+        }
+
+        currentIndex_ = 0;
+
         // mark as connected
         connected_ = true;
         emit connected();
@@ -256,6 +272,7 @@ namespace Ssh
         Debug::Throw( "Ssh::ReadFileSocket::_tryRead.\n" );
 
         if( !isConnected() ) return false;
+        if( maxBufferSize - bytesAvailable_ < bufferSize ) return true;
 
         #if WITH_SSH
 
@@ -263,8 +280,7 @@ namespace Ssh
         auto session( static_cast<ssh_session>(session_) );
         auto handle = static_cast<sftp_file>(handle_.get());
 
-        // read from channel
-        auto read =  sftp_read( handle, buffer_.data()+bytesAvailable_, maxBufferSize-bytesAvailable_ );
+        auto read =  sftp_async_read( handle, buffer_.data()+bytesAvailable_, bufferSize, idList_[currentIndex_] );
         if( read == SSH_ERROR )
         {
 
@@ -273,23 +289,40 @@ namespace Ssh
             bytesAvailable_ = -1;
             return false;
 
-        } else if( read == SSH_AGAIN ) {
+        }
 
+        bytesRead_ += read;
+        bytesAvailable_ += read;
+        if( read != bufferSize && bytesRead_ < fileSize_ )
+        {
+            setErrorString( tr( "invalid read - file too short" ) );
+            timer_.stop();
+            bytesAvailable_ = -1;
             return false;
 
-        } else if( read == 0 ) {
-
-            timer_.stop();
-            setErrorString( "completed" );
-            emit readChannelFinished();
-
-        } else {
-
-            bytesAvailable_ += read;
-            bytesRead_ += read;
-            emit readyRead();
-
         }
+
+        emit readyRead();
+
+        // check if need relaunch
+        auto remaining = fileSize_ - bytesRead_;
+        if( remaining < bufferSize*(nParallel-1) ) idList_[currentIndex_] = -1;
+        else {
+
+            // truncate
+            if( remaining > bufferSize ) remaining = bufferSize;
+            if( ( idList_[currentIndex_] = sftp_async_read_begin( handle, remaining ) ) == SSH_ERROR )
+            {
+                setErrorString( tr( "invalid read - %1" ).arg( ssh_get_error(session) ) );
+                timer_.stop();
+                bytesAvailable_ = -1;
+                return false;
+            }
+        }
+
+        // update index
+        currentIndex_ = (currentIndex_+1)%nParallel;
+
         return true;
 
         #else
