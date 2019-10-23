@@ -21,6 +21,39 @@
 #include "Debug.h"
 #include "TimeStamp.h"
 
+
+#if !defined(Q_OS_WIN)
+#include <sys/stat.h>
+#else
+/* on widows need to define permissions flags manually */
+/* Read, write, execute/search by owner */
+#define S_IRUSR 0000400 /* R for owner */
+#define S_IWUSR 0000200 /* W for owner */
+#define S_IXUSR 0000100 /* X for owner */
+/* Read, write, execute/search by group */
+#define S_IRGRP 0000040 /* R for group */
+#define S_IWGRP 0000020 /* W for group */
+#define S_IXGRP 0000010 /* X for group */
+/* Read, write, execute/search by others */
+#define S_IROTH 0000004 /* R for other */
+#define S_IWOTH 0000002 /* W for other */
+#define S_IXOTH 0000001 /* X for other */
+#endif
+
+using PermissionPair = std::pair<mode_t,QFile::Permission>;
+static const std::initializer_list<PermissionPair> permissionMap =
+{
+    {S_IRUSR, QFile::ReadOwner },
+    {S_IWUSR, QFile::WriteOwner },
+    {S_IXUSR, QFile::ExeOwner },
+    {S_IRGRP, QFile::ReadGroup },
+    {S_IWGRP, QFile::WriteGroup },
+    {S_IXGRP, QFile::ExeGroup },
+    {S_IROTH, QFile::ReadOther },
+    {S_IWOTH, QFile::WriteOther },
+    {S_IXOTH, QFile::ExeOther  }
+};
+
 namespace Xml
 {
     // this one is kept for backward compatibility
@@ -80,6 +113,14 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 }
 
 //________________________________________________________________
+int BaseFileInfo::unixPermissions() const
+{
+    return std::accumulate( permissionMap.begin(), permissionMap.end(), 0,
+        [this]( int permissions, const PermissionPair& pair )
+        { return (permissions_&pair.second) ? std::move( permissions )|pair.first : std::move( permissions ); } );
+}
+
+//________________________________________________________________
 QString BaseFileInfo::typeString() const
 {
     if( isNavigator() ) return QObject::tr( "Navigator" );
@@ -96,6 +137,15 @@ QString BaseFileInfo::permissionsString() const
     if( isLink() ) permissionsString[0] = 'l';
     else if( isFolder() ) permissionsString[0] = 'd';
     return permissionsString;
+}
+
+//________________________________________________________________
+void BaseFileInfo::setUnixPermissions( int value )
+{
+    permissions_ = std::accumulate(
+        permissionMap.begin(), permissionMap.end(), (QFile::Permissions) 0,
+        [value]( QFile::Permissions permissions, const PermissionPair& pair )
+        { return (value&pair.first) ? std::move( permissions )|pair.second : std::move( permissions ); } );
 }
 
 //________________________________________________________________

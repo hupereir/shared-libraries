@@ -184,6 +184,9 @@ class BaseFileInfo
     virtual QFile::Permissions permissions() const
     { return permissions_; }
 
+    //* permissions
+    int unixPermissions() const;
+
     //* type string
     virtual QString typeString() const;
 
@@ -273,6 +276,9 @@ class BaseFileInfo
     //* group
     virtual void setGroup( const QString& group )
     { group_ = group; }
+
+    //* permissions
+    virtual void setUnixPermissions( int );
 
     //* permissions
     virtual void setPermissions( const QFile::Permissions& permissions )
