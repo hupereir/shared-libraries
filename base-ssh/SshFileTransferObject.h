@@ -53,6 +53,11 @@ namespace Ssh
         void setFileSize( qint64 fileSize )
         { fileSize_ = fileSize; }
 
+        //* set file pernissions (for writing to remote)
+        /** it must be called before calling ::connect */
+        void setPermissions( QFile::Permissions value )
+        { permissions_ = value; }
+
         using QObject::connect;
 
         //* connect to remote file
