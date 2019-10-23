@@ -18,6 +18,8 @@
 *******************************************************************************/
 
 #include "SshWriteFileSocket.h"
+
+#include "BaseFileInfo.h"
 #include "Debug.h"
 
 #include <QElapsedTimer>
@@ -29,26 +31,8 @@
 
 #include <fcntl.h>
 
-#if !defined(Q_OS_WIN)
-#include <sys/stat.h>
-#else
-/* File mode */
-/* Read, write, execute/search by owner */
-#define S_IRWXU 0000700 /* RWX mask for owner */
-#define S_IRUSR 0000400 /* R for owner */
-#define S_IWUSR 0000200 /* W for owner */
-#define S_IXUSR 0000100 /* X for owner */
-/* Read, write, execute/search by group */
-#define S_IRWXG 0000070 /* RWX mask for group */
-#define S_IRGRP 0000040 /* R for group */
-#define S_IWGRP 0000020 /* W for group */
-#define S_IXGRP 0000010 /* X for group */
-/* Read, write, execute/search by others */
-#define S_IRWXO 0000007 /* RWX mask for other */
-#define S_IROTH 0000004 /* R for other */
-#define S_IWOTH 0000002 /* W for other */
-#define S_IXOTH 0000001 /* X for other */
-#endif
+static const QFile::Permissions defaultPermissions( QFile::ReadOwner|QFile::WriteOwner|QFile::ReadGroup|QFile::WriteGroup );
+
 
 namespace Ssh
 {
@@ -64,7 +48,7 @@ namespace Ssh
     { close(); }
 
     //_______________________________________________________________________
-    void WriteFileSocket::connect( void* session, const QString& file, qint64 size )
+    void WriteFileSocket::connect( void* session, const QString& file, qint64 size, QFile::Permissions permissions )
     {
 
         /*
@@ -77,6 +61,7 @@ namespace Ssh
         session_ = session;
         remoteFileName_ = file;
         fileSize_ = size;
+        permissions_ = permissions;
 
         // run timer and try connect
         if( !timer_.isActive() )
@@ -206,7 +191,7 @@ namespace Ssh
             // open destination
             auto handle = sftp_open( sftp, qPrintable( remoteFileName_ ),
                 O_WRONLY|O_CREAT|O_TRUNC,
-                S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH );
+                BaseFileInfo::unixPermissions( permissions_ ? permissions_:defaultPermissions ) );
             if( !handle ) return terminate();
 
             // store

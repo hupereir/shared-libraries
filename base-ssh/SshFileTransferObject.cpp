@@ -62,7 +62,7 @@ namespace Ssh
             remoteDevice_ = new WriteFileSocket( this );
             connect( remoteDevice_, SIGNAL(error(QAbstractSocket::SocketError)), SLOT( _processError(QAbstractSocket::SocketError)) );
             connect( remoteDevice_, SIGNAL(connected()), SLOT(_setConnected()) );
-            qobject_cast<WriteFileSocket*>(remoteDevice_)->connect( session, remoteFileName_, fileSize_ );
+            qobject_cast<WriteFileSocket*>(remoteDevice_)->connect( session, remoteFileName_, fileSize_, permissions_ );
             return true;
 
         } else {
@@ -156,6 +156,9 @@ namespace Ssh
 
         // connect to remote file
         fileSize_ = localDevice_->size();
+        if( auto file = qobject_cast<QFile*>( device ) )
+        { permissions_ = file->permissions(); }
+
         bytesTransferred_ = 0;
 
         // create socket if needed
@@ -374,6 +377,16 @@ namespace Ssh
     //____________________________________________________________________________
     void FileTransferObject::_closeSourceFile()
     {
+
+        // store permissions
+        auto local = qobject_cast<QFile*>( localDevice_ );
+        auto remote = qobject_cast<ReadFileSocket*>( remoteDevice_ );
+        if( local && remote )
+        {
+            Debug::Throw( "Ssh::FileTransferObject::_closeSourceFile - copying permissions" );
+            local->setPermissions( remote->permissions() );
+        }
+
         if( localDevice_ && deviceOwned_ )
         {
             localDevice_->close();

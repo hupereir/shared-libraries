@@ -26,6 +26,7 @@
 #include <QAbstractSocket>
 #include <QBasicTimer>
 #include <QByteArray>
+#include <QFile>
 #include <QHostAddress>
 #include <QIODevice>
 #include <QTimerEvent>
@@ -67,6 +68,10 @@ namespace Ssh
         //* file size
         qint64 fileSize() const
         { return fileSize_; }
+
+        //* permissions
+        QFile::Permissions permissions() const
+        { return permissions_; }
 
         //* bytes available
         qint64 bytesAvailable() const override
@@ -149,6 +154,9 @@ namespace Ssh
 
         //* total size
         qint64 fileSize_ = 0;
+
+        //* permissions
+        QFile::Permissions permissions_ = 0;
 
         //* bytes available
         qint64 bytesRead_ = 0;

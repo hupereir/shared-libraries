@@ -24,6 +24,7 @@
 
 #include <QAbstractSocket>
 #include <QByteArray>
+#include <QFile>
 #include <QObject>
 #include <QString>
 
@@ -60,11 +61,11 @@ namespace Ssh
         //* read (remote to local)
         bool fromRemote( void*, QString );
 
-        //* read (remote to local)
-        bool fromRemote( void*, QIODevice* );
-
         //* write (local to remote)
         bool toRemote( void*, QString );
+
+        //* read (remote to local)
+        bool fromRemote( void*, QIODevice* );
 
         //* write (local to remote)
         bool toRemote( void*, QIODevice* );
@@ -190,6 +191,9 @@ namespace Ssh
 
         //* file size
         qint64 fileSize_ = 0;
+
+        //* permissions
+        QFile::Permissions permissions_ = 0;
 
         //* bytes read
         qint64 bytesTransferred_ = 0;

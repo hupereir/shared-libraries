@@ -26,6 +26,7 @@
 #include <QAbstractSocket>
 #include <QBasicTimer>
 #include <QByteArray>
+#include <QFile>
 #include <QHostAddress>
 #include <QIODevice>
 #include <QTimerEvent>
@@ -70,7 +71,7 @@ namespace Ssh
         { latency_ = latency; }
 
         //* connect to remote file
-        void connect( void*, const QString&, qint64 size );
+        void connect( void*, const QString&, qint64 size, QFile::Permissions = 0 );
 
         //* wait for connected
         /** warning, this method is blocking */
@@ -131,6 +132,9 @@ namespace Ssh
 
         //* total size
         qint64 fileSize_ = 0;
+
+        //* permissions
+        QFile::Permissions permissions_ = 0;
 
     };
 

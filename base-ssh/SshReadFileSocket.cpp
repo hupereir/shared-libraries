@@ -18,6 +18,8 @@
 *******************************************************************************/
 
 #include "SshReadFileSocket.h"
+
+#include "BaseFileInfo.h"
 #include "Debug.h"
 
 #include <QElapsedTimer>
@@ -194,6 +196,7 @@ namespace Ssh
             if( !attributes ) return terminate();
 
             fileSize_ = attributes->size;
+            permissions_ = BaseFileInfo::permissions( attributes->permissions );
             sftp_attributes_free( attributes );
             Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - file size: " << fileSize_ << endl;
 
