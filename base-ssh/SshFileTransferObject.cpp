@@ -383,7 +383,7 @@ namespace Ssh
         auto remote = qobject_cast<ReadFileSocket*>( remoteDevice_ );
         if( local && remote )
         {
-            Debug::Throw( "Ssh::FileTransferObject::_closeSourceFile - copying permissions" );
+            Debug::Throw( "Ssh::FileTransferObject::_closeSourceFile - copying permissions.\n" );
             local->setPermissions( remote->permissions() );
         }
 
