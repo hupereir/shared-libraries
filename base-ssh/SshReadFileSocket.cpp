@@ -151,35 +151,26 @@ namespace Ssh
         auto session( static_cast<ssh_session>(session_) );
         Util::SessionBlocker blocker( session );
 
-        // create sftp
+        // invalid termination sequence
+        auto terminate = [this, session]()
+        {
+            timer_.stop();
+            setErrorString( ssh_get_error(session) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return true;
+        };
+
+        // create sftp session
         auto sftp( static_cast<sftp_session>(sftp_.get()) );
         if( !sftp )
         {
-
-            // create session
+            // create sftp session and initialize
             sftp = sftp_new( session );
-            if( !sftp )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
+            if( !( sftp && sftp_init( sftp ) == SSH_OK  ) )
+            { return terminate(); }
 
-            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - sftp new done.\n" );
-
-            // initialize
-            if( sftp_init( sftp ) != SSH_OK  )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
-
+            // store
             sftp_.reset( sftp );
-            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - sftp created.\n" );
-
         }
 
         // file handle
@@ -188,19 +179,11 @@ namespace Ssh
         {
             // open
             handle = sftp_open( sftp, qPrintable( remoteFileName_ ), O_RDONLY, 0 );
-            if( !handle )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
+            if( !handle ) return terminate();
 
             // store
             handle_.reset( handle );
             fileSize_ = 0;
-
-            Debug::Throw( "Ssh::ReadFileSocket::_tryConnect - handle created.\n" );
 
         }
 
@@ -208,13 +191,7 @@ namespace Ssh
         if( !fileSize_ )
         {
             auto attributes = sftp_stat( sftp, qPrintable( remoteFileName_ ) );
-            if( !attributes )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
+            if( !attributes ) return terminate();
 
             fileSize_ = attributes->size;
             sftp_attributes_free( attributes );
@@ -227,12 +204,7 @@ namespace Ssh
         {
             if( fileSize_ < i*bufferSize ) break;
             if( ( idList_[i] = sftp_async_read_begin( handle, bufferSize ) ) == SSH_ERROR )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
+            { return terminate(); }
         }
 
         currentIndex_ = 0;
@@ -263,27 +235,22 @@ namespace Ssh
         auto session( static_cast<ssh_session>(session_) );
         auto handle = static_cast<sftp_file>(handle_.get());
 
-        auto read =  sftp_async_read( handle, buffer_.data()+bytesAvailable_, bufferSize, idList_[currentIndex_] );
-        if( read == SSH_ERROR )
+        // invalid termination sequence
+        auto terminate = [this]( const QString& message)
         {
-
-            setErrorString( tr( "invalid read - %1" ).arg( ssh_get_error( session ) ) );
+            setErrorString( message );
+            emit error( QAbstractSocket::UnknownSocketError );
             timer_.stop();
             bytesAvailable_ = -1;
             return false;
+        };
 
-        }
+        auto read =  sftp_async_read( handle, buffer_.data()+bytesAvailable_, bufferSize, idList_[currentIndex_] );
+        if( read == SSH_ERROR ) return terminate( tr( "invalid read - %1" ).arg( ssh_get_error( session ) ) );
 
         bytesRead_ += read;
         bytesAvailable_ += read;
-        if( read != bufferSize && bytesRead_ < fileSize_ )
-        {
-            setErrorString( tr( "invalid read - file too short" ) );
-            timer_.stop();
-            bytesAvailable_ = -1;
-            return false;
-
-        }
+        if( read != bufferSize && bytesRead_ < fileSize_ ) return terminate( tr( "invalid read - file too short" ) );
 
         emit readyRead();
 
@@ -291,16 +258,10 @@ namespace Ssh
         auto remaining = fileSize_ - bytesRead_;
         if( remaining < bufferSize*(nParallel-1) ) idList_[currentIndex_] = -1;
         else {
-
             // truncate
             if( remaining > bufferSize ) remaining = bufferSize;
             if( ( idList_[currentIndex_] = sftp_async_read_begin( handle, remaining ) ) == SSH_ERROR )
-            {
-                setErrorString( tr( "invalid read - %1" ).arg( ssh_get_error(session) ) );
-                timer_.stop();
-                bytesAvailable_ = -1;
-                return false;
-            }
+            { return terminate( tr( "invalid read - %1" ).arg( ssh_get_error(session) ) ); }
         }
 
         // update index

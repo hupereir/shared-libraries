@@ -177,55 +177,40 @@ namespace Ssh
         auto session( static_cast<ssh_session>(session_) );
         Util::SessionBlocker blocker( session );
 
-        // create sftp
+        // invalid termination sequence
+        auto terminate = [this, session]()
+        {
+            timer_.stop();
+            setErrorString( ssh_get_error(session) );
+            emit error( QAbstractSocket::ConnectionRefusedError );
+            return true;
+        };
+
+        // create sftp session
         auto sftp( static_cast<sftp_session>(sftp_.get()) );
         if( !sftp )
         {
-
-            // create
+            // create sftp session and initialize
             sftp = sftp_new( session );
-            if( !sftp )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
+            if( !( sftp && sftp_init( sftp ) == SSH_OK  ) )
+            { return terminate(); }
 
-            // initialize
-            if( sftp_init( sftp ) != SSH_OK  )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
-
+            // store
             sftp_.reset( sftp );
-
         }
 
         // create and initialize channel if not already done
         auto handle( static_cast<sftp_file>(handle_.get()) );
         if( !handle )
         {
-
-
             // open destination
             auto handle = sftp_open( sftp, qPrintable( remoteFileName_ ),
                 O_WRONLY|O_CREAT|O_TRUNC,
                 S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH );
-            if( !handle )
-            {
-                timer_.stop();
-                setErrorString( ssh_get_error(session) );
-                emit error( QAbstractSocket::ConnectionRefusedError );
-                return true;
-            }
+            if( !handle ) return terminate();
 
             // store
             handle_.reset( handle );
-
         }
 
         // mark as connected
