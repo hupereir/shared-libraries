@@ -46,12 +46,8 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     //* creator
     explicit TabbedDialog( QWidget* );
 
-    //* adds a new Item, returns associated Box
-    QWidget& addPage( const QString& title, const QString& tooltip = QString(), bool expand = false )
-    { return addPage( QIcon(), title, tooltip, expand ); }
-
-    //* adds a new Item, returns associated Box
-    QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), bool expand = false );
+    //*@name accessors
+    //@{
 
     //* button box
     QDialogButtonBox& buttonBox() const
@@ -87,6 +83,20 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     //* retrieve CANCEL button
     QPushButton& cancelButton() const
     { return *buttonBox_->button(QDialogButtonBox::Cancel); }
+
+    //@}
+
+    //*@name modifiers
+    //@{
+
+    //* adds a new Item, returns associated Box
+    QWidget& addPage( const QString& title, const QString& tooltip = QString(), bool expand = false )
+    { return addPage( QIcon(), title, tooltip, expand ); }
+
+    //* adds a new Item, returns associated Box
+    QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), bool expand = false );
+
+    //@}
 
     protected:
 
