@@ -271,14 +271,4 @@ namespace Ssh
         #endif
 
     }
-
-    //______________________________________________________
-    void Socket::ChannelDeleter::operator() (void* ptr) const
-    {
-        #if WITH_SSH
-        auto channel( static_cast<ssh_channel>(ptr) );
-        if( ssh_channel_is_open( channel ) ) ssh_channel_close( channel );
-        ssh_channel_free( channel );
-        #endif
-    }
 }

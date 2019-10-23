@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "SshUtil.h"
 
 #include <QAbstractSocket>
 #include <QBasicTimer>
@@ -114,20 +115,10 @@ namespace Ssh
         QString remoteFileName_;
 
         //* ssh session
-        class SftpDeleter
-        {
-            public:
-            void operator() (void*) const;
-        };
-        std::unique_ptr<void,SftpDeleter> sftp_;
+        std::unique_ptr<void,Util::SftpDeleter> sftp_;
 
         //* file handle
-        class FileHandleDeleter
-        {
-            public:
-            void operator() (void*) const;
-        };
-        std::unique_ptr<void,FileHandleDeleter> handle_;
+        std::unique_ptr<void,Util::FileHandleDeleter> handle_;
 
         //* connected
         bool connected_ = false;

@@ -173,26 +173,9 @@ namespace Ssh
 
         #if WITH_SSH
 
-        class SessionBlocker
-        {
-            public:
-
-            SessionBlocker( ssh_session session ):
-                session_( session )
-            { ssh_set_blocking(session_, true); }
-
-            ~SessionBlocker()
-            { ssh_set_blocking(session_, false); }
-
-            private:
-
-            ssh_session session_;
-
-        };
-
         // cast session
         auto session( static_cast<ssh_session>(session_) );
-        SessionBlocker blocker( session );
+        Util::SessionBlocker blocker( session );
 
         // create sftp
         auto sftp( static_cast<sftp_session>(sftp_.get()) );
@@ -254,24 +237,6 @@ namespace Ssh
         return true;
         #endif
 
-    }
-
-    //______________________________________________________
-    void WriteFileSocket::SftpDeleter::operator() (void* ptr) const
-    {
-        #if WITH_SSH
-        auto sftp = static_cast<sftp_session>( ptr );
-        sftp_free( sftp );
-        #endif
-    }
-
-    //______________________________________________________
-    void WriteFileSocket::FileHandleDeleter::operator() (void* ptr) const
-    {
-        #if WITH_SSH
-        auto file = static_cast<sftp_file>( ptr );
-        sftp_close( file );
-        #endif
     }
 
 }

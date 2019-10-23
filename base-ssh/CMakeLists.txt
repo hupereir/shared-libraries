@@ -52,6 +52,7 @@ set(base_ssh_SOURCES
   SshReadFileSocket.cpp
   SshSocket.cpp
   SshTunnel.cpp
+  SshUtil.cpp
   SshWriteFileSocket.cpp
 )
 

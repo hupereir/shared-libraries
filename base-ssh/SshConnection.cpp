@@ -603,20 +603,4 @@ namespace Ssh
         _notifyError( errorMessage );
     }
 
-    //______________________________________________________
-    void Connection::SessionDeleter::operator() (void* ptr) const
-    {
-        #if WITH_SSH
-        auto session( static_cast<ssh_session>(ptr) );
-
-        // disconnect
-        if( ssh_is_connected( session ) )
-        { ssh_disconnect( session ); }
-
-        // free and reset
-        ssh_free( session );
-
-        #endif
-    }
-
 }

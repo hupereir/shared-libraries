@@ -24,6 +24,7 @@
 #include "CppUtil.h"
 #include "SshConnectionAttributes.h"
 #include "SshTunnelAttributes.h"
+#include "SshUtil.h"
 #include "WeakPointer.h"
 
 #include <QBasicTimer>
@@ -216,13 +217,8 @@ namespace Ssh
         //* abort all commands
         void _abortCommands( const QString& );
 
-        //* ssh session
-        class SessionDeleter
-        {
-            public:
-            void operator() (void*) const;
-        };
-        std::unique_ptr<void, SessionDeleter> session_;
+        // session
+        std::unique_ptr<void, Util::SessionDeleter> session_;
 
         //* connection attributes
         ConnectionAttributes connectionAttributes_;

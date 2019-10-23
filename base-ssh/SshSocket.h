@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 #include "Counter.h"
+#include "SshUtil.h"
 
 #include <QAbstractSocket>
 #include <QBasicTimer>
@@ -134,14 +135,7 @@ namespace Ssh
 
         //* port
         quint16 port_ = 0;
-
-        //* ssh session
-        class ChannelDeleter
-        {
-            public:
-            void operator() (void*) const;
-        };
-        std::unique_ptr<void,ChannelDeleter> channel_;
+        std::unique_ptr<void,Util::ChannelDeleter> channel_;
 
         //* connected
         bool connected_ = false;
