@@ -113,11 +113,21 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 }
 
 //________________________________________________________________
-int BaseFileInfo::unixPermissions() const
+int BaseFileInfo::unixPermissions( QFile::Permissions value )
 {
     return std::accumulate( permissionMap.begin(), permissionMap.end(), 0,
-        [this]( int permissions, const PermissionPair& pair )
-        { return (permissions_&pair.second) ? std::move( permissions )|pair.first : std::move( permissions ); } );
+        [value]( int permissions, const PermissionPair& pair )
+        { return (value&pair.second) ? std::move( permissions )|pair.first : std::move( permissions ); } );
+}
+
+
+//________________________________________________________________
+QFile::Permissions BaseFileInfo::permissions( int value )
+{
+    return std::accumulate(
+        permissionMap.begin(), permissionMap.end(), (QFile::Permissions) 0,
+        [value]( QFile::Permissions permissions, const PermissionPair& pair )
+        { return (value&pair.first) ? std::move( permissions )|pair.second : std::move( permissions ); } );
 }
 
 //________________________________________________________________
@@ -137,15 +147,6 @@ QString BaseFileInfo::permissionsString() const
     if( isLink() ) permissionsString[0] = 'l';
     else if( isFolder() ) permissionsString[0] = 'd';
     return permissionsString;
-}
-
-//________________________________________________________________
-void BaseFileInfo::setUnixPermissions( int value )
-{
-    permissions_ = std::accumulate(
-        permissionMap.begin(), permissionMap.end(), (QFile::Permissions) 0,
-        [value]( QFile::Permissions permissions, const PermissionPair& pair )
-        { return (value&pair.first) ? std::move( permissions )|pair.second : std::move( permissions ); } );
 }
 
 //________________________________________________________________
