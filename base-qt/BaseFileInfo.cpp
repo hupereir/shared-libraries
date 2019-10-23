@@ -109,9 +109,9 @@ void BaseFileInfo::setPermissions( const QString& value )
 
     // reset
     permissions_  = QFile::Permissions();
-    if( value[1] == 'r' ) permissions_ |= QFile::ReadUser;
-    if( value[2] == 'w' ) permissions_ |= QFile::WriteUser;
-    if( value[3] == 'x' ) permissions_ |= QFile::ExeUser;
+    if( value[1] == 'r' ) permissions_ |= QFile::ReadOwner;
+    if( value[2] == 'w' ) permissions_ |= QFile::WriteOwner;
+    if( value[3] == 'x' ) permissions_ |= QFile::ExeOwner;
 
     if( value[4] == 'r' ) permissions_ |= QFile::ReadGroup;
     if( value[5] == 'w' ) permissions_ |= QFile::WriteGroup;
