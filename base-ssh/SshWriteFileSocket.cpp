@@ -31,7 +31,7 @@
 
 #include <fcntl.h>
 
-static const QFile::Permissions defaultPermissions( QFile::ReadOwner|QFile::WriteOwner|QFile::ReadGroup|QFile::WriteGroup );
+static const QFile::Permissions defaultPermissions( QFile::ReadOwner|QFile::WriteOwner|QFile::ReadGroup|QFile::ReadOther );
 
 
 namespace Ssh
