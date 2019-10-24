@@ -46,9 +46,15 @@ static const std::initializer_list<PermissionPair> permissionMap =
     {S_IRUSR, QFile::ReadOwner },
     {S_IWUSR, QFile::WriteOwner },
     {S_IXUSR, QFile::ExeOwner },
+
+    {S_IRUSR, QFile::ReadUser },
+    {S_IWUSR, QFile::WriteUser },
+    {S_IXUSR, QFile::ExeUser },
+
     {S_IRGRP, QFile::ReadGroup },
     {S_IWGRP, QFile::WriteGroup },
     {S_IXGRP, QFile::ExeGroup },
+
     {S_IROTH, QFile::ReadOther },
     {S_IWOTH, QFile::WriteOther },
     {S_IXOTH, QFile::ExeOther  }
@@ -113,7 +119,7 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 }
 
 //________________________________________________________________
-int BaseFileInfo::unixPermissions( QFile::Permissions value )
+mode_t BaseFileInfo::unixPermissions( QFile::Permissions value )
 {
     return std::accumulate( permissionMap.begin(), permissionMap.end(), 0,
         [value]( int permissions, const PermissionPair& pair )
@@ -122,7 +128,7 @@ int BaseFileInfo::unixPermissions( QFile::Permissions value )
 
 
 //________________________________________________________________
-QFile::Permissions BaseFileInfo::permissions( int value )
+QFile::Permissions BaseFileInfo::permissions( mode_t value )
 {
     return std::accumulate(
         permissionMap.begin(), permissionMap.end(), (QFile::Permissions) 0,

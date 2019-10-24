@@ -181,17 +181,17 @@ class BaseFileInfo
     { return group_; }
 
     //* permissions from unix
-    static QFile::Permissions permissions( int );
+    static QFile::Permissions permissions( mode_t );
 
     //* permissions
     virtual QFile::Permissions permissions() const
     { return permissions_; }
 
     //* permissions
-    static int unixPermissions( QFile::Permissions );
+    static mode_t unixPermissions( QFile::Permissions );
 
     //* permissions
-    int unixPermissions() const
+    mode_t unixPermissions() const
     { return unixPermissions( permissions_ ); }
 
     //* type string
@@ -285,7 +285,7 @@ class BaseFileInfo
     { group_ = group; }
 
     //* permissions
-    virtual void setUnixPermissions( int value )
+    virtual void setUnixPermissions( mode_t value )
     { setPermissions( permissions( value ) ); }
 
     //* permissions
