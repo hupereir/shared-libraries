@@ -115,7 +115,6 @@ namespace Ssh
         #else
 
         timer_.stop();
-        bytesAvailable_ = -1;
         setErrorString( "no ssh" );
         return;
 
