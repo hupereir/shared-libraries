@@ -464,7 +464,7 @@ void LineEditor::paintEvent( QPaintEvent* event )
 
         // color
         QColor textColor( palette().text().color() );
-        textColor.setAlpha(128);
+        textColor.setAlphaF(0.5);
 
         QPainter painter( this );
         painter.setPen( textColor );
