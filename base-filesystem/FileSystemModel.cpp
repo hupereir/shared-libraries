@@ -27,6 +27,7 @@
 #include "FileSystemIconNames.h"
 #include "FileRecordProperties.h"
 #include "IconEngine.h"
+#include "QtUtil.h"
 #include "XmlOptions.h"
 
 #include <QApplication>
@@ -123,11 +124,7 @@ QVariant FileSystemModel::data( const QModelIndex& index, int role ) const
         {
             const FileRecord& record( get(index) );
             if( record.hasFlag( BaseFileInfo::Hidden ) && ( this->flags( index )&Qt::ItemIsEnabled ) )
-            {
-                QColor color( QPalette().color( QPalette::Text ) );
-                color.setAlphaF( 0.7 );
-                return color;
-            }
+            { return QtUtil::lightTextColor( QPalette(), QPalette::Text ); }
 
             break;
         }

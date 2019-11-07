@@ -21,6 +21,7 @@
 
 #include "ElidedLabel.h"
 #include "GridLayout.h"
+#include "QtUtil.h"
 
 //____________________________________________________________________________
 GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, Flags flags ):
@@ -32,9 +33,7 @@ GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, Flags flags
     layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
 
     auto palette( key_->palette() );
-    auto color( palette.color( QPalette::WindowText ) );
-    color.setAlpha( 0.8*color.alpha() );
-    palette.setColor( QPalette::WindowText, color );
+    palette.setColor( QPalette::WindowText, QtUtil::lightTextColor( palette ) );
     key_->setPalette( palette );
 
     // elision flag

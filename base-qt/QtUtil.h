@@ -24,6 +24,7 @@
 #include <QDialog>
 #include <QIcon>
 #include <QMenu>
+#include <QPalette>
 #include <QString>
 
 //* some convernience methods
@@ -64,6 +65,20 @@ class QtUtil
 
     //* get 'title' font matching argument
     static QFont titleFont( QFont );
+
+    //* light text color
+    static QColor lightTextColor( const QPalette& palette,
+        QPalette::ColorRole role )
+    { return lightTextColor( palette.color( role ) ); }
+
+    //* light text color
+    static QColor lightTextColor( const QPalette& palette,
+        QPalette::ColorGroup group = QPalette::Normal,
+        QPalette::ColorRole role = QPalette::WindowText )
+    { return lightTextColor( palette.color( group, role ) ); }
+
+    //* light text color
+    static QColor lightTextColor( const QColor& );
 
     //* menu section
     static QAction* addMenuSection( QMenu* menu, const QString& text )

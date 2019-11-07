@@ -19,6 +19,7 @@
 
 #include "QtUtil.h"
 
+#include "Color.h"
 #include "Debug.h"
 #include "Util.h"
 
@@ -199,6 +200,10 @@ QFont QtUtil::titleFont( QFont font )
     font.setPointSize( titleFontPointSize( font ) );
     return font;
 }
+
+//____________________________________________________________
+QColor QtUtil::lightTextColor( const QColor& color )
+{  return Base::Color( color ).addAlpha( 0.7 ); }
 
 //____________________________________________________________
 QAction* QtUtil::addMenuSection( QMenu* menu, const QIcon& icon, const QString& text )
