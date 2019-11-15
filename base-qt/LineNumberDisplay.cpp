@@ -23,12 +23,10 @@
 #include "TextBlockRange.h"
 #include "XmlOptions.h"
 
-#include <QAbstractTextDocumentLayout>
 #include <QPainter>
 #include <QScrollBar>
 #include <QTextDocument>
 #include <QTextBlock>
-#include <QTextLayout>
 
 //____________________________________________________________________________
 LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
@@ -107,7 +105,7 @@ void LineNumberDisplay::paint( QPainter& painter )
     int lastIndex = editor_->cursorForPosition( QPoint( 0, editor_->height() ) ).position();
 
     // loop over data
-    QTextBlock block( editor_->document()->begin() );
+    auto block( editor_->document()->begin() );
     int id( 0 );
 
     for( auto& data:lineNumberData_ )
