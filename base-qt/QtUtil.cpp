@@ -198,6 +198,7 @@ int QtUtil::titleFontPointSize( const QFont& font )
 QFont QtUtil::titleFont( QFont font )
 {
     font.setPointSize( titleFontPointSize( font ) );
+    font.setWeight( QFont::Medium );
     return font;
 }
 
