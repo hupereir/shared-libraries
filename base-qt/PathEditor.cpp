@@ -117,17 +117,14 @@ namespace Private
     //____________________________________________________________________________
     QSize PathEditorItem::sizeHint() const
     {
-        auto size( minimumSize() );
         if( isLast_ )
         {
-            QFont adjustedFont(font());
-            adjustedFont.setBold( true );
-
-            // add some extra space to prevent some false positive about text elision
-            size.rwidth() += QFontMetrics( adjustedFont ).boundingRect( text() ).width()+2;
+            auto size = minimumSize();
+            size.rwidth() += fontMetrics().boundingRect( text() ).width() + 4;
+            return size;
+        } else {
+            return minimumSize();
         }
-
-        return size;
     }
 
     //____________________________________________________________________________
@@ -138,11 +135,9 @@ namespace Private
     void PathEditorItem::updateMinimumSize()
     {
         Debug::Throw( "PathEditorItem::updateMinimumSize.\n" );
-        QFont adjustedFont(font());
-        adjustedFont.setBold( isLast_ );
 
         // text size
-        QSize size( QFontMetrics( adjustedFont ).boundingRect( text() ).size() );
+        QSize size( fontMetrics().boundingRect( text() ).size() );
         if( isLast_ ) size.setWidth( 0 );
 
         // margins
@@ -243,14 +238,10 @@ namespace Private
             else textRect.adjust( 0, 0, -arrowWidth, 0 );
         }
 
-        auto adjustedFont(font());
-        adjustedFont.setBold( isLast_ );
-
         const auto text = isLast_ ?
-            QFontMetrics( adjustedFont ).elidedText( this->text(), Qt::ElideRight, textRect.width() ):
+            fontMetrics().elidedText( this->text(), Qt::ElideRight, textRect.width() ):
             this->text();
 
-        painter->setFont( adjustedFont );
         painter->drawText( QRectF( textRect ), Qt::AlignLeft|Qt::AlignVCenter|Qt::TextHideMnemonic, text );
 
         // render arrow
@@ -303,10 +294,8 @@ namespace Private
     void PathEditorMenuButton::updateMinimumSize()
     {
         Debug::Throw( "PathEditorMenuButton::updateMinimumSize.\n" );
-        auto adjustedFont(font());
-        adjustedFont.setBold( true );
 
-        QFontMetrics metrics( adjustedFont );
+        const auto metrics( fontMetrics() );
         QSize size( metrics.height(), metrics.height() );
         size.rwidth() += 2*BorderWidth;
         size.rheight() += 4*BorderWidth;
