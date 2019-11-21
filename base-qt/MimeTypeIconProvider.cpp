@@ -29,6 +29,7 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     {
         // source code
         { "C", "text-x-csrc" },
+        { "cc", "text-x-c++src" },
         { "cxx", "text-x-c++src" },
         { "cpp", "text-x-c++src" },
         { "h", "text-x-chdr" },
@@ -89,19 +90,28 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
         { "cmake", "text-x-cmake" },
 
         // archives
-        { "gz", "application-x-archive" },
-        { "xz", "application-x-archive" },
-        { "bz2", "application-x-archive" },
-        { "tgz", "application-x-archive" },
-        { "zip", "application-x-archive" },
+        { "gz", "application-x-gzip" },
+        { "xz", "application-zip" },
+        { "bz2", "application-x-bzip" },
+        { "tgz", "application-zip" },
+        { "zip", "application-zip" },
+        { "cbz", "application-zip" },
+        { "rar", "application-x-rar" },
+        { "cbr", "application-x-rar" },
 
         // misc
-        { "root", "application-x-object" },
+        { "a", "application-x-archive" },
+        { "apk", "android-package-archive" },
+        { "desktop", "application-x-desktop" },
+        { "exe", "application-x-ms-dos-executable" },
+        { "json", "application-json" },
         { "o", "application-x-object" },
         { "obj", "application-x-object" },
+        { "root", "application-x-object" },
+        { "rpm", "application-x-rpm" },
+        { "srpm", "application-x-source-rpm" },
         { "so", "application-x-object" },
-        { "a", "application-x-archive" },
-        { "exe", "application-x-ms-dos-executable" }
+        { "spec", "text-x-rpm-spec" }
     } ) )
 {}
 
