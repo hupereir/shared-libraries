@@ -33,6 +33,17 @@ class PasswordEditor: public LineEditor
     //* constructor
     explicit PasswordEditor( QWidget* parent );
 
+    //*@name modifiers
+    //@{
+
+    //* show password
+    void showPassword();
+
+    //* hide password
+    void hidePassword();
+
+    //@}
+
     private Q_SLOTS:
 
     //* show/hide password

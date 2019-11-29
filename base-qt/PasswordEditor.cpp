@@ -37,6 +37,22 @@ PasswordEditor::PasswordEditor( QWidget* parent ):
 }
 
 //____________________________________________________________
+void PasswordEditor::showPassword()
+{
+    Debug::Throw( "PasswordEditor::showPassword.\n" );
+    setEchoMode( Normal );
+    showPasswordButton_->setIcon( IconEngine::get( IconNames::HidePassword ) );
+}
+
+//____________________________________________________________
+void PasswordEditor::hidePassword()
+{
+    Debug::Throw( "PasswordEditor::hidePassword.\n" );
+    setEchoMode( Password );
+    showPasswordButton_->setIcon( IconEngine::get( IconNames::ShowPassword ) );
+}
+
+//____________________________________________________________
 void PasswordEditor::_toggleShowPassword()
 {
     Debug::Throw( "PasswordEditor::_toggleShowPassword.\n" );
