@@ -38,7 +38,7 @@ namespace Ssh
             public:
 
             //* constructor
-            SessionBlocker( void* );
+            explicit SessionBlocker( void* );
 
             //* destructor
             ~SessionBlocker();
