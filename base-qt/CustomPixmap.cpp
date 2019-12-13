@@ -76,7 +76,7 @@ CustomPixmap::CustomPixmap( const QString& file ):
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::find( const QString& file )
+CustomPixmap& CustomPixmap::find( const QString& file )
 {
 
     Debug::Throw( "CustomPixmap::find.\n" );
@@ -86,7 +86,7 @@ CustomPixmap CustomPixmap::find( const QString& file )
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::rotated( const CustomPixmap::Rotation& rotation )
+CustomPixmap CustomPixmap::rotated( const CustomPixmap::Rotation& rotation ) const
 {
     if( rotation == Rotation::None ) return *this;
 

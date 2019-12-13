@@ -67,7 +67,7 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     explicit CustomPixmap( const QString& );
 
     //* find first file matching name in list of path
-    CustomPixmap find( const QString& );
+    CustomPixmap& find( const QString& );
 
     //* rotation
     enum class Rotation
@@ -78,7 +78,7 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     };
 
     //* rotation
-    CustomPixmap rotated( const Rotation& value );
+    CustomPixmap rotated( const Rotation& value ) const;
 
     //* returns a transparent pixmap
     CustomPixmap transparent( qreal ) const;
