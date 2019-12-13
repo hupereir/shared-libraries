@@ -423,12 +423,12 @@ template<class T> class TreeItem: public TreeItemBase
 
 //* less than operator
 template<class T>
-inline bool operator < (const TreeItem<T>& first, const TreeItem<T>& second)
-{ return first.get() < second.get(); }
+inline bool operator < (const TreeItem<T>& lhs, const TreeItem<T>& rhs)
+{ return lhs.get() < rhs.get(); }
 
 //* equal to operator
 template<class T>
-inline bool operator == (const TreeItem<T>& first, const TreeItem<T>& second)
-{ return first.get() == second.get(); }
+inline bool operator == (const TreeItem<T>& lhs, const TreeItem<T>& rhs)
+{ return lhs.get() == rhs.get(); }
 
 #endif

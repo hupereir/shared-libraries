@@ -89,8 +89,8 @@ class TextEncodingString final
 };
 
 //* equal to operator
-inline bool operator == (const TextEncodingString& first, const TextEncodingString& second)
-{ return first.get() == second.get(); }
+inline bool operator == (const TextEncodingString& lhs, const TextEncodingString& rhs)
+{ return lhs.get() == rhs.get(); }
 
 //* specialized copy constructor
 template<> TextEncodingString::TextEncodingString(TextEncodingString& );
