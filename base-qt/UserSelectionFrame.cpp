@@ -26,8 +26,7 @@
 //____________________________________________________________
 UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     QWidget( parent ),
-    Counter( "UserSelectionFrame" ),
-    delay_( 500 )
+    Counter( "UserSelectionFrame" )
 {
 
     Debug::Throw( "UserSelectionFrame::UserSelectionFrame\n" );
@@ -37,8 +36,6 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     layout()->addWidget( comboBox_ = new CustomComboBox( this ) );
 
     comboBox_->setMinimumSize( QSize( 100, 0 ) );
-    comboBox_->setEditable( true );
-    comboBox_->setAutoCompletion( true );
     comboBox_->setToolTip( tr( "User selection" ) );
 
     // send appropriate signal directly

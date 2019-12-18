@@ -77,13 +77,13 @@ class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFra
     private:
 
     //* delay for userChanged signal emission
-    int delay_;
+    int delay_ = 500;
 
     //* user changed timer
     QBasicTimer timer_;
 
     //* user line_edit
-    CustomComboBox* comboBox_;
+    CustomComboBox* comboBox_ = nullptr;
 
     //* current user
     /*! it is used to avoid emiting signal when user was changed but fall back to the current one*/
