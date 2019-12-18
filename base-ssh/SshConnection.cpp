@@ -56,8 +56,8 @@ namespace Ssh
                 { Connection::Command::Connect, QObject::tr( "Connecting to host" ) },
                 { Connection::Command::RequestIdentity, QObject::tr( "Waiting for user authentication" ) },
                 { Connection::Command::AuthenticateWithGssAPI, QObject::tr( "Trying to authenticate using GssAPI" ) },
-                { Connection::Command::AuthenticateWithAgent, QObject::tr( "Trying to authenticate using SSH agent" ) },
-                { Connection::Command::AuthenticateWithPassphrase, QObject::tr( "Trying to authenticate using SSH passphrase" ) },
+                { Connection::Command::AuthenticateWithAgent, QObject::tr( "Trying to authenticate using agent" ) },
+                { Connection::Command::AuthenticateWithPassphrase, QObject::tr( "Trying to authenticate using passphrase" ) },
                 { Connection::Command::AuthenticateWithPassword, QObject::tr( "Trying to authenticate using password" ) }
             });
 
