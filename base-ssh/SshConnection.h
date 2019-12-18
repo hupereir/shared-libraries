@@ -132,6 +132,7 @@ namespace Ssh
             RequestIdentity,
             AuthenticateWithGssAPI,
             AuthenticateWithAgent,
+            AuthenticateWithPassphrase,
             AuthenticateWithPassword
         };
 
@@ -201,15 +202,6 @@ namespace Ssh
         void _newConnection();
 
         private:
-
-        //* get ssh error string
-        QString _sshErrorString( int ) const;
-
-        //* get message command
-        QString _commandMessage( Command ) const;
-
-        //* get message command
-        QString _commandMessage( const CommandList& ) const;
 
         //* process pending commands
         bool _processCommands();

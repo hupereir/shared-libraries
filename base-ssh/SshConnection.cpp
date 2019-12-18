@@ -45,6 +45,34 @@
 namespace Ssh
 {
 
+    namespace
+    {
+
+        //_______________________________________________
+        QString commandMessage( Connection::Command command )
+        {
+            using CommandHash = QHash<Connection::Command,QString>;
+            static const auto commandNames = Base::makeT<CommandHash>( {
+                { Connection::Command::Connect, QObject::tr( "Connecting to host" ) },
+                { Connection::Command::RequestIdentity, QObject::tr( "Waiting for user authentication" ) },
+                { Connection::Command::AuthenticateWithGssAPI, QObject::tr( "Trying to authenticate using GssAPI" ) },
+                { Connection::Command::AuthenticateWithAgent, QObject::tr( "Trying to authenticate using SSH agent" ) },
+                { Connection::Command::AuthenticateWithPassphrase, QObject::tr( "Trying to authenticate using SSH passphrase" ) },
+                { Connection::Command::AuthenticateWithPassword, QObject::tr( "Trying to authenticate using password" ) }
+            });
+
+            return commandNames[command];
+        }
+
+        //_______________________________________________
+        QString commandMessage( const Connection::CommandList& commands )
+        {
+            return std::accumulate( commands.begin(), commands.end(), QString(),
+                []( QString in, const Connection::Command& command ) { return std::move( in ) + commandMessage( command ) + '\n'; } );
+        }
+
+    }
+
     //_______________________________________________
     Connection::Connection( QObject* parent ):
         QObject( parent ),
@@ -143,9 +171,11 @@ namespace Ssh
             Command::AuthenticateWithGssAPI,
             Command::AuthenticateWithAgent } );
 
+        // ask for password if needed and not already done
         if( !( forceRequestIdentity || connectionAttributes_.rememberPassword() ) )
         { commands.append(Command::RequestIdentity); }
 
+        commands.append(Command::AuthenticateWithPassphrase);
         commands.append(Command::AuthenticateWithPassword);
 
         addCommands( commands );
@@ -187,7 +217,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::addCommands( const CommandList& commands )
     {
-        Debug::Throw() << "Ssh::Connection::AddCommand: " << _commandMessage( commands ) << endl;
+        Debug::Throw() << "Ssh::Connection::AddCommand: " << commandMessage( commands ) << endl;
         commands_.append( commands );
         if( !( timer_.isActive() || timerLocked_ ) )
         { timer_.start( latency_, this ); }
@@ -196,7 +226,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::addCommand( Command command )
     {
-        Debug::Throw() << "Ssh::Connection::AddCommand: " << _commandMessage( command ) << endl;
+        Debug::Throw() << "Ssh::Connection::AddCommand: " << commandMessage( command ) << endl;
         commands_.append( command );
         if( !( timer_.isActive() || timerLocked_ ) )
         { timer_.start( latency_, this ); }
@@ -308,12 +338,15 @@ namespace Ssh
         if( commands_.front() != lastCommand_ )
         {
             lastCommand_ = commands_.front();
-            _notifyMessage( _commandMessage( lastCommand_ ) );
+            _notifyMessage( commandMessage( lastCommand_ ) );
         }
 
         #if WITH_SSH
 
-        Debug::Throw() << "Ssh::Connection::_processCommands - processing command: " << _commandMessage(commands_.front()) << endl;
+        Debug::Throw() << "Ssh::Connection::_processCommands -"
+            << " host: " << connectionAttributes_.host()
+            << " processing command: " << commandMessage(commands_.front())
+            << endl;
 
         // cast session. It is used for almost all commands
         auto session( static_cast<ssh_session>(session_.get()) );
@@ -451,6 +484,39 @@ namespace Ssh
                 break;
             }
 
+            case Command::AuthenticateWithPassphrase:
+            {
+
+                Debug::Throw() << "Ssh::Connection::_processCommands - passphrase authentication."
+                    << " Host: " << connectionAttributes_.host()
+                    << " User: " << connectionAttributes_.user()
+                    << " Password: " << connectionAttributes_.password()
+                    << endl;
+
+                auto result = ssh_userauth_publickey_auto( session, nullptr, qPrintable( connectionAttributes_.password() ) );
+                if( result == SSH_AUTH_SUCCESS )
+                {
+
+                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
+
+                    // success
+                    commands_.removeFirst();
+                    state_ |= Connected;
+                    commands_.clear();
+                    emit connected();
+                    return false;
+
+               } else if( result != SSH_AUTH_AGAIN ) {
+
+                    // ignore error, move to next command
+                    commands_.removeFirst();
+                    return true;
+
+                }
+
+                break;
+            }
+
             case Command::AuthenticateWithPassword:
             {
 
@@ -534,7 +600,7 @@ namespace Ssh
         // check session
         if( !session_ )
         {
-            Debug::Throw(0, "Ssh::Connection::_newConnection - invalid session.\n" );
+            Debug::Throw( "Ssh::Connection::_newConnection - invalid session.\n" );
             return;
         }
 
@@ -570,28 +636,6 @@ namespace Ssh
 
         }
 
-    }
-
-    //_______________________________________________
-    QString Connection::_commandMessage( const CommandList& commands ) const
-    {
-        return std::accumulate( commands.begin(), commands.end(), QString(),
-            [this]( QString in, const Command& command ) { return std::move( in ) + _commandMessage( command ) + '\n'; } );
-    }
-
-    //_______________________________________________
-    QString Connection::_commandMessage( Command command ) const
-    {
-       using CommandHash = QHash<Command,QString>;
-        static const auto commandNames = Base::makeT<CommandHash>( {
-            { Command::Connect, tr( "Connecting to host" ) },
-            { Command::RequestIdentity, tr( "Waiting for user authentication" ) },
-            { Command::AuthenticateWithGssAPI, tr( "Trying to authenticate using GssAPI" ) },
-            { Command::AuthenticateWithAgent, tr( "Trying to authenticate using SSH agent" ) },
-            { Command::AuthenticateWithPassword, tr( "Trying to authenticate using password" ) }
-        });
-
-        return commandNames[command];
     }
 
     //_______________________________________________
