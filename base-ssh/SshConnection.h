@@ -124,6 +124,9 @@ namespace Ssh
         /** warning, this method is blocking */
         bool waitForConnected( int msecs = 30000 );
 
+        //* keep alive
+        bool keepAlive();
+
         //* command list
         enum class Command
         {
@@ -133,7 +136,8 @@ namespace Ssh
             AuthenticateWithGssAPI,
             AuthenticateWithAgent,
             AuthenticateWithPassphrase,
-            AuthenticateWithPassword
+            AuthenticateWithPassword,
+            KeepAlive
         };
 
         using CommandList = QList<Command>;

@@ -58,7 +58,8 @@ namespace Ssh
                 { Connection::Command::AuthenticateWithGssAPI, QObject::tr( "Trying to authenticate using GssAPI" ) },
                 { Connection::Command::AuthenticateWithAgent, QObject::tr( "Trying to authenticate using agent" ) },
                 { Connection::Command::AuthenticateWithPassphrase, QObject::tr( "Trying to authenticate using passphrase" ) },
-                { Connection::Command::AuthenticateWithPassword, QObject::tr( "Trying to authenticate using password" ) }
+                { Connection::Command::AuthenticateWithPassword, QObject::tr( "Trying to authenticate using password" ) },
+                { Connection::Command::KeepAlive, QObject::tr( "Keeping connection alive" ) }
             });
 
             return commandNames[command];
@@ -184,6 +185,19 @@ namespace Ssh
     }
 
     //_______________________________________________________________________
+    bool Connection::keepAlive()
+    {
+        if( !commands_.contains( Command::KeepAlive ) )
+        {
+
+            addCommand( Command::KeepAlive );
+            return true;
+
+        } else return false;
+    }
+
+
+    //_______________________________________________________________________
     bool Connection::waitForConnected( int msecs )
     {
 
@@ -248,6 +262,7 @@ namespace Ssh
         _disconnectChannels();
         _disconnectTunnels();
         _disconnectSession();
+        emit disconnected();
 
     }
 
@@ -555,6 +570,28 @@ namespace Ssh
                 break;
             }
 
+            case Command::KeepAlive:
+            {
+                static constexpr const char* aliveData = "";
+                auto result = ssh_send_ignore( session, aliveData );
+                if( result == SSH_OK )
+                {
+
+                    // success
+                    commands_.removeFirst();
+                    return true;
+
+                } else if( result == SSH_ERROR ) {
+
+                    // failure
+                    commands_.removeFirst();
+                    return false;
+
+                }
+
+                break;
+
+            }
             default:
             commands_.removeFirst();
             return true;
