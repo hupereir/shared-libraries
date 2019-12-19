@@ -170,6 +170,9 @@ namespace Ssh
         //* connected
         void connected();
 
+        //* disconnected
+        void disconnected();
+
         //* login failed
         void loginFailed();
 

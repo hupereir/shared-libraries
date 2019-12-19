@@ -579,6 +579,7 @@ namespace Ssh
         Debug::Throw(0) << "Ssh::Connection::_notifyError: " << error << endl;
         error_ = error;
         emit this->error( error );
+        emit disconnected();
     }
 
     //_______________________________________________
