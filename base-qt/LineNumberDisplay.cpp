@@ -25,8 +25,9 @@
 
 #include <QPainter>
 #include <QScrollBar>
-#include <QTextDocument>
 #include <QTextBlock>
+#include <QTextDocument>
+#include <QTextLayout>
 
 //____________________________________________________________________________
 LineNumberDisplay::LineNumberDisplay(TextEditor* editor):

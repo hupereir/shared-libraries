@@ -198,7 +198,12 @@ int QtUtil::titleFontPointSize( const QFont& font )
 QFont QtUtil::titleFont( QFont font )
 {
     font.setPointSize( titleFontPointSize( font ) );
+    #if QT_VERSION >= 0x050000
     font.setWeight( QFont::Medium );
+    #else
+    font.setWeight( 57 );
+    #endif
+
     return font;
 }
 
