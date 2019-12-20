@@ -372,8 +372,13 @@ namespace Ssh
             {
 
                 auto port( connectionAttributes_.port() );
-                ssh_options_set( session, SSH_OPTIONS_HOST, qPrintable( connectionAttributes_.host() ) );
-                ssh_options_set( session, SSH_OPTIONS_USER, qPrintable( connectionAttributes_.user() ) );
+
+                if( !connectionAttributes_.host().isEmpty() )
+                { ssh_options_set( session, SSH_OPTIONS_HOST, qPrintable( connectionAttributes_.host() ) ); }
+
+                if( !connectionAttributes_.user().isEmpty() )
+                { ssh_options_set( session, SSH_OPTIONS_USER, qPrintable( connectionAttributes_.user() ) ); }
+
                 ssh_options_set( session, SSH_OPTIONS_PORT, &port );
 
                 Debug::Throw() << "Ssh::Connection::_processCommands - connection."
