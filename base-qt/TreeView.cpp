@@ -503,7 +503,6 @@ void TreeView::restoreSelectedIndexes()
                 previous = current;
             }
             selection.append( QItemSelectionRange( first, previous ) );
-
             selectionModel()->select( selection, QItemSelectionModel::Select|QItemSelectionModel::Rows );
         }
 
