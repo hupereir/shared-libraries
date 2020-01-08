@@ -481,11 +481,32 @@ void TreeView::restoreSelectedIndexes()
     if( selectionModel() )
     {
 
-        auto selection( model_->selectedIndexes() );
-
         selectionModel()->clear();
-        for( const auto& index:selection )
-        { selectionModel()->select( index, QItemSelectionModel::Select|QItemSelectionModel::Rows ); }
+
+
+        auto selectedIndexes( model_->selectedIndexes() );
+
+        // try build selection ranges from selection
+        if( !selectedIndexes.empty() )
+        {
+            QItemSelection selection;
+            auto first = selectedIndexes.front();
+            auto previous = first;
+            for( auto iter = selectedIndexes.begin()+1; iter != selectedIndexes.end(); ++iter )
+            {
+                const auto current = *iter;
+                if( current.row() != previous.row()+1 )
+                {
+                    selection.append( QItemSelectionRange( first, previous ) );
+                    first = current;
+                }
+                previous = current;
+            }
+            selection.append( QItemSelectionRange( first, previous ) );
+
+            selectionModel()->select( selection, QItemSelectionModel::Select|QItemSelectionModel::Rows );
+        }
+
 
         selectionModel()->setCurrentIndex( model_->currentIndex(), QItemSelectionModel::Current );
 
