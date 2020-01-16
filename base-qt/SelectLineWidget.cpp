@@ -89,7 +89,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     } else {
 
         // separator
-        QFrame* frame( new QFrame( this ) );
+        auto frame( new QFrame( this ) );
         frame->setFrameStyle( QFrame::HLine | QFrame::Sunken );
         layout->addWidget( frame, 0 );
 
