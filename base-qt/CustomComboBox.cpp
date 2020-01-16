@@ -49,7 +49,6 @@ void CustomComboBox::setEditable( bool value )
 
     if( !value ) editor_.reset();
     else if( !editor_ ) {
-
         editor_.reset( new LineEditor( this ) );
         editor_->setFrame( false );
         setLineEdit( editor_.get() );
@@ -62,20 +61,14 @@ void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSens
 {
     Debug::Throw( "CustomComboBox::setAutoCompletion.\n" );
 
-    if( value )
+    if( isEditable() )
     {
-        Q_ASSERT( isEditable() );
-
-        if( !completer() ) setCompleter( new QCompleter( this ) );
-
-        completer()->setCaseSensitivity( caseSensitivity );
-
-    } else {
-
-        setCompleter( nullptr );
-
+        if( value )
+        {
+            if( !completer() ) setCompleter( new QCompleter( this ) );
+            completer()->setCaseSensitivity( caseSensitivity );
+        } else setCompleter( nullptr );
     }
-
     return;
 
 }
