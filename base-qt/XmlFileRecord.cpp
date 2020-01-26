@@ -22,7 +22,7 @@
 namespace Base
 {
 
-    //! some XML definitions specific to Option management
+    //* some XML definitions specific to Option management
     namespace Xml
     {
         static const QString File = "file";
@@ -45,7 +45,6 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     for( int i=0; i<attributes.count(); i++ )
     {
         const auto attribute( attributes.item( i ).toAttr() );
-        if( attribute.isNull() || attribute.name().isEmpty() ) continue;
         if( attribute.name() == Base::Xml::File ) setFile( File( attribute.value() ) );
         else if( attribute.name() == Base::Xml::Time ) setTime( TimeStamp(attribute.value().toInt()) );
         else if( attribute.name() == Base::Xml::Flags ) setFlags( attribute.value().toUInt() );
@@ -57,25 +56,17 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
     for( auto childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )
     {
         const auto childElement = childNode.toElement();
-        if( childElement.isNull() ) continue;
-
-        auto tagName( childElement.tagName() );
+        const auto tagName( childElement.tagName() );
         if( tagName == Base::Xml::Property )
         {
-
-            std::pair< QString, QString > property;
-
             // load attributes
+            std::pair<QString,QString> property;
             const auto attributes( childElement.attributes() );
             for( int i=0; i<attributes.count(); i++ )
             {
-
                 auto attribute( attributes.item( i ).toAttr() );
-                if( attribute.isNull() || attribute.name().isEmpty() ) continue;
-
                 if( attribute.name() == Base::Xml::Name ) property.first = attribute.value();
                 else if( attribute.name() == Base::Xml::Value ) property.second = attribute.value();
-
             }
 
             if( !( property.first.isEmpty() || property.second.isEmpty() ) )

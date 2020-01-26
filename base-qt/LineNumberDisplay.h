@@ -125,19 +125,19 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
         private:
 
         //* block id
-        int id_;
+        int id_ = 0;
 
         //* line number
-        int lineNumber_;
+        int lineNumber_ = 0;
 
         //* position
-        int cursor_;
+        int cursor_ = 0;
 
         //* position
-        int position_;
+        int position_ = -1;
 
         //* validity
-        bool valid_;
+        bool valid_ = false;
 
         //* equal to operator
         friend bool operator == (const LineNumberData& first, const LineNumberData& second )
