@@ -6,20 +6,8 @@ set(BASE_VERSION_PATCH 0)
 set(BASE_VERSION ${BASE_VERSION_MAJOR}.${BASE_VERSION_MINOR}.${BASE_VERSION_PATCH})
 set(BASE_SOVERSION ${BASE_VERSION_MAJOR}.${BASE_VERSION_MINOR})
 
-########### Qt4 configuration #########
-if(USE_QT5)
-
-  find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5Network REQUIRED)
-
-else()
-
-  find_package(Qt4 REQUIRED)
-  set(QT_USE_QTNETWORK TRUE)
-  include(${QT_USE_FILE})
-  add_definitions(${QT_DEFINITIONS})
-
-endif()
+########### Qt configuration #########
+find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -50,23 +38,11 @@ set(base_SOURCES
 )
 
 if(ENABLE_SHARED)
-
   add_library(base SHARED ${base_SOURCES})
   set_target_properties(base PROPERTIES VERSION ${BASE_VERSION} SOVERSION ${BASE_SOVERSION})
   install(TARGETS base DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
 else()
-
   add_library(base STATIC ${base_SOURCES})
-
 endif()
 
-if(USE_QT5)
-
-  target_link_libraries(base Qt5::Widgets Qt5::Network)
-
-else()
-
-  target_link_libraries(base ${QT_LIBRARIES})
-
-endif()
+target_link_libraries(base Qt5::Widgets Qt5::Network)

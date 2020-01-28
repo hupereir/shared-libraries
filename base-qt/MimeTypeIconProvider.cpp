@@ -107,7 +107,7 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
         { "json", "application-json" },
         { "o", "application-x-object" },
         { "obj", "application-x-object" },
-        { "root", "application-x-object" },
+        { "root", "application-x-root" },
         { "rpm", "application-x-rpm" },
         { "srpm", "application-x-source-rpm" },
         { "so", "application-x-object" },

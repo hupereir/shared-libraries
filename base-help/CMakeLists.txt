@@ -6,18 +6,8 @@ set(BASE_HELP_VERSION_PATCH 0)
 set(BASE_HELP_VERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR}.${BASE_HELP_VERSION_PATCH})
 set(BASE_HELP_SOVERSION ${BASE_HELP_VERSION_MAJOR}.${BASE_HELP_VERSION_MINOR})
 
-########### Qt4 configuration #########
-if(USE_QT5)
-
-  find_package(Qt5Widgets REQUIRED)
-
-else()
-
-  find_package(Qt4 REQUIRED)
-  include(${QT_USE_FILE})
-  add_definitions(${QT_DEFINITIONS})
-
-endif()
+########### Qt configuration #########
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -36,25 +26,12 @@ set(base_help_SOURCES
  )
 
 if(ENABLE_SHARED)
-
   add_library(base-help SHARED ${base_help_SOURCES})
   set_target_properties(base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION})
   install(TARGETS base-help DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
 else()
-
   add_library(base-help STATIC ${base_help_SOURCES})
-
 endif()
 
 target_link_libraries(base-help base base-qt)
-
-if(USE_QT5)
-
-  target_link_libraries(base-help Qt5::Widgets)
-
-else()
-
-  target_link_libraries(base-help ${QT_LIBRARIES})
-
-endif()
+target_link_libraries(base-help Qt5::Widgets)

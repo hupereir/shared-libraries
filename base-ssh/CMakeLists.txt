@@ -7,16 +7,7 @@ set(BASE_SSH_VERSION ${BASE_SSH_VERSION_MAJOR}.${BASE_SSH_VERSION_MINOR}.${BASE_
 set(BASE_SSH_SOVERSION ${BASE_SSH_VERSION_MAJOR}.${BASE_SSH_VERSION_MINOR})
 
 ########### Qt configuration #########
-if(USE_QT5)
-  find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5Network REQUIRED)
-else()
-  find_package(Qt4 REQUIRED)
-  set(QT_USE_QTNETWORK TRUE)
-  set(QT_USE_QTXML TRUE)
-  include(${QT_USE_FILE})
-  add_definitions(${QT_DEFINITIONS})
-endif()
+find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
 
 ########### ssh #########
 find_package(libssh)
@@ -64,12 +55,7 @@ else()
 endif()
 
 target_link_libraries(base-ssh base-qt)
-
-if(USE_QT5)
-  target_link_libraries(base-ssh Qt5::Widgets Qt5::Network)
-else()
-  target_link_libraries(base-ssh ${QT_LIBRARIES} base base-qt)
-endif()
+target_link_libraries(base-ssh Qt5::Widgets Qt5::Network)
 
 if(libssh_FOUND)
   target_link_libraries(base-ssh ssh)

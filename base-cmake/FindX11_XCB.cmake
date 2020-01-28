@@ -44,7 +44,7 @@
 
 IF (NOT WIN32)
   # use pkg-config to get the directories and then use these values
-  # in the FIND_PATH() and FIND_LIBRARY() calls
+  # in the FIND_PATH() and find_library() calls
   FIND_PACKAGE(PkgConfig)
   PKG_CHECK_MODULES(PKG_X11_XCB QUIET x11-xcb)
 

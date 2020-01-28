@@ -7,32 +7,18 @@ set(BASE_TRANSPARENCY_VERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPAR
 set(BASE_TRANSPARENCY_SOVERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPARENCY_VERSION_MINOR})
 
 ########### Qt configuration #########
-if(USE_QT5)
-
-  find_package(Qt5Widgets REQUIRED)
-
-else()
-
-  find_package(Qt4 REQUIRED)
-  include(${QT_USE_FILE})
-  add_definitions(${QT_DEFINITIONS})
-
-endif()
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 # ########### X11 #######################
 if(UNIX AND NOT APPLE)
-
   find_package(XCB COMPONENTS XCB SHAPE)
   if( XCB_XCB_FOUND AND XCB_SHAPE_FOUND )
     add_definitions(-DWITH_XCB=1)
   else()
     add_definitions(-DWITH_XCB=0)
   endif()
-
 else()
-
   add_definitions(-DWITH_XCB=0)
-
 endif()
 
 ########### links #########
@@ -53,26 +39,13 @@ set(base_transparency_SOURCES
 )
 
 if(ENABLE_SHARED)
-
   add_library(base-transparency SHARED ${base_transparency_SOURCES})
   set_target_properties(base-transparency PROPERTIES VERSION ${BASE_TRANSPARENCY_VERSION} SOVERSION ${BASE_TRANSPARENCY_SOVERSION})
   install(TARGETS base-transparency DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
 else()
-
   add_library(base-transparency STATIC ${base_transparency_SOURCES})
-
 endif()
 
 target_link_libraries(base-transparency base-qt)
 target_link_libraries(base-transparency ${XCB_LIBRARIES})
-
-if(USE_QT5)
-
-  target_link_libraries(base-transparency Qt5::Widgets)
-
-else()
-
-  target_link_libraries(base-transparency ${QT_LIBRARIES})
-
-endif()
+target_link_libraries(base-transparency Qt5::Widgets)

@@ -28,6 +28,27 @@ macro(setup_compiler_flags)
   endif()
 endmacro()
 
+###################### add missing libraries for static Qt5 compilation #########################
+macro(fix_win32_static_compilation)
+  get_filename_component(qt5_install_prefix "${Qt5_DIR}/../../" ABSOLUTE)
+  message( "fix_win32_static_compilation - qt5_install_prefix: ${qt5_install_prefix}" )
+  set_property(TARGET Qt5::Core APPEND PROPERTY INTERFACE_LINK_LIBRARIES
+    -lversion
+    -lws2_32
+    -lwinmm
+    -luxtheme
+    -luserenv
+    -lnetapi32
+    -limm32
+    -ldwmapi
+    -lwtsapi32
+    -liphlpapi
+    ${qt5_install_prefix}/libqtpcre2.a
+    ${qt5_install_prefix}/libqtlibpng.a
+    ${qt5_install_prefix}/libqtharfbuzz.a
+    ${qt5_install_prefix}/libqtfreetype.a)
+endmacro()
+
 ###################### Install Win32 application #########################
 macro(add_win32_executable target version)
 

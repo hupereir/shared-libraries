@@ -6,24 +6,8 @@ set(BASE_SERVER_VERSION_PATCH 0)
 set(BASE_SERVER_VERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR}.${BASE_SERVER_VERSION_PATCH})
 set(BASE_SERVER_SOVERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR})
 
-########### Qt4 configuration #########
-if(USE_QT5)
-
-  find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5Network REQUIRED)
-  find_package(Qt5Xml REQUIRED)
-
-else()
-
-  find_package(Qt4 REQUIRED)
-  set(QT_USE_QTNETWORK TRUE)
-  set(QT_USE_QTXML TRUE)
-  include(${QT_USE_FILE})
-  add_definitions(${QT_DEFINITIONS})
-
-endif()
-
-# DBUS: is forced to false on APPLE
+########### Qt configuration #########
+find_package(Qt5 COMPONENTS Widgets Network Xml REQUIRED )
 
 ########### kde config ###############
 find_program(KDE_CONFIG NAMES kf5-config kde4-config)
@@ -64,22 +48,10 @@ else()
 endif()
 
 target_link_libraries(base-server base base-qt)
-
-if(USE_QT5)
-
-  target_link_libraries(base-server Qt5::Widgets Qt5::Network Qt5::Xml)
-  if(Qt5DBus_FOUND )
-
-    target_link_libraries(base-server Qt5::DBus)
-
-  else()
-
-    add_definitions("-DQT_NO_DBUS")
-
-  endif()
-
+target_link_libraries(base-server Qt5::Widgets Qt5::Network Qt5::Xml)
+if(Qt5DBus_FOUND )
+  target_link_libraries(base-server Qt5::DBus)
 else()
-
-  target_link_libraries(base-server ${QT_LIBRARIES})
-
+  add_definitions("-DQT_NO_DBUS")
 endif()
+

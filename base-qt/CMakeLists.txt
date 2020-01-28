@@ -7,29 +7,14 @@ set(BASE_QT_VERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR}.${BASE_QT_
 set(BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR})
 
 ########### Qt configuration #########
-if(USE_QT5)
+find_package(Qt5 COMPONENTS Widgets Network Xml PrintSupport REQUIRED)
 
-  find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5Network REQUIRED)
-  find_package(Qt5Xml REQUIRED)
-  find_package(Qt5PrintSupport REQUIRED)
-
-  if(WIN32)
-    find_package(Qt5WinExtras REQUIRED)
-  endif()
-
-  # needed to access QPA classes
-  include_directories(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
-
-else()
-
-  find_package(Qt4 REQUIRED)
-  set(QT_USE_QTNETWORK TRUE)
-  set(QT_USE_QTXML TRUE)
-  include(${QT_USE_FILE})
-  add_definitions(${QT_DEFINITIONS})
-
+if(WIN32)
+  find_package(Qt5WinExtras REQUIRED)
 endif()
+
+# needed to access QPA classes
+include_directories(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
 
 ########### X11 #########
 if(UNIX AND NOT APPLE)
@@ -37,21 +22,13 @@ if(UNIX AND NOT APPLE)
   find_package(XCB COMPONENTS XCB KEYSYMS)
   find_package(X11_XCB)
   if( XCB_XCB_FOUND AND XCB_KEYSYMS_FOUND AND X11_XCB_FOUND )
-
     add_definitions(-DWITH_XCB=1)
-
-    if(USE_QT5)
-      find_package(Qt5X11Extras REQUIRED)
-    endif()
-
+    find_package(Qt5X11Extras REQUIRED)
   else()
     add_definitions(-DWITH_XCB=0)
   endif()
-
 else()
-
   add_definitions(-DWITH_XCB=0)
-
 endif()
 
 ########### includes ###############
@@ -232,39 +209,24 @@ set(base_qt_SOURCES
 set(base_qt_RESOURCES basePixmaps.qrc)
 
 if(ENABLE_SHARED)
-
   add_library(base-qt SHARED ${base_qt_SOURCES} ${base_qt_RESOURCES})
   set_target_properties(base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION})
   install(TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
 else()
-
   add_library(base-qt STATIC ${base_qt_SOURCES} ${base_qt_RESOURCES})
-
 endif()
 
 target_link_libraries(base-qt base)
-
 if(XCB_FOUND)
-
   target_link_libraries(base-qt ${XCB_LIBRARIES})
   target_link_libraries(base-qt ${X11_XCB_LIBRARIES})
-
 endif()
 
-if(USE_QT5)
+target_link_libraries(base-qt Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Xml)
+if(WIN32)
+  target_link_libraries(base-qt Qt5::WinExtras)
+endif()
 
-  target_link_libraries(base-qt Qt5::Widgets Qt5::Network Qt5::PrintSupport Qt5::Xml)
-  if(WIN32)
-    target_link_libraries(base-qt Qt5::WinExtras)
-  endif()
-
-  if(XCB_FOUND)
-    target_link_libraries(base-qt Qt5::X11Extras)
-  endif()
-
-else()
-
-  target_link_libraries(base-qt ${QT_LIBRARIES})
-
+if(XCB_FOUND)
+  target_link_libraries(base-qt Qt5::X11Extras)
 endif()

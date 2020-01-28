@@ -6,30 +6,8 @@ set(BASE_NOTIFICATIONS_VERSION_PATCH 0)
 set(BASE_NOTIFICATIONS_VERSION ${BASE_NOTIFICATIONS_VERSION_MAJOR}.${BASE_NOTIFICATIONS_VERSION_MINOR}.${BASE_NOTIFICATIONS_VERSION_PATCH})
 set(BASE_NOTIFICATIONS_SOVERSION ${BASE_NOTIFICATIONS_VERSION_MAJOR}.${BASE_NOTIFICATIONS_VERSION_MINOR})
 
-########### Qt4 configuration #########
-if(USE_QT5)
-
-  find_package(Qt5Widgets REQUIRED)
-  find_package(Qt5DBus)
-
-else()
-
-  find_package(Qt4 REQUIRED)
-
-  if(UNIX AND NOT APPLE)
-
-    set(QT_USE_QTDBUS TRUE)
-
-  else()
-
-    add_definitions("-DQT_NO_DBUS")
-
-  endif()
-
-  include(${QT_USE_FILE})
-  add_definitions(${QT_DEFINITIONS})
-
-endif()
+########### Qt configuration #########
+find_package(Qt5 COMPONENTS Widgets OPTIONAL_COMPONENTS DBus REQUIRED)
 
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -61,22 +39,9 @@ else()
 endif()
 
 target_link_libraries(base-notifications base base-qt)
-
-if(USE_QT5)
-
-  target_link_libraries(base-notifications Qt5::Widgets)
-  if(Qt5DBus_FOUND )
-
-    target_link_libraries(base-notifications Qt5::DBus)
-
-  else()
-
-    add_definitions("-DQT_NO_DBUS")
-
-  endif()
-
+target_link_libraries(base-notifications Qt5::Widgets)
+if(Qt5DBus_FOUND )
+  target_link_libraries(base-notifications Qt5::DBus)
 else()
-
-  target_link_libraries(base-notifications ${QT_LIBRARIES})
-
+  add_definitions("-DQT_NO_DBUS")
 endif()
