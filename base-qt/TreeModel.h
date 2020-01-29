@@ -289,11 +289,11 @@ template<class T> class TreeModel : public ItemModel
 
     //* add values
     void add( ConstReference value )
-    { add( { value } ); }
+    { add( List( { value } ) ); }
 
     //* add values
     void add( ConstReference parent, ConstReference value )
-    { add( parent, { value } ); }
+    { add( parent, List( { value } ) ); }
 
     //* add values
     void add( List values )
