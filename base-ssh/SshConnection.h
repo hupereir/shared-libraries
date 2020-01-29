@@ -25,7 +25,6 @@
 #include "SshConnectionAttributes.h"
 #include "SshTunnelAttributes.h"
 #include "SshUtil.h"
-#include "WeakPointer.h"
 
 #include <QBasicTimer>
 #include <QObject>

@@ -129,14 +129,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
         if( size != iconSize() )
         {
             QAbstractItemView::setIconSize( size );
-
-            #if QT_VERSION < 0x050000
-            emit iconSizeChanged( size );
-            #endif
-
-            // update list of icon sizes
             _updateIconSizes( size.width() );
-
         }
 
         iconSizeFromOptions_ = false;
@@ -208,11 +201,6 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     //* emitted when selection could be found
     void matchFound();
-
-    #if QT_VERSION < 0x050000
-    //* icon size changed signal
-    void iconSizeChanged( const QSize& );
-    #endif
 
     public Q_SLOTS:
 

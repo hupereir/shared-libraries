@@ -32,9 +32,7 @@
 #define WINVER 0x0500
 #endif
 
-#if QT_VERSION >= 0x050000
 #include <QtWinExtras>
-#endif
 
 #include <windows.h>
 #endif
@@ -137,11 +135,7 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
     POINT topPos = { target_->x(),  target_->y() };
     BLENDFUNCTION blend = { AC_SRC_OVER, 0, static_cast<BYTE>(opacity*255), AC_SRC_ALPHA };
 
-    #if QT_VERSION >= 0x050000
     HBITMAP hBitmap = QtWin::toHBITMAP(pixmap, QtWin::HBitmapPremultipliedAlpha);
-    #else
-    HBITMAP hBitmap = pixmap.toWinHBITMAP(QPixmap::PremultipliedAlpha);
-    #endif
 
     auto screenDc = GetDC(nullptr);
     auto memDc = CreateCompatibleDC(screenDc);

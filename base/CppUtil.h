@@ -22,11 +22,7 @@
 
 #include <QtGlobal>
 
-#if QT_VERSION >= 0x050100
 #include <QHashFunctions>
-#else
-#include <QHash>
-#endif
 
 #include <QList>
 #include <QVector>
@@ -51,30 +47,12 @@ namespace Base
     //* construct QHash, QMap from initializer_list
     template<class T>
         inline T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
-    {
-        #if QT_VERSION >= 0x050100
-        return T( std::move( reference ) );
-        #else
-        // for old QT versions there is no container constructor from initializer_list
-        T out;
-        for( auto&& pair:std::move(reference) ) { out.insert( pair.first, pair.second ); }
-        return out;
-        #endif
-    }
+    { return T( std::move( reference ) ); }
 
     //* construct QSet from initializer_list
     template<class T>
         inline T makeT( std::initializer_list<typename T::key_type>&& reference )
-    {
-        #if QT_VERSION >= 0x050100
-        return T( std::move( reference ) );
-        #else
-        // for old QT versions there is no container constructor from initializer_list
-        T out;
-        for( auto&& value:std::move(reference) ) { out.insert( value ); }
-        return out;
-        #endif
-    }
+    { return T( std::move( reference ) ); }
 
     //* construct QList or QVector from initializer_list
     template<
@@ -85,26 +63,12 @@ namespace Base
             >::type
         >
         inline T makeT( std::initializer_list<typename T::value_type>&& reference )
-    {
-        #if QT_VERSION >= 0x040800
-        return T( std::move(reference) );
-        #else
-        T out;
-        std::copy( reference.begin(), reference.end(), std::back_inserter(out) );
-        return out;
-        #endif
-    }
+    { return T( std::move(reference) ); }
 
     //* append initializer_list to a container
     template<class T>
         inline void append( T& first, std::initializer_list<typename T::value_type>&& second )
-    {
-        #if QT_VERSION >= 0x050500
-        first.append( std::move( second ) );
-        #else
-        std::copy( second.begin(), second.end(), std::back_inserter(first) );
-        #endif
-    }
+    { first.append( std::move( second ) ); }
 
     //* equivalent-to pseudo-operator
     /** it is used for smart insertion in maps and hashed */
@@ -119,16 +83,7 @@ namespace Base
         const typename T::const_iterator iterator,
         const typename T::key_type& key,
         const typename T::mapped_type& value )
-    {
-
-        #if QT_VERSION >= 0x050100
-        return map.insert( iterator, key, value );
-        #else
-        Q_UNUSED( iterator );
-        return map.insert( key, value );
-        #endif
-
-    }
+    { return map.insert( iterator, key, value ); }
 
     //* efficient map insertion
     template<class T>

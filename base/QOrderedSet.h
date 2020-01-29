@@ -265,14 +265,7 @@ class QOrderedSet
     { return q_map.insert(value, QOrderedSetDummyValue()); }
 
     inline iterator insert(const_iterator i, const T &value)
-    {
-        #if QT_VERSION >= 0x050100
-        return q_map.insert( reinterpret_cast<typename Map::const_iterator &>(i), value, QOrderedSetDummyValue());
-        #else
-        Q_UNUSED( i );
-        return q_map.insert( value, QOrderedSetDummyValue());
-        #endif
-    }
+    { return q_map.insert( reinterpret_cast<typename Map::const_iterator &>(i), value, QOrderedSetDummyValue()); }
 
     iterator find(const T &value)
     { return q_map.find(value); }
@@ -349,27 +342,12 @@ class QOrderedSet
     inline QOrderedSet<T> operator-(const QOrderedSet<T> &other) const
     { QOrderedSet<T> result = *this; result -= other; return result; }
 
-    #if QT_VERSION < 0x050000
-    // ### Qt 5: remove
-    inline QOrderedSet<T> operator|(const QOrderedSet<T> &other)
-    { QOrderedSet<T> result = *this; result |= other; return result; }
-
-    inline QOrderedSet<T> operator&(const QOrderedSet<T> &other)
-    { QOrderedSet<T> result = *this; result &= other; return result; }
-
-    inline QOrderedSet<T> operator+(const QOrderedSet<T> &other)
-    { QOrderedSet<T> result = *this; result += other; return result; }
-
-    inline QOrderedSet<T> operator-(const QOrderedSet<T> &other)
-    { QOrderedSet<T> result = *this; result -= other; return result; }
-#endif
-
     QList<T> toList() const;
     inline QList<T> values() const { return toList(); }
 
     static QOrderedSet<T> fromList(const QList<T> &list);
 
-private:
+    private:
     Map q_map;
 };
 

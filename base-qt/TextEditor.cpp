@@ -183,29 +183,8 @@ TextPosition TextEditor::textPosition()
 
     // calculate index
     TextPosition out;
-
-    #if QT_VERSION >= 0x040200
-
-    // direct access as introduced in Qt 4.2
     out.index() = cursor.columnNumber();
     out.paragraph() = cursor.blockNumber();
-
-    #else
-
-    // slow access for prior versions of Qt
-    auto block( cursor.block() );
-    out.index() = cursor.position() - block.position();
-    while( block.isValid() )
-    {
-        block = block.previous();
-        out.paragraph()++;
-    }
-
-    // need to decrement once
-    out.paragraph()--;
-
-    #endif
-
     return out;
 
 }

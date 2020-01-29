@@ -147,19 +147,10 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* set icon size manually and disable option
     void setIconSize( const QSize& size )
     {
-
         if( size != iconSize() )
-        {
-            QTreeView::setIconSize( size );
-
-            #if QT_VERSION < 0x050000
-            emit iconSizeChanged( size );
-            #endif
-
-        }
+        { QTreeView::setIconSize( size ); }
 
         iconSizeFromOptions_ = false;
-
     }
 
     //* store scrollbar position
@@ -225,7 +216,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
         void _initialize();
 
         //* contained treeView
-        TreeView* treeView_;
+        TreeView* treeView_ = nullptr;
 
     };
 
@@ -244,11 +235,6 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* emitted when selection could be found
     void matchFound();
-
-    #if QT_VERSION < 0x050000
-    //* icon size changed signal
-    void iconSizeChanged( const QSize& );
-    #endif
 
     public Q_SLOTS:
 
@@ -340,10 +326,8 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* update alternate item color
     void _updateConfiguration();
 
-    #if QT_VERSION >= 0x051000
     //* update horizontal scrollbar range
     void _updateHorizontalScrollBarRange();
-    #endif
 
     private:
 
@@ -463,10 +447,8 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* locked columns
     int lockedColumns_ = 0;
 
-    #if QT_VERSION >= 0x051000
     //* scrollbar recursion lock
     bool scrollBarRecursionLock_ = false;
-    #endif
 
     friend class Container;
 

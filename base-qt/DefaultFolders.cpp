@@ -22,11 +22,7 @@
 #include "Debug.h"
 #include "Util.h"
 
-#if QT_VERSION >= 0x050000
 #include <QStandardPaths>
-#else
-#include <QDesktopServices>
-#endif
 
 #include <QFileInfo>
 #include <QIcon>
@@ -45,12 +41,8 @@ DefaultFolders& DefaultFolders::get()
 }
 
 //__________________________________________________________________________
-DefaultFolders::DefaultFolders()
-{
-
-
-    // folder names map
-    names_ = Base::makeT<NameMap>(
+DefaultFolders::DefaultFolders():
+    names_(
     {
         { Type::Home, tr( "Home" ) },
         { Type::Desktop, tr( "Desktop" ) },
@@ -60,17 +52,15 @@ DefaultFolders::DefaultFolders()
         { Type::Pictures, tr( "Pictures" ) },
         { Type::Templates, tr( "Templates" ) },
         { Type::Videos, tr( "Video" ) }
-    });
-
-
-    // icons map
-    iconNames_ = Base::makeT<IconMap>(
+    }),
+    iconNames_(
     {
         { Type::Home, "user-home.png" },
         { Type::Desktop, "user-desktop" },
         { Type::Documents, "folder-documents" },
         { Type::Music, "folder-sound" }
-    });
+    })
+{
 
     // there are discrepencies for folder icon names between icon themes
     // try to deal with major ones
@@ -86,21 +76,12 @@ DefaultFolders::DefaultFolders()
     // path map
     folders_.insert( Util::home(), Type::Home );
 
-    #if QT_VERSION >= 0x050000
     _insert( QStandardPaths::writableLocation( QStandardPaths::DesktopLocation ), Type::Desktop );
     _insert( QStandardPaths::writableLocation( QStandardPaths::DocumentsLocation ), Type::Documents );
     _insert( QStandardPaths::writableLocation( QStandardPaths::MusicLocation ), Type::Music );
     _insert( QStandardPaths::writableLocation( QStandardPaths::PicturesLocation ), Type::Pictures );
     _insert( QStandardPaths::writableLocation( QStandardPaths::TempLocation ), Type::Templates );
     _insert( QStandardPaths::writableLocation( QStandardPaths::MoviesLocation ), Type::Videos );
-    #else
-    _insert( QDesktopServices::storageLocation( QDesktopServices::DesktopLocation ), Type::Desktop );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::DocumentsLocation ), Type::Documents );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::MusicLocation ), Type::Music );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::PicturesLocation ), Type::Pictures );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::TempLocation ), Type::Templates );
-    _insert( QDesktopServices::storageLocation( QDesktopServices::MoviesLocation ), Type::Videos );
-    #endif
 
     #if defined( Q_OS_LINUX )
     // use QSettings to get standard directories from XDG

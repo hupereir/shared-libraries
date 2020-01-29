@@ -65,13 +65,8 @@ namespace SpellCheck
 
         // store selected dictionary
         QString selection;
-        #if QT_VERSION >= 0x050600
         auto iter = std::find_if( actions_.keyBegin(), actions_.keyEnd(), [](QAction* current){ return current->isChecked(); } );
         if( iter != actions_.keyEnd() ) selection = iter.base().value();
-        #else
-        for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
-        { if( iter.key()->isChecked() ) selection = iter.value(); }
-        #endif
 
         // clear actions
         QMenu::clear();

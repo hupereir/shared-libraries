@@ -27,9 +27,7 @@
 #include <QProcessEnvironment>
 #include <QCoreApplication>
 
-#if QT_VERSION >= 0x050000
 #include <QStandardPaths>
-#endif
 
 #include <algorithm>
 #include <unistd.h>
@@ -54,20 +52,7 @@ QString Util::user()
 
 //______________________________________________________________________
 QString Util::domain()
-{
-    Debug::Throw( "Util::domain.\n" );
-
-    #if QT_VERSION >= 0x040500
-
-    return QHostInfo::localDomainName();
-
-    #else
-
-    // use system environment.
-    // should work for windows
-    return env( "USERDOMAIN", "localdomain" );
-    #endif
-}
+{ return QHostInfo::localDomainName(); }
 
 //_____________________________________________________
 QString Util::windowTitleSeparator()
@@ -93,39 +78,15 @@ File Util::tmp()
 
 //______________________________________________________________________
 File Util::config()
-{
-
-    #if QT_VERSION >= 0x050000
-    return File( QStandardPaths::writableLocation( QStandardPaths::ConfigLocation ) );
-    #else
-    return File( ".config/" ).addPath( home() );
-    #endif
-
-}
+{ return File( QStandardPaths::writableLocation( QStandardPaths::ConfigLocation ) ); }
 
 //______________________________________________________________________
 File Util::data()
-{
-
-    #if QT_VERSION >= 0x050000
-    return File( QStandardPaths::writableLocation( QStandardPaths::GenericDataLocation ) );
-    #else
-    return File( ".local/share/" ).addPath( home() );
-    #endif
-
-}
+{ return File( QStandardPaths::writableLocation( QStandardPaths::GenericDataLocation ) ); }
 
 //______________________________________________________________________
 File Util::cache()
-{
-
-    #if QT_VERSION >= 0x050000
-    return File( QStandardPaths::writableLocation( QStandardPaths::GenericCacheLocation ) );
-    #else
-    return File( ".cache/" ).addPath( home() );
-    #endif
-
-}
+{ return File( QStandardPaths::writableLocation( QStandardPaths::GenericCacheLocation ) ); }
 
 //______________________________________________________________________
 QString Util::host( bool shortName )

@@ -26,11 +26,7 @@
 //_____________________________________________________________
 void ErrorHandler::initialize()
 {
-    #if QT_VERSION >= 0x050000
     qInstallMessageHandler( _throw );
-    #else
-    qInstallMsgHandler( _throw );
-    #endif
 }
 
 
@@ -43,16 +39,9 @@ ErrorHandler& ErrorHandler::get()
 
 //_____________________________________________________________
 void ErrorHandler::exit()
-{
-    #if QT_VERSION >= 0x050000
-    qInstallMessageHandler( 0 );
-    #else
-    qInstallMsgHandler( 0 );
-    #endif
-}
+{ qInstallMessageHandler(nullptr); }
 
 //_____________________________________________________________
-#if QT_VERSION >= 0x050000
 void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, const QString& message )
 {
 
@@ -61,24 +50,16 @@ void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, co
         .arg( context.file )
         .arg( context.line )
         .arg( context.function );
-    _throw( type, qPrintable( fullMessage ) );
-
-}
-#endif
-
-//_____________________________________________________________
-void ErrorHandler::_throw( QtMsgType type, const char* message )
-{
-    QString localMessage( message );
 
     // check if message is to be disabled
     bool disabled = std::any_of( get().disabledMessages_.begin(), get().disabledMessages_.end(),
-        [&localMessage]( const QString& message )
-        { return localMessage.indexOf( message ) >= 0; } );
+        [&fullMessage]( const QString& message )
+        { return fullMessage.indexOf( message ) >= 0; } );
 
     // check message type
     QTextStream what( stderr );
-    switch ( type ) {
+    switch ( type )
+    {
 
         case QtDebugMsg: break;
 
@@ -102,30 +83,26 @@ void ErrorHandler::_throw( QtMsgType type, const char* message )
 }
 
 //_______________________________________________________________
-ErrorHandler::ErrorHandler()
-{
+ErrorHandler::ErrorHandler():
+    disabledMessages_( {
+    QStringLiteral( "QSocketNotifier: invalid socket"),
+    QStringLiteral( "QServerSocket: failed to bind or listen to the socket"),
+    QStringLiteral( "QPixmap::resize: TODO: resize alpha data"),
+    QStringLiteral( "QPainterPath::arcTo: Adding arc where a parameter is NaN, results are undefined"),
+    QStringLiteral( "warning: Couldn't resolve property"),
+    QStringLiteral( "QProcess: Destroyed while process is still running"),
 
-    // install 'default' disabled messages
-    disableMessage( "QSocketNotifier: invalid socket" );
-    disableMessage( "QServerSocket: failed to bind or listen to the socket" );
-    disableMessage( "QPixmap::resize: TODO: resize alpha data" );
-    disableMessage( "QPainterPath::arcTo: Adding arc where a parameter is NaN, results are undefined" );
-    disableMessage( "warning: Couldn't resolve property" );
-    disableMessage( "QProcess: Destroyed while process is still running" );
+    QStringLiteral( "QPainter::begin: Paint device returned engine == 0, type: 3"),
+    QStringLiteral( "QPainter::setCompositionMode: Painter not active"),
+    QStringLiteral( "QPainter::end: Painter not active, aborted"),
+    QStringLiteral( "QCoreApplication::postEvent: Unexpected null receiver"),
+    QStringLiteral( "Invalid entry (missing '=')"),
+    QStringLiteral( "KConfigIni"),
 
-    disableMessage( "QPainter::begin: Paint device returned engine == 0, type: 3" );
-    disableMessage( "QPainter::setCompositionMode: Painter not active" );
-    disableMessage( "QPainter::end: Painter not active, aborted" );
-    disableMessage( "QCoreApplication::postEvent: Unexpected null receiver" );
-    disableMessage( "Invalid entry (missing '=')" );
-    disableMessage( "KConfigIni" );
+    QStringLiteral( "Qt: Session management error: Could not open network socket"),
 
-    disableMessage( "Qt: Session management error: Could not open network socket" );
-
-    // QT5 specific messages
-    disableMessage( "void QWindow::setTransientParent" );
-    disableMessage( "QBackingStore::flush() called with non-exposed window" );
-    disableMessage( "QXcbClipboard: SelectionRequest too old" );
-    disableMessage( "QXcbConnection: XCB error: 8 (BadMatch)" );
-
-}
+    QStringLiteral( "void QWindow::setTransientParent"),
+    QStringLiteral( "QBackingStore::flush() called with non-exposed window"),
+    QStringLiteral( "QXcbClipboard: SelectionRequest too old"),
+    QStringLiteral( "QXcbConnection: XCB error: 8 (BadMatch)" ) } )
+{}

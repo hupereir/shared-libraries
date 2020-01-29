@@ -232,14 +232,12 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
             gridLayout->addWidget( button, row, 1, 1, 1 );
 
             // icon path
-            #if QT_VERSION >= 0x040600
             gridLayout->addWidget( label = new QLabel( tr( "Icons:" ), box ), ++row, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             button = new QPushButton( IconEngine::get( IconNames::Edit ), tr( "Edit Icon Theme" ), box );
             connect( button, SIGNAL(clicked()), SLOT(_editIconTheme()) );
             gridLayout->addWidget( button, row, 1, 1, 1 );
-            #endif
 
             // debug level
             gridLayout->addWidget( label = new QLabel( tr( "Verbosity:" ), box ), ++row, 0, 1, 1 );

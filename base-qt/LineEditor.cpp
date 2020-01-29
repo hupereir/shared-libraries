@@ -433,48 +433,6 @@ void LineEditor::_modified( const QString& text )
 
 }
 
-//____________________________________________________________
-void LineEditor::paintEvent( QPaintEvent* event )
-{
-    // base class method
-    QLineEdit::paintEvent( event );
-
-    #if QT_VERSION < 0x050000
-    if( text().isEmpty() && !placeholderText().isEmpty() && hasFocus() )
-    {
-
-        // get text rect
-        QStyleOptionFrameV2 frameOption;
-        initStyleOption(&frameOption);
-        QRect textRect( style()->subElementRect(QStyle::SE_LineEditContents, &frameOption, this) );
-
-        // alignment
-        const Qt::Alignment alignment( QStyle::visualAlignment( frameOption.direction, this->alignment() ) );
-
-        // font metrics
-        auto fontMetrics( this->fontMetrics() );
-
-        // adjust text rect
-        const int minBearing = qMax(0, -fontMetrics.minLeftBearing());
-        const int horizontalOffset = 2;
-        textRect.adjust( horizontalOffset + minBearing, 0, 0, 0 );
-
-        // text
-        const QString elidedText = fontMetrics.elidedText( placeholderText(), Qt::ElideRight, textRect.width() );
-
-        // color
-        QColor textColor( palette().text().color() );
-        textColor.setAlphaF(0.5);
-
-        QPainter painter( this );
-        painter.setPen( textColor );
-        painter.drawText( textRect, alignment, elidedText );
-
-    }
-    #endif
-
-}
-
 //__________________________________________________________
 void LineEditor::_installActions()
 {

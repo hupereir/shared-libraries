@@ -88,17 +88,14 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
 
     } else {
 
-        #if QT_VERSION >= 0x040600
-        QString truncatedName( File( file ).truncatedName() );
+        const auto truncatedName( File( file ).truncatedName() );
         if( (flags&Base::IconCacheItem::Flag::FromTheme) && QIcon::hasThemeIcon( truncatedName ) )
         {
 
             out = Base::IconCacheItem( QIcon::fromTheme( truncatedName ) );
             out.addFile( QObject::tr( "from theme" ) );
 
-        } else
-        #endif
-        {
+        } else {
 
             // make sure pixmap path is initialized
             if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" );

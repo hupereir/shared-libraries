@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "WeakPointer.h"
 
 #include <QContextMenuEvent>
 #include <QKeyEvent>
@@ -29,6 +28,7 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QPainter>
+#include <QPointer>
 #include <QProxyStyle>
 #include <QStyleOptionButton>
 #include <QToolButton>
@@ -193,9 +193,6 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //* overloaded key press event
     void keyPressEvent( QKeyEvent* ) override;
 
-    //* paint event
-    void paintEvent( QPaintEvent* ) override;
-
     //@}
 
     private Q_SLOTS:
@@ -278,7 +275,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     LineEditorButton* clearButton_ = nullptr;
 
     //* style proxy
-    Base::WeakPointer<QProxyStyle> proxyStyle_;
+    QPointer<QProxyStyle> proxyStyle_;
 
 };
 

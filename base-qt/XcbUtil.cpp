@@ -24,11 +24,9 @@
 
 #if WITH_XCB
 
-#if QT_VERSION >= 0x050000
 #include <QWindow>
 #include <QGuiApplication>
 #include <qpa/qplatformnativeinterface.h>
-#endif
 
 #include <QX11Info>
 
@@ -139,12 +137,8 @@ xcb_connection_t* XcbUtil::Private::connection()
     {
 
         // get display
-        #if QT_VERSION >= 0x050000
         auto nativeInterface = qApp->platformNativeInterface();
         auto display = reinterpret_cast<Display*>(nativeInterface->nativeResourceForScreen(QByteArray("display"), QGuiApplication::primaryScreen()) );
-        #else
-        auto display = QX11Info::display();
-        #endif
 
         // get matching xcb connection
         if( !display ) return 0;
@@ -241,12 +235,8 @@ XcbUtil::XcbUtil():
 bool XcbUtil::isX11()
 {
     #if WITH_XCB
-    #if QT_VERSION >= 0x050000
     static const bool isX11 = QX11Info::isPlatformX11();
     return isX11;
-    #else
-    return true;
-    #endif
     #endif
 
     return false;
@@ -586,7 +576,6 @@ bool XcbUtil::moveResizeWidget(
     // check
     if( !isSupported( AtomId::_NET_WM_MOVERESIZE ) ) return false;
 
-    #if QT_VERSION >= 0x050300
     auto localPosition( widget->mapFromGlobal( position ) );
     qreal dpiRatio = 1;
     auto windowHandle = widget->window()->windowHandle();
@@ -598,7 +587,6 @@ bool XcbUtil::moveResizeWidget(
 
     localPosition.rx()*=dpiRatio;
     localPosition.ry()*=dpiRatio;
-    #endif
 
     xcb_ungrab_pointer( d->connection(), XCB_TIME_CURRENT_TIME );
 

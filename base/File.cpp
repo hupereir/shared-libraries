@@ -305,9 +305,7 @@ File File::find( const File& file, bool caseSensitive ) const
 
     // filter
     QDir::Filters filter = QDir::Dirs;
-    #if QT_VERSION >= 0x040800
     filter |= QDir::NoDotDot;
-    #endif
 
     const QDir dir( fullname );
     for( const auto& value:dir.entryList( filter ) )
@@ -354,9 +352,7 @@ File::List File::listFiles( ListFlags flags ) const
 
     // open directory
     QDir::Filters filter = QDir::AllEntries|QDir::System;
-    #if QT_VERSION >= 0x040800
     filter |= QDir::NoDotDot;
-    #endif
 
     const QDir dir( fullname );
     if( flags & ListFlag::ShowHiddenFiles ) filter |= QDir::Hidden;
@@ -482,9 +478,7 @@ bool File::removeRecursive() const
 
     // filter
     QDir::Filters filter = QDir::AllEntries|QDir::Hidden|QDir::System;
-    #if QT_VERSION >= 0x040800
     filter |= QDir::NoDotDot;
-    #endif
 
     // list content of directory
     QDir dir( value_ );

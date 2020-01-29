@@ -85,7 +85,6 @@ QSize ElidedLabel::sizeHint() const
 //___________________________________________________
 void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
 {
-    #if QT_VERSION >= 0x040700
     if(
         QApplication::clipboard()->supportsSelection() &&
         textInteractionFlags() != Qt::NoTextInteraction &&
@@ -93,7 +92,6 @@ void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
         !fullText_.isEmpty() &&
         hasSelectedText() )
     {
-
         // Expand "..." when selecting with the mouse
         QString text = selectedText();
         const QChar ellipsis(0x2026); // from qtextengine.cpp
@@ -130,9 +128,11 @@ void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
         // update clipboard
         QApplication::clipboard()->setText( text, QClipboard::Selection );
 
-    } else
-    #endif
-    { QLabel::mouseReleaseEvent( event ); }
+    } else {
+
+        QLabel::mouseReleaseEvent( event );
+
+    }
 
 }
 

@@ -21,10 +21,10 @@
 *******************************************************************************/
 
 #include "BaseContextMenu.h"
-#include "WeakPointer.h"
 
 #include <QAction>
 #include <QList>
+#include <QPointer>
 
 // implements context menu, installable on widgets
 class ContextMenu: public BaseContextMenu
@@ -50,7 +50,7 @@ class ContextMenu: public BaseContextMenu
 
     private:
 
-    using ActionPointer = Base::WeakPointer<QAction>;
+    using ActionPointer = QPointer<QAction>;
     using ActionList = QList<ActionPointer>;
 
     ActionList hiddenActions_;

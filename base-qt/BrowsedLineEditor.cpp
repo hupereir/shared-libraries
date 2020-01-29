@@ -30,11 +30,7 @@
 #include <QLayout>
 #include <QToolButton>
 
-#if QT_VERSION < 0x050000
-#include <QProcessEnvironment>
-#else
 #include <QStandardPaths>
-#endif
 
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
@@ -128,37 +124,9 @@ void BrowsedLineEditor::_browse()
 //_____________________________________________________________
 void BrowsedLineEditor::_findTargetApplication()
 {
-
     // check if current text is valid
     File current( editor().text() );
     if( current.exists() ) return;
 
-    // path list
-    #if QT_VERSION < 0x050000
-
-    // get path list from environment
-    auto environment = QProcessEnvironment::systemEnvironment();
-    auto path = environment.value( "path" );
-    if( path.isEmpty() ) path = environment.value( "PATH" );
-    if( path.isEmpty() ) return;
-
-    // split
-    File::List pathList;
-    auto list = path.split( QLatin1Char( ':' ), QString::SkipEmptyParts);
-    std::transform( list.begin(), list.end(), std::back_inserter( pathList ),
-        []( const QString& item ) { return File( item ); } );
-
-    if( pathList.empty() ) return;
-
-    // find
-    File found( targetApplication_.find( pathList ) );
-
-    #else
-
-    File found( QStandardPaths::findExecutable( targetApplication_ ) );
-
-    #endif
-
-    editor().setText( found );
-
+    editor().setText( QStandardPaths::findExecutable( targetApplication_ ) );
 }

@@ -139,9 +139,6 @@ class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
     //* private
     std::unique_ptr<MessageWidgetPrivate> private_;
 
-    #if QT_VERSION < 0x050000
-    friend class MessageWidgetPrivate;
-    #endif
 
 };
 

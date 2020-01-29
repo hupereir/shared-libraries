@@ -127,9 +127,7 @@ bool BaseApplication::realizeWidget()
     if( !BaseCoreApplication::realizeWidget() ) return false;
 
     // always enable high dpi
-    #if QT_VERSION >= 0x050000
     qApp->setAttribute( Qt::AA_UseHighDpiPixmaps, true );
-    #endif
 
     // need to update icon theme upfront to make sure themed icons are loaded
     _updateIconTheme();
@@ -373,11 +371,9 @@ void BaseApplication::_updateIconTheme()
 {
 
     Debug::Throw( "BaseApplication::_updateIconTheme.\n" );
-    #if QT_VERSION >= 0x040600
     if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
     {
         QIcon::setThemeSearchPaths( Base::makeT<QStringList>({ XmlOptions::get().raw( "ICON_THEME_PATH" ) }) );
         QIcon::setThemeName( XmlOptions::get().raw( "ICON_THEME" ) );
     }
-    #endif
 }

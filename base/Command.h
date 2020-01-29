@@ -32,11 +32,6 @@ namespace Base
 
         public:
 
-        #if QT_VERSION < 0x040800
-        //* constructor
-        explicit Command( std::initializer_list<QString>&& );
-        #endif
-
         //* constructor
         explicit Command( const QStringList& other = QStringList() ):
             Counter( "Command" ),

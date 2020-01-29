@@ -55,13 +55,7 @@ class ErrorHandler: private Base::NonCopyable<ErrorHandler>
     using MessageList = QStringList;
 
     //* check/display Qt error messages
-    #if QT_VERSION >= 0x050000
     static void _throw( QtMsgType, const QMessageLogContext&, const QString& );
-    #endif
-
-    //* check/display Qt error messages
-    /** qt4 version */
-    static void _throw( QtMsgType, const char* );
 
     private:
 

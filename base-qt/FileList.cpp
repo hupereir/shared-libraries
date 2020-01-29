@@ -73,25 +73,9 @@ FileRecord FileList::lastValidFile()
 
     Debug::Throw( "FileList::lastValidFile.\n" );
 
-    // sort list
     std::sort( records_.begin(), records_.end(), FileRecord::FirstOpenFTor() );
-
-    #if QT_VERSION >= 0x050600
-    // use std::find_if with reverse_iterators
-    auto iter = std::find_if( records_.rbegin(), records_.rend(), [this]( const FileRecord& record ) { return (!check_) || record.isValid(); } );
+    const auto iter = std::find_if( records_.rbegin(), records_.rend(), [this]( const FileRecord& record ) { return (!check_) || record.isValid(); } );
     return iter == records_.rend() ? FileRecord():*iter;
-    #else
-    // find last valid file using reverse_iterators
-    QListIterator<FileRecord> iter( records_ );
-    iter.toBack();
-    while( iter.hasPrevious() )
-    {
-        const auto& record( iter.previous() );
-        if( (!check_) || record.isValid() ) return record;
-    }
-    return FileRecord();
-    #endif
-
 }
 
 //_______________________________________________
@@ -166,8 +150,6 @@ FileRecord& FileList::_add(
 {
 
     // do not add empty files
-    Q_ASSERT( !record.file().isEmpty() );
-
     auto iter = std::find_if( records_.begin(), records_.end(), FileRecord::SameFileFTorUnary( record.file() ) );
     if( iter != records_.end() )
     {

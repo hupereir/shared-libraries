@@ -198,12 +198,7 @@ int QtUtil::titleFontPointSize( const QFont& font )
 QFont QtUtil::titleFont( QFont font )
 {
     font.setPointSize( titleFontPointSize( font ) );
-    #if QT_VERSION >= 0x050000
     font.setWeight( QFont::Medium );
-    #else
-    font.setWeight( 57 );
-    #endif
-
     return font;
 }
 
@@ -215,14 +210,7 @@ QColor QtUtil::lightTextColor( const QColor& color )
 QAction* QtUtil::addMenuSection( QMenu* menu, const QIcon& icon, const QString& text )
 {
     menu->setSeparatorsCollapsible( false );
-
-    #if QT_VERSION >= 0x050000
-    QAction* action = menu->addSection( icon, text );
-    #else
-    QAction* action = menu->addSeparator();
-    if( !text.isEmpty() ) action->setText( text );
-    if( !icon.isNull() ) action->setIcon( icon );
-    #endif
+    auto action = menu->addSection( icon, text );
 
     // calculate minimum size, needed to properly account for header
     int width = 0;

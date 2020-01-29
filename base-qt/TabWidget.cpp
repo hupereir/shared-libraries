@@ -282,11 +282,6 @@ namespace Private
         Counter( "Private::LocalTabWidget" )
     {
 
-        #if QT_VERSION < 0x050000
-        setAttribute(Qt::WA_TranslucentBackground);
-        setAttribute(Qt::WA_StyledBackground);
-        #endif
-
         setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
 
         // grid layout to overlay main layout and invisible grip

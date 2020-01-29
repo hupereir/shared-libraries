@@ -26,17 +26,10 @@
 
 namespace Base
 {
-    #if QT_VERSION < 0x040800
-    //____________________________________________
-    Command::Command( std::initializer_list<QString>&& arguments ):
-        Command( Base::makeT<QStringList>(std::move( arguments) ) )
-    {}
-    #endif
 
     //____________________________________________
     bool Command::run( const QString& path ) const
     {
-
         Debug::Throw( "Command::run.\n" );
         if( values_.empty() ) return false;
 
@@ -44,7 +37,6 @@ namespace Base
         auto arguments( values_ );
         arguments.removeFirst();
         return QProcess::startDetached( program, arguments, path );
-
     }
 
     //_________________________________________________________

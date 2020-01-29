@@ -21,11 +21,11 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "WeakPointer.h"
 
 #include <QAction>
 #include <QKeyEvent>
 #include <QMenu>
+#include <QPointer>
 #include <QList>
 
 
@@ -66,7 +66,7 @@ class CustomMenu: public QMenu, private Base::Counter<CustomMenu>
     private:
 
     //* action list
-    using ActionPointer=Base::WeakPointer<QAction>;
+    using ActionPointer=QPointer<QAction>;
     using ActionList=QList<ActionPointer>;
     ActionList invisibleActions_;
 
