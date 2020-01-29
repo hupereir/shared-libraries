@@ -19,8 +19,6 @@
 
 #include "PrintPreviewDialog.h"
 #include "PrintPreviewDialog_p.h"
-
-#include "CppUtil.h"
 #include "Debug.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
@@ -44,14 +42,14 @@ namespace Private
     {
 
         {
-            QMenu* menu = addMenu( tr( "Orientation" ) );
-            orientationActions_ = Base::makeT<OrientationActionMap>(
+            auto menu = addMenu( tr( "Orientation" ) );
+            orientationActions_ =
             {
                 { menu->addAction( tr( "Portrait" ) ), QPrinter::Portrait },
                 { menu->addAction( tr( "Landscape" ) ), QPrinter::Landscape }
-            } );
+            };
 
-            QActionGroup* actionGroup = new QActionGroup( this );
+            auto actionGroup = new QActionGroup( this );
             for( auto&& iter = orientationActions_.begin(); iter != orientationActions_.end(); ++iter )
             {
                 iter.key()->setCheckable( true );
@@ -64,15 +62,15 @@ namespace Private
         }
 
         {
-            QMenu* menu = addMenu( tr( "Layout" ) );
-            pageModeActions_ = Base::makeT<PageModeActionMap>(
+            auto menu = addMenu( tr( "Layout" ) );
+            pageModeActions_ =
             {
                 { menu->addAction( tr( "One Page Per Sheet" ) ), BasePrintHelper::PageMode::SinglePage },
                 { menu->addAction( tr( "Two Pages Per Sheet" ) ), BasePrintHelper::PageMode::TwoPages },
                 { menu->addAction( tr( "Four Pages Per Sheet" ) ), BasePrintHelper::PageMode::FourPages }
-            } );
+            };
 
-            QActionGroup* actionGroup = new QActionGroup( this );
+            auto actionGroup = new QActionGroup( this );
             for( auto&& iter = pageModeActions_.begin(); iter != pageModeActions_.end(); ++iter )
             {
                 iter.key()->setCheckable( true );

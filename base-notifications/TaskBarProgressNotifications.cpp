@@ -20,7 +20,6 @@
  */
 
 #include "TaskBarProgressNotifications.h"
-#include "CppUtil.h"
 #include "Debug.h"
 
 #ifndef QT_NO_DBUS
@@ -90,7 +89,7 @@ void TaskBarProgressNotifications::_update(std::initializer_list<typename std::p
         QLatin1String("com.canonical.Unity.LauncherEntry"),
         QLatin1String("Update"));
 
-    message.setArguments({launcherId_, Base::makeT<QVariantMap>(std::move(properties))});
+    message.setArguments({launcherId_, QVariantMap(properties)});
     QDBusConnection::sessionBus().send(message);
     #endif
 

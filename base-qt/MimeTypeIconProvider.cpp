@@ -18,14 +18,13 @@
 *******************************************************************************/
 
 #include "MimeTypeIconProvider.h"
-#include "CppUtil.h"
 #include "IconEngine.h"
 
 //__________________________________________________________________
 MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     QObject( parent ),
     Counter( "MimeTypeIconProvider" ),
-    iconNames_( Base::makeT<IconNameCache>(
+    iconNames_(
     {
         // source code
         { "C", "text-x-csrc" },
@@ -112,7 +111,7 @@ MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
         { "srpm", "application-x-source-rpm" },
         { "so", "application-x-object" },
         { "spec", "text-x-rpm-spec" }
-    } ) )
+    } )
 {}
 
 //__________________________________________________________________

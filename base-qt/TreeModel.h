@@ -20,7 +20,6 @@
 *
 *******************************************************************************/
 
-#include "CppUtil.h"
 #include "Debug.h"
 #include "ItemModel.h"
 #include "TreeItem.h"
@@ -290,11 +289,11 @@ template<class T> class TreeModel : public ItemModel
 
     //* add values
     void add( ConstReference value )
-    { add( Base::makeT<List>( { value } ) ); }
+    { add( { value } ); }
 
     //* add values
     void add( ConstReference parent, ConstReference value )
-    { add( parent, Base::makeT<List>( { value } ) ); }
+    { add( parent, { value } ); }
 
     //* add values
     void add( List values )
@@ -387,11 +386,11 @@ template<class T> class TreeModel : public ItemModel
 
     //* remove
     void remove( ConstReference value )
-    { remove( Base::makeT<List>( { value } ) ); }
+    { remove( { value } ); }
 
     //* remove
     void remove( ConstReference parent, ConstReference value )
-    { remove( parent, Base::makeT<List>( { value } ) ); }
+    { remove( parent, { value } ); }
 
     //* remove
     void remove( List values )

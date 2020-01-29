@@ -18,9 +18,7 @@
 *******************************************************************************/
 
 #include "BaseFileInformationDialog.h"
-
 #include "BaseIconNames.h"
-#include "CppUtil.h"
 #include "Debug.h"
 #include "ElidedLabel.h"
 #include "File.h"
@@ -82,7 +80,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
 
     // store all items in array, for visibility
     using GridLayoutItemList = QList<GridLayoutItem*>;
-    auto items = Base::makeT<GridLayoutItemList>({
+    GridLayoutItemList items({
         fileItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
         typeItem_ = new GridLayoutItem( mainPage_, gridLayout_ ),
         pathItem_ = new GridLayoutItem( mainPage_, gridLayout_, GridLayoutItem::Flag::Selectable|GridLayoutItem::Flag::Elide ),
@@ -121,10 +119,10 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     layout->addItem( gridLayout );
 
-    items.append( Base::makeT<GridLayoutItemList>({
+    items.append( {
         userItem_ = new GridLayoutItem( box, gridLayout ),
         groupItem_ = new GridLayoutItem( box, gridLayout )
-    }) );
+    });
 
     userItem_->setKey( tr( "User:" ) );
     groupItem_->setKey( tr( "Group:" ) );

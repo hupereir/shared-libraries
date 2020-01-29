@@ -18,8 +18,6 @@
 *******************************************************************************/
 
 #include "FontInfo.h"
-
-#include "CppUtil.h"
 #include "Debug.h"
 
 #include <QLayout>
@@ -32,13 +30,13 @@ QWidget( parent )
 
     // create checkboxes
     setLayout( new QVBoxLayout );
-    checkBoxes_ = Base::makeT<CheckBoxMap>( {
+    checkBoxes_ = {
         {  TextFormat::Bold, new QCheckBox( tr( "Bold" ), this ) },
         {  TextFormat::Italic, new QCheckBox( tr( "Italic" ), this ) },
         {  TextFormat::Underline, new QCheckBox( tr( "Underline" ), this ) },
         {  TextFormat::Strike, new QCheckBox( tr( "Strike" ), this ) },
         {  TextFormat::Overline, new QCheckBox( tr( "Overline" ), this ) },
-    });
+    };
 
     for( auto&& iterator = checkBoxes_.begin(); iterator != checkBoxes_.end(); ++iterator )
     {

@@ -21,7 +21,6 @@
 
 #include "BaseFileInfo.h"
 #include "BaseFileInfoModel.h"
-#include "CppUtil.h"
 #include "CustomPixmap.h"
 #include "FileIconProvider.h"
 #include "FileSystemIconNames.h"
@@ -39,7 +38,7 @@
 FileSystemModel::FileSystemModel( QObject* parent ):
     ListModel( parent ),
     Counter( "FileSystemModel" ),
-    columnTitles_( Base::makeT<QStringList>({ tr( "File" ), tr( "Size" ), tr( "Last Accessed" ) }) ),
+    columnTitles_( { tr( "File" ), tr( "Size" ), tr( "Last Accessed" ) } ),
     sizePropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Size ) )
 {
     Debug::Throw("FileSystemModel::FileSystemModel.\n" );

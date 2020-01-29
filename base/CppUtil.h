@@ -20,60 +20,18 @@
 *
 *******************************************************************************/
 
-#include <QtGlobal>
+#include "IntegralType.h"
 
 #include <QHashFunctions>
-
-#include <QList>
-#include <QVector>
-
 #include <algorithm>
-#include <initializer_list>
-#include <utility>
 
 namespace Base
 {
 
-    //* converninece trait for underlying type
-    template<class T>
-        using underlying_type_t = typename std::underlying_type<T>::type;
-
-    //* convert an strong type enum to integral type
-    template<class T>
-        constexpr underlying_type_t<T>
-        toIntegralType(T value) noexcept
-    { return static_cast<underlying_type_t<T>>(value);}
-
-    //* construct QHash, QMap from initializer_list
-    template<class T>
-        inline T makeT( std::initializer_list<std::pair<typename T::key_type, typename T::mapped_type> >&& reference )
-    { return T( std::move( reference ) ); }
-
-    //* construct QSet from initializer_list
-    template<class T>
-        inline T makeT( std::initializer_list<typename T::key_type>&& reference )
-    { return T( std::move( reference ) ); }
-
-    //* construct QList or QVector from initializer_list
-    template<
-        class T,
-        typename = typename std::enable_if<
-            std::is_base_of<QList<typename T::value_type>, typename std::decay<T>::type>::value ||
-            std::is_base_of<QVector<typename T::value_type>, typename std::decay<T>::type>::value
-            >::type
-        >
-        inline T makeT( std::initializer_list<typename T::value_type>&& reference )
-    { return T( std::move(reference) ); }
-
-    //* append initializer_list to a container
-    template<class T>
-        inline void append( T& first, std::initializer_list<typename T::value_type>&& second )
-    { first.append( std::move( second ) ); }
-
     //* equivalent-to pseudo-operator
     /** it is used for smart insertion in maps and hashed */
     template<class T, class U>
-        inline bool areEquivalent(const T& first, const U& second)
+        constexpr inline bool areEquivalent(const T& first, const U& second)
     { return !(first < second || second < first); }
 
     //* efficient map insertion
@@ -92,14 +50,10 @@ namespace Base
         auto iterator = map.lowerBound( key );
         if( iterator != map.end() && areEquivalent( key, iterator.key() ) )
         {
-
             iterator.value() = value;
             return iterator;
-
         } else {
-
             return insert( map, iterator, key, value );
-
         }
 
     }

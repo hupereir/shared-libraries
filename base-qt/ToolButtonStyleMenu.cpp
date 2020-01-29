@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "ToolButtonStyleMenu.h"
-
 #include "CppUtil.h"
 #include "Debug.h"
 
@@ -35,14 +34,14 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     // install values
-    actions_ = Base::makeT<ActionMap>(
+    actions_ =
     {
         { addAction( tr( "System Default" ) ), Qt::ToolButtonFollowStyle },
         { addAction( tr( "No Text" ) ), Qt::ToolButtonIconOnly },
         { addAction( tr( "Text Only" ) ), Qt::ToolButtonTextOnly },
         { addAction( tr( "Text Alongside icons" ) ), Qt::ToolButtonTextBesideIcon },
         { addAction( tr( "Text Under icons" ) ), Qt::ToolButtonTextUnderIcon }
-    } );
+    };
 
     for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
     {

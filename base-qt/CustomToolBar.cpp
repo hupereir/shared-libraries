@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "BaseMainWindow.h"
-#include "CppUtil.h"
 #include "CustomToolBar.h"
 #include "CustomToolButton.h"
 #include "Singleton.h"
@@ -27,7 +26,7 @@
 //_______________________________________________________________
 const CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
 {
-    static const auto areas = Base::makeT<AreaMap>( {
+    static const AreaMap areas( {
         { tr( "None" ), Qt::NoToolBarArea },
         { tr( "Left" ), Qt::LeftToolBarArea },
         { tr( "Right" ), Qt::RightToolBarArea },

@@ -18,8 +18,6 @@
 *******************************************************************************/
 
 #include "TexString.h"
-
-#include "CppUtil.h"
 #include "File.h"
 
 
@@ -47,7 +45,7 @@ namespace SpellCheck
     //________________________________________________________
     const TexString::ConversionList& TexString::conversions()
     {
-        static const auto conversions = Base::makeT<ConversionList>(
+        static const ConversionList conversions =
         {
              Conversion( "à", "\\`a" ),
              Conversion( "â", "\\^a" ),
@@ -63,10 +61,8 @@ namespace SpellCheck
              Conversion( "ù", "\\`u" ),
              Conversion( "û", "\\^u" ),
              Conversion( "ç", "\\c c" )
-        });
-
+        };
         return conversions;
-
     }
 
 }

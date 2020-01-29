@@ -373,7 +373,7 @@ void BaseApplication::_updateIconTheme()
     Debug::Throw( "BaseApplication::_updateIconTheme.\n" );
     if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
     {
-        QIcon::setThemeSearchPaths( Base::makeT<QStringList>({ XmlOptions::get().raw( "ICON_THEME_PATH" ) }) );
+        QIcon::setThemeSearchPaths( { XmlOptions::get().raw( "ICON_THEME_PATH" ) } );
         QIcon::setThemeName( XmlOptions::get().raw( "ICON_THEME" ) );
     }
 }

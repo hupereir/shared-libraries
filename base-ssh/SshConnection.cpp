@@ -18,8 +18,6 @@
 *******************************************************************************/
 
 #include "SshConnection.h"
-
-#include "CppUtil.h"
 #include "Debug.h"
 #include "File.h"
 #include "Sleep.h"
@@ -52,7 +50,7 @@ namespace Ssh
         QString commandMessage( Connection::Command command )
         {
             using CommandHash = QHash<Connection::Command,QString>;
-            static const auto commandNames = Base::makeT<CommandHash>( {
+            static const CommandHash commandNames( {
                 { Connection::Command::Connect, QObject::tr( "Connecting to host" ) },
                 { Connection::Command::RequestIdentity, QObject::tr( "Waiting for user authentication" ) },
                 { Connection::Command::AuthenticateWithGssAPI, QObject::tr( "Trying to authenticate using GssAPI" ) },
@@ -168,7 +166,7 @@ namespace Ssh
 
         Debug::Throw() << "Ssh::Connection::authenticate - forceRequestIdentity: " << forceRequestIdentity << endl;
 
-        auto commands = Base::makeT<CommandList>( {
+        CommandList commands( {
             Command::AuthenticateWithGssAPI,
             Command::AuthenticateWithAgent } );
 

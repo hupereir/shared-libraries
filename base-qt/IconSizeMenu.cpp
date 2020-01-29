@@ -28,14 +28,13 @@ IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
 {
     Debug::Throw( "IconSizeMenu::IconSizeMenu.\n" );
 
-    QActionGroup *group = new QActionGroup( this );
+    auto group = new QActionGroup( this );
     connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
 
     const auto& sizes( IconSize::map() );
 
     // custom sizes
-    static const auto customSizes = Base::makeT<QList<IconSize::Size> >(
-        { IconSize::Minimum, IconSize::VeryHuge, IconSize::Maximum });
+    static const QList<IconSize::Size> customSizes( { IconSize::Minimum, IconSize::VeryHuge, IconSize::Maximum });
 
     // generic action
     QAction* action;

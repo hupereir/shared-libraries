@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "IconSizeComboBox.h"
-
-#include "CppUtil.h"
 #include "Debug.h"
+
+#include <QSet>
 
 //_________________________________________________________
 IconSizeComboBox::IconSizeComboBox( QWidget* parent, bool custom ):
@@ -34,9 +34,7 @@ IconSizeComboBox::IconSizeComboBox( QWidget* parent, bool custom ):
     const auto& sizes( IconSize::map() );
 
     // custom sizes
-    static const auto customSizes = Base::makeT<QList<IconSize::Size> >(
-        { IconSize::Minimum, IconSize::VeryHuge, IconSize::Maximum });
-
+    static const QSet<IconSize::Size> customSizes({ IconSize::Minimum, IconSize::VeryHuge, IconSize::Maximum });
     for( auto&& iter = sizes.begin(); iter != sizes.end(); ++iter )
     {
         // skip some items depending on custom flags

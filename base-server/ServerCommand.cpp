@@ -19,7 +19,6 @@
 
 
 #include "ServerCommand.h"
-#include "CppUtil.h"
 #include "Debug.h"
 
 #include <QStringList>
@@ -30,7 +29,7 @@ namespace Server
     //__________________________________________________________________
     const ServerCommand::CommandMap& ServerCommand::_commandNames()
     {
-        static const auto names = Base::makeT<CommandMap>( {
+        static const CommandMap names( {
             { CommandType::None, "" },
             { CommandType::Accepted, QObject::tr( "Accepted" ) },
             { CommandType::Denied, QObject::tr( "Denied" ) },

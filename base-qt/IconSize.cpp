@@ -18,8 +18,6 @@
 *******************************************************************************/
 
 #include "IconSize.h"
-#include "CppUtil.h"
-
 #include <QApplication>
 #include <QStyle>
 
@@ -42,7 +40,7 @@ QSize IconSize::get( IconSize::Size size )
 //______________________________________________________________________
 const IconSize::Map& IconSize::map()
 {
-    static const auto sizeMap = Base::makeT<Map>(
+    static const Map sizeMap(
     {
         { Default, QObject::tr( "System Default" ) },
         { Minimum, QObject::tr( "Very Small (8x8)" ) },

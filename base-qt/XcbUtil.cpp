@@ -105,7 +105,7 @@ class XcbUtil::Private
 XcbUtil::Private::Private()
 {
 
-    atomNames_ = Base::makeT<AtomNameMap>(
+    atomNames_ =
     {
         { AtomId::WM_STATE, "WM_STATE" },
         { AtomId::_NET_SUPPORTED, "_NET_SUPPORTED" },
@@ -124,7 +124,7 @@ XcbUtil::Private::Private()
         { AtomId::_NET_WM_NAME, "_NET_WM_NAME" },
         { AtomId::_NET_NUMBER_OF_DESKTOPS, "_NET_NUMBER_OF_DESKTOPS" },
         { AtomId::_KDE_NET_WM_BLUR_BEHIND_REGION, "_KDE_NET_WM_BLUR_BEHIND_REGION" }
-    });
+    };
 
 }
 

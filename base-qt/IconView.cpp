@@ -47,7 +47,7 @@ IconView::IconView( QWidget* parent ):
 {
     Debug::Throw( "IconView::IconView.\n" );
 
-    iconSizes_ = Base::makeT<IconSizeList>(
+    iconSizes_ =
     {
         IconSize::Size::Small,
         IconSize::Size::Medium,
@@ -66,7 +66,7 @@ IconView::IconView( QWidget* parent ):
         224,
         240,
         IconSize::Size::Maximum
-    } );
+    };
 
     // actions
     _installActions();
