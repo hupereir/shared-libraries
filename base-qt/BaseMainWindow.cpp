@@ -352,7 +352,7 @@ bool BaseMainWindow::_hasIconSizeToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasIconSizeToolBars.\n" );
     const auto toolbars( findChildren<QToolBar*>() );
-    return std::any_of( toolbars.begin(), toolbars.end(), [this]( const QToolBar* toolbar )
+    return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
         auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
         return !customToolbar || customToolbar->iconSizeFromOptions();
@@ -366,7 +366,7 @@ bool BaseMainWindow::_hasToolButtonStyleToolBars() const
 {
     Debug::Throw( "BaseMainWindow::_hasToolButtonStyleToolBars.\n" );
     const auto toolbars( findChildren<QToolBar*>() );
-    return std::any_of( toolbars.begin(), toolbars.end(), [this]( const QToolBar* toolbar )
+    return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
 
         auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );

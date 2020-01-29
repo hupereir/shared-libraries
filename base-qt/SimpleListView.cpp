@@ -66,7 +66,7 @@ void Private::SimpleListViewDelegate::paint( QPainter *painter, const QStyleOpti
     if( colorGroup == QPalette::Normal && !(option.state & QStyle::State_Active) )
     { colorGroup = QPalette::Inactive; }
 
-    QStyleOptionViewItemV4 opt(option);
+    QStyleOptionViewItem opt(option);
     opt.showDecorationSelected = true;
     style->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
 

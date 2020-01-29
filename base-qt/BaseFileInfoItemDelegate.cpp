@@ -23,7 +23,7 @@
 #include "BaseFileInfoModel.h"
 
 #include <QAbstractItemView>
-#include <QStyleOptionViewItemV4>
+#include <QStyleOptionViewItem>
 
 //______________________________________________________
 BaseFileInfoItemDelegate::BaseFileInfoItemDelegate( QObject* parent ):
@@ -36,7 +36,7 @@ void BaseFileInfoItemDelegate::initStyleOption( QStyleOptionViewItem* option, co
     TreeViewItemDelegate::initStyleOption( option, index );
 
     // cast option and check icon
-    QStyleOptionViewItemV4 *optionV4 = qstyleoption_cast<QStyleOptionViewItemV4*>( option );
+    QStyleOptionViewItem *optionV4 = qstyleoption_cast<QStyleOptionViewItem*>( option );
     if( !optionV4 || optionV4->icon.isNull() ) return;
 
     // check type

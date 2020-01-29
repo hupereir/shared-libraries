@@ -40,7 +40,7 @@
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOption>
-#include <QStyleOptionViewItemV4>
+#include <QStyleOptionViewItem>
 #include <QTextOption>
 #include <QToolButton>
 
@@ -218,7 +218,7 @@ namespace Private
         if( _mouseOver() && isSelectable() )
         {
 
-            QStyleOptionViewItemV4 option;
+            QStyleOptionViewItem option;
             option.initFrom( this );
             option.showDecorationSelected = true;
             option.rect = rect();
@@ -267,7 +267,7 @@ namespace Private
         if( _mouseOver() )
         {
             // mouse over
-            QStyleOptionViewItemV4 option;
+            QStyleOptionViewItem option;
             option.initFrom( this );
             option.showDecorationSelected = true;
             option.rect = rect();

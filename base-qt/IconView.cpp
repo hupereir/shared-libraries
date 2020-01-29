@@ -1094,7 +1094,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 
         // setup option
         const auto index( model_->index( iter.key(), 0 ) );
-        QStyleOptionViewItemV4 option = _viewOptions( index );
+        QStyleOptionViewItem option = _viewOptions( index );
         option.rect = iter.value().boundingRect();
 
         // paint
@@ -1329,17 +1329,17 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
 }
 
 //____________________________________________________________________
-QStyleOptionViewItemV4 IconView::_viewOptions( const QModelIndex& index ) const
+QStyleOptionViewItem IconView::_viewOptions( const QModelIndex& index ) const
 {
 
     // setup option
-    QStyleOptionViewItemV4 option = viewOptions();
+    QStyleOptionViewItem option = viewOptions();
     option.showDecorationSelected = true;
 
     // state
     if( selectionModel()->isSelected( index ) )
     {
-        option.viewItemPosition = QStyleOptionViewItemV4::OnlyOne;
+        option.viewItemPosition = QStyleOptionViewItem::OnlyOne;
         option.state |= QStyle::State_Selected;
     }
 

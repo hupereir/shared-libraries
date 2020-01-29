@@ -35,7 +35,7 @@
 #include <QPixmap>
 #include <QRubberBand>
 #include <QScrollBar>
-#include <QStyleOptionViewItemV4>
+#include <QStyleOptionViewItem>
 #include <QWheelEvent>
 
 #include <memory>
@@ -341,7 +341,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     bool _findBackward( const TextSelection& selection, bool rewind );
 
     //* get view options matching a given index
-    QStyleOptionViewItemV4 _viewOptions( const QModelIndex& ) const;
+    QStyleOptionViewItem _viewOptions( const QModelIndex& ) const;
 
     protected Q_SLOTS:
 
