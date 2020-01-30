@@ -110,7 +110,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     { return showClearButton_; }
 
     //* clear button
-    QWidget& clearButton() const
+    QAbstractButton& clearButton() const
     { return *clearButton_; }
 
     //* buttons width
