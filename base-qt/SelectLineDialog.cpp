@@ -69,8 +69,8 @@ void SelectLineDialog::setSelectLineWidget( SelectLineWidget* selectLineWidget )
     layout()->addWidget( selectLineWidget_.get() );
 
     // setup connections
-    connect( selectLineWidget_.get(), SIGNAL(lineSelected(int)), this, SIGNAL(lineSelected(int)) );
-    connect( &selectLineWidget_->okButton(), SIGNAL(clicked()), SLOT(close()));
-    connect( &selectLineWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()));
+    connect( selectLineWidget_.get(), &SelectLineWidget::lineSelected, this, &SelectLineDialog::lineSelected );
+    connect( &selectLineWidget_->okButton(), &QAbstractButton::clicked, this, &QWidget::close);
+    connect( &selectLineWidget_->closeButton(), &QAbstractButton::clicked, this, &QWidget::close);
 
 }

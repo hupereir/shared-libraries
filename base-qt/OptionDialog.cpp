@@ -83,14 +83,14 @@ OptionDialog::OptionDialog( QWidget* parent ):
     _reload();
 
     // connections
-    connect( &model_, SIGNAL(optionModified(Options::Pair)), SLOT(_optionModified(Options::Pair)) );
-    connect( &model_, SIGNAL(specialOptionModified(Options::Pair)), SLOT(_specialOptionModified(Options::Pair)) );
+    connect( &model_, &OptionModel::optionModified, this, &OptionDialog::_optionModified );
+    connect( &model_, &OptionModel::specialOptionModified, this, &OptionDialog::_specialOptionModified );
     connect( this, SIGNAL(configurationChanged()), Base::Singleton::get().application(), SIGNAL(configurationChanged()) );
 
     // insert reload
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), "&Reload", this ) );
-    connect( button, SIGNAL(clicked()), SLOT(_reload()) );
+    connect( button, &QAbstractButton::clicked, this, &OptionDialog::_reload );
     button->setAutoDefault( false );
 
 }

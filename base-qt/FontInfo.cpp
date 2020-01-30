@@ -41,7 +41,7 @@ QWidget( parent )
     for( auto&& iterator = checkBoxes_.begin(); iterator != checkBoxes_.end(); ++iterator )
     {
         layout()->addWidget( iterator.value() );
-        connect( iterator.value(), SIGNAL(toggled(bool)), SIGNAL(modified()));
+        connect( iterator.value(), &QAbstractButton::toggled, this, &FontInfo::modified);
     }
 
 }

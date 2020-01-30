@@ -139,53 +139,53 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     QPushButton *button;
     buttonLayout->addWidget( button = new QPushButton( tr( "Add" ), this ) );
     button->setIcon( IconEngine::get( IconNames::Add ) );
-    connect( button, SIGNAL(clicked()), SLOT(_add()) );
+    connect( button, &QAbstractButton::clicked, this, &OptionListBox::_add );
 
     // Add action
     QAction* action;
     addAction( action = new QAction( IconEngine::get( IconNames::Add ), tr( "Add" ), this ) );
-    connect( action, SIGNAL(triggered()), SLOT(_add()) );
+    connect( action, &QAction::triggered, this, &OptionListBox::_add );
     action->setShortcut( QKeySequence::New );
     menu->addAction( action );
 
     // remove button
     buttonLayout->addWidget( remove_ = new QPushButton( tr( "Remove" ), this ) );
-    connect( remove_, SIGNAL(clicked()), SLOT(_remove()) );
+    connect( remove_, &QAbstractButton::clicked, this, &OptionListBox::_remove );
     remove_->setIcon( IconEngine::get( IconNames::Remove ) );
     remove_->setToolTip( tr( "Remove selected value" ) );
 
     addAction( removeAction_ = new QAction( IconEngine::get( IconNames::Remove ), tr( "Remove" ), this ) );
-    connect( removeAction_, SIGNAL(triggered()), SLOT(_remove()) );
+    connect( removeAction_, &QAction::triggered, this, &OptionListBox::_remove );
     removeAction_->setShortcut( QKeySequence::Delete );
     removeAction_->setToolTip( tr( "Remove selected value" ) );
     menu->addAction( action );
 
     // Edit button
     buttonLayout->addWidget( edit_ = new QPushButton( tr( "Edit" ), this ) );
-    connect( edit_, SIGNAL(clicked()), SLOT(_edit()) );
+    connect( edit_, &QAbstractButton::clicked, this, &OptionListBox::_edit );
     edit_->setIcon( IconEngine::get( IconNames::Edit ) );
     edit_->setToolTip( tr( "Edit selected value" ) );
 
     addAction( editAction_ = new QAction( IconEngine::get( IconNames::Edit ),  tr( "Edit" ), this ) );
-    connect( editAction_, SIGNAL(triggered()), SLOT(_edit()) );
+    connect( editAction_, &QAction::triggered, this, &OptionListBox::_edit );
     menu->addAction( action );
 
     // set default button
     buttonLayout->addWidget( default_ = new QPushButton( tr( "Default" ), this ) );
-    connect( default_, SIGNAL(clicked()), SLOT(_setDefault()) );
+    connect( default_, &QAbstractButton::clicked, this, &OptionListBox::_setDefault );
     default_->setToolTip( tr( "Set selected value as default\n(move it to the top of the list)" ) );
     default_->setIcon( IconEngine::get( IconNames::DialogAccept ) );
 
     addAction( defaultAction_ = new QAction( IconEngine::get( IconNames::DialogAccept ), tr( "Default" ), this ) );
-    connect( defaultAction_, SIGNAL(triggered()), SLOT(_setDefault()) );
+    connect( defaultAction_, &QAction::triggered, this, &OptionListBox::_setDefault );
     menu->addAction( action );
 
     buttonLayout->addStretch(1);
 
     // set connections
-    connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
-    connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_updateButtons()) );
-    connect( list_, SIGNAL(activated(QModelIndex)), SLOT(_setDefault()) );
+    connect( list_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &OptionListBox::_updateButtons );
+    connect( list_->selectionModel(), &QItemSelectionModel::currentChanged, this, &OptionListBox::_updateButtons );
+    connect( list_, &QAbstractItemView::activated, this, &OptionListBox::_setDefault );
 
     // update buttons
     _updateButtons();
@@ -199,8 +199,8 @@ void OptionListBox::_setModel( OptionModel* model )
     if( list_ )
     {
         list_->setModel( model );
-        connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
-        connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_updateButtons()) );
+        connect( list_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &OptionListBox::_updateButtons );
+        connect( list_->selectionModel(), &QItemSelectionModel::currentChanged, this, &OptionListBox::_updateButtons );
     }
 
     if( model_ ) model_->deleteLater();

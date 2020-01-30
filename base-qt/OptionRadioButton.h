@@ -44,7 +44,7 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
         setChecked( options.get<bool>( optionName() ) );
         if( !_connected() )
         {
-            connect( this, SIGNAL(toggled(bool)), SIGNAL(modified()));
+            connect( this, &QAbstractButton::toggled, this, &OptionRadioButton::modified);
             _setConnected();
         }
 

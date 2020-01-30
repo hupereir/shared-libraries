@@ -187,7 +187,7 @@ QToolButton* MessageWidget::addDefaultCloseButton()
     button->setAutoRaise( true );
     private_->textLayout_->addWidget( button, 0, Qt::AlignTop );
 
-    connect( button, SIGNAL(clicked()), this, SLOT(animatedHide()) );
+    connect( button, &QAbstractButton::clicked, this, &MessageWidget::animatedHide );
     return button;
 }
 
@@ -378,7 +378,7 @@ void MessageWidgetPrivate::setupAnimation()
     if( !animation_ )
     {
         animation_ = new QPropertyAnimation( parent_, "height", this );
-        connect( animation_, SIGNAL(finished()), SLOT(animationFinished()) );
+        connect( animation_, &QAbstractAnimation::finished, this, &MessageWidgetPrivate::animationFinished );
     }
 
     // setup

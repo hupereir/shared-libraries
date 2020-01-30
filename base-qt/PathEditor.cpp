@@ -90,7 +90,7 @@ namespace Private
         Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
         dragMonitor_ = new DragMonitor( this );
         dragMonitor_->setDragEnabled( false );
-        connect( dragMonitor_, SIGNAL(dragStarted(QPoint)), SLOT(_startDrag(QPoint)));
+        connect( dragMonitor_, &DragMonitor::dragStarted, this, &PathEditorItem::_startDrag);
     }
 
     //____________________________________________________________________________
@@ -361,7 +361,7 @@ PathEditor::PathEditor( QWidget* parent ):
         hLayout->addWidget( menuButton_ = new Private::PathEditorMenuButton( browserContainer_ ) );
         menuButton_->setItemView( itemView_ );
         menuButton_->hide();
-        connect( menuButton_, SIGNAL(clicked()), SLOT(_menuButtonClicked()) );
+        connect( menuButton_, &QAbstractButton::clicked, this, &PathEditor::_menuButtonClicked );
 
         // button layout
         hLayout->addLayout( buttonLayout_ = new QHBoxLayout );
@@ -371,7 +371,7 @@ PathEditor::PathEditor( QWidget* parent ):
         // switch
         Private::PathEditorSwitch* editorSwitch = new Private::PathEditorSwitch( browserContainer_ );
         hLayout->addWidget( editorSwitch, 1 );
-        connect( editorSwitch, SIGNAL(clicked()), SLOT(_showEditor()) );
+        connect( editorSwitch, &QAbstractButton::clicked, this, &PathEditor::_showEditor );
 
         // button group
         group_ = new QButtonGroup( browserContainer_ );
@@ -406,9 +406,9 @@ PathEditor::PathEditor( QWidget* parent ):
 
         button->setFocusPolicy( Qt::StrongFocus );
 
-        connect( editor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_returnPressed()) );
+        connect( editor_->lineEdit(), &QLineEdit::returnPressed, this, &PathEditor::_returnPressed );
         connect( editor_, SIGNAL(activated(int)), SLOT(_returnPressed()) );
-        connect( button, SIGNAL(clicked()), SLOT(_showBrowser()) );
+        connect( button, &QAbstractButton::clicked, this, &PathEditor::_showBrowser );
 
         addWidget( editorContainer_ );
     }
@@ -418,8 +418,8 @@ PathEditor::PathEditor( QWidget* parent ):
         previousPathMenu_ = new QMenu( this );
         nextPathMenu_ = new QMenu( this );
 
-        connect( previousPathMenu_, SIGNAL(triggered(QAction*)), SLOT(selectFromMenu(QAction*)) );
-        connect( nextPathMenu_, SIGNAL(triggered(QAction*)), SLOT(selectFromMenu(QAction*)) );
+        connect( previousPathMenu_, &QMenu::triggered, this, &PathEditor::selectFromMenu );
+        connect( nextPathMenu_, &QMenu::triggered, this, &PathEditor::selectFromMenu );
 
     }
 
@@ -883,7 +883,7 @@ void PathEditor::_menuButtonClicked()
         menu->addAction( path )->setData( path.get() );
     }
 
-    connect( menu, SIGNAL(triggered(QAction*)), SLOT(_updatePath(QAction*)) );
+    connect( menu, &QMenu::triggered, this, &PathEditor::_updatePath );
     menu->exec( menuButton_->mapToGlobal( menuButton_->rect().bottomLeft() ) );
     static_cast<Private::PathEditorButton*>(menuButton_)->setMouseOver( false );
 

@@ -29,9 +29,9 @@ SystemNotifications::SystemNotifications( QObject* parent, const QString& applic
 {
 
     d = new Private::SystemNotificationsP( this );
-    connect( d, SIGNAL(notificationSent(quint32)), this, SIGNAL(notificationSent(quint32)) );
-    connect( d, SIGNAL(notificationClosed(quint32)), this, SIGNAL(notificationClosed(quint32)) );
-    connect( d, SIGNAL(actionInvoked(quint32,QString)), this, SIGNAL(actionInvoked(quint32,QString)) );
+    connect( d, &Private::SystemNotificationsP::notificationSent, this, &SystemNotifications::notificationSent );
+    connect( d, &Private::SystemNotificationsP::notificationClosed, this, &SystemNotifications::notificationClosed );
+    connect( d, &Private::SystemNotificationsP::actionInvoked, this, &SystemNotifications::actionInvoked );
 
     if( !applicationName.isNull() ) setApplicationName( applicationName );
     if( !applicationIcon.isNull() ) setApplicationIcon( applicationIcon );

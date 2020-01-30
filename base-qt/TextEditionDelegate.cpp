@@ -29,7 +29,7 @@ namespace Private
     //______________________________________________________________
     LocalEditor::LocalEditor( QWidget* parent ):
         LineEditor( parent )
-    { connect( this, SIGNAL(returnPressed()), SLOT(_validate()) );}
+    { connect( this, &QLineEdit::returnPressed, this, &LocalEditor::_validate );}
 
     //______________________________________________________________
     void LocalEditor::_validate()

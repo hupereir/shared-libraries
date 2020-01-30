@@ -114,9 +114,9 @@ namespace Ssh
         if( qobject_cast<ReadFileSocket*>(remoteDevice_)->isConnected() ) _prepareReading();
         else connect( remoteDevice_, SIGNAL(connected()), SLOT(_prepareReading()) );
 
-        connect( remoteDevice_, SIGNAL(readyRead()), SLOT(_readFromSocket()) );
-        connect( remoteDevice_, SIGNAL(readChannelFinished()), SLOT(_closeSourceFile()) );
-        connect( remoteDevice_, SIGNAL(readChannelFinished()), SLOT(_closeSocket()) );
+        connect( remoteDevice_, &QIODevice::readyRead, this, &FileTransferObject::_readFromSocket );
+        connect( remoteDevice_, &QIODevice::readChannelFinished, this, &FileTransferObject::_closeSourceFile );
+        connect( remoteDevice_, &QIODevice::readChannelFinished, this, &FileTransferObject::_closeSocket );
 
         _readFromSocket();
 

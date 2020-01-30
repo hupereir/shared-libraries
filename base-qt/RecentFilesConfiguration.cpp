@@ -91,7 +91,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     list_->setSelectionMode( QAbstractItemView::ContiguousSelection );
     list_->setOptionName( "RECENT_FILES_CONFIGURATION_LIST" );
 
-    connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
+    connect( list_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &RecentFilesConfiguration::_updateButtons );
 
     vLayout = new QVBoxLayout;
     vLayout->setSpacing(6);
@@ -105,20 +105,20 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     vLayout->addWidget( cleanButton_ = new QPushButton( tr( "Clean" ), box ) );
     cleanButton_->setToolTip( tr( "Remove invalid files" ) );
     cleanButton_->setIcon( IconEngine::get( IconNames::Delete ) );
-    connect( cleanButton_, SIGNAL(clicked()), SLOT(_clean()) );
+    connect( cleanButton_, &QAbstractButton::clicked, this, &RecentFilesConfiguration::_clean );
 
     addAction( cleanAction_ = new QAction( IconEngine::get( IconNames::Delete ), tr( "Clean" ), this ) );
-    connect( cleanAction_, SIGNAL(triggered()), SLOT(_clean()) );
+    connect( cleanAction_, &QAction::triggered, this, &RecentFilesConfiguration::_clean );
     menu->addAction( cleanAction_ );
 
     // remove
     vLayout->addWidget( removeButton_ = new QPushButton( tr( "Remove" ), box ) );
     removeButton_->setIcon( IconEngine::get( IconNames::Remove ) );
     removeButton_->setToolTip( tr( "Remove selected files" ) );
-    connect( removeButton_, SIGNAL(clicked()), SLOT(_remove()) );
+    connect( removeButton_, &QAbstractButton::clicked, this, &RecentFilesConfiguration::_remove );
 
     addAction( removeAction_ = new QAction( IconEngine::get( IconNames::Remove ), tr( "Remove" ), this ) );
-    connect( removeAction_, SIGNAL(triggered()), SLOT(_remove()) );
+    connect( removeAction_, &QAction::triggered, this, &RecentFilesConfiguration::_remove );
     removeAction_->setShortcut( QKeySequence::Delete );
     menu->addAction( removeAction_ );
     list_->addAction( removeAction_ );
@@ -127,10 +127,10 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     vLayout->addWidget( reloadButton_ = new QPushButton( tr( "Reload" ), box ) );
     reloadButton_->setToolTip( tr( "Reload file list" ) );
     reloadButton_->setIcon( IconEngine::get( IconNames::Reload ) );
-    connect( reloadButton_, SIGNAL(clicked()), SLOT(reload()) );
+    connect( reloadButton_, &QAbstractButton::clicked, this, &RecentFilesConfiguration::reload );
 
     addAction( reloadAction_ = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
-    connect( reloadAction_, SIGNAL(triggered()), SLOT(reload()) );
+    connect( reloadAction_, &QAction::triggered, this, &RecentFilesConfiguration::reload );
     menu->addAction( reloadAction_ );
 
     vLayout->addStretch( 1 );

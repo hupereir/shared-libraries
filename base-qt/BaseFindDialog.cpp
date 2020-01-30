@@ -60,6 +60,6 @@ void BaseFindDialog::setBaseFindWidget( AbstractFindWidget* baseFindWidget )
 
     // setup connections
     connect( baseFindWidget_, SIGNAL(find(TextSelection)), this, SIGNAL(find(TextSelection)) );
-    connect( &baseFindWidget_->closeButton(), SIGNAL(clicked()), SLOT(close()) );
+    connect( &baseFindWidget_->closeButton(), &QAbstractButton::clicked, this, &QWidget::close );
 
 }

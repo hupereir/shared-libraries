@@ -103,8 +103,8 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
     installServerSystemOptions();
 
     connect( this, SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
-    connect( this, SIGNAL(configurationChanged()), SLOT(_updateFonts()) );
-    connect( this, SIGNAL(configurationChanged()), SLOT(_updateIconTheme()) );
+    connect( this, &BaseCoreApplication::configurationChanged, this, &BaseApplication::_updateFonts );
+    connect( this, &BaseCoreApplication::configurationChanged, this, &BaseApplication::_updateIconTheme );
 
 }
 
@@ -134,17 +134,17 @@ bool BaseApplication::realizeWidget()
 
     // actions
     aboutAction_ = new QAction( applicationIcon(), tr( "About %1" ).arg( applicationName() ), this );
-    connect( aboutAction_, SIGNAL(triggered()), SLOT(_about()) );
+    connect( aboutAction_, &QAction::triggered, this, &BaseApplication::_about );
 
     aboutQtAction_ = new QAction( IconEngine::get( IconNames::AboutQt, Base::IconCacheItem::Flag::FromCache|Base::IconCacheItem::Flag::FromResource ), tr( "About Qt" ), this );
-    connect( aboutQtAction_, SIGNAL(triggered()), SLOT(_aboutQt()) );
+    connect( aboutQtAction_, &QAction::triggered, this, &BaseApplication::_aboutQt );
 
     closeAction_ = new QAction( IconEngine::get( IconNames::Exit ), tr( "Exit" ), this );
     closeAction_->setShortcut( QKeySequence::Quit );
     connect( closeAction_, SIGNAL(triggered()), qApp, SLOT(quit()) );
 
     configurationAction_ = new QAction( IconEngine::get( IconNames::Configure ), tr( "Configure %1..." ).arg( applicationName() ), this );
-    connect( configurationAction_, SIGNAL(triggered()), SLOT(_configuration()) );
+    connect( configurationAction_, &QAction::triggered, this, &BaseApplication::_configuration );
 
     return true;
 }

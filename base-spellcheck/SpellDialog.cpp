@@ -110,7 +110,7 @@ namespace SpellCheck
         // configuration
         DictionarySelectionButton* dictionarySelectionButton;
         gridLayout->addWidget( dictionarySelectionButton = new DictionarySelectionButton( this ) );
-        connect( dictionarySelectionButton, SIGNAL(modified()), SLOT(_updateDictionaries()) );
+        connect( dictionarySelectionButton, &DictionarySelectionButton::modified, this, &SpellDialog::_updateDictionaries );
 
         // filter combobox
         gridLayout->addWidget( filterLabel_ = new QLabel( tr( "Filter:" ), this ), 1, 0, 1, 1 );
@@ -123,7 +123,7 @@ namespace SpellCheck
         // configuration
         FilterSelectionButton* filterSelectionButton;
         gridLayout->addWidget( filterSelectionButton = new FilterSelectionButton( this ) );
-        connect( filterSelectionButton, SIGNAL(modified()), SLOT(_updateFilters()) );
+        connect( filterSelectionButton, &FilterSelectionButton::modified, this, &SpellDialog::_updateFilters );
 
         // stretch
         gridLayout->setColumnStretch( 1, 1 );
@@ -137,19 +137,19 @@ namespace SpellCheck
         // add word button
         vLayout->addWidget( addWordButton_ = new QPushButton( tr( "<< Add to Dictionary" ), this ) );
         addWordButton_->setToolTip( tr( "Add misspelled word to the current dictionnary" ) );
-        connect( addWordButton_, SIGNAL(clicked()), SLOT(_addWord()) );
+        connect( addWordButton_, &QAbstractButton::clicked, this, &SpellDialog::_addWord );
 
 
         // check word button
         vLayout->addWidget( checkWordButton_ = new QPushButton( tr( "Suggest" ), this ) );
         checkWordButton_->setToolTip( tr( "Suggest correct spelling for the word to use as a replacement" ) );
-        connect( checkWordButton_, SIGNAL(clicked()), SLOT(_checkWord()) );
+        connect( checkWordButton_, &QAbstractButton::clicked, this, &SpellDialog::_checkWord );
 
         // recheck button
         {
             QPushButton* button;
             vLayout->addWidget( button = new QPushButton( tr( "Recheck Page" ), this ) );
-            connect( button, SIGNAL(clicked()), SLOT(_restart()) );
+            connect( button, &QAbstractButton::clicked, this, &SpellDialog::_restart );
         }
 
         QFrame* frame;
@@ -163,7 +163,7 @@ namespace SpellCheck
 
         // replace button
         vLayout->addWidget( replaceAllButton_ = new QPushButton( tr( "Replace All" ), this ) );
-        connect( replaceAllButton_, SIGNAL(clicked()), SLOT(_replaceAll()) );
+        connect( replaceAllButton_, &QAbstractButton::clicked, this, &SpellDialog::_replaceAll );
         if( readOnly ) replaceAllButton_->setVisible( false );
 
         vLayout->addWidget( frame = new QFrame(this) );
@@ -171,18 +171,18 @@ namespace SpellCheck
 
         // ignore button
         vLayout->addWidget( ignoreButton_ = new QPushButton( tr( "Ignore" ), this ) );
-        connect( ignoreButton_, SIGNAL(clicked()), SLOT(_ignore()) );
+        connect( ignoreButton_, &QAbstractButton::clicked, this, &SpellDialog::_ignore );
 
         // ignore button
         vLayout->addWidget( ignoreAllButton_ = new QPushButton( tr( "Ignore All" ), this ) );
-        connect( ignoreAllButton_, SIGNAL(clicked()), SLOT(_ignoreAll()) );
+        connect( ignoreAllButton_, &QAbstractButton::clicked, this, &SpellDialog::_ignoreAll );
 
         vLayout->addStretch( 1 );
 
         // connections
-        connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_selectSuggestion(QModelIndex)) );
-        connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateButtons()) );
-        if( !readOnly ) { connect( list_, SIGNAL(activated(QModelIndex)), SLOT(_replace(QModelIndex)) ); }
+        connect( list_->selectionModel(), &QItemSelectionModel::currentChanged, this, &SpellDialog::_selectSuggestion );
+        connect( list_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &SpellDialog::_updateButtons );
+        if( !readOnly ) { connect( list_, &QAbstractItemView::activated, this, &SpellDialog::_replace ); }
 
         // set text
         // check Editor seletion
@@ -204,8 +204,8 @@ namespace SpellCheck
         editor_->setReadOnly( true );
 
         // connection
-        connect( &closeButton(), SIGNAL(clicked()), SLOT(_saveWordList()) );
-        connect( &closeButton(), SIGNAL(clicked()), SLOT(_restoreReadOnly()) );
+        connect( &closeButton(), &QAbstractButton::clicked, this, &SpellDialog::_saveWordList );
+        connect( &closeButton(), &QAbstractButton::clicked, this, &SpellDialog::_restoreReadOnly );
 
         Debug::Throw( "SpellCheck::SpellDialog::SpellDialog - done.\n" );
 

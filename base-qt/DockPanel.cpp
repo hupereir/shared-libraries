@@ -73,11 +73,11 @@ DockPanel::DockPanel( QWidget* parent ):
     dock_->installEventFilter( &panel_->widgetDragMonitor() );
 
     // and connect close event request
-    connect( dock_.get(), SIGNAL(closeEventRequest()), &panel_->detachAction(), SLOT(trigger()) );
+    connect( dock_.get(), &Private::LocalDockWidget::closeEventRequest, &panel_->detachAction(), &QAction::trigger );
 
     panel_->setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
-    connect( &panel_->detachAction(), SIGNAL(triggered()), SLOT(_toggleDock()) );
-    connect( &panel_->widgetDragMonitor(), SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
+    connect( &panel_->detachAction(), &QAction::triggered, this, &DockPanel::_toggleDock );
+    connect( &panel_->widgetDragMonitor(), &WidgetDragMonitor::stateChangeRequest, this, &DockPanel::_toggleDock );
 
     // vertical layout for children
     mainLayout_ = new QVBoxLayout;
@@ -237,7 +237,7 @@ namespace Private
 
         // context menu
         setContextMenuPolicy( Qt::CustomContextMenu );
-        connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
+        connect( this, &QWidget::customContextMenuRequested, this, &LocalWidget::_updateContextMenu );
 
         // configuration
         connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
@@ -385,13 +385,13 @@ namespace Private
         addAction( staysOnTopAction_ = new QAction( tr( "Keep Above" ), this ) );
         staysOnTopAction_->setToolTip( tr( "Keep window on top of all others" ) );
         staysOnTopAction_->setCheckable( true );
-        connect( staysOnTopAction_, SIGNAL(toggled(bool)), SLOT(_toggleStaysOnTop(bool)) );
+        connect( staysOnTopAction_, &QAction::toggled, this, &LocalWidget::_toggleStaysOnTop );
 
         // sticky
         addAction( stickyAction_ = new QAction( tr( "Sticky" ), this ) );
         stickyAction_->setToolTip( tr( "Make window appear on all desktops" ) );
         stickyAction_->setCheckable( true );
-        connect( stickyAction_, SIGNAL(toggled(bool)), SLOT(_toggleSticky(bool)) );
+        connect( stickyAction_, &QAction::toggled, this, &LocalWidget::_toggleSticky );
 
     }
 

@@ -59,7 +59,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     layout->addWidget( button, 0 );
 
     // connect button
-    connect( button, SIGNAL(clicked()), SLOT(_browse()) );
+    connect( button, &QAbstractButton::clicked, this, &BrowsedLineEditor::_browse );
 }
 
 //_____________________________________________________________
@@ -74,7 +74,7 @@ void BrowsedLineEditor::setTargetApplication( File target )
         button->setIcon( IconEngine::get( IconNames::Reload ) );
         button->setText( tr( "Refresh" ) );
         layout()->addWidget( button );
-        connect( button, SIGNAL(clicked()), SLOT(_findTargetApplication()) );
+        connect( button, &QAbstractButton::clicked, this, &BrowsedLineEditor::_findTargetApplication );
 
         findTargetButton_.reset( button );
 

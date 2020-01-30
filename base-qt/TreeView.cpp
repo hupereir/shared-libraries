@@ -70,14 +70,14 @@ TreeView::TreeView( QWidget* parent ):
     // header menu
     header()->setContextMenuPolicy( Qt::CustomContextMenu );
     header()->setSortIndicator( 0, Qt::AscendingOrder );
-    connect( header(), SIGNAL(customContextMenuRequested(QPoint)), SLOT(_raiseHeaderMenu(QPoint)) );
-    connect( header(), SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), SLOT(saveSortOrder()) );
+    connect( header(), &QWidget::customContextMenuRequested, this, &TreeView::_raiseHeaderMenu );
+    connect( header(), &QHeaderView::sortIndicatorChanged, this, &TreeView::saveSortOrder );
 
     // hover
-    connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
+    connect( this, &QAbstractItemView::entered, this, &TreeView::_indexEntered );
 
     // horizontal scrollbar range bug
-    connect( horizontalScrollBar(), SIGNAL(rangeChanged(int,int)), SLOT(_updateHorizontalScrollBarRange()) );
+    connect( horizontalScrollBar(), &QAbstractSlider::rangeChanged, this, &TreeView::_updateHorizontalScrollBarRange );
 
     // configuration
     connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
@@ -106,15 +106,15 @@ void TreeView::setModel( QAbstractItemModel* model )
     model_ = qobject_cast<ItemModel*>( model );
     if( model_ )
     {
-        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(saveSelectedIndexes()) );
-        connect( model_, SIGNAL(layoutChanged()), SLOT(restoreSelectedIndexes()) );
+        connect( model_, &QAbstractItemModel::layoutAboutToBeChanged, this, &TreeView::saveSelectedIndexes );
+        connect( model_, &QAbstractItemModel::layoutChanged, this, &TreeView::restoreSelectedIndexes );
     }
 
     // expanded indexes
     if( model_ && model_->supportsExpandedIndexes() )
     {
-        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(saveExpandedIndexes()) );
-        connect( model_, SIGNAL(layoutChanged()), SLOT(restoreExpandedIndexes()) );
+        connect( model_, &QAbstractItemModel::layoutAboutToBeChanged, this, &TreeView::saveExpandedIndexes );
+        connect( model_, &QAbstractItemModel::layoutChanged, this, &TreeView::restoreExpandedIndexes );
     }
 
 }
@@ -155,9 +155,9 @@ void TreeView::setFindWidget( AbstractFindWidget* widget )
     if( findWidget_ )
     {
         connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
-        connect( this, SIGNAL(destroyed()), findWidget_, SLOT(deleteLater()) );
+        connect( this, &TreeView::matchFound, findWidget_, &AbstractFindWidget::matchFound );
+        connect( this, &TreeView::noMatchFound, findWidget_, &AbstractFindWidget::noMatchFound );
+        connect( this, &QObject::destroyed, findWidget_, &QObject::deleteLater );
     }
 
 }
@@ -916,39 +916,39 @@ void TreeView::_installActions()
     connect( selectAllAction_, SIGNAL(triggered()), SLOT(selectAll()) );
 
     addAction( collapseAllAction_ = new QAction( tr("Collapse All Entries"), this ) );
-    connect( collapseAllAction_, SIGNAL(triggered()), SLOT(collapseAll()) );
+    connect( collapseAllAction_, &QAction::triggered, this, &QTreeView::collapseAll );
 
     addAction( findAction_ = new QAction( IconEngine::get( IconNames::Find ), tr("Find"), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAction_, SIGNAL(triggered()), SLOT(_findFromDialog()) );
+    connect( findAction_, &QAction::triggered, this, &TreeView::_findFromDialog );
 
     addAction( findAgainAction_ = new QAction( tr("Find Again"), this ) );
     findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAgainAction_, SIGNAL(triggered()), SLOT(findAgainForward()) );
+    connect( findAgainAction_, &QAction::triggered, this, &TreeView::findAgainForward );
 
     addAction( findAgainBackwardAction_ = new QAction( this ) );
     findAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAgainBackwardAction_, SIGNAL(triggered()), SLOT(findAgainBackward()) );
+    connect( findAgainBackwardAction_, &QAction::triggered, this, &TreeView::findAgainBackward );
 
     addAction( findSelectionAction_ = new QAction( tr("Find Selection"), this ) );
     findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findSelectionAction_, SIGNAL(triggered()), SLOT(findSelectionForward()) );
+    connect( findSelectionAction_, &QAction::triggered, this, &TreeView::findSelectionForward );
 
     addAction( findSelectionBackwardAction_ = new QAction( this ) );
     findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findSelectionBackwardAction_, SIGNAL(triggered()), SLOT(findSelectionBackward()) );
+    connect( findSelectionBackwardAction_, &QAction::triggered, this, &TreeView::findSelectionBackward );
 
 
     // show header action
     showHeaderAction_ = new QAction( tr("Show List Header"), this );
     showHeaderAction_->setCheckable( true );
     showHeaderAction_->setChecked( true );
-    connect( showHeaderAction_, SIGNAL(toggled(bool)), SLOT(toggleShowHeader(bool)) );
+    connect( showHeaderAction_, &QAction::toggled, this, &TreeView::toggleShowHeader );
 
 }
 

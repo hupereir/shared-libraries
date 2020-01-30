@@ -185,5 +185,5 @@ void CustomToolBar::_installActions()
         visibilityAction_->setChecked( true );
     }
 
-    connect( visibilityAction_, SIGNAL(toggled(bool)), SLOT(_toggleVisibility(bool)) );
+    connect( visibilityAction_, &QAction::toggled, this, &CustomToolBar::_toggleVisibility );
 }

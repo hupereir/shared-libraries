@@ -48,7 +48,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     { setDirectory( QDir( FileDialog::_workingDirectory() ) ); }
 
     Debug::Throw() << "ImageFileDialog::ImageFileDialog - working directory: " << FileDialog::_workingDirectory() << endl;
-    connect( this, SIGNAL(directoryEntered(QString)), SLOT(saveWorkingDirectory(QString)) );
+    connect( this, &QFileDialog::directoryEntered, this, &ImageFileDialog::saveWorkingDirectory );
 
     // add image display
     auto splitter = findChild<QSplitter*>( "splitter" );
@@ -75,7 +75,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
 
         auto button = new QPushButton( tr( "Preview" ), main );
         hLayout->addWidget( button );
-        connect( button, SIGNAL(clicked()), SLOT(_preview()) );
+        connect( button, &QAbstractButton::clicked, this, &ImageFileDialog::_preview );
 
     } else Debug::Throw() << "ImageFileDialog::ImageFileDialog - unable to find splitter." << endl;
 

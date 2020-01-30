@@ -55,7 +55,7 @@ void BaseFileInfoConfigurationWidget::read( const Options& options )
     {
         iter.value()->setChecked( mask&iter.key() );
         if( !_connected() )
-        { connect( iter.value(), SIGNAL(toggled(bool)), SIGNAL(modified()) ); }
+        { connect( iter.value(), &QAbstractButton::toggled, this, &BaseFileInfoConfigurationWidget::modified ); }
     }
 
     _setConnected();
@@ -81,6 +81,6 @@ void BaseFileInfoConfigurationWidget::_addCheckBox( BaseFileInfoToolTipWidget::T
     checkboxes_.insert( type, checkbox );
 
     if( _connected() )
-    { connect( checkbox, SIGNAL(toggled(bool)), SIGNAL(modified()) ); }
+    { connect( checkbox, &QAbstractButton::toggled, this, &BaseFileInfoConfigurationWidget::modified ); }
 
 }

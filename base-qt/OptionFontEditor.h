@@ -43,7 +43,7 @@ class OptionFontEditor: public FontEditor, public OptionWidget
         setFont( options.raw( optionName() ) );
         if( !_connected() )
         {
-            connect( this, SIGNAL(fontChanged(QFont)), SIGNAL(modified()));
+            connect( this, &FontEditor::fontChanged, this, &OptionFontEditor::modified);
             _setConnected();
         }
 

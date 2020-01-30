@@ -83,10 +83,10 @@ namespace Base
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );
         htmlEditor_->setTrackAnchors( true );
-        connect( htmlEditor_, SIGNAL(linkActivated(QString)), SLOT(_openLink(QString)) );
+        connect( htmlEditor_, &TextEditor::linkActivated, this, &HelpDialog::_openLink );
 
         // connect list to text edit
-        connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex,QModelIndex)) );
+        connect( list_->selectionModel(), &QItemSelectionModel::currentChanged, this, &HelpDialog::_display );
 
         // add close accelerator
         new QShortcut( QKeySequence::Quit, this, SLOT(close()) );

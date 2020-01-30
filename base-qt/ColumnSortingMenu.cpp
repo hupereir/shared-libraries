@@ -31,13 +31,13 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, const QString& title ):
 {
     Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
     setTitle( title );
-    connect( this, SIGNAL(aboutToShow()), SLOT(_updateActions()) );
-    connect( this, SIGNAL(triggered(QAction*)), SLOT(_sort(QAction*)) );
+    connect( this, &QMenu::aboutToShow, this, &ColumnSortingMenu::_updateActions );
+    connect( this, &QMenu::triggered, this, &ColumnSortingMenu::_sort );
     group_->setExclusive( true );
 
     addSeparator();
 
-    addAction( tr( "Reverse Order" ), this, SLOT(_revertOrder()) );
+    addAction( tr( "Reverse Order" ), this, &ColumnSortingMenu::_revertOrder );
 }
 
 //_____________________________________________________

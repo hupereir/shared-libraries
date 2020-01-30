@@ -228,5 +228,5 @@ void DockWidget::_installActions()
         visibilityAction().setChecked( true );
     }
 
-    connect( visibilityAction_, SIGNAL(toggled(bool)), SLOT(_toggleVisibility(bool)) );
+    connect( visibilityAction_, &QAction::toggled, this, &DockWidget::_toggleVisibility );
 }

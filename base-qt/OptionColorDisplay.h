@@ -44,7 +44,7 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
         setColor( options.get<Base::Color>( optionName() ) );
         if( !_connected() )
         {
-            connect( &_editor(), SIGNAL(textChanged(QString)), SIGNAL(modified()) );
+            connect( &_editor(), &QLineEdit::textChanged, this, &OptionColorDisplay::modified );
             _setConnected();
         }
 

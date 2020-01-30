@@ -63,6 +63,6 @@ FontEditor::FontEditor( QWidget *parent ):
     layout->addWidget( button, 0 );
 
     // connect push_button
-    connect( button, SIGNAL(clicked()), SLOT(_selectFont()) );
+    connect( button, &QAbstractButton::clicked, this, &FontEditor::_selectFont );
     setFont( font() );
 }

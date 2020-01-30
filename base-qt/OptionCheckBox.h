@@ -50,7 +50,7 @@ class OptionCheckBox: public QCheckBox, public OptionWidget
         else setChecked( options.get<bool>( optionName() ) );
         if( !_connected() )
         {
-            connect( this, SIGNAL(toggled(bool)), SIGNAL(modified()) );
+            connect( this, &QAbstractButton::toggled, this, &OptionCheckBox::modified );
             _setConnected();
         }
 

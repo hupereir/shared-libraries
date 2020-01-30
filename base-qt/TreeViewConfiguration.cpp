@@ -76,7 +76,7 @@ void TreeViewConfiguration::read( const Options& options )
     {
         checkbox_[index]->setChecked( mask & (1<<index) );
         if( !_connected() )
-        { connect( checkbox_[index], SIGNAL(toggled(bool)), this, SIGNAL(modified())); }
+        { connect( checkbox_[index], &QAbstractButton::toggled, this, &TreeViewConfiguration::modified); }
     }
 
     _setConnected();

@@ -114,7 +114,7 @@ namespace Svg
         if( !fileSystemWatcher_ )
         {
             fileSystemWatcher_ = new QFileSystemWatcher( this );
-            connect( fileSystemWatcher_, SIGNAL(fileChanged(QString)), SLOT(_configurationFileChanged(QString)) );
+            connect( fileSystemWatcher_, &QFileSystemWatcher::fileChanged, this, &SvgPlasmaInterface::_configurationFileChanged );
         }
 
         // add valid configuration files to watcher

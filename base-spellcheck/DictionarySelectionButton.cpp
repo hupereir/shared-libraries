@@ -41,7 +41,7 @@ namespace SpellCheck
         setIcon( IconEngine::get( IconNames::Configure ) );
         setAutoRaise( true );
         setToolTip( tr( "Configure dictionaries that should appear in the list" ) );
-        connect( this, SIGNAL(clicked()), SLOT(_edit()) );
+        connect( this, &QAbstractButton::clicked, this, &DictionarySelectionButton::_edit );
 
         read( XmlOptions::get() );
 

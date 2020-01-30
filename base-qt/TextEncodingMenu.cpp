@@ -36,7 +36,7 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     setTitle( tr( "Text Encoding" ) );
 
     auto group = new QActionGroup( this );
-    connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
+    connect( group, &QActionGroup::triggered, this, &TextEncodingMenu::_selected );
 
     // use MIBs to get rid of aliases
     QList<TextEncodingString> codecStrings;

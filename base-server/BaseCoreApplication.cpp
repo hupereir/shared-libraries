@@ -41,7 +41,7 @@ BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments 
     ErrorHandler::initialize();
 
     // configuration
-    connect( this, SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( this, &BaseCoreApplication::configurationChanged, this, &BaseCoreApplication::_updateConfiguration );
 
 }
 
@@ -93,7 +93,7 @@ bool BaseCoreApplication::initApplicationManager()
     applicationManager_->setApplicationName( applicationName() );
 
     // connections
-    connect( applicationManager_.get(), SIGNAL(commandRecieved(Server::ServerCommand)), SLOT(_processCommand(Server::ServerCommand)) );
+    connect( applicationManager_.get(), &Server::ApplicationManager::commandRecieved, this, &BaseCoreApplication::_processCommand );
 
     // initialization
     applicationManager_->initialize( arguments_ );

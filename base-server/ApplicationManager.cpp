@@ -297,7 +297,7 @@ namespace Server
             // create client from pending connection
             auto client = std::make_shared<Client>( this, server_->nextPendingConnection() );
             connect( client.get(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
-            connect( &client->socket(), SIGNAL(disconnected()), SLOT(_clientConnectionClosed()) );
+            connect( &client->socket(), &QAbstractSocket::disconnected, this, &ApplicationManager::_clientConnectionClosed );
             connectedClients_.append( client );
         }
 
@@ -456,7 +456,7 @@ namespace Server
         serverInitialized_ = true;
 
         server_.reset( new QTcpServer( this ) );
-        connect( server_.get(), SIGNAL(newConnection()), SLOT(_newConnection()) );
+        connect( server_.get(), &QTcpServer::newConnection, this, &ApplicationManager::_newConnection );
 
         return server_->listen( host_, port_ );
 
@@ -471,8 +471,8 @@ namespace Server
         // connect client to port
         client_.reset( new Client( this ) );
         connect( &client_->socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
-        connect( &client_->socket(), SIGNAL(connected()), SLOT(_startTimer()) );
-        connect( &client_->socket(), SIGNAL(disconnected()), SLOT(_serverConnectionClosed()) );
+        connect( &client_->socket(), &QAbstractSocket::connected, this, &ApplicationManager::_startTimer );
+        connect( &client_->socket(), &QAbstractSocket::disconnected, this, &ApplicationManager::_serverConnectionClosed );
         connect( client_.get(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_process(Server::ServerCommand)) );
         client_->socket().connectToHost( host_, port_ );
 

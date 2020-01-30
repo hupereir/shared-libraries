@@ -60,7 +60,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
 
         if( !_connected() )
         {
-            connect( this, SIGNAL(editTextChanged(QString)), SIGNAL(modified()) );
+            connect( this, &QComboBox::editTextChanged, this, &OptionComboBox::modified );
             connect( this, SIGNAL(currentIndexChanged(int)), SIGNAL(modified()) );
             _setConnected();
         }

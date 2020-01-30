@@ -33,7 +33,7 @@ PasswordEditor::PasswordEditor( QWidget* parent ):
     showPasswordButton_->setIcon( IconEngine::get( IconNames::ShowPassword ) );
     addRightWidget( showPasswordButton_ );
 
-    connect( showPasswordButton_, SIGNAL(clicked()), SLOT(_toggleShowPassword()) );
+    connect( showPasswordButton_, &QAbstractButton::clicked, this, &PasswordEditor::_toggleShowPassword );
 }
 
 //____________________________________________________________

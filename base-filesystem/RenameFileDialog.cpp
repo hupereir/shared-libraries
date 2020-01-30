@@ -42,7 +42,7 @@ RenameFileDialog::RenameFileDialog( QWidget* parent, FileRecord record ):
     File shortFile( record.file().truncatedName() );
     if( !shortFile.isEmpty() ) _editor().setSelection( 0, shortFile.get().size() );
     else _editor().selectAll();
-    connect( &_editor(), SIGNAL(textChanged(QString)), SLOT(_updateButtons()) );
+    connect( &_editor(), &QLineEdit::textChanged, this, &RenameFileDialog::_updateButtons );
 
     // rename buttons
     okButton().setText( tr( "Rename" ) );

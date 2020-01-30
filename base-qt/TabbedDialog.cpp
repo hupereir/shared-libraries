@@ -66,7 +66,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     buttonBox_->layout()->setMargin(5);
 
     // connections
-    connect( list_->selectionModel(), SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), SLOT(_display(QModelIndex)) );
+    connect( list_->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &TabbedDialog::_display );
     new QShortcut( QKeySequence::Quit, this, SLOT(close()) );
 
 }

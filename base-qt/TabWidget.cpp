@@ -67,12 +67,12 @@ TabWidget::TabWidget( QTabWidget* parent ):
     dock_->installEventFilter( &widgetDragMonitor_ );
 
     // connections
-    connect( dock_.get(), SIGNAL(closeEventRequest()), detachAction_, SLOT(trigger()) );
-    connect( &widgetDragMonitor_, SIGNAL(stateChangeRequest()), SLOT(_toggleDock()) );
+    connect( dock_.get(), &Private::LocalTabWidget::closeEventRequest, detachAction_, &QAction::trigger );
+    connect( &widgetDragMonitor_, &WidgetDragMonitor::stateChangeRequest, this, &TabWidget::_toggleDock );
 
     // context menu
     setContextMenuPolicy( Qt::CustomContextMenu );
-    connect( this, SIGNAL(customContextMenuRequested(QPoint)), SLOT(_updateContextMenu(QPoint)) );
+    connect( this, &QWidget::customContextMenuRequested, this, &TabWidget::_updateContextMenu );
 
 }
 
@@ -239,21 +239,21 @@ void TabWidget::_installActions()
     // detach action
     addAction( detachAction_ = new QAction( tr( "Detach" ), this ) );
     detachAction_->setToolTip( tr( "Dock/undock panel" ) );
-    connect( detachAction_, SIGNAL(triggered()), SLOT(_toggleDock()) );
+    connect( detachAction_, &QAction::triggered, this, &TabWidget::_toggleDock );
 
     // stays on top
     addAction( staysOnTopAction_ = new QAction( tr( "Keep Above" ), this ) );
     staysOnTopAction_->setToolTip( tr( "Keep window above all others" ) );
     staysOnTopAction_->setCheckable( true );
     staysOnTopAction_->setChecked( false );
-    connect( staysOnTopAction_, SIGNAL(toggled(bool)), SLOT(_toggleStaysOnTop(bool)) );
+    connect( staysOnTopAction_, &QAction::toggled, this, &TabWidget::_toggleStaysOnTop );
 
     // sticky
     addAction( stickyAction_ = new QAction( tr( "Sticky" ), this ) );
     stickyAction_->setToolTip( tr( "Make window appear on all desktops" ) );
     stickyAction_->setCheckable( true );
     stickyAction_->setChecked( false );
-    connect( stickyAction_, SIGNAL(toggled(bool)), SLOT(_toggleSticky(bool)) );
+    connect( stickyAction_, &QAction::toggled, this, &TabWidget::_toggleSticky );
 
 }
 

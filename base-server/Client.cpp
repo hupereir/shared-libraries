@@ -39,7 +39,7 @@ namespace Server
         BaseSocketInterface( parent, socket ),
         Counter( "Server::Client" ),
         id_( _counter()++ )
-    { connect( this, SIGNAL(bufferReceived(qint32,QByteArray)), SLOT(_parseBuffer(qint32,QByteArray)) ); }
+    { connect( this, &BaseSocketInterface::bufferReceived, this, &Client::_parseBuffer ); }
 
     //_______________________________________________________
     void Client::sendCommand( const ServerCommand& command )

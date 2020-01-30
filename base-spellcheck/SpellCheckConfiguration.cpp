@@ -73,7 +73,7 @@ namespace SpellCheck
 
             DictionarySelectionButton* dictionaryButton;
             gridLayout->addWidget( dictionaryButton = new DictionarySelectionButton( this ), 1, 2, 1, 1 );
-            connect( dictionaryButton, SIGNAL(modified()), SLOT(_updateDictionaries()) );
+            connect( dictionaryButton, &DictionarySelectionButton::modified, this, &SpellCheckConfiguration::_updateDictionaries );
             addOptionWidget( dictionaryButton );
 
         }
@@ -91,7 +91,7 @@ namespace SpellCheck
 
             FilterSelectionButton* filterButton;
             gridLayout->addWidget( filterButton = new FilterSelectionButton( this ), 2, 2, 1, 1 );
-            connect( filterButton, SIGNAL(modified()), SLOT(_updateFilters()) );
+            connect( filterButton, &FilterSelectionButton::modified, this, &SpellCheckConfiguration::_updateFilters );
             addOptionWidget( filterButton );
         }
 

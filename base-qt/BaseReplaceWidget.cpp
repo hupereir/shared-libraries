@@ -48,24 +48,24 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     // disable callbacks on find editor
     const auto editor = qobject_cast<CustomComboBox*>( &this->editor() );
     if( editor )
-    { disconnect( editor->lineEdit(), SIGNAL(textChanged(QString)), this, SLOT(_findNoIncrement()) ); }
+    { disconnect( editor->lineEdit(), &QLineEdit::textChanged, this, &BaseReplaceWidget::_findNoIncrement ); }
 
     replaceEditor_->setEditable( true );
     replaceEditor_->setAutoCompletion( true, Qt::CaseSensitive );
     replaceEditor_->setNavigationEnabled( false );
 
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_replace()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateFindComboBox()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(returnPressed()), SLOT(_updateReplaceComboBox()) );
-    connect( replaceEditor_->lineEdit(), SIGNAL(textChanged(QString)), this, SIGNAL(replaceTextChanged(QString)) );
+    connect( replaceEditor_->lineEdit(), &QLineEdit::returnPressed, this, &BaseReplaceWidget::_replace );
+    connect( replaceEditor_->lineEdit(), &QLineEdit::returnPressed, this, &BaseReplaceWidget::_updateFindComboBox );
+    connect( replaceEditor_->lineEdit(), &QLineEdit::returnPressed, this, &BaseReplaceWidget::_updateReplaceComboBox );
+    connect( replaceEditor_->lineEdit(), &QLineEdit::textChanged, this, &BaseReplaceWidget::replaceTextChanged );
 
     setTabOrder( &this->editor(), replaceEditor_ );
 
     // replace buttons
     QPushButton* button = new QPushButton( tr( "Replace" ), this );
-    connect( button, SIGNAL(clicked()), SLOT(_replace()) );
-    connect( button, SIGNAL(clicked()), SLOT(_updateFindComboBox()) );
-    connect( button, SIGNAL(clicked()), SLOT(_updateReplaceComboBox()) );
+    connect( button, &QAbstractButton::clicked, this, &BaseReplaceWidget::_replace );
+    connect( button, &QAbstractButton::clicked, this, &BaseReplaceWidget::_updateFindComboBox );
+    connect( button, &QAbstractButton::clicked, this, &BaseReplaceWidget::_updateReplaceComboBox );
     _addDisabledButton( button );
     _editorLayout().addWidget( button, 1, 2, 1, 1 );
     button->setAutoDefault( false );
@@ -84,18 +84,18 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     // replace in selection action
     QAction* action;
     replaceAllMenu_->addAction( action = new QAction( tr( "Selection" ), this ) );
-    connect( action, SIGNAL(triggered()), SLOT(_replaceInSelection()) );
-    connect( action, SIGNAL(triggered()), SLOT(_updateFindComboBox()) );
-    connect( action, SIGNAL(triggered()), SLOT(_updateReplaceComboBox()) );
+    connect( action, &QAction::triggered, this, &BaseReplaceWidget::_replaceInSelection );
+    connect( action, &QAction::triggered, this, &BaseReplaceWidget::_updateFindComboBox );
+    connect( action, &QAction::triggered, this, &BaseReplaceWidget::_updateReplaceComboBox );
     replaceInSelectionAction_ = action;
 
     // replace in window action
     replaceAllMenu_->addAction( action = new QAction( tr( "Window" ), this ) );
-    connect( action, SIGNAL(triggered()), SLOT(_replaceInWindow()) );
-    connect( action, SIGNAL(triggered()), SLOT(_updateFindComboBox()) );
-    connect( action, SIGNAL(triggered()), SLOT(_updateReplaceComboBox()) );
+    connect( action, &QAction::triggered, this, &BaseReplaceWidget::_replaceInWindow );
+    connect( action, &QAction::triggered, this, &BaseReplaceWidget::_updateFindComboBox );
+    connect( action, &QAction::triggered, this, &BaseReplaceWidget::_updateReplaceComboBox );
 
-    connect( replaceAllMenu_, SIGNAL(aboutToShow()), SIGNAL(menuAboutToShow()) );
+    connect( replaceAllMenu_, &QMenu::aboutToShow, this, &BaseReplaceWidget::menuAboutToShow );
 
 }
 

@@ -49,7 +49,7 @@ class OptionSlider: public CustomSlider, public OptionWidget
         setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
         if( !_connected() )
         {
-            connect( this, SIGNAL(valueChanged(int)), SIGNAL(modified()));
+            connect( this, &CustomSlider::valueChanged, this, &OptionSlider::modified);
             _setConnected();
         }
     }

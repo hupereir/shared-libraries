@@ -43,7 +43,7 @@ namespace SpellCheck
         list_->header()->hide();
 
         // connections
-        connect( list_, SIGNAL(clicked(QModelIndex)), SLOT(_selectItem(QModelIndex)) );
+        connect( list_, &QAbstractItemView::clicked, this, &SpellItemDialog::_selectItem );
 
     }
 

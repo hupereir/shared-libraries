@@ -39,8 +39,8 @@ namespace SpellCheck
         interface_.reset();
 
         // connections
-        if( !readOnly ) connect( this, SIGNAL(triggered(QAction*)), SLOT(_select(QAction*)) );
-        connect( this, SIGNAL(aboutToShow()), SLOT(_aboutToShow()) );
+        if( !readOnly ) connect( this, &QMenu::triggered, this, &SuggestionMenu::_select );
+        connect( this, &QMenu::aboutToShow, this, &SuggestionMenu::_aboutToShow );
 
     }
 
@@ -76,8 +76,8 @@ namespace SpellCheck
         if( !suggestions.isEmpty() )
         { addSeparator(); }
 
-        addAction( tr( "Add Word to Dictionary" ), this, SLOT(_addWord()) );
-        addAction( tr( "Ignore Word" ), this, SLOT(_ignoreWord()) );
+        addAction( tr( "Add Word to Dictionary" ), this, &SuggestionMenu::_addWord );
+        addAction( tr( "Ignore Word" ), this, &SuggestionMenu::_ignoreWord );
 
     }
 

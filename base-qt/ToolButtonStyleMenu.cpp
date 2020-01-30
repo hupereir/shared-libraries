@@ -31,7 +31,7 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     Debug::Throw( "ToolButtonStyleMenu::ToolButtonStyleMenu.\n" );
 
     auto group = new QActionGroup( this );
-    connect( group, SIGNAL(triggered(QAction*)), SLOT(_selected(QAction*)) );
+    connect( group, &QActionGroup::triggered, this, &ToolButtonStyleMenu::_selected );
 
     // install values
     actions_ =

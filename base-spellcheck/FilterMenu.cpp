@@ -41,7 +41,7 @@ namespace SpellCheck
         group_->setExclusive( true );
 
         reset();
-        connect( this, SIGNAL(triggered(QAction*)), SLOT(_selectFilter(QAction*)) );
+        connect( this, &QMenu::triggered, this, &FilterMenu::_selectFilter );
     }
 
     //____________________________________________________________________
@@ -73,7 +73,7 @@ namespace SpellCheck
         // add reset button
         QAction* action;
         addAction( action = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
-        connect( action, SIGNAL(triggered()), SLOT(reset()) );
+        connect( action, &QAction::triggered, this, &FilterMenu::reset );
 
         // load disabled filters from options
         QStringList disabledFilters;

@@ -32,8 +32,8 @@ ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, co
 {
     Debug::Throw( "ColumnSelectionMenu::ColumnSelectionMenu.\n" );
     setTitle( title );
-    connect( this, SIGNAL(aboutToShow()), SLOT(_updateActions()) );
-    connect( this, SIGNAL(triggered(QAction*)), SLOT(_updateSelectedColumns(QAction*)) );
+    connect( this, &QMenu::aboutToShow, this, &ColumnSelectionMenu::_updateActions );
+    connect( this, &QMenu::triggered, this, &ColumnSelectionMenu::_updateSelectedColumns );
 }
 
 //_____________________________________________________
@@ -73,7 +73,7 @@ void ColumnSelectionMenu::_updateActions()
         if( !( treeView && treeView->isColumnVisibilityLocked( currentColumn_ ) ) )
         {
             currentColumnAction_.reset( new QAction( tr( "Hide Column '%1'" ).arg( columnName ), this ) );
-            connect( currentColumnAction_.get(), SIGNAL(triggered()), SLOT(_hideCurrentColumn()) );
+            connect( currentColumnAction_.get(), &QAction::triggered, this, &ColumnSelectionMenu::_hideCurrentColumn );
             insertAction( firstAction, currentColumnAction_.get() );
             insertSeparator( firstAction );
         }

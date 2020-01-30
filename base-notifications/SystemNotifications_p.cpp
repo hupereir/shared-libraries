@@ -188,7 +188,7 @@ namespace Private
             constTimeout );
 
         auto watcher = new QDBusPendingCallWatcher( pendingCall, this );
-        connect( watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(_pendingCallFinished(QDBusPendingCallWatcher*)));
+        connect( watcher, &QDBusPendingCallWatcher::finished, this, &SystemNotificationsP::_pendingCallFinished);
 
         #endif
 

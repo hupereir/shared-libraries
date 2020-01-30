@@ -29,8 +29,8 @@ BaseSocketInterface::BaseSocketInterface( QObject* parent, QTcpSocket* socket ):
 {
     Debug::Throw( "BaseSocketInterface::BaseSocketInterface.\n" );
     if( !socket_ ) socket_ = new QTcpSocket( this );
-    connect( socket_, SIGNAL(connected()), SLOT(_sendPendingBuffers()) );
-    connect( socket_, SIGNAL(readyRead()), SLOT(_read()) );
+    connect( socket_, &QAbstractSocket::connected, this, &BaseSocketInterface::_sendPendingBuffers );
+    connect( socket_, &QIODevice::readyRead, this, &BaseSocketInterface::_read );
 }
 
 //_______________________________________________________

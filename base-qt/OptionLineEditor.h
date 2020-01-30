@@ -43,7 +43,7 @@ class OptionLineEditor: public LineEditor, public OptionWidget
         setText( options.raw( optionName() ) );
         if( !_connected() )
         {
-            connect( this, SIGNAL(textChanged(QString)), SIGNAL(modified()));
+            connect( this, &QLineEdit::textChanged, this, &OptionLineEditor::modified);
             _setConnected();
         }
     }

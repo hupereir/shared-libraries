@@ -56,7 +56,7 @@ namespace Private
                 actionGroup->addAction( iter.key() );
             }
 
-            connect( actionGroup, SIGNAL(triggered(QAction*)), SLOT(_setOrientation(QAction*)) );
+            connect( actionGroup, &QActionGroup::triggered, this, &OptionMenu::_setOrientation );
             menu->actions().front()->setChecked( true );
 
         }
@@ -78,7 +78,7 @@ namespace Private
             }
 
             menu->actions().front()->setChecked( true );
-            connect( actionGroup, SIGNAL(triggered(QAction*)), SLOT(_setPageMode(QAction*)) );
+            connect( actionGroup, &QActionGroup::triggered, this, &OptionMenu::_setPageMode );
 
         }
 
@@ -123,7 +123,7 @@ namespace Private
         previousPageButton_->setAutoRaise( true );
         previousPageButton_->setIcon( IconEngine::get( IconNames::Previous ) );
         previousPageButton_->setIconSize( IconSize::get( IconSize::Medium ) );
-        connect( previousPageButton_, SIGNAL(clicked()), SLOT(_previousPage()) );
+        connect( previousPageButton_, &QAbstractButton::clicked, this, &NavigationWidget::_previousPage );
 
         // editor
         hLayout->addWidget( editor_ = new QLineEdit( this ) );
@@ -135,7 +135,7 @@ namespace Private
         validator_.setTop( 1 );
         editor_->setValidator( &validator_ );
         editor_->setAlignment( Qt::AlignCenter );
-        connect( editor_, SIGNAL(textEdited(QString)), SLOT(_updatePage()) );
+        connect( editor_, &QLineEdit::textEdited, this, &NavigationWidget::_updatePage );
 
         // label
         hLayout->addWidget( label_ = new QLabel( this ) );
@@ -145,7 +145,7 @@ namespace Private
         nextPageButton_->setAutoRaise( true );
         nextPageButton_->setIcon( IconEngine::get( IconNames::Next ) );
         nextPageButton_->setIconSize( IconSize::get( IconSize::Medium ) );
-        connect( nextPageButton_, SIGNAL(clicked()), SLOT(_nextPage()) );
+        connect( nextPageButton_, &QAbstractButton::clicked, this, &NavigationWidget::_nextPage );
 
         // pages
         setPages(1);
@@ -295,7 +295,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags fla
     previewWidget_->setZoomMode( QPrintPreviewWidget::FitToWidth );
 
     mainLayout().addWidget( navigationWidget_ = new Private::NavigationWidget( this ), 0, Qt::AlignCenter );
-    connect( navigationWidget_, SIGNAL(pageChanged(int)), previewWidget_, SLOT(setCurrentPage(int)) );
+    connect( navigationWidget_, &Private::NavigationWidget::pageChanged, previewWidget_, &QPrintPreviewWidget::setCurrentPage );
 
     // close accelerator
     new QShortcut( QKeySequence::Close, this, SLOT(close()) );
@@ -306,7 +306,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags fla
     {
 
         // connection on vertical scrollbar
-        connect( graphicsViews.front()->verticalScrollBar(), SIGNAL(valueChanged(int)), SLOT(_updatePage()) );
+        connect( graphicsViews.front()->verticalScrollBar(), &QAbstractSlider::valueChanged, this, &PrintPreviewDialog::_updatePage );
 
         // hide horizontal scrollbar
         graphicsViews.front()->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
@@ -332,9 +332,9 @@ void PrintPreviewDialog::setHelper( QObject* helper )
 
     connect( previewWidget_, SIGNAL(paintRequested(QPrinter*)), helper, SLOT(print(QPrinter*)) );
     connect( optionMenu_, SIGNAL(orientationChanged(QPrinter::Orientation)), helper, SLOT(setOrientation(QPrinter::Orientation)) );
-    connect( optionMenu_, SIGNAL(orientationChanged(QPrinter::Orientation)), previewWidget_, SLOT(updatePreview()) );
+    connect( optionMenu_, &Private::OptionMenu::orientationChanged, previewWidget_, &QPrintPreviewWidget::updatePreview );
     connect( optionMenu_, SIGNAL(pageModeChanged(BasePrintHelper::PageMode)), helper, SLOT(setPageMode(BasePrintHelper::PageMode)) );
-    connect( optionMenu_, SIGNAL(pageModeChanged(BasePrintHelper::PageMode)), previewWidget_, SLOT(updatePreview()) );
+    connect( optionMenu_, &Private::OptionMenu::pageModeChanged, previewWidget_, &QPrintPreviewWidget::updatePreview );
     connect( helper, SIGNAL(pageCountChanged(int)), navigationWidget_, SLOT(setPages(int)) );
 
 }

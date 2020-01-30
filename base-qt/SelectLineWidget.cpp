@@ -63,9 +63,9 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     layout->addWidget( editor_ = new LineEditor( this ), 1 );
     label->setBuddy( editor_ );
 
-    connect( editor_, SIGNAL(cleared()), SLOT(matchFound()) );
-    connect( editor_, SIGNAL(returnPressed()), SLOT(_selectLine()) );
-    connect( editor_, SIGNAL(textChanged(QString)), SLOT(_selectLine()) );
+    connect( editor_, &LineEditor::cleared, this, &SelectLineWidget::matchFound );
+    connect( editor_, &QLineEdit::returnPressed, this, &SelectLineWidget::_selectLine );
+    connect( editor_, &QLineEdit::textChanged, this, &SelectLineWidget::_selectLine );
 
     QIntValidator *validator = new QIntValidator( this );
     validator->setBottom(0);
@@ -84,7 +84,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
         closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
         static_cast<QToolButton*>( closeButton_ )->setAutoRaise( true );
 
-        connect( closeButton_, SIGNAL(clicked()), SLOT(hide()) );
+        connect( closeButton_, &QAbstractButton::clicked, this, &QWidget::hide );
 
     } else {
 
@@ -114,7 +114,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     }
 
     // connections
-    connect( okButton_, SIGNAL(clicked()), SLOT(_selectLine()) );
+    connect( okButton_, &QAbstractButton::clicked, this, &SelectLineWidget::_selectLine );
 
 }
 

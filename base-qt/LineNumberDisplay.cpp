@@ -38,11 +38,11 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
 
     Debug::Throw( "LineNumberDisplay::LineNumberDisplay.\n" );
 
-    connect( &editor_->wrapModeAction(), SIGNAL(toggled(bool)), SLOT(needUpdate()) );
+    connect( &editor_->wrapModeAction(), &QAction::toggled, this, &LineNumberDisplay::needUpdate );
 
     // document connections
-    connect( editor_->document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged()) );
-    connect( editor_->document(), SIGNAL(contentsChanged()), SLOT(_contentsChanged()) );
+    connect( editor_->document(), &QTextDocument::blockCountChanged, this, &LineNumberDisplay::_blockCountChanged );
+    connect( editor_->document(), &QTextDocument::contentsChanged, this, &LineNumberDisplay::_contentsChanged );
 
 }
 
@@ -58,8 +58,8 @@ void LineNumberDisplay::synchronize( LineNumberDisplay* display )
     width_ = display->width_;
 
     // re-initialize connections
-    connect( editor_->document(), SIGNAL(blockCountChanged(int)), SLOT(_blockCountChanged()) );
-    connect( editor_->document(), SIGNAL(contentsChanged()), SLOT(_contentsChanged()) );
+    connect( editor_->document(), &QTextDocument::blockCountChanged, this, &LineNumberDisplay::_blockCountChanged );
+    connect( editor_->document(), &QTextDocument::contentsChanged, this, &LineNumberDisplay::_contentsChanged );
 
 }
 

@@ -94,7 +94,7 @@ namespace Ssh
 
             // create Tcp server
             auto tcpServer = new QTcpServer( this );
-            connect( tcpServer, SIGNAL(newConnection()), SLOT(_newConnection()) );
+            connect( tcpServer, &QTcpServer::newConnection, this, &Connection::_newConnection );
             if( !tcpServer->listen( QHostAddress::LocalHost, attributes.localPort() ) )
             {
 
@@ -669,10 +669,10 @@ namespace Ssh
                 tunnel->sshSocket()->setLocalHost( "localhost", iter->localPort() );
                 tunnel->sshSocket()->connectToHost( session_.get(), iter->host(), iter->remotePort() );
 
-                connect( tunnel, SIGNAL(error(QString)), SLOT(_notifyError(QString)) );
-                connect( tunnel, SIGNAL(debug(QString)), SLOT(_notifyDebug(QString)) );
-                connect( tunnel->sshSocket(), SIGNAL(error(QAbstractSocket::SocketError)), tunnel, SLOT(deleteLater()) );
-                connect( tunnel->sshSocket(), SIGNAL(readChannelFinished()), tunnel, SLOT(deleteLater()) );
+                connect( tunnel, &Tunnel::error, this, &Connection::_notifyError );
+                connect( tunnel, &Tunnel::debug, this, &Connection::_notifyDebug );
+                connect( tunnel->sshSocket(), &Socket::error, tunnel, &QObject::deleteLater );
+                connect( tunnel->sshSocket(), &QIODevice::readChannelFinished, tunnel, &QObject::deleteLater );
             }
 
         }

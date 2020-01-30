@@ -213,7 +213,7 @@ SimpleListView::SimpleListView( QWidget* parent ):
     setSelectionBehavior( SelectRows );
 
     // hover
-    connect( this, SIGNAL(entered(QModelIndex)), SLOT(_indexEntered(QModelIndex)) );
+    connect( this, &QAbstractItemView::entered, this, &SimpleListView::_indexEntered );
 }
 
 //_________________________________________________________
@@ -245,7 +245,7 @@ void SimpleListView::setModel( QAbstractItemModel* model )
     if( model )
     {
         // connect model modification to resize
-        connect( model, SIGNAL(layoutChanged()), SLOT(_adjustSize()) );
+        connect( model, &QAbstractItemModel::layoutChanged, this, &SimpleListView::_adjustSize );
         _adjustSize();
     }
 }

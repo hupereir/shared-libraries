@@ -39,8 +39,8 @@ CustomSlider::CustomSlider( QWidget* parent ):
 
     connect( spinBox_, SIGNAL(valueChanged(int)),   SLOT(_updateSlider(int)) );
     connect( spinBox_, SIGNAL(valueChanged(int)),   SIGNAL(valueChanged(int)) );
-    connect( slider_, SIGNAL(valueChanged(int)),  SLOT(_updateSpinBox(int)) );
-    connect( slider_, SIGNAL(valueChanged(int)),  SIGNAL(valueChanged(int)) );
+    connect( slider_, &QAbstractSlider::valueChanged,  this, &CustomSlider::_updateSpinBox );
+    connect( slider_, &QAbstractSlider::valueChanged,  this, &CustomSlider::valueChanged );
 
 }
 

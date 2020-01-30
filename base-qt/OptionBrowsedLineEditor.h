@@ -56,7 +56,7 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
         setFile( options.raw( optionName() ) );
         if( !_connected() )
         {
-            connect( &editor(), SIGNAL(textChanged(QString)), SIGNAL(modified()) );
+            connect( &editor(), &QLineEdit::textChanged, this, &OptionBrowsedLineEditor::modified );
             _setConnected();
         }
     }

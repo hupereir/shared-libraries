@@ -40,7 +40,7 @@ class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSy
         Counter( "FileSystemWatcher" )
     {
         Debug::Throw( "FileSystemWatcher::FileSystemWatcher.\n" );
-        connect( this, SIGNAL( directoryChanged( const QString& ) ), SLOT( _addModifiedDirectory( const QString& ) ) );
+        connect( this, &QFileSystemWatcher::directoryChanged, this, &FileSystemWatcher::_addModifiedDirectory );
     }
 
     //* delay

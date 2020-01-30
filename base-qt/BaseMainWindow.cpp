@@ -47,13 +47,13 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     addAction( lockToolBarsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Toolbar Positions" ), this ) );
     lockToolBarsAction_->setCheckable( true );
     lockToolBarsAction_->setChecked( true );
-    connect( lockToolBarsAction_, SIGNAL(toggled(bool)), SLOT(_lockToolBars(bool)) );
+    connect( lockToolBarsAction_, &QAction::toggled, this, &BaseMainWindow::_lockToolBars );
 
     // lock panels action
     addAction( lockPanelsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Panel Positions" ), this ) );
     lockPanelsAction_->setCheckable( true );
     lockPanelsAction_->setChecked( true );
-    connect( lockPanelsAction_, SIGNAL(toggled(bool)), SLOT(_lockPanels(bool)) );
+    connect( lockPanelsAction_, &QAction::toggled, this, &BaseMainWindow::_lockPanels );
 
     // show menu action
     addAction( showMenuBarAction_ = new QAction( IconEngine::get( IconNames::ShowMenu ), tr( "Show Menu Bar" ), this ) );
@@ -61,14 +61,14 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     showMenuBarAction_->setChecked( true );
     showMenuBarAction_->setShortcut( Qt::CTRL + Qt::Key_M );
     showMenuBarAction_->setEnabled( false );
-    connect( showMenuBarAction_, SIGNAL(toggled(bool)), SLOT(_toggleMenuBar(bool)) );
+    connect( showMenuBarAction_, &QAction::toggled, this, &BaseMainWindow::_toggleMenuBar );
 
     // show statusbar
     addAction( showStatusBarAction_ = new QAction( tr( "Show Status Bar" ), this ) );
     showStatusBarAction_->setCheckable( true );
     showStatusBarAction_->setChecked( true );
     showStatusBarAction_->setEnabled( false );
-    connect( showStatusBarAction_, SIGNAL(toggled(bool)), SLOT(_toggleStatusBar(bool)) );
+    connect( showStatusBarAction_, &QAction::toggled, this, &BaseMainWindow::_toggleStatusBar );
 
     connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
     connect( this, SIGNAL(toolbarConfigurationChanged()), Base::Singleton::get().application(), SIGNAL(configurationChanged()) );
@@ -197,8 +197,8 @@ QMenu* BaseMainWindow::createPopupMenu()
         auto menu = toolBarMenu( this );
         menu->toolButtonStyleMenu().select( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
         menu->iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
-        connect( &menu->toolButtonStyleMenu(), SIGNAL(styleSelected(int)), SLOT(_updateToolButtonStyle(int)) );
-        connect( &menu->iconSizeMenu(), SIGNAL(iconSizeSelected(IconSize::Size)), SLOT(_updateToolButtonIconSize(IconSize::Size)) );
+        connect( &menu->toolButtonStyleMenu(), &ToolButtonStyleMenu::styleSelected, this, &BaseMainWindow::_updateToolButtonStyle );
+        connect( &menu->iconSizeMenu(), &IconSizeMenu::iconSizeSelected, this, &BaseMainWindow::_updateToolButtonIconSize );
         return menu;
 
     }
@@ -409,7 +409,7 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
             auto action = new QAction( toolbar->windowTitle(), menu );
             action->setCheckable( true );
             action->setChecked( toolbar->isVisible() );
-            connect( action, SIGNAL(toggled(bool)), toolbar, SLOT(setVisible(bool)) );
+            connect( action, &QAction::toggled, toolbar, &QWidget::setVisible );
             actions.append( action );
 
         }

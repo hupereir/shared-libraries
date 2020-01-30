@@ -61,7 +61,7 @@ ClockLabel::ClockLabel( QWidget* parent ):
     Debug::Throw( "ClockLabel::ClockLabel.\n" );
 
     // create static clock timer, updated every 10 seconds
-    connect( &timer_, SIGNAL(timeChanged(QString)), SLOT(setText(QString)) );
+    connect( &timer_, &ClockTimer::timeChanged, this, &QLabel::setText );
 
     // initialize
     setText( TimeStamp::now().toString( format ) );

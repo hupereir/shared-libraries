@@ -96,7 +96,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     layout->addLayout( hLayout );
     hLayout->addStretch( 1 );
     hLayout->addWidget( previewButton_ = new QPushButton( IconEngine::get( IconNames::PrintPreview ), tr( "Preview" ), this ) );
-    connect( previewButton_, SIGNAL(clicked()), SLOT(_preview()) );
+    connect( previewButton_, &QAbstractButton::clicked, this, &PrinterOptionWidget::_preview );
 
     previewButton_->setEnabled( false );
 

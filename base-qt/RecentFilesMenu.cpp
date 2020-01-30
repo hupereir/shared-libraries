@@ -36,10 +36,10 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
     Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
 
     setTitle( tr( "Open Recent" ) );
-    connect( this, SIGNAL(triggered(QAction*)), SLOT(_open(QAction*)) );
-    connect( this, SIGNAL(aboutToShow()), fileList_, SLOT(checkValidFiles()) );
-    connect( this, SIGNAL(aboutToShow()), SLOT(_loadFiles()) );
-    connect( fileList_, SIGNAL(validFilesChecked()), SLOT(_updateActions()) );
+    connect( this, &QMenu::triggered, this, &RecentFilesMenu::_open );
+    connect( this, &QMenu::aboutToShow, fileList_, &FileList::checkValidFiles );
+    connect( this, &QMenu::aboutToShow, this, &RecentFilesMenu::_loadFiles );
+    connect( fileList_, &FileList::validFilesChecked, this, &RecentFilesMenu::_updateActions );
 
     // icons
     setIcon( IconEngine::get( IconNames::Open ) );
@@ -48,7 +48,7 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
     actionGroup_->setExclusive( true );
 
     addAction( cleanAction_ = new QAction( IconEngine::get( IconNames::Delete ), tr( "Clean" ), this ) );
-    connect( cleanAction_, SIGNAL(triggered()), SLOT(_clean()) );
+    connect( cleanAction_, &QAction::triggered, this, &RecentFilesMenu::_clean );
     cleanAction_->setEnabled( false );
     addSeparator();
 

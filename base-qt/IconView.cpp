@@ -75,8 +75,8 @@ IconView::IconView( QWidget* parent ):
     header_ = new QHeaderView( Qt::Horizontal, this );
     header_->hide();
 
-    connect( header_, SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), SLOT(sortByColumn(int,Qt::SortOrder)) );
-    connect( header_, SIGNAL(sortIndicatorChanged(int,Qt::SortOrder)), SLOT(saveSortOrder()) );
+    connect( header_, &QHeaderView::sortIndicatorChanged, this, &IconView::sortByColumn );
+    connect( header_, &QHeaderView::sortIndicatorChanged, this, &IconView::saveSortOrder );
 
     // enable sorting by default
     setSortingEnabled( true );
@@ -85,8 +85,8 @@ IconView::IconView( QWidget* parent ):
     horizontalScrollBar()->adjustSize();
     setMouseTracking( true );
 
-    connect( verticalScrollBar(), SIGNAL(valueChanged(int)), SLOT(_updateHoverIndex()) );
-    connect( horizontalScrollBar(), SIGNAL(valueChanged(int)), SLOT(_updateHoverIndex()) );
+    connect( verticalScrollBar(), &QAbstractSlider::valueChanged, this, &IconView::_updateHoverIndex );
+    connect( horizontalScrollBar(), &QAbstractSlider::valueChanged, this, &IconView::_updateHoverIndex );
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
     // configuration
@@ -106,8 +106,8 @@ void IconView::setModel( QAbstractItemModel* model )
 
     if( (model_ = qobject_cast<ItemModel*>(model)) )
     {
-        connect( model_, SIGNAL(layoutAboutToBeChanged()), SLOT(saveSelectedIndexes()) );
-        connect( model_, SIGNAL(layoutChanged()), SLOT(restoreSelectedIndexes()) );
+        connect( model_, &QAbstractItemModel::layoutAboutToBeChanged, this, &IconView::saveSelectedIndexes );
+        connect( model_, &QAbstractItemModel::layoutChanged, this, &IconView::restoreSelectedIndexes );
     }
 }
 
@@ -122,8 +122,8 @@ void IconView::setFindWidget( AbstractFindWidget* widget )
 
     // connections
     connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-    connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
-    connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
+    connect( this, &IconView::matchFound, findWidget_, &AbstractFindWidget::matchFound );
+    connect( this, &IconView::noMatchFound, findWidget_, &AbstractFindWidget::noMatchFound );
 
 }
 
@@ -1476,42 +1476,42 @@ void IconView::_installActions()
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( selectAllAction_, SIGNAL(triggered()), SLOT(selectAll()) );
+    connect( selectAllAction_, &QAction::triggered, this, &QAbstractItemView::selectAll );
 
     addAction( findAction_ = new QAction( IconEngine::get( IconNames::Find ), tr( "Find" ), this ) );
     findAction_->setShortcut( QKeySequence::Find );
     findAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAction_, SIGNAL(triggered()), SLOT(_findFromDialog()) );
+    connect( findAction_, &QAction::triggered, this, &IconView::_findFromDialog );
 
     addAction( findAgainAction_ = new QAction( tr( "Find Again" ), this ) );
     findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAgainAction_, SIGNAL(triggered()), SLOT(findAgainForward()) );
+    connect( findAgainAction_, &QAction::triggered, this, &IconView::findAgainForward );
 
     addAction( findAgainBackwardAction_ = new QAction( this ) );
     findAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findAgainBackwardAction_, SIGNAL(triggered()), SLOT(findAgainBackward()) );
+    connect( findAgainBackwardAction_, &QAction::triggered, this, &IconView::findAgainBackward );
 
     addAction( findSelectionAction_ = new QAction( tr( "Find Selection" ), this ) );
     findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findSelectionAction_, SIGNAL(triggered()), SLOT(findSelectionForward()) );
+    connect( findSelectionAction_, &QAction::triggered, this, &IconView::findSelectionForward );
 
     addAction( findSelectionBackwardAction_ = new QAction( this ) );
     findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( findSelectionBackwardAction_, SIGNAL(triggered()), SLOT(findSelectionBackward()) );
+    connect( findSelectionBackwardAction_, &QAction::triggered, this, &IconView::findSelectionBackward );
 
     addAction( incrementIconSizeAction_ = new QAction( tr( "Increase Icon Size" ), this ) );
     incrementIconSizeAction_->setShortcut( QKeySequence::ZoomIn );
     incrementIconSizeAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( incrementIconSizeAction_, SIGNAL(triggered()), SLOT(_incrementIconSize()) );
+    connect( incrementIconSizeAction_, &QAction::triggered, this, &IconView::_incrementIconSize );
 
     addAction( decrementIconSizeAction_ = new QAction( tr( "Decrease Icon Size" ), this ) );
     decrementIconSizeAction_->setShortcut( QKeySequence::ZoomOut );
     decrementIconSizeAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( decrementIconSizeAction_, SIGNAL(triggered()), SLOT(_decrementIconSize()) );
+    connect( decrementIconSizeAction_, &QAction::triggered, this, &IconView::_decrementIconSize );
 }
 
 

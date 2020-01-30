@@ -62,7 +62,7 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
     label->setEnabled( false );
     spinbox->setEnabled( false );
 
-    connect( checkbox, SIGNAL(toggled(bool)), label, SLOT(setEnabled(bool)) );
-    connect( checkbox, SIGNAL(toggled(bool)), spinbox, SLOT(setEnabled(bool)) );
+    connect( checkbox, &QAbstractButton::toggled, label, &QWidget::setEnabled );
+    connect( checkbox, &QAbstractButton::toggled, spinbox, &QWidget::setEnabled );
 
 }

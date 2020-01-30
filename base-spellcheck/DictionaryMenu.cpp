@@ -44,7 +44,7 @@ namespace SpellCheck
         reset();
 
         // connections
-        connect( this, SIGNAL(triggered(QAction*)), SLOT(_selectDictionary(QAction*)) );
+        connect( this, &QMenu::triggered, this, &DictionaryMenu::_selectDictionary );
 
     }
 
@@ -75,7 +75,7 @@ namespace SpellCheck
         // add reset button
         QAction* action;
         addAction( action = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
-        connect( action, SIGNAL(triggered()), SLOT(reset()) );
+        connect( action, &QAction::triggered, this, &DictionaryMenu::reset );
 
         // load disabled dictionaries from options
         QStringList disabledDictionaries;

@@ -116,7 +116,7 @@ namespace
             gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignCenter );
 
             box->setEnabled( false );
-            connect( checkBox, SIGNAL(toggled(bool)), box, SLOT(setEnabled(bool)) );
+            connect( checkBox, &QAbstractButton::toggled, box, &QWidget::setEnabled );
 
             read( XmlOptions::get() );
 
@@ -143,21 +143,21 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
     buttonBox().button( QDialogButtonBox::RestoreDefaults )->setIcon( IconEngine::get( IconNames::Revert ) );
     buttonBox().button( QDialogButtonBox::RestoreDefaults )->setToolTip( tr( "Restore default value for all options" ) );
 
-    connect( buttonBox().button( QDialogButtonBox::RestoreDefaults ), SIGNAL(clicked()), SLOT(_restoreDefaults()) );
-    connect( buttonBox().button( QDialogButtonBox::RestoreDefaults ), SIGNAL(clicked()), SIGNAL(restoreDefaults()) );
+    connect( buttonBox().button( QDialogButtonBox::RestoreDefaults ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::_restoreDefaults );
+    connect( buttonBox().button( QDialogButtonBox::RestoreDefaults ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::restoreDefaults );
 
     // reset
     buttonBox().addButton( QDialogButtonBox::Reset );
     buttonBox().button( QDialogButtonBox::Reset )->setToolTip( tr( "Reset configuration" ) );
     buttonBox().button( QDialogButtonBox::Reset )->setIcon( IconEngine::get( IconNames::Undo ) );
-    connect( buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SLOT(_reset()) );
-    connect( buttonBox().button( QDialogButtonBox::Reset ), SIGNAL(clicked()), SIGNAL(reset()) );
+    connect( buttonBox().button( QDialogButtonBox::Reset ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::_reset );
+    connect( buttonBox().button( QDialogButtonBox::Reset ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::reset );
 
     // ok button
     buttonBox().addButton( QDialogButtonBox::Ok );
-    connect( buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SLOT(_save()) );
-    connect( buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SIGNAL(ok()) );
-    connect( buttonBox().button( QDialogButtonBox::Ok ), SIGNAL(clicked()), SLOT(accept()) );
+    connect( buttonBox().button( QDialogButtonBox::Ok ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::_save );
+    connect( buttonBox().button( QDialogButtonBox::Ok ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::ok );
+    connect( buttonBox().button( QDialogButtonBox::Ok ), &QAbstractButton::clicked, this, &QDialog::accept );
     buttonBox().button( QDialogButtonBox::Ok )->setToolTip(
         tr( "Apply changes to options and close window.\n"
         "Note: the application may have to be restarted so that\n"
@@ -165,8 +165,8 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
 
     // apply button
     buttonBox().addButton( QDialogButtonBox::Apply );
-    connect( buttonBox().button( QDialogButtonBox::Apply ), SIGNAL(clicked()), SLOT(_apply()) );
-    connect( buttonBox().button( QDialogButtonBox::Apply ), SIGNAL(clicked()), SIGNAL(apply()) );
+    connect( buttonBox().button( QDialogButtonBox::Apply ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::_apply );
+    connect( buttonBox().button( QDialogButtonBox::Apply ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::apply );
     buttonBox().button( QDialogButtonBox::Apply )->setToolTip(
         tr( "Apply changes to options.\n"
         "Note: the application may have to be restarted so that\n"
@@ -174,13 +174,13 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
 
     // cancel button
     buttonBox().addButton( QDialogButtonBox::Cancel );
-    connect( buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SLOT(_cancel()) );
-    connect( buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SIGNAL(cancel()) );
-    connect( buttonBox().button( QDialogButtonBox::Cancel ), SIGNAL(clicked()), SLOT(reject()) );
+    connect( buttonBox().button( QDialogButtonBox::Cancel ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::_cancel );
+    connect( buttonBox().button( QDialogButtonBox::Cancel ), &QAbstractButton::clicked, this, &BaseConfigurationDialog::cancel );
+    connect( buttonBox().button( QDialogButtonBox::Cancel ), &QAbstractButton::clicked, this, &QDialog::reject );
     buttonBox().button( QDialogButtonBox::Cancel )->setToolTip( tr( "Discard changes to options and close window" ) );
 
     // connection
-    connect( this, SIGNAL(modified()), SLOT(_checkModified()));
+    connect( this, &BaseConfigurationDialog::modified, this, &BaseConfigurationDialog::_checkModified);
 
     // close accelerator
     new QShortcut( QKeySequence::Close, this, SLOT(reject()) );
@@ -228,7 +228,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             auto button = new QPushButton( IconEngine::get( IconNames::Edit ), tr( "Edit Pixmap Path" ), box );
-            connect( button, SIGNAL(clicked()), SLOT(_editPixmapPathList()) );
+            connect( button, &QAbstractButton::clicked, this, &BaseConfigurationDialog::_editPixmapPathList );
             gridLayout->addWidget( button, row, 1, 1, 1 );
 
             // icon path
@@ -236,7 +236,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
             button = new QPushButton( IconEngine::get( IconNames::Edit ), tr( "Edit Icon Theme" ), box );
-            connect( button, SIGNAL(clicked()), SLOT(_editIconTheme()) );
+            connect( button, &QAbstractButton::clicked, this, &BaseConfigurationDialog::_editIconTheme );
             gridLayout->addWidget( button, row, 1, 1, 1 );
 
             // debug level
@@ -281,8 +281,8 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
-        connect( checkbox, SIGNAL(toggled(bool)), label, SLOT(setDisabled(bool)) );
-        connect( checkbox, SIGNAL(toggled(bool)), edit, SLOT(setDisabled(bool)) );
+        connect( checkbox, &QAbstractButton::toggled, label, &QWidget::setDisabled );
+        connect( checkbox, &QAbstractButton::toggled, edit, &QWidget::setDisabled );
 
         // fixed font
         gridLayout->addWidget( label = new QLabel( tr( "Fixed font:" ), box ) );
@@ -291,8 +291,8 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
 
-        connect( checkbox, SIGNAL(toggled(bool)), label, SLOT(setDisabled(bool)) );
-        connect( checkbox, SIGNAL(toggled(bool)), edit, SLOT(setDisabled(bool)) );
+        connect( checkbox, &QAbstractButton::toggled, label, &QWidget::setDisabled );
+        connect( checkbox, &QAbstractButton::toggled, edit, &QWidget::setDisabled );
 
         out = box;
 

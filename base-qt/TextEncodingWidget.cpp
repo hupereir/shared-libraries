@@ -129,10 +129,10 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
     layout->addWidget( editor_ = new LineEditor( this ) );
 
     // connections
-    connect( editor_, SIGNAL(textChanged(QString)), SLOT(_find(QString)) );
-    connect( list_->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), SLOT(_updateSelection()) );
-    connect( list_->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(_updateSelection()) );
-    connect( list_, SIGNAL(clicked(QModelIndex)), SLOT(_updateSelection()) );
+    connect( editor_, &QLineEdit::textChanged, this, &TextEncodingWidget::_find );
+    connect( list_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &TextEncodingWidget::_updateSelection );
+    connect( list_->selectionModel(), &QItemSelectionModel::currentChanged, this, &TextEncodingWidget::_updateSelection );
+    connect( list_, &QAbstractItemView::clicked, this, &TextEncodingWidget::_updateSelection );
 
     _loadTextCodecs();
 

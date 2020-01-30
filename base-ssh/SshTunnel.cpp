@@ -34,12 +34,12 @@ namespace Ssh
         Debug::Throw( "Ssh::Tunnel::Tunnel.\n" );
 
         buffer_.resize(maxSize_ );
-        connect( tcpSocket_, SIGNAL(readyRead()), SLOT(_readFromTcpSocket()) );
-        connect( tcpSocket_, SIGNAL(disconnected()), SLOT(close()) );
+        connect( tcpSocket_, &QIODevice::readyRead, this, &Tunnel::_readFromTcpSocket );
+        connect( tcpSocket_, &QAbstractSocket::disconnected, this, &Tunnel::close );
 
-        connect( sshSocket_, SIGNAL(connected()), SLOT(_readFromTcpSocket()) );
-        connect( sshSocket_, SIGNAL(readyRead()), SLOT(_readFromSshSocket()) );
-        connect( sshSocket_, SIGNAL(readChannelFinished()), SLOT(close()) );
+        connect( sshSocket_, &Socket::connected, this, &Tunnel::_readFromTcpSocket );
+        connect( sshSocket_, &QIODevice::readyRead, this, &Tunnel::_readFromSshSocket );
+        connect( sshSocket_, &QIODevice::readChannelFinished, this, &Tunnel::close );
 
     }
 

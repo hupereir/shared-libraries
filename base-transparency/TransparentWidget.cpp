@@ -260,7 +260,7 @@ namespace Transparency
         addAction( inverseColorsAction_ = new QAction( tr( "Inverse Colors" ), this ) );
         inverseColorsAction_->setCheckable( true );
         inverseColorsAction_->setChecked( false );
-        connect( inverseColorsAction_, SIGNAL(toggled(bool)), SLOT(_toggleInverseColors(bool)) );
+        connect( inverseColorsAction_, &QAction::toggled, this, &TransparentWidget::_toggleInverseColors );
 
     }
 
