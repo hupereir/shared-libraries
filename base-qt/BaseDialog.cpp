@@ -86,46 +86,29 @@ BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 }
 
 //________________________________________________________________
-BaseDialog& BaseDialog::uniconify()
+void BaseDialog::uniconify()
 {
-
-    Debug::Throw( "BaseDialog::uniconify.\n" );
     if( isMinimized() )
     {
-
         if( wasMaximized_ ) showMaximized();
         else showNormal();
-
     } else if( isHidden() ) show();
-
     activateWindow();
     raise();
-    return *this;
-
 }
 
 //__________________________________________________________
-BaseDialog& BaseDialog::toggleSticky( bool state )
+void BaseDialog::toggleSticky( bool state )
 {
-
-    Debug::Throw( "BaseDialog::toggleSticky.\n" );
-
     #if WITH_XCB
     if( XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_STICKY ) )
     {
-
         XcbUtil::get().changeState( this, XcbDefines::AtomId::_NET_WM_STATE_STICKY, state );
-
     } else if( XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_DESKTOP ) ) {
-
-        unsigned long desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), XcbDefines::AtomId::_NET_CURRENT_DESKTOP );
+        const auto desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), XcbDefines::AtomId::_NET_CURRENT_DESKTOP );
         XcbUtil::get().changeCardinal( this, XcbDefines::AtomId::_NET_WM_DESKTOP, state ? XcbDefines::ALL_DESKTOPS:desktop );
-
     }
-
     #endif
-
-    return *this;
 }
 
 //_______________________________________________________

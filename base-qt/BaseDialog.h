@@ -83,10 +83,10 @@ class BaseDialog: public QDialog
     public Q_SLOTS:
 
     //* uniconify
-    BaseDialog& uniconify();
+    void uniconify();
 
     //* stickyness
-    BaseDialog& toggleSticky( bool );
+    void toggleSticky( bool );
 
     protected:
 
