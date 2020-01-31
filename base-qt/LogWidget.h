@@ -50,7 +50,10 @@ class LogWidget: public TextEditor
     public Q_SLOTS:
 
     //* append text
-    void append( const QString&, TextFormat::Flags = TextFormat::Default, const QColor& = QColor(), int verbosity = 0 );
+    void append( const QString& value, TextFormat::Flags format = TextFormat::Default )
+    { append( value, format, QColor(), 0 ); }
+
+    void append( const QString&, TextFormat::Flags, const QColor&, int verbosity = 0 );
 
     //* clear
     /*
