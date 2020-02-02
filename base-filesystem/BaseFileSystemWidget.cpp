@@ -123,7 +123,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
 
     pathEditor_->setRootPathList( rootPathList );
 
-    connect( pathEditor_, SIGNAL(pathChanged(File)), SLOT(_update()) );
+    connect( pathEditor_, &PathEditor::pathChanged, [this](File){ _update(); } );
     connect( pathEditor_, &PathEditor::pathChanged, this, &BaseFileSystemWidget::_updateNavigationActions );
     connect( pathEditor_, &PathEditor::pathChanged, this, &BaseFileSystemWidget::_updateFileSystemWatcher );
 
@@ -174,7 +174,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     connect( list_, &TreeView::hovered, this, &BaseFileSystemWidget::_showToolTip );
 
     // connect filesystem watcher
-    connect( &fileSystemWatcher_, SIGNAL(directoryChanged(QString)), SLOT(_update(QString)) );
+    connect( &fileSystemWatcher_, &QFileSystemWatcher::directoryChanged, this, QOverload<const QString&>::of( &BaseFileSystemWidget::_update ) );
 
     // connect thread
     connect( &thread_, &FileThread::filesAvailable, this, &BaseFileSystemWidget::_processFiles );
@@ -536,7 +536,7 @@ void BaseFileSystemWidget::_installActions()
     // hidden files
     addAction( hiddenFilesAction_ = new QAction( tr( "Show Hidden Files" ), this ) );
     hiddenFilesAction_->setCheckable( true );
-    connect( hiddenFilesAction_, SIGNAL(toggled(bool)), SLOT(_update()) );
+    connect( hiddenFilesAction_, &QAction::toggled, [this](bool) { _update(); } );
     connect( hiddenFilesAction_, &QAction::toggled, this, &BaseFileSystemWidget::_toggleShowHiddenFiles );
 
     // previous directory (from history)

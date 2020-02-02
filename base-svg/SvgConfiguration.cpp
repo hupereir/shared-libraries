@@ -205,7 +205,7 @@ namespace Svg
         vLayout->addStretch(1);
         #endif
 
-        connect( styleWidget, SIGNAL(currentIndexChanged(int)), stackedWidget, SLOT(setCurrentIndex(int)));
+        connect( styleWidget, QOverload<int>::of( &StyleOptionWidget::currentIndexChanged ), stackedWidget, &QStackedWidget::setCurrentIndex );
 
     }
 

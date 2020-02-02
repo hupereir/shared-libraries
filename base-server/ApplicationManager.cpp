@@ -296,7 +296,7 @@ namespace Server
         {
             // create client from pending connection
             auto client = std::make_shared<Client>( this, server_->nextPendingConnection() );
-            connect( client.get(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_redirect(Server::ServerCommand)) );
+            connect( client.get(), &Client::commandAvailable, this, QOverload<Server::ServerCommand>::of( &ApplicationManager::_redirect ) );
             connect( &client->socket(), &QAbstractSocket::disconnected, this, &ApplicationManager::_clientConnectionClosed );
             connectedClients_.append( client );
         }
@@ -470,10 +470,10 @@ namespace Server
 
         // connect client to port
         client_.reset( new Client( this ) );
-        connect( &client_->socket(), SIGNAL(error(QAbstractSocket::SocketError)), SLOT(_error(QAbstractSocket::SocketError)) );
+        connect( &client_->socket(), QOverload<QAbstractSocket::SocketError>::of( &QAbstractSocket::error ), this, &ApplicationManager::_error );
         connect( &client_->socket(), &QAbstractSocket::connected, this, &ApplicationManager::_startTimer );
         connect( &client_->socket(), &QAbstractSocket::disconnected, this, &ApplicationManager::_serverConnectionClosed );
-        connect( client_.get(), SIGNAL(commandAvailable(Server::ServerCommand)), SLOT(_process(Server::ServerCommand)) );
+        connect( client_.get(), &Client::commandAvailable, this, &ApplicationManager::_process );
         client_->socket().connectToHost( host_, port_ );
 
         // emit initialization signal

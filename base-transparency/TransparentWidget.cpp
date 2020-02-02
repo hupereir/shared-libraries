@@ -255,7 +255,7 @@ namespace Transparency
         Debug::Throw( "TransparentWidget::_installAction.\n" );
 
         addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload Blur Region" ), this ) );
-        connect( reloadBlurRegionAction_, SIGNAL(triggered()), SLOT(_updateBlurRegion()) );
+        connect( reloadBlurRegionAction_, &QAction::triggered, this, QOverload<>::of( &TransparentWidget::_updateBlurRegion) );
 
         addAction( inverseColorsAction_ = new QAction( tr( "Inverse Colors" ), this ) );
         inverseColorsAction_->setCheckable( true );

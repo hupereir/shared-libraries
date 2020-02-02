@@ -51,18 +51,20 @@ namespace Ssh
         {
 
             // connect to remote file and start reading
-            remoteDevice_ = new ReadFileSocket( this );
-            connect( remoteDevice_, SIGNAL(error(QAbstractSocket::SocketError)), SLOT( _processError(QAbstractSocket::SocketError)) );
-            connect( remoteDevice_, SIGNAL(connected()), SLOT(_setConnected()) );
-            qobject_cast<ReadFileSocket*>(remoteDevice_)->connect( session, remoteFileName_ );
+            auto socket = new ReadFileSocket( this );
+            connect( socket, QOverload<QAbstractSocket::SocketError>::of( &ReadFileSocket::error ), this, &FileTransferObject::_processError );
+            connect( socket, &ReadFileSocket::connected, this, &FileTransferObject::_setConnected );
+            socket->connect( session, remoteFileName_ );
+            remoteDevice_ = socket;
             return true;
 
         } else if( mode == QIODevice::WriteOnly ) {
 
-            remoteDevice_ = new WriteFileSocket( this );
-            connect( remoteDevice_, SIGNAL(error(QAbstractSocket::SocketError)), SLOT( _processError(QAbstractSocket::SocketError)) );
-            connect( remoteDevice_, SIGNAL(connected()), SLOT(_setConnected()) );
-            qobject_cast<WriteFileSocket*>(remoteDevice_)->connect( session, remoteFileName_, fileSize_, permissions_ );
+            auto socket = new WriteFileSocket( this );
+            connect( socket, QOverload<QAbstractSocket::SocketError>::of( &WriteFileSocket::error ), this, &FileTransferObject::_processError );
+            connect( socket, &WriteFileSocket::connected, this, &FileTransferObject::_setConnected );
+            socket->connect( session, remoteFileName_, fileSize_, permissions_ );
+            remoteDevice_ = socket;
             return true;
 
         } else {
@@ -103,16 +105,17 @@ namespace Ssh
         localDevice_ = device;
 
         // create socket if needed
+        auto socket = qobject_cast<ReadFileSocket*>(remoteDevice_);
         if( !remoteDevice_ ) connect( session, QIODevice::ReadOnly );
-        else if( !qobject_cast<ReadFileSocket*>(remoteDevice_) )
+        else if( !socket )
         {
             emit error( error_ = tr( "file %1 not opended for reading" ).arg( remoteFileName_ ) );
             _setFailed();
             return false;
         }
 
-        if( qobject_cast<ReadFileSocket*>(remoteDevice_)->isConnected() ) _prepareReading();
-        else connect( remoteDevice_, SIGNAL(connected()), SLOT(_prepareReading()) );
+        if( socket->isConnected() ) _prepareReading();
+        else connect( socket, &ReadFileSocket::connected, this, &FileTransferObject::_prepareReading );
 
         connect( remoteDevice_, &QIODevice::readyRead, this, &FileTransferObject::_readFromSocket );
         connect( remoteDevice_, &QIODevice::readChannelFinished, this, &FileTransferObject::_closeSourceFile );
@@ -162,16 +165,17 @@ namespace Ssh
         bytesTransferred_ = 0;
 
         // create socket if needed
+        auto socket = qobject_cast<WriteFileSocket*>(remoteDevice_);
         if( !remoteDevice_ ) connect( session, QIODevice::WriteOnly );
-        else if( !qobject_cast<WriteFileSocket*>(remoteDevice_) )
+        else if( !socket )
         {
             emit error( error_ = tr( "file %1 not opended for writing" ).arg( remoteFileName_ ) );
             _setFailed();
             return false;
         }
 
-        if( qobject_cast<WriteFileSocket*>(remoteDevice_)->isConnected() ) _writeToSocket();
-        else connect( remoteDevice_, SIGNAL(connected()), SLOT(_writeToSocket()) );
+        if( socket->isConnected() ) _writeToSocket();
+        else connect( socket, &WriteFileSocket::connected, this, &FileTransferObject::_writeToSocket );
 
         return true;
 
@@ -319,7 +323,8 @@ namespace Ssh
     {
         Debug::Throw( "Ssh::FileTransferObject::_writeToSocket.\n" );
 
-        if( !qobject_cast<WriteFileSocket*>(remoteDevice_)->isConnected() ) return;
+
+        if( !static_cast<WriteFileSocket*>(remoteDevice_)->isConnected() ) return;
         if( !localDevice_->isOpen() ) return;
 
         // read from socket, write through ssh

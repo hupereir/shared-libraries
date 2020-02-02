@@ -102,7 +102,7 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
 
     installServerSystemOptions();
 
-    connect( this, SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( this, &BaseApplication::configurationChanged, this, &BaseApplication::_updateConfiguration );
     connect( this, &BaseCoreApplication::configurationChanged, this, &BaseApplication::_updateFonts );
     connect( this, &BaseCoreApplication::configurationChanged, this, &BaseApplication::_updateIconTheme );
 
@@ -141,7 +141,7 @@ bool BaseApplication::realizeWidget()
 
     closeAction_ = new QAction( IconEngine::get( IconNames::Exit ), tr( "Exit" ), this );
     closeAction_->setShortcut( QKeySequence::Quit );
-    connect( closeAction_, SIGNAL(triggered()), qApp, SLOT(quit()) );
+    connect( closeAction_, &QAction::triggered, qApp, &QApplication::quit );
 
     configurationAction_ = new QAction( IconEngine::get( IconNames::Configure ), tr( "Configure %1..." ).arg( applicationName() ), this );
     connect( configurationAction_, &QAction::triggered, this, &BaseApplication::_configuration );

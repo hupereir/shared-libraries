@@ -104,8 +104,7 @@ namespace SpellCheck
         label->setBuddy( dictionariesComboBox_ );
         _updateDictionaries();
 
-
-        connect( dictionariesComboBox_, SIGNAL(activated(QString)), SLOT(_selectDictionary(QString)) );
+        connect( dictionariesComboBox_, QOverload<const QString&>::of( &QComboBox::activated ), this, &SpellDialog::_selectDictionary );
 
         // configuration
         DictionarySelectionButton* dictionarySelectionButton;
@@ -118,7 +117,7 @@ namespace SpellCheck
         _updateFilters();
         filterLabel_->setBuddy( dictionariesComboBox_ );
 
-        connect( filtersComboBox_, SIGNAL(activated(QString)), SLOT(_selectFilter(QString)) );
+        connect( filtersComboBox_, QOverload<const QString&>::of( &QComboBox::activated ), this, &SpellDialog::_selectFilter );
 
         // configuration
         FilterSelectionButton* filterSelectionButton;
@@ -158,7 +157,7 @@ namespace SpellCheck
 
         // replace button
         vLayout->addWidget( replaceButton_ = new QPushButton( tr( "Replace" ), this ) );
-        connect( replaceButton_, SIGNAL(clicked()), SLOT(_replace()) );
+        connect( replaceButton_, &QPushButton::clicked, [this](bool){ _replace(); } );
         if( readOnly ) replaceButton_->setVisible( false );
 
         // replace button

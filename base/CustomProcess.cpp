@@ -61,7 +61,7 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
 
 //______________________________________________________________
 void CustomProcess::setAutoDelete()
-{ connect( this, SIGNAL(finished(int,QProcess::ExitStatus)), SLOT(deleteLater()) ); }
+{ connect( this, QOverload<int,QProcess::ExitStatus>::of( &CustomProcess::finished ), [this](int,QProcess::ExitStatus) { deleteLater(); } ); }
 
 //______________________________________________________________
 QString CustomProcess::errorMessage( ProcessError error )

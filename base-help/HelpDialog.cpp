@@ -89,7 +89,7 @@ namespace Base
         connect( list_->selectionModel(), &QItemSelectionModel::currentChanged, this, &HelpDialog::_display );
 
         // add close accelerator
-        new QShortcut( QKeySequence::Quit, this, SLOT(close()) );
+        connect( new QShortcut( QKeySequence::Quit, this ), &QShortcut::activated, this, &HelpDialog::close );
 
 
         connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );

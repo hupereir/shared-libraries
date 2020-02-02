@@ -96,7 +96,8 @@ namespace Svg
 
         //* reload all icons set in cache from new path list
         /** return true if changed */
-        bool reload( bool forced = false );
+        inline bool reload() { return reload( false ); }
+        bool reload( bool forced );
 
         private Q_SLOTS:
 

@@ -39,7 +39,7 @@ namespace Svg
     //__________________________________________________________
     SvgEngine::SvgEngine():
         thread_( this )
-    { connect( &thread_, SIGNAL(imageCacheAvailable(Svg::ImageCache)), SLOT(_processImageCache(Svg::ImageCache)) ); }
+    { connect( &thread_, &SvgThread::imageCacheAvailable, this, &SvgEngine::_processImageCache ); }
 
     //__________________________________________________________
     bool SvgEngine::needsReloadOnPaletteChange() const
@@ -166,7 +166,7 @@ namespace Svg
             {
 
                 plasmaInterface_ = new SvgPlasmaInterface( this );
-                connect( plasmaInterface_, SIGNAL(themeChanged()), SLOT(reload()) );
+                connect( plasmaInterface_, &SvgPlasmaInterface::themeChanged, this, QOverload<>::of( &SvgEngine::reload ) );
 
             }
 
