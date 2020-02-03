@@ -63,8 +63,8 @@ namespace Base{
         void setApplication( T* application )
         {
             application_ = application;
-            connect( application, &T::configurationChanged, [this](){ emit configurationChanged(); } );
-            connect( this, &Singleton::requestConfigurationChanged, [&application](){ application->emit configurationChanged(); } );
+            connect( application, &T::configurationChanged, this, &Singleton::configurationChanged );
+            connect( this, &Singleton::requestConfigurationChanged, application, &T::configurationChanged );
         }
 
         //@}

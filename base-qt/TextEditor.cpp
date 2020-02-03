@@ -53,6 +53,7 @@
 #include <QPainter>
 #include <QProgressDialog>
 #include <QRegExp>
+#include <QRegularExpression>
 #include <QTextBlock>
 #include <QTextStream>
 #include <QToolTip>
@@ -388,15 +389,15 @@ void TextEditor::selectLine()
 void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 {
 
-    static QRegExp regexp( "\\s+$" );
+    static const QRegularExpression regexp( QStringLiteral( "\\s+$" ) );
 
     auto cursor( textCursor() );
     if( cursor.hasSelection() )
     {
 
         // get selection, look for trailing spaces
-        QString text( cursor.selectedText() );
-        if( regexp.indexIn( text ) >= 0 )
+        const auto match( regexp.match( cursor.selectedText() ) );
+        if( match.hasMatch() )
         {
 
             // create local cursor, copy current, in proper order
@@ -404,7 +405,7 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
             local.beginEditBlock();
             local.setPosition( qMin( cursor.position(), cursor.anchor() ), QTextCursor::MoveAnchor );
             local.setPosition( qMax( cursor.position(), cursor.anchor() ), QTextCursor::KeepAnchor );
-            local.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, regexp.matchedLength() );
+            local.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, match.capturedLength() );
 
             local.mergeCharFormat( format );
             local.endEditBlock();

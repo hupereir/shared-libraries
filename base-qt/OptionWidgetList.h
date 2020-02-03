@@ -82,8 +82,7 @@ template<class T>
 void OptionWidgetList<W>::addOptionWidget( T* widget )
 {
     optionWidgets_.append( widget );
-    if( buddy_ )
-    {  QObject::connect( widget, &T::modified, [this](){ buddy_->emit modified(); } ); }
+    if( buddy_ )  QObject::connect( widget, &T::modified, buddy_, &W::modified );
 }
 
 //______________________________________________________________________

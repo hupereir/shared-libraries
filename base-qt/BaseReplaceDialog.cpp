@@ -35,9 +35,9 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     setBaseFindWidget( replaceWidget );
 
     // connections
-    connect( replaceWidget, &BaseReplaceWidget::replace, [this]( TextSelection textSelection ){ emit replace(textSelection); } );
-    connect( replaceWidget, &BaseReplaceWidget::replaceInWindow, [this]( TextSelection textSelection ){ emit replaceInWindow(textSelection); } );
-    connect( replaceWidget, &BaseReplaceWidget::replaceInSelection, [this]( TextSelection textSelection ){ emit replaceInSelection(textSelection); } );
-    connect( replaceWidget, &BaseReplaceWidget::replaceTextChanged, [this]( QString value ){ emit replaceTextChanged(value); } );
+    connect( replaceWidget, &BaseReplaceWidget::replace, this, &BaseReplaceDialog::replace );
+    connect( replaceWidget, &BaseReplaceWidget::replaceInWindow, this, &BaseReplaceDialog::replaceInWindow );
+    connect( replaceWidget, &BaseReplaceWidget::replaceInSelection, this, &BaseReplaceDialog::replaceInSelection );
+    connect( replaceWidget, &BaseReplaceWidget::replaceTextChanged, this, &BaseReplaceDialog::replaceTextChanged );
 
 }

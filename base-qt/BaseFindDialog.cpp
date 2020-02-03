@@ -59,7 +59,7 @@ void BaseFindDialog::setBaseFindWidget( AbstractFindWidget* baseFindWidget )
     layout()->addWidget( baseFindWidget_ );
 
     // setup connections
-    connect( baseFindWidget_, &AbstractFindWidget::find, [this]( TextSelection textSelection ){ emit find(textSelection); } );
+    connect( baseFindWidget_, &AbstractFindWidget::find, this, &BaseFindDialog::find );
     connect( &baseFindWidget_->closeButton(), &QAbstractButton::clicked, this, &QWidget::close );
 
 }
