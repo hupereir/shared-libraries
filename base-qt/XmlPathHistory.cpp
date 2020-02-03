@@ -35,7 +35,7 @@ XmlPathHistory::XmlPathHistory( QObject* parent ):
 {
 
     Debug::Throw( "XmlPathHistory::XmlPathHistory.\n" );
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &XmlPathHistory::_updateConfiguration );
     connect( qApp, &QCoreApplication::aboutToQuit, this, &XmlPathHistory::_saveConfiguration );
     _updateConfiguration();
 

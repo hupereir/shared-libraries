@@ -179,7 +179,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     // connect thread
     connect( &thread_, &FileThread::filesAvailable, this, &BaseFileSystemWidget::_processFiles );
 
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &BaseFileSystemWidget::_updateConfiguration );
     _updateConfiguration();
     _updateNavigationActions();
     _updateActions();

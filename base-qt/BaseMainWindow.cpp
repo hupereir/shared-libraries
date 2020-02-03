@@ -70,8 +70,8 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     showStatusBarAction_->setEnabled( false );
     connect( showStatusBarAction_, &QAction::toggled, this, &BaseMainWindow::_toggleStatusBar );
 
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
-    connect( this, SIGNAL(toolbarConfigurationChanged()), Base::Singleton::get().application(), SIGNAL(configurationChanged()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &BaseMainWindow::_updateConfiguration );
+    connect( this, &BaseMainWindow::toolbarConfigurationChanged, [](){ Base::Singleton::get().emit requestConfigurationChanged(); } );
 
     _updateConfiguration();
 

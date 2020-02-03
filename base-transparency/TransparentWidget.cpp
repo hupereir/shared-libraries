@@ -63,8 +63,7 @@ namespace Transparency
         // configuration
         _updateConfiguration();
 
-        if( Base::Singleton::get().hasApplication() )
-        { connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
+        connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &TransparentWidget::_updateConfiguration );
 
     }
 

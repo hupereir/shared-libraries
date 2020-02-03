@@ -427,7 +427,7 @@ PathEditor::PathEditor( QWidget* parent ):
     setCurrentWidget( browserContainer_ );
 
     // configuration
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &PathEditor::_updateConfiguration );
     _updateConfiguration();
 
 }

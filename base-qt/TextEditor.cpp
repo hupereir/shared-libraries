@@ -106,8 +106,7 @@ TextEditor::TextEditor( QWidget *parent ):
     connect( this, &QTextEdit::selectionChanged, this, &TextEditor::_updateClipboard );
     connect( this, &QTextEdit::cursorPositionChanged, this, &TextEditor::_synchronizeSelection );
 
-    if( Base::Singleton::get().hasApplication() )
-    { connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) ); }
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &TextEditor::_updateConfiguration );
 
     // track changes of block counts
     connect( TextEditor::document(), &QTextDocument::blockCountChanged, this, &TextEditor::_blockCountChanged );

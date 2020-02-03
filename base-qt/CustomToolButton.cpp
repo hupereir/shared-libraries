@@ -41,7 +41,7 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
     setAutoRaise( true );
 
     // configuration
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &CustomToolButton::_updateConfiguration );
     _updateConfiguration();
 
 }

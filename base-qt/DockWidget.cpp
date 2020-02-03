@@ -56,7 +56,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     setFeatures( DockWidgetClosable|DockWidgetMovable );
 
     // configuration
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &DockWidget::_updateConfiguration );
     _updateConfiguration();
 
 }

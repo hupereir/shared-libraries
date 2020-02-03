@@ -90,7 +90,7 @@ IconView::IconView( QWidget* parent ):
     setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
     // configuration
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &IconView::_updateConfiguration );
     _updateConfiguration();
 }
 

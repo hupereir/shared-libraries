@@ -21,15 +21,16 @@
 *******************************************************************************/
 
 #include "Counter.h"
-#include "NonCopyable.h"
 
 #include <QObject>
 
 namespace Base{
 
     //* a class singleton used to centralize all objects that need static creation
-    class Singleton final: private Counter<Singleton>, private NonCopyable<Singleton>
+    class Singleton final: public QObject, private Counter<Singleton>
     {
+
+        Q_OBJECT
 
         public:
 
@@ -45,18 +46,12 @@ namespace Base{
 
         //* application
         QObject* application()
-        {
-            Q_CHECK_PTR( application_ );
-            return application_;
-        }
+        { return application_; }
 
         //* cast
-        template< typename T >
+        template< class T >
         T* application()
-        {
-            Q_CHECK_PTR( application_ );
-            return static_cast<T*>( application_ );
-        }
+        { return static_cast<T*>( application_ ); }
 
         //@}
 
@@ -64,13 +59,23 @@ namespace Base{
         //@{
 
         //* set application
-        void setApplication( QObject* application )
+        template< class T >
+        void setApplication( T* application )
         {
-            Q_ASSERT( !application_ );
             application_ = application;
+            connect( application, &T::configurationChanged, [this](){ emit configurationChanged(); } );
+            connect( this, &Singleton::requestConfigurationChanged, [&application](){ application->emit configurationChanged(); } );
         }
 
         //@}
+
+        Q_SIGNALS:
+
+        // request configuration changed
+        void requestConfigurationChanged();
+
+        // configuration changed
+        void configurationChanged();
 
         private:
 

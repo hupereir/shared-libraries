@@ -82,7 +82,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     vLayout->addStretch( 1 );
 
     // configuration
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &BaseFileInfoToolTipWidget::_updateConfiguration );
     _updateConfiguration();
 
 }

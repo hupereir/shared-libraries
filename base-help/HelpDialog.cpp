@@ -92,7 +92,7 @@ namespace Base
         connect( new QShortcut( QKeySequence::Quit, this ), &QShortcut::activated, this, &HelpDialog::close );
 
 
-        connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+        connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &HelpDialog::_updateConfiguration );
         _updateConfiguration();
 
     }

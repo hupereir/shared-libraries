@@ -80,7 +80,7 @@ TreeView::TreeView( QWidget* parent ):
     connect( horizontalScrollBar(), &QAbstractSlider::rangeChanged, this, &TreeView::_updateHorizontalScrollBarRange );
 
     // configuration
-    connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &TreeView::_updateConfiguration );
     _updateConfiguration();
 
 }

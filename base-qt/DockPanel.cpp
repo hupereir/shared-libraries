@@ -13,7 +13,7 @@
 * for more details.
 *
 * You should have received a copy of the GNU General Public License along with
-* this program.  If not, see <http://www.gnu.org/licenses/>.
+* this program.  If not, see <http://www.gnu.org/lic1enses/>.
 *
 *******************************************************************************/
 
@@ -240,7 +240,7 @@ namespace Private
         connect( this, &QWidget::customContextMenuRequested, this, &LocalWidget::_updateContextMenu );
 
         // configuration
-        connect( Base::Singleton::get().application(), SIGNAL(configurationChanged()), SLOT(_updateConfiguration()) );
+        connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &LocalWidget::_updateConfiguration );
         _updateConfiguration();
     }
 
