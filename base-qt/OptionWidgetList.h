@@ -25,14 +25,19 @@
 
 #include <QList>
 
+#include <QApplication>
+#include <QStyle>
+#include <QStyleOption>
+
 //* abstract container for OptionWidgets
+template<class W>
 class OptionWidgetList: public OptionWidget
 {
 
     public:
 
     //* constructor
-    explicit OptionWidgetList( QObject* buddy = nullptr ):
+    explicit OptionWidgetList( W* buddy = nullptr ):
         OptionWidget( "generic", buddy )
     {}
 
@@ -68,8 +73,9 @@ class OptionWidgetList: public OptionWidget
 
 
 //______________________________________________________________________
+template<class W>
 template<class T>
-void OptionWidgetList::addOptionWidget( T* widget )
+void OptionWidgetList<W>::addOptionWidget( T* widget )
 {
 
     Debug::Throw()
@@ -81,8 +87,41 @@ void OptionWidgetList::addOptionWidget( T* widget )
 
     //* connect signals
     if( _connected() && hasBuddy() )
-    {  QObject::connect( widget, SIGNAL(modified()), &buddy(), SIGNAL(modified())); }
+    // {  QObject::connect( widget, SIGNAL(modified()), &buddy(), SIGNAL(modified())); }
+    {  QObject::connect( widget, &T::modified, [this](){ static_cast<W*>(&buddy())->emit modified(); } ); }
 
+}
+
+//______________________________________________________________________
+template<class W>
+void OptionWidgetList<W>::read( const Options& options )
+{
+
+    Debug::Throw( "OptionWidgetList::read.\n" );
+    for( const auto& widget:optionWidgets_ )
+    { widget->read( options ); }
+
+    _setConnected();
+
+}
+
+//______________________________________________________________________
+template<class W>
+void OptionWidgetList<W>::write( Options& options ) const
+{
+    Debug::Throw( "OptionWidgetList::write\n" );
+    for( const auto& widget:optionWidgets_ )
+    { widget->write( options ); }
+}
+
+//__________________________________________________
+template<class W>
+int OptionWidgetList<W>::_checkBoxSpacing() const
+{
+    QStyleOption option;
+    option.rect = QRect( 0, 0, 50, 50 );
+    QRect adjusted( qApp->style()->subElementRect( QStyle::SE_CheckBoxContents, &option, nullptr ) );
+    return adjusted.left()-option.rect.left();
 }
 
 #endif

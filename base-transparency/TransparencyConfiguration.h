@@ -28,7 +28,7 @@
 namespace Transparency
 {
     //! transparency common configuration
-    class TransparencyConfiguration: public QWidget, public OptionWidgetList, private Base::Counter<TransparencyConfiguration>
+    class TransparencyConfiguration: public QWidget, public OptionWidgetList<TransparencyConfiguration>, private Base::Counter<TransparencyConfiguration>
     {
 
         Q_OBJECT

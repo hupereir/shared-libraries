@@ -29,7 +29,7 @@
 class CustomDialog;
 
 //* configuration dialog
-class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList
+class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList<BaseConfigurationDialog>
 {
 
     Q_OBJECT

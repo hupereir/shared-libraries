@@ -54,7 +54,7 @@ namespace
     {
 
         //_________________________________________________________
-        class IconThemeDialog: public CustomDialog, public OptionWidgetList
+        class IconThemeDialog: public CustomDialog, public OptionWidgetList<IconThemeDialog>
         {
 
             Q_OBJECT

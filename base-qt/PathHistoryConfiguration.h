@@ -26,7 +26,7 @@
 #include <QWidget>
 
 //! configure files in recent files menu
-class PathHistoryConfiguration: public QWidget, public OptionWidgetList, private Base::Counter<PathHistoryConfiguration>
+class PathHistoryConfiguration: public QWidget, public OptionWidgetList<PathHistoryConfiguration>, private Base::Counter<PathHistoryConfiguration>
 {
 
     Q_OBJECT
