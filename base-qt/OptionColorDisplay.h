@@ -35,7 +35,7 @@ class OptionColorDisplay: public ColorDisplay, public OptionWidget
     //! constructor
     explicit OptionColorDisplay( QWidget* parent, const QString& optionName ):
         ColorDisplay( parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //! read value from option

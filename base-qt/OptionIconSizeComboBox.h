@@ -34,7 +34,7 @@ class OptionIconSizeComboBox: public IconSizeComboBox, public OptionWidget
     //* constructor
     explicit OptionIconSizeComboBox( QWidget* parent, const QString& optionName ):
         IconSizeComboBox( parent, true ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //* read value from option

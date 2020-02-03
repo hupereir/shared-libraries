@@ -30,7 +30,7 @@ namespace SpellCheck
     //________________________________________________________________
     DictionarySelectionButton::DictionarySelectionButton( QWidget* parent ):
         QToolButton( parent ),
-        OptionWidget( "SPELLCHECK_DISABLED_DICTIONARIES", this )
+        OptionWidget( "SPELLCHECK_DISABLED_DICTIONARIES" )
     {
 
         // make sure disabled dictionaries option exists

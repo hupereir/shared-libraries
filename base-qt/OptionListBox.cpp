@@ -97,7 +97,7 @@ EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode m
 //_______________________________________________________
 OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     QWidget( parent ),
-    OptionWidget( name, this )
+    OptionWidget( name )
 {
 
     Debug::Throw( "OptionListBox::OptionListBox.\n" );

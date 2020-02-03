@@ -46,7 +46,7 @@ namespace Svg
         //! constructor
         explicit StyleOptionWidget( QWidget* parent ):
             CustomComboBox( parent ),
-            OptionWidget( "DUMMY_OPTION", this )
+            OptionWidget( "DUMMY_OPTION" )
         {
 
             setEditable( false );

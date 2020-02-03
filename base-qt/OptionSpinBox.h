@@ -38,9 +38,9 @@ class OptionSpinBox: public QWidget, public OptionWidget
     //* constructor
     explicit OptionSpinBox( QWidget* parent, const QString& optionName, bool addStretch = true ):
         QWidget( parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {
-        QHBoxLayout *layout = new QHBoxLayout();
+        auto layout = new QHBoxLayout();
         layout->setMargin(0);
         setLayout( layout );
         layout->addWidget( spinBox_ = new QSpinBox( this ) );

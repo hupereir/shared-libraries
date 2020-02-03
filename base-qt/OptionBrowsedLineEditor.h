@@ -35,7 +35,7 @@ class OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
     //* constructor
     explicit OptionBrowsedLineEditor( QWidget* parent, const QString& optionName ):
         BrowsedLineEditor( parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //*@name accessors

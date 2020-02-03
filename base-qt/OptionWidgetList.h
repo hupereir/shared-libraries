@@ -38,7 +38,8 @@ class OptionWidgetList: public OptionWidget
 
     //* constructor
     explicit OptionWidgetList( W* buddy = nullptr ):
-        OptionWidget( "generic", buddy )
+        OptionWidget( "generic" ),
+        buddy_( buddy )
     {}
 
     //* add option widget
@@ -66,6 +67,9 @@ class OptionWidgetList: public OptionWidget
 
     private:
 
+    //* buddy (needed to emit ::modified signal)
+    W* buddy_ = nullptr;
+
     //* contained options
     QList< OptionWidget* > optionWidgets_;
 
@@ -77,19 +81,9 @@ template<class W>
 template<class T>
 void OptionWidgetList<W>::addOptionWidget( T* widget )
 {
-
-    Debug::Throw()
-        << "OptionWidgetList::addOptionWidget -"
-        << " buddy: " << ( widget->hasBuddy() ? widget->buddy().metaObject()->className():"none" )
-        << endl;
-
     optionWidgets_.append( widget );
-
-    //* connect signals
-    if( _connected() && hasBuddy() )
-    // {  QObject::connect( widget, SIGNAL(modified()), &buddy(), SIGNAL(modified())); }
-    {  QObject::connect( widget, &T::modified, [this](){ static_cast<W*>(&buddy())->emit modified(); } ); }
-
+    if( buddy_ )
+    {  QObject::connect( widget, &T::modified, [this](){ buddy_->emit modified(); } ); }
 }
 
 //______________________________________________________________________

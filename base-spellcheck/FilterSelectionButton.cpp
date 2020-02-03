@@ -30,7 +30,7 @@ namespace SpellCheck
     //________________________________________________________________
     FilterSelectionButton::FilterSelectionButton( QWidget* parent ):
         QToolButton( parent ),
-        OptionWidget( "SPELLCHECK_DISABLED_FILTERS", this )
+        OptionWidget( "SPELLCHECK_DISABLED_FILTERS" )
     {
 
         // make sure disabled filters option exists

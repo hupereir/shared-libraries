@@ -34,7 +34,7 @@ class OptionLineEditor: public LineEditor, public OptionWidget
     //* constructor
     explicit OptionLineEditor( QWidget* parent, const QString& optionName ):
         LineEditor( parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //* read value from option

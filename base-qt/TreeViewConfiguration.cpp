@@ -30,7 +30,7 @@
 //____________________________________________________________________________
 TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target, const QString& optionName ):
     QGroupBox( parent ),
-    OptionWidget( optionName, this )
+    OptionWidget( optionName )
 {
 
     Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" );

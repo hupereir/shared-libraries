@@ -35,7 +35,7 @@ class OptionRadioButton: public QRadioButton, public OptionWidget
     //! constructor
     explicit OptionRadioButton( const QString& label, QWidget* parent, const QString& optionName ):
         QRadioButton( label, parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //! read value from option

@@ -36,7 +36,7 @@ class OptionSlider: public CustomSlider, public OptionWidget
     //* constructor
     explicit OptionSlider( QWidget* parent, const QString& optionName ):
         CustomSlider( parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //* scale (i.e. option = value()/scale)

@@ -34,7 +34,7 @@ class OptionFontEditor: public FontEditor, public OptionWidget
         //! constructor
     explicit OptionFontEditor( QWidget* parent, const QString& optionName ):
         FontEditor( parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //! read value from option

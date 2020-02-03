@@ -27,7 +27,7 @@
 //_______________________________________________________
 BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* parent ):
     QWidget( parent ),
-    OptionWidget( "TOOLTIPS_MASK", this )
+    OptionWidget( "TOOLTIPS_MASK" )
 {
 
     Debug::Throw( "BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget.\n" );

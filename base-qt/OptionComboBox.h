@@ -34,7 +34,7 @@ class OptionComboBox: public CustomComboBox, public OptionWidget
     //* constructor
     explicit OptionComboBox( QWidget* parent, const QString& optionName ):
         CustomComboBox( parent ),
-        OptionWidget( optionName, this )
+        OptionWidget( optionName )
     {}
 
     //* use value for option
