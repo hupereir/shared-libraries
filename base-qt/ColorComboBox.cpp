@@ -35,7 +35,7 @@ ColorComboBox::ColorComboBox( QWidget* parent ):
 {
     Debug::Throw( "ColorComboBox::ColorComboBox.\n" );
     setEditable( false );
-    connect( this, SIGNAL(activated(int)), SLOT(_updateActiveIndex(int)) );
+    connect( this, QOverload<int>::of( &ColorComboBox::activated ), this, &ColorComboBox::_updateActiveIndex );
 }
 
 //_________________________________________________________

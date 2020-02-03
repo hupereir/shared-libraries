@@ -30,7 +30,7 @@ OpenWithComboBox::OpenWithComboBox( QWidget* parent ):
 
     setEditable( false );
     QComboBox::addItem( tr( "Other..." ) );
-    connect( this, SIGNAL(activated(int)), SLOT(_indexActivated(int)) );
+    connect( this, QOverload<int>::of( &OpenWithComboBox::activated ), this, &OpenWithComboBox::_indexActivated );
 
 }
 

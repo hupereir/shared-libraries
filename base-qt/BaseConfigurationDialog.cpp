@@ -183,7 +183,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
     connect( this, &BaseConfigurationDialog::modified, this, &BaseConfigurationDialog::_checkModified);
 
     // close accelerator
-    new QShortcut( QKeySequence::Close, this, SLOT(reject()) );
+    connect( new QShortcut( QKeySequence::Close, this ), &QShortcut::activated, this, &BaseConfigurationDialog::reject );
 
     // default configuration, as set by flags
     if( flags )

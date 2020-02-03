@@ -376,7 +376,7 @@ PathEditor::PathEditor( QWidget* parent ):
         // button group
         group_ = new QButtonGroup( browserContainer_ );
         group_->setExclusive( false );
-        connect( group_, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_buttonClicked(QAbstractButton*)) );
+        connect( group_, QOverload<QAbstractButton*>::of( &QButtonGroup::buttonClicked ), this, &PathEditor::_buttonClicked );
 
         addWidget( browserContainer_ );
     }
@@ -407,7 +407,7 @@ PathEditor::PathEditor( QWidget* parent ):
         button->setFocusPolicy( Qt::StrongFocus );
 
         connect( editor_->lineEdit(), &QLineEdit::returnPressed, this, &PathEditor::_returnPressed );
-        connect( editor_, SIGNAL(activated(int)), SLOT(_returnPressed()) );
+        connect( editor_, QOverload<int>::of( &QComboBox::activated ), [this](int){ _returnPressed(); } );
         connect( button, &QAbstractButton::clicked, this, &PathEditor::_showBrowser );
 
         addWidget( editorContainer_ );

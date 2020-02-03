@@ -298,7 +298,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags fla
     connect( navigationWidget_, &Private::NavigationWidget::pageChanged, previewWidget_, &QPrintPreviewWidget::setCurrentPage );
 
     // close accelerator
-    new QShortcut( QKeySequence::Close, this, SLOT(close()) );
+    connect( new QShortcut( QKeySequence::Close, this ), &QShortcut::activated, this, &PrintPreviewDialog::close );
 
     // connect scrollbars
     QList<QGraphicsView*> graphicsViews( previewWidget_->findChildren<QGraphicsView*>() );
@@ -324,18 +324,18 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags fla
 }
 
 //_________________________________________________________________
-void PrintPreviewDialog::setHelper( QObject* helper )
+void PrintPreviewDialog::setHelper( BasePrintHelper* helper )
 {
     Debug::Throw( "PrintPreviewDialog::setHelper.\n" );
 
     if( !helper ) return;
 
-    connect( previewWidget_, SIGNAL(paintRequested(QPrinter*)), helper, SLOT(print(QPrinter*)) );
-    connect( optionMenu_, SIGNAL(orientationChanged(QPrinter::Orientation)), helper, SLOT(setOrientation(QPrinter::Orientation)) );
+    connect( previewWidget_, &QPrintPreviewWidget::paintRequested, helper, &BasePrintHelper::print );
+    connect( optionMenu_, &Private::OptionMenu::orientationChanged, helper, &BasePrintHelper::setOrientation );
     connect( optionMenu_, &Private::OptionMenu::orientationChanged, previewWidget_, &QPrintPreviewWidget::updatePreview );
-    connect( optionMenu_, SIGNAL(pageModeChanged(BasePrintHelper::PageMode)), helper, SLOT(setPageMode(BasePrintHelper::PageMode)) );
+    connect( optionMenu_, &Private::OptionMenu::pageModeChanged, helper, &BasePrintHelper::setPageMode );
     connect( optionMenu_, &Private::OptionMenu::pageModeChanged, previewWidget_, &QPrintPreviewWidget::updatePreview );
-    connect( helper, SIGNAL(pageCountChanged(int)), navigationWidget_, SLOT(setPages(int)) );
+    connect( helper, &BasePrintHelper::pageCountChanged, navigationWidget_, &Private::NavigationWidget::setPages );
 
 }
 

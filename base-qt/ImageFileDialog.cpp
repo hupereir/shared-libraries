@@ -79,7 +79,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
 
     } else Debug::Throw() << "ImageFileDialog::ImageFileDialog - unable to find splitter." << endl;
 
-    connect( this, SIGNAL(currentChanged (QString)), SLOT(_currentChanged(QString)) );
+    connect( this, QOverload<const QString&>::of( &ImageFileDialog::currentChanged ), this, &ImageFileDialog::_currentChanged );
 
 }
 

@@ -121,7 +121,7 @@ void IconView::setFindWidget( AbstractFindWidget* widget )
     findWidget_ = widget;
 
     // connections
-    connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+    connect( findWidget_, &AbstractFindWidget::find, this, &IconView::find );
     connect( this, &IconView::matchFound, findWidget_, &AbstractFindWidget::matchFound );
     connect( this, &IconView::noMatchFound, findWidget_, &AbstractFindWidget::noMatchFound );
 
@@ -1567,7 +1567,7 @@ void IconView::Container::_initialize()
     vLayout->addWidget( iconView_->findWidget_ );
     iconView_->findWidget_->hide();
 
-    connect( &iconView_->findWidget_->closeButton(), SIGNAL(clicked()), iconView_, SLOT(setFocus()) );
+    connect( &iconView_->findWidget_->closeButton(), &QPushButton::clicked, [this](bool){ iconView_->setFocus(); } );
 
 }
 

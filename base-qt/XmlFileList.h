@@ -57,7 +57,8 @@ class XmlFileList: public FileList
     bool read( File = File() );
 
     //* write fileList to file
-    bool write( File = File() );
+    inline bool write() { return write( File() ); }
+    bool write( File );
 
     protected:
 

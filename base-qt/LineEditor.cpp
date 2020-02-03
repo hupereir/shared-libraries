@@ -170,7 +170,7 @@ LineEditor::LineEditor( QWidget* parent ):
     addRightWidget( clearButton_ );
 
     // setup connections
-    connect( clearButton_, SIGNAL(clicked()), SLOT(clear()) );
+    connect( clearButton_, &LineEditorButton::clicked, [this](bool){ clear(); } );
 
     setStyle( proxyStyle_.data() );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
@@ -462,7 +462,7 @@ void LineEditor::_installActions()
     pasteAction_->setEnabled( !isReadOnly() );
 
     addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
-    connect( clearAction_, SIGNAL(triggered()), SLOT(clear()) );
+    connect( clearAction_, &QAction::triggered, this, &LineEditor::clear );
 
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );

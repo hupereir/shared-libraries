@@ -40,7 +40,7 @@ class CounterDialog: public CustomDialog
     public Q_SLOTS:
 
     //* update Counter list
-    void update();
+    void updateCounters();
 
     private:
 

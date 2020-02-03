@@ -41,7 +41,7 @@ class IconCacheDialog: public CustomDialog
     public Q_SLOTS:
 
     //* update IconCache list
-    void update();
+    void updateCache();
 
     private:
 

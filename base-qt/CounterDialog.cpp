@@ -45,18 +45,18 @@ CustomDialog( parent, OkButton, Qt::Window )
 
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
-    connect( button, SIGNAL(clicked()), SLOT(update()) );
+    connect( button, &QPushButton::clicked, [this](bool){ updateCounters(); } );
     button->setAutoDefault( false );
 
-    new QShortcut( QKeySequence::Refresh, this, SLOT(update()) );
+    connect( new QShortcut( QKeySequence::Refresh, this ), &QShortcut::activated, this, &CounterDialog::updateCounters );
 
 }
 
 //__________________________________________________________________________
-void CounterDialog::update()
+void CounterDialog::updateCounters()
 {
 
-    Debug::Throw( "CounterDialog::update.\n" );
+    Debug::Throw( "CounterDialog::updateCounters.\n" );
 
     // retrieve counters
     auto&& counters( Base::CounterMap::get() );

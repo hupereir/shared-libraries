@@ -34,7 +34,7 @@ XmlFileList::XmlFileList( QObject* parent ):
 {
 
     Debug::Throw( "XmlFileList::XmlFileList.\n" );
-    connect( qApp, SIGNAL(aboutToQuit()), SLOT(write()) );
+    connect( qApp, &QApplication::aboutToQuit, this, QOverload<>::of( &XmlFileList::write ) );
 
 }
 

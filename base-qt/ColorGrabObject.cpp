@@ -28,12 +28,12 @@
 #include <QWindow>
 
 //______________________________________________
-ColorGrabObject::ColorGrabObject( QWidget* parent ):
+ColorGrabObject::ColorGrabObject( QAbstractButton* parent ):
     QObject( parent ),
     Counter( "ColorGrabObject" )
 {
     Debug::Throw( "ColorGrabObject::ColorGrabObject.\n" );
-    connect( parent, SIGNAL(clicked()), SLOT(_grabColor()) );
+    connect( parent, &QAbstractButton::clicked, [this](bool){ _grabColor(); } );
 }
 
 //________________________________________________________

@@ -100,6 +100,8 @@ class BasePrintHelper: public QObject
     void setPageMode( BasePrintHelper::PageMode value )
     { pageMode_ = value; }
 
+    virtual void print( QPrinter* ) {};
+
     Q_SIGNALS:
 
     //* emitted when number of pages has changed

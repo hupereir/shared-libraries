@@ -21,6 +21,7 @@
 
 #include "Counter.h"
 
+#include <QAbstractButton>
 #include <QDialog>
 #include <QEvent>
 #include <QWidget>
@@ -35,7 +36,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
     public:
 
     //* constructor
-    explicit ColorGrabObject( QWidget* );
+    explicit ColorGrabObject( QAbstractButton* );
 
     //* event filter
     bool eventFilter( QObject*, QEvent* ) override;

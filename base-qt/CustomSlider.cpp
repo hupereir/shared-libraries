@@ -37,8 +37,8 @@ CustomSlider::CustomSlider( QWidget* parent ):
     layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
     layout()->addWidget( spinBox_ = new QSpinBox( this ) );
 
-    connect( spinBox_, SIGNAL(valueChanged(int)),   SLOT(_updateSlider(int)) );
-    connect( spinBox_, SIGNAL(valueChanged(int)),   SIGNAL(valueChanged(int)) );
+    connect( spinBox_, QOverload<int>::of( &QSpinBox::valueChanged ), this, &CustomSlider::_updateSlider );
+    connect( spinBox_, QOverload<int>::of( &QSpinBox::valueChanged ), [this]( int value ) { emit valueChanged( value ); } );
     connect( slider_, &QAbstractSlider::valueChanged,  this, &CustomSlider::_updateSpinBox );
     connect( slider_, &QAbstractSlider::valueChanged,  this, &CustomSlider::valueChanged );
 

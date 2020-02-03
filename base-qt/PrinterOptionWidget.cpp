@@ -61,7 +61,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
         orientationButtons_.insert( radioButton, QPrinter::Landscape );
         buttonGroup->addButton( radioButton );
 
-        connect( buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_setOrientation(QAbstractButton*)) );
+        connect( buttonGroup, QOverload<QAbstractButton*>::of( &QButtonGroup::buttonClicked ), this, &PrinterOptionWidget::_setOrientation );
 
         vLayout->addStretch();
     }
@@ -86,7 +86,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
         pageModeButtons_.insert( radioButton, BasePrintHelper::PageMode::FourPages );
         buttonGroup->addButton( radioButton );
 
-        connect( buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), SLOT(_setPageMode(QAbstractButton*)) );
+        connect( buttonGroup, QOverload<QAbstractButton*>::of( &QButtonGroup::buttonClicked ), this, &PrinterOptionWidget::_setPageMode );
 
         vLayout->addStretch();
     }

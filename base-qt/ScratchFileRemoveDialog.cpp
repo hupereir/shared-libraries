@@ -141,6 +141,6 @@ void ScratchFileRemoveDialog::_installActions()
 
     // select all
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
-    connect( selectAllAction_, SIGNAL(triggered()), list_, SLOT(selectAll()) );
+    connect( selectAllAction_, &QAction::triggered, list_, &TreeView::selectAll );
 
 }

@@ -67,7 +67,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // connections
     connect( list_->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &TabbedDialog::_display );
-    new QShortcut( QKeySequence::Quit, this, SLOT(close()) );
+    connect( new QShortcut( QKeySequence::Quit, this ), &QShortcut::activated, this, &TabbedDialog::close );
 
 }
 

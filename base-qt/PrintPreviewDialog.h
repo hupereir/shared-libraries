@@ -45,7 +45,7 @@ class PrintPreviewDialog: public CustomDialog
     explicit PrintPreviewDialog( QWidget* = nullptr, CustomDialog::Flags = 0 );
 
     //* set print helper
-    void setHelper( QObject* );
+    void setHelper( BasePrintHelper* );
 
     //* return preview widget
     QPrintPreviewWidget& previewWidget() const
