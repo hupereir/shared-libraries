@@ -154,7 +154,7 @@ void TreeView::setFindWidget( AbstractFindWidget* widget )
     // connections
     if( findWidget_ )
     {
-        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( findWidget_, &AbstractFindWidget::find, this, &TreeView::find );
         connect( this, &TreeView::matchFound, findWidget_, &AbstractFindWidget::matchFound );
         connect( this, &TreeView::noMatchFound, findWidget_, &AbstractFindWidget::noMatchFound );
         connect( this, &QObject::destroyed, findWidget_, &QObject::deleteLater );
@@ -913,7 +913,7 @@ void TreeView::_installActions()
     addAction( selectAllAction_ = new QAction( tr("Select All"), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
     selectAllAction_->setShortcutContext( Qt::WidgetShortcut );
-    connect( selectAllAction_, SIGNAL(triggered()), SLOT(selectAll()) );
+    connect( selectAllAction_, &QAction::triggered, this, &TreeView::selectAll );
 
     addAction( collapseAllAction_ = new QAction( tr("Collapse All Entries"), this ) );
     connect( collapseAllAction_, &QAction::triggered, this, &QTreeView::collapseAll );
@@ -1191,5 +1191,5 @@ void TreeView::Container::_initialize()
     vLayout->addWidget( treeView_->findWidget_ );
     treeView_->findWidget_->hide();
 
-    connect( &treeView_->findWidget_->closeButton(), SIGNAL(clicked()), treeView_, SLOT(setFocus()) );
+    connect( &treeView_->findWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ treeView_->setFocus(); } );
 }

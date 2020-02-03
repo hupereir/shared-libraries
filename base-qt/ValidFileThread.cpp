@@ -27,10 +27,7 @@
 ValidFileThread::ValidFileThread( QObject* parent ):
     QThread( parent ),
     Counter( "ValidFileThread" )
-{
-    // register FileRecord::List as meta type so that it can be used in SIGNAL
-    qRegisterMetaType<FileRecord::List>( "FileRecord::List" );
-}
+{ qRegisterMetaType<FileRecord::List>( "FileRecord::List" ); }
 
 //______________________________________________________
 void ValidFileThread::run()

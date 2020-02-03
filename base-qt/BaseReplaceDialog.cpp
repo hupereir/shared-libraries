@@ -31,12 +31,13 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     setOptionName( "REPLACE_DIALOG" );
 
     // set base find widget
-    setBaseFindWidget( new BaseReplaceWidget( this, false ) );
+    auto replaceWidget = new BaseReplaceWidget( this, false );
+    setBaseFindWidget( replaceWidget );
 
     // connections
-    connect( &baseFindWidget(), SIGNAL(replace(TextSelection)), this, SIGNAL(replace(TextSelection)));
-    connect( &baseFindWidget(), SIGNAL(replaceInWindow(TextSelection)), this, SIGNAL(replaceInWindow(TextSelection)));
-    connect( &baseFindWidget(), SIGNAL(replaceInSelection(TextSelection)), this, SIGNAL(replaceInSelection(TextSelection)));
-    connect( &baseFindWidget(), SIGNAL(replaceTextChanged(QString)), this, SIGNAL(replaceTextChanged(QString)));
+    connect( replaceWidget, &BaseReplaceWidget::replace, [this]( TextSelection textSelection ){ emit replace(textSelection); } );
+    connect( replaceWidget, &BaseReplaceWidget::replaceInWindow, [this]( TextSelection textSelection ){ emit replaceInWindow(textSelection); } );
+    connect( replaceWidget, &BaseReplaceWidget::replaceInSelection, [this]( TextSelection textSelection ){ emit replaceInSelection(textSelection); } );
+    connect( replaceWidget, &BaseReplaceWidget::replaceTextChanged, [this]( QString value ){ emit replaceTextChanged(value); } );
 
 }

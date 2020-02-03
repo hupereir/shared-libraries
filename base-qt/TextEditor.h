@@ -500,10 +500,12 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual void replace( TextSelection selection );
 
     //* replace selection in range
-    virtual int replaceInSelection( TextSelection selection, bool showDialog = true );
+    inline virtual int replaceInSelection( TextSelection selection ) { return replaceInSelection( selection, true ); }
+    virtual int replaceInSelection( TextSelection selection, bool showDialog );
 
     //* replace selection in window, returns number of replacements
-    virtual int replaceInWindow( TextSelection selection, bool showDialog = true );
+    inline virtual int replaceInWindow( TextSelection selection ) { return replaceInWindow( selection, true ); }
+    virtual int replaceInWindow( TextSelection selection, bool showDialog );
 
     //* replace again forward
     virtual void replaceAgainForward();

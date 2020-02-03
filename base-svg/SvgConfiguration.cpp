@@ -82,7 +82,7 @@ namespace Svg
 
             if( !_connected() )
             {
-                connect( this, SIGNAL(currentIndexChanged(int)), SIGNAL(modified()) );
+                connect( this, QOverload<int>::of( &StyleOptionWidget::currentIndexChanged ), [this](int){ emit modified(); } );
                 _setConnected();
             }
 

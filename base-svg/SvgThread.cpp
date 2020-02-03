@@ -28,10 +28,7 @@ namespace Svg
     //______________________________________________________
     SvgThread::SvgThread( QObject* parent ):
         QThread( parent )
-    {
-        // register FileRecord::List as meta type so that it can be used in SIGNAL
-        qRegisterMetaType<Svg::ImageCache>( "Svg::ImageCache" );
-    }
+    { qRegisterMetaType<Svg::ImageCache>( "Svg::ImageCache" ); }
 
     //______________________________________________________
     void SvgThread::run()

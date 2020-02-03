@@ -600,9 +600,9 @@ void TextEditor::createFindWidget( bool compact )
     if( !findWidget_ )
     {
         findWidget_ = new BaseFindWidget( this, compact );
-        connect( findWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
-        connect( this, SIGNAL(matchFound()), findWidget_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), findWidget_, SLOT(noMatchFound()) );
+        connect( findWidget_, &BaseFindWidget::find, this, &TextEditor::find );
+        connect( this, &TextEditor::matchFound, findWidget_, &BaseFindWidget::matchFound );
+        connect( this, &TextEditor::noMatchFound, findWidget_, &BaseFindWidget::noMatchFound );
     }
 
     return;
@@ -617,13 +617,13 @@ void TextEditor::createReplaceWidget( bool compact )
     if( !replaceWidget_ )
     {
         replaceWidget_ = new BaseReplaceWidget( this, compact );
-        connect( replaceWidget_, SIGNAL(find(TextSelection)), SLOT(find(TextSelection)) );
+        connect( replaceWidget_, &BaseReplaceWidget::find, this, &TextEditor::find );
         connect( replaceWidget_, &BaseReplaceWidget::replace, this, &TextEditor::replace );
-        connect( replaceWidget_, SIGNAL(replaceInWindow(TextSelection)), SLOT(replaceInWindow(TextSelection)) );
-        connect( replaceWidget_, SIGNAL(replaceInSelection(TextSelection)), SLOT(replaceInSelection(TextSelection)) );
+        connect( replaceWidget_, &BaseReplaceWidget::replaceInWindow, this, QOverload<TextSelection>::of( &TextEditor::replaceInWindow ) );
+        connect( replaceWidget_, &BaseReplaceWidget::replaceInSelection, this, QOverload<TextSelection>::of( &TextEditor::replaceInSelection ) );
         connect( replaceWidget_, &BaseReplaceWidget::menuAboutToShow, this, &TextEditor::_updateReplaceInSelection );
-        connect( this, SIGNAL(matchFound()), replaceWidget_, SLOT(matchFound()) );
-        connect( this, SIGNAL(noMatchFound()), replaceWidget_, SLOT(noMatchFound()) );
+        connect( this, &TextEditor::matchFound, replaceWidget_, &BaseReplaceWidget::matchFound );
+        connect( this, &TextEditor::noMatchFound, replaceWidget_, &BaseReplaceWidget::noMatchFound );
     }
 
     return;
@@ -637,7 +637,7 @@ void TextEditor::createSelectLineWidget( bool compact )
     {
         Debug::Throw( "TextEditor::createSelectLineWidget.\n" );
         selectLineWidget_ = new SelectLineWidget( this, compact );
-        connect( selectLineWidget_, SIGNAL(lineSelected(int)), SLOT(selectLine(int)) );
+        connect( selectLineWidget_, &SelectLineWidget::lineSelected, this, QOverload<int>::of( &TextEditor::selectLine ) );
         connect( this, &TextEditor::lineFound, selectLineWidget_, &SelectLineWidget::matchFound );
         connect( this, &TextEditor::lineNotFound, selectLineWidget_, &SelectLineWidget::noMatchFound );
    }
@@ -1823,27 +1823,27 @@ void TextEditor::_installActions()
     // create actions
     addAction( undoAction_ = new StandardAction( StandardAction::Type::Undo, this ) );
     undoAction_->setEnabled( document()->isUndoAvailable() && !isReadOnly() );
-    connect( undoAction_, SIGNAL(triggered()), document(), SLOT(undo()) );
+    connect( undoAction_, &QAction::triggered, document(), QOverload<>::of( &QTextDocument::undo ) );
     connect( this, &QTextEdit::undoAvailable, this, &TextEditor::_updateUndoRedoActions );
 
     addAction( redoAction_ = new StandardAction( StandardAction::Type::Redo, this ) );
     redoAction_->setEnabled( document()->isRedoAvailable() && !isReadOnly() );
-    connect( redoAction_, SIGNAL(triggered()), document(), SLOT(redo()) );
+    connect( redoAction_, &QAction::triggered, document(), QOverload<>::of( &QTextDocument::redo ) );
     connect( this, &QTextEdit::redoAvailable, this, &TextEditor::_updateUndoRedoActions );
 
     addAction( cutAction_ = new StandardAction( StandardAction::Type::Cut, this ) );
     cutAction_->setShortcut( QKeySequence::Cut );
-    connect( cutAction_, SIGNAL(triggered()), SLOT(cut()) );
+    connect( cutAction_, &QAction::triggered, this, &TextEditor::cut );
 
     addAction( copyAction_ = new StandardAction( StandardAction::Type::Copy, this ) );
-    connect( copyAction_, SIGNAL(triggered()), SLOT(copy()) );
+    connect( copyAction_, &QAction::triggered, this, &TextEditor::copy );
 
     addAction( pasteAction_ = new StandardAction( StandardAction::Type::Paste, this ) );
-    connect( pasteAction_, SIGNAL(triggered()), SLOT(paste()) );
+    connect( pasteAction_, &QAction::triggered, this, &TextEditor::paste );
     _updatePasteAction();
 
     addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
-    connect( clearAction_, SIGNAL(triggered()), SLOT(clear()) );
+    connect( clearAction_, &QAction::triggered, this, &TextEditor::clear );
 
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
@@ -2978,8 +2978,8 @@ void TextEditor::Container::_initialize()
     editor_->selectLineWidget_->hide();
 
     // make connections so that focus is restored on close
-    connect( &editor_->findWidget_->closeButton(), SIGNAL(clicked()), editor_, SLOT(setFocus()) );
-    connect( &editor_->replaceWidget_->closeButton(), SIGNAL(clicked()), editor_, SLOT(setFocus()) );
-    connect( &editor_->selectLineWidget_->closeButton(), SIGNAL(clicked()), editor_, SLOT(setFocus()) );
+    connect( &editor_->findWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ editor_->setFocus(); } );
+    connect( &editor_->replaceWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ editor_->setFocus(); } );
+    connect( &editor_->selectLineWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ editor_->setFocus(); } );
 
 }
