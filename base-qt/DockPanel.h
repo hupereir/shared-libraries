@@ -90,12 +90,10 @@ class DockPanel: public QWidget, private Base::Counter<DockPanel>
     //* emitted when panel is detached
     void detached();
 
-    private Q_SLOTS:
+    private:
 
     //* toggle dock
     void _toggleDock();
-
-    private:
 
     //* vertical layout for main widget
     QVBoxLayout* mainLayout_ = nullptr;

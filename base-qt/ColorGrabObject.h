@@ -45,11 +45,9 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
 
     void colorSelected( QColor );
 
-    private Q_SLOTS:
+    private:
 
     void _grabColor();
-
-    private:
 
     //* select color
     void _selectColorFromMouseEvent( QMouseEvent* );

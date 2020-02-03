@@ -51,8 +51,6 @@ class BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
   //* clear highlighted block
   void clear();
 
-  public Q_SLOTS:
-
   //* highlight
   void highlight();
 

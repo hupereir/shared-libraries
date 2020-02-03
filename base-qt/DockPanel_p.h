@@ -119,7 +119,7 @@ namespace Private
 
         //@}
 
-        private Q_SLOTS:
+        private:
 
         //* update context menu
         void _updateContextMenu( const QPoint& );
@@ -132,8 +132,6 @@ namespace Private
 
         //* configuration
         void _updateConfiguration();
-
-        private:
 
         //* update actions
         void _updateActions();

@@ -184,7 +184,7 @@ namespace Ssh
         //* timer event
         void timerEvent( QTimerEvent* ) override;
 
-        private Q_SLOTS:
+        private:
 
         //* disconnect channels
         void _disconnectChannels();
@@ -206,8 +206,6 @@ namespace Ssh
 
         //* new tcp connection (from QTcpServer)
         void _newConnection();
-
-        private:
 
         //* process pending commands
         bool _processCommands();

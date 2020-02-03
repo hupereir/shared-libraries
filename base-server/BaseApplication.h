@@ -89,15 +89,13 @@ class BaseApplication: public BaseCoreApplication
 
     //@}
 
-    public Q_SLOTS:
-
     //* set application busy
     void busy();
 
     //* set application idle
     void idle();
 
-    protected Q_SLOTS:
+    protected:
 
     //* process request from application manager
     void _aboutQt();
@@ -105,7 +103,7 @@ class BaseApplication: public BaseCoreApplication
     //* configuration
     virtual void _configuration() = 0;
 
-    private Q_SLOTS:
+    private:
 
     //* configuration
     void _updateConfiguration();
@@ -116,12 +114,8 @@ class BaseApplication: public BaseCoreApplication
     //* update icon path
     void _updateIconTheme();
 
-    private Q_SLOTS:
-
     //* application 'about' dialog
     virtual void _about();
-
-    private:
 
     //* true if fixed fonts are used
     bool useFixedFonts_ = false;

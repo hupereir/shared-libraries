@@ -46,7 +46,7 @@ class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMen
     void setCurrentColumn( int index )
     { currentColumn_ = index; }
 
-    private Q_SLOTS:
+    private:
 
     //* update actions
     void _updateActions();
@@ -56,8 +56,6 @@ class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMen
 
     //* update mask when triggering actions
     void _updateSelectedColumns( QAction* action );
-
-    private:
 
     //* target
     QTreeView* target_ = nullptr;

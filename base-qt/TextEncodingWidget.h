@@ -54,15 +54,13 @@ class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidg
 
     //@}
 
-    private Q_SLOTS:
+    private:
 
     //* update selection
     void _updateSelection();
 
     //* find
     void _find(QString);
-
-    private:
 
     //* load text codecs
     void _loadTextCodecs();

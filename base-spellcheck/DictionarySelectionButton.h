@@ -57,12 +57,10 @@ namespace SpellCheck
         //* emitted when selection is modified
         void modified();
 
-        private Q_SLOTS:
+        private:
 
         //* edit dictionaries
         void _edit();
-
-        private:
 
         //* disabled dictionaries
         QString value_;

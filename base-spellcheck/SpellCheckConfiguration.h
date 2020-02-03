@@ -56,15 +56,13 @@ namespace SpellCheck
         //* modified
         void modified();
 
-        private Q_SLOTS:
+        private:
 
         //* update dictionaries
         void _updateDictionaries();
 
         //* update filters
         void _updateFilters();
-
-        private:
 
         OptionComboBox* dictionariesComboBox_ = nullptr;
         OptionComboBox* filtersComboBox_ = nullptr;

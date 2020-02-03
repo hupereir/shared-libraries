@@ -51,20 +51,16 @@ class PrintPreviewDialog: public CustomDialog
     QPrintPreviewWidget& previewWidget() const
     { return *previewWidget_; }
 
-    public Q_SLOTS:
-
     //* show/hide menu
     void showMenu();
 
     //* show/hide menu
     void hideMenu();
 
-    private Q_SLOTS:
+    private:
 
     //* update page
     void _updatePage();
-
-    private:
 
     //* option widget
     Private::OptionMenu* optionMenu_ = nullptr;

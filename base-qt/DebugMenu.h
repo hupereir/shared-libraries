@@ -54,7 +54,7 @@ class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
     //* needed to toggle visibility
     bool eventFilter( QObject*, QEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* print object counters
     void _showCounterDialog();
@@ -67,8 +67,6 @@ class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
 
     //* show options
     void _showOptions();
-
-    private:
 
     //* non modal Counter dialog
     CounterDialog* counterDialog_ = nullptr;

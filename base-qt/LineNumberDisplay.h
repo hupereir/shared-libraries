@@ -61,21 +61,17 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     //* paint
     void paint( QPainter& );
 
-    public Q_SLOTS:
-
     //* need update
     void needUpdate()
     { needsUpdate_ = true; }
 
-    private Q_SLOTS:
+    private:
 
     //* contents changed
     void _contentsChanged();
 
     //* block count changed
     void _blockCountChanged();
-
-    private:
 
     //* map block number and position
     class LineNumberData final

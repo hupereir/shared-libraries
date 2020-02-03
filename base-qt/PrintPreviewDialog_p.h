@@ -56,15 +56,13 @@ namespace Private
 
         void pageModeChanged( BasePrintHelper::PageMode );
 
-        private Q_SLOTS:
+        private:
 
         //* orientation changed
         void _setOrientation( QAction* );
 
         //* page mode
         void _setPageMode( QAction* );
-
-        private:
 
         //* actions maps
         using OrientationActionMap = QHash<QAction*, QPrinter::Orientation>;
@@ -96,8 +94,6 @@ namespace Private
         //* event filter
         bool eventFilter( QObject*, QEvent* ) override;
 
-        public Q_SLOTS:
-
         //* set pages
         void setPages( int );
 
@@ -106,7 +102,7 @@ namespace Private
         //* new page selected
         void pageChanged( int );
 
-        protected Q_SLOTS:
+        protected:
 
         //* previous page
         void _previousPage();

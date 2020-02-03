@@ -31,7 +31,7 @@
 namespace SpellCheck
 {
 
-    //! dictionary filter selection menu
+    //* dictionary filter selection menu
     class FilterMenu: public QMenu, private Base::Counter<FilterMenu>
     {
 
@@ -39,33 +39,29 @@ namespace SpellCheck
 
         public:
 
-        //! constructor
+        //* constructor
         explicit FilterMenu( QWidget* );
 
-        //! select filter manualy
+        //* select filter manualy
         void select( const QString& );
+
+        //* reset filter list
+        void reset();
 
         Q_SIGNALS:
 
-        //! filter changed
+        //* filter changed
         void selectionChanged( const QString& );
-
-        public Q_SLOTS:
-
-        //! reset filter list
-        void reset();
-
-        private Q_SLOTS:
-
-        //! filter selected from menu
-        void _selectFilter( QAction* );
 
         private:
 
-        //! action group
+        //* filter selected from menu
+        void _selectFilter( QAction* );
+
+        //* action group
         QActionGroup* group_ = nullptr;
 
-        //! map filters and action
+        //* map filters and action
         using ActionMap = QHash<QAction*, QString>;
         ActionMap actions_;
 

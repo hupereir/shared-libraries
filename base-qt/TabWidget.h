@@ -106,7 +106,7 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
     //* emitted when box is attached
     void attached();
 
-    private Q_SLOTS:
+    private:
 
     //* toggle dock
     void _toggleDock();
@@ -119,8 +119,6 @@ class TabWidget: public QWidget, private Base::Counter<TabWidget>
 
     //* update context menu
     void _updateContextMenu( const QPoint& );
-
-    private:
 
     //* actions
     void _installActions();

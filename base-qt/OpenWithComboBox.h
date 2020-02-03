@@ -64,12 +64,10 @@ class OpenWithComboBox: public QComboBox, private Base::Counter<OpenWithComboBox
 
     //@}
 
-    private Q_SLOTS:
+    private:
 
     //* process item selection
     void _indexActivated( int );
-
-    private:
 
     //* list of new items
     QStringList newItems_;

@@ -47,8 +47,6 @@ class LogWidget: public TextEditor
     void setVerbosity( int value )
     { verbosity_ = value; }
 
-    public Q_SLOTS:
-
     //* append text
     void append( const QString& value, TextFormat::Flags format = TextFormat::Default )
     { append( value, format, QColor(), 0 ); }
@@ -62,14 +60,6 @@ class LogWidget: public TextEditor
     */
     void clear() override
     { BaseEditor::clear(); }
-
-    private Q_SLOTS:
-
-    //* toggle wrap mode
-    bool _toggleWrapMode( bool ) override;
-
-    //* slider
-    void _verticalScrollBarMoved( int );
 
     protected:
 
@@ -92,6 +82,12 @@ class LogWidget: public TextEditor
     { return locked_; }
 
     private:
+
+    //* toggle wrap mode
+    bool _toggleWrapMode( bool ) override;
+
+    //* slider
+    void _verticalScrollBarMoved( int );
 
     //* verbosity
     int verbosity_ = 0;

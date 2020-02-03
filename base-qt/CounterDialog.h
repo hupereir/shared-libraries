@@ -37,8 +37,6 @@ class CounterDialog: public CustomDialog
     // constructor
     explicit CounterDialog( QWidget* );
 
-    public Q_SLOTS:
-
     //* update Counter list
     void updateCounters();
 

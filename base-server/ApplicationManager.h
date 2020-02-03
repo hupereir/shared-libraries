@@ -99,8 +99,6 @@ namespace Server
 
         //@}
 
-        public Q_SLOTS:
-
         //* (re)initialize server/client connections
         void initialize( CommandLineArguments args = CommandLineArguments() );
 
@@ -117,7 +115,7 @@ namespace Server
         //* timer event
         void timerEvent( QTimerEvent* ) override;
 
-        private Q_SLOTS:
+        private:
 
         //* a new connection is granted
         void _newConnection();
@@ -139,8 +137,6 @@ namespace Server
 
         //* start timeout
         void _startTimer();
-
-        private:
 
         //* client pointer
         using ClientPtr = std::shared_ptr<Client>;

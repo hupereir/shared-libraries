@@ -53,30 +53,26 @@ class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineW
     QAbstractButton& closeButton() const
     { return *closeButton_; }
 
-    Q_SIGNALS:
-
-    //* emitted when pressing the Ok button
-    void lineSelected( int );
-
-    public Q_SLOTS:
-
     //* take action when at least one match is found
     void matchFound();
 
     //* take action when no match is found
     void noMatchFound();
 
+    Q_SIGNALS:
+
+    //* emitted when pressing the Ok button
+    void lineSelected( int );
+
     protected:
 
     //* change event
     void changeEvent( QEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* retrieve line number and emit signal
     void _selectLine();
-
-    private:
 
     //* create not found palette
     void _updateNotFoundPalette();

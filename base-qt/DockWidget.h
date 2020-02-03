@@ -70,7 +70,7 @@ class DockWidget: public QDockWidget
 
     //@}
 
-    private Q_SLOTS:
+    private:
 
     //* toggle visibility
     void _toggleVisibility( bool );
@@ -80,8 +80,6 @@ class DockWidget: public QDockWidget
 
     //* update configuration
     void _updateConfiguration();
-
-    private:
 
     //* install actions
     void _installActions();

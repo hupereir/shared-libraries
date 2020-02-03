@@ -60,13 +60,6 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
     const FileRecord& currentFile() const
     { return currentFile_; }
 
-    Q_SIGNALS:
-
-    //* signal emitted when a file is selected
-    void fileSelected( FileRecord );
-
-    public Q_SLOTS:
-
     //* set current file
     void setCurrentFile( const File& file );
 
@@ -82,7 +75,12 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
     FileRecord& add( File file )
     { return fileList_->add( file.expand() ); }
 
-    private Q_SLOTS:
+    Q_SIGNALS:
+
+    //* signal emitted when a file is selected
+    void fileSelected( FileRecord );
+
+    private:
 
     //* update actions
     /** this is trigger by the fileList valid file check completion */
@@ -96,8 +94,6 @@ class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
 
     //* display files from internal list
     void _loadFiles();
-
-    private:
 
     //* associated file list
     FileList* fileList_ = nullptr;

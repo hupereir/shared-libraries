@@ -64,15 +64,13 @@ class HtmlDialog: public CustomDialog
     // options
     void setOptionWidgets( QList<QWidget*> );
 
-    private Q_SLOTS:
+    private:
 
     //* browse print command
     void _browseCommand();
 
     //* save print command
     void _saveCommands();
-
-    private:
 
     //* print command
     CustomComboBox* commandEditor_ = nullptr;

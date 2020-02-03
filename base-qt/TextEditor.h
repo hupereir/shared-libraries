@@ -429,43 +429,6 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
 
     };
 
-    Q_SIGNALS:
-
-    //* busy signal
-    void busy( int );
-
-    //* progress
-    void progressAvailable( int );
-
-    //* idle
-    void idle();
-
-    //* emitted when selection could not be found
-    void noMatchFound();
-
-    //* emitted when selection could be found
-    void matchFound();
-
-    //* emitted when selected line is not found
-    void lineNotFound();
-
-    //* emitted when selected line is found
-    void lineFound();
-
-    //* emitted when recieve focus
-    void hasFocus( TextEditor* );
-
-    //* overwrite mode changed
-    void modifiersChanged( TextEditor::Modifiers );
-
-    //* anchor (html links) has been clicked
-    void linkActivated( QString );
-
-    //* anchor (html links) has been clicked
-    void linkHovered( QString );
-
-    public Q_SLOTS:
-
     //* cut
     virtual void cut();
 
@@ -521,6 +484,41 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
 
     //* clear
     virtual void clear();
+
+    Q_SIGNALS:
+
+    //* busy signal
+    void busy( int );
+
+    //* progress
+    void progressAvailable( int );
+
+    //* idle
+    void idle();
+
+    //* emitted when selection could not be found
+    void noMatchFound();
+
+    //* emitted when selection could be found
+    void matchFound();
+
+    //* emitted when selected line is not found
+    void lineNotFound();
+
+    //* emitted when selected line is found
+    void lineFound();
+
+    //* emitted when recieve focus
+    void hasFocus( TextEditor* );
+
+    //* overwrite mode changed
+    void modifiersChanged( TextEditor::Modifiers );
+
+    //* anchor (html links) has been clicked
+    void linkActivated( QString );
+
+    //* anchor (html links) has been clicked
+    void linkHovered( QString );
 
     protected:
 
@@ -725,8 +723,6 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
         return true;
     }
 
-    protected Q_SLOTS:
-
     //* synchronize selection
     virtual void _synchronizeSelection();
 
@@ -786,7 +782,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //* update replace in selection action
     void _updateReplaceInSelection();
 
-    private Q_SLOTS:
+    private:
 
     //* update configuration
     void _updateConfiguration();
@@ -800,8 +796,6 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
 
     //* restore default font
     void _restoreDefaultFont();
-
-    private:
 
     //* install default actions
     void _installActions();

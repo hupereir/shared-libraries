@@ -47,12 +47,10 @@ class IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
     //* emitted when a new size is selected
     void iconSizeSelected( IconSize::Size );
 
-    private Q_SLOTS:
+    private:
 
     //* size selected from action
     void _selected( QAction* );
-
-    private:
 
     //* action map
     using ActionMap = QHash<QAction*, IconSize::Size >;

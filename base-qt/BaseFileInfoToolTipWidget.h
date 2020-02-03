@@ -62,12 +62,10 @@ class BaseFileInfoToolTipWidget: public BaseToolTipWidget
     void _reload()
     { setFileInfo( fileInfo_, icon_ ); }
 
-    private Q_SLOTS:
+    private:
 
     //* update configuration
     void _updateConfiguration();
-
-    private:
 
     //* pixmap size
     int pixmapSize_ = 96;

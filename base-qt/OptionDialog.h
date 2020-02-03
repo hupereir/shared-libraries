@@ -43,7 +43,7 @@ class OptionDialog: public CustomDialog
     //* emitted when options are modified
     void configurationChanged();
 
-    private Q_SLOTS:
+    private:
 
     //* reload options from backup
     void _reload();
@@ -53,8 +53,6 @@ class OptionDialog: public CustomDialog
 
     //* option modified
     void _specialOptionModified( Options::Pair );
-
-    private:
 
     //* option model
     OptionModel model_;

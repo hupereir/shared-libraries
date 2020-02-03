@@ -54,6 +54,9 @@ class BaseSocketInterface: public QObject
     QTcpSocket& socket()
     { return *socket_; }
 
+    //* write buffer of a given type
+    void sendBuffer( qint32, const QByteArray& );
+
     //@}
 
     //* used to retrieve all readers for a given state
@@ -64,12 +67,7 @@ class BaseSocketInterface: public QObject
     //* received buffer of given type
     void bufferReceived( qint32, QByteArray );
 
-    public Q_SLOTS:
-
-    //* write buffer of a given type
-    void sendBuffer( qint32, const QByteArray& );
-
-    protected Q_SLOTS:
+    protected:
 
     //* send pending buffers
     void _sendPendingBuffers();

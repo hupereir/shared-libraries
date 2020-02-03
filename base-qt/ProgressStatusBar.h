@@ -50,8 +50,6 @@ class ProgressStatusBar: public BaseStatusBar
     StatusBarLabel& label( int i = 0  ) const override
     { return (i==0) ? *label_:BaseStatusBar::label(i); }
 
-    public Q_SLOTS:
-
     //* show progress bar as visible widget
     void showProgressBar();
 

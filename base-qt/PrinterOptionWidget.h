@@ -57,7 +57,7 @@ class PrinterOptionWidget: public QWidget, private Base::Counter<PrinterOptionWi
     //* emitted when pageMode is changed
     void pageModeChanged( BasePrintHelper::PageMode );
 
-    private Q_SLOTS:
+    private:
 
     //* orientation
     void _setOrientation( QAbstractButton* );
@@ -67,8 +67,6 @@ class PrinterOptionWidget: public QWidget, private Base::Counter<PrinterOptionWi
 
     //* preview
     void _preview();
-
-    private:
 
     //* helper
     BasePrintHelper* helper_ = nullptr;

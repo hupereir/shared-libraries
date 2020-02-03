@@ -87,6 +87,9 @@ namespace Ssh
         //* connect to host
         void connectToHost( void*, const QString&, quint16 port );
 
+        //* close
+        void close() override;
+
         //@}
 
         Q_SIGNALS:
@@ -96,11 +99,6 @@ namespace Ssh
 
         //* error
         void error(QAbstractSocket::SocketError);
-
-        public Q_SLOTS:
-
-        //* close
-        void close() override;
 
         protected:
 

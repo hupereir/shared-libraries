@@ -68,7 +68,7 @@ class OptionListBox: public QWidget, public OptionWidget
     //* modified
     void modified();
 
-    protected Q_SLOTS:
+    protected:
 
     //* update buttons
     virtual void _updateButtons();
@@ -84,8 +84,6 @@ class OptionListBox: public QWidget, public OptionWidget
 
     //* set value as default
     virtual void _setDefault();
-
-    protected:
 
     //* model
     OptionModel& _model() const

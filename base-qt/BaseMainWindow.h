@@ -127,17 +127,15 @@ class BaseMainWindow: public QMainWindow
     //* option name
     void setOptionName( const QString& name );
 
+    //* uniconify
+    void uniconify();
+
     //@}
 
     Q_SIGNALS:
 
     //* toolbar configuration changed
     void toolbarConfigurationChanged();
-
-    public Q_SLOTS:
-
-    //* uniconify
-    void uniconify();
 
     protected:
 
@@ -185,7 +183,7 @@ class BaseMainWindow: public QMainWindow
     //* update statusbar visibility
     void _updateStatusBarVisibility();
 
-    private Q_SLOTS:
+    private:
 
     //* update configuration
     void _updateConfiguration();

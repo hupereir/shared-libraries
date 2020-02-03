@@ -69,12 +69,10 @@ namespace Base
         QAction& displayAction()
         { return *displayAction_; }
 
-        private Q_SLOTS:
+        private:
 
         //* opens help dialog
         void _display();
-
-        private:
 
         //* dialog display action
         QAction* displayAction_ = nullptr;

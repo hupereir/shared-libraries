@@ -62,12 +62,10 @@ class FileRecordToolTipWidget: public BaseToolTipWidget
     void _reload()
     { setRecord( record_, icon_ ); }
 
-    private Q_SLOTS:
+    private:
 
     //* update configuration
     void _updateConfiguration();
-
-    private:
 
     //* pixmap size
     int pixmapSize_ = 96;

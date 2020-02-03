@@ -40,8 +40,6 @@ class ScratchFileMonitor: public QObject, private Base::Counter<ScratchFileMonit
         Counter( "ScratchFileMonitor" )
     {}
 
-    public Q_SLOTS:
-
     //* add
     void add( const File& file );
 

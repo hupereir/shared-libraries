@@ -51,12 +51,10 @@ namespace SpellCheck
         //* disabled items
         QString disabledItems() const;
 
-        private Q_SLOTS:
+        private:
 
         //* select item
         void _selectItem( const QModelIndex& );
-
-        private:
 
         //* model
         SpellItemModel model_;

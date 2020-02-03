@@ -155,15 +155,13 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
     //* move event
     void moveEvent( QMoveEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* toggle visibility
     void _toggleVisibility( bool );
 
     //* update configuration
     void _updateConfiguration();
-
-    private:
 
     //* install actions
     void _installActions();

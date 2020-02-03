@@ -59,15 +59,13 @@ class SimpleListView: public QListView
     //* mouse press event
     void mousePressEvent( QMouseEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* adjust size
     void _adjustSize();
 
     //* hover index
     void _indexEntered( const QModelIndex& );
-
-    private:
 
     //* hover index
     void _setHoverIndex( const QModelIndex& );

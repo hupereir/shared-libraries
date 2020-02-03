@@ -45,7 +45,10 @@ class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
     //* constructor
     explicit ColumnSortingMenu( QWidget*, QHeaderView*, const QString&  = tr( "Sort By" ) );
 
-    private Q_SLOTS:
+    private:
+
+    //* private constructor
+    explicit ColumnSortingMenu( QWidget*, const QString& );
 
     //* update actions
     void _updateActions();
@@ -55,10 +58,6 @@ class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
 
     //* update mask when triggering actions
     void _sort( QAction* action );
-
-    private:
-
-    explicit ColumnSortingMenu( QWidget*, const QString& );
 
     //* target
     QTreeView* target_ = nullptr;

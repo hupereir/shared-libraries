@@ -72,8 +72,6 @@ class MessageWidgetPrivate: public QObject, private Base::Counter<MessageWidgetP
     //* animation duration
     int duration_ = 150;
 
-    public Q_SLOTS:
-
     //* animation finished
     void animationFinished();
 

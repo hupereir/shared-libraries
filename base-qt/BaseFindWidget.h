@@ -83,17 +83,15 @@ class BaseFindWidget: public AbstractFindWidget, private Base::Counter<BaseFindW
     //* enable/disable RegExp
     void enableRegExp( bool );
 
-    //@}
-
-    public Q_SLOTS:
-
     //* take action when at least one match is found
     void matchFound() override;
 
     //* take action when no match is found
     void noMatchFound() override;
 
-    protected Q_SLOTS:
+    //@}
+
+    protected:
 
     //* update combo box with current text
     void _updateFindComboBox()
@@ -126,8 +124,6 @@ class BaseFindWidget: public AbstractFindWidget, private Base::Counter<BaseFindW
 
     //* update button state depending on the string to find
     void _updateButtons( const QString& text = QString() );
-
-    protected:
 
     //* change event
     void changeEvent( QEvent* ) override;

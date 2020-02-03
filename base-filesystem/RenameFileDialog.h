@@ -39,12 +39,10 @@ class RenameFileDialog: public CustomDialog
     //* new file name
     File file() const;
 
-    private Q_SLOTS:
+    private:
 
     //* button update
     void _updateButtons();
-
-    private:
 
     //* line editor
     LineEditor& _editor() const

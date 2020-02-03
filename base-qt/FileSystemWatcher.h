@@ -57,12 +57,10 @@ class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSy
     //* timer event
     void timerEvent( QTimerEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* add modified directory
     void _addModifiedDirectory( const QString& );
-
-    private:
 
     //* delay
     int delay_ = 500;

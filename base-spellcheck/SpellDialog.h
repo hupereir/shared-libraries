@@ -98,7 +98,7 @@ namespace SpellCheck
         //* close
         void closeEvent( QCloseEvent* ) override;
 
-        private Q_SLOTS:
+        private:
 
         //* update dictionaries
         void _updateDictionaries();
@@ -145,8 +145,6 @@ namespace SpellCheck
 
         //* restore read only state
         void _restoreReadOnly();
-
-        private:
 
         //* qlistview for object IconCaches
         class Model: public ListModel<QString>

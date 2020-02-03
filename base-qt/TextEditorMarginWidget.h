@@ -55,8 +55,6 @@ class TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMa
 
     //@}
 
-    public Q_SLOTS:
-
     //* dirty
     void setDirty();
 

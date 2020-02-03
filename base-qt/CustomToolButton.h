@@ -56,12 +56,10 @@ class CustomToolButton: public QToolButton, private Base::Counter<CustomToolButt
     //* painting
     void paintEvent( QPaintEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* tool button configuration
     void _updateConfiguration();
-
-    private:
 
     //* update configuration from options
     bool updateFromOptions_ = true;

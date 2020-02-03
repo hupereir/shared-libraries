@@ -38,8 +38,6 @@ class IconCacheDialog: public CustomDialog
     // constructor
     explicit IconCacheDialog( QWidget* );
 
-    public Q_SLOTS:
-
     //* update IconCache list
     void updateCache();
 

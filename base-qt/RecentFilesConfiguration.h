@@ -49,20 +49,18 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList<RecentFi
     //* read files
     void read();
 
-    Q_SIGNALS:
-
-    //* modified
-    void modified();
-
-    public Q_SLOTS:
-
     // write files
     void write();
 
     //* reload
     void reload();
 
-    private Q_SLOTS:
+    Q_SIGNALS:
+
+    //* modified
+    void modified();
+
+    private:
 
     //* update actions
     void _updateButtons();
@@ -73,37 +71,35 @@ class RecentFilesConfiguration: public QWidget, public OptionWidgetList<RecentFi
     //* remove
     void _remove();
 
-    private:
-
     //* file list
-    FileList* recentFiles_;
+    FileList* recentFiles_ = nullptr;
 
     //* file record model
     FileRecordModel model_;
 
     //* file record list
-    TreeView* list_;
+    TreeView* list_ = nullptr;
 
     //* clean
-    QPushButton *cleanButton_;
+    QPushButton *cleanButton_ = nullptr;
 
     //* remove
-    QPushButton *removeButton_;
+    QPushButton *removeButton_ = nullptr;
 
     //* reload
-    QPushButton *reloadButton_;
+    QPushButton *reloadButton_ = nullptr;
 
     //*@name actions
     //@{
 
     //* clean action
-    QAction* cleanAction_;
+    QAction* cleanAction_ = nullptr;
 
     //* remove action
-    QAction* removeAction_;
+    QAction* removeAction_ = nullptr;
 
     //* remove action
-    QAction* reloadAction_;
+    QAction* reloadAction_ = nullptr;
 
     //@}
 

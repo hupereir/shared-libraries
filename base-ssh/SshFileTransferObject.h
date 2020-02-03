@@ -146,7 +146,7 @@ namespace Ssh
         //* emitted when transfer has failed
         void failed();
 
-        private Q_SLOTS:
+        private:
 
         //* process error
         void _processError( QAbstractSocket::SocketError );
@@ -168,8 +168,6 @@ namespace Ssh
 
         //* close socket
         void _closeSocket();
-
-        private:
 
         //* set completed
         void _setCompleted()

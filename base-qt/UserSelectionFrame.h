@@ -50,22 +50,20 @@ class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFra
     CustomComboBox& comboBox() const
     { return *comboBox_; }
 
+    //* update user list
+    void updateUsers( QStringList );
+
     Q_SIGNALS:
 
     //* emitted when user is changed
     void userChanged( QString );
-
-    public Q_SLOTS:
-
-    //* update user list
-    void updateUsers( QStringList );
 
     protected:
 
     //* timer event
     void timerEvent( QTimerEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* selected user changed
     void _userChanged();
@@ -73,8 +71,6 @@ class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFra
     //* selected user changed
     void _delayedUserChanged()
     { timer_.start( delay_, this ); }
-
-    private:
 
     //* delay for userChanged signal emission
     int delay_ = 500;

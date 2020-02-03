@@ -73,8 +73,6 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
 
     //@}
 
-    public Q_SLOTS:
-
     //* set lineEditor_file
     void setFile( const QString& file );
 
@@ -88,15 +86,13 @@ class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor
     QFileDialog::FileMode _fileMode() const
     { return fileMode_; }
 
-    private Q_SLOTS:
+    private:
 
     //* opens a file dialog, stores result in line edit
     virtual void _browse();
 
     //* target
     void _findTargetApplication();
-
-    private:
 
     //* line editor widget
     Editor *lineEditor_ = nullptr;

@@ -66,8 +66,6 @@ class BaseCoreApplication: public QObject
 
     //@}
 
-    public Q_SLOTS:
-
     //* send server command
     virtual void sendServerCommand( Server::ServerCommand::CommandType );
 
@@ -82,16 +80,11 @@ class BaseCoreApplication: public QObject
     //* emitted when configuration is changed
     void configurationChanged();
 
-    protected Q_SLOTS:
+    protected:
 
     //* process command from server
     /** returns true if command has been accepted */
     virtual bool _processCommand( Server::ServerCommand );
-
-    private Q_SLOTS:
-
-    //* configuration
-    void _updateConfiguration();
 
     protected:
 
@@ -123,6 +116,9 @@ class BaseCoreApplication: public QObject
     { return *applicationManager_.get(); }
 
     private:
+
+    //* configuration
+    void _updateConfiguration();
 
     //* pointer to application manager
     std::unique_ptr<Server::ApplicationManager> applicationManager_;

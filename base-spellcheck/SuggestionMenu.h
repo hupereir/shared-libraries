@@ -57,7 +57,7 @@ namespace SpellCheck {
         //* ignore word
         void ignoreWord( QString );
 
-        private Q_SLOTS:
+        private:
 
         //* load suggestions before showing the menu
         void _aboutToShow();
@@ -74,8 +74,6 @@ namespace SpellCheck {
             if( word_.isEmpty() ) return;
             emit ignoreWord( word_ );
         }
-
-        private:
 
         //* spell interface
         SpellInterface interface_;

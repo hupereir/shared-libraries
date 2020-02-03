@@ -106,6 +106,13 @@ class FileList: public QObject, private Base::Counter<FileList>
     //* maximum Size
     void setMaxSize( int );
 
+    //* add file.
+    FileRecord& add( const File& file )
+    { return _add( FileRecord( file ) ); }
+
+    //* run thread to check file validity
+    void checkValidFiles();
+
     //@}
 
     Q_SIGNALS:
@@ -115,15 +122,6 @@ class FileList: public QObject, private Base::Counter<FileList>
 
     //* emitted when contents is changed
     void contentsChanged();
-
-    public Q_SLOTS:
-
-    //* add file.
-    FileRecord& add( const File& file )
-    { return _add( FileRecord( file ) ); }
-
-    //* run thread to check file validity
-    void checkValidFiles();
 
     protected:
 
@@ -148,12 +146,10 @@ class FileList: public QObject, private Base::Counter<FileList>
     FileRecord::List& _records()
     { return records_; }
 
-    private Q_SLOTS:
+    private:
 
     //* process records from threads
     void _processRecords( const FileRecord::List&, bool );
-
-    private:
 
     //* clean enabled
     void _setCleanEnabled( bool value )

@@ -81,7 +81,7 @@ class BaseReplaceWidget: public BaseFindWidget
     //* emitted when text replacement is changed
     void replaceTextChanged( QString text_replace );
 
-    protected Q_SLOTS:
+    protected:
 
     //* update combo box with current text
     void _updateReplaceComboBox()
@@ -96,8 +96,6 @@ class BaseReplaceWidget: public BaseFindWidget
 
     //* create Selection object when replace button is pressed
     void _replaceInSelection();
-
-    protected:
 
     //* replace editor
     CustomComboBox& _replaceEditor() const

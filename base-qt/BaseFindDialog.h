@@ -71,15 +71,6 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     //* set base find widget
     void setBaseFindWidget( AbstractFindWidget* widget );
 
-    //@}
-
-    Q_SIGNALS:
-
-    //* emitted when Find is pressed
-    void find( TextSelection );
-
-    public Q_SLOTS:
-
     //* take action when at least one match is found
     void matchFound()
     { baseFindWidget_->matchFound(); }
@@ -88,10 +79,17 @@ class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
     void noMatchFound()
     { baseFindWidget_->noMatchFound(); }
 
+    //@}
+
+    Q_SIGNALS:
+
+    //* emitted when Find is pressed
+    void find( TextSelection );
+
     private:
 
     //* find widget
-    AbstractFindWidget* baseFindWidget_;
+    AbstractFindWidget* baseFindWidget_ = nullptr;
 
 };
 #endif

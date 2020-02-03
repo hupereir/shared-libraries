@@ -82,15 +82,13 @@ class TaskBarProgressNotifications : public QObject, private Base::Counter<TaskB
 
     void setProgressVisible( bool );
 
-    //@}
-
-    public Q_SLOTS:
-
     //* maximum
     void setMaximum( int );
 
     //* value
     void setValue( int );
+
+    //@}
 
     private:
 

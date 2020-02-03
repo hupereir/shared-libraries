@@ -78,15 +78,13 @@ class BaseDialog: public QDialog
     void setIconSize( const QSize& size )
     { iconSize_ = size; }
 
-    //@}
-
-    public Q_SLOTS:
-
     //* uniconify
     void uniconify();
 
     //* stickyness
     void toggleSticky( bool );
+
+    //@}
 
     protected:
 

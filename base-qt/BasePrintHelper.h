@@ -88,10 +88,6 @@ class BasePrintHelper: public QObject
     void setSheetNumber( int value )
     { sheetNumber_ = value; }
 
-    //@}
-
-    public Q_SLOTS:
-
     //* orientation
     void setOrientation( QPrinter::Orientation value )
     { orientation_ = value; }
@@ -101,6 +97,8 @@ class BasePrintHelper: public QObject
     { pageMode_ = value; }
 
     virtual void print( QPrinter* ) {};
+
+    //@}
 
     Q_SIGNALS:
 

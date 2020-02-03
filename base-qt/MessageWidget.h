@@ -111,6 +111,12 @@ class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
     //* set duration
     void setDuration( int value );
 
+    //* show animated
+    void animatedShow();
+
+    //* show animated
+    void animatedHide();
+
     //@}
 
     Q_SIGNALS:
@@ -120,14 +126,6 @@ class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
 
     //* animatedHide finished
     void hideAnimationFinished();
-
-    public Q_SLOTS:
-
-    //* show animated
-    void animatedShow();
-
-    //* show animated
-    void animatedHide();
 
     protected:
 

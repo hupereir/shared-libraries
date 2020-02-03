@@ -220,24 +220,6 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     };
 
-    Q_SIGNALS:
-
-    //* emitted when index is hovered
-    /**
-    this is similar to the 'entered' signal,
-    except that it is also sent when no index is selected,
-    for instance, to hide tooltips
-    */
-    void hovered( const QModelIndex& );
-
-    //* emitted when selection could not be found
-    void noMatchFound();
-
-    //* emitted when selection could be found
-    void matchFound();
-
-    public Q_SLOTS:
-
     //* resize all visible columns to match contents
     void resizeColumns()
     { resizeColumns( mask() ); }
@@ -294,6 +276,22 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* restore expanded indexes from model
     void restoreExpandedIndexes();
 
+    Q_SIGNALS:
+
+    //* emitted when index is hovered
+    /**
+    this is similar to the 'entered' signal,
+    except that it is also sent when no index is selected,
+    for instance, to hide tooltips
+    */
+    void hovered( const QModelIndex& );
+
+    //* emitted when selection could not be found
+    void noMatchFound();
+
+    //* emitted when selection could be found
+    void matchFound();
+
     protected:
 
     //* generic event
@@ -312,7 +310,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     void _setUseEmbeddedWidgets( bool value )
     { useEmbeddedWidgets_ = value; }
 
-    private Q_SLOTS:
+    private:
 
     //* header menu
     void _raiseHeaderMenu( const QPoint& );
@@ -328,8 +326,6 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
 
     //* update horizontal scrollbar range
     void _updateHorizontalScrollBarRange();
-
-    private:
 
     //* install actions
     void _installActions();

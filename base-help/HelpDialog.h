@@ -51,7 +51,7 @@ namespace Base
         //* set items
         void setItems( const HelpItem::List& items );
 
-        private Q_SLOTS:
+        private:
 
         //* display selected help text
         void _display( const QModelIndex&, const QModelIndex& );
@@ -61,8 +61,6 @@ namespace Base
 
         //* open link
         void _openLink( QString );
-
-        private:
 
         //* model
         HelpModel model_;

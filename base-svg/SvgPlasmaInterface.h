@@ -97,12 +97,10 @@ namespace Svg
     //* timer event
     void timerEvent( QTimerEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* configuration file modified
     void _configurationFileChanged( const QString& );
-
-    private:
 
     //* validity
     bool _setValid( bool value )

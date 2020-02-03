@@ -42,8 +42,6 @@ class StatusBarLabel: public QLabel
         QLabel( parent )
     {}
 
-    public Q_SLOTS:
-
     //* set text
     void setText( const QString& message, bool alsoUpdate = true )
     {

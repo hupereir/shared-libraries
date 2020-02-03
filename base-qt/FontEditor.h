@@ -62,7 +62,7 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
     //* font changed
     void fontChanged( const QFont& );
 
-    private Q_SLOTS:
+    private:
 
     //* select font from dialog
     void _selectFont()
@@ -76,8 +76,6 @@ class FontEditor: public QWidget, private Base::Counter<FontEditor>
         }
         return;
     }
-
-    private:
 
     //* update label
     void _updateLabel()

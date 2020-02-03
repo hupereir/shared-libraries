@@ -51,25 +51,21 @@ namespace SpellCheck
         //* select dictionary manualy
         void select( const QString& );
 
+        //* reset dictionary list
+        void reset();
+
         Q_SIGNALS:
 
         //* dictionary changed
         void selectionChanged( const QString& );
 
-        public Q_SLOTS:
-
-        //* reset dictionary list
-        void reset();
-
-        private Q_SLOTS:
+        private:
 
         //* dictionary selected from menu
         void _selectDictionary( QAction* action );
 
-        private:
-
         //* action group
-        QActionGroup* group_;
+        QActionGroup* group_ = nullptr;
 
         //* map dictionaries and action
         using ActionMap = QHash<QAction*, QString>;

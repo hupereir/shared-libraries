@@ -37,7 +37,7 @@ class ContextMenu: public BaseContextMenu
     //* contructor
     explicit ContextMenu( QWidget* );
 
-    private Q_SLOTS:
+    private:
 
     //* hide actions
     void _hideActions();
@@ -47,8 +47,6 @@ class ContextMenu: public BaseContextMenu
 
     //* raise request
     void _raise( const QPoint& );
-
-    private:
 
     using ActionPointer = QPointer<QAction>;
     using ActionList = QList<ActionPointer>;

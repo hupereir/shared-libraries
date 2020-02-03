@@ -90,17 +90,15 @@ class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystem
     //* clear list, add navigator button
     void clear();
 
+    //* base directory
+    void setPath( File, bool forced = false );
+
     //@}
 
     Q_SIGNALS:
 
     //* file selected
     void fileActivated( FileRecord );
-
-    public Q_SLOTS:
-
-    //* base directory
-    void setPath( File, bool forced = false );
 
     protected:
 
@@ -124,12 +122,10 @@ class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystem
     QAction& _openAction() const
     { return *openAction_; }
 
-    protected Q_SLOTS:
-
     //* update actions
     virtual void _updateActions();
 
-    private Q_SLOTS:
+    private:
 
     //* custom event, used to retrieve file validity check event
     void _processFiles( const File::List& );
@@ -180,8 +176,6 @@ class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystem
 
     //* file properties
     void _fileProperties();
-
-    private:
 
     //* install actions
     void _installActions();

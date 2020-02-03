@@ -97,8 +97,6 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     // event filter
     bool eventFilter( QObject*, QEvent* ) override;
 
-    public Q_SLOTS:
-
     //* change visibility
     void setVisible( bool ) override;
 
@@ -128,12 +126,10 @@ class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget
     //* adjust position
     void _adjustPosition();
 
-    private Q_SLOTS:
+    private:
 
     //* update configuration
     void _updateConfiguration();
-
-    private:
 
     //* enable state
     bool enabled_ = false;

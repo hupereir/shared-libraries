@@ -74,13 +74,6 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
     //* event filter
     bool eventFilter( QObject*, QEvent* ) override;
 
-
-    Q_SIGNALS:
-
-    void stateChangeRequest();
-
-    public Q_SLOTS:
-
     void toggleState()
     {
         enabled_ = !enabled_;
@@ -93,20 +86,22 @@ class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor
         if( !enabled_ ) _resetDrag();
     }
 
+    Q_SIGNALS:
+
+    void stateChangeRequest();
+
     protected:
 
     //* timer event
     void timerEvent( QTimerEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* start drag
     bool _startDrag();
 
     //* reset drag
     void _resetDrag();
-
-    private:
 
     //* get corner from (relative) position
     XcbDefines::Direction _direction( QWidget* widget, const QPoint& ) const;

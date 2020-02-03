@@ -48,8 +48,6 @@ class DetailsDialog: public CustomDialog
     //* set details widget
     void setDetails( QWidget* );
 
-    public Q_SLOTS:
-
     //* show details
     void showDetails()
     { toggleDetails( true ); }

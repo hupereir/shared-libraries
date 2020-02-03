@@ -60,12 +60,10 @@ namespace Server
         //* emitted when a message is available
         void commandAvailable( Server::ServerCommand );
 
-        private Q_SLOTS:
+        private:
 
         //* process buffer
         void _parseBuffer( qint32, QByteArray );
-
-        private:
 
         //* client counter
         static quint32& _counter();

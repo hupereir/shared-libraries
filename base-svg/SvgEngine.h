@@ -82,12 +82,6 @@ namespace Svg
         /** uses a separate thread, in order not to slow down application */
         void preload( const SvgId::List& );
 
-        Q_SIGNALS:
-
-        //* emitted when svg files are changed
-        void changed();
-
-        public Q_SLOTS:
 
         //* reload all icons set in cache from new path list
         /** return true if changed */
@@ -99,15 +93,20 @@ namespace Svg
         inline bool reload() { return reload( false ); }
         bool reload( bool forced );
 
-        private Q_SLOTS:
+        //@}
+
+        Q_SIGNALS:
+
+        //* emitted when svg files are changed
+        void changed();
+
+        private:
 
         //* process image cache generated from thread
         void _processImageCache( const Svg::ImageCache& );
 
         //* load svg
         bool _loadSvg( bool forced = false );
-
-        private:
 
         //*@name non static methods are hidden
         //@{

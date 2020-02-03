@@ -57,7 +57,7 @@ class XmlPathHistory: public PathHistory
     //* read
     bool _read( const XmlDocument& );
 
-    private Q_SLOTS:
+    private:
 
     //* update configuration
     void _updateConfiguration();
@@ -67,8 +67,6 @@ class XmlPathHistory: public PathHistory
 
     //* compare two record lists
     bool _differs( const FileRecord::List&, const FileRecord::List& ) const;
-
-    private:
 
     //* tag name
     QString tagName_;

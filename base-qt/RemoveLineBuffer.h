@@ -20,21 +20,13 @@
 *
 *******************************************************************************/
 
-/*!
-  \file RemoveLineBuffer.h
-  \brief handles consecutive calls to remove line in a single Clipboard block
-  \author Hugo Pereira
-  \version $Revision$
-  \date $Date$
-*/
-
 #include <QString>
 #include <QObject>
 
 #include "Counter.h"
 #include "Debug.h"
 
-//! handles consecutive calls to remove line in a single Clipboard block
+//* handles consecutive calls to remove line in a single Clipboard block
 class RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
 {
 
@@ -42,23 +34,21 @@ class RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
 
   public:
 
-  //! constructor
+  //* constructor
   explicit RemoveLineBuffer( QObject* parent ):
     QObject( parent ),
     Counter( "RemoveLineBuffer" )
   { Debug::Throw( "RemoveLineBuffer::RemoveLineBuffer.\n" ); }
 
-  //! append string to buffer
+  //* append string to buffer
   void append( const QString& value );
 
-  public Q_SLOTS:
-
-  //! clear buffer to clipboard
+  //* clear buffer to clipboard
   void clear();
 
   private:
 
-  //! buffer string
+  //* buffer string
   QString buffer_;
 
 };

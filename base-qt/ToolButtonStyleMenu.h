@@ -48,12 +48,10 @@ class ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMe
     //* emitted when a new size is selected
     void styleSelected( int );
 
-    private Q_SLOTS:
+    private:
 
     //* size selected from action
     void _selected( QAction* );
-
-    private:
 
     //* action map
     using ActionMap = QHash< QAction*, int >;

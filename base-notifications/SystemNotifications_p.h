@@ -89,9 +89,9 @@ namespace Private
         //* action called
         void actionInvoked( quint32, QString );
 
+        #ifndef QT_NO_DBUS
         private Q_SLOTS:
 
-        #ifndef QT_NO_DBUS
         //* pending dbus call finished
         void _pendingCallFinished(QDBusPendingCallWatcher*);
 

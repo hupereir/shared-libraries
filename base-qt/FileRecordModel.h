@@ -110,12 +110,10 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     //* add, without update
     void _add( const ValueType& ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* configuration
     void _updateConfiguration();
-
-    private:
 
     //* used to sort Counters
     class SortFTor: public ItemModel::SortFTor

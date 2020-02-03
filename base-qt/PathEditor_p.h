@@ -171,12 +171,10 @@ namespace Private
         int _arrowWidth() const
         { return isLast_ ? 0:qMax<int>( 4, fontMetrics().boundingRect(text()).height()/2 + BorderWidth ); }
 
-        private Q_SLOTS:
+        private:
 
         //* start drag
         void _startDrag( QPoint );
-
-        private:
 
         //* path
         File path_;

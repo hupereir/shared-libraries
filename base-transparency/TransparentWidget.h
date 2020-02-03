@@ -85,12 +85,10 @@ namespace Transparency
         void setBackgroundChanged( bool value )
         { backgroundChanged_ = value; }
 
-        //@}
-
-        public Q_SLOTS:
-
         //* force reloading of the background
         virtual void setBackgroundChanged();
+
+        //@}
 
         protected:
 
@@ -191,8 +189,6 @@ namespace Transparency
         //* update blur region
         virtual void _updateBlurRegion( const QRegion& );
 
-        protected Q_SLOTS:
-
         //* update background pixmap
         virtual void _updateBackgroundPixmap();
 
@@ -206,12 +202,10 @@ namespace Transparency
         //* toggle inverse colors
         virtual void _toggleInverseColors( bool );
 
-        private Q_SLOTS:
+        private:
 
         //* update configuration
         void _updateConfiguration();
-
-        private:
 
         //* actions
         void _installActions();

@@ -148,21 +148,6 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu* );
 
-    //@}
-
-    Q_SIGNALS:
-
-    //* signal emitted when the cursor changes position
-    void cursorPositionChanged( int position );
-
-    //* modification state changed
-    void modificationChanged( bool );
-
-    //* emitted when clear button is pressed
-    void cleared();
-
-    public Q_SLOTS:
-
     //* set text
     /** copy base class method to make it virtual */
     virtual void setText( const QString& value )
@@ -178,6 +163,19 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 
     //* changes selection to uppercase
     void upperCase();
+
+    //@}
+
+    Q_SIGNALS:
+
+    //* signal emitted when the cursor changes position
+    void cursorPositionChanged( int position );
+
+    //* modification state changed
+    void modificationChanged( bool );
+
+    //* emitted when clear button is pressed
+    void cleared();
 
     protected:
 
@@ -195,7 +193,7 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 
     //@}
 
-    private Q_SLOTS:
+    private:
 
     //* update modification state
     void _modified( const QString& text );
@@ -209,8 +207,6 @@ class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 
     //* update undo/redo actions
     void _updateUndoRedoActions();
-
-    private:
 
     //* add widget to parent
     void _addWidget( QWidget*, QWidget* );

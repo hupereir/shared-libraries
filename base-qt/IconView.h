@@ -187,22 +187,10 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
         void _initialize();
 
         //* contained iconView
-        IconView* iconView_;
+        IconView* iconView_ = nullptr;
 
     };
 
-    Q_SIGNALS:
-
-    //* emitted when item is hovered. Invalid index means no hovered index
-    void hovered( const QModelIndex& );
-
-    //* emitted when selection could not be found
-    void noMatchFound();
-
-    //* emitted when selection could be found
-    void matchFound();
-
-    public Q_SLOTS:
 
     //* sort order
     void updateSortOrder();
@@ -235,6 +223,17 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
 
     //* restore selected indexes from model
     void restoreSelectedIndexes();
+
+    Q_SIGNALS:
+
+    //* emitted when item is hovered. Invalid index means no hovered index
+    void hovered( const QModelIndex& );
+
+    //* emitted when selection could not be found
+    void noMatchFound();
+
+    //* emitted when selection could be found
+    void matchFound();
 
     protected:
 
@@ -343,12 +342,10 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* get view options matching a given index
     QStyleOptionViewItem _viewOptions( const QModelIndex& ) const;
 
-    protected Q_SLOTS:
-
     //* update geometries
     void updateGeometries() override;
 
-    private Q_SLOTS:
+    private:
 
     //* sort order
     void sortByColumn( int, Qt::SortOrder );
@@ -368,8 +365,6 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* decrement icon size
     void _decrementIconSize()
     { _incrementIconSize( -1 ); }
-
-    private:
 
     //* install actions
     void _installActions();

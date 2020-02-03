@@ -100,15 +100,13 @@ class CustomSlider: public QWidget, private Base::Counter<CustomSlider>
     QSpinBox& spinBox()
     { return *spinBox_; }
 
-    private Q_SLOTS:
+    private:
 
     //* changes QSlider value according to QSpinBox
     void _updateSlider( int );
 
     //* changes QSpinBox value according to QSlider
     void _updateSpinBox( int );
-
-    private:
 
     //* associated slider
     QSlider *slider_ = nullptr;

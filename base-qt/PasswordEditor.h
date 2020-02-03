@@ -44,12 +44,10 @@ class PasswordEditor: public LineEditor
 
     //@}
 
-    private Q_SLOTS:
+    private:
 
     //* show/hide password
     void _toggleShowPassword();
-
-    private:
 
     //* show password button
     LineEditorButton* showPasswordButton_ = nullptr;

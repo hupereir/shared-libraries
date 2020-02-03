@@ -93,6 +93,9 @@ namespace Ssh
         /** warning, this method is blocking */
         bool waitForConnected( int msecs = 30000 );
 
+        //* close
+        void close() override;
+
         //@}
 
         Q_SIGNALS:
@@ -102,11 +105,6 @@ namespace Ssh
 
         //* error
         void error(QAbstractSocket::SocketError);
-
-        public Q_SLOTS:
-
-        //* close
-        void close() override;
 
         protected:
 

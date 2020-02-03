@@ -101,12 +101,10 @@ class OpenWithDialog: public CustomDialog
 
     //@}
 
-    private Q_SLOTS:
+    private:
 
     //* open file
     void _open();
-
-    private:
 
     //* file
     File::List files_;

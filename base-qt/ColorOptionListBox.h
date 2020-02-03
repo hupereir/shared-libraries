@@ -33,7 +33,7 @@ class ColorOptionListBox: public OptionListBox
     //* constructor
     explicit ColorOptionListBox( QWidget*, const QString& );
 
-    protected Q_SLOTS:
+    protected:
 
     //* add
     void _add() override;

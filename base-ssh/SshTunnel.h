@@ -53,6 +53,14 @@ namespace Ssh
 
         //@}
 
+        //*@name modifiers
+        //@{
+
+        //* close
+        void close();
+
+        //@}
+
         Q_SIGNALS:
 
         //* error message
@@ -61,20 +69,13 @@ namespace Ssh
         //* debug message
         void debug( QString );
 
-        public Q_SLOTS:
-
-        //* close
-        void close();
-
-        private Q_SLOTS:
+        private:
 
         //* read from tcp socket
         void _readFromTcpSocket();
 
         //* read from ssh socket
         void _readFromSshSocket();
-
-        private:
 
         //* tcp socket
         QTcpSocket* tcpSocket_ = nullptr;

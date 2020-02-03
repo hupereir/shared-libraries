@@ -123,12 +123,10 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     /** this will clear the model and delete all pages */
     void _clear();
 
-    private Q_SLOTS:
+    private:
 
     //* display item page
     void _display( const QModelIndex& );
-
-    private:
 
     //* item model
     class Item final: private Base::Counter<Item>
@@ -171,8 +169,6 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
         //* icon
         const QIcon& icon() const
         { return icon_; }
-
-        private:
 
         //* name
         QString name_;

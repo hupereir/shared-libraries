@@ -67,15 +67,6 @@ class AbstractFindWidget: public EmbeddedWidget
     virtual void synchronize()
     {}
 
-    //@}
-
-    Q_SIGNALS:
-
-    //* emitted when Find is pressed
-    void find( TextSelection );
-
-    public Q_SLOTS:
-
     //* take action when at least one match is found
     virtual void matchFound()
     {}
@@ -83,6 +74,13 @@ class AbstractFindWidget: public EmbeddedWidget
     //* take action when no match is found
     virtual void noMatchFound()
     {}
+
+    //@}
+
+    Q_SIGNALS:
+
+    //* emitted when Find is pressed
+    void find( TextSelection );
 
 };
 

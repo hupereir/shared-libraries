@@ -51,8 +51,6 @@ class XmlFileList: public FileList
 
     //@}
 
-    public Q_SLOTS:
-
     //* Read fileList from file
     bool read( File = File() );
 

@@ -62,12 +62,10 @@ class ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
 
     //@}
 
-    private Q_SLOTS:
+    private:
 
     //* update selected color
     void _updateActiveIndex( int );
-
-    private:
 
     //* last selected color
     QColor lastColor_;

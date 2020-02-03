@@ -44,8 +44,6 @@ class BaseProgressBar:public QProgressBar
         QProgressBar::reset();
     }
 
-    public Q_SLOTS:
-
     //* set maximum
     virtual void setMaximum( int value )
     { QProgressBar::setMaximum( value ); }

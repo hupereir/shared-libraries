@@ -117,15 +117,6 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     //* set path
     void setPath( const File&, const File& = File() );
 
-    //@}
-
-    Q_SIGNALS:
-
-    //* path changed
-    void pathChanged( const File& );
-
-    public Q_SLOTS:
-
     //* select parent path
     void selectParent();
 
@@ -138,12 +129,19 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
     //* select from action
     void selectFromMenu( QAction* );
 
+    //@}
+
+    Q_SIGNALS:
+
+    //* path changed
+    void pathChanged( const File& );
+
     protected:
 
     //* resize events
     void resizeEvent( QResizeEvent* ) override;
 
-    private Q_SLOTS:
+    private:
 
     //* show browser
     void _showBrowser()
@@ -173,8 +171,6 @@ class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
 
     //* configuration
     void _updateConfiguration();
-
-    private:
 
     //* prefix
     void _setUsePrefix( bool value )
