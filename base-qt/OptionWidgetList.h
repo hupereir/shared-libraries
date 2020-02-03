@@ -37,7 +37,9 @@ class OptionWidgetList: public OptionWidget
     {}
 
     //* add option widget
-    void addOptionWidget( OptionWidget* );
+    template< class T >
+        void addOptionWidget( T* );
+    // void addOptionWidget( OptionWidget* );
 
     //* clear option widgets
     void clearOptionWidgets()
@@ -63,5 +65,24 @@ class OptionWidgetList: public OptionWidget
     QList< OptionWidget* > optionWidgets_;
 
 };
+
+
+//______________________________________________________________________
+template<class T>
+void OptionWidgetList::addOptionWidget( T* widget )
+{
+
+    Debug::Throw()
+        << "OptionWidgetList::addOptionWidget -"
+        << " buddy: " << ( widget->hasBuddy() ? widget->buddy().metaObject()->className():"none" )
+        << endl;
+
+    optionWidgets_.append( widget );
+
+    //* connect signals
+    if( _connected() && hasBuddy() )
+    {  QObject::connect( widget, SIGNAL(modified()), &buddy(), SIGNAL(modified())); }
+
+}
 
 #endif
