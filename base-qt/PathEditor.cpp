@@ -764,7 +764,7 @@ void PathEditor::selectFromMenu( QAction* action )
 //____________________________________________________________________________
 void PathEditor::resizeEvent( QResizeEvent* event )
 {
-    QMetaObject::invokeMethod( this, "_updateButtonVisibility", Qt::QueuedConnection );
+    QMetaObject::invokeMethod( this, &PathEditor::_updateButtonVisibility, Qt::QueuedConnection );
     QWidget::resizeEvent( event );
 }
 

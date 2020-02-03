@@ -196,7 +196,7 @@ void WidgetDragMonitor::timerEvent( QTimerEvent* event )
     if( !enabled_ ) emit stateChangeRequest();
     if( !enabled_ ) return;
 
-    QMetaObject::invokeMethod( this, "_startDrag", Qt::QueuedConnection );
+    QMetaObject::invokeMethod( this, &WidgetDragMonitor::_startDrag, Qt::QueuedConnection );
 }
 
 //________________________________________________
