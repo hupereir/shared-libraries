@@ -23,6 +23,7 @@
 #include "Debug.h"
 
 #include <QProcess>
+#include <QRegularExpression>
 
 namespace Base
 {
@@ -54,7 +55,7 @@ namespace Base
         {
             if( !line.isEmpty() )
             {
-                static const QRegExp regExp( "\\s+" );
+                static const QRegularExpression regExp( "\\s+" );
                 if( split ) out.append( line.split( regExp, QString::SkipEmptyParts ) );
                 else out.append( QString("\"") + line + "\"" );
             }

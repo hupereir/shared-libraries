@@ -26,6 +26,7 @@
 #include "XmlOption.h"
 
 #include <QFile>
+#include <QRegularExpression>
 
 //____________________________________________________________________
 Private::XmlOptionsSingleton& XmlOptions::_singleton()
@@ -212,8 +213,8 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
             if( options.isSpecialOption( option.name() ) )
             {
 
-                static QRegExp invalidOptionRegExp( "\\(0b\\d+\\)$" );
-                if( invalidOptionRegExp.indexIn( option.raw() ) < 0 )
+                static const QRegularExpression invalidOptionRegExp( "\\(0b\\d+\\)$" );
+                if( !invalidOptionRegExp.match( option.raw() ).hasMatch() )
                 { options.add( option.name(), (Option) option ); }
 
             } else options.set( option.name(), (Option) option );

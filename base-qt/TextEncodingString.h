@@ -21,7 +21,7 @@
 *******************************************************************************/
 
 #include <QList>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QString>
 
 //* model content
@@ -43,23 +43,23 @@ class TextEncodingString final
     {
         textSegments_.clear();
         numSegments_.clear();
-        int lastPosition = 0;
         int position = 0;
-        QRegExp regExp( "(\\d+)" );
-        while( ( position = value_.indexOf( regExp, lastPosition ) ) >= 0 )
+        static const QRegularExpression regexp( "(\\d+)" );
+        auto iter = regexp.globalMatch( value_ );
+        while( iter.hasNext() )
         {
-            textSegments_.append( value_.left( position ) );
-            numSegments_.append( regExp.cap(0).toInt() );
-            lastPosition = position + regExp.matchedLength();
+            const auto match( iter.next() );
+            if( match.capturedStart() > position ) textSegments_.append( value_.mid( position, match.capturedStart() - position ) );
+            numSegments_.append( match.captured().toInt() );
+            position = match.capturedEnd();
         }
-
-        textSegments_.append( value_.mid( lastPosition ) );
+        textSegments_.append( value_.mid( position ) );
     }
 
     private:
 
     QString value_;
-    QList<QString> textSegments_;
+    QStringList textSegments_;
     QList<int> numSegments_;
 
     //* less than operator
@@ -68,18 +68,18 @@ class TextEncodingString final
         int textIndex(0);
         int numIndex(0);
 
-        while( true )
+        forever
         {
             if( textIndex < first.textSegments_.size() && textIndex < second.textSegments_.size() )
             {
                 if( first.textSegments_[textIndex] != second.textSegments_[textIndex] ) return first.textSegments_[textIndex] < second.textSegments_[textIndex];
-                else textIndex++;
+                else ++textIndex;
             } else return first.textSegments_.size() < second.textSegments_.size();
 
             if( numIndex < first.numSegments_.size() && numIndex < second.numSegments_.size() )
             {
                 if( first.numSegments_[numIndex] != second.numSegments_[numIndex] ) return first.numSegments_[numIndex] < second.numSegments_[numIndex];
-                else numIndex++;
+                else ++numIndex;
             }
         }
 

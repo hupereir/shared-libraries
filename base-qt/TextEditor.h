@@ -37,6 +37,7 @@
 #include <QClipboard>
 #include <QContextMenuEvent>
 #include <QFocusEvent>
+#include <QRegularExpression>
 #include <QResizeEvent>
 #include <QScrollBar>
 #include <QTextBlockFormat>
@@ -664,15 +665,15 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     virtual void _insertTab();
 
     //* multi tab regular expression
-    virtual const QRegExp& _tabRegExp() const
+    virtual const QRegularExpression& _tabRegExp() const
     { return tabRegexp_; }
 
     //* 'normal' tab regular expression
-    virtual const QRegExp& _normalTabRegExp() const
+    virtual const QRegularExpression& _normalTabRegExp() const
     { return normalTabRegexp_; }
 
     //* 'emulated' tab regular expression
-    virtual const QRegExp& _emulatedTabRegExp() const
+    virtual const QRegularExpression& _emulatedTabRegExp() const
     { return emulatedTabRegexp_; }
 
     //@}
@@ -875,13 +876,13 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     QString tab_;
 
     //* emulated tab regular expression
-    QRegExp emulatedTabRegexp_;
+    QRegularExpression emulatedTabRegexp_;
 
     //* normale tab regular expression
-    QRegExp normalTabRegexp_;
+    QRegularExpression normalTabRegexp_;
 
     //* multi tab regExp
-    QRegExp tabRegexp_;
+    QRegularExpression tabRegexp_;
 
     //* min font size
     int minimumFontSize_ = 4;

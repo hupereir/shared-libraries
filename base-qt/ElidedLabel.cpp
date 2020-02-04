@@ -22,43 +22,20 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QRegularExpression>
 #include <QStringList>
-
-//___________________________________________________
-ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
-    QLabel( parent ),
-    Counter( "ElidedLabel" ),
-    hRefRegExp_( "(<a href=.+>)|(</a>)" )
-{
-
-    Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
-    hRefRegExp_.setMinimal( true );
-
-    // set size policy
-    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
-
-    // set text
-    setText( text );
-
-}
 
 //___________________________________________________
 ElidedLabel::ElidedLabel(  QWidget* parent ):
     QLabel( parent ),
-    Counter( "ElidedLabel" ),
-    hRefRegExp_( "(<a href=.+>)|(</a>)" ),
-    elideMode_( Qt::ElideLeft )
-{
-
-    Debug::Throw( "ElidedLabel::ElidedLabel.\n" );
-    hRefRegExp_.setMinimal( true );
-
-    // set size policy
-    setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
-
-}
+    Counter( "ElidedLabel" )
+{ setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ); }
 
 //___________________________________________________
+ElidedLabel::ElidedLabel( const QString& text, QWidget* parent ):
+    ElidedLabel( parent )
+{ setText( text ); }
+
 //___________________________________________________
 void ElidedLabel::setText( const QString& text )
 {
@@ -112,7 +89,7 @@ void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
             if (textFormat() == Qt::RichText )
             {
 
-                static QRegExp regExp( "<[^>]*>" );
+                static const QRegularExpression regExp( "<[^>]*>" );
                 text.replace( regExp, "" );
 
                 // account for stripped characters
@@ -152,6 +129,8 @@ void ElidedLabel::updateElidedText()
         return;
     }
 
+    static const QRegularExpression regexp( QStringLiteral("(<a href=.+?>)|(</a>)") );
+
     auto fontMetrics( this->fontMetrics() );
     int labelWidth = size().width();
 
@@ -169,18 +148,20 @@ void ElidedLabel::updateElidedText()
         {
             case Qt::ElideLeft:
             {
-                if( fullLine.indexOf( hRefRegExp_ ) == 0 )
+                QRegularExpressionMatch match;
+                if( fullLine.indexOf( regexp, 0, &match ) == 0 )
                 {
-                    prefix = fullLine.left( hRefRegExp_.matchedLength() );
-                    line = fullLine.mid( hRefRegExp_.matchedLength() );
+                    prefix = fullLine.left( match.capturedLength() );
+                    line = fullLine.mid( match.capturedLength() );
                 }
                 break;
             }
 
             case Qt::ElideRight:
             {
-                int position( fullLine.lastIndexOf( hRefRegExp_ ) );
-                if( position >= 0 && position + hRefRegExp_.matchedLength() == fullLine.length() )
+                QRegularExpressionMatch match;
+                int position( fullLine.lastIndexOf( regexp, -1, &match ) );
+                if( position >= 0 && position + match.capturedLength() == fullLine.length() )
                 {
                     suffix = fullLine.mid( position );
                     line = fullLine.left( position );

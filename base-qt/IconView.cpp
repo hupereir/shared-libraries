@@ -28,6 +28,7 @@
 #include "IconSize.h"
 #include "InformationDialog.h"
 #include "ItemModel.h"
+#include "RegExpUtil.h"
 #include "Singleton.h"
 #include "TextEditor.h"
 #include "XmlOptions.h"
@@ -36,6 +37,7 @@
 #include <QDrag>
 #include <QHoverEvent>
 #include <QPaintEvent>
+#include <QRegularExpression>
 #include <QStyle>
 
 #include <numeric>
@@ -1151,7 +1153,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
     // check model and selection model
     if( !( model_ && selectionModel() ) ) return false;
 
-    QRegExp regexp;
+    QRegularExpression regexp;
     if( selection.flag( TextSelection::RegExp ) )
     {
 
@@ -1164,7 +1166,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
 
     }
 
@@ -1194,7 +1196,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
         {
 
             // check if text match
-            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
+            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.match( text ).hasMatch() ) accepted = true; }
             else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
             { accepted = true; }
 
@@ -1247,7 +1249,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
     // check model and selection model
     if( !( model_ && selectionModel() ) ) return false;
 
-    QRegExp regexp;
+    QRegularExpression regexp;
     if( selection.flag( TextSelection::RegExp ) )
     {
 
@@ -1260,7 +1262,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
 
     }
 
@@ -1290,7 +1292,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
         {
 
             // check if text match
-            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.indexIn( text ) >= 0 ) accepted = true; }
+            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.match( text ).hasMatch() ) accepted = true; }
             else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
             { accepted = true; }
 

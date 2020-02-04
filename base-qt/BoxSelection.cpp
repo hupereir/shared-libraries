@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QMimeData>
+#include <QRegularExpression>
 
 #include <numeric>
 
@@ -448,7 +449,7 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
     Debug::Throw( debugLevel, "BoxSelection::mergeCharFormat.\n" );
 
     // trailing space regexp
-    static QRegExp regexp( "\\s+$" );
+    static const QRegularExpression regexp( "\\s+$" );
 
     // check if state is ok
     if( state() != State::Finished || cursorList().empty() ) return false;
@@ -465,8 +466,9 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
 
         // get selection, look for trailing spaces
         QString text( cursor.selectedText() );
-        if( regexp.indexIn( text ) >= 0 )
-        { cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, regexp.matchedLength() ); }
+        const auto match( regexp.match( text ) );
+        if( match.hasMatch() )
+        { cursor.movePosition( QTextCursor::PreviousCharacter, QTextCursor::KeepAnchor, match.capturedLength() ); }
 
         cursor.mergeCharFormat( format );
 

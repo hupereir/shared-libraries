@@ -92,8 +92,6 @@ class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
 
     private:
 
-    QRegExp hRefRegExp_;
-
     //* elision mode
     Qt::TextElideMode elideMode_ = Qt::ElideLeft;
 

@@ -29,6 +29,7 @@
 #include "IconEngine.h"
 #include "InformationDialog.h"
 #include "ItemModel.h"
+#include "RegExpUtil.h"
 #include "Singleton.h"
 #include "ScrollBarMonitor.h"
 #include "TextEditor.h"
@@ -40,6 +41,7 @@
 #include <QHeaderView>
 #include <QPainter>
 #include <QScrollBar>
+#include <QRegularExpression>
 #include <QStyledItemDelegate>
 
 //______________________________________________________________________
@@ -678,7 +680,7 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
     // check model and selection model
     if( !( model() && selectionModel() ) ) return false;
 
-    QRegExp regexp;
+    QRegularExpression regexp;
     if( selection.flag( TextSelection::RegExp ) )
     {
 
@@ -691,7 +693,7 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
 
     }
 
@@ -721,21 +723,9 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
         {
 
             // check if text match
-            if( regexp.isValid() && !regexp.pattern().isEmpty() )
-            {
-
-                if( regexp.indexIn( text ) >= 0 ) accepted = true;
-
-            } else if( selection.flag( TextSelection::BeginOfWord ) ) {
-
-                if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
-                { accepted = true; }
-
-            } else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 ) {
-
-                accepted = true;
-
-            }
+            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.match( text ).hasMatch() ) accepted = true; }
+            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+            { accepted = true; }
 
         }
 
@@ -785,7 +775,7 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
     // check model and selection model
     if( !( model() && selectionModel() ) ) return false;
 
-    QRegExp regexp;
+    QRegularExpression regexp;
     if( selection.flag( TextSelection::RegExp ) )
     {
 
@@ -798,7 +788,7 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
 
     }
 
@@ -828,21 +818,9 @@ bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
         {
 
             // check if text match
-            if( regexp.isValid() && !regexp.pattern().isEmpty() )
-            {
-
-                if( regexp.indexIn( text ) >= 0 ) accepted = true;
-
-            } else if( selection.flag( TextSelection::BeginOfWord ) ) {
-
-                if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) == 0 )
-                { accepted = true; }
-
-            } else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 ) {
-
-                accepted = true;
-
-            }
+            if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.match( text ).hasMatch() ) accepted = true; }
+            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+            { accepted = true; }
 
         }
 

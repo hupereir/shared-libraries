@@ -34,6 +34,7 @@
 #include "LineEditor.h"
 #include "LineNumberDisplay.h"
 #include "QtUtil.h"
+#include "RegExpUtil.h"
 #include "SelectLineDialog.h"
 #include "SelectLineWidget.h"
 #include "Singleton.h"
@@ -52,7 +53,6 @@
 #include <QMimeData>
 #include <QPainter>
 #include <QProgressDialog>
-#include <QRegExp>
 #include <QRegularExpression>
 #include <QTextBlock>
 #include <QTextStream>
@@ -847,7 +847,7 @@ void TextEditor::replace( TextSelection selection )
     if( selection.flag( TextSelection::RegExp ) )
     {
 
-        accepted &= QRegExp( selection.text() ).exactMatch( cursor.selectedText() );
+        accepted &= Base::exactMatch( QRegularExpression( selection.text() ), cursor.selectedText() );
 
     } else {
 
@@ -2056,7 +2056,7 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
     {
 
         // construct regexp and check
-        QRegExp regexp( selection.text() );
+        QRegularExpression regexp( selection.text() );
         if( !regexp.isValid() )
         {
             InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
@@ -2064,13 +2064,13 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
 
         // make a copy of current cursor
         auto found( cursor );
 
         // if current text has selection that match, make sure pointer is located at the end of it
-        if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) )
+        if( found.hasSelection() && Base::exactMatch( regexp, found.selectedText() ) )
         { found.setPosition( qMax( found.position(), found.anchor() ) ); }
 
         // move the found to the end of the document
@@ -2079,9 +2079,8 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
         QString text( found.selectedText() );
 
         // parse text
-        int match = regexp.indexIn( text );
-        int length = regexp.matchedLength();
-        if( match < 0 )
+        auto match = regexp.match( text );
+        if( match.hasMatch() )
         {
             // no match found
             // if not rewind, stop here
@@ -2090,16 +2089,14 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
             // update selection to the beginning of the document
             found.movePosition( QTextCursor::Start, QTextCursor::KeepAnchor );
             text = found.selectedText();
-            match = regexp.indexIn( text );
-            length = regexp.matchedLength();
+            match = regexp.match( text );
 
+            if( !match.hasMatch() ) return false;
         }
 
-        // no match found. Return
-        if( match < 0 ) return false;
-
         // match found. Update selection and return
-        int position( match + qMin( found.anchor(), found.position() ) );
+        const auto length = match.capturedLength();
+        int position( match.capturedStart() + qMin( found.anchor(), found.position() ) );
         found.setPosition( position, QTextCursor::MoveAnchor );
         found.setPosition( position+length, QTextCursor::KeepAnchor );
         setTextCursor( found );
@@ -2164,7 +2161,7 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
     {
 
         // construct regexp and check
-        QRegExp regexp( selection.text() );
+        QRegularExpression regexp( selection.text() );
         if( !regexp.isValid() )
         {
             InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
@@ -2172,13 +2169,13 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
 
         // make a copy of current cursor
         auto found( cursor );
 
         // if current text has selection that match, make sure pointer is located at the end of it
-        if( found.hasSelection() && regexp.exactMatch( found.selectedText() ) )
+        if( found.hasSelection() && Base::exactMatch( regexp, found.selectedText() ) )
         { found.setPosition( qMin( found.position(), found.anchor() ) ); }
 
         // move cursor to beginning of the text
@@ -2186,9 +2183,8 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
         QString text( found.selectedText() );
 
         // parse text
-        int match = regexp.lastIndexIn( text );
-        int length = regexp.matchedLength();
-        if( match < 0 )
+        auto match = regexp.match( text );
+        if( !match.hasMatch() )
         {
             // no match found
             // if not rewind, stop here
@@ -2197,16 +2193,15 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
             // update selection to the beginning of the document
             found.movePosition( QTextCursor::End, QTextCursor::KeepAnchor );
             text = found.selectedText();
-            match = regexp.lastIndexIn( text );
-            length = regexp.matchedLength();
+            match = regexp.match( text );
 
+            if( !match.hasMatch() ) return false;
         }
 
-        // no match found. Return
-        if( match < 0 ) return false;
+        const auto length = match.capturedLength();
 
         // match found. Update selection and return
-        int position( match + qMin( found.anchor(), found.position() )+length );
+        int position( match.capturedStart() + qMin( found.anchor(), found.position() )+length );
         found.setPosition( position, QTextCursor::MoveAnchor );
         found.setPosition( position-length, QTextCursor::KeepAnchor );
         setTextCursor( found );
@@ -2283,7 +2278,7 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
         Debug::Throw( "TextEditor::_replaceInRange - regexp.\n" );
 
         // construct regexp and check
-        QRegExp regexp( selection.text() );
+        QRegularExpression regexp( selection.text() );
         if( !regexp.isValid() )
         {
             InformationDialog( this, tr( "Invalid regular expression. Find canceled" ) ).exec();
@@ -2291,21 +2286,22 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
         }
 
         // case sensitivity
-        regexp.setCaseSensitivity( selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive );
+        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
 
         // replace everything in selected text
         QString selectedText( cursor.selectedText() );
         emit busy( selectedText.size() );
 
-        for( int position = 0; (position = regexp.indexIn( selectedText, position )) != -1; )
+        QRegularExpressionMatch match;
+        for( int position = 0; (position = selectedText.indexOf( regexp, position, &match )) != -1; )
         {
             // replace in selected text
-            selectedText.replace( position, regexp.matchedLength(), selection.replaceText() );
+            selectedText.replace( position, match.capturedLength(), selection.replaceText() );
 
             // replace in cursor
             /* this is to allow for undoing the changes one by one */
             cursor.setPosition( savedAnchor + position );
-            cursor.setPosition( savedAnchor + position + regexp.matchedLength(), QTextCursor::KeepAnchor );
+            cursor.setPosition( savedAnchor + position + match.capturedLength(), QTextCursor::KeepAnchor );
             cursor.insertText( selection.replaceText() );
             currentPosition = cursor.position();
 

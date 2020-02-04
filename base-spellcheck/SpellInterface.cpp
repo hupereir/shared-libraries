@@ -24,6 +24,8 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
+#include <QRegularExpression>
+
 #include <algorithm>
 #include <functional>
 
@@ -46,8 +48,8 @@ namespace SpellCheck
     };
 
     //_______________________________________________
-    const QString SpellInterface::FilterNone = "none";
-    const QString SpellInterface::FilterTex = "tex";
+    const QString SpellInterface::FilterNone = QStringLiteral( "none" );
+    const QString SpellInterface::FilterTex = QStringLiteral( "tex" );
     const QString SpellInterface::FilterTexWithNoAccents = QObject::tr( "tex (no accents)" );
 
     //_______________________________________________
@@ -398,12 +400,12 @@ namespace SpellCheck
         const auto lines( QString( process.readAllStandardOutput() ).split( QLatin1Char('\n') ) );
         for( const auto& line:lines )
         {
-            static QRegExp regExp( "\\s+" );
-            const int position( line.indexOf( regExp ) );
-            if( position > 0 )
+            static const QRegularExpression regExp( "^(\\w+)\\s+(.*)" );
+            const auto match( regExp.match( line ) );
+            if( match.hasMatch() )
             {
-                const QString mode( line.left( position ) );
-                const QString comment( line.mid( position + regExp.matchedLength() ) );
+                const auto mode( match.captured(1) );
+                const QString comment( match.captured(2) );
                 filters_.insert( mode );
                 filterMap_.insert( mode, comment );
                 if( mode == FilterTex )
