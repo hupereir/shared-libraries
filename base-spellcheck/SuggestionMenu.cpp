@@ -60,7 +60,7 @@ namespace SpellCheck
         Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
 
         // add words
-        int max( XmlOptions::get().get<int>( "MAX_SUGGESTIONS" ) );
+        int max( XmlOptions::get().get<int>( QStringLiteral("MAX_SUGGESTIONS") ) );
         if( max == 0 || max > suggestions.size() ) max = suggestions.size();
         for( int i=0; i < max; ++i )
         {

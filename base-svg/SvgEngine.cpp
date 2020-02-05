@@ -158,7 +158,7 @@ namespace Svg
 
         // try get from plasma interface if needed
         #if !defined(Q_OS_WIN)
-        if( XmlOptions::get().get<bool>( "SVG_USE_PLASMA_INTERFACE" ) )
+        if( XmlOptions::get().get<bool>( QStringLiteral("SVG_USE_PLASMA_INTERFACE") ) )
         {
 
             bool first( !plasmaInterface_ );
@@ -176,7 +176,7 @@ namespace Svg
                 plasmaInterface_->themePalette():
                 QPalette() );
 
-            if( plasmaInterface_->setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( "SVG_PLASMA_IMAGE_PATH" ) ) ) changed = true;
+            if( plasmaInterface_->setImagePath( (SvgPlasmaInterface::ImagePath) XmlOptions::get().get<int>( QStringLiteral("SVG_PLASMA_IMAGE_PATH") ) ) ) changed = true;
             if( changed || first || forced ) plasmaInterface_->loadFile();
 
             if( plasmaInterface_->isValid() )

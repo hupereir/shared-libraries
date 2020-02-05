@@ -181,9 +181,9 @@ void FileRecordToolTipWidget::_updateConfiguration()
     bool modified( false );
 
     // mask from options
-    if( XmlOptions::get().contains( "TOOLTIPS_MASK" ) )
+    if( XmlOptions::get().contains( QStringLiteral("TOOLTIPS_MASK") ) )
     {
-        auto mask( XmlOptions::get().get<int>( "TOOLTIPS_MASK" ) );
+        auto mask( XmlOptions::get().get<int>( QStringLiteral("TOOLTIPS_MASK") ) );
         if( mask != mask_ )
         {
             mask_ = mask;

@@ -2477,21 +2477,21 @@ void TextEditor::_updateConfiguration()
 
     // wrap mode
     if( wrapFromOptions() )
-    { wrapModeAction_->setChecked( XmlOptions::get().get<bool>( "WRAP_TEXT" ) ); }
+    { wrapModeAction_->setChecked( XmlOptions::get().get<bool>( QStringLiteral("WRAP_TEXT") ) ); }
 
     if( lineNumbersFromOptions() )
-    { showLineNumberAction_->setChecked( XmlOptions::get().get<bool>( "SHOW_LINE_NUMBERS" ) ); }
+    { showLineNumberAction_->setChecked( XmlOptions::get().get<bool>( QStringLiteral("SHOW_LINE_NUMBERS") ) ); }
 
     // tab emulation
-    _setTabSize( XmlOptions::get().get<int>("TAB_SIZE") );
-    tabEmulationAction_->setChecked( XmlOptions::get().get<bool>( "TAB_EMULATION" ) );
+    _setTabSize( XmlOptions::get().get<int>(QStringLiteral("TAB_SIZE")) );
+    tabEmulationAction_->setChecked( XmlOptions::get().get<bool>( QStringLiteral("TAB_EMULATION") ) );
 
     // paragraph highlighting
     if( highlightBlockFromOptions_ )
     {
-        blockHighlight_->setEnabled( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+        blockHighlight_->setEnabled( XmlOptions::get().get<bool>( QStringLiteral("HIGHLIGHT_PARAGRAPH") ) );
         blockHighlightAction_->setEnabled( true );
-        blockHighlightAction_->setChecked( XmlOptions::get().get<bool>( "HIGHLIGHT_PARAGRAPH" ) );
+        blockHighlightAction_->setChecked( XmlOptions::get().get<bool>( QStringLiteral("HIGHLIGHT_PARAGRAPH") ) );
     }
 
     // update box configuration
@@ -2505,8 +2505,8 @@ void TextEditor::_updateConfiguration()
     }
 
     // cursor monitor
-    cursorMonitor_.setEnabled( XmlOptions::get().get<int>( "AUTOHIDE_CURSOR_DELAY" ) > 0 );
-    cursorMonitor_.setAutoHideDelay( XmlOptions::get().get<int>( "AUTOHIDE_CURSOR_DELAY" ) * 1000 );
+    cursorMonitor_.setEnabled( XmlOptions::get().get<int>( QStringLiteral("AUTOHIDE_CURSOR_DELAY") ) > 0 );
+    cursorMonitor_.setAutoHideDelay( XmlOptions::get().get<int>( QStringLiteral("AUTOHIDE_CURSOR_DELAY") ) * 1000 );
 
     return;
 
@@ -2693,7 +2693,7 @@ void TextEditor::_toggleBlockHighlight( bool state )
     blockHighlight_->setEnabled( state );
 
     // update options
-    XmlOptions::get().set<bool>( "HIGHLIGHT_PARAGRAPH", state );
+    XmlOptions::get().set<bool>( QStringLiteral("HIGHLIGHT_PARAGRAPH"), state );
 
     // update current paragraph
     if( blockHighlight_->isEnabled() ) blockHighlight_->highlight();
@@ -2782,7 +2782,7 @@ void TextEditor::_toggleShowLineNumbers( bool state )
     _updateMargin();
 
     // update options
-    XmlOptions::get().set<bool>( "SHOW_LINE_NUMBERS", state );
+    XmlOptions::get().set<bool>( QStringLiteral("SHOW_LINE_NUMBERS"), state );
 
     // propagate to other displays
     if( isSynchronized() )

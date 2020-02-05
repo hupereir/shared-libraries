@@ -1030,10 +1030,10 @@ void PathEditor::_updateConfiguration()
 {
     Debug::Throw( QStringLiteral("PathEditor::_updateConfiguration.\n") );
 
-    if( XmlOptions::get().contains( "USE_PREFIX" ) )
-    { _setUsePrefix( XmlOptions::get().get<bool>( "USE_PREFIX" ) ); }
+    if( XmlOptions::get().contains( QStringLiteral("USE_PREFIX") ) )
+    { _setUsePrefix( XmlOptions::get().get<bool>( QStringLiteral("USE_PREFIX") ) ); }
 
-    if( XmlOptions::get().contains( "USE_TRUNCATION" ) )
-    { _setUseTruncation( XmlOptions::get().get<bool>( "USE_TRUNCATION" ) ); }
+    if( XmlOptions::get().contains( QStringLiteral("USE_TRUNCATION") ) )
+    { _setUseTruncation( XmlOptions::get().get<bool>( QStringLiteral("USE_TRUNCATION") ) ); }
 
 }

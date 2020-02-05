@@ -29,12 +29,12 @@
 void installFileSystemOptions()
 {
     XmlOptions::get().setAutoDefault( true );
-    XmlOptions::get().set<bool>( "SHOW_HIDDEN_FILES", false );
-    XmlOptions::get().set<bool>( "SHOW_NAVIGATOR", false );
+    XmlOptions::get().set<bool>( QStringLiteral("SHOW_HIDDEN_FILES"), false );
+    XmlOptions::get().set<bool>( QStringLiteral("SHOW_NAVIGATOR"), false );
 
-    XmlOptions::get().set<int>( "FILE_SYSTEM_LIST_MASK", 1<<FileSystemModel::FileName );
-    XmlOptions::get().set<int>( "FILE_SYSTEM_LIST_SORT_COLUMN", FileSystemModel::FileName );
-    XmlOptions::get().set<int>( "FILE_SYSTEM_LIST_SORT_ORDER", Qt::AscendingOrder );
+    XmlOptions::get().set<int>( QStringLiteral("FILE_SYSTEM_LIST_MASK"), 1<<FileSystemModel::FileName );
+    XmlOptions::get().set<int>( QStringLiteral("FILE_SYSTEM_LIST_SORT_COLUMN"), FileSystemModel::FileName );
+    XmlOptions::get().set<int>( QStringLiteral("FILE_SYSTEM_LIST_SORT_ORDER"), Qt::AscendingOrder );
 
     XmlOptions::get().setAutoDefault( false );
 }

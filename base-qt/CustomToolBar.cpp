@@ -104,7 +104,7 @@ void CustomToolBar::_updateConfiguration()
     // pixmap size
     if( iconSizeFromOptions_ )
     {
-        int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+        int iconSize( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE") ) );
         if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
         QToolBar::setIconSize( QSize( iconSize, iconSize ) );
     }
@@ -112,7 +112,7 @@ void CustomToolBar::_updateConfiguration()
     // text label for toolbars
     if( toolButtonStyleFromOptions_ )
     {
-        const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+        const int toolButtonTextPosition( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_TEXT_POSITION") ) );
         if( toolButtonTextPosition < 0 ) QToolBar::setToolButtonStyle(  (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
         else QToolBar::setToolButtonStyle(  (Qt::ToolButtonStyle) toolButtonTextPosition );
     }

@@ -85,11 +85,11 @@ namespace Svg
         Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme" << endl;
 
         File::List configurationFiles;
-        if( XmlOptions::get().contains( "KDE_CONFIG" ) )
+        if( XmlOptions::get().contains( QStringLiteral("KDE_CONFIG") ) )
         {
 
             // get kde4 config command and retrieve output
-            const QString kdeConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
+            const QString kdeConfigCommand( XmlOptions::get().raw( QStringLiteral("KDE_CONFIG") ) );
 
             CustomProcess process( this );
             process.start( Base::Command( kdeConfigCommand ) << "--path" << "config" );
@@ -209,11 +209,11 @@ namespace Svg
         Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - theme:" << theme << endl;
         File::List themePathList;
 
-        if( XmlOptions::get().contains( "KDE_CONFIG" ) )
+        if( XmlOptions::get().contains( QStringLiteral("KDE_CONFIG") ) )
         {
 
             // get kde4 config command and retrieve output
-            const QString kdeConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
+            const QString kdeConfigCommand( XmlOptions::get().raw( QStringLiteral("KDE_CONFIG") ) );
 
             CustomProcess process( this );
             process.start( Base::Command( kdeConfigCommand ) << "--path" << "data" );

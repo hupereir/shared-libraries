@@ -40,11 +40,11 @@ namespace Server
         Debug::Throw( QStringLiteral("ApplicationManager::ApplicationManager.\n") );
         setApplicationName( "Generic Application" );
 
-        if( !XmlOptions::get().contains( "SERVER_HOST" ) )
-        { XmlOptions::get().setRaw( "SERVER_HOST", host_.toString(), true ); }
+        if( !XmlOptions::get().contains( QStringLiteral("SERVER_HOST") ) )
+        { XmlOptions::get().setRaw( QStringLiteral("SERVER_HOST"), host_.toString(), true ); }
 
-        if( !XmlOptions::get().contains( "SERVER_PORT" ) )
-        { XmlOptions::get().set<int>( "SERVER_PORT", port_, true ); }
+        if( !XmlOptions::get().contains( QStringLiteral("SERVER_PORT") ) )
+        { XmlOptions::get().set<int>( QStringLiteral("SERVER_PORT"), port_, true ); }
 
     }
 
@@ -86,7 +86,7 @@ namespace Server
             QString host( parser.option( "--server-host" ) );
             host_ = QHostAddress( host );
 
-        } else host_ = QHostAddress( QString( XmlOptions::get().raw( "SERVER_HOST" ) ) );
+        } else host_ = QHostAddress( QString( XmlOptions::get().raw( QStringLiteral("SERVER_HOST") ) ) );
 
         // overwrite port from command line arguments
         if( parser.hasOption( "--server-port" ) )
@@ -95,7 +95,7 @@ namespace Server
             int port( parser.option( "--server-port" ).toUInt() );
             port_ = port;
 
-        } else port_ = XmlOptions::get().get<int>( "SERVER_PORT" );
+        } else port_ = XmlOptions::get().get<int>( QStringLiteral("SERVER_PORT") );
 
         Debug::Throw() << "ApplicationManager::initialize - port: " << port_ << endl;
         _initializeClient();
@@ -498,7 +498,7 @@ namespace Server
     {
         // time out delay (for existing server to reply)
         // one should really start the timer only when the client is connected
-        int timeoutDelay( XmlOptions::get().contains( "SERVER_TIMEOUT_DELAY" ) ? XmlOptions::get().get<int>( "SERVER_TIMEOUT_DELAY" ) : 2000 );
+        int timeoutDelay( XmlOptions::get().contains( QStringLiteral("SERVER_TIMEOUT_DELAY") ) ? XmlOptions::get().get<int>( QStringLiteral("SERVER_TIMEOUT_DELAY") ) : 2000 );
         timer_.start( timeoutDelay, this );
     }
 

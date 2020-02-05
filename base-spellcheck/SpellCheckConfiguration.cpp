@@ -110,7 +110,7 @@ namespace SpellCheck
         if( !dictionariesComboBox_ ) return;
 
         // read list of disabled dictionaries
-        const auto disabledDictionaries( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_DICTIONARIES" ) ).split( QLatin1Char(' ') ) );
+        const auto disabledDictionaries( QString( XmlOptions::get().raw( QStringLiteral("SPELLCHECK_DISABLED_DICTIONARIES") ) ).split( QLatin1Char(' ') ) );
 
         // clear combobox
         dictionariesComboBox_->clear();
@@ -133,7 +133,7 @@ namespace SpellCheck
         if( !filtersComboBox_ ) return;
 
         // read list of disabled filters
-        const auto disabledFilters( QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( QLatin1Char(' ') ) );
+        const auto disabledFilters( QString( XmlOptions::get().raw( QStringLiteral("SPELLCHECK_DISABLED_FILTERS") ) ).split( QLatin1Char(' ') ) );
 
         // clear combobox
         filtersComboBox_->clear();

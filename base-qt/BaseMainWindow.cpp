@@ -195,8 +195,8 @@ QMenu* BaseMainWindow::createPopupMenu()
     } else {
 
         auto menu = toolBarMenu( this );
-        menu->toolButtonStyleMenu().select( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
-        menu->iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+        menu->toolButtonStyleMenu().select( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_TEXT_POSITION") ) );
+        menu->iconSizeMenu().select( (IconSize::Size) XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE") ) );
         connect( &menu->toolButtonStyleMenu(), &ToolButtonStyleMenu::styleSelected, this, &BaseMainWindow::_updateToolButtonStyle );
         connect( &menu->iconSizeMenu(), &IconSizeMenu::iconSizeSelected, this, &BaseMainWindow::_updateToolButtonIconSize );
         return menu;
@@ -439,12 +439,12 @@ void BaseMainWindow::_updateConfiguration()
     Debug::Throw( QStringLiteral("BaseMainWindow::_updateConfiguration.\n") );
 
     // icon size
-    int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+    int iconSize( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE") ) );
     if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
     setIconSize( QSize( iconSize, iconSize ) );
 
     // text label for toolbars
-    const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    const int toolButtonTextPosition( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_TEXT_POSITION") ) );
     if( toolButtonTextPosition < 0 ) setToolButtonStyle(  (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
     else setToolButtonStyle(  (Qt::ToolButtonStyle) toolButtonTextPosition );
 
@@ -476,7 +476,7 @@ void BaseMainWindow::_updateToolButtonStyle( int style )
 {
 
     Debug::Throw( QStringLiteral("BaseMainWindow::_updateToolButtonStyle.\n") );
-    XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", style );
+    XmlOptions::get().set<int>( QStringLiteral("TOOLBUTTON_TEXT_POSITION"), style );
     emit toolbarConfigurationChanged();
 
 }
@@ -485,7 +485,7 @@ void BaseMainWindow::_updateToolButtonStyle( int style )
 void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 {
     Debug::Throw( QStringLiteral("BaseMainWindow::_updateToolButtonIconSize.\n") );
-    XmlOptions::get().set<int>( "TOOLBUTTON_ICON_SIZE", size );
+    XmlOptions::get().set<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE"), size );
     emit toolbarConfigurationChanged();
 }
 

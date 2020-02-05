@@ -77,8 +77,8 @@ namespace SpellCheck
 
         // load disabled filters from options
         QStringList disabledFilters;
-        if( XmlOptions::get().contains( "SPELLCHECK_DISABLED_FILTERS" ) )
-        { disabledFilters = QString( XmlOptions::get().raw( "SPELLCHECK_DISABLED_FILTERS" ) ).split( QLatin1Char(' ') ); }
+        if( XmlOptions::get().contains( QStringLiteral("SPELLCHECK_DISABLED_FILTERS") ) )
+        { disabledFilters = QString( XmlOptions::get().raw( QStringLiteral("SPELLCHECK_DISABLED_FILTERS") ) ).split( QLatin1Char(' ') ); }
 
         // populate list
         bool first( true );

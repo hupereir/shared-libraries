@@ -319,10 +319,10 @@ void BaseFileSystemWidget::_itemActivated( const QModelIndex& index )
 void BaseFileSystemWidget::_updateConfiguration()
 {
     Debug::Throw( QStringLiteral("BaseFileSystemWidget::_updateConfiguration.\n") );
-    hiddenFilesAction_->setChecked( XmlOptions::get().get<bool>( "SHOW_HIDDEN_FILES" ) );
+    hiddenFilesAction_->setChecked( XmlOptions::get().get<bool>( QStringLiteral("SHOW_HIDDEN_FILES") ) );
 
     // show navigator in list
-    showNavigator_ = XmlOptions::get().get<bool>( "SHOW_NAVIGATOR" );
+    showNavigator_ = XmlOptions::get().get<bool>( QStringLiteral("SHOW_NAVIGATOR") );
 
 }
 

@@ -178,7 +178,7 @@ void BaseCoreApplication::_updateConfiguration()
     Debug::Throw( QStringLiteral("BaseCoreApplication::_updateConfiguration.\n") );
 
     // debug
-    Debug::setLevel( XmlOptions::get().get<int>( "DEBUG_LEVEL" ) );
+    Debug::setLevel( XmlOptions::get().get<int>( QStringLiteral("DEBUG_LEVEL") ) );
 
     // emit signal to propagate changes to other widgets
     Debug::Throw( QStringLiteral("BaseCoreApplication::_updateConfiguration - done.\n") );

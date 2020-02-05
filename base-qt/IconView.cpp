@@ -1445,7 +1445,7 @@ void IconView::_updateConfiguration()
 
     // update pixmap size
     int iconSize( IconSize::Size::VeryLarge );
-    if( iconSizeFromOptions_ && XmlOptions::get().contains( "ICON_VIEW_ICON_SIZE" ) && (iconSize = XmlOptions::get().get<int>( "ICON_VIEW_ICON_SIZE" )) != this->iconSize().width() )
+    if( iconSizeFromOptions_ && XmlOptions::get().contains( QStringLiteral("ICON_VIEW_ICON_SIZE") ) && (iconSize = XmlOptions::get().get<int>( QStringLiteral("ICON_VIEW_ICON_SIZE") )) != this->iconSize().width() )
     {
         QAbstractItemView::setIconSize( QSize( iconSize, iconSize ) );
 

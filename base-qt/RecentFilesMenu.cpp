@@ -133,7 +133,7 @@ void RecentFilesMenu::_loadFiles()
 
     // redo all actions
     FileRecord::List records( fileList_->records() );
-    if( XmlOptions::get().get<bool>("SORT_FILES_BY_DATE") ) { std::sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
+    if( XmlOptions::get().get<bool>(QStringLiteral("SORT_FILES_BY_DATE")) ) { std::sort( records.begin(), records.end(), FileRecord::FirstOpenFTor() ); }
     else { std::sort( records.begin(), records.end(), FileRecord::FileFTor() ); }
 
     // retrieve stored file record

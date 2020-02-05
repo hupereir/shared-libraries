@@ -1021,20 +1021,20 @@ void TreeView::_updateConfiguration()
     // alternate color
     const QPalette palette( this->palette() );
     setAlternatingRowColors(
-        ( XmlOptions::get().get<bool>( "USE_ALTERNATE_COLOR" ) || forceAlternatingRowColors_ ) &&
+        ( XmlOptions::get().get<bool>( QStringLiteral("USE_ALTERNATE_COLOR") ) || forceAlternatingRowColors_ ) &&
         palette.color( QPalette::AlternateBase ) != palette.color( QPalette::Base ) );
 
     // try load selected column color from option
-    useSelectedColumnColor_ = XmlOptions::get().get<bool>( "USE_SELECTED_COLUMN_COLOR" );
+    useSelectedColumnColor_ = XmlOptions::get().get<bool>( QStringLiteral("USE_SELECTED_COLUMN_COLOR") );
 
     // item margin
-    if( itemMarginFromOptions_ && XmlOptions::get().contains( "LIST_ITEM_MARGIN" ) )
-    { _setItemMargin( XmlOptions::get().get<int>( "LIST_ITEM_MARGIN" ) ); }
+    if( itemMarginFromOptions_ && XmlOptions::get().contains( QStringLiteral("LIST_ITEM_MARGIN") ) )
+    { _setItemMargin( XmlOptions::get().get<int>( QStringLiteral("LIST_ITEM_MARGIN") ) ); }
 
     // icon size
-    if( iconSizeFromOptions_ && XmlOptions::get().contains( "LIST_ICON_SIZE" )  )
+    if( iconSizeFromOptions_ && XmlOptions::get().contains( QStringLiteral("LIST_ICON_SIZE") )  )
     {
-        int iconSize( XmlOptions::get().get<int>( "LIST_ICON_SIZE" ) );
+        int iconSize( XmlOptions::get().get<int>( QStringLiteral("LIST_ICON_SIZE") ) );
         QTreeView::setIconSize( QSize( iconSize, iconSize )  );
     }
 

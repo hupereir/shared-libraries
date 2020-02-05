@@ -257,6 +257,6 @@ void BaseToolTipWidget::_adjustPosition()
 void BaseToolTipWidget::_updateConfiguration()
 {
     Debug::Throw( QStringLiteral("BaseToolTipWidget::_updateConfiguration.\n") );
-    if( XmlOptions::get().contains( "SHOW_TOOLTIPS" ) ) setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
-    if( XmlOptions::get().contains( "TOOLTIP_DELAY" ) ) setDefaultDelay( XmlOptions::get().get<int>( "TOOLTIP_DELAY" ) );
+    if( XmlOptions::get().contains( QStringLiteral("SHOW_TOOLTIPS") ) ) setEnabled( XmlOptions::get().get<bool>( QStringLiteral("SHOW_TOOLTIPS") ) );
+    if( XmlOptions::get().contains( QStringLiteral("TOOLTIP_DELAY") ) ) setDefaultDelay( XmlOptions::get().get<int>( QStringLiteral("TOOLTIP_DELAY") ) );
 }

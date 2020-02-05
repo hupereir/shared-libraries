@@ -202,15 +202,15 @@ void XmlPathHistory::_updateConfiguration()
     Debug::Throw( QStringLiteral("XmlPathHistory::_updateConfiguration.\n") );
 
     // max size
-    if( XmlOptions::get().contains( "HISTORY_SIZE" ) )
-    { _setMaxSize( XmlOptions::get().get<int>( "HISTORY_SIZE" ) ); }
+    if( XmlOptions::get().contains( QStringLiteral("HISTORY_SIZE") ) )
+    { _setMaxSize( XmlOptions::get().get<int>( QStringLiteral("HISTORY_SIZE") ) ); }
 
     // save history
-    if( XmlOptions::get().contains( "SAVE_HISTORY" ) )
-    { saveHistory_ = XmlOptions::get().get<bool>( "SAVE_HISTORY" ); }
+    if( XmlOptions::get().contains( QStringLiteral("SAVE_HISTORY") ) )
+    { saveHistory_ = XmlOptions::get().get<bool>( QStringLiteral("SAVE_HISTORY") ); }
 
     // DB file
-    _setDBFile( File( XmlOptions::get().raw( "RC_FILE" ) ) );
+    _setDBFile( File( XmlOptions::get().raw( QStringLiteral("RC_FILE") ) ) );
 
     return;
 

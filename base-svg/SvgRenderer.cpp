@@ -34,7 +34,7 @@ namespace Svg
     //________________________________________________
     bool SvgRenderer::updateConfiguration()
     {
-        bool drawOverlay( XmlOptions::get().get<bool>( "SVG_DRAW_OVERLAY" ) );
+        bool drawOverlay( XmlOptions::get().get<bool>( QStringLiteral("SVG_DRAW_OVERLAY") ) );
         if( drawOverlay == drawOverlay_ ) return false;
         drawOverlay_ = drawOverlay;
         return true;

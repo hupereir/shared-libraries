@@ -395,7 +395,7 @@ namespace SpellCheck
         filters_.insert( FilterNone );
 
         CustomProcess process;
-        process.start( XmlOptions::get().raw("ASPELL") + " dump modes" );
+        process.start( XmlOptions::get().raw(QStringLiteral("ASPELL")) + " dump modes" );
         process.waitForFinished();
         const auto lines( QString( process.readAllStandardOutput() ).split( QLatin1Char('\n') ) );
         for( const auto& line:lines )

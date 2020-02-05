@@ -270,28 +270,28 @@ void BaseApplication::_updateFonts()
     Debug::Throw( QStringLiteral("BaseApplication::_updateFonts.\n") );
 
     // default widget font
-    if( !XmlOptions::get().get<bool>( "USE_SYSTEM_FONT" ) )
+    if( !XmlOptions::get().get<bool>( QStringLiteral("USE_SYSTEM_FONT") ) )
     {
 
         QFont font;
 
         // generic font
-        font.fromString( XmlOptions::get().raw( "FONT_NAME" ) );
+        font.fromString( XmlOptions::get().raw( QStringLiteral("FONT_NAME") ) );
         qApp->setFont( font );
 
         // generic font
-        if( useFixedFonts() ) font.fromString( XmlOptions::get().raw( "FIXED_FONT_NAME" ) );
+        if( useFixedFonts() ) font.fromString( XmlOptions::get().raw( QStringLiteral("FIXED_FONT_NAME") ) );
         qApp->setFont( font, "QTextEdit" );
         qApp->setFont( font, "QPlainTextEdit" );
 
     } else {
 
         File::List configurationFiles;
-        if( XmlOptions::get().contains( "KDE_CONFIG" ) )
+        if( XmlOptions::get().contains( QStringLiteral("KDE_CONFIG") ) )
         {
 
             // get kde4 config command and retrieve output
-            const QString kde4ConfigCommand( XmlOptions::get().raw( "KDE_CONFIG" ) );
+            const QString kde4ConfigCommand( XmlOptions::get().raw( QStringLiteral("KDE_CONFIG") ) );
 
             CustomProcess process( this );
             process.start( Base::Command( kde4ConfigCommand ) << "--path" << "config" );
@@ -371,9 +371,9 @@ void BaseApplication::_updateIconTheme()
 {
 
     Debug::Throw( QStringLiteral("BaseApplication::_updateIconTheme.\n") );
-    if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
+    if( XmlOptions::get().get<bool>( QStringLiteral("USE_ICON_THEME") ) )
     {
-        QIcon::setThemeSearchPaths( { XmlOptions::get().raw( "ICON_THEME_PATH" ) } );
-        QIcon::setThemeName( XmlOptions::get().raw( "ICON_THEME" ) );
+        QIcon::setThemeSearchPaths( { XmlOptions::get().raw( QStringLiteral("ICON_THEME_PATH") ) } );
+        QIcon::setThemeName( XmlOptions::get().raw( QStringLiteral("ICON_THEME") ) );
     }
 }

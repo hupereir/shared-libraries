@@ -146,11 +146,11 @@ void CustomToolButton::_updateConfiguration()
 
     if( !updateFromOptions_ ) return;
 
-    int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
+    int iconSize( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE") ) );
     if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
     setIconSize( QSize( iconSize, iconSize ) );
 
-    const int toolButtonTextPosition( XmlOptions::get().get<int>( "TOOLBUTTON_TEXT_POSITION" ) );
+    const int toolButtonTextPosition( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_TEXT_POSITION") ) );
     if( toolButtonTextPosition < 0 ) setToolButtonStyle( static_cast<Qt::ToolButtonStyle>( style()->styleHint( QStyle::SH_ToolButtonStyle ) ) );
     else setToolButtonStyle( static_cast<Qt::ToolButtonStyle>( toolButtonTextPosition ) );
 

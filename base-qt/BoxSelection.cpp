@@ -37,7 +37,7 @@ BoxSelection::BoxSelection( TextEditor* parent ):
     Counter( QStringLiteral("BoxSelection") ),
     parent_( parent )
 {
-    Debug::Throw( debugLevel, "BoxSelection::BoxSelection.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::BoxSelection.\n") );
     updateConfiguration();
 }
 
@@ -54,7 +54,7 @@ bool BoxSelection::empty() const
 void BoxSelection::synchronize( const BoxSelection& box )
 {
 
-    Debug::Throw( debugLevel, "BoxSelection::synchronize.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::synchronize.\n") );
 
     // check enable state.
     if( !checkEnabled() ) return;
@@ -84,7 +84,7 @@ void BoxSelection::updateConfiguration()
     color_ = color;
 
     // retrieve shading from options
-    color.setAlphaF( XmlOptions::get().get<double>("BOX_SELECTION_ALPHA")/100 );
+    color.setAlphaF( XmlOptions::get().get<double>(QStringLiteral("BOX_SELECTION_ALPHA"))/100 );
     brush_ = QBrush( color );
 
     // additional initialization dependening on whether box selection is enabled or not
@@ -96,7 +96,7 @@ void BoxSelection::updateConfiguration()
 bool BoxSelection::checkEnabled()
 {
 
-    Debug::Throw( debugLevel, "BoxSelection::checkEnabled.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::checkEnabled.\n") );
     if( isEnabled() ) return true;
 
     /*
@@ -119,7 +119,7 @@ bool BoxSelection::checkEnabled()
 //________________________________________________________________________
 bool BoxSelection::start( QPoint point )
 {
-    Debug::Throw( debugLevel, "BoxSelection::start.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::start.\n") );
     if( state_ != State::Empty ) return false;
 
     // store point
@@ -138,7 +138,7 @@ bool BoxSelection::start( QPoint point )
 //________________________________________________________________________
 bool BoxSelection::update( QPoint point )
 {
-    Debug::Throw( debugLevel, "BoxSelection::update.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::update.\n") );
     if( state_ != State::Started ) return false;
 
     // store end point
@@ -161,7 +161,7 @@ bool BoxSelection::update( QPoint point )
 //________________________________________________________________________
 bool BoxSelection::finish( QPoint point )
 {
-    Debug::Throw( debugLevel, "BoxSelection::finish.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::finish.\n") );
     if( state_ != State::Started ) return false;
 
     update( point );
@@ -177,7 +177,7 @@ bool BoxSelection::finish( QPoint point )
 //________________________________________________________________________
 bool BoxSelection::clear()
 {
-    Debug::Throw( debugLevel, "BoxSelection::clear.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::clear.\n") );
     if( state_ != State::Finished ) return false;
 
     // change state and redraw
@@ -198,7 +198,7 @@ bool BoxSelection::clear()
 //________________________________________________________________________
 QString BoxSelection::toString() const
 {
-    Debug::Throw( debugLevel, "BoxSelection::toString.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::toString.\n") );
 
     QString out;
 
@@ -221,7 +221,7 @@ QString BoxSelection::toString() const
 bool BoxSelection::fromString( QString input )
 {
 
-    Debug::Throw( debugLevel, "BoxSelection::fromString.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::fromString.\n") );
 
     // check state
     if( state() != State::Finished ) return false;
@@ -314,7 +314,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
 {
 
-    Debug::Throw( debugLevel, "BoxSelection::fromClipboard.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::fromClipboard.\n") );
 
     // check mode
     if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
@@ -335,7 +335,7 @@ bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
 //________________________________________________________________________
 bool BoxSelection::removeSelectedText() const
 {
-    Debug::Throw( debugLevel, "BoxSelection::removeSelectedText.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::removeSelectedText.\n") );
 
     // check if state is ok
     if( state() != State::Finished || cursorList().empty() ) return false;
@@ -370,7 +370,7 @@ bool BoxSelection::removeSelectedText() const
 //________________________________________________________________________
 bool BoxSelection::toUpper()
 {
-    Debug::Throw( debugLevel, "BoxSelection::toUpper.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::toUpper.\n") );
 
     // check if state is ok
     if( state() != State::Finished || cursorList().empty() ) return false;
@@ -408,7 +408,7 @@ bool BoxSelection::toUpper()
 //________________________________________________________________________
 bool BoxSelection::toLower()
 {
-    Debug::Throw( debugLevel, "BoxSelection::toLower.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::toLower.\n") );
 
     // check if state is ok
     if( state() != State::Finished || cursorList().empty() ) return false;
@@ -446,7 +446,7 @@ bool BoxSelection::toLower()
 bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
 {
 
-    Debug::Throw( debugLevel, "BoxSelection::mergeCharFormat.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::mergeCharFormat.\n") );
 
     // trailing space regexp
     static const QRegularExpression regexp( QStringLiteral("\\s+$") );
@@ -491,7 +491,7 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
 //________________________________________________________________________
 void BoxSelection::_updateRect()
 {
-    Debug::Throw( debugLevel, "BoxSelection::_updateRect.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::_updateRect.\n") );
     int xMin( qMin( begin_.x(), end_.x() ) );
     int xMax( qMax( begin_.x(), end_.x() ) );
 
@@ -516,7 +516,7 @@ void BoxSelection::_updateRect()
 //________________________________________________________________________
 void BoxSelection::_store()
 {
-    Debug::Throw( debugLevel, "BoxSelection::_store.\n" );
+    Debug::Throw( debugLevel, QStringLiteral("BoxSelection::_store.\n") );
 
     // retrieve box selection size
     int firstColumn = rect().left() / fontWidth_;
