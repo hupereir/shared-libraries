@@ -27,7 +27,7 @@ namespace Ssh
 {
 
     //_________________________________________________________________
-    const QString ConnectionAttributes::MimeType( "ssh/connection-attributes" );
+    const QString ConnectionAttributes::MimeType( QStringLiteral("ssh/connection-attributes") );
 
     //_____________________________________________________________
     bool ConnectionAttributes::isValid() const

@@ -26,11 +26,11 @@
 namespace FileRecordProperties
 {
 
-    static const QString ClassName = "class_name";
-    static const QString Wrapped = "wrap";
-    static const QString Dictionary = "dictionary";
-    static const QString Filter = "filter";
-    static const QString Size = "size";
+    static const QString ClassName = QStringLiteral("class_name");
+    static const QString Wrapped = QStringLiteral("wrap");
+    static const QString Dictionary = QStringLiteral("dictionary");
+    static const QString Filter = QStringLiteral("filter");
+    static const QString Size = QStringLiteral("size");
 
     //* needed to tag session file records
     enum Flag

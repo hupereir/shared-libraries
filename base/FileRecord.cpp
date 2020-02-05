@@ -20,7 +20,7 @@
 #include "FileRecord.h"
 
 //_______________________________________________
-const QString FileRecord::MimeType( "internal/file-record-list" );
+const QString FileRecord::MimeType( QStringLiteral("internal/file-record-list") );
 
 //_______________________________________________
 FileRecord::PropertyId::IdMap& FileRecord::PropertyId::_idMap()

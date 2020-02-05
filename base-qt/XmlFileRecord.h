@@ -30,11 +30,11 @@ namespace Base
 {
     namespace Xml
     {
-        static const QString FileList = "FileList";
-        static const QString SessionFileList = "SessionFileList";
-        static const QString LastSessionFileList = "LastSessionFileList";
-        static const QString PathHistory = "PathHistory";
-        static const QString Record = "record";
+        static const QString FileList = QStringLiteral("FileList");
+        static const QString SessionFileList = QStringLiteral("SessionFileList");
+        static const QString LastSessionFileList = QStringLiteral("LastSessionFileList");
+        static const QString PathHistory = QStringLiteral("PathHistory");
+        static const QString Record = QStringLiteral("record");
     }
 }
 

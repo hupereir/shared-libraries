@@ -45,7 +45,7 @@
 #include <QToolButton>
 
 //___________________________________________________________________
-const QString PathEditor::MimeType( "internal/path-editor-item" );
+const QString PathEditor::MimeType( QStringLiteral("internal/path-editor-item") );
 
 namespace Private
 {

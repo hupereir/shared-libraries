@@ -63,11 +63,11 @@ static const std::initializer_list<PermissionPair> permissionMap =
 namespace Xml
 {
     // this one is kept for backward compatibility
-    static const QString Name = "name";
+    static const QString Name = QStringLiteral("name");
 };
 
 //________________________________________________________________
-const QString BaseFileInfo::MimeType( "internal/file-info-list" );
+const QString BaseFileInfo::MimeType( QStringLiteral("internal/file-info-list") );
 
 //________________________________________________________________
 BaseFileInfo::BaseFileInfo( const QDomElement& element ):

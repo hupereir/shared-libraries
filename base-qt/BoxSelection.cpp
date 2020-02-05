@@ -30,7 +30,7 @@
 static const int debugLevel = 1;
 
 //________________________________________________________________________
-const QString BoxSelection::mimeType = "text/boxSelection";
+const QString BoxSelection::mimeType = QStringLiteral("text/boxSelection");
 
 //________________________________________________________________________
 BoxSelection::BoxSelection( TextEditor* parent ):

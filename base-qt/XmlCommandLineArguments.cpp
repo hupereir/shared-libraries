@@ -21,7 +21,7 @@
 
 namespace Xml
 {
-    const QString Argument( "c" );
+    const QString Argument( QStringLiteral("c") );
 }
 
 //______________________________________________________

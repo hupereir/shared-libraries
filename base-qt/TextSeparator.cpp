@@ -31,11 +31,11 @@ TextSeparator::TextSeparator()
 {
 
     // initialize separator
-    const QString baseSeparators( " \t\n" );
+    const QString baseSeparators( QStringLiteral(" \t\n") );
     for( int i=0; i< baseSeparators.size(); i++ )
     { baseSeparators_.insert( baseSeparators[i] ); }
 
-    const QString extendedSeparators( ",;.:?!&+-=*/|-()'`{}[]<>\"\\%" );
+    const QString extendedSeparators( QStringLiteral(",;.:?!&+-=*/|-()'`{}[]<>\"\\%") );
     for( int i=0; i< extendedSeparators.size(); i++ )
     { extendedSeparators_.insert( extendedSeparators[i] ); }
 

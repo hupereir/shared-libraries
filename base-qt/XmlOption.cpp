@@ -25,9 +25,9 @@ namespace Base
     namespace Xml
     {
 
-        static const QString Name = "Name";
-        static const QString Flags = "flags";
-        static const QString Front = "Front";
+        static const QString Name = QStringLiteral("Name");
+        static const QString Flags = QStringLiteral("flags");
+        static const QString Front = QStringLiteral("Front");
 
     }
 

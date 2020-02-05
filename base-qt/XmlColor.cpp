@@ -25,11 +25,11 @@ namespace Base
 {
     namespace Xml
     {
-        static const QString Name = "Name";
-        static const QString Red = "r";
-        static const QString Green = "g";
-        static const QString Blue = "b";
-        static const QString Alpha = "a";
+        static const QString Name = QStringLiteral("Name");
+        static const QString Red = QStringLiteral("r");
+        static const QString Green = QStringLiteral("g");
+        static const QString Blue = QStringLiteral("b");
+        static const QString Alpha = QStringLiteral("a");
     }
 
 }

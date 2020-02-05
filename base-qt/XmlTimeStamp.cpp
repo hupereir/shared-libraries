@@ -22,7 +22,7 @@
 namespace Xml
 {
 
-    static const QString Time( "time" );
+    static const QString Time( QStringLiteral("time") );
 
 }
 

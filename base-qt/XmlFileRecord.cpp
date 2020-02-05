@@ -25,13 +25,13 @@ namespace Base
     //* some XML definitions specific to Option management
     namespace Xml
     {
-        static const QString File = "file";
-        static const QString Time = "time";
-        static const QString Flags = "flags";
-        static const QString Valid = "valid";
-        static const QString Property = "property";
-        static const QString Name = "name";
-        static const QString Value = "value";
+        static const QString File = QStringLiteral("file");
+        static const QString Time = QStringLiteral("time");
+        static const QString Flags = QStringLiteral("flags");
+        static const QString Valid = QStringLiteral("valid");
+        static const QString Property = QStringLiteral("property");
+        static const QString Name = QStringLiteral("name");
+        static const QString Value = QStringLiteral("value");
     }
 }
 

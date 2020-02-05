@@ -27,11 +27,11 @@ namespace TextFormat
     namespace Xml
     {
 
-        static const QString Format = "format";
-        static const QString Color = "color";
-        static const QString HRef = "href";
-        static const QString Begin = "begin";
-        static const QString End = "end";
+        static const QString Format = QStringLiteral("format");
+        static const QString Color = QStringLiteral("color");
+        static const QString HRef = QStringLiteral("href");
+        static const QString Begin = QStringLiteral("begin");
+        static const QString End = QStringLiteral("end");
 
     }
 

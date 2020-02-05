@@ -28,7 +28,7 @@ namespace TextFormat
 {
     namespace Xml
     {
-        static const QString Tag = "TextFormat";
+        static const QString Tag = QStringLiteral("TextFormat");
     }
 
     //* text format with Xml abilities

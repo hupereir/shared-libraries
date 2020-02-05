@@ -147,7 +147,7 @@ namespace Private
 
         // setup hints
         QVariantMap hints;
-        static const QString iconDataString( "icon_data" );
+        static const QString iconDataString( QStringLiteral("icon_data") );
         if( !notification.icon().isNull() )
         {
 

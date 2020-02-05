@@ -33,34 +33,34 @@ namespace Svg
 
     //*@name main panel
     //@{
-    static const QString TopLeft="topleft";
-    static const QString Top="top";
-    static const QString TopRight="topright";
-    static const QString Left="left";
-    static const QString Center="center";
-    static const QString Right="right";
-    static const QString BottomRight="bottomright";
-    static const QString Bottom="bottom";
-    static const QString BottomLeft="bottomleft";
+    static const QString TopLeft=QStringLiteral("topleft");
+    static const QString Top=QStringLiteral("top");
+    static const QString TopRight=QStringLiteral("topright");
+    static const QString Left=QStringLiteral("left");
+    static const QString Center=QStringLiteral("center");
+    static const QString Right=QStringLiteral("right");
+    static const QString BottomRight=QStringLiteral("bottomright");
+    static const QString Bottom=QStringLiteral("bottom");
+    static const QString BottomLeft=QStringLiteral("bottomleft");
     //@}
 
     //* overlay
-    static const QString Overlay="overlay";
+    static const QString Overlay=QStringLiteral("overlay");
 
     //*@name main panel margin hints
     //@{
-    static const QString MarginLeft="hint-left-margin";
-    static const QString MarginRight="hint-right-margin";
-    static const QString MarginTop="hint-top-margin";
-    static const QString MarginBottom="hint-bottom-margin";
+    static const QString MarginLeft=QStringLiteral("hint-left-margin");
+    static const QString MarginRight=QStringLiteral("hint-right-margin");
+    static const QString MarginTop=QStringLiteral("hint-top-margin");
+    static const QString MarginBottom=QStringLiteral("hint-bottom-margin");
     //@}
 
     //*@name main panel shadow hints
     //@{
-    static const QString ShadowLeft="hint-left-shadow";
-    static const QString ShadowRight="hint-right-shadow";
-    static const QString ShadowTop="hint-top-shadow";
-    static const QString ShadowBottom="hint-bottom-shadow";
+    static const QString ShadowLeft=QStringLiteral("hint-left-shadow");
+    static const QString ShadowRight=QStringLiteral("hint-right-shadow");
+    static const QString ShadowTop=QStringLiteral("hint-top-shadow");
+    static const QString ShadowBottom=QStringLiteral("hint-bottom-shadow");
     //@}
 
     //* map size and pixmap

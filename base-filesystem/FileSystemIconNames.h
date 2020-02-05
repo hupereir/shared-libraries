@@ -28,14 +28,14 @@
 namespace IconNames
 {
 
-    static const QString Document = "application-x-zerosize";
-    static const QString Folder = "folder";
-    static const QString FileSystem = "folder";
+    static const QString Document = QStringLiteral("application-x-zerosize");
+    static const QString Folder = QStringLiteral("folder");
+    static const QString FileSystem = QStringLiteral("folder");
 
-    static const QString Parent = "go-up";
-    static const QString PreviousDirectory = "go-previous";
-    static const QString NextDirectory = "go-next";
-    static const QString Home = "go-home";
+    static const QString Parent = QStringLiteral("go-up");
+    static const QString PreviousDirectory = QStringLiteral("go-previous");
+    static const QString NextDirectory = QStringLiteral("go-next");
+    static const QString Home = QStringLiteral("go-home");
 
 };
 
