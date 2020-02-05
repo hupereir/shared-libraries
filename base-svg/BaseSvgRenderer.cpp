@@ -90,9 +90,9 @@ namespace Svg
             document.setContent( content );
 
             // create new style element
-            QDomElement element = document.createElement( QLatin1String( "style" ) );
-            element.setAttribute( QLatin1String( "type" ), QLatin1String( "text/css" ) );
-            element.setAttribute( QLatin1String( "id" ), QLatin1String( "current-color-scheme" ) );
+            QDomElement element = document.createElement( QStringLiteral( "style" ) );
+            element.setAttribute( QStringLiteral( "type" ), QStringLiteral( "text/css" ) );
+            element.setAttribute( QStringLiteral( "id" ), QStringLiteral( "current-color-scheme" ) );
             element.appendChild( document.createTextNode( styleSheet_ ) );
 
             // find child in document
@@ -102,7 +102,7 @@ namespace Svg
             {
 
                 auto&& child( children.at(i) );
-                if( child.toElement().attribute( QLatin1String( "id" ) ) == QLatin1String( "current-color-scheme" ) )
+                if( child.toElement().attribute( QStringLiteral( "id" ) ) == QStringLiteral( "current-color-scheme" ) )
                 {
                     auto parent( child.parentNode() );
                     parent.replaceChild( element, child );

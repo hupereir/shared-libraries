@@ -37,10 +37,10 @@ void TaskBarProgressNotifications::setProgressVisible(bool progressVisible)
         progressVisible_ = progressVisible;
         if( progressVisible_ && first_ )
         {
-            _update({ {QLatin1String("progress"), 0} });
+            _update({ {QStringLiteral("progress"), 0} });
             first_ = false;
         }
-        _update({ {QLatin1String("progress-visible"), progressVisible} });
+        _update({ {QStringLiteral("progress-visible"), progressVisible} });
     }
 
 }
@@ -74,7 +74,7 @@ void TaskBarProgressNotifications::setValue(int value)
     {
         first_ = false;
         value_ = value;
-        _update({ {QLatin1String("progress"), value/qreal(maximum_)} });
+        _update({ {QStringLiteral("progress"), value/qreal(maximum_)} });
     }
 }
 
@@ -86,8 +86,8 @@ void TaskBarProgressNotifications::_update(std::initializer_list<typename std::p
     #ifndef QT_NO_DBUS
     auto message = QDBusMessage::createSignal(
         path_,
-        QLatin1String("com.canonical.Unity.LauncherEntry"),
-        QLatin1String("Update"));
+        QStringLiteral("com.canonical.Unity.LauncherEntry"),
+        QStringLiteral("Update"));
 
     message.setArguments({launcherId_, QVariantMap(properties)});
     QDBusConnection::sessionBus().send(message);
