@@ -104,5 +104,6 @@ ErrorHandler::ErrorHandler():
     QStringLiteral( "void QWindow::setTransientParent"),
     QStringLiteral( "QBackingStore::flush() called with non-exposed window"),
     QStringLiteral( "QXcbClipboard: SelectionRequest too old"),
-    QStringLiteral( "QXcbConnection: XCB error: 8 (BadMatch)" ) } )
+    QStringLiteral( "QXcbConnection: XCB error: 8 (BadMatch)" ),
+    QStringLiteral( "QXcbConnection: XCB error: 3 (BadWindow)" ) } )
 {}
