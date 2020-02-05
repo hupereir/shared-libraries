@@ -38,7 +38,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
     Debug::Throw( QStringLiteral("OptionDialog::OptionDialog.\n") );
     setWindowTitle( tr( "Runtime Options" ) );
-    setOptionName( "OPTION_DIALOG" );
+    setOptionName( QStringLiteral("OPTION_DIALOG") );
 
     layout()->setMargin(0);
     buttonLayout().setMargin(5);
@@ -76,7 +76,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     list_->setItemDelegate( new TextEditionDelegate( this ) );
 
     list_->setIconSize( QSize( 16, 16 ) );
-    list_->setOptionName( "OPTION_LIST" );
+    list_->setOptionName( QStringLiteral("OPTION_LIST") );
 
     // store current option state as backup and update model
     backupOptions_ = XmlOptions::get();

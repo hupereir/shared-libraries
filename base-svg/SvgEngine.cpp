@@ -200,7 +200,7 @@ namespace Svg
 
         // find valid svg file
         bool found( false );
-        for( const auto& option:XmlOptions::get().specialOptions( "SVG_BACKGROUND" ) )
+        for( const auto& option:XmlOptions::get().specialOptions( QStringLiteral("SVG_BACKGROUND") ) )
         {
 
             QString file( option.raw() );

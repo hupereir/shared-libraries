@@ -56,7 +56,7 @@ EditDialog::EditDialog( QWidget* parent ):
     CustomDialog( parent )
 {
 
-    setOptionName( "OPTIONLISTBOX_EDIT" );
+    setOptionName( QStringLiteral("OPTIONLISTBOX_EDIT") );
     QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(5);

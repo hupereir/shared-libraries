@@ -38,7 +38,7 @@ CustomDialog( parent )
 
     Debug::Throw( QStringLiteral("ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n") );
 
-    setOptionName( "SCRATCH_DIALOG" );
+    setOptionName( QStringLiteral("SCRATCH_DIALOG") );
 
     // label
     QLabel* textLabel = new QLabel(
@@ -67,7 +67,7 @@ CustomDialog( parent )
         (1<<FileRecordModel::FileName)|
         (1<<FileRecordModel::Path) );
     list_->showHeaderAction().setChecked( false );
-    list_->setOptionName( "SCRATCH_FILE_LIST" );
+    list_->setOptionName( QStringLiteral("SCRATCH_FILE_LIST") );
 
     model_.add( files );
     model_.sort( FileRecordModel::FileName, Qt::DescendingOrder );

@@ -34,7 +34,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
 
     Debug::Throw( QStringLiteral("IconCacheDialog::IconCacheDialog.\n") );
     setWindowTitle( tr( "Icon Cache" ) );
-    setOptionName( "ICON_CACHE_DIALOG" );
+    setOptionName( QStringLiteral("ICON_CACHE_DIALOG") );
 
     layout()->setMargin(0);
     buttonLayout().setMargin(5);

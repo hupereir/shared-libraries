@@ -66,7 +66,7 @@ EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode m
     CustomDialog( parent )
 {
 
-    setOptionName( "OPTIONLISTBOX_EDIT" );
+    setOptionName( QStringLiteral("OPTIONLISTBOX_EDIT") );
     QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(5);

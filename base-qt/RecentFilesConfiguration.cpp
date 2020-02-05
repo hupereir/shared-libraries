@@ -89,7 +89,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     list_->setModel( &model_ );
     list_->sortByColumn( XmlOptions::get().get<bool>( QStringLiteral("SORT_FILES_BY_DATE") ) ? FileRecordModel::Time : FileRecordModel::FileName );
     list_->setSelectionMode( QAbstractItemView::ContiguousSelection );
-    list_->setOptionName( "RECENT_FILES_CONFIGURATION_LIST" );
+    list_->setOptionName( QStringLiteral("RECENT_FILES_CONFIGURATION_LIST") );
 
     connect( list_->selectionModel(), &QItemSelectionModel::selectionChanged, this, &RecentFilesConfiguration::_updateButtons );
 

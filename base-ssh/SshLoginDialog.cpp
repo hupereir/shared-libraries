@@ -33,7 +33,7 @@ namespace Ssh
     {
 
         Debug::Throw( QStringLiteral("LoginDialog::LoginDialog.\n") );
-        setOptionName( "SSH_LOGIN_DIALOG" );
+        setOptionName( QStringLiteral("SSH_LOGIN_DIALOG") );
         setWindowTitle( tr( "SSH login" ) );
         auto gridLayout = new GridLayout;
         gridLayout->setMargin(0);

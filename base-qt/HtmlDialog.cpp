@@ -38,7 +38,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
 
     Debug::Throw( QStringLiteral("HtmlDialog::HtmlDialog.\n") );
 
-    setOptionName( "HTML_DIALOG" );
+    setOptionName( QStringLiteral("HTML_DIALOG") );
 
     // file
     GridLayout *gridLayout = new GridLayout;
@@ -76,9 +76,9 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     okButton().setIcon( IconEngine::get( IconNames::Html ));
 
     // make sure HTML command is saved
-    XmlOptions::get().keep( "HTML_COMMAND" );
+    XmlOptions::get().keep( QStringLiteral("HTML_COMMAND") );
 
-    Options::List commands( XmlOptions::get().specialOptions( "HTML_COMMAND" ) );
+    Options::List commands( XmlOptions::get().specialOptions( QStringLiteral("HTML_COMMAND") ) );
     for( const auto& command:commands ) addCommand( command.raw() );
 
     connect( &okButton(), &QAbstractButton::clicked, this, &HtmlDialog::_saveCommands );

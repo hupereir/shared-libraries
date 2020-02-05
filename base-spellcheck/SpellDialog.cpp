@@ -49,7 +49,7 @@ namespace SpellCheck
 
         // window title
         setWindowTitle( readOnly ? tr( "Spell Check (read-only)" ) : tr( "Spell Check" ) );
-        setOptionName( "SPELL_DIALOG" );
+        setOptionName( QStringLiteral("SPELL_DIALOG") );
 
         // horizontal layout for suggestions and buttons
         auto hLayout = new QHBoxLayout;

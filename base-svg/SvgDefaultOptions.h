@@ -29,7 +29,7 @@
 void installSvgOptions()
 {
     XmlOptions::get().setAutoDefault( true );
-    XmlOptions::get().keep( "SVG_BACKGROUND" );
+    XmlOptions::get().keep( QStringLiteral("SVG_BACKGROUND") );
     XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-air.svgz" ) );
     XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-dark.svgz", Option::Flag::Recordable|Option::Flag::Current ) );
     XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-light.svgz" ) );

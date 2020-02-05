@@ -145,7 +145,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     list_->setDragEnabled( true );
     list_->setModel( &model_ );
     list_->setSelectionMode( QAbstractItemView::ContiguousSelection );
-    list_->setOptionName( "FILE_SYSTEM_LIST" );
+    list_->setOptionName( QStringLiteral("FILE_SYSTEM_LIST") );
     list_->header()->hide();
 
     // list menu

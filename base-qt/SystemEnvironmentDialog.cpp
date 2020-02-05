@@ -34,7 +34,7 @@ CustomDialog( parent, CloseButton )
 
     Debug::Throw( QStringLiteral("SystemEnvironmentDialog::SystemEnvironmentDialog.\n") );
     setWindowTitle( tr( "System Environment Variables" ) );
-    setOptionName( "SYSTEM_ENVIRONMENT_DIALOG" );
+    setOptionName( QStringLiteral("SYSTEM_ENVIRONMENT_DIALOG") );
 
     layout()->setMargin(0);
     buttonLayout().setMargin(5);

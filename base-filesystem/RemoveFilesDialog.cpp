@@ -39,7 +39,7 @@ RemoveFilesDialog::RemoveFilesDialog( QWidget* parent, const FileSystemModel::Li
     Q_ASSERT( !files.empty() );
 
     // options
-    setOptionName( "REMOVE_FILES_DIALOG" );
+    setOptionName( QStringLiteral("REMOVE_FILES_DIALOG") );
 
     // customize buttons
     okButton().setText( "Delete" );

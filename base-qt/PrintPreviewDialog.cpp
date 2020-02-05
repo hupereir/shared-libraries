@@ -282,7 +282,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags fla
     CustomDialog( parent, flags )
 {
     Debug::Throw( QStringLiteral("PrintPreviewDialog::PrintPreviewDialog.\n") );
-    setOptionName( "PRINT_PREVIEW_DIALOG" );
+    setOptionName( QStringLiteral("PRINT_PREVIEW_DIALOG") );
 
     layout()->setMargin(0);
     buttonLayout().setMargin(5);

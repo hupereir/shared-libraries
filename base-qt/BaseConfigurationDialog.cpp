@@ -135,7 +135,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
 
     Debug::Throw( QStringLiteral("BaseConfigurationDialog::BaseConfigurationDialog.\n") );
     setWindowTitle( tr( "Configuration" ) );
-    setOptionName( "PREFERENCE_DIALOG" );
+    setOptionName( QStringLiteral("PREFERENCE_DIALOG") );
 
     // restore default
     buttonBox().addButton( QDialogButtonBox::RestoreDefaults );
@@ -722,7 +722,7 @@ void BaseConfigurationDialog::_restoreDefaults()
     { if( iter.value().defaultValue().isEmpty() ) local.append( Options::Pair( iter.key(), iter.value() ) ); }
 
     QuestionDialog dialog( this );
-    dialog.setOptionName( "RESTORE_DEFAULT_DIALOG" );
+    dialog.setOptionName( QStringLiteral("RESTORE_DEFAULT_DIALOG") );
     if( !local.empty() )
     {
 

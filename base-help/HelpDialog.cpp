@@ -54,7 +54,7 @@ namespace Base
         layout()->setSpacing(0);
         buttonLayout().setMargin(5);
 
-        setOptionName( "HELP_DIALOG" );
+        setOptionName( QStringLiteral("HELP_DIALOG") );
 
         auto layout = new QHBoxLayout;
         layout->setMargin(0);

@@ -28,7 +28,7 @@ BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // set dialog title
     setWindowTitle( tr( "Replace" ) );
-    setOptionName( "REPLACE_DIALOG" );
+    setOptionName( QStringLiteral("REPLACE_DIALOG") );
 
     // set base find widget
     auto replaceWidget = new BaseReplaceWidget( this, false );
