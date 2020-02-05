@@ -40,7 +40,7 @@ CustomProcess::~CustomProcess()
 //____________________________________________________
 void CustomProcess::start( QString arguments, OpenMode mode )
 {
-    static const QRegularExpression regExp("\\s");
+    static const QRegularExpression regExp(QStringLiteral("\\s"));
     return start( arguments.split( regExp, QString::SkipEmptyParts ), mode );
 }
 

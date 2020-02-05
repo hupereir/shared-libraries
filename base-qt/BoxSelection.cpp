@@ -449,7 +449,7 @@ bool BoxSelection::mergeCharFormat( const QTextCharFormat& format ) const
     Debug::Throw( debugLevel, "BoxSelection::mergeCharFormat.\n" );
 
     // trailing space regexp
-    static const QRegularExpression regexp( "\\s+$" );
+    static const QRegularExpression regexp( QStringLiteral("\\s+$") );
 
     // check if state is ok
     if( state() != State::Finished || cursorList().empty() ) return false;

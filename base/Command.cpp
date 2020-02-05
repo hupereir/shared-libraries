@@ -55,7 +55,7 @@ namespace Base
         {
             if( !line.isEmpty() )
             {
-                static const QRegularExpression regExp( "\\s+" );
+                static const QRegularExpression regExp( QStringLiteral("\\s+") );
                 if( split ) out.append( line.split( regExp, QString::SkipEmptyParts ) );
                 else out.append( QString("\"") + line + "\"" );
             }

@@ -400,7 +400,7 @@ namespace SpellCheck
         const auto lines( QString( process.readAllStandardOutput() ).split( QLatin1Char('\n') ) );
         for( const auto& line:lines )
         {
-            static const QRegularExpression regExp( "^(\\w+)\\s+(.*)" );
+            static const QRegularExpression regExp( QStringLiteral("^(\\w+)\\s+(.*)") );
             const auto match( regExp.match( line ) );
             if( match.hasMatch() )
             {

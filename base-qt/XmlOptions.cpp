@@ -213,7 +213,7 @@ bool XmlOptions::_read( const XmlDocument& document, Options& options )
             if( options.isSpecialOption( option.name() ) )
             {
 
-                static const QRegularExpression invalidOptionRegExp( "\\(0b\\d+\\)$" );
+                static const QRegularExpression invalidOptionRegExp( QStringLiteral("\\(0b\\d+\\)$") );
                 if( !invalidOptionRegExp.match( option.raw() ).hasMatch() )
                 { options.add( option.name(), (Option) option ); }
 

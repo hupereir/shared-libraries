@@ -89,7 +89,7 @@ void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
             if (textFormat() == Qt::RichText )
             {
 
-                static const QRegularExpression regExp( "<[^>]*>" );
+                static const QRegularExpression regExp( QStringLiteral("<[^>]*>") );
                 text.replace( regExp, "" );
 
                 // account for stripped characters
