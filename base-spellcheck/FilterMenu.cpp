@@ -31,9 +31,9 @@ namespace SpellCheck
     //____________________________________________________________________
     FilterMenu::FilterMenu( QWidget* parent ):
         QMenu( parent ),
-        Counter( "FilterMenu" )
+        Counter( QStringLiteral("FilterMenu") )
     {
-        Debug::Throw( "FilterMenu::FilterMenu.\n" );
+        Debug::Throw( QStringLiteral("FilterMenu::FilterMenu.\n") );
         setTitle( tr( "Filter" ) );
 
         // action group
@@ -59,7 +59,7 @@ namespace SpellCheck
     void FilterMenu::reset()
     {
 
-        Debug::Throw( "FilterMenu::reset.\n" );
+        Debug::Throw( QStringLiteral("FilterMenu::reset.\n") );
 
         // store selected filter
         QString selection;
@@ -109,7 +109,7 @@ namespace SpellCheck
     void FilterMenu::_selectFilter( QAction*  action )
     {
 
-        Debug::Throw( "FilterMenu::_filter.\n" );
+        Debug::Throw( QStringLiteral("FilterMenu::_filter.\n") );
         const auto iter( actions_.find( action ) );
         if( iter == actions_.end() ) return;
 

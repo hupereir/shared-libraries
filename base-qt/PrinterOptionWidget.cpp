@@ -32,7 +32,7 @@
 //________________________________________________________________
 PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     QWidget( parent ),
-    Counter( "Print::PrinterOptionWidget" )
+    Counter( QStringLiteral("Print::PrinterOptionWidget") )
 {
 
     setWindowTitle( tr( "Pages" ) );
@@ -136,7 +136,7 @@ void PrinterOptionWidget::_setPageMode( QAbstractButton* button )
 void PrinterOptionWidget::_preview()
 {
 
-    Debug::Throw( "PrinterOptionWidget::_preview" );
+    Debug::Throw( QStringLiteral("PrinterOptionWidget::_preview") );
     if( !helper_ ) return;
 
     // create dialog, connect and execute

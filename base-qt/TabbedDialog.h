@@ -136,12 +136,12 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
 
         //* constructor
         explicit Item():
-            Counter( "TabbedDialog::Item" )
+            Counter( QStringLiteral("TabbedDialog::Item") )
         {}
 
         //* constructor
         explicit Item( const QString& name, QWidget* widget ):
-            Counter( "TabbedDialog::Item" ),
+            Counter( QStringLiteral("TabbedDialog::Item") ),
             name_( name ),
             widget_( widget )
         {}

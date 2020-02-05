@@ -33,13 +33,13 @@ PixmapEngine& PixmapEngine::get()
 
 //__________________________________________________________
 PixmapEngine::PixmapEngine():
-    Counter( "PixmapEngine" )
-{ Debug::Throw( "PixmapEngine::PixmapEngine.\n" ); }
+    Counter( QStringLiteral("PixmapEngine") )
+{ Debug::Throw( QStringLiteral("PixmapEngine::PixmapEngine.\n") ); }
 
 //__________________________________________________________
 bool PixmapEngine::reload()
 {
-    Debug::Throw( "PixmapEngine::reload.\n" );
+    Debug::Throw( QStringLiteral("PixmapEngine::reload.\n") );
 
     // load path from options
     auto pathList( XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" ) );
@@ -55,7 +55,7 @@ bool PixmapEngine::reload()
 //__________________________________________________________
 const QPixmap& PixmapEngine::_get( const QString& file, bool fromCache )
 {
-    Debug::Throw( "PixmapEngine::_get (file).\n" );
+    Debug::Throw( QStringLiteral("PixmapEngine::_get (file).\n") );
 
     // try find file in cache
     if( fromCache )

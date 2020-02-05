@@ -32,7 +32,7 @@ BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments 
     arguments_( arguments )
 {
 
-    Debug::Throw( "BaseCoreApplication::BaseCoreApplication.\n" );
+    Debug::Throw( QStringLiteral("BaseCoreApplication::BaseCoreApplication.\n") );
 
     // install interuption handler
     InterruptionHandler::initialize();
@@ -48,7 +48,7 @@ BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments 
 //____________________________________________
 BaseCoreApplication::~BaseCoreApplication()
 {
-    Debug::Throw( "BaseCoreApplication::~BaseCoreApplication.\n" );
+    Debug::Throw( QStringLiteral("BaseCoreApplication::~BaseCoreApplication.\n") );
     emit saveConfiguration();
     XmlOptions::write();
     ErrorHandler::get().exit();
@@ -104,7 +104,7 @@ bool BaseCoreApplication::initApplicationManager()
 //____________________________________________
 bool BaseCoreApplication::realizeWidget()
 {
-    Debug::Throw( "BaseCoreApplication::realizeWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseCoreApplication::realizeWidget.\n") );
 
     //* check if the method has already been called.
     if( realized_ ) return false;
@@ -135,14 +135,14 @@ CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments a
 //__________________________________________________________________
 void BaseCoreApplication::sendServerCommand( Server::ServerCommand::CommandType type )
 {
-    Debug::Throw( "BaseCoreApplication::sendServerCommand.\n" );
+    Debug::Throw( QStringLiteral("BaseCoreApplication::sendServerCommand.\n") );
     if( _hasApplicationManager() ) sendServerCommand( Server::ServerCommand( _applicationManager().id(), type ) );
 }
 
 //__________________________________________________________________
 void BaseCoreApplication::sendServerCommand( Server::ServerCommand command )
 {
-    Debug::Throw( "BaseCoreApplication::sendServerCommand.\n" );
+    Debug::Throw( QStringLiteral("BaseCoreApplication::sendServerCommand.\n") );
     if( _hasApplicationManager() ) _applicationManager().client().sendCommand( command );
 }
 
@@ -175,13 +175,13 @@ bool BaseCoreApplication::_processCommand( Server::ServerCommand command )
 //_______________________________________________
 void BaseCoreApplication::_updateConfiguration()
 {
-    Debug::Throw( "BaseCoreApplication::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseCoreApplication::_updateConfiguration.\n") );
 
     // debug
     Debug::setLevel( XmlOptions::get().get<int>( "DEBUG_LEVEL" ) );
 
     // emit signal to propagate changes to other widgets
-    Debug::Throw( "BaseCoreApplication::_updateConfiguration - done.\n" );
+    Debug::Throw( QStringLiteral("BaseCoreApplication::_updateConfiguration - done.\n") );
 
 }
 

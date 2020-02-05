@@ -30,10 +30,10 @@ namespace SpellCheck
     //____________________________________________________________________
     DictionaryMenu::DictionaryMenu( QWidget* parent ):
         QMenu( parent ),
-        Counter( "DictionaryMenu" )
+        Counter( QStringLiteral("DictionaryMenu") )
     {
 
-        Debug::Throw( "DictionaryMenu::DictionaryMenu.\n" );
+        Debug::Throw( QStringLiteral("DictionaryMenu::DictionaryMenu.\n") );
         setTitle( tr( "Dictionary" ) );
 
         // action group
@@ -61,7 +61,7 @@ namespace SpellCheck
     void DictionaryMenu::reset()
     {
 
-        Debug::Throw( "DictionaryMenu::reset.\n" );
+        Debug::Throw( QStringLiteral("DictionaryMenu::reset.\n") );
 
         // store selected dictionary
         QString selection;
@@ -114,7 +114,7 @@ namespace SpellCheck
     void DictionaryMenu::_selectDictionary( QAction*  action )
     {
 
-        Debug::Throw( "DictionaryMenu::_selectDictionary.\n" );
+        Debug::Throw( QStringLiteral("DictionaryMenu::_selectDictionary.\n") );
         const auto iter( actions_.find( action ) );
         if( iter == actions_.end() ) return;
 

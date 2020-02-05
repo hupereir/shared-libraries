@@ -30,7 +30,7 @@
 
 //_________________________________________________________
 RoundedRegion::RoundedRegion( const QRect& rect, Corners corners ):
-  Counter( "RoundedRegon" ),
+  Counter( QStringLiteral("RoundedRegon") ),
   region_( rect )
 {
 

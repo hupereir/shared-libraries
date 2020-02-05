@@ -34,7 +34,7 @@
 void RemoveLineBuffer::append( const QString& value )
 {
 
-  Debug::Throw( "RemoveLineBuffer::append.\n" );
+  Debug::Throw( QStringLiteral("RemoveLineBuffer::append.\n") );
   buffer_ += value;
 
 }
@@ -44,7 +44,7 @@ void RemoveLineBuffer::clear()
 {
 
   if( buffer_.isEmpty() ) return;
-  Debug::Throw( "RemoveLineBuffer::clear.\n" );
+  Debug::Throw( QStringLiteral("RemoveLineBuffer::clear.\n") );
 
   qApp->clipboard()->setText( buffer_, QClipboard::Clipboard );
   buffer_.clear();

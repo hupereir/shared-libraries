@@ -28,7 +28,7 @@
 //___________________________________________________
 ElidedLabel::ElidedLabel(  QWidget* parent ):
     QLabel( parent ),
-    Counter( "ElidedLabel" )
+    Counter( QStringLiteral("ElidedLabel") )
 { setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ); }
 
 //___________________________________________________
@@ -46,7 +46,7 @@ void ElidedLabel::setText( const QString& text )
 //___________________________________________________
 void ElidedLabel::clear()
 {
-    Debug::Throw( "ElidedLabel::clear.\n" );
+    Debug::Throw( QStringLiteral("ElidedLabel::clear.\n") );
     fullText_.clear();
     QLabel::clear();
 }

@@ -28,9 +28,9 @@ static const TimeStamp::Format format( TimeStamp::Format::JobTag );
 //__________________________________________________________
 ClockTimer::ClockTimer( QWidget *parent ):
     QObject( parent ),
-    Counter( "ClockTimer" )
+    Counter( QStringLiteral("ClockTimer") )
 {
-    Debug::Throw( "ClockTimer::ClockTimer.\n" );
+    Debug::Throw( QStringLiteral("ClockTimer::ClockTimer.\n") );
     timer_.start( 1000*interval(), this );
 }
 
@@ -38,7 +38,7 @@ ClockTimer::ClockTimer( QWidget *parent ):
 void ClockTimer::timerEvent( QTimerEvent* event )
 {
 
-    Debug::Throw( "ClockTimer::timerEvent.\n" );
+    Debug::Throw( QStringLiteral("ClockTimer::timerEvent.\n") );
     TimeStamp newTime( TimeStamp::now() );
 
     if( event->timerId() == timer_.timerId() )
@@ -58,7 +58,7 @@ ClockLabel::ClockLabel( QWidget* parent ):
     timer_( this )
 {
 
-    Debug::Throw( "ClockLabel::ClockLabel.\n" );
+    Debug::Throw( QStringLiteral("ClockLabel::ClockLabel.\n") );
 
     // create static clock timer, updated every 10 seconds
     connect( &timer_, &ClockTimer::timeChanged, this, &QLabel::setText );

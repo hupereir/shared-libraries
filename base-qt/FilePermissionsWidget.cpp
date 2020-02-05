@@ -30,10 +30,10 @@
 //_____________________________________________________________________
 FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permissions permissions):
     QWidget( parent ),
-    Counter( "FilePermissionsWidget" )
+    Counter( QStringLiteral("FilePermissionsWidget") )
 {
 
-    Debug::Throw( "FilePermissionsWidget::FilePermissionsWidget\n" );
+    Debug::Throw( QStringLiteral("FilePermissionsWidget::FilePermissionsWidget\n") );
 
     GridLayout* gridLayout = new GridLayout;
     gridLayout->setMargin(0);
@@ -82,7 +82,7 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
 void FilePermissionsWidget::setPermissions( QFile::Permissions permissions )
 {
 
-    Debug::Throw( "FilePermissionsWidget::setPermissions\n" );
+    Debug::Throw( QStringLiteral("FilePermissionsWidget::setPermissions\n") );
 
     // set checkboxes
     for( auto&& iter = checkboxes_.begin(); iter != checkboxes_.end(); ++iter )

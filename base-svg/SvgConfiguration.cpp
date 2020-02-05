@@ -116,10 +116,10 @@ namespace Svg
     SvgConfiguration::SvgConfiguration( QWidget* parent ):
         QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "Svg::SvgConfiguration" )
+        Counter( QStringLiteral("Svg::SvgConfiguration") )
     {
 
-        Debug::Throw( "SvgConfiguration::SvgConfiguration.\n" );
+        Debug::Throw( QStringLiteral("SvgConfiguration::SvgConfiguration.\n") );
 
         QVBoxLayout* vLayout = new QVBoxLayout;
         vLayout->setMargin(0);

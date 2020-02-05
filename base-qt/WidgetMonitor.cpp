@@ -23,13 +23,13 @@
 //_________________________________________________________
 WidgetMonitor::WidgetMonitor( QWidget* parent ):
     QObject( parent ),
-    Counter( "WidgetMonitor" )
+    Counter( QStringLiteral("WidgetMonitor") )
 { parent->installEventFilter(this); }
 
 //_________________________________________________________
 void WidgetMonitor::setOptionName( const QString& name )
 {
-    Debug::Throw( "WidgetMonitor::setOptionName.\n" );
+    Debug::Throw( QStringLiteral("WidgetMonitor::setOptionName.\n") );
     if( name.isEmpty() )
     {
 

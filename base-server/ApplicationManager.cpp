@@ -34,10 +34,10 @@ namespace Server
     //_________________________________________
     ApplicationManager::ApplicationManager( QObject* parent ):
         QObject( parent ),
-        Counter( "ApplicationManager" )
+        Counter( QStringLiteral("ApplicationManager") )
     {
 
-        Debug::Throw( "ApplicationManager::ApplicationManager.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::ApplicationManager.\n") );
         setApplicationName( "Generic Application" );
 
         if( !XmlOptions::get().contains( "SERVER_HOST" ) )
@@ -73,7 +73,7 @@ namespace Server
     void ApplicationManager::initialize( CommandLineArguments arguments )
     {
 
-        Debug::Throw( "ApplicationManager::init.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::init.\n") );
 
         // store arguments
         arguments_ = arguments;
@@ -100,7 +100,7 @@ namespace Server
         Debug::Throw() << "ApplicationManager::initialize - port: " << port_ << endl;
         _initializeClient();
 
-        Debug::Throw( "ApplicationManager::init. done.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::init. done.\n") );
 
     }
 
@@ -119,7 +119,7 @@ namespace Server
         if (event->timerId() == timer_.timerId() )
         {
 
-            Debug::Throw( "ApplicationManager::timerEvent.\n" );
+            Debug::Throw( QStringLiteral("ApplicationManager::timerEvent.\n") );
             timer_.stop();
 
             // the timer is triggered only when the client is connected
@@ -138,7 +138,7 @@ namespace Server
     //_____________________________________________________
     ApplicationManager::ClientMap::iterator ApplicationManager::_register( const ApplicationId& id, ClientPtr client, bool forced )
     {
-        Debug::Throw( "ApplicationManager::_register.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::_register.\n") );
 
         if( forced ) return acceptedClients_.insert( id, client );
         else {
@@ -291,7 +291,7 @@ namespace Server
     //_____________________________________________________
     void ApplicationManager::_newConnection()
     {
-        Debug::Throw( "ApplicationManager::_newConnection.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::_newConnection.\n") );
         while( server_->hasPendingConnections() )
         {
             // create client from pending connection
@@ -306,7 +306,7 @@ namespace Server
     //_____________________________________________________
     void ApplicationManager::_serverConnectionClosed()
     {
-        Debug::Throw( "ApplicationManager::_serverConnectionClosed - lost connection to server.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::_serverConnectionClosed - lost connection to server.\n") );
         serverInitialized_ = false;
         initialize();
     }
@@ -315,7 +315,7 @@ namespace Server
     void ApplicationManager::_clientConnectionClosed()
     {
 
-        Debug::Throw( "ApplicationManager::_clientConnectionClosed - client has disconnected.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::_clientConnectionClosed - client has disconnected.\n") );
 
         // look for disconnected clients in client map
         for( auto&& iter = acceptedClients_.begin(); iter != acceptedClients_.end(); )
@@ -375,7 +375,7 @@ namespace Server
     void ApplicationManager::_redirect( ServerCommand command )
     {
 
-        Debug::Throw( "Application::_redirect.\n" );
+        Debug::Throw( QStringLiteral("Application::_redirect.\n") );
 
         _redirect( command, *std::find_if(  connectedClients_.begin(), connectedClients_.end(), Client::SameIdFTor( command.clientId() ) ) );
         return;
@@ -451,7 +451,7 @@ namespace Server
     bool ApplicationManager::_initializeServer()
     {
 
-        Debug::Throw( "ApplicationManager::_initializeServer.\n" );
+        Debug::Throw( QStringLiteral("ApplicationManager::_initializeServer.\n") );
 
         serverInitialized_ = true;
 

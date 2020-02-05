@@ -27,7 +27,7 @@
 //______________________________________________________
 FileThread::FileThread( QObject* parent ):
     QThread( parent ),
-    Counter( "FileThread" )
+    Counter( QStringLiteral("FileThread") )
 { qRegisterMetaType<File::List>( "File::List" ); }
 
 //______________________________________________________

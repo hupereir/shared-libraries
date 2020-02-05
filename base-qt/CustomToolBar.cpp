@@ -39,12 +39,12 @@ const CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
 //_______________________________________________________________
 CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QString& optionName ):
     QToolBar( title, parent ),
-    Counter( "CustomToolBar" ),
+    Counter( QStringLiteral("CustomToolBar") ),
     optionName_( optionName ),
     locationOptionName_( optionName + "_LOCATION" ),
     appearsInMenu_( parent && qobject_cast<QMainWindow*>( parent ) )
 {
-    Debug::Throw( "CustomToolBar::CustomToolBar.\n" );
+    Debug::Throw( QStringLiteral("CustomToolBar::CustomToolBar.\n") );
 
     // assign option name to object
     if( !optionName_.isEmpty() ) { setObjectName( optionName ); }
@@ -99,7 +99,7 @@ void CustomToolBar::_toggleVisibility( bool state )
 //_______________________________________________________________
 void CustomToolBar::_updateConfiguration()
 {
-    Debug::Throw( "CustomToolBar::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("CustomToolBar::_updateConfiguration.\n") );
 
     // pixmap size
     if( iconSizeFromOptions_ )
@@ -172,7 +172,7 @@ void CustomToolBar::_updateConfiguration()
 //_______________________________________________________________
 void CustomToolBar::_installActions()
 {
-    Debug::Throw( "CustomToolBar::_installActions.\n" );
+    Debug::Throw( QStringLiteral("CustomToolBar::_installActions.\n") );
     QString buffer;
     QTextStream( &buffer) << "&" << windowTitle();
     visibilityAction_ = new QAction( buffer, this );

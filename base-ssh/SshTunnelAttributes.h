@@ -39,7 +39,7 @@ namespace Ssh
 
         //* constructor
         explicit TunnelAttributes():
-            Counter( "Ssh::TunnelAttributes" )
+            Counter( QStringLiteral("Ssh::TunnelAttributes") )
         {}
 
         //* destructor

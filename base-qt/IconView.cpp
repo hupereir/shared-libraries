@@ -45,9 +45,9 @@
 //____________________________________________________________________
 IconView::IconView( QWidget* parent ):
     QAbstractItemView( parent ),
-    Counter( "IconView" )
+    Counter( QStringLiteral("IconView") )
 {
-    Debug::Throw( "IconView::IconView.\n" );
+    Debug::Throw( QStringLiteral("IconView::IconView.\n") );
 
     iconSizes_ =
     {
@@ -102,7 +102,7 @@ IconView::~IconView() = default;
 //_______________________________________________
 void IconView::setModel( QAbstractItemModel* model )
 {
-    Debug::Throw( "IconView::setModel.\n" );
+    Debug::Throw( QStringLiteral("IconView::setModel.\n") );
     QAbstractItemView::setModel( model );
     header_->setModel( model );
 
@@ -117,7 +117,7 @@ void IconView::setModel( QAbstractItemModel* model )
 void IconView::setFindWidget( AbstractFindWidget* widget )
 {
 
-    Debug::Throw( "IconView::setFindWidget.\n" );
+    Debug::Throw( QStringLiteral("IconView::setFindWidget.\n") );
 
     if( findWidget_ ) findWidget_->deleteLater();
     findWidget_ = widget;
@@ -132,7 +132,7 @@ void IconView::setFindWidget( AbstractFindWidget* widget )
 //_______________________________________________
 void IconView::setFindEnabled( bool value )
 {
-    Debug::Throw( "IconView::setFindEnabled.\n" );
+    Debug::Throw( QStringLiteral("IconView::setFindEnabled.\n") );
     findAction_->setEnabled( value );
     findSelectionAction_->setEnabled( value );
     findAgainAction_->setEnabled( value );
@@ -144,7 +144,7 @@ void IconView::setFindEnabled( bool value )
 TextSelection IconView::selection() const
 {
 
-    Debug::Throw( "IconView::selection.\n" );
+    Debug::Throw( QStringLiteral("IconView::selection.\n") );
 
     // copy last selection
     TextSelection out;
@@ -275,7 +275,7 @@ QSize IconView::minimumSizeHint() const
 void IconView::updateSortOrder()
 {
 
-    Debug::Throw( "IconView::updateSortOrder.\n" );
+    Debug::Throw( QStringLiteral("IconView::updateSortOrder.\n") );
     if( !hasOptionName() ) return;
     if( XmlOptions::get().contains( sortColumnOptionName() ) && XmlOptions::get().contains( sortColumnOptionName() ) )
     {
@@ -294,7 +294,7 @@ void IconView::updateSortOrder()
 void IconView::saveSortOrder()
 {
 
-    Debug::Throw( "IconView::saveSortOrder.\n" );
+    Debug::Throw( QStringLiteral("IconView::saveSortOrder.\n") );
 
     // save option
     if( !hasOptionName() ) return;
@@ -345,7 +345,7 @@ void IconView::doItemsLayout()
 //______________________________________________________________________
 void IconView::find( TextSelection selection )
 {
-    Debug::Throw( "IconView::find.\n" );
+    Debug::Throw( QStringLiteral("IconView::find.\n") );
     bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
     if( found ) emit matchFound();
     else emit noMatchFound();
@@ -509,7 +509,7 @@ void IconView::setSelection( const QRect& constRect, QItemSelectionModel::Select
 void IconView::startDrag( Qt::DropActions supportedActions )
 {
 
-    Debug::Throw( "IconView::startDrag.\n" );
+    Debug::Throw( QStringLiteral("IconView::startDrag.\n") );
 
     // get list of dragable indexes
     QModelIndexList indexes;
@@ -727,7 +727,7 @@ void IconView::mousePressEvent( QMouseEvent* event )
         if( shiftPressed && anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) )
         {
 
-            Debug::Throw( "IconView::mousePressEvent - using anchor widget.\n" );
+            Debug::Throw( QStringLiteral("IconView::mousePressEvent - using anchor widget.\n") );
             selectionModel()->clear();
             selectionModel()->setCurrentIndex( index, QItemSelectionModel::Current );
             selectionModel()->select( QItemSelection( anchorIndex_, index ), QItemSelectionModel::Select|QItemSelectionModel::Rows );
@@ -1114,7 +1114,7 @@ QPixmap IconView::_pixmap( const QModelIndexList& indexes, QRect& boundingRect )
 void IconView::_createFindDialog()
 {
 
-    Debug::Throw( "IconView::_createFindDialog.\n" );
+    Debug::Throw( QStringLiteral("IconView::_createFindDialog.\n") );
 
     // create dialog
     findDialog_ =  new BaseFindDialog( this );
@@ -1131,7 +1131,7 @@ void IconView::_createFindDialog()
 void IconView::_createFindWidget( bool compact )
 {
 
-    Debug::Throw( "IconView::_createFindWidget.\n" );
+    Debug::Throw( QStringLiteral("IconView::_createFindWidget.\n") );
 
     // create Widget
     auto findWidget = new BaseFindWidget( this, compact );
@@ -1144,7 +1144,7 @@ void IconView::_createFindWidget( bool compact )
 //______________________________________________________________________
 bool IconView::_findForward( const TextSelection& selection, bool rewind )
 {
-    Debug::Throw( "IconView::_findForward.\n" );
+    Debug::Throw( QStringLiteral("IconView::_findForward.\n") );
     if( selection.text().isEmpty() ) return false;
 
     // store selection
@@ -1240,7 +1240,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
 bool IconView::_findBackward( const TextSelection& selection, bool rewind )
 {
 
-    Debug::Throw( "IconView::_findBackward.\n" );
+    Debug::Throw( QStringLiteral("IconView::_findBackward.\n") );
     if( selection.text().isEmpty() ) return false;
 
     // store selection
@@ -1393,7 +1393,7 @@ void IconView::sortByColumn( int column, Qt::SortOrder order)
 //_____________________________________________________________________
 void IconView::_findFromDialog()
 {
-    Debug::Throw( "IconView::_findFromDialog.\n" );
+    Debug::Throw( QStringLiteral("IconView::_findFromDialog.\n") );
 
     // set default text
     // update find text
@@ -1431,14 +1431,14 @@ void IconView::_findFromDialog()
 //_____________________________________________________________________
 void IconView::_updateHoverIndex()
 {
-    Debug::Throw( "IconView::_updateHoverIndex.\n" );
+    Debug::Throw( QStringLiteral("IconView::_updateHoverIndex.\n") );
     _setHoverIndex(  indexAt( viewport()->mapFromGlobal( QCursor::pos() ) ) );
 }
 
 //_____________________________________________________________________
 void IconView::_updateConfiguration()
 {
-    Debug::Throw( "IconView::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("IconView::_updateConfiguration.\n") );
 
     // update sort order from options
     updateSortOrder();
@@ -1473,7 +1473,7 @@ void IconView::_incrementIconSize( int delta )
 //__________________________________________________________
 void IconView::_installActions()
 {
-    Debug::Throw( "IconView::_installActions.\n" );
+    Debug::Throw( QStringLiteral("IconView::_installActions.\n") );
 
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
@@ -1536,21 +1536,21 @@ QModelIndex IconView::_indexBefore( const QModelIndex& current ) const
 //_________________________________________________________
 IconView::Container::Container( QWidget* parent ):
     QWidget( parent ),
-    Counter( "IconView::Container" ),
+    Counter( QStringLiteral("IconView::Container") ),
     iconView_( new IconView )
 { _initialize(); }
 
 //_________________________________________________________
 IconView::Container::Container( QWidget* parent, IconView* iconView ):
     QWidget( parent ),
-    Counter( "IconView::Container" ),
+    Counter( QStringLiteral("IconView::Container") ),
     iconView_( iconView )
 { _initialize(); }
 
 //_________________________________________________________
 void IconView::Container::_initialize()
 {
-    Debug::Throw( "IconView::Container::_initialize.\n" );
+    Debug::Throw( QStringLiteral("IconView::Container::_initialize.\n") );
     iconView_->setParent( this );
 
     // setup layout
@@ -1576,7 +1576,7 @@ void IconView::Container::_initialize()
 //___________________________________________________
 void IconView::_updateIconSizes( int iconSize )
 {
-    Debug::Throw( "IconView::_updateIconSizes.\n" );
+    Debug::Throw( QStringLiteral("IconView::_updateIconSizes.\n") );
 
     // update available iconSizes
     auto iter = std::lower_bound( iconSizes_.begin(), iconSizes_.end(), iconSize );

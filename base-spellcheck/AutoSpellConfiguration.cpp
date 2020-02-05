@@ -34,9 +34,9 @@ namespace SpellCheck
     AutoSpellConfiguration::AutoSpellConfiguration( QWidget* parent ):
         QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "SpellCheck::AutoSpellConfiguration" )
+        Counter( QStringLiteral("SpellCheck::AutoSpellConfiguration") )
     {
-        Debug::Throw( "AutoSpellConfiguration::AutoSpellConfiguration.\n" );
+        Debug::Throw( QStringLiteral("AutoSpellConfiguration::AutoSpellConfiguration.\n") );
 
         auto gridLayout( new GridLayout );
         gridLayout->setSpacing( 5 );

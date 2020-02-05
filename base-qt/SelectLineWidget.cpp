@@ -33,10 +33,10 @@
 //_______________________________________________________
 SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     EmbeddedWidget( parent ),
-    Counter( "SelectLineWidget" )
+    Counter( QStringLiteral("SelectLineWidget") )
 {
 
-    Debug::Throw( "SelectLineWidget::SelectLineWidget.\n" );
+    Debug::Throw( QStringLiteral("SelectLineWidget::SelectLineWidget.\n") );
 
     // update palette
     _updateNotFoundPalette();

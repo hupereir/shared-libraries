@@ -46,7 +46,7 @@ class FileRecord: private Base::Counter<FileRecord>
 
     //* constructor
     explicit FileRecord( const File& file = File(), const TimeStamp& time = TimeStamp::now() ):
-        Counter( "FileRecord" ),
+        Counter( QStringLiteral("FileRecord") ),
         file_( file ),
         time_( time ),
         valid_( true )
@@ -54,7 +54,7 @@ class FileRecord: private Base::Counter<FileRecord>
 
     //* constructor
     explicit FileRecord( File&& file, const TimeStamp& time = TimeStamp::now() ):
-        Counter( "FileRecord" ),
+        Counter( QStringLiteral("FileRecord") ),
         file_( std::move(file) ),
         time_( time ),
         valid_( true )

@@ -164,7 +164,7 @@ namespace Svg
     bool SvgPlasmaInterface::loadFile()
     {
 
-        Debug::Throw( "Svg::SvgPlasmaInterface::loadFile.\n" );
+        Debug::Throw( QStringLiteral("Svg::SvgPlasmaInterface::loadFile.\n") );
 
         // check path
         if( !path_.exists() ) return _setValid( false );

@@ -36,7 +36,7 @@
 void QtUtil::moveWidget( QWidget* widget, QPoint position )
 {
 
-    Debug::Throw( "QtUtil::moveWidget.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::moveWidget.\n") );
     if( !widget ) return;
     QDesktopWidget* desktop( qApp->desktop() );
     QRect geometry( desktop->screenGeometry( desktop->screenNumber( widget ) ) );
@@ -48,7 +48,7 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
 //____________________________________________________________
 QPoint QtUtil::centerOnPointer( const QSize& size )
 {
-    Debug::Throw( "QtUtil::centerOnPointer.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::centerOnPointer.\n") );
 
     // get cursor position
     QPoint point( QCursor::pos() );
@@ -73,7 +73,7 @@ QPoint QtUtil::centerOnPointer( const QSize& size )
 //____________________________________________________________
 QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
 {
-    Debug::Throw( "QtUtil::centerOnWidget.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::centerOnWidget.\n") );
     if( !widget ) return centerOnDesktop( size );
 
     Debug::Throw() << "QtUtil::centerOnWidget - size: (" << size.width() << "," << size.height() << ")" << endl;
@@ -107,7 +107,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
 //____________________________________________________________
 QPoint QtUtil::centerOnDesktop( const QSize& size )
 {
-    Debug::Throw( "QtUtil::centerOnDesktop.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::centerOnDesktop.\n") );
 
     // retrieve desktop
     QDesktopWidget *desktop( qApp->desktop() );
@@ -132,7 +132,7 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
 //____________________________________________________________
 QWidget* QtUtil::centerOnPointer( QWidget* widget )
 {
-    Debug::Throw( "QtUtil::centerOnPointer.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::centerOnPointer.\n") );
     Q_CHECK_PTR( widget );
 
     // move widget
@@ -152,7 +152,7 @@ QWidget* QtUtil::centerOnParent( QWidget* widget )
 //____________________________________________________________
 QWidget* QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 {
-    Debug::Throw( "QtUtil::centerOnParent.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::centerOnParent.\n") );
     Q_CHECK_PTR( widget );
 
     // get parent widget
@@ -165,7 +165,7 @@ QWidget* QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 //____________________________________________________________
 QWidget* QtUtil::centerOnDesktop( QWidget* widget )
 {
-    Debug::Throw( "QtUtil::centerOnDesktop.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::centerOnDesktop.\n") );
     Q_CHECK_PTR( widget );
     widget->move( centerOnDesktop( widget->frameSize() ) );
     return widget;
@@ -175,7 +175,7 @@ QWidget* QtUtil::centerOnDesktop( QWidget* widget )
 QWidget* QtUtil::uniconify( QWidget *widget )
 {
 
-    Debug::Throw( "QtUtil::uniconify.\n" );
+    Debug::Throw( QStringLiteral("QtUtil::uniconify.\n") );
 
     if( !widget->isTopLevel() ) return widget;
     widget = widget->window();

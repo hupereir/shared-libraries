@@ -30,7 +30,7 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
     OptionWidget( "TOOLTIPS_MASK" )
 {
 
-    Debug::Throw( "BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget.\n") );
 
     QVBoxLayout* vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
@@ -75,7 +75,7 @@ void BaseFileInfoConfigurationWidget::write( Options& options ) const
 //_______________________________________________________
 void BaseFileInfoConfigurationWidget::_addCheckBox( BaseFileInfoToolTipWidget::Type type, const QString& value )
 {
-    Debug::Throw( "BaseFileInfoConfigurationWidget::_addCheckBox.\n" );
+    Debug::Throw( QStringLiteral("BaseFileInfoConfigurationWidget::_addCheckBox.\n") );
     QCheckBox* checkbox;
     layout()->addWidget( checkbox = new QCheckBox( value, this ) );
     checkboxes_.insert( type, checkbox );

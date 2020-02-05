@@ -36,9 +36,9 @@
 //______________________________________________
 ColorDisplay::ColorDisplay( QWidget* parent ):
     QWidget( parent ),
-    Counter( "ColorDisplay" )
+    Counter( QStringLiteral("ColorDisplay") )
 {
-    Debug::Throw( "ColorDisplay::ColorDisplay.\n" );
+    Debug::Throw( QStringLiteral("ColorDisplay::ColorDisplay.\n") );
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setMargin(0);
@@ -75,7 +75,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
 //________________________________________________________
 void ColorDisplay::_selectColorFromDialog()
 {
-    Debug::Throw( "ColorDisplay::_selectColor.\n" );
+    Debug::Throw( QStringLiteral("ColorDisplay::_selectColor.\n") );
     QColor color( QColorDialog::getColor( editor_->color(), this ) );
     if( color.isValid() ) setColor( color );
 }
@@ -83,14 +83,14 @@ void ColorDisplay::_selectColorFromDialog()
 //________________________________________________________
 void ColorDisplay::_selectColorFromText()
 {
-    Debug::Throw( "ColorDisplay::_selectColorFromText.\n" );
+    Debug::Throw( QStringLiteral("ColorDisplay::_selectColorFromText.\n") );
     editor_->setColor( editor_->text() );
 }
 
 //_______________________________________________
 QColor ColorDisplay::Editor::color() const
 {
-    Debug::Throw( "ColorDisplay::Editor::color.\n" );
+    Debug::Throw( QStringLiteral("ColorDisplay::Editor::color.\n") );
     QString text( LineEditor::text() );
     return text.isEmpty() ? QColor():QColor( text );
 }

@@ -33,7 +33,7 @@
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QSize& size, Flags flags ):
     QPixmap( size*qApp->devicePixelRatio() ),
-    Counter( "CustomPixmap" )
+    Counter( QStringLiteral("CustomPixmap") )
 {
     setDevicePixelRatio( qApp->devicePixelRatio() );
     if( flags&Flag::Transparent ) fill( Qt::transparent );
@@ -42,9 +42,9 @@ CustomPixmap::CustomPixmap( const QSize& size, Flags flags ):
 //_________________________________________________
 CustomPixmap::CustomPixmap( const QString& file ):
     QPixmap( file ),
-    Counter( "CustomPixmap" )
+    Counter( QStringLiteral("CustomPixmap") )
 {
-    Debug::Throw( "CustomPixmap::CustomPixmap.\n" );
+    Debug::Throw( QStringLiteral("CustomPixmap::CustomPixmap.\n") );
 
     /*
     under windows, if pixmap is null, and file is an executable of a link
@@ -72,7 +72,7 @@ CustomPixmap::CustomPixmap( const QString& file ):
 CustomPixmap& CustomPixmap::find( const QString& file )
 {
 
-    Debug::Throw( "CustomPixmap::find.\n" );
+    Debug::Throw( QStringLiteral("CustomPixmap::find.\n") );
     *this = CustomPixmap( PixmapEngine::get( file ) );
     return *this;
 
@@ -212,7 +212,7 @@ CustomPixmap CustomPixmap::merged( const QPixmap& pixmap, Corner corner ) const
 CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
 {
 
-    Debug::Throw( "CustomPixmap::highlighted.\n" );
+    Debug::Throw( QStringLiteral("CustomPixmap::highlighted.\n") );
     if( opacity <= 0 ) return *this;
     opacity = qMin<qreal>( opacity, 1.0 );
 

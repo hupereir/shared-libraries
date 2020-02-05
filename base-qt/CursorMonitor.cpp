@@ -23,7 +23,7 @@
 //_________________________________________________________
 CursorMonitor::CursorMonitor( QWidget* parent ):
     QObject( parent ),
-    Counter( "CursorMonitor" ),
+    Counter( QStringLiteral("CursorMonitor") ),
     savedCursorShape_( parent->cursor().shape() )
 {
     parent->setMouseTracking( true );

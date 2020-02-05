@@ -38,7 +38,7 @@ namespace TextFormat
 
         //* constructor
         explicit Block( int begin = 0, int end = 0, Flags format = 0, const QColor& color = QColor() ):
-            Counter( "TextFormat::Block" ),
+            Counter( QStringLiteral("TextFormat::Block") ),
             begin_( begin ),
             end_( end ),
             format_( format ),

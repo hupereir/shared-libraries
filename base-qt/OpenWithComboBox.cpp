@@ -25,7 +25,7 @@
 //___________________________________________________________
 OpenWithComboBox::OpenWithComboBox( QWidget* parent ):
     QComboBox( parent ),
-    Counter( "OpenWithComboBox" )
+    Counter( QStringLiteral("OpenWithComboBox") )
 {
 
     setEditable( false );

@@ -34,7 +34,7 @@ QOrderedSet<QString>& BaseReplaceWidget::_replacedStrings()
 BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     BaseFindWidget( parent, compact )
 {
-    Debug::Throw( "BaseReplaceWidget::BaseReplaceWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseReplaceWidget::BaseReplaceWidget.\n") );
 
     // replace label and editor
     QLabel* label = new QLabel( tr( "Replace with:" ), this );
@@ -112,7 +112,7 @@ TextSelection BaseReplaceWidget::selection( bool noIncrement ) const
 //__________________________________________________
 void BaseReplaceWidget::synchronize()
 {
-    Debug::Throw( "BaseReplaceWidget::synchronize.\n" );
+    Debug::Throw( QStringLiteral("BaseReplaceWidget::synchronize.\n") );
 
     // base class method
     BaseFindWidget::synchronize();

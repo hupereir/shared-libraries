@@ -32,11 +32,11 @@
 //____________________________________________________________________________
 LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
     QObject( editor ),
-    Counter( "LineNumberDisplay" ),
+    Counter( QStringLiteral("LineNumberDisplay") ),
     editor_( editor )
 {
 
-    Debug::Throw( "LineNumberDisplay::LineNumberDisplay.\n" );
+    Debug::Throw( QStringLiteral("LineNumberDisplay::LineNumberDisplay.\n") );
 
     connect( &editor_->wrapModeAction(), &QAction::toggled, this, &LineNumberDisplay::needUpdate );
 
@@ -50,7 +50,7 @@ LineNumberDisplay::LineNumberDisplay(TextEditor* editor):
 void LineNumberDisplay::synchronize( LineNumberDisplay* display )
 {
 
-    Debug::Throw( "LineNumberDisplay::synchronize.\n" );
+    Debug::Throw( QStringLiteral("LineNumberDisplay::synchronize.\n") );
 
     // copy members
     lineNumberData_ = display->lineNumberData_;
@@ -66,7 +66,7 @@ void LineNumberDisplay::synchronize( LineNumberDisplay* display )
 //__________________________________________
 bool LineNumberDisplay::updateWidth( int count )
 {
-    Debug::Throw( "LineNumberDisplay::updateWidth.\n" );
+    Debug::Throw( QStringLiteral("LineNumberDisplay::updateWidth.\n") );
 
     int newWidth( editor_->fontMetrics().width( QString::number( count ) ) + 14 );
     if( width() == newWidth ) return false;
@@ -79,7 +79,7 @@ bool LineNumberDisplay::updateWidth( int count )
 //__________________________________________
 void LineNumberDisplay::clear()
 {
-    Debug::Throw( "LineNumberDisplay::clear.\n" );
+    Debug::Throw( QStringLiteral("LineNumberDisplay::clear.\n") );
     lineNumberData_.clear();
     needsUpdate_ = true;
 }

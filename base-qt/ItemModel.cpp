@@ -25,7 +25,7 @@ ItemModel::ItemModel( QObject* parent ):
     QAbstractItemModel( parent ),
     sortColumn_(0),
     sortOrder_( Qt::AscendingOrder )
-{ Debug::Throw( "ItemModel::ItemModel.\n" ); }
+{ Debug::Throw( QStringLiteral("ItemModel::ItemModel.\n") ); }
 
 //____________________________________________________________
 void ItemModel::sort( int column, Qt::SortOrder order )

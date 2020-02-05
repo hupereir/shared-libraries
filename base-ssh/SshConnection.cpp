@@ -75,7 +75,7 @@ namespace Ssh
     //_______________________________________________
     Connection::Connection( QObject* parent ):
         QObject( parent ),
-        Counter( "Ssh::Connection" )
+        Counter( QStringLiteral("Ssh::Connection") )
     {}
 
     //_______________________________________________
@@ -86,7 +86,7 @@ namespace Ssh
     bool Connection::createTunnels()
     {
 
-        Debug::Throw( "Ssh::Connection::createTunnels.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::createTunnels.\n") );
 
         // loop over tunnel attributes
         for( const auto& attributes:connectionAttributes_.tunnels() )
@@ -121,7 +121,7 @@ namespace Ssh
     bool Connection::connect( bool forceRequestIdentity )
     {
 
-        Debug::Throw( "Ssh::Connection::connect.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::connect.\n") );
 
         #if WITH_SSH
 
@@ -256,7 +256,7 @@ namespace Ssh
     void Connection::disconnect()
     {
 
-        Debug::Throw( "Ssh::Connection::disconnect.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::disconnect.\n") );
         _disconnectChannels();
         _disconnectTunnels();
         _disconnectSession();
@@ -268,7 +268,7 @@ namespace Ssh
     void Connection::_disconnectChannels()
     {
 
-        Debug::Throw( "Ssh::Connection::_disconnectChannels.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::_disconnectChannels.\n") );
 
         // loop over tunnels and delete
         for( const auto& tunnel:findChildren<Tunnel*>() )
@@ -283,7 +283,7 @@ namespace Ssh
     void Connection::_disconnectSession()
     {
 
-        Debug::Throw( "Ssh::Connection::_disconnectSession.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::_disconnectSession.\n") );
         session_.reset();
         state_ &= ~(Connected|SessionCreated);
     }
@@ -291,7 +291,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::_disconnectTunnels()
     {
-        Debug::Throw( "Ssh::Connection::_disconnectTunnel.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::_disconnectTunnel.\n") );
 
         // disconnect all tcp servers
         for( const auto& tcpServer:findChildren<QTcpServer*>() )
@@ -448,7 +448,7 @@ namespace Ssh
                 if( result == SSH_AUTH_SUCCESS )
                 {
 
-                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
+                    Debug::Throw( QStringLiteral("Ssh::Connection::_processCommands - connected.\n") );
 
                     // success
                     commands_.removeFirst();
@@ -476,7 +476,7 @@ namespace Ssh
                 if( result == SSH_AUTH_SUCCESS )
                 {
 
-                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
+                    Debug::Throw( QStringLiteral("Ssh::Connection::_processCommands - connected.\n") );
 
                     // success
                     commands_.removeFirst();
@@ -515,7 +515,7 @@ namespace Ssh
                 if( result == SSH_AUTH_SUCCESS )
                 {
 
-                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
+                    Debug::Throw( QStringLiteral("Ssh::Connection::_processCommands - connected.\n") );
 
                     // success
                     commands_.removeFirst();
@@ -548,7 +548,7 @@ namespace Ssh
                 if( result == SSH_AUTH_SUCCESS )
                 {
 
-                    Debug::Throw( "Ssh::Connection::_processCommands - connected.\n" );
+                    Debug::Throw( QStringLiteral("Ssh::Connection::_processCommands - connected.\n") );
 
                     // success
                     commands_.removeFirst();
@@ -636,12 +636,12 @@ namespace Ssh
     //_______________________________________________
     void Connection::_newConnection()
     {
-        Debug::Throw( "Ssh::Connection::_newConnection.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::_newConnection.\n") );
 
         // check session
         if( !session_ )
         {
-            Debug::Throw( "Ssh::Connection::_newConnection - invalid session.\n" );
+            Debug::Throw( QStringLiteral("Ssh::Connection::_newConnection - invalid session.\n") );
             return;
         }
 
@@ -682,7 +682,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::_abortCommands( const QString& errorMessage )
     {
-        Debug::Throw( "Ssh::Connection::_abortCommands.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Connection::_abortCommands.\n") );
         if( timer_.isActive() ) timer_.stop();
         commands_.clear();
         _notifyError( errorMessage );

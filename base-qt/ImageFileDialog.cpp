@@ -38,7 +38,7 @@
 ImageFileDialog::ImageFileDialog( QWidget* parent ):
     QFileDialog( parent )
 {
-    Debug::Throw( "ImageFileDialog::ImageFileDialog.\n" );
+    Debug::Throw( QStringLiteral("ImageFileDialog::ImageFileDialog.\n") );
 
     // no size grip, ever
     setSizeGripEnabled( false );
@@ -86,13 +86,13 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
 //______________________________________________________________________
 ImageFileDialog::Label::Label( QWidget* parent ):
     QLabel( parent ),
-    Counter( "ImageFileDialog::Label" )
+    Counter( QStringLiteral("ImageFileDialog::Label") )
 { setAcceptDrops( true ); }
 
 //______________________________________________________________________
 void ImageFileDialog::Label::dragEnterEvent( QDragEnterEvent *event )
 {
-    Debug::Throw( "ImageFileDialog::Label::dragEnterEvent.\n" );
+    Debug::Throw( QStringLiteral("ImageFileDialog::Label::dragEnterEvent.\n") );
     if (event->mimeData()->hasUrls()) event->acceptProposedAction();
 }
 
@@ -100,7 +100,7 @@ void ImageFileDialog::Label::dragEnterEvent( QDragEnterEvent *event )
 void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 {
 
-    Debug::Throw( "ImageFileDialog::Label::dropEvent.\n" );
+    Debug::Throw( QStringLiteral("ImageFileDialog::Label::dropEvent.\n") );
 
     // check if event is valid
     if( !event->mimeData()->hasUrls() ) return;
@@ -138,7 +138,7 @@ void ImageFileDialog::saveWorkingDirectory( QString directory )
 //______________________________________________________________________
 void ImageFileDialog::_currentChanged( const QString& value )
 {
-    Debug::Throw( "ImageFileDialog::_currentChanged.\n" );
+    Debug::Throw( QStringLiteral("ImageFileDialog::_currentChanged.\n") );
     currentPath_ = File( value );
     if( automaticPreview_ && automaticPreview_->isChecked() ) _preview();
 }
@@ -147,7 +147,7 @@ void ImageFileDialog::_currentChanged( const QString& value )
 void ImageFileDialog::_preview()
 {
 
-    Debug::Throw( "ImageFileDialog::_preview.\n" );
+    Debug::Throw( QStringLiteral("ImageFileDialog::_preview.\n") );
 
     // nothing if no preview
     if( !preview_ ) return;

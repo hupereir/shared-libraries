@@ -38,12 +38,12 @@
 //________________________________________________________
 TabWidget::TabWidget( QTabWidget* parent ):
     QWidget( parent ),
-    Counter( "TabWidget" ),
+    Counter( QStringLiteral("TabWidget") ),
     parent_( parent ),
     widgetDragMonitor_( this )
 {
 
-    Debug::Throw( "TabWidget::TabWidget.\n" );
+    Debug::Throw( QStringLiteral("TabWidget::TabWidget.\n") );
 
     // dock
     dock_.reset( new Private::LocalTabWidget(nullptr) );
@@ -101,7 +101,7 @@ void TabWidget::updateActions( bool detached )
 void TabWidget::_toggleDock()
 {
 
-    Debug::Throw( "TabWidget::_toggleDock.\n" );
+    Debug::Throw( QStringLiteral("TabWidget::_toggleDock.\n") );
 
     if( isDetached() )
     {
@@ -191,7 +191,7 @@ void TabWidget::_toggleStaysOnTop( bool state )
 void TabWidget::_toggleSticky( bool state )
 {
 
-    Debug::Throw( "TabWidget::_toggleSticky.\n" );
+    Debug::Throw( QStringLiteral("TabWidget::_toggleSticky.\n") );
 
     // make sure that detached
     if( !isDetached() ) return;
@@ -215,7 +215,7 @@ void TabWidget::_toggleSticky( bool state )
 void TabWidget::_updateContextMenu( const QPoint& position )
 {
 
-    Debug::Throw( "TabWidget::_updateContextMenu.\n" );
+    Debug::Throw( QStringLiteral("TabWidget::_updateContextMenu.\n") );
 
     // create menu
     BaseContextMenu menu( this );
@@ -234,7 +234,7 @@ void TabWidget::_updateContextMenu( const QPoint& position )
 void TabWidget::_installActions()
 {
 
-    Debug::Throw( "TabWidget::_installActions.\n" );
+    Debug::Throw( QStringLiteral("TabWidget::_installActions.\n") );
 
     // detach action
     addAction( detachAction_ = new QAction( tr( "Detach" ), this ) );
@@ -279,7 +279,7 @@ namespace Private
     //___________________________________________________________
     LocalTabWidget::LocalTabWidget( QWidget* parent ):
         QWidget( parent, Qt::FramelessWindowHint|Qt::Window ),
-        Counter( "Private::LocalTabWidget" )
+        Counter( QStringLiteral("Private::LocalTabWidget") )
     {
 
         setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );

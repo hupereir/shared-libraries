@@ -57,7 +57,7 @@ namespace Private
     PathEditorButton::PathEditorButton( QWidget* parent ):
         QAbstractButton( parent )
     {
-        Debug::Throw( "PathEditorButton::PathEditorButton.\n" );
+        Debug::Throw( QStringLiteral("PathEditorButton::PathEditorButton.\n") );
         setAttribute( Qt::WA_Hover );
         setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
         setMinimumHeight(parent->minimumHeight());
@@ -82,12 +82,12 @@ namespace Private
     //____________________________________________________________________________
     PathEditorItem::PathEditorItem( QWidget* parent ):
         PathEditorButton( parent ),
-        Counter( "PathEditorItem" ),
+        Counter( QStringLiteral("PathEditorItem") ),
         isLocal_( true ),
         isSelectable_( true ),
         isLast_( false )
     {
-        Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+        Debug::Throw( QStringLiteral("PathEditorItem::PathEditorItem.\n") );
         dragMonitor_ = new DragMonitor( this );
         dragMonitor_->setDragEnabled( false );
         connect( dragMonitor_, &DragMonitor::dragStarted, this, &PathEditorItem::_startDrag);
@@ -97,7 +97,7 @@ namespace Private
     void PathEditorItem::setPath( const File& path, const QString& name )
     {
 
-        Debug::Throw( "PathEditorItem::setPath.\n" );
+        Debug::Throw( QStringLiteral("PathEditorItem::setPath.\n") );
 
         path_ = path;
 
@@ -134,7 +134,7 @@ namespace Private
     //____________________________________________________________________________
     void PathEditorItem::updateMinimumSize()
     {
-        Debug::Throw( "PathEditorItem::updateMinimumSize.\n" );
+        Debug::Throw( QStringLiteral("PathEditorItem::updateMinimumSize.\n") );
 
         // text size
         QSize size( fontMetrics().boundingRect( text() ).size() );
@@ -156,7 +156,7 @@ namespace Private
     void PathEditorItem::_startDrag( QPoint dragOrigin )
     {
 
-        Debug::Throw( "PathEditorItem::_startDrag.\n" );
+        Debug::Throw( QStringLiteral("PathEditorItem::_startDrag.\n") );
 
         // start drag
         auto drag = new QDrag(this);
@@ -293,7 +293,7 @@ namespace Private
     //____________________________________________________________________________
     void PathEditorMenuButton::updateMinimumSize()
     {
-        Debug::Throw( "PathEditorMenuButton::updateMinimumSize.\n" );
+        Debug::Throw( QStringLiteral("PathEditorMenuButton::updateMinimumSize.\n") );
 
         const auto metrics( fontMetrics() );
         QSize size( metrics.height(), metrics.height() );
@@ -325,14 +325,14 @@ namespace Private
 //____________________________________________________________________________
 PathEditor::PathEditor( QWidget* parent ):
     QStackedWidget( parent ),
-    Counter( "PathEditor" ),
+    Counter( QStringLiteral("PathEditor") ),
     usePrefix_( true ),
     isLocal_( true ),
     truncate_( true ),
     dragEnabled_( false ),
     history_( new XmlPathHistory( this ) )
 {
-    Debug::Throw( "PathEditor::PathEditor.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::PathEditor.\n") );
 
     // size policy
     setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
@@ -435,7 +435,7 @@ PathEditor::PathEditor( QWidget* parent ):
 //____________________________________________________________________________
 File PathEditor::path() const
 {
-    Debug::Throw( "PathEditor::path.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::path.\n") );
     QString path( editor_->currentText() );
     if( !prefix_.isEmpty() )
     {
@@ -498,7 +498,7 @@ QSize PathEditor::minimumSizeHint() const
 //____________________________________________________________________________
 void PathEditor::setPrefix( const QString& value )
 {
-    Debug::Throw( "PathEditor::setPrefix.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::setPrefix.\n") );
     if( prefix_ == value ) return;
     prefix_ = value;
     prefixLabel_->setText( prefix_ );
@@ -513,7 +513,7 @@ void PathEditor::setHistoryTagName( const QString& value )
 //____________________________________________________________________________
 void PathEditor::setHomePath( const File& value )
 {
-    Debug::Throw( "PathEditor::setHomePath.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::setHomePath.\n") );
     if( home_ == value ) return;
     home_ = value;
     _reload();
@@ -522,7 +522,7 @@ void PathEditor::setHomePath( const File& value )
 //____________________________________________________________________________
 void PathEditor::setRootPathList( const File::List& value )
 {
-    Debug::Throw( "PathEditor::setRootPathList.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::setRootPathList.\n") );
     if( rootPathList_ == value ) return;
     rootPathList_ = value;
     _reload();
@@ -731,7 +731,7 @@ void PathEditor::selectParent()
 //____________________________________________________________________________
 void PathEditor::selectPrevious()
 {
-    Debug::Throw( "PathEditor::selectPrevious.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::selectPrevious.\n") );
     if( !hasPrevious() ) return;
     const File path( history_->previous() );
     setPath( path );
@@ -741,7 +741,7 @@ void PathEditor::selectPrevious()
 //____________________________________________________________________________
 void PathEditor::selectNext()
 {
-    Debug::Throw( "PathEditor::selectNext.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::selectNext.\n") );
     if( !hasNext() ) return;
     const File path( history_->next() );
     setPath( path );
@@ -751,7 +751,7 @@ void PathEditor::selectNext()
 //____________________________________________________________________________
 void PathEditor::selectFromMenu( QAction* action )
 {
-    Debug::Throw( "PathEditor::selectFromMenu.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::selectFromMenu.\n") );
 
     const QVariant data( action->data() );
     if( !data.canConvert( QVariant::Int ) ) return;
@@ -772,7 +772,7 @@ void PathEditor::resizeEvent( QResizeEvent* event )
 void PathEditor::_updatePrefix()
 {
 
-    Debug::Throw( "PathEditor::_updatePrefix.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::_updatePrefix.\n") );
 
     // use prefix
     const bool usePrefix( usePrefix_ && !prefix_.isEmpty() );
@@ -812,7 +812,7 @@ void PathEditor::_updatePrefix()
 //____________________________________________________________________________
 void PathEditor::_setUseTruncation( bool value )
 {
-    Debug::Throw( "PathEditor::_setUseTruncation.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::_setUseTruncation.\n") );
     if( truncate_ == value ) return;
     truncate_ = value;
     _reload();
@@ -1001,7 +1001,7 @@ void PathEditor::_updateButtonVisibility()
 //____________________________________________________________________________
 void PathEditor::_updatePathMenus()
 {
-    Debug::Throw( "PathEditor::_updatePathMenus.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::_updatePathMenus.\n") );
 
     // previous
     int index = 0;
@@ -1028,7 +1028,7 @@ void PathEditor::_updatePathMenus()
 //____________________________________________________________________________
 void PathEditor::_updateConfiguration()
 {
-    Debug::Throw( "PathEditor::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("PathEditor::_updateConfiguration.\n") );
 
     if( XmlOptions::get().contains( "USE_PREFIX" ) )
     { _setUsePrefix( XmlOptions::get().get<bool>( "USE_PREFIX" ) ); }

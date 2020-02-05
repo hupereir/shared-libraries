@@ -27,7 +27,7 @@
 //__________________________________________________________________________
 BaseFileIconProvider::BaseFileIconProvider( QObject* parent ):
     QObject( parent ),
-    Counter( "BaseFileIconProvider" )
+    Counter( QStringLiteral("BaseFileIconProvider") )
 {}
 
 //__________________________________________________________________________

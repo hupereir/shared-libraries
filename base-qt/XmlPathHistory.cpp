@@ -34,7 +34,7 @@ XmlPathHistory::XmlPathHistory( QObject* parent ):
     PathHistory( parent )
 {
 
-    Debug::Throw( "XmlPathHistory::XmlPathHistory.\n" );
+    Debug::Throw( QStringLiteral("XmlPathHistory::XmlPathHistory.\n") );
     connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &XmlPathHistory::_updateConfiguration );
     connect( qApp, &QCoreApplication::aboutToQuit, this, &XmlPathHistory::_saveConfiguration );
     _updateConfiguration();
@@ -58,7 +58,7 @@ void XmlPathHistory::setTagName( const QString& value )
 //_______________________________________________
 bool XmlPathHistory::read( File file )
 {
-    Debug::Throw( "XmlPathHistory::read.\n" );
+    Debug::Throw( QStringLiteral("XmlPathHistory::read.\n") );
 
     // do nothing for invalid tagname
     if( tagName_.isEmpty() )
@@ -124,7 +124,7 @@ bool XmlPathHistory::_read( const XmlDocument& document )
 //_______________________________________________
 bool XmlPathHistory::write( File file )
 {
-    Debug::Throw( "XmlPathHistory::write.\n" );
+    Debug::Throw( QStringLiteral("XmlPathHistory::write.\n") );
 
     // do nothing for invalid tag name
     if( tagName_.isEmpty() )
@@ -199,7 +199,7 @@ bool XmlPathHistory::_setDBFile( const File& file )
 //______________________________________
 void XmlPathHistory::_updateConfiguration()
 {
-    Debug::Throw( "XmlPathHistory::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("XmlPathHistory::_updateConfiguration.\n") );
 
     // max size
     if( XmlOptions::get().contains( "HISTORY_SIZE" ) )
@@ -219,7 +219,7 @@ void XmlPathHistory::_updateConfiguration()
 //______________________________________
 void XmlPathHistory::_saveConfiguration()
 {
-    Debug::Throw( "XmlPathHistory::_saveConfiguration.\n" );
+    Debug::Throw( QStringLiteral("XmlPathHistory::_saveConfiguration.\n") );
     write();
 }
 

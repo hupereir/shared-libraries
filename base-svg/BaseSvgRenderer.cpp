@@ -32,7 +32,7 @@ namespace Svg
     //________________________________________________
     BaseSvgRenderer::BaseSvgRenderer():
         QSvgRenderer(),
-        Counter( "Svg::BaseSvgRenderer" )
+        Counter( QStringLiteral("Svg::BaseSvgRenderer") )
     {}
 
     //________________________________________________

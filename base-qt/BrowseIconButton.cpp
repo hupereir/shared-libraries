@@ -89,7 +89,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 //_____________________________________________
 void BrowseIconButton::_browse()
 {
-    Debug::Throw( "BrowseIconButton::_Browse.\n" );
+    Debug::Throw( QStringLiteral("BrowseIconButton::_Browse.\n") );
 
     ImageFileDialog dialog( this );
     dialog.setFileMode( QFileDialog::AnyFile );
@@ -137,7 +137,7 @@ void BrowseIconButton::_browse()
 //______________________________________________________________________
 void BrowseIconButton::dragEnterEvent( QDragEnterEvent *event )
 {
-    Debug::Throw( "BrowseIconButton::dragEnterEvent.\n" );
+    Debug::Throw( QStringLiteral("BrowseIconButton::dragEnterEvent.\n") );
     if (event->mimeData()->hasUrls()) event->acceptProposedAction();
 }
 
@@ -145,7 +145,7 @@ void BrowseIconButton::dragEnterEvent( QDragEnterEvent *event )
 void BrowseIconButton::dropEvent( QDropEvent *event )
 {
 
-    Debug::Throw( "BrowseIconButton::dropEvent.\n" );
+    Debug::Throw( QStringLiteral("BrowseIconButton::dropEvent.\n") );
 
     // check if event is valid
     if( !event->mimeData()->hasUrls() ) return;

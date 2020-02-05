@@ -27,7 +27,7 @@ InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
     DetailsDialog( parent, OkButton| Separator )
 {
 
-    Debug::Throw( "InformationDialog::InformationDialog\n" );
+    Debug::Throw( QStringLiteral("InformationDialog::InformationDialog\n") );
 
     // icon
     QHBoxLayout *hLayout( new QHBoxLayout );
@@ -49,7 +49,7 @@ InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
 //____________________________________________________________
 void InformationDialog::setText( const QString& text )
 {
-    Debug::Throw( "InformationDialog::setText\n" );
+    Debug::Throw( QStringLiteral("InformationDialog::setText\n") );
     label_->setText( text );
     label_->setWordWrap( label_->fontMetrics().width( text ) >300 );
 }

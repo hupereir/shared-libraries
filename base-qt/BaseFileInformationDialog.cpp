@@ -34,7 +34,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     CustomDialog( parent, CloseButton )
 {
 
-    Debug::Throw( "BaseFileInformationDialog::BaseFileInformationDialog.\n" );
+    Debug::Throw( QStringLiteral("BaseFileInformationDialog::BaseFileInformationDialog.\n") );
     setOptionName( "FILE_INFORMATION_DIALOG" );
     setIconSize( IconSize::get( IconSize::VeryHuge ) );
 

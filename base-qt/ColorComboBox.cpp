@@ -31,9 +31,9 @@
 //_________________________________________________________
 ColorComboBox::ColorComboBox( QWidget* parent ):
     QComboBox( parent ),
-    Counter( "ColorComboBox" )
+    Counter( QStringLiteral("ColorComboBox") )
 {
-    Debug::Throw( "ColorComboBox::ColorComboBox.\n" );
+    Debug::Throw( QStringLiteral("ColorComboBox::ColorComboBox.\n") );
     setEditable( false );
     connect( this, QOverload<int>::of( &ColorComboBox::activated ), this, &ColorComboBox::_updateActiveIndex );
 }
@@ -42,7 +42,7 @@ ColorComboBox::ColorComboBox( QWidget* parent ):
 Base::Color::Set ColorComboBox::colors() const
 {
 
-    Debug::Throw( "ColorComboBox::colors.\n" );
+    Debug::Throw( QStringLiteral("ColorComboBox::colors.\n") );
 
     Base::Color::Set out;
     for( int index = 0; index < QComboBox::count(); ++index )
@@ -67,7 +67,7 @@ QColor ColorComboBox::color() const
 void ColorComboBox::setColors( const Base::Color::Set& colors )
 {
 
-    Debug::Throw( "ColorComboBox::addColors.\n" );
+    Debug::Throw( QStringLiteral("ColorComboBox::addColors.\n") );
 
     // first clear
     clear();

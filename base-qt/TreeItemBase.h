@@ -43,7 +43,7 @@ class TreeItemBase: private Base::Counter<TreeItemBase>
     //* constructor
     /** used to insert T in the tree structure */
     explicit TreeItemBase( const Id& id ):
-        Counter( "TreeItemBase" ),
+        Counter( QStringLiteral("TreeItemBase") ),
         id_( id )
     {}
 

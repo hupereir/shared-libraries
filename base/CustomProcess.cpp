@@ -30,7 +30,7 @@ might cause the application to hang, notably when process crashes
 //____________________________________________________
 CustomProcess::CustomProcess( QObject* parent ):
 QProcess( parent ),
-Counter( "CustomProcess" )
+Counter( QStringLiteral("CustomProcess") )
 {}
 
 //____________________________________________________

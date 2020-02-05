@@ -43,7 +43,7 @@
 OpenWithDialog::OpenWithDialog( QWidget* parent ):
     CustomDialog( parent, OkButton|CancelButton|Separator )
 {
-    Debug::Throw( "OpenWithDialog::OpenWithDialog.\n" );
+    Debug::Throw( QStringLiteral("OpenWithDialog::OpenWithDialog.\n") );
     okButton().setText( tr( "Open" ) );
 }
 
@@ -186,7 +186,7 @@ void OpenWithDialog::realizeWidget()
 //____________________________________________________________________________
 void OpenWithDialog::_open()
 {
-    Debug::Throw( "OpenWithDialog::_open.\n" );
+    Debug::Throw( QStringLiteral("OpenWithDialog::_open.\n") );
 
     // update options
     if( !optionName_.isEmpty() && XmlOptions::get().isSpecialOption( optionName_ ) )

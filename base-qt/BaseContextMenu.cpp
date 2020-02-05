@@ -25,7 +25,7 @@
 //___________________________________________________
 BaseContextMenu::BaseContextMenu( QWidget* parent ):
     QMenu( parent ),
-    Counter( "BaseContextMenu" )
+    Counter( QStringLiteral("BaseContextMenu") )
 { ensurePolished(); }
 
 //___________________________________________________

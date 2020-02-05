@@ -44,7 +44,7 @@ class TextEncodingString final
         textSegments_.clear();
         numSegments_.clear();
         int position = 0;
-        static const QRegularExpression regexp( "(\\d+)" );
+        static const QRegularExpression regexp( QStringLiteral("(\\d+)") );
         auto iter = regexp.globalMatch( value_ );
         while( iter.hasNext() )
         {

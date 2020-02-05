@@ -24,9 +24,9 @@
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
     QMenu( tr( "Icon size" ), parent ),
-    Counter( "IconSizeMenu" )
+    Counter( QStringLiteral("IconSizeMenu") )
 {
-    Debug::Throw( "IconSizeMenu::IconSizeMenu.\n" );
+    Debug::Throw( QStringLiteral("IconSizeMenu::IconSizeMenu.\n") );
 
     auto group = new QActionGroup( this );
     connect( group, &QActionGroup::triggered, this, &IconSizeMenu::_selected );
@@ -57,7 +57,7 @@ IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
 void IconSizeMenu::select( IconSize::Size size )
 {
 
-    Debug::Throw( "IconSizeMenu::select.\n" );
+    Debug::Throw( QStringLiteral("IconSizeMenu::select.\n") );
     const auto iter = Base::findByValue( actions_, size );
     if( iter != actions_.end() ) iter.key()->setChecked( true );
 
@@ -67,7 +67,7 @@ void IconSizeMenu::select( IconSize::Size size )
 void IconSizeMenu::_selected( QAction* action )
 {
 
-    Debug::Throw( "IconSizeMenu::_selected.\n" );
+    Debug::Throw( QStringLiteral("IconSizeMenu::_selected.\n") );
 
     // find matching actions
     const auto iter = actions_.find( action );

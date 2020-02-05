@@ -32,13 +32,13 @@ IconEngine& IconEngine::get()
 
 //__________________________________________________________
 IconEngine::IconEngine():
-    Counter( "IconEngine" )
-{ Debug::Throw( "IconEngine::IconEngine.\n" ); }
+    Counter( QStringLiteral("IconEngine") )
+{ Debug::Throw( QStringLiteral("IconEngine::IconEngine.\n") ); }
 
 //__________________________________________________________
 bool IconEngine::reload()
 {
-    Debug::Throw( "IconEngine::reload.\n" );
+    Debug::Throw( QStringLiteral("IconEngine::reload.\n") );
 
     // load path from options
     auto pathList( XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" ) );
@@ -55,7 +55,7 @@ bool IconEngine::reload()
 //__________________________________________________________
 void IconEngine::clear()
 {
-    Debug::Throw( "IconEngine::clear.\n" );
+    Debug::Throw( QStringLiteral("IconEngine::clear.\n") );
     cache_.clear();
 }
 

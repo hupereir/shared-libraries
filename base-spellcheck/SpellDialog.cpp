@@ -45,7 +45,7 @@ namespace SpellCheck
         editor_( parent ),
         readOnly_( readOnly )
     {
-        Debug::Throw( "SpellCheck::SpellDialog::SpellDialog.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::SpellDialog.\n") );
 
         // window title
         setWindowTitle( readOnly ? tr( "Spell Check (read-only)" ) : tr( "Spell Check" ) );
@@ -206,14 +206,14 @@ namespace SpellCheck
         connect( &closeButton(), &QAbstractButton::clicked, this, &SpellDialog::_saveWordList );
         connect( &closeButton(), &QAbstractButton::clicked, this, &SpellDialog::_restoreReadOnly );
 
-        Debug::Throw( "SpellCheck::SpellDialog::SpellDialog - done.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::SpellDialog - done.\n") );
 
     }
 
     //__________________________________________
     void SpellDialog::showFilter( bool value )
     {
-        Debug::Throw( "SpellCheck::SpellDialog::showFilter.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::showFilter.\n") );
         if( value ){
             filterLabel_->show();
             filtersComboBox_->show();
@@ -226,7 +226,7 @@ namespace SpellCheck
     //____________________________________________________
     bool SpellDialog::setDictionary( const QString& dictionary )
     {
-        Debug::Throw( "SpellCheck::SpellDialog::setDictionary.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::setDictionary.\n") );
 
         // find matching index
         int index( dictionariesComboBox_->findText( dictionary ) );
@@ -253,7 +253,7 @@ namespace SpellCheck
     //____________________________________________________
     bool SpellDialog::setFilter( const QString& filter )
     {
-        Debug::Throw( "SpellCheck::SpellDialog::setFilter.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::setFilter.\n") );
 
         // find matching index
         int index( filtersComboBox_->findText( filter ) );
@@ -280,7 +280,7 @@ namespace SpellCheck
     //___________________________________________
     void SpellDialog::_updateDictionaries()
     {
-        Debug::Throw( "SpellCheck::SpellDialog::_updateDictionaries.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_updateDictionaries.\n") );
 
         // store selection
         const auto selection( dictionariesComboBox_->currentText() );
@@ -303,7 +303,7 @@ namespace SpellCheck
     //___________________________________________
     void SpellDialog::_updateFilters()
     {
-        Debug::Throw( "SpellCheck::SpellDialog::_updateFilters.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_updateFilters.\n") );
 
         // store selection
         const auto selection( filtersComboBox_->currentText() );
@@ -326,7 +326,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_selectSuggestion( const QModelIndex& index )
     {
-        Debug::Throw( "SpellCheck::SpellDialog::_selectSuggestion.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_selectSuggestion.\n") );
         if( index.isValid() ) { replaceEditor_->setText( model_.get( index ) ); }
     }
 
@@ -334,7 +334,7 @@ namespace SpellCheck
     void SpellDialog::_selectDictionary( const QString& dictionary )
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::_SelectDictionary.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_SelectDictionary.\n") );
 
         // see if changed
         if( interface_.dictionary() == dictionary ) return;
@@ -358,7 +358,7 @@ namespace SpellCheck
     void SpellDialog::_selectFilter( const QString& filter )
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::_SelectFilter.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_SelectFilter.\n") );
 
         // see if changed
         if( interface_.filter() == filter ) return;
@@ -381,7 +381,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_restart()
     {
-        Debug::Throw( "SpellCheck::SpellDialog::_restart.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_restart.\n") );
 
         if( !interface_.reset() )
         {
@@ -396,7 +396,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_addWord()
     {
-        Debug::Throw( "SpellCheck::SpellDialog::_addWord.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_addWord.\n") );
 
         if( !interface_.addWord( interface_.word() ) )
         {
@@ -415,7 +415,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_checkWord()
     {
-        Debug::Throw( "SpellCheck::SpellDialog::_checkWord.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_checkWord.\n") );
 
         // retrieve check word
         _displayWord( replaceEditor_->text() );
@@ -426,7 +426,7 @@ namespace SpellCheck
     void SpellDialog::_ignore()
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::_ignore.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_ignore.\n") );
         nextWord();
 
     }
@@ -435,7 +435,7 @@ namespace SpellCheck
     void SpellDialog::_ignoreAll()
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::_ignoreAll.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_ignoreAll.\n") );
         interface_.ignoreWord( sourceLabel_->text() );
         _ignore();
 
@@ -445,7 +445,7 @@ namespace SpellCheck
     void SpellDialog::_replace( const QModelIndex& index )
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::_replace.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_replace.\n") );
         QModelIndex local( index );
         if( !local.isValid() ) local = list_->selectionModel()->currentIndex();
         if( !local.isValid() ) return;
@@ -462,7 +462,7 @@ namespace SpellCheck
     void SpellDialog::_replaceAll()
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::_replaceAll.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_replaceAll.\n") );
         QString oldWord( sourceLabel_->text() );
         QString newWord( replaceEditor_->text() );
         replacedWords_.insert( oldWord, newWord );
@@ -473,7 +473,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellDialog::_updateButtons()
     {
-        Debug::Throw( "SpellCheck::SpellDialog::_updateButtons.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_updateButtons.\n") );
         const bool hasSelection( list_->selectionModel()->hasSelection() );
         const bool hasWord( !sourceLabel_->text().isEmpty() );
         addWordButton_->setEnabled( hasWord );
@@ -488,7 +488,7 @@ namespace SpellCheck
     void SpellDialog::nextWord()
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::nextWord.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::nextWord.\n") );
 
         bool accepted( false );
         QString word;
@@ -594,7 +594,7 @@ namespace SpellCheck
     void SpellDialog::_displayWord( const QString& word )
     {
 
-        Debug::Throw( "SpellCheck::SpellDialog::_displayWord.\n" );
+        Debug::Throw( QStringLiteral("SpellCheck::SpellDialog::_displayWord.\n") );
 
         // set text in line_editor
         sourceLabel_->setText( word );

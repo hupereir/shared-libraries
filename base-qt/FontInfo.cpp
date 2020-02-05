@@ -26,7 +26,7 @@
 FontInfo::FontInfo( QWidget* parent ):
 QWidget( parent )
 {
-    Debug::Throw( "FontInfo::FontInfo.\n" );
+    Debug::Throw( QStringLiteral("FontInfo::FontInfo.\n") );
 
     // create checkboxes
     setLayout( new QVBoxLayout );
@@ -49,7 +49,7 @@ QWidget( parent )
 //__________________________________________________
 void FontInfo::setFormat( TextFormat::Flags format )
 {
-    Debug::Throw( "FontInfo::setFormat.\n" );
+    Debug::Throw( QStringLiteral("FontInfo::setFormat.\n") );
     for( CheckBoxMap::iterator iter = checkBoxes_.begin(); iter != checkBoxes_.end(); ++iter )
     { iter.value()->setChecked( format&iter.key() ); }
 }
@@ -57,7 +57,7 @@ void FontInfo::setFormat( TextFormat::Flags format )
 //__________________________________________________
 TextFormat::Flags FontInfo::format() const
 {
-    Debug::Throw( "FontInfo::format.\n" );
+    Debug::Throw( QStringLiteral("FontInfo::format.\n") );
 
     TextFormat::Flags out = TextFormat::Default;
     for( CheckBoxMap::const_iterator iter = checkBoxes_.constBegin(); iter != checkBoxes_.constEnd(); ++iter )

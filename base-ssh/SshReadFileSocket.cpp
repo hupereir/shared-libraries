@@ -41,7 +41,7 @@ namespace Ssh
     //_______________________________________________________________________
     ReadFileSocket::ReadFileSocket( QObject* parent ):
         QIODevice( parent ),
-        Counter( "Ssh::ReadFileSocket" )
+        Counter( QStringLiteral("Ssh::ReadFileSocket") )
     {
         buffer_.resize( maxBufferSize );
         setOpenMode(QIODevice::ReadOnly);
@@ -74,7 +74,7 @@ namespace Ssh
     bool ReadFileSocket::waitForConnected( int msecs )
     {
 
-        Debug::Throw( "Ssh::ReadFileSocket::waitForConnected.\n" );
+        Debug::Throw( QStringLiteral("Ssh::ReadFileSocket::waitForConnected.\n") );
 
         // do nothing if already connected
         if( isConnected() ) return true;
@@ -92,7 +92,7 @@ namespace Ssh
     //_______________________________________________________________________
     void ReadFileSocket::close()
     {
-        Debug::Throw( "Ssh::ReadFileSocket:close.\n" );
+        Debug::Throw( QStringLiteral("Ssh::ReadFileSocket:close.\n") );
 
         // stop timer
         if( timer_.isActive() ) timer_.stop();
@@ -144,7 +144,7 @@ namespace Ssh
     bool ReadFileSocket::_tryConnect()
     {
 
-        Debug::Throw( "Ssh::ReadFileSocket::_tryConnect.\n" );
+        Debug::Throw( QStringLiteral("Ssh::ReadFileSocket::_tryConnect.\n") );
         if( isConnected() ) return true;
 
         #if WITH_SSH
@@ -227,7 +227,7 @@ namespace Ssh
     bool ReadFileSocket::_tryRead()
     {
 
-        Debug::Throw( "Ssh::ReadFileSocket::_tryRead.\n" );
+        Debug::Throw( QStringLiteral("Ssh::ReadFileSocket::_tryRead.\n") );
 
         if( !isConnected() ) return false;
         if( maxBufferSize - bytesAvailable_ < bufferSize ) return true;

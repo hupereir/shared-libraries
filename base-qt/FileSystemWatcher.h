@@ -37,9 +37,9 @@ class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSy
     //* constructor
     explicit FileSystemWatcher( QObject* parent = nullptr ):
         QFileSystemWatcher( parent ),
-        Counter( "FileSystemWatcher" )
+        Counter( QStringLiteral("FileSystemWatcher") )
     {
-        Debug::Throw( "FileSystemWatcher::FileSystemWatcher.\n" );
+        Debug::Throw( QStringLiteral("FileSystemWatcher::FileSystemWatcher.\n") );
         connect( this, &QFileSystemWatcher::directoryChanged, this, &FileSystemWatcher::_addModifiedDirectory );
     }
 

@@ -38,9 +38,9 @@ namespace Transparency
     TransparencyConfiguration::TransparencyConfiguration( QWidget* parent, Flags flags ):
         QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "Transparency::TransparencyConfiguration" )
+        Counter( QStringLiteral("Transparency::TransparencyConfiguration") )
     {
-        Debug::Throw( "TransparencyConfiguration::TransparencyConfiguration.\n" );
+        Debug::Throw( QStringLiteral("TransparencyConfiguration::TransparencyConfiguration.\n") );
 
         if( (flags&Foreground) && (flags&Background) )
         {

@@ -29,9 +29,9 @@
 PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
     QWidget( parent ),
     OptionWidgetList( this ),
-    Counter( "PathHistoryConfiguration" )
+    Counter( QStringLiteral("PathHistoryConfiguration") )
 {
-    Debug::Throw( "PathHistoryConfiguration::PathHistoryConfiguration.\n" );
+    Debug::Throw( QStringLiteral("PathHistoryConfiguration::PathHistoryConfiguration.\n") );
 
     QVBoxLayout* layout = new QVBoxLayout;
     setLayout( layout );

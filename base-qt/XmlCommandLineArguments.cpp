@@ -28,7 +28,7 @@ namespace Xml
 XmlCommandLineArguments::XmlCommandLineArguments( const QDomElement& element )
 {
 
-    Debug::Throw( "XmlCommandLineArguments::XmlCommandLineArguments" );
+    Debug::Throw( QStringLiteral("XmlCommandLineArguments::XmlCommandLineArguments") );
 
     // parse children elements
     for( auto childNode = element.firstChild(); !childNode.isNull(); childNode = childNode.nextSibling() )

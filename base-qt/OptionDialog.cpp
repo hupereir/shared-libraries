@@ -36,7 +36,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     CustomDialog( parent, CloseButton )
 {
 
-    Debug::Throw( "OptionDialog::OptionDialog.\n" );
+    Debug::Throw( QStringLiteral("OptionDialog::OptionDialog.\n") );
     setWindowTitle( tr( "Runtime Options" ) );
     setOptionName( "OPTION_DIALOG" );
 
@@ -99,7 +99,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 void OptionDialog::_reload()
 {
 
-    Debug::Throw( "OptionDialog::_reload.\n" );
+    Debug::Throw( QStringLiteral("OptionDialog::_reload.\n") );
 
     model_.clear();
 

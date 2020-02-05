@@ -36,7 +36,7 @@ class IconViewItem final: private Base::Counter<IconViewItem>
 
     //* constructor
     explicit IconViewItem():
-        Counter( "IconView::Item" )
+        Counter( QStringLiteral("IconView::Item") )
     {}
 
     //*@name accessors

@@ -42,7 +42,7 @@ namespace Private
     //____________________________________________________________
     LineEditorStyle::LineEditorStyle( QStyle* parent ):
         QProxyStyle( parent ),
-        Counter( "Private::LineEditorStyle" )
+        Counter( QStringLiteral("Private::LineEditorStyle") )
     {}
 
     //____________________________________________________________
@@ -88,7 +88,7 @@ namespace Private
 //____________________________________________________________
 LineEditorButton::LineEditorButton( QWidget* parent ):
     QToolButton( parent ),
-    Counter( "LineEditorButton" )
+    Counter( QStringLiteral("LineEditorButton") )
 {
 
     QStyleOptionButton option;
@@ -132,11 +132,11 @@ void LineEditorButton::paintEvent( QPaintEvent* event )
 //____________________________________________________________
 LineEditor::LineEditor( QWidget* parent ):
     QLineEdit( parent ),
-    Counter( "LineEditor" ),
+    Counter( QStringLiteral("LineEditor") ),
     proxyStyle_( new Private::LineEditorStyle() )
 {
 
-    Debug::Throw( "LineEditor::LineEditor.\n" );
+    Debug::Throw( QStringLiteral("LineEditor::LineEditor.\n") );
 
     // actions
     _installActions();
@@ -200,7 +200,7 @@ void LineEditor::setReadOnly( bool value )
 //_____________________________________________________________________
 void LineEditor::setModified( bool value )
 {
-    Debug::Throw( "LineEditor::setModified.\n" );
+    Debug::Throw( QStringLiteral("LineEditor::setModified.\n") );
     if( value != modified_ )
     {
         modified_ = value;
@@ -222,7 +222,7 @@ void LineEditor::setShowClearButton( bool value )
 //______________________________________________________________________________
 void LineEditor::installContextMenuActions( BaseContextMenu* menu )
 {
-    Debug::Throw( "TextEditor::installContextMenuActions.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::installContextMenuActions.\n") );
     menu->addAction( undoAction_ );
     menu->addAction( redoAction_ );
     menu->addSeparator();
@@ -314,7 +314,7 @@ bool LineEditor::event( QEvent* event )
 //_______________________________________________________________
 void LineEditor::contextMenuEvent(QContextMenuEvent *event)
 {
-    Debug::Throw( "TextEditor::contextMenuEvent.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::contextMenuEvent.\n") );
 
     // menu
     BaseContextMenu menu( this );
@@ -436,7 +436,7 @@ void LineEditor::_modified( const QString& text )
 //__________________________________________________________
 void LineEditor::_installActions()
 {
-    Debug::Throw( "LineEditor::_installActions.\n" );
+    Debug::Throw( QStringLiteral("LineEditor::_installActions.\n") );
 
     // create actions
     addAction( undoAction_ = new StandardAction( StandardAction::Type::Undo, this ) );
@@ -488,7 +488,7 @@ void LineEditor::_installActions()
 //________________________________________________
 void LineEditor::_updateUndoRedoActions()
 {
-    Debug::Throw( "LineEditor::_updateUndoRedoActions.\n" );
+    Debug::Throw( QStringLiteral("LineEditor::_updateUndoRedoActions.\n") );
     undoAction_->setEnabled( isUndoAvailable() );
     redoAction_->setEnabled( isRedoAvailable() );
 }
@@ -497,7 +497,7 @@ void LineEditor::_updateUndoRedoActions()
 void LineEditor::_updateSelectionActions()
 {
 
-    Debug::Throw( "LineEditor::_updateSelectionActions.\n" );
+    Debug::Throw( QStringLiteral("LineEditor::_updateSelectionActions.\n") );
 
     bool hasSelection( hasSelectedText() );
     bool editable( !isReadOnly() );
@@ -513,7 +513,7 @@ void LineEditor::_updateSelectionActions()
 void LineEditor::_updatePasteAction()
 {
 
-    Debug::Throw( "LineEditor::_updatePasteAction.\n" );
+    Debug::Throw( QStringLiteral("LineEditor::_updatePasteAction.\n") );
     bool editable( !isReadOnly() );
     bool hasClipboard( !qApp->clipboard()->text().isEmpty() );
     pasteAction_->setEnabled( editable && hasClipboard );

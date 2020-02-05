@@ -61,7 +61,7 @@ class OptionModel: public TreeModel<Options::Pair>, private Base::Counter<Option
     //* constructor
     explicit OptionModel( QObject* parent = nullptr ):
         TreeModel( parent ),
-        Counter( "OptionModel" )
+        Counter( QStringLiteral("OptionModel") )
     {}
 
     //* set model read only

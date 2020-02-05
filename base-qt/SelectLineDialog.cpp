@@ -26,10 +26,10 @@
 //_______________________________________________________
 SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
     BaseDialog( parent, flags ),
-    Counter( "SelectLineDialog" )
+    Counter( QStringLiteral("SelectLineDialog") )
 {
 
-    Debug::Throw( "SelectLineDialog::SelectLineDialog.\n" );
+    Debug::Throw( QStringLiteral("SelectLineDialog::SelectLineDialog.\n") );
 
     // set dialog title
     setWindowTitle( tr( "Goto Line Number" ) );
@@ -55,7 +55,7 @@ LineEditor& SelectLineDialog::editor() const
 //________________________________________________________________________
 void SelectLineDialog::setSelectLineWidget( SelectLineWidget* selectLineWidget )
 {
-    Debug::Throw( "BaseFindDialog::setBaseFindWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseFindDialog::setBaseFindWidget.\n") );
 
     // assign new widget and change parent
     selectLineWidget_.reset( selectLineWidget );

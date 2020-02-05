@@ -37,7 +37,7 @@ class TaskBarProgressNotifications : public QObject, private Base::Counter<TaskB
     //* contructor
     explicit TaskBarProgressNotifications(QObject* parent = nullptr):
         QObject( parent ),
-        Counter( "TaskBarProgressNotifications" )
+        Counter( QStringLiteral("TaskBarProgressNotifications") )
         {}
 
     //*@name accessors

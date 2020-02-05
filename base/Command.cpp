@@ -31,7 +31,7 @@ namespace Base
     //____________________________________________
     bool Command::run( const QString& path ) const
     {
-        Debug::Throw( "Command::run.\n" );
+        Debug::Throw( QStringLiteral("Command::run.\n") );
         if( values_.empty() ) return false;
 
         const auto program( values_.front() );
@@ -44,7 +44,7 @@ namespace Base
     QStringList Command::_parse( const QString &in )
     {
 
-        Debug::Throw( "Command::parse.\n" );
+        Debug::Throw( QStringLiteral("Command::parse.\n") );
         QStringList out;
 
         // first split using '"' as separator to get "single string" arguments that contain strings

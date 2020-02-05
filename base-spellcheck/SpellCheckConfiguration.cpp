@@ -39,9 +39,9 @@ namespace SpellCheck
     SpellCheckConfiguration::SpellCheckConfiguration( QWidget* parent, Flags flags ):
         QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "SpellCheck::SpellCheckConfiguration" )
+        Counter( QStringLiteral("SpellCheck::SpellCheckConfiguration") )
     {
-        Debug::Throw( "SpellCheckConfiguration::SpellCheckConfiguration.\n" );
+        Debug::Throw( QStringLiteral("SpellCheckConfiguration::SpellCheckConfiguration.\n") );
 
         auto gridLayout( new GridLayout );
         gridLayout->setSpacing( 5 );
@@ -105,7 +105,7 @@ namespace SpellCheck
     //___________________________________________
     void SpellCheckConfiguration::_updateDictionaries()
     {
-        Debug::Throw( "SpellCheckConfiguration::_updateDictionaries.\n" );
+        Debug::Throw( QStringLiteral("SpellCheckConfiguration::_updateDictionaries.\n") );
 
         if( !dictionariesComboBox_ ) return;
 
@@ -128,7 +128,7 @@ namespace SpellCheck
     //___________________________________________
     void SpellCheckConfiguration::_updateFilters()
     {
-        Debug::Throw( "SpellCheckConfiguration::_updateFilters.\n" );
+        Debug::Throw( QStringLiteral("SpellCheckConfiguration::_updateFilters.\n") );
 
         if( !filtersComboBox_ ) return;
 

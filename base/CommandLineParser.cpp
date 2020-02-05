@@ -30,7 +30,7 @@ const QString CommandLineParser::qtGroupName( QObject::tr( "Qt Options:" ) );
 
 //________________________________________________________
 CommandLineParser::CommandLineParser():
-    Counter( "CommandLineParser" )
+    Counter( QStringLiteral("CommandLineParser") )
 {
     // insert default groups
     groupNames_.append( applicationGroupName );
@@ -43,7 +43,7 @@ CommandLineParser::CommandLineParser():
 void CommandLineParser::usage() const
 {
 
-    Debug::Throw( "CommandLineParser::usage.\n" );
+    Debug::Throw( QStringLiteral("CommandLineParser::usage.\n") );
 
     QTextStream stream( stdout );
     for( const auto& groupName:groupNames_ )
@@ -108,7 +108,7 @@ void CommandLineParser::usage() const
 //_______________________________________________________
 CommandLineArguments CommandLineParser::arguments() const
 {
-    Debug::Throw( "CommandLineParser::arguments.\n" );
+    Debug::Throw( QStringLiteral("CommandLineParser::arguments.\n") );
 
     CommandLineArguments out( { applicationName_ } );
 
@@ -174,7 +174,7 @@ void CommandLineParser::registerOption( const Tag& tag, const QString& type, con
 //________________________________________________________
 CommandLineParser& CommandLineParser::parse( const CommandLineArguments& arguments, bool ignoreWarnings )
 {
-    Debug::Throw( "CommandLineParser::parse.\n" );
+    Debug::Throw( QStringLiteral("CommandLineParser::parse.\n") );
 
     // clear all
     clear();
@@ -365,7 +365,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
 void CommandLineParser::clear()
 {
 
-    Debug::Throw( "CommandLineParser::clear.\n" );
+    Debug::Throw( QStringLiteral("CommandLineParser::clear.\n") );
 
     applicationName_.clear();
     orphans_.clear();

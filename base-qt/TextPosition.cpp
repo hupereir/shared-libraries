@@ -23,7 +23,7 @@
 
 //______________________________________________________________
 TextPosition::TextPosition( QTextDocument* document, int index ):
-    Counter( "TextPosition" ),
+    Counter( QStringLiteral("TextPosition") ),
     paragraph_( 0 ),
     index_( 0 )
 {

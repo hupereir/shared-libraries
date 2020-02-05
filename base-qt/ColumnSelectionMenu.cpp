@@ -27,10 +27,10 @@
 //_____________________________________________________
 ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, const QString& title ):
     QMenu( parent ),
-    Counter( "ColumnSelectionMenu" ),
+    Counter( QStringLiteral("ColumnSelectionMenu") ),
     target_( target )
 {
-    Debug::Throw( "ColumnSelectionMenu::ColumnSelectionMenu.\n" );
+    Debug::Throw( QStringLiteral("ColumnSelectionMenu::ColumnSelectionMenu.\n") );
     setTitle( title );
     connect( this, &QMenu::aboutToShow, this, &ColumnSelectionMenu::_updateActions );
     connect( this, &QMenu::triggered, this, &ColumnSelectionMenu::_updateSelectedColumns );
@@ -40,7 +40,7 @@ ColumnSelectionMenu::ColumnSelectionMenu( QWidget* parent, QTreeView* target, co
 void ColumnSelectionMenu::_updateActions()
 {
 
-    Debug::Throw( "ColumnSelectionMenu::_updateActions.\n" );
+    Debug::Throw( QStringLiteral("ColumnSelectionMenu::_updateActions.\n") );
 
     // clear current column action
     currentColumnAction_.reset();
@@ -119,7 +119,7 @@ void ColumnSelectionMenu::_updateActions()
 //______________________________________________________________________________
 void ColumnSelectionMenu::_hideCurrentColumn()
 {
-    Debug::Throw( "ColumnSelectionMenu::_hideCurrentColumn.\n" );
+    Debug::Throw( QStringLiteral("ColumnSelectionMenu::_hideCurrentColumn.\n") );
 
     // update current column visibility
     if( currentColumn_ >= 0 )
@@ -134,7 +134,7 @@ void ColumnSelectionMenu::_hideCurrentColumn()
 //______________________________________________________________________________
 void ColumnSelectionMenu::_updateSelectedColumns( QAction* action )
 {
-    Debug::Throw( "ColumnSelectionMenu::_updateSelectedColumns.\n" );
+    Debug::Throw( QStringLiteral("ColumnSelectionMenu::_updateSelectedColumns.\n") );
 
     // retrieve index
     auto&& iter = actions_.find( action );

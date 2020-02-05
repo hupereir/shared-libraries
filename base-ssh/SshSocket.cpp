@@ -35,7 +35,7 @@ namespace Ssh
     //_______________________________________________________________________
     Socket::Socket( QObject* parent ):
         QIODevice( parent ),
-        Counter( "Ssh::Socket" )
+        Counter( QStringLiteral("Ssh::Socket") )
     {
         buffer_.resize( maxBufferSize );
         setOpenMode(QIODevice::ReadWrite);
@@ -78,7 +78,7 @@ namespace Ssh
     //_______________________________________________________________________
     void Socket::close()
     {
-        Debug::Throw( "Ssh::Socket:close.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Socket:close.\n") );
 
         // stop timer
         if( timer_.isActive() ) timer_.stop();

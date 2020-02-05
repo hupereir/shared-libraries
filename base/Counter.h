@@ -33,7 +33,7 @@ namespace Base
         public:
 
         //* construtor
-        explicit Counter( QString name )
+        explicit Counter( const QString& name )
         {
             if( !initialized )
             {

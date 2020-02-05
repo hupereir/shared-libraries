@@ -34,10 +34,10 @@
 //_______________________________________________________
 BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
     QWidget( parent, Qt::ToolTip | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint ),
-    Counter( "BaseToolTipWidget" )
+    Counter( QStringLiteral("BaseToolTipWidget") )
 {
 
-    Debug::Throw( "BaseToolTipWidget::BaseToolTipWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseToolTipWidget::BaseToolTipWidget.\n") );
     setAttribute( Qt::WA_TranslucentBackground, true );
 
     // event filter on parent
@@ -57,7 +57,7 @@ BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
 //_____________________________________________
 void BaseToolTipWidget::setEnabled( bool value )
 {
-    Debug::Throw( "BaseToolTipWidget::setEnabled.\n" );
+    Debug::Throw( QStringLiteral("BaseToolTipWidget::setEnabled.\n") );
     if( enabled_ == value ) return;
     enabled_ = value;
     if( !enabled_ )
@@ -256,7 +256,7 @@ void BaseToolTipWidget::_adjustPosition()
 //_____________________________________________
 void BaseToolTipWidget::_updateConfiguration()
 {
-    Debug::Throw( "BaseToolTipWidget::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseToolTipWidget::_updateConfiguration.\n") );
     if( XmlOptions::get().contains( "SHOW_TOOLTIPS" ) ) setEnabled( XmlOptions::get().get<bool>( "SHOW_TOOLTIPS" ) );
     if( XmlOptions::get().contains( "TOOLTIP_DELAY" ) ) setDefaultDelay( XmlOptions::get().get<int>( "TOOLTIP_DELAY" ) );
 }

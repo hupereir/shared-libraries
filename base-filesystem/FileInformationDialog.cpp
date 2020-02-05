@@ -28,7 +28,7 @@
 FileInformationDialog::FileInformationDialog( QWidget* parent, const FileRecord& record ):
     BaseFileInformationDialog( parent )
 {
-    Debug::Throw( "FileInformationDialog::FileInformationDialog.\n" );
+    Debug::Throw( QStringLiteral("FileInformationDialog::FileInformationDialog.\n") );
 
     // file name
     const File& file( record.file() );

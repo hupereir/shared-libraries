@@ -26,9 +26,9 @@
 
 //_________________________________________________________
 ResourceMigration::ResourceMigration( File source ):
-    Counter( "ResourceMigration" ),
+    Counter( QStringLiteral("ResourceMigration") ),
     source_( source )
-{ Debug::Throw( "ResourceMigration::ResourceMigration.\n" ); }
+{ Debug::Throw( QStringLiteral("ResourceMigration::ResourceMigration.\n") ); }
 
 //_________________________________________________________
 bool ResourceMigration::migrate( File destination ) const

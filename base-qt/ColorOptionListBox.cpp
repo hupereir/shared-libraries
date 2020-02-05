@@ -78,7 +78,7 @@ ColorOptionListBox::ColorOptionListBox( QWidget* parent, const QString& name ):
 //_______________________________________________________
 void ColorOptionListBox::_add()
 {
-    Debug::Throw( "OptionListBox::_add.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_add.\n") );
 
     // map dialog
     EditDialog dialog( this );
@@ -108,7 +108,7 @@ void ColorOptionListBox::_add()
 //_______________________________________________________
 void ColorOptionListBox::_edit()
 {
-    Debug::Throw( "OptionListBox::_edit.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_edit.\n") );
 
     // retrieve selection
     QModelIndex current( list().selectionModel()->currentIndex() );

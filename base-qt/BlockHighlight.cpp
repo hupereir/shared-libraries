@@ -29,9 +29,9 @@
 //_______________________________________________________________________
 BlockHighlight::BlockHighlight( TextEditor* parent ):
     QObject( parent ),
-    Counter( "BlockHighlight" ),
+    Counter( QStringLiteral("BlockHighlight") ),
     parent_( parent )
-{ Debug::Throw( "BlockHighlight::BlockHighlight.\n" ); }
+{ Debug::Throw( QStringLiteral("BlockHighlight::BlockHighlight.\n") ); }
 
 //______________________________________________________________________
 void BlockHighlight::clear()

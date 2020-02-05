@@ -43,13 +43,13 @@ namespace Transparency
     CompositeEngine::CompositeEngine():
         available_( false ),
         initialized_( false )
-    { Debug::Throw( "CompositeEngine::CompositeEngine.\n" ); }
+    { Debug::Throw( QStringLiteral("CompositeEngine::CompositeEngine.\n") ); }
 
     //_______________________________________________________________
     void CompositeEngine::_initialize()
     {
 
-        Debug::Throw( "CompositeEngine::initialize\n" );
+        Debug::Throw( QStringLiteral("CompositeEngine::initialize\n") );
         if( !initialized_ )
         {
             initialized_ = true;
@@ -60,7 +60,7 @@ namespace Transparency
     //_______________________________________________________________
     bool CompositeEngine::_compositingAvailable() const
     {
-        Debug::Throw( "CompositeEngine::_compositingAvailable\n" );
+        Debug::Throw( QStringLiteral("CompositeEngine::_compositingAvailable\n") );
 
         #if defined(Q_OS_WIN)
         return true;

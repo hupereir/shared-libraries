@@ -26,7 +26,7 @@
 HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocument& document )
 {
 
-    Debug::Throw( "HtmlTextNode::HtmlTextNode.\n" );
+    Debug::Throw( QStringLiteral("HtmlTextNode::HtmlTextNode.\n") );
     const auto lines( text.split( QLatin1Char('\n') ) );
     if( lines.empty() ) return;
 

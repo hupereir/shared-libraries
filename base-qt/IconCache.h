@@ -38,19 +38,19 @@ namespace Base
 
         //* constructor
         explicit IconCacheItem():
-            Counter( "Base::IconCacheItem" )
+            Counter( QStringLiteral("Base::IconCacheItem") )
         {}
 
         //* copy constructor
         explicit IconCacheItem( const QIcon& other ):
             QIcon( other ),
-            Counter( "Base::IconCacheItem" )
+            Counter( QStringLiteral("Base::IconCacheItem") )
         {}
 
         //* copy constructor
         explicit IconCacheItem( QIcon&& other ):
             QIcon( std::move( other ) ),
-            Counter( "Base::IconCacheItem" )
+            Counter( QStringLiteral("Base::IconCacheItem") )
         {}
 
         //* flags

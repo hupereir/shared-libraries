@@ -37,7 +37,7 @@
 //______________________________________________
 FontEditor::FontEditor( QWidget *parent ):
     QWidget( parent ),
-    Counter( "FontEditor" )
+    Counter( QStringLiteral("FontEditor") )
 {
 
     QHBoxLayout *layout( new QHBoxLayout );

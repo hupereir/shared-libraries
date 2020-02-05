@@ -44,7 +44,7 @@ namespace SpellCheck
         //* constructor
         explicit SpellItemModel( QObject* parent = nullptr ):
             ListModel( parent ),
-            Counter( "SpellItemModel" )
+            Counter( QStringLiteral("SpellItemModel") )
         {}
 
         //*@name methods reimplemented from base class

@@ -40,9 +40,9 @@
 //___________________________________________________________
 DockPanel::DockPanel( QWidget* parent ):
     QWidget( parent ),
-    Counter( "DockPanel" )
+    Counter( QStringLiteral("DockPanel") )
 {
-    Debug::Throw( "DockPanel::DockPanel.\n" );
+    Debug::Throw( QStringLiteral("DockPanel::DockPanel.\n") );
 
     // dock
     dock_.reset( new Private::LocalDockWidget(nullptr) );
@@ -113,7 +113,7 @@ void DockPanel::setOptionName( QString value )
 void DockPanel::_toggleDock()
 {
 
-    Debug::Throw( "DockPanel::_toggleDock.\n" );
+    Debug::Throw( QStringLiteral("DockPanel::_toggleDock.\n") );
 
     if( panel_->isDetached() )
     {
@@ -164,7 +164,7 @@ namespace Private
     //___________________________________________________________
     LocalDockWidget::LocalDockWidget( QWidget* parent ):
         QWidget( parent, Qt::FramelessWindowHint|Qt::Window ),
-        Counter( "Private::LocalDockWidget" )
+        Counter( QStringLiteral("Private::LocalDockWidget") )
     {
 
         setAttribute(Qt::WA_TranslucentBackground);
@@ -229,7 +229,7 @@ namespace Private
     //___________________________________________________________
     LocalWidget::LocalWidget( QWidget* parent ):
         QFrame( parent ),
-        Counter( "Private::LocalWidget" ),
+        Counter( QStringLiteral("Private::LocalWidget") ),
         widgetDragMonitor_( this )
     {
         _installActions();
@@ -279,7 +279,7 @@ namespace Private
     void LocalWidget::_updateContextMenu( const QPoint& position )
     {
 
-        Debug::Throw( "LocalWidget::_updateContextMenu.\n" );
+        Debug::Throw( QStringLiteral("LocalWidget::_updateContextMenu.\n") );
 
         // create menu
         BaseContextMenu menu( this );
@@ -298,7 +298,7 @@ namespace Private
     void LocalWidget::_toggleStaysOnTop( bool state )
     {
 
-        Debug::Throw( "LocalWidget::_toggleStaysOnTop.\n" );
+        Debug::Throw( QStringLiteral("LocalWidget::_toggleStaysOnTop.\n") );
 
         // check that widget is top level
         if( !widgetDragMonitor_.isEnabled() ) return;
@@ -330,7 +330,7 @@ namespace Private
     void LocalWidget::_toggleSticky( bool state )
     {
 
-        Debug::Throw( "LocalWidget::_toggleSticky.\n" );
+        Debug::Throw( QStringLiteral("LocalWidget::_toggleSticky.\n") );
 
         // check that widget is top level
         if( !widgetDragMonitor_.isEnabled() ) return;
@@ -360,7 +360,7 @@ namespace Private
     void LocalWidget::_updateConfiguration()
     {
 
-        Debug::Throw( "DockPanel::_updateConfiguration.\n" );
+        Debug::Throw( QStringLiteral("DockPanel::_updateConfiguration.\n") );
 
         // sticky and stay on top options
         if( _hasOptionName() )
@@ -375,7 +375,7 @@ namespace Private
     void LocalWidget::_installActions()
     {
 
-        Debug::Throw( "LocalWidget::_installActions.\n" );
+        Debug::Throw( QStringLiteral("LocalWidget::_installActions.\n") );
 
         // detach
         addAction( detachAction_ = new QAction( tr( "Detach" ), this ) );

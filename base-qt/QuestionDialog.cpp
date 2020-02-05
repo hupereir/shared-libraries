@@ -28,7 +28,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
     DetailsDialog( parent, OkButton | CancelButton| Separator )
 {
 
-    Debug::Throw( "QuestionDialog::QuestionDialog\n" );
+    Debug::Throw( QStringLiteral("QuestionDialog::QuestionDialog\n") );
 
     // try load Question icon
     auto hLayout( new QHBoxLayout );
@@ -49,7 +49,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
 //____________________________________________________________
 void QuestionDialog::setText( const QString& text )
 {
-    Debug::Throw( "QuestionDialog::setText\n" );
+    Debug::Throw( QStringLiteral("QuestionDialog::setText\n") );
     label_->setText( text );
     label_->setWordWrap( label_->fontMetrics().width( text ) >300 );
 }

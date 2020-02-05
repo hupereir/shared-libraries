@@ -81,7 +81,7 @@ namespace Base{
 
         //* constructor
         explicit Singleton():
-            Counter( "Singleton" )
+            Counter( QStringLiteral("Singleton") )
         {}
 
         QObject* application_ = nullptr;

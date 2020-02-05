@@ -30,25 +30,25 @@ QTextStream& operator >> ( QTextStream& in, bool& value )
 
 //________________________________________________________
 Option::Option():
-    Counter( "Option" )
+    Counter( QStringLiteral("Option") )
 {}
 
 //________________________________________________________
 Option::Option( const char* value, Flags flags ):
-    Counter( "Option" ),
+    Counter( QStringLiteral("Option") ),
     flags_( flags )
 { value_ = value; }
 
 //________________________________________________________
 Option::Option( const QByteArray& value, Flags flags ):
-    Counter( "Option" ),
+    Counter( QStringLiteral("Option") ),
     value_( value ),
     flags_( flags )
 {}
 
 //________________________________________________________
 Option::Option( const QString& value, Flags flags ):
-    Counter( "Option" ),
+    Counter( QStringLiteral("Option") ),
     value_( value.toUtf8() ),
     flags_( flags )
 {}

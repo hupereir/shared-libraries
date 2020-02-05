@@ -33,8 +33,8 @@
 //_________________________________________________________
 Private::SimpleListViewDelegate::SimpleListViewDelegate( QObject *parent ):
     QAbstractItemDelegate( parent ),
-    Counter( "Private::SimpleListViewDelegate" )
-{ Debug::Throw( "Private::SimpleListViewDelegate::SimpleListViewDelegate.\n" ); }
+    Counter( QStringLiteral("Private::SimpleListViewDelegate") )
+{ Debug::Throw( QStringLiteral("Private::SimpleListViewDelegate::SimpleListViewDelegate.\n") ); }
 
 //_________________________________________________________
 void Private::SimpleListViewDelegate::paint( QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index ) const

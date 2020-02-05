@@ -26,10 +26,10 @@
 //____________________________________________________________
 CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags):
     BaseDialog( parent, wflags ),
-    Counter( "CustomDialog" )
+    Counter( QStringLiteral("CustomDialog") )
 {
 
-    Debug::Throw( "CustomDialog::CustomDialog.\n" );
+    Debug::Throw( QStringLiteral("CustomDialog::CustomDialog.\n") );
 
     // create vbox layout
     auto layout = new QVBoxLayout;

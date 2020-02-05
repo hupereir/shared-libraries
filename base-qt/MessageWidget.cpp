@@ -80,11 +80,11 @@ class MessageWidgetPrivate: public QObject, private Base::Counter<MessageWidgetP
 //___________________________________________________________
 MessageWidget::MessageWidget( QWidget* parent, MessageType type, const QString& text ):
     QWidget( parent ),
-    Counter( "MessageWidget" ),
+    Counter( QStringLiteral("MessageWidget") ),
     private_( new MessageWidgetPrivate( this ) )
 {
 
-    Debug::Throw( "MessageWidget::MessageWidget.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::MessageWidget.\n") );
 
     // reset policy and constrains
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Minimum );
@@ -143,7 +143,7 @@ QString MessageWidget::text() const
 //___________________________________________________________
 void MessageWidget::setMessageType( MessageWidget::MessageType messageType )
 {
-    Debug::Throw( "MessageWidget::setMessageType.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::setMessageType.\n") );
     if( private_->messageType_ != messageType )
     {
         private_->messageType_ = messageType;
@@ -154,7 +154,7 @@ void MessageWidget::setMessageType( MessageWidget::MessageType messageType )
 //___________________________________________________________
 void MessageWidget::setIcon( const QIcon& icon )
 {
-    Debug::Throw( "MessageWidget::setIcon.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::setIcon.\n") );
     if( icon.isNull() )
     {
 
@@ -179,7 +179,7 @@ void MessageWidget::setText( const QString& text )
 QToolButton* MessageWidget::addDefaultCloseButton()
 {
 
-    Debug::Throw( "InformationWidget::addDefaultCloseButton.\n" );
+    Debug::Throw( QStringLiteral("InformationWidget::addDefaultCloseButton.\n") );
     auto button = new QToolButton( private_->content_ );
     button->setIcon( IconEngine::get( IconNames::DialogClose ) );
     button->setAutoRaise( true );
@@ -192,7 +192,7 @@ QToolButton* MessageWidget::addDefaultCloseButton()
 //___________________________________________________________
 QPushButton* MessageWidget::addButton( const QIcon& icon, const QString& text )
 {
-    Debug::Throw( "MessageWidget::addButton.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::addButton.\n") );
     auto button = new QPushButton( icon, text, private_->content_ );
     private_->buttonLayout_->addWidget( button );
     return button;
@@ -201,7 +201,7 @@ QPushButton* MessageWidget::addButton( const QIcon& icon, const QString& text )
 //___________________________________________________________
 void MessageWidget::clearButtons()
 {
-    Debug::Throw( "MessageWidget::clearButtons.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::clearButtons.\n") );
     for( auto&& button:private_->content_->findChildren<QAbstractButton*>() )
     {
         if( button->parentWidget() == private_->content_ )
@@ -216,7 +216,7 @@ void MessageWidget::clearButtons()
 //___________________________________________________________
 MessageWidget::ButtonList MessageWidget::addButtons( const QStringList& textList )
 {
-    Debug::Throw( "MessageWidget::addButtons.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::addButtons.\n") );
     ButtonList out;
     for( const auto& text:textList )
     { out.append( addButton( text ) ); }
@@ -226,7 +226,7 @@ MessageWidget::ButtonList MessageWidget::addButtons( const QStringList& textList
 //___________________________________________________________
 MessageWidget::ButtonList MessageWidget::setButtons( const QStringList& textList )
 {
-    Debug::Throw( "MessageWidget::setButtons.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::setButtons.\n") );
     clearButtons();
     return addButtons( textList );
 }
@@ -243,7 +243,7 @@ void MessageWidget::setDuration( int duration )
 void MessageWidget::animatedShow()
 {
 
-    Debug::Throw( "MessageWidget::animatedShow.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::animatedShow.\n") );
 
     // check animation
     if( private_->animation_ &&
@@ -278,7 +278,7 @@ void MessageWidget::animatedShow()
 void MessageWidget::animatedHide()
 {
 
-    Debug::Throw( "MessageWidget::animatedHide.\n" );
+    Debug::Throw( QStringLiteral("MessageWidget::animatedHide.\n") );
 
     // check animation
     if( private_->animation_ &&
@@ -359,9 +359,9 @@ void MessageWidget::paintEvent( QPaintEvent* event )
 //___________________________________________________________
 MessageWidgetPrivate::MessageWidgetPrivate( MessageWidget* parent ):
     QObject( parent ),
-    Counter( "MessageWidgetPrivate" ),
+    Counter( QStringLiteral("MessageWidgetPrivate") ),
     parent_( parent )
-{ Debug::Throw( "MessageWidgetPrivate::MessageWidgetPrivate.\n" ); }
+{ Debug::Throw( QStringLiteral("MessageWidgetPrivate::MessageWidgetPrivate.\n") ); }
 
 //___________________________________________________________
 int MessageWidgetPrivate::preferredHeight() const

@@ -43,7 +43,7 @@ namespace Ssh
 
         //* constructor
         explicit ConnectionAttributes():
-            Counter( "Ssh::ConnectionAttributes" )
+            Counter( QStringLiteral("Ssh::ConnectionAttributes") )
         {}
 
         virtual ~ConnectionAttributes() = default;

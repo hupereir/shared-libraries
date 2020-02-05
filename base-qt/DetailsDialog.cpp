@@ -24,7 +24,7 @@
 void DetailsDialog::setDetails( const QString& details )
 {
 
-    Debug::Throw( "DetailsDialog::setDetails.\n" );
+    Debug::Throw( QStringLiteral("DetailsDialog::setDetails.\n") );
 
     // do nothing if detail string is invalid
     if( details.isEmpty() ) return;
@@ -43,7 +43,7 @@ void DetailsDialog::setDetails( const QString& details )
 void DetailsDialog::setDetails( QWidget* widget )
 {
 
-    Debug::Throw( "DetailsDialog::setDetails.\n" );
+    Debug::Throw( QStringLiteral("DetailsDialog::setDetails.\n") );
 
     // details label
     if( !detailsLabel_ )
@@ -66,7 +66,7 @@ void DetailsDialog::setDetails( QWidget* widget )
 //_____________________________________________________________________
 void DetailsDialog::toggleDetails( bool visible )
 {
-    Debug::Throw( "toggleDetails::showDetails.\n" );
+    Debug::Throw( QStringLiteral("toggleDetails::showDetails.\n") );
     if( !detailsWidget_ ) return;
 
     detailsLabel_->setVisible( !visible );

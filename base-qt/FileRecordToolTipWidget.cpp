@@ -36,7 +36,7 @@ FileRecordToolTipWidget::FileRecordToolTipWidget( QWidget* parent ):
     BaseToolTipWidget( parent )
 {
 
-    Debug::Throw( "FileRecordToolTipWidget::FileRecordToolTipWidget.\n" );
+    Debug::Throw( QStringLiteral("FileRecordToolTipWidget::FileRecordToolTipWidget.\n") );
 
     // layout
     auto hLayout = new QHBoxLayout;
@@ -91,7 +91,7 @@ FileRecordToolTipWidget::FileRecordToolTipWidget( QWidget* parent ):
 //_______________________________________________________
 void FileRecordToolTipWidget::setRecord( const FileRecord& record, const QIcon& icon )
 {
-    Debug::Throw( "FileRecordToolTipWidget::setRecord.\n" );
+    Debug::Throw( QStringLiteral("FileRecordToolTipWidget::setRecord.\n") );
 
     // local storage
     icon_ = icon;
@@ -177,7 +177,7 @@ void FileRecordToolTipWidget::setRecord( const FileRecord& record, const QIcon& 
 //_____________________________________________
 void FileRecordToolTipWidget::_updateConfiguration()
 {
-    Debug::Throw( "FileRecordToolTipWidget::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("FileRecordToolTipWidget::_updateConfiguration.\n") );
     bool modified( false );
 
     // mask from options

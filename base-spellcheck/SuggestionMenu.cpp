@@ -29,11 +29,11 @@ namespace SpellCheck
     //________________________________________________
     SuggestionMenu::SuggestionMenu( QWidget* parent, const QString& word, bool readOnly ):
         QMenu( parent ),
-        Counter( "SuggestionMenu" ),
+        Counter( QStringLiteral("SuggestionMenu") ),
         word_( word )
     {
 
-        Debug::Throw( "SuggestionMenu::SuggestionMenu.\n" );
+        Debug::Throw( QStringLiteral("SuggestionMenu::SuggestionMenu.\n") );
 
         // item selection
         interface_.reset();
@@ -48,7 +48,7 @@ namespace SpellCheck
     void SuggestionMenu::_aboutToShow()
     {
 
-        Debug::Throw( "SuggestionMenu::_aboutToShow.\n" );
+        Debug::Throw( QStringLiteral("SuggestionMenu::_aboutToShow.\n") );
 
         QString word( word_ );
 
@@ -85,7 +85,7 @@ namespace SpellCheck
     void SuggestionMenu::_select( QAction* action )
     {
 
-        Debug::Throw( "SuggestionMenu::_select.\n" );
+        Debug::Throw( QStringLiteral("SuggestionMenu::_select.\n") );
         const auto iter( suggestions_.find( action ) );
         if( iter != suggestions_.end() ) emit suggestionSelected( iter.value() );
         return;
@@ -96,7 +96,7 @@ namespace SpellCheck
     void SuggestionMenu::_addWord()
     {
 
-        Debug::Throw( "SuggestionMenu::_addWord.\n" );
+        Debug::Throw( QStringLiteral("SuggestionMenu::_addWord.\n") );
         if( word_.isEmpty() ) return;
         interface_.addWord( word_ );
         interface_.saveWordList();

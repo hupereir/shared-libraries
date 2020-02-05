@@ -39,9 +39,9 @@ QOrderedSet<QString>& BaseFindWidget::_searchedStrings()
 //________________________________________________________________________
 BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     AbstractFindWidget( parent ),
-    Counter( "BaseFindWidget" )
+    Counter( QStringLiteral("BaseFindWidget") )
 {
-    Debug::Throw( "BaseFindWidget::BaseFindWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseFindWidget::BaseFindWidget.\n") );
 
     // update palette
     _updateNotFoundPalette();
@@ -209,7 +209,7 @@ void BaseFindWidget::changeEvent( QEvent* event )
 //________________________________________________________________________
 void BaseFindWidget::_addDisabledButton( QAbstractButton* button )
 {
-    Debug::Throw( "BaseFindWidget::_addDisabledButton.\n" );
+    Debug::Throw( QStringLiteral("BaseFindWidget::_addDisabledButton.\n") );
     buttons_.append( button );
     _updateButtons();
 }
@@ -217,7 +217,7 @@ void BaseFindWidget::_addDisabledButton( QAbstractButton* button )
 //________________________________________________________________________
 void BaseFindWidget::_addSearchedString( const QString& text  )
 {
-    Debug::Throw( "BaseFindWidget::_addSearchedString.\n" );
+    Debug::Throw( QStringLiteral("BaseFindWidget::_addSearchedString.\n") );
     if( text.isEmpty() ) return;
     if( _searchedStrings().find( text ) == _searchedStrings().end() )
     {
@@ -229,7 +229,7 @@ void BaseFindWidget::_addSearchedString( const QString& text  )
 //________________________________________________________________________
 void BaseFindWidget::synchronize()
 {
-    Debug::Throw( "BaseFindWidget::synchronize.\n" );
+    Debug::Throw( QStringLiteral("BaseFindWidget::synchronize.\n") );
     editor_->clear();
 
     for( const auto& string:_searchedStrings() )
@@ -239,7 +239,7 @@ void BaseFindWidget::synchronize()
 //________________________________________________________________________
 void BaseFindWidget::_regExpChecked( bool value )
 {
-    Debug::Throw( "BaseFindWidget::_regExpChecked.\n" );
+    Debug::Throw( QStringLiteral("BaseFindWidget::_regExpChecked.\n") );
     caseSensitiveCheckbox_->setChecked( value );
     if( value )
     {
@@ -252,7 +252,7 @@ void BaseFindWidget::_regExpChecked( bool value )
 //________________________________________________________________________
 void BaseFindWidget::_updateButtons( const QString& text )
 {
-    Debug::Throw( "BaseFindWidget::_updateButtons.\n" );
+    Debug::Throw( QStringLiteral("BaseFindWidget::_updateButtons.\n") );
 
     const bool enabled( !( text.isEmpty() ) );
     for( const auto& button:buttons_ )

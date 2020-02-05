@@ -133,7 +133,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
     backupOptions_( XmlOptions::get() )
 {
 
-    Debug::Throw( "BaseConfigurationDialog::BaseConfigurationDialog.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::BaseConfigurationDialog.\n") );
     setWindowTitle( tr( "Configuration" ) );
     setOptionName( "PREFERENCE_DIALOG" );
 
@@ -199,7 +199,7 @@ BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags )
 QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flags )
 {
 
-    Debug::Throw( "BaseConfigurationDialog::baseConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::baseConfiguration.\n") );
 
     if( !parent ) parent = &addPage(
         IconEngine::get( IconNames::PreferencesGeneral ),
@@ -312,7 +312,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
 QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 {
 
-    Debug::Throw( "BaseConfigurationDialog::listConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::listConfiguration.\n") );
 
     // make sure parent is valid
     QWidget* box( nullptr );
@@ -394,7 +394,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags flags )
 {
 
-    Debug::Throw( "BaseConfigurationDialog::textEditConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::textEditConfiguration.\n") );
 
     // make sure parent is valid
     if( !parent ) parent = &addPage(
@@ -509,7 +509,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         out = box;
     }
 
-    Debug::Throw( "BaseConfigurationDialog::textEditConfiguration - done.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::textEditConfiguration - done.\n") );
     return out;
 
 }
@@ -518,7 +518,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
 void BaseConfigurationDialog::_editPixmapPathList()
 {
 
-    Debug::Throw( "BaseConfigurationDialog::_editPixmapPathList.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::_editPixmapPathList.\n") );
 
     if( !pixmapPathDialog_ )
     {
@@ -545,7 +545,7 @@ void BaseConfigurationDialog::_editPixmapPathList()
 //__________________________________________________
 void BaseConfigurationDialog::_editIconTheme()
 {
-    Debug::Throw( "BaseConfigurationDialog::_editIconTheme.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::_editIconTheme.\n") );
     if( !iconThemeDialog_ )
     {
         // create
@@ -655,7 +655,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
 //__________________________________________________
 void BaseConfigurationDialog::_apply()
 {
-    Debug::Throw( "BaseConfigurationDialog::_apply.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::_apply.\n") );
     if( _checkModified() )
     {
 
@@ -676,7 +676,7 @@ void BaseConfigurationDialog::_apply()
 //__________________________________________________
 void BaseConfigurationDialog::_save()
 {
-    Debug::Throw( "BaseConfigurationDialog::_save.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::_save.\n") );
     _apply();
 
     // write options to disk
@@ -687,7 +687,7 @@ void BaseConfigurationDialog::_save()
 //__________________________________________________
 void BaseConfigurationDialog::_cancel()
 {
-    Debug::Throw( "BaseConfigurationDialog::_cancel.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::_cancel.\n") );
     if( XmlOptions::get() == backupOptions_ ) return;
 
     // restore backup
@@ -703,7 +703,7 @@ void BaseConfigurationDialog::_cancel()
 //__________________________________________________
 void BaseConfigurationDialog::_reset()
 {
-    Debug::Throw( "BaseConfigurationDialog::_reset.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::_reset.\n") );
 
     // restore options from XML
     read( XmlOptions::get() );
@@ -713,7 +713,7 @@ void BaseConfigurationDialog::_reset()
 //__________________________________________________
 void BaseConfigurationDialog::_restoreDefaults()
 {
-    Debug::Throw( "BaseConfigurationDialog::_restoreDefaults.\n" );
+    Debug::Throw( QStringLiteral("BaseConfigurationDialog::_restoreDefaults.\n") );
 
     // list options that have no default values
     OptionModel::List local;

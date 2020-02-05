@@ -25,7 +25,7 @@ SingleTimeDialog::SingleTimeDialog( QWidget* parent, const QString& text ):
     InformationDialog( parent, text )
 {
 
-    Debug::Throw( "SingleTimeDialog::SingleTimeDialog\n" );
+    Debug::Throw( QStringLiteral("SingleTimeDialog::SingleTimeDialog\n") );
 
     singleTimeCheckBox_ = new QCheckBox( tr( "Do not show this message again" ), this );
     mainLayout().addWidget( singleTimeCheckBox_ );

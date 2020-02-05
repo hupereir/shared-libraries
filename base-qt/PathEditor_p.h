@@ -207,9 +207,9 @@ namespace Private
         //* constructor
         explicit PathEditorMenuButton( QWidget* parent ):
             PathEditorButton( parent ),
-            Counter( "PathEditorMenuButton" )
+            Counter( QStringLiteral("PathEditorMenuButton") )
         {
-            Debug::Throw( "PathEditorMenuButton::PathEditorMenuButton.\n" );
+            Debug::Throw( QStringLiteral("PathEditorMenuButton::PathEditorMenuButton.\n") );
             setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
             updateMinimumSize();
         }
@@ -235,9 +235,9 @@ namespace Private
         //* constructor
         explicit PathEditorSwitch( QWidget* parent ):
             PathEditorButton( parent ),
-            Counter( "PathEditorSwitch" )
+            Counter( QStringLiteral("PathEditorSwitch") )
         {
-            Debug::Throw( "PathEditorItem::PathEditorItem.\n" );
+            Debug::Throw( QStringLiteral("PathEditorItem::PathEditorItem.\n") );
             setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
             setCursor( Qt::IBeamCursor );
         }

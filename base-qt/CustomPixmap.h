@@ -43,24 +43,24 @@ class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
     //* constructor
     explicit CustomPixmap( const QPixmap& pixmap ):
         QPixmap( pixmap ),
-        Counter( "CustomPixmap" )
+        Counter( QStringLiteral("CustomPixmap") )
     {}
 
     //* constructor
     explicit CustomPixmap( QPixmap&& pixmap ):
         QPixmap( std::move(pixmap) ),
-        Counter( "CustomPixmap" )
+        Counter( QStringLiteral("CustomPixmap") )
     {}
 
     //* constructor
     explicit CustomPixmap( const QImage& image ):
         QPixmap( fromImage(image) ),
-        Counter( "CustomPixmap" )
+        Counter( QStringLiteral("CustomPixmap") )
     {}
 
     //* constructor
     explicit CustomPixmap():
-        Counter( "CustomPixmap" )
+        Counter( QStringLiteral("CustomPixmap") )
     {}
 
     //* constructor

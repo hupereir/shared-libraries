@@ -62,7 +62,7 @@ namespace SpellCheck
     //_______________________________________________
     void SpellItemDialog::_selectItem( const QModelIndex& index )
     {
-        Debug::Throw( "SpellItemDialog::_selectItem.\n" );
+        Debug::Throw( QStringLiteral("SpellItemDialog::_selectItem.\n") );
 
         if( !index.isValid() ) return;
 

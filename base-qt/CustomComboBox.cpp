@@ -27,10 +27,10 @@
 //___________________________________________________
 CustomComboBox::CustomComboBox( QWidget* parent ):
     QComboBox( parent ),
-    Counter( "CustomComboBox" )
+    Counter( QStringLiteral("CustomComboBox") )
 {
 
-    Debug::Throw( "CustomComboBox::CustomComboBox.\n" );
+    Debug::Throw( QStringLiteral("CustomComboBox::CustomComboBox.\n") );
     setAutoCompletion( false );
 
     // size policy
@@ -44,7 +44,7 @@ CustomComboBox::~CustomComboBox() = default;
 //____________________________________________________
 void CustomComboBox::setEditable( bool value )
 {
-    Debug::Throw( "CustomComboBox::setEditable.\n" );
+    Debug::Throw( QStringLiteral("CustomComboBox::setEditable.\n") );
     QComboBox::setEditable( value );
 
     if( !value ) editor_.reset();
@@ -59,7 +59,7 @@ void CustomComboBox::setEditable( bool value )
 //____________________________________________________
 void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSensitivity )
 {
-    Debug::Throw( "CustomComboBox::setAutoCompletion.\n" );
+    Debug::Throw( QStringLiteral("CustomComboBox::setAutoCompletion.\n") );
 
     if( isEditable() )
     {

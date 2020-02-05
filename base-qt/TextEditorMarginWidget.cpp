@@ -28,10 +28,10 @@
 //_____________________________________________________________
 TextEditorMarginWidget::TextEditorMarginWidget( TextEditor* parent ):
     QWidget( parent ),
-    Counter( "TextEditorMarginWidget" ),
+    Counter( QStringLiteral("TextEditorMarginWidget") ),
     editor_( parent )
 {
-    Debug::Throw( "TextEditorMarginWidget::TextEditorMarginWidget.\n" );
+    Debug::Throw( QStringLiteral("TextEditorMarginWidget::TextEditorMarginWidget.\n") );
     resize(0,0);
 
     setBackgroundRole( QPalette::AlternateBase );

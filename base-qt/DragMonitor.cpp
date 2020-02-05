@@ -26,7 +26,7 @@
 //_____________________________________________________________
 DragMonitor::DragMonitor( QWidget* parent ):
     QObject( parent ),
-    Counter( "DragMonitor::DragMonitor" ),
+    Counter( QStringLiteral("DragMonitor::DragMonitor") ),
     dragEnabled_( true ),
     dragInProgress_( false )
 {

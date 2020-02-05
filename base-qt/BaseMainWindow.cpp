@@ -41,7 +41,7 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     QMainWindow( parent, WindowFlags ),
     monitor_( this )
 {
-    Debug::Throw( "BaseMainWindow::BaseMainWindow.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::BaseMainWindow.\n") );
 
     // lock toolbars action
     addAction( lockToolBarsAction_ = new QAction( IconEngine::get( IconNames::Lock ), tr( "Lock Toolbar Positions" ), this ) );
@@ -81,7 +81,7 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
 void BaseMainWindow::setOptionName( const QString& name )
 {
 
-    Debug::Throw( "BaseMainWindow::setOptionName.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::setOptionName.\n") );
     monitor_.setOptionName( name );
 
     if( name.isEmpty() ) {
@@ -117,7 +117,7 @@ void BaseMainWindow::setOptionName( const QString& name )
 void BaseMainWindow::setWindowTitle( const QString& title )
 {
 
-    Debug::Throw( "BaseMainWindow::setWindowTitle.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::setWindowTitle.\n") );
     QMainWindow::setWindowTitle( Util::windowTitle( title ) );
 
 }
@@ -126,7 +126,7 @@ void BaseMainWindow::setWindowTitle( const QString& title )
 void BaseMainWindow::setMenuBar( QMenuBar* menu )
 {
 
-    Debug::Throw( "BaseMainWindow::setMenuBar.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::setMenuBar.\n") );
     QMainWindow::setMenuBar( menu );
     if( !menu ) return;
     menu->setVisible( showMenuBarAction_->isChecked() );
@@ -137,7 +137,7 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
 void BaseMainWindow::setStatusBar( QStatusBar* widget )
 {
 
-    Debug::Throw( "BaseMainWindow::setStatusBar.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::setStatusBar.\n") );
     QMainWindow::setStatusBar( widget );
     if( !statusBar() ) return;
     statusBar()->setVisible( showStatusBarAction_->isChecked() );
@@ -162,7 +162,7 @@ QSize BaseMainWindow::sizeHint() const
 void BaseMainWindow::centerOnDesktop()
 {
 
-    Debug::Throw( "BaseMainWindow::centerOnDesktop.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::centerOnDesktop.\n") );
     move( QtUtil::centerOnDesktop( sizeHint() ) );
 
 }
@@ -171,7 +171,7 @@ void BaseMainWindow::centerOnDesktop()
 void BaseMainWindow::centerOnWidget( QWidget* parent )
 {
 
-    Debug::Throw( "BaseMainWindow::centerOnWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::centerOnWidget.\n") );
     move( QtUtil::centerOnWidget( sizeHint(), parent ) );
 
 }
@@ -179,7 +179,7 @@ void BaseMainWindow::centerOnWidget( QWidget* parent )
 //________________________________________________________________
 QMenu* BaseMainWindow::createPopupMenu()
 {
-    Debug::Throw( "BaseMainWindow::createPopupMenu.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::createPopupMenu.\n") );
 
     if( !_hasToolBars() )
     {
@@ -209,7 +209,7 @@ QMenu* BaseMainWindow::createPopupMenu()
 ToolBarMenu* BaseMainWindow::toolBarMenu( QWidget* parent )
 {
 
-    Debug::Throw( "BaseMainWindow::toolBarMenu.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::toolBarMenu.\n") );
 
     _updateLayoutActions();
 
@@ -250,7 +250,7 @@ ToolBarMenu* BaseMainWindow::toolBarMenu( QWidget* parent )
 void BaseMainWindow::uniconify()
 {
 
-    Debug::Throw( "BaseMainWindow::uniconify" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::uniconify") );
     if( isMinimized() )
     {
 
@@ -293,28 +293,28 @@ bool BaseMainWindow::event( QEvent* event )
 //________________________________________________________________
 bool BaseMainWindow::_hasMenuBar() const
 {
-    Debug::Throw( "BaseMainWindow::_hasMenuBar.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_hasMenuBar.\n") );
     return (bool) findChild<QMenuBar*>();
 }
 
 //________________________________________________________________
 bool BaseMainWindow::_hasStatusBar() const
 {
-    Debug::Throw( "BaseMainWindow::_hasStatusBar.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_hasStatusBar.\n") );
     return (bool) findChild<QStatusBar*>();
 }
 
 //________________________________________________________________
 bool BaseMainWindow::_hasToolBars() const
 {
-    Debug::Throw( "BaseMainWindow::_hasToolBars.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_hasToolBars.\n") );
     return !findChildren<QToolBar*>().isEmpty();
 }
 
 //________________________________________________________________
 bool BaseMainWindow::_hasHideableToolBars() const
 {
-    Debug::Throw( "BaseMainWindow::_hasHideableToolBars.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_hasHideableToolBars.\n") );
     const auto toolbars( findChildren<QToolBar*>() );
     return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
@@ -331,7 +331,7 @@ bool BaseMainWindow::_hasHideableToolBars() const
 //________________________________________________________________
 bool BaseMainWindow::_hasLockableToolBars() const
 {
-    Debug::Throw( "BaseMainWindow::_hasLockableToolBars.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_hasLockableToolBars.\n") );
     const auto toolbars( findChildren<QToolBar*>() );
     return std::any_of( toolbars.begin(), toolbars.end(), [this]( const QToolBar* toolbar )
     {
@@ -350,7 +350,7 @@ bool BaseMainWindow::_hasLockableToolBars() const
 //________________________________________________________________
 bool BaseMainWindow::_hasIconSizeToolBars() const
 {
-    Debug::Throw( "BaseMainWindow::_hasIconSizeToolBars.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_hasIconSizeToolBars.\n") );
     const auto toolbars( findChildren<QToolBar*>() );
     return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
@@ -364,7 +364,7 @@ bool BaseMainWindow::_hasIconSizeToolBars() const
 //________________________________________________________________
 bool BaseMainWindow::_hasToolButtonStyleToolBars() const
 {
-    Debug::Throw( "BaseMainWindow::_hasToolButtonStyleToolBars.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_hasToolButtonStyleToolBars.\n") );
     const auto toolbars( findChildren<QToolBar*>() );
     return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
@@ -383,7 +383,7 @@ bool BaseMainWindow::_hasPanels() const
 //________________________________________________________________
 BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
 {
-    Debug::Throw( "BaseMainWindow::_toolBarsActions.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_toolBarsActions.\n") );
 
     ActionList actions;
 
@@ -424,7 +424,7 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
 void BaseMainWindow::_updateStatusBarVisibility()
 {
 
-    Debug::Throw( "BaseMainWindow::_updateStatusBarVisibility" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_updateStatusBarVisibility") );
 
     // loop over statusbar and adjust visibility
     for( auto statusBar:findChildren<QStatusBar*>() )
@@ -436,7 +436,7 @@ void BaseMainWindow::_updateStatusBarVisibility()
 void BaseMainWindow::_updateConfiguration()
 {
 
-    Debug::Throw( "BaseMainWindow::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_updateConfiguration.\n") );
 
     // icon size
     int iconSize( XmlOptions::get().get<int>( "TOOLBUTTON_ICON_SIZE" ) );
@@ -475,7 +475,7 @@ void BaseMainWindow::_updateConfiguration()
 void BaseMainWindow::_updateToolButtonStyle( int style )
 {
 
-    Debug::Throw( "BaseMainWindow::_updateToolButtonStyle.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_updateToolButtonStyle.\n") );
     XmlOptions::get().set<int>( "TOOLBUTTON_TEXT_POSITION", style );
     emit toolbarConfigurationChanged();
 
@@ -484,7 +484,7 @@ void BaseMainWindow::_updateToolButtonStyle( int style )
 //____________________________________________________________
 void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 {
-    Debug::Throw( "BaseMainWindow::_updateToolButtonIconSize.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_updateToolButtonIconSize.\n") );
     XmlOptions::get().set<int>( "TOOLBUTTON_ICON_SIZE", size );
     emit toolbarConfigurationChanged();
 }
@@ -492,7 +492,7 @@ void BaseMainWindow::_updateToolButtonIconSize( IconSize::Size size )
 //____________________________________________________________
 void BaseMainWindow::_updateLayoutActions()
 {
-    Debug::Throw( "BaseMainWindow::_updateLayoutActions.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_updateLayoutActions.\n") );
     lockPanelsAction_->setEnabled( _hasPanels() );
     showMenuBarAction_->setEnabled( _hasMenuBar() );
     showStatusBarAction_->setEnabled( _hasStatusBar() );
@@ -501,7 +501,7 @@ void BaseMainWindow::_updateLayoutActions()
 //____________________________________________________________
 void BaseMainWindow::_lockToolBars( bool value )
 {
-    Debug::Throw( "BaseMainWindow::_lockToolBars.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_lockToolBars.\n") );
     for( const auto& toolbar:findChildren<QToolBar*>() )
     {
 
@@ -524,7 +524,7 @@ void BaseMainWindow::_lockToolBars( bool value )
 //____________________________________________________________
 void BaseMainWindow::_lockPanels( bool value )
 {
-    Debug::Throw( "BaseMainWindow::_lockPanels.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_lockPanels.\n") );
     for( const auto& panel:findChildren<DockWidget*>() )
     { panel->setLocked( value ); }
 
@@ -535,7 +535,7 @@ void BaseMainWindow::_lockPanels( bool value )
 //____________________________________________________________
 void BaseMainWindow::_toggleMenuBar( bool value )
 {
-    Debug::Throw( "BaseMainWindow::_toggleMenuBar.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_toggleMenuBar.\n") );
 
     if( !menuWidget() ) return;
     menuWidget()->setVisible( value );
@@ -548,7 +548,7 @@ void BaseMainWindow::_toggleMenuBar( bool value )
 //____________________________________________________________
 void BaseMainWindow::_toggleStatusBar( bool value )
 {
-    Debug::Throw( "BaseMainWindow::_toggleStatusBar.\n" );
+    Debug::Throw( QStringLiteral("BaseMainWindow::_toggleStatusBar.\n") );
 
     // loop over statusbar and adjust visibility
     for( auto statusBar:findChildren<QStatusBar*>() )

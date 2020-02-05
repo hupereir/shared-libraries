@@ -39,7 +39,7 @@ class CustomTextDocument: public QTextDocument, public Base::Key, private Base::
     //* constructor
     explicit CustomTextDocument( QObject* parent = nullptr ):
         QTextDocument( parent ),
-        Counter( "CustomTextDocument" )
+        Counter( QStringLiteral("CustomTextDocument") )
     {}
 
 };

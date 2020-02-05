@@ -65,14 +65,14 @@ namespace SpellCheck
 
     //____________________________________________________________________________
     SpellParser::SpellParser():
-        Counter( "SpellParser" )
-    {  Debug::Throw( "SpellParser::SpellParser.\n" ); }
+        Counter( QStringLiteral("SpellParser") )
+    {  Debug::Throw( QStringLiteral("SpellParser::SpellParser.\n") ); }
 
     //____________________________________________________________________________
     Word::Set SpellParser::parse( const QString& constText )
     {
 
-        Debug::Throw( "SpellParser::Parse.\n" );
+        Debug::Throw( QStringLiteral("SpellParser::Parse.\n") );
 
         // local copy
         QString text( constText );
@@ -145,7 +145,7 @@ namespace SpellCheck
     //___________________________________________________________
     bool SpellParser::setColor( const QColor& color )
     {
-        Debug::Throw( "SpellParser::setColor.\n" );
+        Debug::Throw( QStringLiteral("SpellParser::setColor.\n") );
         if( color == color_ || !color.isValid() ) return false;
         else {
             color_ = color;
@@ -157,7 +157,7 @@ namespace SpellCheck
     bool SpellParser::setFontFormat( TextFormat::Flags format )
     {
 
-        Debug::Throw( "SpellParser::setFontFormat.\n" );
+        Debug::Throw( QStringLiteral("SpellParser::setFontFormat.\n") );
         if( fontFormat_ == format ) return false;
         else {
             fontFormat_ = format;

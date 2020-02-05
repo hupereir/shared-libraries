@@ -26,7 +26,7 @@
 PasswordEditor::PasswordEditor( QWidget* parent ):
     LineEditor( parent )
 {
-    Debug::Throw( "PasswordEditor::PasswordEditor.\n" );
+    Debug::Throw( QStringLiteral("PasswordEditor::PasswordEditor.\n") );
     setEchoMode( QLineEdit::Password );
 
     showPasswordButton_ = new LineEditorButton;
@@ -39,7 +39,7 @@ PasswordEditor::PasswordEditor( QWidget* parent ):
 //____________________________________________________________
 void PasswordEditor::showPassword()
 {
-    Debug::Throw( "PasswordEditor::showPassword.\n" );
+    Debug::Throw( QStringLiteral("PasswordEditor::showPassword.\n") );
     setEchoMode( Normal );
     showPasswordButton_->setIcon( IconEngine::get( IconNames::HidePassword ) );
 }
@@ -47,7 +47,7 @@ void PasswordEditor::showPassword()
 //____________________________________________________________
 void PasswordEditor::hidePassword()
 {
-    Debug::Throw( "PasswordEditor::hidePassword.\n" );
+    Debug::Throw( QStringLiteral("PasswordEditor::hidePassword.\n") );
     setEchoMode( Password );
     showPasswordButton_->setIcon( IconEngine::get( IconNames::ShowPassword ) );
 }
@@ -55,7 +55,7 @@ void PasswordEditor::hidePassword()
 //____________________________________________________________
 void PasswordEditor::_toggleShowPassword()
 {
-    Debug::Throw( "PasswordEditor::_toggleShowPassword.\n" );
+    Debug::Throw( QStringLiteral("PasswordEditor::_toggleShowPassword.\n") );
     if( echoMode() == Normal )
     {
 

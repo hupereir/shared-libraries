@@ -26,9 +26,9 @@
 //________________________________________________________________________
 BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
     BaseDialog( parent, flags ),
-    Counter( "BaseFindDialog" )
+    Counter( QStringLiteral("BaseFindDialog") )
 {
-    Debug::Throw( "BaseFindDialog::BaseFindDialog.\n" );
+    Debug::Throw( QStringLiteral("BaseFindDialog::BaseFindDialog.\n") );
     setOptionName( "FIND_DIALOG" );
 
     // set dialog title
@@ -45,7 +45,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 //________________________________________________________________________
 void BaseFindDialog::setBaseFindWidget( AbstractFindWidget* baseFindWidget )
 {
-    Debug::Throw( "BaseFindDialog::setBaseFindWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseFindDialog::setBaseFindWidget.\n") );
 
     // assign new widget and change parent
     baseFindWidget_ = baseFindWidget;

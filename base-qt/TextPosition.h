@@ -32,7 +32,7 @@ class TextPosition final: private Base::Counter<TextPosition>
 
     //* default constructor
     explicit TextPosition( int paragraph = 0, int index = 0 ):
-        Counter( "TextPosition" ),
+        Counter( QStringLiteral("TextPosition") ),
         paragraph_( paragraph ),
         index_( index )
     {}

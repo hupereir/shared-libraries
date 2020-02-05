@@ -37,7 +37,7 @@ namespace Transparency
         template< typename... Args >
             explicit ShadowLabel( Args&&... args ):
             QLabel( std::forward<Args>(args)... ),
-            Counter( "Transparency::ShadowLabel" ),
+            Counter( QStringLiteral("Transparency::ShadowLabel") ),
             shadowOffset_( 0 )
         {}
 

@@ -26,9 +26,9 @@
 //_____________________________________________________________________________
 ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
     QMenu( tr( "Text position" ), parent ),
-    Counter( "ToolButtonStyleMenu" )
+    Counter( QStringLiteral("ToolButtonStyleMenu") )
 {
-    Debug::Throw( "ToolButtonStyleMenu::ToolButtonStyleMenu.\n" );
+    Debug::Throw( QStringLiteral("ToolButtonStyleMenu::ToolButtonStyleMenu.\n") );
 
     auto group = new QActionGroup( this );
     connect( group, &QActionGroup::triggered, this, &ToolButtonStyleMenu::_selected );
@@ -72,7 +72,7 @@ void ToolButtonStyleMenu::select( int style )
 void ToolButtonStyleMenu::_selected( QAction* action )
 {
 
-    Debug::Throw( "ToolButtonStyleMenu::_selected.\n" );
+    Debug::Throw( QStringLiteral("ToolButtonStyleMenu::_selected.\n") );
 
     // find matching actions
     auto iter = actions_.find( action );

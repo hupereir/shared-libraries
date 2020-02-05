@@ -40,7 +40,7 @@ namespace Ssh
     //_______________________________________________________________________
     WriteFileSocket::WriteFileSocket( QObject* parent ):
         QIODevice( parent ),
-        Counter( "Ssh::WriteFileSocket" )
+        Counter( QStringLiteral("Ssh::WriteFileSocket") )
     { setOpenMode(QIODevice::WriteOnly); }
 
     //_______________________________________________________________________
@@ -89,7 +89,7 @@ namespace Ssh
     //_______________________________________________________________________
     void WriteFileSocket::close()
     {
-        Debug::Throw( "Ssh::WriteFileSocket:close.\n" );
+        Debug::Throw( QStringLiteral("Ssh::WriteFileSocket:close.\n") );
 
         // stop timer
         if( timer_.isActive() ) timer_.stop();

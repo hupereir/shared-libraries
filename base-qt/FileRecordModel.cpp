@@ -39,11 +39,11 @@ FileRecordModel::IconCache& FileRecordModel::_icons()
 //__________________________________________________________________
 FileRecordModel::FileRecordModel( QObject* parent ):
     ListModel( parent ),
-    Counter( "FileRecordModel" ),
+    Counter( QStringLiteral("FileRecordModel") ),
     iconPropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Icon ) ),
     columnTitles_( { tr( "File" ), tr( "Path" ), tr( "Last Accessed" ) } )
 {
-    Debug::Throw("FileRecordModel::FileRecordModel.\n" );
+    Debug::Throw(QStringLiteral("FileRecordModel::FileRecordModel.\n") );
     connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &FileRecordModel::_updateConfiguration );
 }
 
@@ -212,7 +212,7 @@ void FileRecordModel::_add( const ValueType& value )
 //____________________________________________________________
 void FileRecordModel::_updateConfiguration()
 {
-    Debug::Throw( "FileRecordModel::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("FileRecordModel::_updateConfiguration.\n") );
     _icons().clear();
 }
 
@@ -220,7 +220,7 @@ void FileRecordModel::_updateConfiguration()
 void FileRecordModel::_updateColumns( const ValueType& value )
 {
 
-    Debug::Throw( "FileRecordModel::_updateColumns.\n" );
+    Debug::Throw( QStringLiteral("FileRecordModel::_updateColumns.\n") );
 
     // loop over available properties
     const FileRecord::PropertyMap& properties( value.properties() );
@@ -266,7 +266,7 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
 const QIcon& FileRecordModel::_icon( const QString& name )
 {
 
-    Debug::Throw( "FileRecordModel::_icon.\n" );
+    Debug::Throw( QStringLiteral("FileRecordModel::_icon.\n") );
 
     IconCache::const_iterator iter( _icons().find( name ) );
     if( iter != _icons().end() ) return iter.value();

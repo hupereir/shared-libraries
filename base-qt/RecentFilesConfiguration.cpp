@@ -38,10 +38,10 @@
 RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& recentFiles ):
     QWidget( parent ),
     OptionWidgetList( this ),
-    Counter( "RecentFilesConfiguration" ),
+    Counter( QStringLiteral("RecentFilesConfiguration") ),
     recentFiles_( &recentFiles )
 {
-    Debug::Throw( "RecentFilesConfiguration::RecentFilesConfiguration.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesConfiguration::RecentFilesConfiguration.\n") );
 
     QVBoxLayout* layout = new QVBoxLayout;
     setLayout( layout );
@@ -143,7 +143,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 //__________________________________________________________________________
 void RecentFilesConfiguration::read()
 {
-    Debug::Throw( "RecentFilesConfiguration::read.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesConfiguration::read.\n") );
     reload();
     list_->resizeColumns();
 }
@@ -151,7 +151,7 @@ void RecentFilesConfiguration::read()
 //__________________________________________________________________________
 void RecentFilesConfiguration::write()
 {
-    Debug::Throw( "RecentFilesConfiguration::write.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesConfiguration::write.\n") );
     recentFiles_->set( model_.get() );
 }
 
@@ -159,7 +159,7 @@ void RecentFilesConfiguration::write()
 void RecentFilesConfiguration::reload()
 {
 
-    Debug::Throw( "RecentFilesConfiguration::reload.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesConfiguration::reload.\n") );
     const auto recordModelList( recentFiles_->records() );
     model_.set( recordModelList );
 
@@ -175,7 +175,7 @@ void RecentFilesConfiguration::reload()
 void RecentFilesConfiguration::_updateButtons()
 {
 
-    Debug::Throw( "RecentFilesConfiguration::_updateButtons.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesConfiguration::_updateButtons.\n") );
     QList<QModelIndex> selection( list_->selectionModel()->selectedRows() );
     removeButton_->setEnabled( !selection.empty() );
 
@@ -185,7 +185,7 @@ void RecentFilesConfiguration::_updateButtons()
 void RecentFilesConfiguration::_remove()
 {
 
-    Debug::Throw( "RecentFilesConfiguration::_remove.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesConfiguration::_remove.\n") );
     QList<QModelIndex> selection( list_->selectionModel()->selectedRows() );
     if( selection.isEmpty() ) return;
 
@@ -206,7 +206,7 @@ void RecentFilesConfiguration::_remove()
 //__________________________________________________________________________
 void RecentFilesConfiguration::_clean()
 {
-    Debug::Throw( "RecentFilesConfiguration::_clean.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesConfiguration::_clean.\n") );
 
     // remove invalid files
     FileRecordModel::List records( model_.get() );

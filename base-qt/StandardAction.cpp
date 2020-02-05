@@ -25,7 +25,7 @@
 //_________________________________________________________
 StandardAction::StandardAction( StandardAction::Type type, QObject* parent ):
     QAction( parent ),
-    Counter( "StandardAction" )
+    Counter( QStringLiteral("StandardAction") )
 {
 
     switch( type )

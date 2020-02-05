@@ -37,12 +37,12 @@ class TimeStamp:private Base::Counter<TimeStamp>
 
     //* empty creator
     explicit TimeStamp():
-        Counter( "TimeStamp" )
+        Counter( QStringLiteral("TimeStamp") )
     {}
 
     //* time_t creator
     explicit TimeStamp( time_t time ):
-        Counter( "TimeStamp" )
+        Counter( QStringLiteral("TimeStamp") )
     { setTime( time ); }
 
     //* destructor

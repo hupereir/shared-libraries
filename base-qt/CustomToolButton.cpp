@@ -32,10 +32,10 @@
 //___________________________________________________________________
 CustomToolButton::CustomToolButton( QWidget* parent ):
     QToolButton( parent ),
-    Counter( "CustomToolButton" )
+    Counter( QStringLiteral("CustomToolButton") )
 {
 
-    Debug::Throw( "CustomToolButton::CustomToolButton.\n" );
+    Debug::Throw( QStringLiteral("CustomToolButton::CustomToolButton.\n") );
 
     // auto-raise
     setAutoRaise( true );
@@ -49,7 +49,7 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
 //______________________________________________________________________
 bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
 {
-    Debug::Throw( "CustomToolButton::rotate.\n" );
+    Debug::Throw( QStringLiteral("CustomToolButton::rotate.\n") );
     if( rotation_ == value ) return false;
 
     const QIcon source( icon() );
@@ -142,7 +142,7 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
 //_________________________________________________________________
 void CustomToolButton::_updateConfiguration()
 {
-    Debug::Throw( "CustomToolButton::_updateConfiguration.\n");
+    Debug::Throw( QStringLiteral("CustomToolButton::_updateConfiguration.\n"));
 
     if( !updateFromOptions_ ) return;
 

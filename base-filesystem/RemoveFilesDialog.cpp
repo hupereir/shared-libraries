@@ -35,7 +35,7 @@ RemoveFilesDialog::RemoveFilesDialog( QWidget* parent, const FileSystemModel::Li
     CustomDialog( parent )
 {
 
-    Debug::Throw( "RemoveFilesDialog::RemoveFilesDialog.\n" );
+    Debug::Throw( QStringLiteral("RemoveFilesDialog::RemoveFilesDialog.\n") );
     Q_ASSERT( !files.empty() );
 
     // options

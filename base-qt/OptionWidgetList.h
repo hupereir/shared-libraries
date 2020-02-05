@@ -50,7 +50,7 @@ class OptionWidgetList: public OptionWidget
     //* clear option widgets
     void clearOptionWidgets()
     {
-        Debug::Throw( "OptionWidgetList::clearOptionWidgets.\n" );
+        Debug::Throw( QStringLiteral("OptionWidgetList::clearOptionWidgets.\n") );
         optionWidgets_.clear();
     }
 
@@ -90,7 +90,7 @@ template<class W>
 void OptionWidgetList<W>::read( const Options& options )
 {
 
-    Debug::Throw( "OptionWidgetList::read.\n" );
+    Debug::Throw( QStringLiteral("OptionWidgetList::read.\n") );
     for( const auto& widget:optionWidgets_ )
     { widget->read( options ); }
 
@@ -102,7 +102,7 @@ void OptionWidgetList<W>::read( const Options& options )
 template<class W>
 void OptionWidgetList<W>::write( Options& options ) const
 {
-    Debug::Throw( "OptionWidgetList::write\n" );
+    Debug::Throw( QStringLiteral("OptionWidgetList::write\n") );
     for( const auto& widget:optionWidgets_ )
     { widget->write( options ); }
 }

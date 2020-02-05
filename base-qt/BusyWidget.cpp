@@ -26,10 +26,10 @@
 //__________________________________________________________________________
 BusyWidget::BusyWidget( QWidget* parent, Location location ):
     QWidget( parent ),
-    Counter( "BusyWidget" ),
+    Counter( QStringLiteral("BusyWidget") ),
     location_( location )
 {
-    Debug::Throw( "BusyWidget::BusyWidget.\n" );
+    Debug::Throw( QStringLiteral("BusyWidget::BusyWidget.\n") );
 
     // setup widget
     setAttribute(Qt::WA_OpaquePaintEvent, false);
@@ -105,7 +105,7 @@ bool BusyWidget::eventFilter( QObject* object, QEvent* event )
 //__________________________________________________________________________
 void BusyWidget::start()
 {
-    Debug::Throw( "BusyWidget::start.\n" );
+    Debug::Throw( QStringLiteral("BusyWidget::start.\n") );
     if( timer_.isActive() ) return;
     if( delay_ >= 0 ) timer_.start( delay_, this );
     else {
@@ -120,7 +120,7 @@ void BusyWidget::start()
 //__________________________________________________________________________
 void BusyWidget::stop()
 {
-    Debug::Throw( "BusyWidget::stop.\n" );
+    Debug::Throw( QStringLiteral("BusyWidget::stop.\n") );
     if( timer_.isActive() ) timer_.stop();
     if( animation_->state() != QAbstractAnimation::Stopped ) animation_->stop();
     hide();

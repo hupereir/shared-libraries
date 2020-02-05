@@ -32,7 +32,7 @@ namespace Ssh
         CustomDialog( parent, OkButton|CancelButton|Separator )
     {
 
-        Debug::Throw( "LoginDialog::LoginDialog.\n" );
+        Debug::Throw( QStringLiteral("LoginDialog::LoginDialog.\n") );
         setOptionName( "SSH_LOGIN_DIALOG" );
         setWindowTitle( tr( "SSH login" ) );
         auto gridLayout = new GridLayout;

@@ -26,10 +26,10 @@
 //____________________________________________________________
 UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     QWidget( parent ),
-    Counter( "UserSelectionFrame" )
+    Counter( QStringLiteral("UserSelectionFrame") )
 {
 
-    Debug::Throw( "UserSelectionFrame::UserSelectionFrame\n" );
+    Debug::Throw( QStringLiteral("UserSelectionFrame::UserSelectionFrame\n") );
     setLayout( new QHBoxLayout );
     layout()->setMargin(0);
     layout()->setSpacing(5);
@@ -86,7 +86,7 @@ void UserSelectionFrame::setUser( const QString& user )
 //________________________________________________________________
 void UserSelectionFrame::updateUsers( QStringList users )
 {
-    Debug::Throw( "UserSelectionFrame::updateUsers.\n" );
+    Debug::Throw( QStringLiteral("UserSelectionFrame::updateUsers.\n") );
 
     // make sure default user and current user are in the list
     const QString currentUser( user() );
@@ -109,7 +109,7 @@ void UserSelectionFrame::updateUsers( QStringList users )
 //____________________________________________________________
 QString UserSelectionFrame::user() const
 {
-    Debug::Throw( "UserSelectionFrame::user.\n" );
+    Debug::Throw( QStringLiteral("UserSelectionFrame::user.\n") );
     QString user(  comboBox_->currentText() );
     if( user.isNull() || user.isEmpty() ) return "";
     return user.trimmed();

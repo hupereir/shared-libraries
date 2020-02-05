@@ -30,12 +30,12 @@
 //_______________________________________________________
 DebugMenu::DebugMenu( QWidget* parent, Flags flags ):
     QMenu( parent ),
-    Counter( "DebugMenu" )
+    Counter( QStringLiteral("DebugMenu") )
 {
 
     setTitle( tr( "Debug" ) );
 
-    Debug::Throw( "DebugMenu::DebugMenu.\n" );
+    Debug::Throw( QStringLiteral("DebugMenu::DebugMenu.\n") );
     if( flags&Flag::Counters ) addAction( tr("Object Counters"), this, &DebugMenu::_showCounterDialog );
     if( flags&Flag::Icons ) addAction( tr("Icon Cache"), this, &DebugMenu::_showIconCacheDialog );
     if( flags&Flag::System ) addAction( tr("System environment"), this, &DebugMenu::_showSystemEnvironment );
@@ -79,7 +79,7 @@ bool DebugMenu::eventFilter( QObject* object, QEvent* event )
 //_______________________________________________
 void DebugMenu::_showCounterDialog()
 {
-    Debug::Throw( "DebugMenu::_ShowCounterDialog.\n" );
+    Debug::Throw( QStringLiteral("DebugMenu::_ShowCounterDialog.\n") );
 
     // check counter dialog has been build
     if( !counterDialog_ ) {
@@ -103,7 +103,7 @@ void DebugMenu::_showCounterDialog()
 //_______________________________________________
 void DebugMenu::_showIconCacheDialog()
 {
-    Debug::Throw( "DebugMenu::_ShowIconCacheDialog.\n" );
+    Debug::Throw( QStringLiteral("DebugMenu::_ShowIconCacheDialog.\n") );
 
     // check IconCache dialog has been build
     if( !iconCacheDialog_ ) {
@@ -127,7 +127,7 @@ void DebugMenu::_showIconCacheDialog()
 //_______________________________________________
 void DebugMenu::_showSystemEnvironment()
 {
-    Debug::Throw( "DebugMenu::_showSystemEnvironment.\n" );
+    Debug::Throw( QStringLiteral("DebugMenu::_showSystemEnvironment.\n") );
 
     auto&& dialog = new SystemEnvironmentDialog( qApp->activeWindow() );
     dialog->centerOnWidget( qApp->activeWindow() );
@@ -139,7 +139,7 @@ void DebugMenu::_showSystemEnvironment()
 //_______________________________________________
 void DebugMenu::_showOptions()
 {
-    Debug::Throw( "DebugMenu::_showOptions.\n" );
+    Debug::Throw( QStringLiteral("DebugMenu::_showOptions.\n") );
 
     auto&& dialog = new OptionDialog( qApp->activeWindow() );
     dialog->centerOnWidget( qApp->activeWindow() );

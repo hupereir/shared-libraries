@@ -34,19 +34,19 @@ namespace Base
 
         //* constructor
         explicit Command( const QStringList& other = QStringList() ):
-            Counter( "Command" ),
+            Counter( QStringLiteral("Command") ),
             values_( other )
         {}
 
         //* constructor
         explicit Command( QStringList&& other ):
-            Counter( "Command" ),
+            Counter( QStringLiteral("Command") ),
             values_( std::move( other ) )
         {}
 
         //* constructor
         explicit Command( const QString& in ):
-            Counter( "Command" ),
+            Counter( QStringLiteral("Command") ),
             values_( _parse( in ) )
         {}
 

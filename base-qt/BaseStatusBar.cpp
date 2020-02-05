@@ -30,9 +30,9 @@
 //___________________________________________
 BaseStatusBar::BaseStatusBar( QWidget* parent ):
     QStatusBar( parent ),
-    Counter( "BaseStatusBar" )
+    Counter( QStringLiteral("BaseStatusBar") )
 {
-    Debug::Throw( "BaseStatusBar::BaseStatusBar.\n" );
+    Debug::Throw( QStringLiteral("BaseStatusBar::BaseStatusBar.\n") );
     setSizeGripEnabled( false );
 
     // if no size grip, still leaves some space to the right of the widget
@@ -49,14 +49,14 @@ BaseStatusBar::BaseStatusBar( QWidget* parent ):
 //___________________________________________
 void BaseStatusBar::addClock()
 {
-    Debug::Throw( "BaseStatusBar::addClock.\n" );
+    Debug::Throw( QStringLiteral("BaseStatusBar::addClock.\n") );
     addPermanentWidget( new ClockLabel( this ) );
 }
 
 //____________________________________________
 void BaseStatusBar::addLabel( int stretch )
 {
-    Debug::Throw( "BaseStatusBar::addLabel.\n" );
+    Debug::Throw( QStringLiteral("BaseStatusBar::addLabel.\n") );
 
     auto label = new StatusBarLabel( this );
     label->setMargin(2);
@@ -68,7 +68,7 @@ void BaseStatusBar::addLabel( int stretch )
 //__________________________________________________________________
 void BaseStatusBar::contextMenuEvent( QContextMenuEvent *event )
 {
-    Debug::Throw( "BaseStatusBar::contextMenuEvent.\n" );
+    Debug::Throw( QStringLiteral("BaseStatusBar::contextMenuEvent.\n") );
 
     // get main window
     auto mainWindow = qobject_cast<QMainWindow*>( window() );

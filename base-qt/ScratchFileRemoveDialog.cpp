@@ -36,7 +36,7 @@ ScratchFileRemoveDialog::ScratchFileRemoveDialog( QWidget* parent, const FileRec
 CustomDialog( parent )
 {
 
-    Debug::Throw( "ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n" );
+    Debug::Throw( QStringLiteral("ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n") );
 
     setOptionName( "SCRATCH_DIALOG" );
 
@@ -100,7 +100,7 @@ FileRecordModel::List ScratchFileRemoveDialog::selectedFiles() const
 //____________________________________________________________________
 void ScratchFileRemoveDialog::_updateActions()
 {
-    Debug::Throw( "ScratchFileRemoveDialog::_updateActions.\n" );
+    Debug::Throw( QStringLiteral("ScratchFileRemoveDialog::_updateActions.\n") );
     bool hasSelection( !list_->selectionModel()->selectedRows().empty() );
     clearSelectionAction_->setEnabled( hasSelection );
     okButton().setEnabled( hasSelection );
@@ -110,7 +110,7 @@ void ScratchFileRemoveDialog::_updateActions()
 void ScratchFileRemoveDialog::_updateContextMenu( const QPoint& position )
 {
 
-    Debug::Throw( "ScratchFileRemoveDialog::_updateContextMenu.\n" );
+    Debug::Throw( QStringLiteral("ScratchFileRemoveDialog::_updateContextMenu.\n") );
 
     BaseContextMenu menu( list_ );
     menu.setHideDisabledActions( true );

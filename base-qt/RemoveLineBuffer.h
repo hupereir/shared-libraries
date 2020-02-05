@@ -37,8 +37,8 @@ class RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
   //* constructor
   explicit RemoveLineBuffer( QObject* parent ):
     QObject( parent ),
-    Counter( "RemoveLineBuffer" )
-  { Debug::Throw( "RemoveLineBuffer::RemoveLineBuffer.\n" ); }
+    Counter( QStringLiteral("RemoveLineBuffer") )
+  { Debug::Throw( QStringLiteral("RemoveLineBuffer::RemoveLineBuffer.\n") ); }
 
   //* append string to buffer
   void append( const QString& value );

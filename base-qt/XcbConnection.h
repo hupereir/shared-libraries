@@ -35,7 +35,7 @@ class XcbConnection final: private Base::Counter<XcbConnection>
 
     //* constructor
     explicit XcbConnection():
-        Counter( "XcbConnection" )
+        Counter( QStringLiteral("XcbConnection") )
     {
         #if WITH_XCB
         if( XcbUtil::isX11() )

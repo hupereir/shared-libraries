@@ -36,7 +36,7 @@ namespace Base
 //________________________________________________
 XmlOption::XmlOption( const QDomElement& element )
 {
-    Debug::Throw( "XmlOption::XmlOption.\n" );
+    Debug::Throw( QStringLiteral("XmlOption::XmlOption.\n") );
 
     // old implementation (kept for backward compatibility
     // element name is option name

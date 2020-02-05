@@ -29,10 +29,10 @@
 //__________________________________________________________
 TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     QMenu( parent ),
-    Counter( "TextEncodingMenu" )
+    Counter( QStringLiteral("TextEncodingMenu") )
 {
 
-    Debug::Throw( "TextEncodingMenu::TextEncodingMenu.\n" );
+    Debug::Throw( QStringLiteral("TextEncodingMenu::TextEncodingMenu.\n") );
     setTitle( tr( "Text Encoding" ) );
 
     auto group = new QActionGroup( this );
@@ -83,7 +83,7 @@ void TextEncodingMenu::select( const QByteArray& constValue )
 void TextEncodingMenu::_selected( QAction* action )
 {
 
-    Debug::Throw( "TextEncodingMenu::_selected.\n" );
+    Debug::Throw( QStringLiteral("TextEncodingMenu::_selected.\n") );
 
     // find matching actions
     const auto iter = actions_.find( action );

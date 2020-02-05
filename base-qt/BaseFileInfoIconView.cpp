@@ -25,7 +25,7 @@
 //______________________________________________________________
 BaseFileInfoIconView::BaseFileInfoIconView( QWidget* parent ):
     IconView( parent )
-{ Debug::Throw( "BaseFileInfoIconView::BaseFileInfoIconView.\n" ); }
+{ Debug::Throw( QStringLiteral("BaseFileInfoIconView::BaseFileInfoIconView.\n") ); }
 
 //______________________________________________________________
 void BaseFileInfoIconView::_updateItem( IconViewItem& item, const QModelIndex& index ) const

@@ -36,7 +36,7 @@ class XmlError final: private Base::Counter<XmlError>
 
     //* constructor
     explicit XmlError( const File& file = File() ):
-        Counter( "XmlError" ),
+        Counter( QStringLiteral("XmlError") ),
         file_ ( file )
     {}
 

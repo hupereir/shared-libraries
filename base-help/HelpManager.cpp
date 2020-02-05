@@ -37,11 +37,11 @@ namespace Base
     //_________________________________________________________
     HelpManager::HelpManager( QObject* parent ):
         QObject( parent ),
-        Counter( "HelpManager" ),
+        Counter( QStringLiteral("HelpManager") ),
         windowTitle_( tr( "Reference Manual" ) )
     {
 
-        Debug::Throw( "HelpManager::HelpManager.\n" );
+        Debug::Throw( QStringLiteral("HelpManager::HelpManager.\n") );
 
         // actions
         displayAction_ = new QAction( IconEngine::get( IconNames::Help ), tr( "%1 Handbook" ).arg( qApp->applicationName() ), this );
@@ -54,7 +54,7 @@ namespace Base
     void HelpManager::install( const QString text[], bool clear )
     {
 
-        Debug::Throw( "HelpManager::install.\n" );
+        Debug::Throw( QStringLiteral("HelpManager::install.\n") );
 
         // clear existing text
         if( clear ) HelpManager::clear();
@@ -75,7 +75,7 @@ namespace Base
     //_____________________________________________________
     void HelpManager::setWindowTitle( const QString& value )
     {
-        Debug::Throw( "HelpManager::setWindowTitle.\n" );
+        Debug::Throw( QStringLiteral("HelpManager::setWindowTitle.\n") );
         windowTitle_ = value;
         displayAction().setText( value );
     }
@@ -84,7 +84,7 @@ namespace Base
     void HelpManager::_display()
     {
 
-        Debug::Throw( "HelpManager::_display.\n" );
+        Debug::Throw( QStringLiteral("HelpManager::_display.\n") );
 
         // create dialog
         auto dialog = new HelpDialog;

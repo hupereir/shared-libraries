@@ -34,7 +34,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     BaseToolTipWidget( parent )
 {
 
-    Debug::Throw( "BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget.\n") );
 
     // layout
     auto hLayout = new QHBoxLayout;
@@ -90,7 +90,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
 //_______________________________________________________
 void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const QIcon& icon )
 {
-    Debug::Throw( "BaseFileInfoToolTipWidget::setFileInfo.\n" );
+    Debug::Throw( QStringLiteral("BaseFileInfoToolTipWidget::setFileInfo.\n") );
 
     // local storage
     icon_ = icon;
@@ -174,7 +174,7 @@ void BaseFileInfoToolTipWidget::setFileInfo( const BaseFileInfo& fileInfo, const
 //_____________________________________________
 void BaseFileInfoToolTipWidget::_updateConfiguration()
 {
-    Debug::Throw( "BaseFileInfoToolTipWidget::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseFileInfoToolTipWidget::_updateConfiguration.\n") );
     bool modified( false );
 
     // mask from options

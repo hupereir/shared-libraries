@@ -25,7 +25,7 @@ void FileSystemWatcher::timerEvent( QTimerEvent* event )
     if( event->timerId() == timer_.timerId() )
     {
 
-        Debug::Throw("FileSystemWatcher::timerEvent.\n" );
+        Debug::Throw(QStringLiteral("FileSystemWatcher::timerEvent.\n") );
 
         timer_.stop();
         for( const auto& directory:directories_ )

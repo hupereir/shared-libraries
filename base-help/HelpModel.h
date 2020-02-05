@@ -43,7 +43,7 @@ namespace Base
 
         //* constructor
         explicit HelpModel():
-            Counter( "HelpModel" )
+            Counter( QStringLiteral("HelpModel") )
         {}
 
         //*@name methods reimplemented from base class

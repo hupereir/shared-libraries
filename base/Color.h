@@ -38,7 +38,7 @@ namespace Base
         //* universal constructor
         template< typename... Args >
             explicit Color( Args&&... args ):
-            Counter( "Base::Color" ),
+            Counter( QStringLiteral("Base::Color") ),
             value_( std::forward<Args>(args)... )
         {}
 

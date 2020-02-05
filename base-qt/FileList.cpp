@@ -27,7 +27,7 @@
 //_______________________________________________
 FileList::FileList( QObject* parent ):
     QObject( parent ),
-    Counter( "FileList" ),
+    Counter( QStringLiteral("FileList") ),
     thread_( this )
 {
     // thread connection
@@ -50,7 +50,7 @@ void FileList::remove( const File& file )
 void FileList::set( const FileRecord::List& records )
 {
 
-    Debug::Throw( "FileList::set.\n" );
+    Debug::Throw( QStringLiteral("FileList::set.\n") );
     records_ = records;
     emit contentsChanged();
 
@@ -59,7 +59,7 @@ void FileList::set( const FileRecord::List& records )
 //___________________________________________________
 File::List FileList::files() const
 {
-    Debug::Throw( "FileList::files.\n" );
+    Debug::Throw( QStringLiteral("FileList::files.\n") );
 
     File::List out;
     const auto records( _truncatedList( records_ ) );
@@ -71,7 +71,7 @@ File::List FileList::files() const
 FileRecord FileList::lastValidFile()
 {
 
-    Debug::Throw( "FileList::lastValidFile.\n" );
+    Debug::Throw( QStringLiteral("FileList::lastValidFile.\n") );
 
     std::sort( records_.begin(), records_.end(), FileRecord::FirstOpenFTor() );
     const auto iter = std::find_if( records_.rbegin(), records_.rend(), [this]( const FileRecord& record ) { return (!check_) || record.isValid(); } );
@@ -81,7 +81,7 @@ FileRecord FileList::lastValidFile()
 //_______________________________________________
 void FileList::checkValidFiles()
 {
-    Debug::Throw( "FileList::checkValidFiles.\n" );
+    Debug::Throw( QStringLiteral("FileList::checkValidFiles.\n") );
     if( !check_ ) return;
     if( thread_.isRunning() ) return;
     thread_.setRecords( records_ );
@@ -105,7 +105,7 @@ void FileList::_processRecords( const FileRecord::List& records, bool hasInvalid
 //___________________________________________________
 void FileList::clean()
 {
-    Debug::Throw( "FileList::clean" );
+    Debug::Throw( QStringLiteral("FileList::clean") );
 
     if( check_ )
     {
@@ -127,7 +127,7 @@ void FileList::clean()
 //___________________________________________________
 void FileList::clear()
 {
-    Debug::Throw( "FileList::clear" );
+    Debug::Throw( QStringLiteral("FileList::clear") );
     records_.clear();
     return;
 }
@@ -136,7 +136,7 @@ void FileList::clear()
 void FileList::setMaxSize( int value )
 {
 
-    Debug::Throw( "FileList::setMaxSize.\n" );
+    Debug::Throw( QStringLiteral("FileList::setMaxSize.\n") );
     maxSize_ = value;
     return;
 

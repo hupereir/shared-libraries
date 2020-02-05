@@ -25,9 +25,9 @@
 //_________________________________________________________
 IconSizeComboBox::IconSizeComboBox( QWidget* parent, bool custom ):
     QComboBox( parent ),
-    Counter( "IconSizeComboBox" )
+    Counter( QStringLiteral("IconSizeComboBox") )
 {
-    Debug::Throw( "IconSizeComboBox::IconSizeComboBox.\n" );
+    Debug::Throw( QStringLiteral("IconSizeComboBox::IconSizeComboBox.\n") );
     setEditable( false );
 
     // insert items

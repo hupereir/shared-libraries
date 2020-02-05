@@ -35,7 +35,7 @@ class TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockD
     //* constructor
     explicit TextBlockData():
         QTextBlockUserData(),
-        Counter( "TextBlockData" ),
+        Counter( QStringLiteral("TextBlockData") ),
         flags_( TextBlock::None )
     {}
 

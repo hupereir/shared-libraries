@@ -26,10 +26,10 @@
 //____________________________________________________
 ToolBarMenu::ToolBarMenu( QWidget* parent ):
 QMenu( parent ),
-Counter( "ToolBarMenu" )
+Counter( QStringLiteral("ToolBarMenu") )
 {
 
-    Debug::Throw( "ToolBarMenu::ToolBarMenu.\n" );
+    Debug::Throw( QStringLiteral("ToolBarMenu::ToolBarMenu.\n") );
 
     // make sure object is deleted when closing
     setAttribute( Qt::WA_DeleteOnClose, true );

@@ -26,9 +26,9 @@
 //_________________________________________________________
 CustomSlider::CustomSlider( QWidget* parent ):
     QWidget( parent ),
-    Counter( "CustomSlider" )
+    Counter( QStringLiteral("CustomSlider") )
 {
-    Debug::Throw( "CustomSlider::CustomSlider.\n" );
+    Debug::Throw( QStringLiteral("CustomSlider::CustomSlider.\n") );
 
     setLayout( new QHBoxLayout );
     layout()->setMargin(0);
@@ -59,7 +59,7 @@ void CustomSlider::setValue( int value )
 //_________________________________________________________
 void CustomSlider::_updateSlider( int value )
 {
-    Debug::Throw( "CustomSlider::_updateSlider.\n" );
+    Debug::Throw( QStringLiteral("CustomSlider::_updateSlider.\n") );
 
     if( sliderLocked_ )
     {

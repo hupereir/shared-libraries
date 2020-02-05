@@ -23,7 +23,7 @@
 //__________________________________________________________________
 MimeTypeIconProvider::MimeTypeIconProvider( QObject* parent ):
     QObject( parent ),
-    Counter( "MimeTypeIconProvider" ),
+    Counter( QStringLiteral("MimeTypeIconProvider") ),
     iconNames_(
     {
         // source code

@@ -121,7 +121,7 @@ class BoxSelection final: private Base::Counter<BoxSelection>
 
         //* constructor
         explicit CursorList( int firstColumn = 0, int columns = 0 ):
-            Counter( "CursorList" ),
+            Counter( QStringLiteral("CursorList") ),
             firstColumn_( firstColumn ),
             columns_( columns )
         {}

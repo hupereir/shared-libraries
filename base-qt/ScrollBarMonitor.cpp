@@ -25,7 +25,7 @@
 //________________________________________________
 ScrollBarMonitor::ScrollBarMonitor( QAbstractScrollArea* parent ):
     QObject( parent ),
-    Counter( "ScrollBarMonitor" )
+    Counter( QStringLiteral("ScrollBarMonitor") )
 {}
 
 //________________________________________________

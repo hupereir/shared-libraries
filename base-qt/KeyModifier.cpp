@@ -41,7 +41,7 @@ key_( key )
 KeyModifier::State KeyModifier::state() const
 {
 
-    Debug::Throw( "KeyModifier::state.\n" );
+    Debug::Throw( QStringLiteral("KeyModifier::state.\n") );
 
     #if defined(Q_OS_WIN)
     switch( key_ )

@@ -32,7 +32,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     CustomDialog( parent, OkButton, Qt::Window )
 {
 
-    Debug::Throw( "IconCacheDialog::IconCacheDialog.\n" );
+    Debug::Throw( QStringLiteral("IconCacheDialog::IconCacheDialog.\n") );
     setWindowTitle( tr( "Icon Cache" ) );
     setOptionName( "ICON_CACHE_DIALOG" );
 
@@ -56,7 +56,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
 void IconCacheDialog::updateCache()
 {
 
-    Debug::Throw( "IconCacheDialog::updateCache.\n" );
+    Debug::Throw( QStringLiteral("IconCacheDialog::updateCache.\n") );
 
     // retrieve cache
     const Base::IconCache& cache( IconEngine::cache() );

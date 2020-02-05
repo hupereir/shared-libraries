@@ -51,7 +51,7 @@ namespace SpellCheck
     void DictionarySelectionButton::_edit()
     {
 
-        Debug::Throw( "DictionarySelectionButton::_edit.\n" );
+        Debug::Throw( QStringLiteral("DictionarySelectionButton::_edit.\n") );
 
         // value
         const QString backup( value_ );

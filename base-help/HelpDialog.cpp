@@ -46,7 +46,7 @@ namespace Base
         CustomDialog( parent, CloseButton )
     {
 
-        Debug::Throw( "HelpDialog::HelpDialog.\n" );
+        Debug::Throw( QStringLiteral("HelpDialog::HelpDialog.\n") );
 
 
         // customize layout
@@ -101,7 +101,7 @@ namespace Base
     void HelpDialog::setItems( const HelpItem::List& items )
     {
 
-        Debug::Throw( "HelpDialog::setItems.\n" );
+        Debug::Throw( QStringLiteral("HelpDialog::setItems.\n") );
 
         // clear list and editors
         htmlEditor_->clear();
@@ -122,7 +122,7 @@ namespace Base
     void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previous )
     {
 
-        Debug::Throw( "HelpDialog::_Display.\n" );
+        Debug::Throw( QStringLiteral("HelpDialog::_Display.\n") );
 
         // check validity
         if( !current.isValid() ) htmlEditor_->clear();
@@ -141,7 +141,7 @@ namespace Base
     //_________________________________________________________
     void HelpDialog::_updateConfiguration()
     {
-        Debug::Throw( "HelpDialog::_updateConfiguration.\n" );
+        Debug::Throw( QStringLiteral("HelpDialog::_updateConfiguration.\n") );
         htmlEditor_->setFont( qApp->font() );
     }
 

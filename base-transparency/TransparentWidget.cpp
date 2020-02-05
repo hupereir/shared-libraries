@@ -42,10 +42,10 @@ namespace Transparency
     //____________________________________________________________________
     TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
         QWidget( parent, flags ),
-        Counter( "Transparency::TransparentWidget" )
+        Counter( QStringLiteral("Transparency::TransparentWidget") )
     {
 
-        Debug::Throw( "TransparentWidget::TransparentWidget.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::TransparentWidget.\n") );
 
         /*
         disable all automatic background filling
@@ -70,7 +70,7 @@ namespace Transparency
     //____________________________________________________________________
     void TransparentWidget::setBackgroundChanged()
     {
-        Debug::Throw( "TransparentWidget::setBackgroundChanged.\n"  );
+        Debug::Throw( QStringLiteral("TransparentWidget::setBackgroundChanged.\n")  );
         setBackgroundChanged( true );
         update();
     }
@@ -103,7 +103,7 @@ namespace Transparency
     //____________________________________________________________________
     void TransparentWidget::_setTintColor( const QColor& color )
     {
-        Debug::Throw( "TransparentWidget::_setTintColor.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::_setTintColor.\n") );
         if( tintColor_ == color ) return;
         tintColor_ = color;
         setBackgroundChanged( true );
@@ -140,7 +140,7 @@ namespace Transparency
     void TransparentWidget::paintEvent( QPaintEvent* event )
     {
 
-        Debug::Throw( "TransparentWidget::paintEvent.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::paintEvent.\n") );
 
         #if defined(Q_OS_WIN)
         _paintBackground( widgetPixmap_, event->rect() );
@@ -156,7 +156,7 @@ namespace Transparency
     //________________________________________________________________________
     void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rect )
     {
-        Debug::Throw( "TransparentWidget::_paintBackground.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::_paintBackground.\n") );
         QPainter painter( &device );
         painter.setClipRect( rect );
 
@@ -177,7 +177,7 @@ namespace Transparency
     //____________________________________________________________________
     void TransparentWidget::_toggleInverseColors( bool value )
     {
-        Debug::Throw( "TransparentWidget::_toggleInverseColors.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::_toggleInverseColors.\n") );
         XmlOptions::get().set<bool>( "TRANSPARENCY_INVERSE_COLORS", value );
         update();
     }
@@ -186,7 +186,7 @@ namespace Transparency
     void TransparentWidget::_updateConfiguration()
     {
 
-        Debug::Throw( "TransparentWidget::_updateConfiguration.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::_updateConfiguration.\n") );
 
         // colors
         QColor color;
@@ -232,7 +232,7 @@ namespace Transparency
     void TransparentWidget::_updateBackgroundPixmap()
     {
 
-        Debug::Throw( "TransparentWidget::_updateBackgroundPixmap.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::_updateBackgroundPixmap.\n") );
 
         backgroundPixmap_ = QPixmap( size() );
         if( CompositeEngine::get().isAvailable() ) backgroundPixmap_.fill( Qt::transparent );
@@ -251,7 +251,7 @@ namespace Transparency
     //____________________________________________________________________
     void TransparentWidget::_installActions()
     {
-        Debug::Throw( "TransparentWidget::_installAction.\n" );
+        Debug::Throw( QStringLiteral("TransparentWidget::_installAction.\n") );
 
         addAction( reloadBlurRegionAction_ = new QAction( IconEngine::get( IconNames::Reload ), tr( "Reload Blur Region" ), this ) );
         connect( reloadBlurRegionAction_, &QAction::triggered, this, QOverload<>::of( &TransparentWidget::_updateBlurRegion) );

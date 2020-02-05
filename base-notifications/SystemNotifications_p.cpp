@@ -72,7 +72,7 @@ namespace Private
     //____________________________________________
     SystemNotificationsP::SystemNotificationsP( QObject* parent ):
         QObject( parent ),
-        Counter( "SystemNotificationsP" )
+        Counter( QStringLiteral("SystemNotificationsP") )
     {
         #ifndef QT_NO_DBUS
         qDBusRegisterMetaType<Notifications::ImageData>();
@@ -97,7 +97,7 @@ namespace Private
     void SystemNotificationsP::initialize()
     {
 
-        Debug::Throw( "SystemNotificationsP::initialize.\n" );
+        Debug::Throw( QStringLiteral("SystemNotificationsP::initialize.\n") );
 
         if( initialized_ ) return;
         initialized_ = true;
@@ -127,7 +127,7 @@ namespace Private
     bool SystemNotificationsP::isSupported() const
     {
 
-        Debug::Throw( "SystemNotificationsP::isSupported.\n" );
+        Debug::Throw( QStringLiteral("SystemNotificationsP::isSupported.\n") );
         #ifndef QT_NO_DBUS
         return initialized_ && QDBusConnection::sessionBus().isConnected() && dbusInterface_->isValid();
         #else

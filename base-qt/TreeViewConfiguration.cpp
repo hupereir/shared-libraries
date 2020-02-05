@@ -33,7 +33,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
     OptionWidget( optionName )
 {
 
-    Debug::Throw( "TreeViewConfiguration::TreeViewConfiguration.\n" );
+    Debug::Throw( QStringLiteral("TreeViewConfiguration::TreeViewConfiguration.\n") );
 
     // create vbox layout
     setLayout( new QVBoxLayout );
@@ -68,7 +68,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
 //____________________________________________________________________________
 void TreeViewConfiguration::read( const Options& options )
 {
-    Debug::Throw( "TreeViewConfiguration::read.\n" );
+    Debug::Throw( QStringLiteral("TreeViewConfiguration::read.\n") );
 
     // set check button state according to the backup mask
     int mask( options.get<int>( optionName() ) );
@@ -88,7 +88,7 @@ void TreeViewConfiguration::read( const Options& options )
 //____________________________________________________________________________
 void TreeViewConfiguration::write( Options& options ) const
 {
-    Debug::Throw( "TreeViewConfiguration::write.\n" );
+    Debug::Throw( QStringLiteral("TreeViewConfiguration::write.\n") );
 
     int mask(0);
     for( int index = 0; index < checkbox_.size(); index++ )

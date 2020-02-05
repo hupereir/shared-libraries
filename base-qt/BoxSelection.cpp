@@ -34,7 +34,7 @@ const QString BoxSelection::mimeType = "text/boxSelection";
 
 //________________________________________________________________________
 BoxSelection::BoxSelection( TextEditor* parent ):
-    Counter( "BoxSelection" ),
+    Counter( QStringLiteral("BoxSelection") ),
     parent_( parent )
 {
     Debug::Throw( debugLevel, "BoxSelection::BoxSelection.\n" );
@@ -77,7 +77,7 @@ void BoxSelection::synchronize( const BoxSelection& box )
 void BoxSelection::updateConfiguration()
 {
 
-    Debug::Throw( "BoxSelection::updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BoxSelection::updateConfiguration.\n") );
 
     // retrieve box selection color from options
     QColor color = parent_->palette().color( QPalette::Active, QPalette::Highlight );

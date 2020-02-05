@@ -51,7 +51,7 @@ namespace SpellCheck
     void FilterSelectionButton::_edit()
     {
 
-        Debug::Throw( "FilterSelectionButton::_edit.\n" );
+        Debug::Throw( QStringLiteral("FilterSelectionButton::_edit.\n") );
 
         // value
         const QString backup( value_ );

@@ -30,9 +30,9 @@
 //______________________________________________
 ColorGrabObject::ColorGrabObject( QAbstractButton* parent ):
     QObject( parent ),
-    Counter( "ColorGrabObject" )
+    Counter( QStringLiteral("ColorGrabObject") )
 {
-    Debug::Throw( "ColorGrabObject::ColorGrabObject.\n" );
+    Debug::Throw( QStringLiteral("ColorGrabObject::ColorGrabObject.\n") );
     connect( parent, &QAbstractButton::clicked, [this](bool){ _grabColor(); } );
 }
 
@@ -40,7 +40,7 @@ ColorGrabObject::ColorGrabObject( QAbstractButton* parent ):
 void ColorGrabObject::_grabColor()
 {
 
-    Debug::Throw( "ColorGrabObject::_grabColor.\n" );
+    Debug::Throw( QStringLiteral("ColorGrabObject::_grabColor.\n") );
 
     _clearCapture();
     captureWidget_.reset( new QDialog( nullptr, Qt::X11BypassWindowManagerHint ) );

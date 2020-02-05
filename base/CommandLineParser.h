@@ -56,7 +56,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
 
         //* constructor
         explicit Tag( QString longName, QString shortName = QString() ):
-            Counter( "CommandLineParser::Tag" ),
+            Counter( QStringLiteral("CommandLineParser::Tag") ),
             longName_( longName ),
             shortName_( shortName )
         {}
@@ -194,7 +194,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
 
         //* constructor
         explicit Flag( QString helpText = QString() ):
-            Counter( "CommandLineParser::Flag" ),
+            Counter( QStringLiteral("CommandLineParser::Flag") ),
             helpText_( helpText )
         {}
 

@@ -27,7 +27,7 @@ ContextMenu::ContextMenu( QWidget* parent ):
     BaseContextMenu( parent )
 {
 
-    Debug::Throw( "ContextMenu::ContextMenu.\n" );
+    Debug::Throw( QStringLiteral("ContextMenu::ContextMenu.\n") );
     parent->setContextMenuPolicy( Qt::CustomContextMenu );
     connect( parent, &QWidget::customContextMenuRequested, this, &ContextMenu::_raise );
     connect( this, &QMenu::aboutToShow, this, &ContextMenu::_hideActions );

@@ -26,7 +26,7 @@
 //______________________________________________________
 ValidFileThread::ValidFileThread( QObject* parent ):
     QThread( parent ),
-    Counter( "ValidFileThread" )
+    Counter( QStringLiteral("ValidFileThread") )
 { qRegisterMetaType<FileRecord::List>( "FileRecord::List" ); }
 
 //______________________________________________________

@@ -32,7 +32,7 @@ void ScratchFileMonitor::add( const File& file )
 //_______________________________________________________________________________________
 void ScratchFileMonitor::deleteScratchFiles()
 {
-    Debug::Throw( "ScratchFileMonitor::deleteScratchFiles.\n" );
+    Debug::Throw( QStringLiteral("ScratchFileMonitor::deleteScratchFiles.\n") );
 
     // create records
     FileRecordModel::List records;

@@ -26,7 +26,7 @@
 //____________________________________________________________________________
 GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, Flags flags ):
     QObject( parent ),
-    Counter( "GridLayoutItem" ),
+    Counter( QStringLiteral("GridLayoutItem") ),
     flags_( flags )
 {
 

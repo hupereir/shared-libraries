@@ -100,7 +100,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     OptionWidget( name )
 {
 
-    Debug::Throw( "OptionListBox::OptionListBox.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::OptionListBox.\n") );
 
     QHBoxLayout* layout( new QHBoxLayout );
     layout->setSpacing(5);
@@ -195,7 +195,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 //_______________________________________________________
 void OptionListBox::_setModel( OptionModel* model )
 {
-    Debug::Throw( "OptionListBox::_setModel.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_setModel.\n") );
     if( list_ )
     {
         list_->setModel( model );
@@ -212,7 +212,7 @@ void OptionListBox::_setModel( OptionModel* model )
 //_______________________________________________________
 void OptionListBox::read( const Options& options )
 {
-    Debug::Throw( "OptionListBox::read.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::read.\n") );
 
     // retrieve all values from Options, insert in list
     Options::List values( options.specialOptions( optionName() ) );
@@ -236,7 +236,7 @@ void OptionListBox::read( const Options& options )
 //_______________________________________________________
 void OptionListBox::write( Options& options ) const
 {
-    Debug::Throw( "OptionListBox::write.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::write.\n") );
 
     options.clearSpecialOptions( optionName() );
     options.keep( optionName() );
@@ -249,7 +249,7 @@ void OptionListBox::write( Options& options ) const
 //______________________________________________________________________
 void OptionListBox::_updateButtons()
 {
-    Debug::Throw( "OptionListBox::_updateButtons.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_updateButtons.\n") );
 
     QModelIndex current( list_->selectionModel()->currentIndex() );
     edit_->setEnabled( current.isValid() && model_->get( current ).second.hasFlag( Option::Flag::Recordable ) );
@@ -269,7 +269,7 @@ void OptionListBox::_updateButtons()
 //_______________________________________________________
 void OptionListBox::_add()
 {
-    Debug::Throw( "OptionListBox::_add.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_add.\n") );
 
     // map dialog
     EditDialog dialog( this, browsable_, fileMode_ );
@@ -307,7 +307,7 @@ void OptionListBox::_add()
 //_______________________________________________________
 void OptionListBox::_edit()
 {
-    Debug::Throw( "OptionListBox::_edit.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_edit.\n") );
 
     // retrieve selection
     QModelIndex current( list_->selectionModel()->currentIndex() );
@@ -360,7 +360,7 @@ void OptionListBox::_edit()
 //_______________________________________________________
 void OptionListBox::_remove()
 {
-    Debug::Throw( "OptionListBox::_remove.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_remove.\n") );
 
     // retrieve selected items; retrieve only recordable options
     OptionModel::List removed;
@@ -378,7 +378,7 @@ void OptionListBox::_remove()
 //_______________________________________________________
 void OptionListBox::_setDefault()
 {
-    Debug::Throw( "OptionListBox::_setDefault.\n" );
+    Debug::Throw( QStringLiteral("OptionListBox::_setDefault.\n") );
 
     // retrieve selection
     QModelIndex current( list_->selectionModel()->currentIndex() );

@@ -36,10 +36,10 @@
 //_________________________________________________________
 TabbedDialog::TabbedDialog( QWidget* parent ):
     BaseDialog( parent ),
-    Counter( "TabbedDialog" )
+    Counter( QStringLiteral("TabbedDialog") )
 {
 
-    Debug::Throw( "TabbedDialog::TabbedDialog.\n" );
+    Debug::Throw( QStringLiteral("TabbedDialog::TabbedDialog.\n") );
 
     auto layout = new QVBoxLayout;
     layout->setMargin(0);
@@ -151,7 +151,7 @@ QWidget* TabbedDialog::_findPage( const QModelIndex& index ) const
 //__________________________________________________
 void TabbedDialog::_clear()
 {
-    Debug::Throw( "TabbedDialog::_clear.\n" );
+    Debug::Throw( QStringLiteral("TabbedDialog::_clear.\n") );
     model_.clear();
     while( stackedWidget_->currentWidget() )
     { delete  stackedWidget_->currentWidget(); }
@@ -160,7 +160,7 @@ void TabbedDialog::_clear()
 //__________________________________________________
 void TabbedDialog::_display( const QModelIndex& index )
 {
-    Debug::Throw( "TabbedDialog::_display.\n" );
+    Debug::Throw( QStringLiteral("TabbedDialog::_display.\n") );
     if( !index.isValid() ) return;
     stackedWidget_->setCurrentWidget( model_.get( index ).widget() );
 }

@@ -36,7 +36,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     tabWidget_( 0 )
 {
 
-    Debug::Throw( "HtmlDialog::HtmlDialog.\n" );
+    Debug::Throw( QStringLiteral("HtmlDialog::HtmlDialog.\n") );
 
     setOptionName( "HTML_DIALOG" );
 
@@ -89,7 +89,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
 void HtmlDialog::setOptionWidgets( QList<QWidget*> widgets )
 {
 
-    Debug::Throw( "HtmlDialog::setOptionWidgets\n" );
+    Debug::Throw( QStringLiteral("HtmlDialog::setOptionWidgets\n") );
     if( widgets.isEmpty() ) return;
 
     Q_ASSERT( !tabWidget_ );
@@ -105,7 +105,7 @@ void HtmlDialog::setOptionWidgets( QList<QWidget*> widgets )
 void HtmlDialog::_browseCommand()
 {
 
-    Debug::Throw( "HtmlDialog::_browseCommand.\n" );
+    Debug::Throw( QStringLiteral("HtmlDialog::_browseCommand.\n") );
 
     // open FileDialog
     QString file( FileDialog( this ).getFile() );
@@ -122,6 +122,6 @@ void HtmlDialog::_browseCommand()
 //__________________________________________________
 void HtmlDialog::_saveCommands()
 {
-    Debug::Throw( "HtmlDialog::_saveCommands.\n" );
+    Debug::Throw( QStringLiteral("HtmlDialog::_saveCommands.\n") );
     XmlOptions::get().add( "HTML_COMMAND", Option( command(), Option::Flag::Recordable|Option::Flag::Current ) );
 }

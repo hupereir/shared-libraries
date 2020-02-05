@@ -36,7 +36,7 @@ BasePrintHelper::BasePrintHelper( QObject* parent ):
 void BasePrintHelper::setupPage( QPrinter* printer )
 {
 
-    Debug::Throw( "BasePrintHelper::setupPage.\n" );
+    Debug::Throw( QStringLiteral("BasePrintHelper::setupPage.\n") );
 
     sheetNumber_ = 0;
     pageNumber_ = 0;
@@ -114,7 +114,7 @@ void BasePrintHelper::setupPage( QPrinter* printer )
 void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
 {
 
-    Debug::Throw( "BasePrintHelper::_newPage.\n" );
+    Debug::Throw( QStringLiteral("BasePrintHelper::_newPage.\n") );
 
     // increment printer page
     switch( pageMode_ )

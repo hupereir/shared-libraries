@@ -113,7 +113,7 @@ class TextEncodingModel: public ListModel<TextEncodingString>
 //______________________________________________________________________
 TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
     QWidget( parent ),
-    Counter( "TextEncodingWidget" ),
+    Counter( QStringLiteral("TextEncodingWidget") ),
     model_( new TextEncodingModel( this ) )
 {
     // layout

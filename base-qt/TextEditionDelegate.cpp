@@ -34,7 +34,7 @@ namespace Private
     //______________________________________________________________
     void LocalEditor::_validate()
     {
-        Debug::Throw( "Private::LocalEditor::_validate.\n" );
+        Debug::Throw( QStringLiteral("Private::LocalEditor::_validate.\n") );
         valid_ = true;
     }
 
@@ -43,13 +43,13 @@ namespace Private
 //______________________________________________________________
 TextEditionDelegate::TextEditionDelegate( QObject *parent ):
     TreeViewItemDelegate( parent ),
-    Counter( "TextEditionDelegate" )
-{ Debug::Throw( "TextEditionDelegate::TextEditionDelegate.\n" ); }
+    Counter( QStringLiteral("TextEditionDelegate") )
+{ Debug::Throw( QStringLiteral("TextEditionDelegate::TextEditionDelegate.\n") ); }
 
 //______________________________________________________________
 QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
-    Debug::Throw( "TextEditionDelegate::createEditor.\n" );
+    Debug::Throw( QStringLiteral("TextEditionDelegate::createEditor.\n") );
     auto editor = new Private::LocalEditor( parent );
     editor->setFrame( false );
     return editor;
@@ -58,7 +58,7 @@ QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionVi
 //______________________________________________________________
 void TextEditionDelegate::setEditorData(QWidget *widget, const QModelIndex &index) const
 {
-    Debug::Throw( "TextEditionDelegate::setEditorData.\n" );
+    Debug::Throw( QStringLiteral("TextEditionDelegate::setEditorData.\n") );
     QString text = index.model()->data(index, Qt::DisplayRole).toString();
     auto editor = qobject_cast<Private::LocalEditor*>(widget);
     if( editor ) editor->setText( text );
@@ -67,7 +67,7 @@ void TextEditionDelegate::setEditorData(QWidget *widget, const QModelIndex &inde
 //______________________________________________________________
 void TextEditionDelegate::setModelData(QWidget *widget, QAbstractItemModel *model, const QModelIndex &index) const
 {
-    Debug::Throw( "TextEditionDelegate::setModelData.\n" );
+    Debug::Throw( QStringLiteral("TextEditionDelegate::setModelData.\n") );
     Private::LocalEditor *editor = qobject_cast<Private::LocalEditor*>(widget);
 
     // update model only if edition is "valid", meaning that return was pressed
@@ -81,6 +81,6 @@ void TextEditionDelegate::setModelData(QWidget *widget, QAbstractItemModel *mode
 //______________________________________________________________
 void TextEditionDelegate::updateEditorGeometry(QWidget *widget, const QStyleOptionViewItem &option, const QModelIndex &) const
 {
-    Debug::Throw( "TextEditionDelegate::updateEditorGeometry.\n" );
+    Debug::Throw( QStringLiteral("TextEditionDelegate::updateEditorGeometry.\n") );
     widget->setGeometry(option.rect);
 }

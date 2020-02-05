@@ -37,11 +37,11 @@
 //__________________________________________________________________
 FileSystemModel::FileSystemModel( QObject* parent ):
     ListModel( parent ),
-    Counter( "FileSystemModel" ),
+    Counter( QStringLiteral("FileSystemModel") ),
     columnTitles_( { tr( "File" ), tr( "Size" ), tr( "Last Accessed" ) } ),
     sizePropertyId_( FileRecord::PropertyId::get( FileRecordProperties::Size ) )
 {
-    Debug::Throw("FileSystemModel::FileSystemModel.\n" );
+    Debug::Throw(QStringLiteral("FileSystemModel::FileSystemModel.\n") );
     iconProvider_ = new FileIconProvider( this );
 }
 

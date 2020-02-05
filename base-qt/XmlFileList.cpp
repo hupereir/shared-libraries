@@ -33,7 +33,7 @@ XmlFileList::XmlFileList( QObject* parent ):
     tagName_( Base::Xml::FileList )
 {
 
-    Debug::Throw( "XmlFileList::XmlFileList.\n" );
+    Debug::Throw( QStringLiteral("XmlFileList::XmlFileList.\n") );
     connect( qApp, &QApplication::aboutToQuit, this, QOverload<>::of( &XmlFileList::write ) );
 
 }
@@ -76,7 +76,7 @@ bool XmlFileList::setDBFile( const File& file )
 //_______________________________________________
 bool XmlFileList::read( File file )
 {
-    Debug::Throw( "XmlFileList::read.\n" );
+    Debug::Throw( QStringLiteral("XmlFileList::read.\n") );
 
     if( file.isEmpty() ) file = dbFile_;
     if( file.isEmpty() || !file.exists() ) return false;
@@ -128,7 +128,7 @@ bool XmlFileList::_read( const XmlDocument& document )
 //_______________________________________________
 bool XmlFileList::write( File file )
 {
-    Debug::Throw( "XmlFileList::write.\n" );
+    Debug::Throw( QStringLiteral("XmlFileList::write.\n") );
 
     if( file.isEmpty() ) file = dbFile_;
     if( file.isEmpty() ) return false;

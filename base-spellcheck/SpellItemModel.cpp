@@ -26,7 +26,7 @@ namespace SpellCheck
     //__________________________________________________________________
     QVariant SpellItemModel::data( const QModelIndex& index, int role ) const
     {
-        Debug::Throw( "SpellItemModel::data.\n" );
+        Debug::Throw( QStringLiteral("SpellItemModel::data.\n") );
 
         // check index
         if( !contains( index ) ) return QVariant();

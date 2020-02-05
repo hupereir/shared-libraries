@@ -32,7 +32,7 @@ SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
 CustomDialog( parent, CloseButton )
 {
 
-    Debug::Throw( "SystemEnvironmentDialog::SystemEnvironmentDialog.\n" );
+    Debug::Throw( QStringLiteral("SystemEnvironmentDialog::SystemEnvironmentDialog.\n") );
     setWindowTitle( tr( "System Environment Variables" ) );
     setOptionName( "SYSTEM_ENVIRONMENT_DIALOG" );
 

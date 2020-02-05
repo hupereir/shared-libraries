@@ -70,7 +70,7 @@ TextSelection& TextEditor::lastSelection()
 //______________________________________________
 TextEditor::TextEditor( QWidget *parent ):
     BaseEditor( parent ),
-    Counter( "TextEditor" ),
+    Counter( QStringLiteral("TextEditor") ),
     marginWidget_( new TextEditorMarginWidget( this ) ),
     boxSelection_( this ),
     cursorMonitor_( viewport() ),
@@ -78,7 +78,7 @@ TextEditor::TextEditor( QWidget *parent ):
     clickCounter_( this, 4 )
 {
 
-    Debug::Throw( "TextEditor::TextEditor.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::TextEditor.\n") );
 
     // set customized document
     auto document( new CustomTextDocument(0) );
@@ -168,7 +168,7 @@ TextEditor::~TextEditor()
 //________________________________________________
 int TextEditor::blockCount() const
 {
-    Debug::Throw( "TextEditor::blockCount.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::blockCount.\n") );
     TextBlockRange range( document() );
     return std::accumulate( range.begin(), range.end(), 0,
         [this]( int sum, const QTextBlock& block )
@@ -206,7 +206,7 @@ bool TextEditor::hasSelection() const
 //______________________________________________________________________
 TextSelection TextEditor::selection() const
 {
-    Debug::Throw( "TextEditor::selection.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::selection.\n") );
 
     // copy last selection
     TextSelection out( "" );
@@ -219,7 +219,7 @@ TextSelection TextEditor::selection() const
     QString text;
     if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) {
 
-        Debug::Throw( "TextEditor::selection - from clipboard.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::selection - from clipboard.\n") );
         out.setText( text );
 
     } else if( textCursor().hasSelection() ) {
@@ -229,7 +229,7 @@ TextSelection TextEditor::selection() const
 
     } else {
 
-        Debug::Throw( "TextEditor::selection - from last selection.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::selection - from last selection.\n") );
         out.setText( lastSelection().text() );
 
     }
@@ -241,7 +241,7 @@ TextSelection TextEditor::selection() const
 //________________________________________________
 void TextEditor::setPlainText( const QString& text )
 {
-    Debug::Throw( "TextEditor::setPlainText.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::setPlainText.\n") );
 
     lineNumberDisplay_->clear();
 
@@ -255,7 +255,7 @@ void TextEditor::setPlainText( const QString& text )
 //________________________________________________
 void TextEditor::setHtml( const QString& text )
 {
-    Debug::Throw( "TextEditor::setHtml.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::setHtml.\n") );
 
     bool enabled( blockHighlight_->isEnabled() );
     blockHighlight_->setEnabled( false );
@@ -314,7 +314,7 @@ void TextEditor::paintMargin( QPainter& painter )
 //________________________________________________
 void TextEditor::selectWord()
 {
-    Debug::Throw( "TextEditor::selectWord.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::selectWord.\n") );
 
     // retrieve text cursor, block and text
     auto cursor( textCursor() );
@@ -362,7 +362,7 @@ void TextEditor::selectWord()
 //________________________________________________
 void TextEditor::selectLine()
 {
-    Debug::Throw( "TextEditor::selectLine.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::selectLine.\n") );
 
     auto cursor( textCursor() );
     auto block( cursor.block() );
@@ -431,7 +431,7 @@ void TextEditor::mergeCurrentCharFormat( const QTextCharFormat& format )
 //________________________________________________
 void TextEditor::synchronize( TextEditor* editor )
 {
-    Debug::Throw( "TextEditor::synchronize.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::synchronize.\n") );
 
     // retrieve and cast old document
     auto document( qobject_cast<CustomTextDocument*>( BaseEditor::document() ) );
@@ -481,7 +481,7 @@ void TextEditor::synchronize( TextEditor* editor )
 bool TextEditor::setActive( bool active )
 {
 
-    Debug::Throw( "TextEditor::setActive.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::setActive.\n") );
 
     // check if value is changed
     if( isActive() == active ) return false;
@@ -494,7 +494,7 @@ bool TextEditor::setActive( bool active )
 void TextEditor::showReplacements( int counts )
 {
 
-    Debug::Throw( "TextEditor::showReplacements.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::showReplacements.\n") );
 
     QString buffer;
     if( !counts ) buffer = tr( "String not found." );
@@ -511,7 +511,7 @@ void TextEditor::showReplacements( int counts )
 //__________________________________________________________________
 void TextEditor::setTrackAnchors( bool value )
 {
-    Debug::Throw( "TextEditor::setTrackAnchors.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::setTrackAnchors.\n") );
     trackAnchors_ = value;
     if( value ) setMouseTracking( true );
 }
@@ -519,7 +519,7 @@ void TextEditor::setTrackAnchors( bool value )
 //__________________________________________________________________
 void TextEditor::setReadOnly( bool readOnly )
 {
-    Debug::Throw( "TextEditor::setReadOnly.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::setReadOnly.\n") );
     BaseEditor::setReadOnly( readOnly );
     _updateReadOnlyActions( readOnly );
     if( readOnly ) document()->setModified( false );
@@ -530,7 +530,7 @@ void TextEditor::resetUndoRedoStack()
 {
     if( isReadOnly() || !document()->isUndoRedoEnabled() ) return;
 
-    Debug::Throw(" TextEditor::resetUndoRedoStack.\n");
+    Debug::Throw(QStringLiteral(" TextEditor::resetUndoRedoStack.\n"));
     document()->setUndoRedoEnabled( false );
     document()->setUndoRedoEnabled( true );
 
@@ -540,7 +540,7 @@ void TextEditor::resetUndoRedoStack()
 void TextEditor::installContextMenuActions( BaseContextMenu* menu, bool allActions )
 {
 
-    Debug::Throw( "TextEditor::installContextMenuActions.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::installContextMenuActions.\n") );
 
     // anchors
     if( trackAnchors_ && !anchor().isEmpty() )
@@ -596,7 +596,7 @@ void TextEditor::installContextMenuActions( BaseContextMenu* menu, bool allActio
 void TextEditor::createFindWidget( bool compact )
 {
 
-    Debug::Throw( "TextEditor::createFindWidget.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::createFindWidget.\n") );
     if( !findWidget_ )
     {
         findWidget_ = new BaseFindWidget( this, compact );
@@ -613,7 +613,7 @@ void TextEditor::createFindWidget( bool compact )
 void TextEditor::createReplaceWidget( bool compact )
 {
 
-    Debug::Throw( "TextEditor::createReplaceWidget.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::createReplaceWidget.\n") );
     if( !replaceWidget_ )
     {
         replaceWidget_ = new BaseReplaceWidget( this, compact );
@@ -635,7 +635,7 @@ void TextEditor::createSelectLineWidget( bool compact )
 {
     if( !selectLineWidget_ )
     {
-        Debug::Throw( "TextEditor::createSelectLineWidget.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::createSelectLineWidget.\n") );
         selectLineWidget_ = new SelectLineWidget( this, compact );
         connect( selectLineWidget_, &SelectLineWidget::lineSelected, this, QOverload<int>::of( &TextEditor::selectLine ) );
         connect( this, &TextEditor::lineFound, selectLineWidget_, &SelectLineWidget::matchFound );
@@ -647,7 +647,7 @@ void TextEditor::createSelectLineWidget( bool compact )
 void TextEditor::setBackground( const QTextBlock& constBlock, const QColor& color )
 {
 
-    Debug::Throw( "TextEditor::setBackground.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::setBackground.\n") );
 
     // local copy
     auto block( constBlock );
@@ -667,7 +667,7 @@ void TextEditor::setBackground( const QTextBlock& constBlock, const QColor& colo
 void TextEditor::clearBackground( const QTextBlock& block )
 {
 
-    Debug::Throw( "TextEditor::clearBackground.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::clearBackground.\n") );
     auto data( static_cast<TextBlockData*>( block.userData() ) );
     if( data && data->hasFlag( TextBlock::HasBackground ) && data->setBackground( QColor() ) && updatesEnabled()  )
     { document()->markContentsDirty(block.position(), block.length()-1); }
@@ -678,7 +678,7 @@ void TextEditor::clearBackground( const QTextBlock& block )
 //___________________________________________________________________________
 void TextEditor::clearAllBackgrounds()
 {
-    Debug::Throw( "TextEditor::clearAllBackgrounds.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::clearAllBackgrounds.\n") );
     for( const auto& block:TextBlockRange( document() ) )
     { clearBackground( block ); }
 }
@@ -687,7 +687,7 @@ void TextEditor::clearAllBackgrounds()
 void TextEditor::cut()
 {
 
-    Debug::Throw( "TextEditor::cut.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::cut.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -710,7 +710,7 @@ void TextEditor::cut()
 void TextEditor::copy()
 {
 
-    Debug::Throw( "TextEditor::copy.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::copy.\n") );
     if( boxSelection_.state() == BoxSelection::State::Finished ) boxSelection_.toClipboard( QClipboard::Clipboard );
     else BaseEditor::copy();
 
@@ -720,7 +720,7 @@ void TextEditor::copy()
 void TextEditor::paste()
 {
 
-    Debug::Throw( "TextEditor::paste.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::paste.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -739,7 +739,7 @@ void TextEditor::paste()
 //________________________________________________
 void TextEditor::upperCase()
 {
-    Debug::Throw( "TextEditor::upperCase.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::upperCase.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -767,7 +767,7 @@ void TextEditor::upperCase()
 void TextEditor::lowerCase()
 {
 
-    Debug::Throw( "TextEditor::lowerCase.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::lowerCase.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -795,7 +795,7 @@ void TextEditor::lowerCase()
 //______________________________________________________________________
 void TextEditor::find( TextSelection selection )
 {
-    Debug::Throw( "TextEditor::find.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::find.\n") );
     bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
     if( found ) emit matchFound();
     else emit noMatchFound();
@@ -804,28 +804,28 @@ void TextEditor::find( TextSelection selection )
 //______________________________________________________________________
 void TextEditor::findSelectionForward()
 {
-    Debug::Throw( "TextEditor::findSelectionForward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::findSelectionForward.\n") );
     _findForward( selection(), true );
 }
 
 //______________________________________________________________________
 void TextEditor::findSelectionBackward()
 {
-    Debug::Throw( "TextEditor::findSelectionBackward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::findSelectionBackward.\n") );
     _findBackward( selection(), true );
 }
 
 //______________________________________________________________________
 void TextEditor::findAgainForward()
 {
-    Debug::Throw( "TextEditor::findAgainForward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::findAgainForward.\n") );
     _findForward( lastSelection(), true );
 }
 
 //______________________________________________________________________
 void TextEditor::findAgainBackward()
 {
-    Debug::Throw( "TextEditor::findAgainBackward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::findAgainBackward.\n") );
     _findBackward( lastSelection(), true );
 }
 
@@ -833,7 +833,7 @@ void TextEditor::findAgainBackward()
 void TextEditor::replace( TextSelection selection )
 {
 
-    Debug::Throw( "TextEditor::replace.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::replace.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -872,7 +872,7 @@ void TextEditor::replace( TextSelection selection )
 //______________________________________________________________________
 void TextEditor::replaceAgainForward()
 {
-    Debug::Throw( "TextEditor::replaceAgainForward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::replaceAgainForward.\n") );
     auto selection = lastSelection();
     selection.setFlag( TextSelection::Backward, false );
     replace( selection );
@@ -881,7 +881,7 @@ void TextEditor::replaceAgainForward()
 //______________________________________________________________________
 void TextEditor::replaceAgainBackward()
 {
-    Debug::Throw( "TextEditor::replaceAgainBackward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::replaceAgainBackward.\n") );
     auto selection = lastSelection();
     selection.setFlag( TextSelection::Backward, true );
     replace( selection );
@@ -891,7 +891,7 @@ void TextEditor::replaceAgainBackward()
 int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 {
 
-    Debug::Throw( "TextEditor::replaceInSelection.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::replaceInSelection.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -905,7 +905,7 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
     if( boxSelection_.state() == BoxSelection::State::Finished )
     {
 
-        Debug::Throw( "TextEditor::replaceInSelection - box selection.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::replaceInSelection - box selection.\n") );
         auto cursors( boxSelection_.cursorList() );
         counts = std::accumulate( cursors.begin(), cursors.end(), 0,
             [this, &selection]( int count, QTextCursor cursor )
@@ -915,13 +915,13 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 
     } else {
 
-        Debug::Throw( "TextEditor::replaceInSelection - normal selection.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::replaceInSelection - normal selection.\n") );
         auto cursor = textCursor();
         counts = _replaceInRange( selection, cursor, CursorMode::Expand );
 
     }
 
-    Debug::Throw( "TextEditor::replaceInSelection - done.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::replaceInSelection - done.\n") );
     if( showDialog ) showReplacements( counts );
     return counts;
 
@@ -931,7 +931,7 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 int TextEditor::replaceInWindow( TextSelection selection, bool showDialog )
 {
 
-    Debug::Throw( "TextEditor::replaceInWindow.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::replaceInWindow.\n") );
 
     // progress dialog
     if( showDialog ) _createProgressDialog();
@@ -985,7 +985,7 @@ void TextEditor::selectLine( int index )
 void TextEditor::removeLine()
 {
 
-    Debug::Throw( "TextEditor::removeLine.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::removeLine.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -1026,7 +1026,7 @@ void TextEditor::removeLine()
 //________________________________________________
 void TextEditor::clear()
 {
-    Debug::Throw( "TextEditor::clear.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::clear.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -1095,7 +1095,7 @@ void TextEditor::enterEvent( QEvent* event )
 void TextEditor::mousePressEvent( QMouseEvent* event )
 {
 
-    Debug::Throw( "TextEditor::mousePressEvent.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::mousePressEvent.\n") );
 
     // check button
     if( event->button() == Qt::LeftButton )
@@ -1193,7 +1193,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
 void TextEditor::mouseDoubleClickEvent( QMouseEvent* event )
 {
 
-    Debug::Throw( "TextEditor::mouseDoubleClickEvent.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::mouseDoubleClickEvent.\n") );
 
     if( event->button() != Qt::LeftButton ) BaseEditor::mouseDoubleClickEvent( event );
     else {
@@ -1285,7 +1285,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
 void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 {
 
-    Debug::Throw( "TextEditor::mouseReleaseEvent.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::mouseReleaseEvent.\n") );
 
     autoScrollTimer_.stop();
 
@@ -1370,7 +1370,7 @@ void TextEditor::wheelEvent( QWheelEvent* event )
 void TextEditor::dropEvent( QDropEvent* event )
 {
 
-    Debug::Throw( "TextEditor::dropEvent.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::dropEvent.\n") );
 
     // static empty mimeData used to pass to base class
     // so that drop events are finished properly even when actually doing nothing
@@ -1387,7 +1387,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         !textCursor().hasSelection() )
     {
 
-        Debug::Throw( "TextEditor::dropEvent - dropping box selection.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::dropEvent - dropping box selection.\n") );
 
         // retrieve text from mimeType
         auto text( event->mimeData()->text() );
@@ -1413,7 +1413,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         )
     {
         // drag is box selection and from this window. Move current block selection around.
-        Debug::Throw( "TextEditor::dropEvent - [box] moving current box selection.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::dropEvent - [box] moving current box selection.\n") );
 
         // count rows in current selection
         int rowCount( boxSelection_.cursorList().size() - 1 );
@@ -1460,7 +1460,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         {
 
             // current selection is inserted in itself. Doing nothing
-            Debug::Throw( "TextEditor::dropEvent - [box] doing nothing.\n" );
+            Debug::Throw( QStringLiteral("TextEditor::dropEvent - [box] doing nothing.\n") );
             event->acceptProposedAction();
             BaseEditor::dropEvent( &dropEvent );
             return;
@@ -1468,7 +1468,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         } else {
 
             // insert mine data in current box selection
-            Debug::Throw( "TextEditor::dropEvent - [box] inserting selection.\n" );
+            Debug::Throw( QStringLiteral("TextEditor::dropEvent - [box] inserting selection.\n") );
             boxSelection_.fromString( event->mimeData()->text() );
             setTextCursor( boxSelection_.cursorList().back() );
             boxSelection_.clear();
@@ -1493,7 +1493,7 @@ void TextEditor::dropEvent( QDropEvent* event )
         {
 
             // drag action is from another widget and ends in selection. Replace this selection
-            Debug::Throw( "TextEditor::dropEvent - inserting selection.\n" );
+            Debug::Throw( QStringLiteral("TextEditor::dropEvent - inserting selection.\n") );
             cursor.insertText( event->mimeData()->text() );
             event->acceptProposedAction();
             BaseEditor::dropEvent( &dropEvent );
@@ -1506,7 +1506,7 @@ void TextEditor::dropEvent( QDropEvent* event )
 
             // drag action is from this widget
             // insert selection at current location and remove old selection
-            Debug::Throw( "TextEditor::dropEvent - moving selection.\n" );
+            Debug::Throw( QStringLiteral("TextEditor::dropEvent - moving selection.\n") );
             cursor.beginEditBlock();
             cursor.removeSelectedText();
             cursor.setPosition( newCursor.position() );
@@ -1660,7 +1660,7 @@ void TextEditor::focusInEvent( QFocusEvent* event )
 void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 {
 
-    Debug::Throw( "TextEditor::contextMenuEvent.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::contextMenuEvent.\n") );
     contextMenuPosition_ = event->pos();
 
     BaseContextMenu menu( this );
@@ -1818,7 +1818,7 @@ void TextEditor::scrollContentsBy( int dx, int dy )
 //______________________________________________________________
 void TextEditor::_installActions()
 {
-    Debug::Throw( "TextEditor::_installActions.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_installActions.\n") );
 
     // create actions
     addAction( undoAction_ = new StandardAction( StandardAction::Type::Undo, this ) );
@@ -1970,7 +1970,7 @@ void TextEditor::_installActions()
 void TextEditor::_createFindDialog()
 {
 
-    Debug::Throw( "TextEditor::_createFindDialog.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_createFindDialog.\n") );
     if( !findDialog_ )
     {
         if( !findWidget_ ) createFindWidget( false );
@@ -1987,7 +1987,7 @@ void TextEditor::_createFindDialog()
 void TextEditor::_createReplaceDialog()
 {
 
-    Debug::Throw( "TextEditor::_createReplaceDialog.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_createReplaceDialog.\n") );
     if( !replaceDialog_ )
     {
         if( !replaceWidget_ ) createReplaceWidget( false );
@@ -2005,7 +2005,7 @@ void TextEditor::_createSelectLineDialog()
 {
     if( !selectLineDialog_ )
     {
-        Debug::Throw( "TextEditor::_createSelectLineDialog.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::_createSelectLineDialog.\n") );
         selectLineDialog_ = new SelectLineDialog( this );
         if( !selectLineWidget_ ) createSelectLineWidget( false );
         selectLineDialog_->setSelectLineWidget( selectLineWidget_ );
@@ -2018,7 +2018,7 @@ void TextEditor::_createSelectLineDialog()
 void TextEditor::_createProgressDialog()
 {
 
-    Debug::Throw( "TextEditor::_createProgressDialog.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_createProgressDialog.\n") );
 
     // create dialog
     auto dialog = new QProgressDialog(0);
@@ -2039,7 +2039,7 @@ void TextEditor::_createProgressDialog()
 //______________________________________________________________________
 bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
 {
-    Debug::Throw( "TextEditor::_findForward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_findForward.\n") );
     if( selection.text().isEmpty() ) return false;
 
     // store selection
@@ -2146,7 +2146,7 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
 bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
 {
 
-    Debug::Throw( "TextEditor::_findBackward.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_findBackward.\n") );
     if( selection.text().isEmpty() ) return false;
     setLastSelection( selection );
 
@@ -2275,7 +2275,7 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
     if( selection.flag( TextSelection::RegExp ) )
     {
 
-        Debug::Throw( "TextEditor::_replaceInRange - regexp.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::_replaceInRange - regexp.\n") );
 
         // construct regexp and check
         QRegularExpression regexp( selection.text() );
@@ -2327,7 +2327,7 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
 
     } else {
 
-        Debug::Throw( "TextEditor::_replaceInRange - normal replacement.\n" );
+        Debug::Throw( QStringLiteral("TextEditor::_replaceInRange - normal replacement.\n") );
 
         emit busy( cursor.selectedText().size() );
 
@@ -2373,7 +2373,7 @@ void TextEditor::_synchronizeBoxSelection() const
 
     if( !isSynchronized() ) return;
 
-    // Debug::Throw( "TextEditor::_synchronizeBoxSelection.\n" );
+    // Debug::Throw( QStringLiteral("TextEditor::_synchronizeBoxSelection.\n") );
     Base::KeySet<TextEditor> displays( this );
     for( const auto& editor:Base::KeySet<TextEditor>(this) )
     { editor->boxSelection_.synchronize( boxSelection_ ); }
@@ -2398,7 +2398,7 @@ bool TextEditor::_setLeftMargin( int margin )
 void TextEditor::_toggleOverwriteMode()
 {
 
-    Debug::Throw( "TextEditor::_toggleOverwriteMode.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_toggleOverwriteMode.\n") );
     setOverwriteMode( !overwriteMode() );
     if( _setModifier( Modifier::Insert, overwriteMode() ) ) emit modifiersChanged( modifiers() );
     return;
@@ -2434,7 +2434,7 @@ bool TextEditor::_setTabSize( int tabSize )
 //_____________________________________________________________
 void TextEditor::_insertTab()
 {
-    Debug::Throw( "TextEditor::_insertTab.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_insertTab.\n") );
 
     // retrieve current cursor
     auto cursor( textCursor() );
@@ -2457,7 +2457,7 @@ void TextEditor::_insertTab()
 bool TextEditor::_updateMargin()
 {
 
-    Debug::Throw( "TextEditor::_updateMargin.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updateMargin.\n") );
     int leftMargin( 0 );
 
     if( showLineNumberAction_->isChecked() && showLineNumberAction_->isVisible() )
@@ -2473,7 +2473,7 @@ bool TextEditor::_updateMargin()
 void TextEditor::_updateConfiguration()
 {
 
-    Debug::Throw( "TextEditor::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updateConfiguration.\n") );
 
     // wrap mode
     if( wrapFromOptions() )
@@ -2545,7 +2545,7 @@ void TextEditor::_restoreDefaultFont()
 void TextEditor::_synchronizeSelection()
 {
 
-    //Debug::Throw( "TextEditor::_synchronizeSelection.\n" );
+    //Debug::Throw( QStringLiteral("TextEditor::_synchronizeSelection.\n") );
     if( !isSynchronized() ) return;
 
     for( const auto& editor:Base::KeySet<TextEditor>(this) )
@@ -2576,7 +2576,7 @@ void TextEditor::_synchronizeSelection()
 void TextEditor::_updateContentActions()
 {
 
-    Debug::Throw( "TextEditor::_updateContentActions.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updateContentActions.\n") );
 
     // actions
     clearAction_->setEnabled( !(document()->isEmpty() || isReadOnly() ) );
@@ -2588,7 +2588,7 @@ void TextEditor::_updateContentActions()
 void TextEditor::_updateReadOnlyActions( bool readOnly )
 {
 
-    Debug::Throw( "TextEditor::_updateReadOnlyActions.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updateReadOnlyActions.\n") );
     bool hasSelection( textCursor().hasSelection() );
 
     clearAction_->setEnabled( !(readOnly || document()->isEmpty() ) );
@@ -2610,7 +2610,7 @@ void TextEditor::_updateReadOnlyActions( bool readOnly )
 void TextEditor::_updateUndoRedoActions()
 {
 
-    Debug::Throw( "TextEditor::_updateUndoRedoActions.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updateUndoRedoActions.\n") );
     undoAction_->setEnabled( document()->isUndoAvailable() && !isReadOnly() );
     redoAction_->setEnabled( document()->isRedoAvailable() && !isReadOnly() );
 
@@ -2636,7 +2636,7 @@ void TextEditor::_updateSelectionActions( bool hasSelection )
 //________________________________________________
 void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 {
-    Debug::Throw( "TextEditor::_updateClipboardActions.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updateClipboardActions.\n") );
     if( mode == QClipboard::Selection )
     {
 
@@ -2651,7 +2651,7 @@ void TextEditor::_updateClipboardActions( QClipboard::Mode mode )
 //________________________________________________
 void TextEditor::_updateClipboard()
 {
-    Debug::Throw( "TextEditor::_updateClipboard.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updateClipboard.\n") );
 
     // copy selected text to clipboard
     if( qApp->clipboard()->supportsSelection() && textCursor().hasSelection() )
@@ -2662,7 +2662,7 @@ void TextEditor::_updateClipboard()
 //_____________________________________________
 void TextEditor::_copyLinkLocation()
 {
-    Debug::Throw( "TextEditor::_copyLinkLocation.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_copyLinkLocation.\n") );
     if( !trackAnchors_ ) return;
 
     auto anchor( this->anchor() );
@@ -2678,7 +2678,7 @@ void TextEditor::_copyLinkLocation()
 void TextEditor::_updatePasteAction()
 {
 
-    Debug::Throw( "TextEditor::_updatePasteAction.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_updatePasteAction.\n") );
     pasteAction_->setEnabled( !isReadOnly() );
 
 }
@@ -2687,7 +2687,7 @@ void TextEditor::_updatePasteAction()
 void TextEditor::_toggleBlockHighlight( bool state )
 {
 
-    Debug::Throw( "TextEditor::_toggleBlockHighlight.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_toggleBlockHighlight.\n") );
 
     // enable
     blockHighlight_->setEnabled( state );
@@ -2804,7 +2804,7 @@ void TextEditor::_toggleShowLineNumbers( bool state )
 void TextEditor::_blockCountChanged( int count )
 {
 
-    Debug::Throw( "TextEditor::_blockCountChanged.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_blockCountChanged.\n") );
 
     // margins
     if( !( lineNumberDisplay_ && lineNumberDisplay_->updateWidth( count ) ) ) return;
@@ -2817,7 +2817,7 @@ void TextEditor::_blockCountChanged( int count )
 //_____________________________________________________________________
 void TextEditor::_findFromDialog()
 {
-    Debug::Throw( "TextEditor::_findFromDialog.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_findFromDialog.\n") );
 
     // set default text
     // update find text
@@ -2857,7 +2857,7 @@ void TextEditor::_findFromDialog()
 //_____________________________________________________________________
 void TextEditor::_replaceFromDialog()
 {
-    Debug::Throw( "TextEditor::_replaceFromDialog.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_replaceFromDialog.\n") );
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -2903,7 +2903,7 @@ void TextEditor::_updateReplaceInSelection()
 void TextEditor::_selectLineFromDialog()
 {
 
-    Debug::Throw( "TextEditor::_selectLineFromDialog.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::_selectLineFromDialog.\n") );
 
     if( useEmbeddedWidgets_ )
     {
@@ -2929,21 +2929,21 @@ void TextEditor::_selectLineFromDialog()
 //_________________________________________________________
 TextEditor::Container::Container( QWidget* parent ):
     QWidget( parent ),
-    Counter( "TextEditor::Container" ),
+    Counter( QStringLiteral("TextEditor::Container") ),
     editor_( new TextEditor )
 { _initialize(); }
 
 //_________________________________________________________
 TextEditor::Container::Container( QWidget* parent, TextEditor* editor ):
     QWidget( parent ),
-    Counter( "TextEditor::Container" ),
+    Counter( QStringLiteral("TextEditor::Container") ),
     editor_( editor )
 { _initialize(); }
 
 //_________________________________________________________
 void TextEditor::Container::_initialize()
 {
-    Debug::Throw( "TextEditor::Container::_initialize.\n" );
+    Debug::Throw( QStringLiteral("TextEditor::Container::_initialize.\n") );
     editor_->setParent( this );
 
     QVBoxLayout* vLayout = new QVBoxLayout;

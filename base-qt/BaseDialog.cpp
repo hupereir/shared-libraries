@@ -34,7 +34,7 @@ BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):
     monitor_( this ),
     iconSize_( IconSize::get( IconSize::VeryHuge ) )
 {
-    Debug::Throw( "BaseDialog::BaseDialog.\n" );
+    Debug::Throw( QStringLiteral("BaseDialog::BaseDialog.\n") );
     setSizeGripEnabled(false);
 }
 
@@ -60,7 +60,7 @@ void BaseDialog::setWindowTitle( const QString& title )
 BaseDialog& BaseDialog::centerOnPointer()
 {
 
-    Debug::Throw( "BaseDialog::centerOnPointer.\n" );
+    Debug::Throw( QStringLiteral("BaseDialog::centerOnPointer.\n") );
     move( QtUtil::centerOnPointer( sizeHint() ) );
     return *this;
 }
@@ -69,7 +69,7 @@ BaseDialog& BaseDialog::centerOnPointer()
 BaseDialog& BaseDialog::centerOnDesktop()
 {
 
-    Debug::Throw( "BaseDialog::centerOnDesktop.\n" );
+    Debug::Throw( QStringLiteral("BaseDialog::centerOnDesktop.\n") );
     move( QtUtil::centerOnDesktop( sizeHint() ) );
     return *this;
 
@@ -79,7 +79,7 @@ BaseDialog& BaseDialog::centerOnDesktop()
 BaseDialog& BaseDialog::centerOnWidget( QWidget* parent )
 {
 
-    Debug::Throw( "BaseDialog::centerOnWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseDialog::centerOnWidget.\n") );
     move( QtUtil::centerOnWidget( sizeHint(), parent ) );
     return *this;
 

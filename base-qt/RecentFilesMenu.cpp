@@ -30,10 +30,10 @@
 //_______________________________________________
 RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
     QMenu( parent ),
-    Counter( "RecentFilesMenu" ),
+    Counter( QStringLiteral("RecentFilesMenu") ),
     fileList_( &files )
 {
-    Debug::Throw( "RecentFilesMenu::RecentFilesMenu.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesMenu::RecentFilesMenu.\n") );
 
     setTitle( tr( "Open Recent" ) );
     connect( this, &QMenu::triggered, this, &RecentFilesMenu::_open );
@@ -57,7 +57,7 @@ RecentFilesMenu::RecentFilesMenu( QWidget *parent, FileList& files ):
 //______________________________________
 bool RecentFilesMenu::openLastValidFile()
 {
-    Debug::Throw( "RecentFilesMenu::openLastValidFile.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesMenu::openLastValidFile.\n") );
     const FileRecord record( fileList_->lastValidFile() );
     if( record.file().isEmpty() ) return false;
     else {
@@ -74,7 +74,7 @@ void RecentFilesMenu::setCurrentFile( const File& file )
 void RecentFilesMenu::_updateActions()
 {
 
-    Debug::Throw( "RecentFilesMenu::_updateActions.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesMenu::_updateActions.\n") );
 
     // set actions enability
     FileRecord::List records( fileList_->records() );
@@ -109,7 +109,7 @@ void RecentFilesMenu::_clean()
 void RecentFilesMenu::_open( QAction* action )
 {
 
-    Debug::Throw( "RecentFilesMenu::_Open.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesMenu::_Open.\n") );
 
     // find Action in map
     ActionMap::iterator iter( actions_.find( action ) );
@@ -121,7 +121,7 @@ void RecentFilesMenu::_open( QAction* action )
 //_______________________________________________
 void RecentFilesMenu::_loadFiles()
 {
-    Debug::Throw( "RecentFilesMenu::_loadFiles.\n" );
+    Debug::Throw( QStringLiteral("RecentFilesMenu::_loadFiles.\n") );
 
     // run thread to check file validity
     cleanAction_->setEnabled( fileList_->cleanEnabled() );

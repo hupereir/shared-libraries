@@ -33,9 +33,9 @@ namespace Server
     ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
         QWidget( parent ),
         OptionWidgetList( this ),
-        Counter( "ServerConfiguration" )
+        Counter( QStringLiteral("ServerConfiguration") )
     {
-        Debug::Throw( "ServerConfiguration::ServerConfiguration.\n" );
+        Debug::Throw( QStringLiteral("ServerConfiguration::ServerConfiguration.\n") );
 
         setLayout( new QVBoxLayout );
         layout()->setSpacing(5);

@@ -26,7 +26,7 @@
 LogWidget::LogWidget( QWidget* parent ):
     TextEditor( parent )
 {
-    Debug::Throw( "LogWidget::LogWidget.\n" );
+    Debug::Throw( QStringLiteral("LogWidget::LogWidget.\n") );
     setReadOnly( true );
     setWrapFromOptions( false );
 
@@ -37,7 +37,7 @@ LogWidget::LogWidget( QWidget* parent ):
 //______________________________________________________
 void LogWidget::setOptionName( const QString& value )
 {
-    Debug::Throw( "LogWidget::setOptionName.\n" );
+    Debug::Throw( QStringLiteral("LogWidget::setOptionName.\n") );
     if( optionName_ == value ) return;
 
     optionName_ = value;
@@ -136,7 +136,7 @@ void LogWidget::wheelEvent( QWheelEvent* event )
 //______________________________________________________
 bool LogWidget::_toggleWrapMode( bool value )
 {
-    Debug::Throw( "LogWidget::_toggleWrapMode.\n" );
+    Debug::Throw( QStringLiteral("LogWidget::_toggleWrapMode.\n") );
     if( _hasOptionName() ) XmlOptions::get().set<bool>( _wrapOptionName(), value );
     return TextEditor::_toggleWrapMode( value );
 }

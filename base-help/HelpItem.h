@@ -37,10 +37,10 @@ namespace Base
 
         //* constructor
         explicit HelpItem( const QString& label = QString(), const QString& text = QString() ):
-            Counter( "HelpItem" ),
+            Counter( QStringLiteral("HelpItem") ),
             label_( label ),
             text_( text )
-        { Debug::Throw( "HelpItem::HelpItem.\n" ); }
+        { Debug::Throw( QStringLiteral("HelpItem::HelpItem.\n") ); }
 
         //* item label
         void setLabel( const QString& label )

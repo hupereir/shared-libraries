@@ -50,11 +50,11 @@ namespace Server
 
     //___________________________________________
     ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& command ):
-        Counter( "ServerCommand" ),
+        Counter( QStringLiteral("ServerCommand") ),
         timestamp_( TimeStamp::now() ),
         id_( id ),
         command_( command )
-    { Debug::Throw( "ServerCommand::ServerCommand.\n" ); }
+    { Debug::Throw( QStringLiteral("ServerCommand::ServerCommand.\n") ); }
 
     //__________________________________________________
     QDataStream& operator << (QDataStream& stream, const ServerCommand& command )

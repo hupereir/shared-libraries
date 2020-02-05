@@ -38,7 +38,7 @@ namespace Private
     //_________________________________________________________________
     OptionMenu::OptionMenu( QWidget* parent ):
         QMenuBar( parent ),
-        Counter( "Private::OptionMenu" )
+        Counter( QStringLiteral("Private::OptionMenu") )
     {
 
         {
@@ -109,10 +109,10 @@ namespace Private
     //_________________________________________________________________
     NavigationWidget::NavigationWidget( QWidget* parent ):
         QWidget( parent ),
-        Counter( "Private::NavigationWidget" ),
+        Counter( QStringLiteral("Private::NavigationWidget") ),
         pages_( 0 )
     {
-        Debug::Throw( "NavigationWidget::NavigationWidget.\n" );
+        Debug::Throw( QStringLiteral("NavigationWidget::NavigationWidget.\n") );
 
         QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setMargin(0);
@@ -168,7 +168,7 @@ namespace Private
     //_________________________________________________________________
     void NavigationWidget::setPages( int pages )
     {
-        Debug::Throw( "NavigationWidget::setPages.\n" );
+        Debug::Throw( QStringLiteral("NavigationWidget::setPages.\n") );
 
         // check value
         if( pages < 1 ) return;
@@ -232,7 +232,7 @@ namespace Private
     void NavigationWidget::_updatePage()
     {
 
-        Debug::Throw( "NavigationWidget::_updatePage.\n" );
+        Debug::Throw( QStringLiteral("NavigationWidget::_updatePage.\n") );
         int page( editor_->text().toInt() );
         if( page < 1 || page > pages_ ) return;
         _updateButtons();
@@ -245,7 +245,7 @@ namespace Private
     void NavigationWidget::_previousPage()
     {
 
-        Debug::Throw( "NavigationWidget::_previousPage.\n" );
+        Debug::Throw( QStringLiteral("NavigationWidget::_previousPage.\n") );
         int page( editor_->text().toInt() );
         if( page < 2 ) return;
         editor_->setText( QString::number( page-1 ) );
@@ -257,7 +257,7 @@ namespace Private
     void NavigationWidget::_nextPage()
     {
 
-        Debug::Throw( "NavigationWidget::_nextPage.\n" );
+        Debug::Throw( QStringLiteral("NavigationWidget::_nextPage.\n") );
         int page( editor_->text().toInt() );
 
         if( page >= pages_ ) return;
@@ -281,7 +281,7 @@ namespace Private
 PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags flags ):
     CustomDialog( parent, flags )
 {
-    Debug::Throw( "PrintPreviewDialog::PrintPreviewDialog.\n" );
+    Debug::Throw( QStringLiteral("PrintPreviewDialog::PrintPreviewDialog.\n") );
     setOptionName( "PRINT_PREVIEW_DIALOG" );
 
     layout()->setMargin(0);
@@ -326,7 +326,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags fla
 //_________________________________________________________________
 void PrintPreviewDialog::setHelper( BasePrintHelper* helper )
 {
-    Debug::Throw( "PrintPreviewDialog::setHelper.\n" );
+    Debug::Throw( QStringLiteral("PrintPreviewDialog::setHelper.\n") );
 
     if( !helper ) return;
 

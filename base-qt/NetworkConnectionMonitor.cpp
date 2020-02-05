@@ -62,7 +62,7 @@ namespace Network
     //________________________________________________
     ConnectionMonitor::ConnectionMonitor( QObject* parent ):
         QObject( parent ),
-        Counter( "Network::ConnectionMonitor" )
+        Counter( QStringLiteral("Network::ConnectionMonitor") )
     {}
 
     //______________________________________________________________________
@@ -94,7 +94,7 @@ namespace Network
     //________________________________________________
     ConnectionMonitor::DeviceSet ConnectionMonitor::devices( ConnectionMonitor::DeviceType type )
     {
-        Debug::Throw( "Network::ConnectionMonitor::devices.\n" );
+        Debug::Throw( QStringLiteral("Network::ConnectionMonitor::devices.\n") );
         #if defined(Q_OS_WIN) || defined(__OS2__)
         return DeviceSet();
         #else
@@ -138,7 +138,7 @@ namespace Network
     void ConnectionMonitor::checkDevice()
     {
 
-        Debug::Throw( "ConnectionMonitor::checkDevice.\n" );
+        Debug::Throw( QStringLiteral("ConnectionMonitor::checkDevice.\n") );
 
         // get connected devices
         auto devices( connectedDevices() );

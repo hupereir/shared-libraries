@@ -24,27 +24,27 @@
 
 //_____________________________________________________________________
 CommandLineArguments::CommandLineArguments( int argc, char* argv[] ):
-Counter( "CommandLineArguments" )
+Counter( QStringLiteral("CommandLineArguments") )
 {
-    Debug::Throw( "CommandLineArguments::CommandLineArguments.\n" );
+    Debug::Throw( QStringLiteral("CommandLineArguments::CommandLineArguments.\n") );
     for( int i=0; i<argc; i++ )
     { if( argv[i] && strlen( argv[i] ) ) arguments_.append( argv[i] ); }
 }
 
 //_____________________________________________________________________
 CommandLineArguments::CommandLineArguments( const QStringList& ref ):
-    Counter( "CommandLineArguments" ),
+    Counter( QStringLiteral("CommandLineArguments") ),
     arguments_( ref )
 {}
 
 //_____________________________________________________________________
 CommandLineArguments::CommandLineArguments( QStringList&& ref ):
-    Counter( "CommandLineArguments" ),
+    Counter( QStringLiteral("CommandLineArguments") ),
     arguments_( std::move(ref) )
 {}
 
 //_____________________________________________________________________
 CommandLineArguments::CommandLineArguments( std::initializer_list<QString>&& ref ):
-    Counter( "CommandLineArguments" ),
+    Counter( QStringLiteral("CommandLineArguments") ),
     arguments_( std::move(ref) )
 {}

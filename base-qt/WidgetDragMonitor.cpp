@@ -25,7 +25,7 @@
 //_________________________________________________________
 WidgetDragMonitor::WidgetDragMonitor( QWidget* parent ):
     QObject( parent ),
-    Counter( "WidgetDragMonitor" ),
+    Counter( QStringLiteral("WidgetDragMonitor") ),
     mode_( ModeFlag::DragMove ),
     enabled_( false ),
     clickCounter_( this, 2 ),

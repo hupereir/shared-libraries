@@ -38,7 +38,7 @@ namespace Base
 //_______________________________________________
 XmlFileRecord::XmlFileRecord( const QDomElement& element )
 {
-    Debug::Throw( "XmlFileRecord::XmlFileRecord.\n" );
+    Debug::Throw( QStringLiteral("XmlFileRecord::XmlFileRecord.\n") );
 
     // load attributes
     const auto attributes( element.attributes() );
@@ -80,7 +80,7 @@ XmlFileRecord::XmlFileRecord( const QDomElement& element )
 //_______________________________________________
 QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 {
-    Debug::Throw( "XmlFileRecord::domElement.\n" );
+    Debug::Throw( QStringLiteral("XmlFileRecord::domElement.\n") );
     auto out( parent.createElement( Base::Xml::Record ) );
     out.setAttribute( Base::Xml::File, file() );
     out.setAttribute( Base::Xml::Time, QString::number( XmlFileRecord::time().unixTime() ) );
@@ -102,7 +102,7 @@ QDomElement XmlFileRecord::domElement( QDomDocument& parent ) const
 //_______________________________________________
 XmlFileRecord::List XmlFileRecord::Helper::list( const QDomElement& element )
 {
-    Debug::Throw( "XmlFileRecord::List::List.\n" );
+    Debug::Throw( QStringLiteral("XmlFileRecord::List::List.\n") );
 
     List out;
     for( auto node = element.firstChild(); !node.isNull(); node = node.nextSibling() )
@@ -126,7 +126,7 @@ XmlFileRecord::List XmlFileRecord::Helper::list( const QDomElement& element )
 //_______________________________________________
 QDomElement XmlFileRecord::Helper::domElement( const List& list, QDomDocument& document )
 {
-    Debug::Throw( "XmlFileRecord::List::domElement.\n" );
+    Debug::Throw( QStringLiteral("XmlFileRecord::List::domElement.\n") );
     auto top = document.appendChild( document.createElement( Base::Xml::FileList ) ).toElement();
     for( const auto& record:list )
     {

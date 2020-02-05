@@ -22,13 +22,13 @@
 //_______________________________________________________
 CustomMenu::CustomMenu( QWidget* parent ):
 QMenu( parent ),
-Counter( "CustomMenu" )
+Counter( QStringLiteral("CustomMenu") )
 {}
 
 //_______________________________________________________
 CustomMenu::CustomMenu( const QString& title, QWidget* parent ):
 QMenu( title, parent ),
-Counter( "CustomMenu" )
+Counter( QStringLiteral("CustomMenu") )
 {}
 
 //_______________________________________________________

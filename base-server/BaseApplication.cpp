@@ -98,7 +98,7 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
     BaseCoreApplication( parent, arguments )
 {
 
-    Debug::Throw( "BaseApplication::BaseApplication.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::BaseApplication.\n") );
 
     installServerSystemOptions();
 
@@ -111,7 +111,7 @@ BaseApplication::BaseApplication( QObject* parent, CommandLineArguments argument
 //____________________________________________
 bool BaseApplication::initApplicationManager()
 {
-    Debug::Throw( "BaseApplication::initApplicationManager.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::initApplicationManager.\n") );
 
     // assign application name to qapplication
     qApp->setWindowIcon( applicationIcon() );
@@ -121,7 +121,7 @@ bool BaseApplication::initApplicationManager()
 //____________________________________________
 bool BaseApplication::realizeWidget()
 {
-    Debug::Throw( "BaseApplication::realizeWidget.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::realizeWidget.\n") );
 
     // check if the method has already been called.
     if( !BaseCoreApplication::realizeWidget() ) return false;
@@ -186,7 +186,7 @@ void BaseApplication::idle()
 //_______________________________________________
 void BaseApplication::_aboutQt()
 {
-    Debug::Throw( "BaseApplication::aboutQt.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::aboutQt.\n") );
     Server::AppEventFilter eventFilter;
     qApp->installEventFilter( &eventFilter );
     QMessageBox::aboutQt(0);
@@ -196,7 +196,7 @@ void BaseApplication::_aboutQt()
 void BaseApplication::_about()
 {
 
-    Debug::Throw( "BaseApplication::_about.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::_about.\n") );
 
     // make sure name is all lower case and starts with upper case.
     auto name( applicationName() );
@@ -248,7 +248,7 @@ void BaseApplication::_about()
 //_______________________________________________
 void BaseApplication::_updateConfiguration()
 {
-    Debug::Throw( "BaseApplication::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::_updateConfiguration.\n") );
 
     // application icon
     const QIcon icon( applicationIcon() );
@@ -267,7 +267,7 @@ void BaseApplication::_updateConfiguration()
 void BaseApplication::_updateFonts()
 {
 
-    Debug::Throw( "BaseApplication::_updateFonts.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::_updateFonts.\n") );
 
     // default widget font
     if( !XmlOptions::get().get<bool>( "USE_SYSTEM_FONT" ) )
@@ -370,7 +370,7 @@ void BaseApplication::_updateFonts()
 void BaseApplication::_updateIconTheme()
 {
 
-    Debug::Throw( "BaseApplication::_updateIconTheme.\n" );
+    Debug::Throw( QStringLiteral("BaseApplication::_updateIconTheme.\n") );
     if( XmlOptions::get().get<bool>( "USE_ICON_THEME" ) )
     {
         QIcon::setThemeSearchPaths( { XmlOptions::get().raw( "ICON_THEME_PATH" ) } );

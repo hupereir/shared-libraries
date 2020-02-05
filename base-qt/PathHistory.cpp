@@ -26,7 +26,7 @@
 //__________________________________________________________________
 PathHistory::PathHistory( QObject* parent ):
     QObject( parent ),
-    Counter( "PathHistory" )
+    Counter( QStringLiteral("PathHistory") )
 {}
 
 //__________________________________________________________________
@@ -49,7 +49,7 @@ FileRecord::List PathHistory::nextPathList() const
 //__________________________________________________________________
 void PathHistory::setPathList( const FileRecord::List& pathList )
 {
-    Debug::Throw( "PathHistory::setPathList.\n" );
+    Debug::Throw( QStringLiteral("PathHistory::setPathList.\n") );
 
     pathList_ = pathList;
     index_ = pathList.size()-1;
@@ -87,7 +87,7 @@ void PathHistory::add( const FileRecord& path )
 //__________________________________________
 void PathHistory::clear()
 {
-    Debug::Throw( "PathHistory::clear.\n" );
+    Debug::Throw( QStringLiteral("PathHistory::clear.\n") );
     pathList_.clear();
     index_ = 0;
     emit contentsChanged();
@@ -96,7 +96,7 @@ void PathHistory::clear()
 //__________________________________________________________________
 File PathHistory::selectPath( int index )
 {
-    Debug::Throw( "PathHistory::selectPath.\n" );
+    Debug::Throw( QStringLiteral("PathHistory::selectPath.\n") );
     index_ = qMin( index, pathList_.size()-1 );
     return pathList_[index_].file();
 }
@@ -105,7 +105,7 @@ File PathHistory::selectPath( int index )
 void PathHistory::_setMaxSize( int value )
 {
 
-    Debug::Throw( "PathHistory::_setMaxSize.\n" );
+    Debug::Throw( QStringLiteral("PathHistory::_setMaxSize.\n") );
     maxSize_ = value;
     return;
 

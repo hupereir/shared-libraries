@@ -76,7 +76,7 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
     lastModified_(-1)
 {
 
-    Debug::Throw( "BaseFileInfo::BaseFileInfo (dom).\n" );
+    Debug::Throw( QStringLiteral("BaseFileInfo::BaseFileInfo (dom).\n") );
 
     // parse attributes
     const auto attributes( element.attributes() );
@@ -102,7 +102,7 @@ BaseFileInfo::BaseFileInfo( const QDomElement& element ):
 QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 {
 
-    Debug::Throw( "BaseFileInfo::DomElement.\n" );
+    Debug::Throw( QStringLiteral("BaseFileInfo::DomElement.\n") );
     auto out( document.createElement( Xml::FileInfo ) );
     out.setAttribute( Xml::File, file() );
     out.setAttribute( Xml::Type, QString::number( type() ) );

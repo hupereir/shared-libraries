@@ -32,7 +32,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     optionName_( optionName )
 {
 
-    Debug::Throw( "DockWidget::DockWidget.\n" );
+    Debug::Throw( QStringLiteral("DockWidget::DockWidget.\n") );
 
     // assign option name to object
     if( !optionName_.isEmpty() )
@@ -100,7 +100,7 @@ void DockWidget::setUseScrollArea( bool value )
 //_________________________________________________________
 void DockWidget::setFeatures( QDockWidget::DockWidgetFeatures features )
 {
-    Debug::Throw( "DockWidget::setFeatures.\n" );
+    Debug::Throw( QStringLiteral("DockWidget::setFeatures.\n") );
     features_ = features;
     if( !locked_ ) QDockWidget::setFeatures( features );
 }
@@ -134,7 +134,7 @@ void DockWidget::setLocked( bool locked )
 void DockWidget::setMainWidget( QWidget* mainWidget )
 {
 
-    Debug::Throw( "DockWidget::setMainWidget.\n" );
+    Debug::Throw( QStringLiteral("DockWidget::setMainWidget.\n") );
 
     // delete old mainWidget
     if( mainWidget_ )
@@ -169,7 +169,7 @@ void DockWidget::setAutoHideTitleBar( bool value )
 //_________________________________________________________
 void DockWidget::_updateTitleBarWidget()
 {
-    Debug::Throw( "DockWidget::_updateTitleBarWidget.\n" );
+    Debug::Throw( QStringLiteral("DockWidget::_updateTitleBarWidget.\n") );
 
     if( autoHideTitleBar_ && locked_ )
     {
@@ -201,7 +201,7 @@ void DockWidget::_toggleVisibility( bool state )
 //_______________________________________________________________
 void DockWidget::_updateConfiguration()
 {
-    Debug::Throw( "DockWidget::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("DockWidget::_updateConfiguration.\n") );
 
     // lock
     BaseMainWindow* mainwindow( qobject_cast<BaseMainWindow*>( window() ) );
@@ -216,7 +216,7 @@ void DockWidget::_updateConfiguration()
 //_______________________________________________________________
 void DockWidget::_installActions()
 {
-    Debug::Throw( "DockWidget::_installActions.\n" );
+    Debug::Throw( QStringLiteral("DockWidget::_installActions.\n") );
 
     visibilityAction_ = new QAction( windowTitle(), this );
     visibilityAction().setCheckable( true );

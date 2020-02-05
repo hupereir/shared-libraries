@@ -25,7 +25,7 @@
 //____________________________________________
 SystemNotifications::SystemNotifications( QObject* parent, const QString& applicationName, const QIcon& applicationIcon ):
     QObject( parent ),
-    Counter( "SystemNotifications" )
+    Counter( QStringLiteral("SystemNotifications") )
 {
 
     d = new Private::SystemNotificationsP( this );
@@ -86,7 +86,7 @@ void SystemNotifications::sendNotification( const Notification& notification )
 void SystemNotifications::timerEvent( QTimerEvent* event )
 {
 
-    Debug::Throw( "SystemNotifications::timerEvent.\n" );
+    Debug::Throw( QStringLiteral("SystemNotifications::timerEvent.\n") );
     if( event->timerId() == timer_.timerId() )
     {
 
@@ -100,7 +100,7 @@ void SystemNotifications::timerEvent( QTimerEvent* event )
 //____________________________________________
 void SystemNotifications::_sendPendingNotification()
 {
-    Debug::Throw( "SystemNotifications::_sendPendingNotification.\n" );
+    Debug::Throw( QStringLiteral("SystemNotifications::_sendPendingNotification.\n") );
     if( notification_.isValid() )
     {
         // send

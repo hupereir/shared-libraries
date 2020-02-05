@@ -54,10 +54,10 @@ namespace SpellCheck
 
     //_______________________________________________
     SpellInterface::SpellInterface():
-        Counter( "SpellInterface" ),
+        Counter( QStringLiteral("SpellInterface") ),
         spellConfig_( new_aspell_config() )
     {
-        Debug::Throw( "SpellInterface::SpellInterface.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::SpellInterface.\n") );
 
         // set encoding. Forced to latin1
         aspell_config_replace(spellConfig_.get(), "encoding", "iso8859-1" );
@@ -73,7 +73,7 @@ namespace SpellCheck
         // set default filter
         setFilter( FilterNone );
 
-        Debug::Throw( "SpellInterface::SpellInterface - done.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::SpellInterface - done.\n") );
 
     }
 
@@ -107,7 +107,7 @@ namespace SpellCheck
     bool SpellInterface::setDictionary( const QString& dictionary )
     {
 
-        Debug::Throw( "SpellInterface::setDictionary.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::setDictionary.\n") );
         if( !spellConfig_ )
         {
             error_ = QObject::tr( "invalid aspell configuration" );
@@ -141,7 +141,7 @@ namespace SpellCheck
     bool SpellInterface::setFilter( const QString& filter )
     {
 
-        Debug::Throw( "SpellInterface::setFilter.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::setFilter.\n") );
         if( !spellConfig_ )
         {
             error_ = QObject::tr( "invalid aspell configuration" );
@@ -172,12 +172,12 @@ namespace SpellCheck
         int begin,
         int end )
     {
-        Debug::Throw( "SpellInterface::setText.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::setText.\n") );
 
         // check text
         if( text.isEmpty() )
         {
-            Debug::Throw( "SpellInterface::setText - empty.\n" );
+            Debug::Throw( QStringLiteral("SpellInterface::setText - empty.\n") );
             return true;
         }
 
@@ -206,7 +206,7 @@ namespace SpellCheck
     //____________________________________________________
     bool SpellInterface::addWord( const QString& word )
     {
-        Debug::Throw( "SpellInterface::addWord.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::addWord.\n") );
 
         // check word
         if( word.isEmpty() ) return false;
@@ -227,7 +227,7 @@ namespace SpellCheck
     bool SpellInterface::replace( const QString& word )
     {
 
-        Debug::Throw( "SpellInterface::replace.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::replace.\n") );
 
         // check current word
         if( !word_.size() )
@@ -314,7 +314,7 @@ namespace SpellCheck
     QStringList SpellInterface::suggestions( const QString& word ) const
     {
 
-        Debug::Throw( "SpellInterface::suggestions.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::suggestions.\n") );
 
         // check spell checker
         QStringList out;
@@ -341,7 +341,7 @@ namespace SpellCheck
     //____________________________________________________
     void SpellInterface::saveWordList()
     {
-        Debug::Throw( "SpellInterface::saveWordList.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::saveWordList.\n") );
         if( spellChecker_ ) aspell_speller_save_all_word_lists( spellChecker_.get() );
     }
 
@@ -349,7 +349,7 @@ namespace SpellCheck
     //____________________________________________________
     bool SpellInterface::reset()
     {
-        Debug::Throw( "SpellInterface::reset.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::reset.\n") );
 
         // reinitialize begin and end position
         begin_ = 0;
@@ -365,7 +365,7 @@ namespace SpellCheck
     void SpellInterface::_loadDictionaries()
     {
 
-        Debug::Throw( "SpellInterface::_loadDictionaries.\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::_loadDictionaries.\n") );
 
         dictionaries_.clear();
         if( !spellConfig_ ) return;
@@ -425,7 +425,7 @@ namespace SpellCheck
     bool SpellInterface::_reset()
     {
 
-        Debug::Throw( "SpellInterface::_reset\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::_reset\n") );
 
         // check config
         if( !spellConfig_ ) {
@@ -439,7 +439,7 @@ namespace SpellCheck
         //!reset spell checker
         if( !_resetSpellChecker() )
         {
-            Debug::Throw( "SpellInterface::_reset - _resetSpellChecker failed.\n" );
+            Debug::Throw( QStringLiteral("SpellInterface::_reset - _resetSpellChecker failed.\n") );
             return false;
         }
 
@@ -449,7 +449,7 @@ namespace SpellCheck
         {
 
             error_ = aspell_error_message( err );
-            Debug::Throw( "SpellInterface::_reset - unable to create document_checker.\n" );
+            Debug::Throw( QStringLiteral("SpellInterface::_reset - unable to create document_checker.\n") );
             return false;
 
         } else documentChecker_.reset( to_aspell_document_checker(err) );
@@ -457,14 +457,14 @@ namespace SpellCheck
         // assign text if any
         if( checkedText_.size() )
         {
-            Debug::Throw( "SpellInterface::_reset - assigning text.\n" );
+            Debug::Throw( QStringLiteral("SpellInterface::_reset - assigning text.\n") );
             text_ = checkedText_;
             end_ += offset_;
             position_ = 0;
             offset_ = 0;
             aspell_document_checker_reset( documentChecker_.get() );
             aspell_document_checker_process(documentChecker_.get(), text_.mid( begin_, end_-begin_).toLatin1().constData(), -1);
-            Debug::Throw( "SpellInterface::_reset - assigning text, done.\n" );
+            Debug::Throw( QStringLiteral("SpellInterface::_reset - assigning text, done.\n") );
         }
 
         return true;
@@ -475,12 +475,12 @@ namespace SpellCheck
     bool SpellInterface::_resetSpellChecker()
     {
 
-        Debug::Throw( "SpellInterface::_resetSpellChecker\n" );
+        Debug::Throw( QStringLiteral("SpellInterface::_resetSpellChecker\n") );
 
         // check config
         if( !spellConfig_ )
         {
-            Debug::Throw( "SpellInterface::_resetSpellChecker - invalid aspell configuration.\n" );
+            Debug::Throw( QStringLiteral("SpellInterface::_resetSpellChecker - invalid aspell configuration.\n") );
             error_ = QObject::tr( "invalid aspell configuration" );
             return false;
         }
@@ -493,7 +493,7 @@ namespace SpellCheck
         if( aspell_error_number(err) )
         {
 
-            Debug::Throw( "SpellInterface::_resetSpellChecker - failed to create speller.\n" );
+            Debug::Throw( QStringLiteral("SpellInterface::_resetSpellChecker - failed to create speller.\n") );
             error_ = aspell_error_message( err );
             return false;
 

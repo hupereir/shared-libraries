@@ -25,14 +25,14 @@
 //_______________________________________________________
 FileDialog::FileDialog( QWidget* parent ):
     QObject( parent ),
-    Counter( "FileDialog" ),
+    Counter( QStringLiteral("FileDialog") ),
     selectedFile_( _workingDirectory() )
-{ Debug::Throw( "FileDialog::FileDialog.\n" ); }
+{ Debug::Throw( QStringLiteral("FileDialog::FileDialog.\n") ); }
 
 //_______________________________________________________
 FileDialog& FileDialog::selectFile( const File& file )
 {
-    Debug::Throw( "FileDialog::selectFile.\n" );
+    Debug::Throw( QStringLiteral("FileDialog::selectFile.\n") );
     selectedFile_ = file;
     _workingDirectory() = QFileInfo( file ).isDir() ? File( file ): File( file ).path();
     return *this;
@@ -41,7 +41,7 @@ FileDialog& FileDialog::selectFile( const File& file )
 //_______________________________________________________
 File FileDialog::getFile()
 {
-    Debug::Throw( "FileDialog::getFile.\n" );
+    Debug::Throw( QStringLiteral("FileDialog::getFile.\n") );
     File out;
     const auto caption = caption_.isEmpty() ? _defaultCaption() : Util::windowTitle( caption_ );
     if( acceptMode_ == QFileDialog::AcceptOpen )
@@ -60,12 +60,12 @@ File FileDialog::getFile()
 
     } else {
 
-        Debug::Throw( "FileDialog::getFile - getSaveFileName.\n" );
+        Debug::Throw( QStringLiteral("FileDialog::getFile - getSaveFileName.\n") );
         out = File( QFileDialog::getSaveFileName( qobject_cast<QWidget*>( parent() ), caption, selectedFile_, filter_, nullptr, options_ ) );
 
     }
 
-    Debug::Throw( "FileDialog::getFile. Done.\n" );
+    Debug::Throw( QStringLiteral("FileDialog::getFile. Done.\n") );
 
     // store working directory
     if( !out.isEmpty() ) _workingDirectory() = File( QFileInfo( out ).path() );
@@ -76,7 +76,7 @@ File FileDialog::getFile()
 //_______________________________________________________
 void FileDialog::setWorkingDirectory( const File& value )
 {
-    Debug::Throw( "FileDialog::setWorkingDirectory.\n" );
+    Debug::Throw( QStringLiteral("FileDialog::setWorkingDirectory.\n") );
     _workingDirectory() = value;
 }
 

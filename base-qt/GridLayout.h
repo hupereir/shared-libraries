@@ -36,7 +36,7 @@ class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
     //* constructor
     explicit GridLayout():
         QGridLayout(),
-        Counter( "GridLayout" )
+        Counter( QStringLiteral("GridLayout") )
     {}
 
     //* column alignments

@@ -30,7 +30,7 @@ WarningDialog::WarningDialog( QWidget* parent, const QString& text ):
     DetailsDialog( parent, OkButton| Separator )
 {
 
-    Debug::Throw( "WarningDialog::WarningDialog\n" );
+    Debug::Throw( QStringLiteral("WarningDialog::WarningDialog\n") );
 
     //! try load Question icon
     QHBoxLayout *hLayout( new QHBoxLayout );
@@ -50,7 +50,7 @@ WarningDialog::WarningDialog( QWidget* parent, const QString& text ):
 //____________________________________________________________
 void WarningDialog::setText( const QString& text )
 {
-    Debug::Throw( "WarningDialog::setText\n" );
+    Debug::Throw( QStringLiteral("WarningDialog::setText\n") );
     label_->setText( text );
     label_->setWordWrap( label_->fontMetrics().width( text ) >300 );
 }

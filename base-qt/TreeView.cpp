@@ -47,9 +47,9 @@
 //______________________________________________________________________
 TreeView::TreeView( QWidget* parent ):
     QTreeView( parent ),
-    Counter( "TreeView" )
+    Counter( QStringLiteral("TreeView") )
 {
-    Debug::Throw( "TreeView::TreeView.\n" );
+    Debug::Throw( QStringLiteral("TreeView::TreeView.\n") );
 
     // scrollbar monitor
     scrollBarMonitor_ = new ScrollBarMonitor( this );
@@ -101,7 +101,7 @@ void TreeView::setItemMargin( int value )
 void TreeView::setModel( QAbstractItemModel* model )
 {
 
-    Debug::Throw( "TreeView::setModel.\n" );
+    Debug::Throw( QStringLiteral("TreeView::setModel.\n") );
     QTreeView::setModel( model );
 
     // selected indexes
@@ -149,7 +149,7 @@ void TreeView::setItemDelegateForColumn( int column, QAbstractItemDelegate* dele
 void TreeView::setFindWidget( AbstractFindWidget* widget )
 {
 
-    Debug::Throw( "TreeView::setFindWidget.\n" );
+    Debug::Throw( QStringLiteral("TreeView::setFindWidget.\n") );
     if( findWidget_ ) findWidget_->deleteLater();
     findWidget_ = widget;
 
@@ -167,7 +167,7 @@ void TreeView::setFindWidget( AbstractFindWidget* widget )
 //______________________________________________________________________
 void TreeView::setFindEnabled( bool value )
 {
-    Debug::Throw( "IconView::setFindEnabled.\n" );
+    Debug::Throw( QStringLiteral("IconView::setFindEnabled.\n") );
     findAction_->setEnabled( value );
     findSelectionAction_->setEnabled( value );
     findAgainAction_->setEnabled( value );
@@ -179,7 +179,7 @@ void TreeView::setFindEnabled( bool value )
 TextSelection TreeView::selection() const
 {
 
-    Debug::Throw( "TreeView::selection.\n" );
+    Debug::Throw( QStringLiteral("TreeView::selection.\n") );
 
     // copy last selection
     TextSelection out;
@@ -308,7 +308,7 @@ bool TreeView::setOptionName( const QString& value )
 //_______________________________________________
 int TreeView::mask() const
 {
-    Debug::Throw( "TreeView::mask.\n" );
+    Debug::Throw( QStringLiteral("TreeView::mask.\n") );
     int mask = 0;
     for( int index=0; model() && index < model()->columnCount(); index++ )
     { if( !isColumnHidden( index ) ) mask |= (1<<index); }
@@ -319,7 +319,7 @@ int TreeView::mask() const
 void TreeView::setMask( int mask )
 {
 
-    Debug::Throw( "TreeView::setMask.\n" );
+    Debug::Throw( QStringLiteral("TreeView::setMask.\n") );
     for( int index=0; index < model()->columnCount(); index++ )
     {
 
@@ -368,7 +368,7 @@ void TreeView::toggleShowHeader( bool value )
 void TreeView::updateMask()
 {
 
-    Debug::Throw( "TreeView::updateMask.\n" );
+    Debug::Throw( QStringLiteral("TreeView::updateMask.\n") );
 
     // check model and option availability
     if( !model() ) return;
@@ -385,7 +385,7 @@ void TreeView::updateMask()
 void TreeView::saveMask()
 {
 
-    Debug::Throw( "TreeView::saveMask.\n" );
+    Debug::Throw( QStringLiteral("TreeView::saveMask.\n") );
     if( !hasOptionName() ) return;
     XmlOptions::get().set<int>( maskOptionName_, mask() );
 
@@ -395,7 +395,7 @@ void TreeView::saveMask()
 void TreeView::updateSortOrder()
 {
 
-    Debug::Throw( "TreeView::updateSortOrder.\n" );
+    Debug::Throw( QStringLiteral("TreeView::updateSortOrder.\n") );
     if( !hasOptionName() ) return;
     if( XmlOptions::get().contains( sortColumnOptionName_ ) && XmlOptions::get().contains( sortColumnOptionName_ ) )
     {
@@ -414,7 +414,7 @@ void TreeView::updateSortOrder()
 void TreeView::saveSortOrder()
 {
 
-    Debug::Throw( "TreeView::saveSortOrder.\n" );
+    Debug::Throw( QStringLiteral("TreeView::saveSortOrder.\n") );
 
     // save option
     if( !hasOptionName() ) return;
@@ -426,7 +426,7 @@ void TreeView::saveSortOrder()
 //______________________________________________________________________
 void TreeView::find( TextSelection selection )
 {
-    Debug::Throw( "TreeView::find.\n" );
+    Debug::Throw( QStringLiteral("TreeView::find.\n") );
     bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
     if( found ) emit matchFound();
     else emit noMatchFound();
@@ -516,7 +516,7 @@ void TreeView::restoreSelectedIndexes()
 void TreeView::saveExpandedIndexes()
 {
 
-    Debug::Throw( "TreeView::saveExpandedIndexes.\n" );
+    Debug::Throw( QStringLiteral("TreeView::saveExpandedIndexes.\n") );
 
     // clear
     model_->clearExpandedIndexes();
@@ -640,7 +640,7 @@ void TreeView::paintEvent( QPaintEvent* event )
 void TreeView::_createFindDialog()
 {
 
-    Debug::Throw( "TreeView::_createFindDialog.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_createFindDialog.\n") );
     // create dialog
     findDialog_ = new BaseFindDialog( this );
     findDialog_->setWindowTitle( tr( "Find in List" ) );
@@ -656,7 +656,7 @@ void TreeView::_createFindDialog()
 void TreeView::_createFindWidget( bool compact )
 {
 
-    Debug::Throw( "TreeView::_createFindWidget.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_createFindWidget.\n") );
 
     // create dialog
     auto findWidget =  new BaseFindWidget( this, compact );
@@ -671,7 +671,7 @@ void TreeView::_createFindWidget( bool compact )
 //______________________________________________________________________
 bool TreeView::_findForward( const TextSelection& selection, bool rewind )
 {
-    Debug::Throw( "TreeView::_findForward.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_findForward.\n") );
     if( selection.text().isEmpty() ) return false;
 
     // store selection
@@ -766,7 +766,7 @@ bool TreeView::_findForward( const TextSelection& selection, bool rewind )
 bool TreeView::_findBackward( const TextSelection& selection, bool rewind )
 {
 
-    Debug::Throw( "TreeView::_findBackward.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_findBackward.\n") );
     if( selection.text().isEmpty() ) return false;
 
     // store selection
@@ -862,7 +862,7 @@ void TreeView::_updateHorizontalScrollBarRange()
     /* this hack fixes a bug that the header lenght is not properly calculated
     Qt version 5.10, resulting in horizontal scrollbars being shown in all tree views */
 
-    Debug::Throw( "TreeView::_installActions.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_installActions.\n") );
     if( scrollBarRecursionLock_ ) return;
     if( !( model() && header() ) ) return;
 
@@ -886,7 +886,7 @@ void TreeView::_updateHorizontalScrollBarRange()
 //__________________________________________________________
 void TreeView::_installActions()
 {
-    Debug::Throw( "TreeView::_installActions.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_installActions.\n") );
 
     addAction( selectAllAction_ = new QAction( tr("Select All"), this ) );
     selectAllAction_->setShortcut( QKeySequence::SelectAll );
@@ -933,7 +933,7 @@ void TreeView::_installActions()
 //___________________________________
 void TreeView::_raiseHeaderMenu( const QPoint & pos )
 {
-    Debug::Throw( "TreeView::_raiseHeaderMenu.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_raiseHeaderMenu.\n") );
 
     // check number of columns
     if( header()->count() <= 1 ) return;
@@ -959,7 +959,7 @@ void TreeView::_raiseHeaderMenu( const QPoint & pos )
 //_____________________________________________________________________
 void TreeView::_findFromDialog()
 {
-    Debug::Throw( "TreeView::_findFromDialog.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_findFromDialog.\n") );
 
     // set default text
     // update find text
@@ -1012,7 +1012,7 @@ void TreeView::_setHoverIndex( const QModelIndex& index )
 //_____________________________________________________________________
 void TreeView::_updateConfiguration()
 {
-    Debug::Throw( "TreeView::_updateConfiguration.\n" );
+    Debug::Throw( QStringLiteral("TreeView::_updateConfiguration.\n") );
 
     // load mask from option, if any
     updateMask();
@@ -1136,21 +1136,21 @@ QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 //_________________________________________________________
 TreeView::Container::Container( QWidget* parent ):
     QWidget( parent ),
-    Counter( "TreeView::Container" ),
+    Counter( QStringLiteral("TreeView::Container") ),
     treeView_( new TreeView )
 { _initialize(); }
 
 //_________________________________________________________
 TreeView::Container::Container( QWidget* parent, TreeView* treeView ):
     QWidget( parent ),
-    Counter( "TreeView::Container" ),
+    Counter( QStringLiteral("TreeView::Container") ),
     treeView_( treeView )
 { _initialize(); }
 
 //_________________________________________________________
 void TreeView::Container::_initialize()
 {
-    Debug::Throw( "TreeView::Container::_initialize.\n" );
+    Debug::Throw( QStringLiteral("TreeView::Container::_initialize.\n") );
     treeView_->setParent( this );
 
     // setup layout

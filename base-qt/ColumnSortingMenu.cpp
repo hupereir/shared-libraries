@@ -26,10 +26,10 @@
 //_____________________________________________________
 ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, const QString& title ):
     QMenu( parent ),
-    Counter( "ColumnSortingMenu" ),
+    Counter( QStringLiteral("ColumnSortingMenu") ),
     group_( new QActionGroup( this ) )
 {
-    Debug::Throw( "ColumnSortingMenu::ColumnSortingMenu.\n" );
+    Debug::Throw( QStringLiteral("ColumnSortingMenu::ColumnSortingMenu.\n") );
     setTitle( title );
     connect( this, &QMenu::aboutToShow, this, &ColumnSortingMenu::_updateActions );
     connect( this, &QMenu::triggered, this, &ColumnSortingMenu::_sort );
@@ -54,7 +54,7 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QHeaderView* header, cons
 void ColumnSortingMenu::_updateActions()
 {
 
-    Debug::Throw( "ColumnSortingMenu::_updateActions.\n" );
+    Debug::Throw( QStringLiteral("ColumnSortingMenu::_updateActions.\n") );
 
     // clear existing actions
     for( auto&& iter = actions_.begin(); iter != actions_.end(); ++iter )
@@ -102,7 +102,7 @@ void ColumnSortingMenu::_updateActions()
 //______________________________________________________________________________
 void ColumnSortingMenu::_sort( QAction* action )
 {
-    Debug::Throw( "ColumnSortingMenu::_sort.\n" );
+    Debug::Throw( QStringLiteral("ColumnSortingMenu::_sort.\n") );
 
     // retrieve index
     auto iter = actions_.find( action );
@@ -119,7 +119,7 @@ void ColumnSortingMenu::_sort( QAction* action )
 //______________________________________________________________________________
 void ColumnSortingMenu::_revertOrder()
 {
-    Debug::Throw( "ColumnSortingMenu::_sort.\n" );
+    Debug::Throw( QStringLiteral("ColumnSortingMenu::_sort.\n") );
 
     // retrieve parent tree_view
     if( target_ ) header_ = target_->header();

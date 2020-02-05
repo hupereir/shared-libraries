@@ -27,11 +27,11 @@ namespace Ssh
     //______________________________________________________
     Tunnel::Tunnel( QObject* parent, QTcpSocket* socket ):
         QObject( parent ),
-        Counter( "Ssh::Tunnel" ),
+        Counter( QStringLiteral("Ssh::Tunnel") ),
         tcpSocket_( socket ),
         sshSocket_( new Socket( this ) )
     {
-        Debug::Throw( "Ssh::Tunnel::Tunnel.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Tunnel::Tunnel.\n") );
 
         buffer_.resize(maxSize_ );
         connect( tcpSocket_, &QIODevice::readyRead, this, &Tunnel::_readFromTcpSocket );
@@ -46,7 +46,7 @@ namespace Ssh
     //______________________________________________________
     void Tunnel::close()
     {
-        Debug::Throw( "Ssh::Tunnel::close.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Tunnel::close.\n") );
         tcpSocket_->close();
         sshSocket_->close();
     }
@@ -54,7 +54,7 @@ namespace Ssh
     //______________________________________________________
     void Tunnel::_readFromTcpSocket()
     {
-        Debug::Throw( "Ssh::Tunnel::_readFromTcpSocket.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Tunnel::_readFromTcpSocket.\n") );
 
         if( !sshSocket_->isConnected() ) return;
 
@@ -97,7 +97,7 @@ namespace Ssh
     //______________________________________________________
     void Tunnel::_readFromSshSocket()
     {
-        Debug::Throw( "Ssh::Tunnel::_readFromSshSocket.\n" );
+        Debug::Throw( QStringLiteral("Ssh::Tunnel::_readFromSshSocket.\n") );
 
         // read from socket, write through ssh
         qint64 bytesAvailable = 0;

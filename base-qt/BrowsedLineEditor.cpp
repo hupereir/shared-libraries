@@ -35,10 +35,10 @@
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
     QWidget( parent ),
-    Counter( "BrowsedLineEditor" )
+    Counter( QStringLiteral("BrowsedLineEditor") )
 {
 
-    Debug::Throw( "BrowsedLineEditor::BrowsedLineEditor.\n" );
+    Debug::Throw( QStringLiteral("BrowsedLineEditor::BrowsedLineEditor.\n") );
 
     // insert horizontal layout
     auto layout = new QHBoxLayout;
@@ -90,7 +90,7 @@ void BrowsedLineEditor::setFile( const QString& file )
 void BrowsedLineEditor::_browse()
 {
 
-    Debug::Throw( "BrowsedLineEditor::_browse.\n" );
+    Debug::Throw( QStringLiteral("BrowsedLineEditor::_browse.\n") );
 
     if( useNativeFileDialog_ )
     {

@@ -34,7 +34,7 @@ CounterDialog::CounterDialog( QWidget* parent ):
 CustomDialog( parent, OkButton, Qt::Window )
 {
 
-    Debug::Throw( "CounterDialog::CounterDialog.\n" );
+    Debug::Throw( QStringLiteral("CounterDialog::CounterDialog.\n") );
     setWindowTitle( tr( "Object Counters" ) );
     setOptionName( "COUNTER_DIALOG" );
 
@@ -56,7 +56,7 @@ CustomDialog( parent, OkButton, Qt::Window )
 void CounterDialog::updateCounters()
 {
 
-    Debug::Throw( "CounterDialog::updateCounters.\n" );
+    Debug::Throw( QStringLiteral("CounterDialog::updateCounters.\n") );
 
     // retrieve counters
     auto&& counters( Base::CounterMap::get() );

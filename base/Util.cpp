@@ -39,7 +39,7 @@ QString Util::env( const QString& key, const QString& defaultValue )
 //______________________________________________________________________
 QString Util::user()
 {
-    Debug::Throw( "Util::user.\n" );
+    Debug::Throw( QStringLiteral("Util::user.\n") );
     #if defined(Q_OS_WIN)
     return env( "USERNAME", QObject::tr( "unknown user" ) );
     #else
@@ -62,7 +62,7 @@ QString Util::windowTitleSeparator()
 QString Util::windowTitle( const QString& title )
 {
 
-    Debug::Throw( "Util::windowTitle.\n" );
+    Debug::Throw( QStringLiteral("Util::windowTitle.\n") );
     const auto applicationName( qApp->applicationName() );
     return title.endsWith( applicationName ) ? title:
         title + windowTitleSeparator() + applicationName;
@@ -94,7 +94,7 @@ QString Util::host( bool shortName )
 
     // use system environment
     // it does not work for windows
-    Debug::Throw( "Util::host.\n" );
+    Debug::Throw( QStringLiteral("Util::host.\n") );
     auto out( QHostInfo::localHostName() );
     if( ! shortName ) return out;
     else {

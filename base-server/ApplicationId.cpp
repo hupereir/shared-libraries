@@ -26,10 +26,10 @@ namespace Server
 
     //____________________________________________________
     ApplicationId::ApplicationId( const QString& name, QString user, QString display ):
-        Counter( "ApplicationId" ),
+        Counter( QStringLiteral("ApplicationId") ),
         name_( name )
     {
-        Debug::Throw( "ApplicationId::ApplicationId.\n" );
+        Debug::Throw( QStringLiteral("ApplicationId::ApplicationId.\n") );
         if( user.isNull() ) user = Util::user();
         if( display.isNull() ) display = Util::env( "DISPLAY", "0.0" );
         user_ = user + QString("@")+display;

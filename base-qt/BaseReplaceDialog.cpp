@@ -24,7 +24,7 @@
 BaseReplaceDialog::BaseReplaceDialog( QWidget* parent, Qt::WindowFlags flags ):
     BaseFindDialog( parent, flags )
 {
-    Debug::Throw( "BaseReplaceDialog::BaseReplaceDialog.\n" );
+    Debug::Throw( QStringLiteral("BaseReplaceDialog::BaseReplaceDialog.\n") );
 
     // set dialog title
     setWindowTitle( tr( "Replace" ) );

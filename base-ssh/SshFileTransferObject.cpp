@@ -36,7 +36,7 @@ namespace Ssh
     //____________________________________________________________________________
     FileTransferObject::FileTransferObject( QObject* parent, QString remoteFileName ):
         QObject( parent ),
-        Counter( "Ssh::FiletransferObject" ),
+        Counter( QStringLiteral("Ssh::FiletransferObject") ),
         remoteFileName_( remoteFileName )
     { buffer_.resize( maxBufferSize ); }
 
@@ -184,7 +184,7 @@ namespace Ssh
     //_______________________________________________________________________
     bool FileTransferObject::waitForConnected( int msecs )
     {
-        Debug::Throw( "Ssh::FileTransferObject::waitForConnected.\n" );
+        Debug::Throw( QStringLiteral("Ssh::FileTransferObject::waitForConnected.\n") );
 
         // do nothing if socket is already closed
         if( isConnected() ) return !isFailed();
@@ -202,7 +202,7 @@ namespace Ssh
     //_______________________________________________________________________
     bool FileTransferObject::waitForCompleted( int msecs )
     {
-        Debug::Throw( "Ssh::FileTransferObject::waitForCompleted.\n" );
+        Debug::Throw( QStringLiteral("Ssh::FileTransferObject::waitForCompleted.\n") );
 
         // do nothing if socket is already closed
         if( isCompleted() ) return !isFailed();
@@ -213,7 +213,7 @@ namespace Ssh
         while( ( msecs < 0 || timer.elapsed() < msecs ) && !(state_&(Completed|Failed)) )
         { qApp->processEvents(); }
 
-        Debug::Throw( "Ssh::FileTransferObject::waitForCompleted - done\n" );
+        Debug::Throw( QStringLiteral("Ssh::FileTransferObject::waitForCompleted - done\n") );
         return isCompleted() && !isFailed();
 
     }
@@ -243,7 +243,7 @@ namespace Ssh
     //____________________________________________________________________________
     void FileTransferObject::_prepareReading()
     {
-        Debug::Throw( "Ssh::FileTransferObject::_prepareReading.\n" );
+        Debug::Throw( QStringLiteral("Ssh::FileTransferObject::_prepareReading.\n") );
 
         // store file size
         fileSize_ = qobject_cast<ReadFileSocket*>( remoteDevice_ )->fileSize();
@@ -254,7 +254,7 @@ namespace Ssh
     void FileTransferObject::_readFromSocket()
     {
 
-        Debug::Throw( "Ssh::FileTransferObject::_readFromSocket.\n" );
+        Debug::Throw( QStringLiteral("Ssh::FileTransferObject::_readFromSocket.\n") );
 
         // check source file and ssh socket
         if( !localDevice_->isOpen() ) return;
@@ -321,7 +321,7 @@ namespace Ssh
     //______________________________________________________
     void FileTransferObject::_writeToSocket()
     {
-        Debug::Throw( "Ssh::FileTransferObject::_writeToSocket.\n" );
+        Debug::Throw( QStringLiteral("Ssh::FileTransferObject::_writeToSocket.\n") );
 
 
         if( !static_cast<WriteFileSocket*>(remoteDevice_)->isConnected() ) return;
@@ -388,7 +388,7 @@ namespace Ssh
         auto remote = qobject_cast<ReadFileSocket*>( remoteDevice_ );
         if( local && remote )
         {
-            Debug::Throw( "Ssh::FileTransferObject::_closeSourceFile - copying permissions.\n" );
+            Debug::Throw( QStringLiteral("Ssh::FileTransferObject::_closeSourceFile - copying permissions.\n") );
             local->setPermissions( remote->permissions() );
         }
 
