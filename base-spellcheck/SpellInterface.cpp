@@ -319,7 +319,7 @@ namespace SpellCheck
         // check spell checker
         QStringList out;
         if( !spellChecker_ ) {
-            Debug::Throw(0, "SpellInterface::suggestions - no spell checker" );
+            Debug::Throw(0, QStringLiteral("SpellInterface::suggestions - no spell checker") );
             return out;
         }
 

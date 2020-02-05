@@ -345,7 +345,7 @@ namespace Private
     //___________________________________________________________
     void LocalTabWidget::closeEvent( QCloseEvent* event )
     {
-        Debug::Throw( 0, "LocalWidget::closeEvent.\n" );
+        Debug::Throw( 0, QStringLiteral("LocalWidget::closeEvent.\n") );
         event->ignore();
         emit closeEventRequest();
     }

@@ -95,7 +95,7 @@ void BrowsedLineEditor::_browse()
     if( useNativeFileDialog_ )
     {
 
-        Debug::Throw( 0, "BrowsedLineEditor::_browse - using FileDialog.\n" );
+        Debug::Throw( 0, QStringLiteral("BrowsedLineEditor::_browse - using FileDialog.\n") );
 
         FileDialog dialog( this );
         dialog.setAcceptMode( acceptMode_ );
@@ -106,7 +106,7 @@ void BrowsedLineEditor::_browse()
 
     } else {
 
-        Debug::Throw( 0, "BrowsedLineEditor::_browse - using QFileDialog.\n" );
+        Debug::Throw( 0, QStringLiteral("BrowsedLineEditor::_browse - using QFileDialog.\n") );
 
         QFileDialog dialog(this);
         dialog.setAcceptMode( acceptMode_ );

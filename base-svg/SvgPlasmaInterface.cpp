@@ -195,7 +195,7 @@ namespace Svg
         if( event->timerId() == timer_.timerId() )
         {
 
-            Debug::Throw(0, "Svg::SvgPlasmaInterface::timerEvent.\n" );
+            Debug::Throw(0, QStringLiteral("Svg::SvgPlasmaInterface::timerEvent.\n") );
             timer_.stop();
             emit themeChanged();
 

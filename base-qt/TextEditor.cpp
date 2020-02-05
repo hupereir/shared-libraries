@@ -1214,7 +1214,7 @@ void TextEditor::mouseDoubleClickEvent( QMouseEvent* event )
 void TextEditor::mouseMoveEvent( QMouseEvent* event )
 {
 
-    Debug::Throw( 2, "TextEditor::mouseMoveEvent.\n" );
+    Debug::Throw( 2, QStringLiteral("TextEditor::mouseMoveEvent.\n") );
 
     // do nothing if some buttons are pressed
     if( trackAnchors_ )

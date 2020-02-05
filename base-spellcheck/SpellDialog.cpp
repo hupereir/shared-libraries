@@ -554,7 +554,7 @@ namespace SpellCheck
     //__________________________________________
     void SpellDialog::closeEvent( QCloseEvent *e )
     {
-        Debug::Throw( 0, "SpellCheck::SpellDialog::closeEvent.\n" );
+        Debug::Throw( 0, QStringLiteral("SpellCheck::SpellDialog::closeEvent.\n") );
         _restoreReadOnly();
         _saveWordList();
         QDialog::closeEvent( e );
