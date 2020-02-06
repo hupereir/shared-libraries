@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_svg_export.h"
 #include "File.h"
 
 #include <QBasicTimer>
@@ -33,7 +34,7 @@ namespace Svg
 {
 
   //* kde specific interface to plasma to load matching Svg background
-  class SvgPlasmaInterface: public QObject
+  class BASE_SVG_EXPORT SvgPlasmaInterface: public QObject
   {
 
     Q_OBJECT

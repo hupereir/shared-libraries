@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_svg_export.h"
 #include "SvgRenderer.h"
 #include "Svg.h"
 
@@ -33,7 +34,7 @@ namespace Svg
 {
 
     //* independent thread used to automatically save file
-    class SvgThread: public QThread
+    class BASE_SVG_EXPORT SvgThread: public QThread
     {
 
         Q_OBJECT

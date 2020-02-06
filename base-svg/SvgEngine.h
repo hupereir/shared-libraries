@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_svg_export.h"
 #include "Margins.h"
 #include "SvgRenderer.h"
 #include "SvgThread.h"
@@ -34,7 +35,7 @@ namespace Svg
     class SvgPlasmaInterface;
 
     //* customized Icon factory to provide better looking disabled icons
-    class SvgEngine: public QObject
+    class BASE_SVG_EXPORT SvgEngine: public QObject
     {
 
         Q_OBJECT;

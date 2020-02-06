@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_svg_export.h"
 #include "Counter.h"
 
 #include <QByteArray>
@@ -31,7 +32,7 @@
 //* construct pixmap of given size using Svg renderer
 namespace Svg
 {
-    class BaseSvgRenderer: public QSvgRenderer, private Base::Counter<BaseSvgRenderer>
+    class BASE_SVG_EXPORT BaseSvgRenderer: public QSvgRenderer, private Base::Counter<BaseSvgRenderer>
     {
 
         public:

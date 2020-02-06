@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_svg_export.h"
 #include <QSize>
 #include <QString>
 #include <QList>
@@ -27,7 +28,7 @@
 //* svg namespace
 namespace Svg
 {
-    class SvgId
+    class BASE_SVG_EXPORT SvgId
     {
         public:
 

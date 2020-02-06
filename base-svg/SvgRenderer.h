@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_svg_export.h"
 #include "BaseSvgRenderer.h"
 #include "Margins.h"
 
@@ -31,7 +32,7 @@
 //* construct pixmap of given size using Svg renderer
 namespace Svg
 {
-    class SvgRenderer: public BaseSvgRenderer
+    class BASE_SVG_EXPORT SvgRenderer: public BaseSvgRenderer
     {
 
         public:

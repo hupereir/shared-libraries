@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_svg_export.h"
 #include "Counter.h"
 #include "OptionWidgetList.h"
 #include "OptionCheckBox.h"
@@ -31,7 +32,7 @@ namespace Svg
 {
 
     //! SVG common configuration
-    class SvgConfiguration: public QWidget, public OptionWidgetList<SvgConfiguration>, private Base::Counter<SvgConfiguration>
+    class BASE_SVG_EXPORT SvgConfiguration: public QWidget, public OptionWidgetList<SvgConfiguration>, private Base::Counter<SvgConfiguration>
     {
 
         Q_OBJECT
