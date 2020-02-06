@@ -58,7 +58,7 @@ macro(add_win32_executable target version)
 
   ### use static gcc linking
   if(${CMAKE_COMPILER_IS_GNUCXX})
-    if(${USE_SHARED_LIBS})
+    if(USE_SHARED_LIBS)
       set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -static-libstdc++ -lpthread -s")
     else()
       set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -static-libstdc++ -static -lpthread -s")
@@ -69,7 +69,7 @@ macro(add_win32_executable target version)
   GET_TARGET_PROPERTY(TARGET_PATH ${target} LOCATION)
 
   ### Compress target
-  if(ENABLE_SHARED)
+  if(USE_SHARED_LIBS)
 
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import")
     set(CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import ")
