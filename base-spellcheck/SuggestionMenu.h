@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "SpellInterface.h"
 
@@ -29,7 +30,7 @@
 namespace SpellCheck {
 
     //* customized popup menu to display spell checker suggestions
-    class SuggestionMenu: public QMenu, private Base::Counter<SuggestionMenu>
+    class BASE_SPELLCHECK_EXPORT SuggestionMenu: public QMenu, private Base::Counter<SuggestionMenu>
     {
 
         //* Qt meta object declaration

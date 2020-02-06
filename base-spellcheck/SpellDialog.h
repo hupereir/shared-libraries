@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "CustomDialog.h"
 #include "ListModel.h"
@@ -38,7 +39,7 @@ namespace SpellCheck
 {
 
     //* spell checker popup dialog
-    class SpellDialog: public CustomDialog
+    class BASE_SPELLCHECK_EXPORT SpellDialog: public CustomDialog
     {
 
         //* Qt meta object declaration
@@ -147,7 +148,7 @@ namespace SpellCheck
         void _restoreReadOnly();
 
         //* qlistview for object IconCaches
-        class Model: public ListModel<QString>
+        class BASE_SPELLCHECK_EXPORT Model: public ListModel<QString>
         {
 
             public:

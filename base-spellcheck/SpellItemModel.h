@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "ListModel.h"
 
@@ -31,7 +32,7 @@
 namespace SpellCheck
 {
 
-    class SpellItemModel: public ListModel<QString>, private Base::Counter<SpellItemModel>
+    class BASE_SPELLCHECK_EXPORT SpellItemModel: public ListModel<QString>, private Base::Counter<SpellItemModel>
     {
 
         Q_OBJECT

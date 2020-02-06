@@ -21,13 +21,14 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "TextPosition.h"
 #include <QSet>
 
 namespace SpellCheck
 {
     //* keep track of misspelled words in text
-    class Word final
+    class BASE_SPELLCHECK_EXPORT Word final
     {
         public:
 
@@ -67,7 +68,7 @@ namespace SpellCheck
         //@}
 
         //* returns true if Word is find at position
-        class AtPositionFTor
+        class BASE_SPELLCHECK_EXPORT AtPositionFTor
         {
 
             public:

@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "BaseConfigurationDialog.h"
 
 class OptionCheckBox;
@@ -27,7 +28,7 @@ class OptionCheckBox;
 namespace SpellCheck
 {
 
-    class ConfigurationDialog: public BaseConfigurationDialog
+    class BASE_SPELLCHECK_EXPORT ConfigurationDialog: public BaseConfigurationDialog
     {
 
         Q_OBJECT

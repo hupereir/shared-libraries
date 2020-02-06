@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 
 #include <QAction>
@@ -32,7 +33,7 @@ namespace SpellCheck
 {
 
     //* dictionary filter selection menu
-    class FilterMenu: public QMenu, private Base::Counter<FilterMenu>
+    class BASE_SPELLCHECK_EXPORT FilterMenu: public QMenu, private Base::Counter<FilterMenu>
     {
 
         Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "NonCopyable.h"
 
 #include <QString>
@@ -31,7 +32,7 @@
 namespace SpellCheck
 {
 
-    class TexString final: private Base::NonCopyable<TexString>
+    class BASE_SPELLCHECK_EXPORT TexString final: private Base::NonCopyable<TexString>
     {
 
         public:

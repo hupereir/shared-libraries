@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "QOrderedSet.h"
 
@@ -32,7 +33,7 @@
 namespace SpellCheck
 {
     //* spell checker interface
-    class SpellInterface final: private Base::Counter<SpellInterface>
+    class BASE_SPELLCHECK_EXPORT SpellInterface final: private Base::Counter<SpellInterface>
     {
 
         public:
@@ -264,7 +265,7 @@ namespace SpellCheck
         QString filter_;
 
         //* Aspell config deleter
-        class AspellConfigDeleter
+        class BASE_SPELLCHECK_EXPORT AspellConfigDeleter
         {
 
             public:
@@ -280,7 +281,7 @@ namespace SpellCheck
         AspellConfigPtr spellConfig_;
 
         //* Aspell checker deleter
-        class AspellSpellerDeleter
+        class BASE_SPELLCHECK_EXPORT AspellSpellerDeleter
         {
 
             public:
@@ -296,7 +297,7 @@ namespace SpellCheck
         AspellSpellerPtr spellChecker_;
 
         //* Aspell document checker deleter
-        class AspellDocumentCheckerDeleter
+        class BASE_SPELLCHECK_EXPORT AspellDocumentCheckerDeleter
         {
 
             public:

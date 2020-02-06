@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
@@ -29,7 +30,7 @@ namespace SpellCheck
 {
 
     //* Spell common configuration
-    class AutoSpellConfiguration: public QWidget, public OptionWidgetList<AutoSpellConfiguration>, private Base::Counter<AutoSpellConfiguration>
+    class BASE_SPELLCHECK_EXPORT AutoSpellConfiguration: public QWidget, public OptionWidgetList<AutoSpellConfiguration>, private Base::Counter<AutoSpellConfiguration>
     {
 
         Q_OBJECT

@@ -28,6 +28,7 @@
 \date $Date$
 */
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 
 #include <QAction>
@@ -38,7 +39,7 @@
 //* dictionary dictionary selection menu
 namespace SpellCheck
 {
-    class DictionaryMenu: public QMenu, private Base::Counter<DictionaryMenu>
+    class BASE_SPELLCHECK_EXPORT DictionaryMenu: public QMenu, private Base::Counter<DictionaryMenu>
     {
 
         Q_OBJECT

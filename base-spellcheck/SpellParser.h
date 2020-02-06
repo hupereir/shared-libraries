@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "SpellInterface.h"
@@ -35,7 +36,7 @@ namespace SpellCheck
 {
 
   //* highlight text based on misspelled words
-  class SpellParser final: private Base::Counter<SpellParser>
+  class BASE_SPELLCHECK_EXPORT SpellParser final: private Base::Counter<SpellParser>
   {
 
     public:

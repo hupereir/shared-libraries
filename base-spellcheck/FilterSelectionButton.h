@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_spellcheck_export.h"
 #include "OptionWidget.h"
 
 #include <QToolButton>
@@ -27,7 +28,7 @@
 namespace SpellCheck
 {
 
-    class FilterSelectionButton: public QToolButton, public OptionWidget
+    class BASE_SPELLCHECK_EXPORT FilterSelectionButton: public QToolButton, public OptionWidget
     {
 
         Q_OBJECT
