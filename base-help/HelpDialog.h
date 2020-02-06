@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_help_export.h"
 #include "Counter.h"
 #include "CustomDialog.h"
 #include "HelpModel.h"
@@ -34,7 +35,7 @@ namespace Base
 {
 
     //* reference manual display dialog
-    class HelpDialog:public CustomDialog
+    class BASE_HELP_EXPORT HelpDialog:public CustomDialog
     {
 
         Q_OBJECT

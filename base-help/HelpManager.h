@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_help_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
@@ -32,7 +33,7 @@
 namespace Base
 {
 
-    class HelpManager:public QObject, private Counter<HelpManager>
+    class BASE_HELP_EXPORT HelpManager:public QObject, private Counter<HelpManager>
     {
 
         Q_OBJECT

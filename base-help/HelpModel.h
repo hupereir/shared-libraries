@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_help_export.h"
 #include "ListModel.h"
 #include "HelpItem.h"
 #include "Debug.h"
@@ -30,7 +31,7 @@ namespace Base
 {
 
     //* model for help items
-    class HelpModel: public ListModel<HelpItem>, private Counter<HelpModel>
+    class BASE_HELP_EXPORT HelpModel: public ListModel<HelpItem>, private Counter<HelpModel>
     {
 
         //* Qt meta object declaration

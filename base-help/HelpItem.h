@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_help_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -30,7 +31,7 @@ namespace Base
 {
 
     //* reference manual single entry
-    class HelpItem final: private Counter<HelpItem>
+    class BASE_HELP_EXPORT HelpItem final: private Counter<HelpItem>
     {
 
         public:
