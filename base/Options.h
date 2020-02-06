@@ -228,7 +228,7 @@ class BASE_EXPORT Options: private Base::Counter<Options>
     bool autoDefault_ = false;
 
     //* streamer
-    friend QTextStream &operator << ( QTextStream &,const Options &);
+    friend BASE_EXPORT QTextStream &operator << ( QTextStream &,const Options &);
 
     //* equality operator
     friend bool operator == ( const Options& first, const Options& second )
