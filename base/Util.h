@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "File.h"
 
 #include <QStringList>
 
 //* some utilities used everywhere
-class Util
+class BASE_EXPORT Util
 {
     public:
 

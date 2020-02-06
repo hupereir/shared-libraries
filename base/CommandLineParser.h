@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "CommandLineArguments.h"
 #include "Counter.h"
 #include "Debug.h"
@@ -30,7 +31,7 @@
 #include <QMap>
 
 //* parse command line argument.
-class CommandLineParser: private Base::Counter<CommandLineParser>
+class BASE_EXPORT CommandLineParser: private Base::Counter<CommandLineParser>
 {
 
     public:
@@ -49,7 +50,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     //@}
 
     //* used to register options/flags
-    class Tag: private Base::Counter<Tag>
+    class BASE_EXPORT Tag: private Base::Counter<Tag>
     {
 
         public:
@@ -187,7 +188,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     bool _isTag( const QString& ) const;
 
     //* flag class
-    class Flag: private Base::Counter<Flag>
+    class BASE_EXPORT Flag: private Base::Counter<Flag>
     {
 
         public:
@@ -210,7 +211,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     };
 
     //* option class
-    class Option: public Flag
+    class BASE_EXPORT Option: public Flag
     {
 
         public:
@@ -239,7 +240,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
     using MinTypeLengthFTor = Base::Functor::BinaryLess<Option, int, &Option::typeSize>;
 
     //* used to find matching flag
-    class SameTagFTor
+    class BASE_EXPORT SameTagFTor
     {
 
         public:
@@ -260,7 +261,7 @@ class CommandLineParser: private Base::Counter<CommandLineParser>
 
     };
 
-    class Group
+    class BASE_EXPORT Group
     {
 
         public:

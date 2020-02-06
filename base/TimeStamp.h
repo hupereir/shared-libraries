@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 
 #include <QDataStream>
@@ -27,7 +28,7 @@
 #include <ctime>
 
 //* time manipulation object
-class TimeStamp:private Base::Counter<TimeStamp>
+class BASE_EXPORT TimeStamp:private Base::Counter<TimeStamp>
 {
 
     public:

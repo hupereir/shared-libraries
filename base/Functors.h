@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include <memory>
 #include <functional>
 
@@ -31,7 +32,7 @@ namespace Base
 
         //* generic unary functor that verifies if a value equals a prediction
         template<class T, typename Comparator = std::equal_to<T> >
-        class SameFTor
+        class BASE_EXPORT SameFTor
         {
             public:
 
@@ -65,7 +66,7 @@ namespace Base
 
         //* generic unary functor that verifies if a given method returns a specific value
         template <class T, typename R, R (T::*accessor)() const, typename Comparator = std::equal_to<R> >
-            class Unary
+            class BASE_EXPORT Unary
         {
 
             public:
@@ -77,7 +78,7 @@ namespace Base
 
             //* constructor
             template<
-                class U,
+                class BASE_EXPORT U,
                 typename = typename std::enable_if<std::is_base_of<T, typename std::decay<U>::type>::value>::type
              >
             explicit Unary( const U& object ):
@@ -86,7 +87,7 @@ namespace Base
 
             //* constructor
             template<
-                class U,
+                class BASE_EXPORT U,
                 typename = typename std::enable_if<std::is_base_of<T, typename std::decay<U>::type>::value>::type
              >
             explicit Unary( U* pointer ):
@@ -95,7 +96,7 @@ namespace Base
 
             //* constructor
             template<
-                class U,
+                class BASE_EXPORT U,
                 typename = typename std::enable_if<std::is_base_of<T, typename std::decay<U>::type>::value>::type
              >
             explicit Unary( const std::shared_ptr<U>& pointer ):
@@ -138,7 +139,7 @@ namespace Base
 
         //* generic unary functor that verifies if a given method is satisfied
         template <class T, bool (T::*accessor)() const, bool prediction = true>
-            class UnaryTrue
+            class BASE_EXPORT UnaryTrue
         {
 
             public:
@@ -163,7 +164,7 @@ namespace Base
 
         //* generic binary functor that compares a the result of a given accessor between two objects
         template <class T, typename R, R (T::*accessor)() const, typename Comparator = std::equal_to<R> >
-            class Binary
+            class BASE_EXPORT Binary
         {
 
             public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include <QHash>
 #include <QPair>
 #include <QString>
@@ -27,7 +28,7 @@
 namespace Base
 {
 
-    class CounterMap final
+    class BASE_EXPORT CounterMap final
     {
 
         public:

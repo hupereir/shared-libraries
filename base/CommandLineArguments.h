@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
 #include <QStringList>
 
-class CommandLineArguments: private Base::Counter<CommandLineArguments>
+class BASE_EXPORT CommandLineArguments: private Base::Counter<CommandLineArguments>
 {
 
     public:

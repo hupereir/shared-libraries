@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Functors.h"
 #include "TimeStamp.h"
 
@@ -29,7 +30,7 @@
 #include <QTextStream>
 
 //* file manipulation utility
-class File
+class BASE_EXPORT File
 {
 
     public:

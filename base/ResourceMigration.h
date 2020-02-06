@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 #include "File.h"
 
 //* file manipulation utility
-class ResourceMigration final: private Base::Counter<ResourceMigration>
+class BASE_EXPORT ResourceMigration final: private Base::Counter<ResourceMigration>
 {
 
     public:

@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 
+#include "base_export.h"
 #include "Counter.h"
 #include "Command.h"
 #include "ObjectDeleter.h"
@@ -31,7 +32,7 @@
 #include <memory>
 
 //* customized process to store stdout/stderr in full/flushed streams
-class CustomProcess: public QProcess, private Base::Counter<CustomProcess>
+class BASE_EXPORT CustomProcess: public QProcess, private Base::Counter<CustomProcess>
 {
 
     Q_OBJECT

@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "TimeStamp.h"
 
 #include <QFile>
 #include <QString>
 #include <QTextStream>
 
-class Debug final
+class BASE_EXPORT Debug final
 {
     public:
 
@@ -55,7 +56,7 @@ class Debug final
     { Throw( 1, value ); }
 
     //* debug stream
-    class Stream final
+    class BASE_EXPORT Stream final
     {
 
         public:
@@ -103,7 +104,7 @@ class Debug final
 
     private:
 
-    class Private;
+    class BASE_EXPORT Private;
 
     //* return singleton
     static Private& _get();

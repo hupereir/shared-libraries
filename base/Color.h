@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 #include "QOrderedSet.h"
 
@@ -30,7 +31,7 @@ namespace Base
 {
 
     // color utility
-    class Color: private Base::Counter<Color>
+    class BASE_EXPORT Color: private Base::Counter<Color>
     {
 
         public:

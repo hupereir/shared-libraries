@@ -20,8 +20,9 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include <QThread>
-class Sleep final: public QThread
+class BASE_EXPORT Sleep final: public QThread
 {
     public:
     static void usleep(unsigned long usecs){QThread::usleep(usecs);}

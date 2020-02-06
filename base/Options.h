@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Option.h"
@@ -31,7 +32,7 @@
 #include <QTextStream>
 
 //* Option file parser based on Xml
-class Options: private Base::Counter<Options>
+class BASE_EXPORT Options: private Base::Counter<Options>
 {
 
     public:
@@ -187,7 +188,7 @@ class Options: private Base::Counter<Options>
     //@}
 
     //* used to retrieve file records that match a given flag
-    class HasFlagFTor: public Option::HasFlagFTor
+    class BASE_EXPORT HasFlagFTor: public Option::HasFlagFTor
     {
 
         public:

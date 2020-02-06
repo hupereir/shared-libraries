@@ -23,7 +23,7 @@
 //* object deleter
 namespace Base
 {
-    class ObjectDeleter
+    class BASE_EXPORT ObjectDeleter
     {
 
         public:

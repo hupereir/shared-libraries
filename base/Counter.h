@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "CounterMap.h"
 
 #include <QString>
@@ -27,7 +28,7 @@
 namespace Base
 {
     template<typename T>
-    class Counter
+    class BASE_EXPORT Counter
     {
 
         public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Functors.h"
@@ -35,7 +36,7 @@ QTextStream& operator >> ( QTextStream& in, bool& value );
 \class   Option
 \brief   Option objects for string, int, bool and double options
 */
-class Option:private Base::Counter<Option>
+class BASE_EXPORT Option:private Base::Counter<Option>
 {
 
     public:

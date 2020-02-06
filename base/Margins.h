@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include <QTextStream>
 #include <QPoint>
 #include <QRect>
 
 namespace Base
 {
-    class Margins
+    class BASE_EXPORT Margins
     {
 
         public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 #include "Functors.h"
 #include "Debug.h"
@@ -32,7 +33,7 @@
 #include <QStringList>
 
 //* handles previously opened file and tags
-class FileRecord: private Base::Counter<FileRecord>
+class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
 {
 
     public:
@@ -89,7 +90,7 @@ class FileRecord: private Base::Counter<FileRecord>
     { return valid_; }
 
     //* map string to property ID
-    class PropertyId
+    class BASE_EXPORT PropertyId
     {
 
         public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 
 #include <QString>
@@ -27,7 +28,7 @@
 
 namespace Base
 {
-    class Command final: private Base::Counter<Command>
+    class BASE_EXPORT Command final: private Base::Counter<Command>
     {
 
         public:

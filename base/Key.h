@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Functors.h"
 
 #include <QTextStream>
@@ -30,7 +31,7 @@
 namespace Base
 {
 
-    class Key
+    class BASE_EXPORT Key
     {
 
         public:
@@ -141,7 +142,7 @@ namespace Base
         using SameKeyFTor = Base::Functor::Unary<Key, Type, &Key::key>;
 
         //* used to find keys of matching id
-        class IsAssociatedFTor
+        class BASE_EXPORT IsAssociatedFTor
         {
 
             public:
@@ -210,7 +211,7 @@ namespace Base
     Contains all objects of type T associated to the Key.
     */
     template<typename T>
-    class KeySet final
+    class BASE_EXPORT KeySet final
     {
 
         private:

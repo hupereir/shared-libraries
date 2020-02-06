@@ -20,6 +20,7 @@
 #ifndef QOrderedSet_h
 #define QOrderedSet_h
 
+#include "base_export.h"
 #include <QMap>
 
 QT_BEGIN_HEADER
@@ -32,7 +33,7 @@ struct QOrderedSetDummyValue
 {};
 
 template <class T>
-class QOrderedSet
+class BASE_EXPORT QOrderedSet
 {
     using Map = QMap<T, QOrderedSetDummyValue>;
 
@@ -96,9 +97,9 @@ class QOrderedSet
 
     bool contains(const QOrderedSet<T> &set) const;
 
-    class const_iterator;
+    class BASE_EXPORT const_iterator;
 
-    class iterator
+    class BASE_EXPORT iterator
     {
         using Map = QMap<T, QOrderedSetDummyValue>;
         typename Map::iterator i;
@@ -167,7 +168,7 @@ class QOrderedSet
 
     };
 
-    class const_iterator
+    class BASE_EXPORT const_iterator
     {
         using Map = QMap<T, QOrderedSetDummyValue>;
         typename Map::const_iterator i;
@@ -432,7 +433,7 @@ QOrderedSet<T> QOrderedSet<T>::fromList(const QList<T> &list)
 Q_DECLARE_SEQUENTIAL_ITERATOR(OrderedSet)
 
 template <typename T>
-class QMutableOrderedSetIterator
+class BASE_EXPORT QMutableOrderedSetIterator
 {
     using iterator = typename QOrderedSet<T>::iterator;
     QOrderedSet<T> *c;

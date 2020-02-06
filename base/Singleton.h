@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_export.h"
 #include "Counter.h"
 
 #include <QObject>
@@ -27,7 +28,7 @@
 namespace Base{
 
     //* a class singleton used to centralize all objects that need static creation
-    class Singleton final: public QObject, private Counter<Singleton>
+    class BASE_EXPORT Singleton final: public QObject, private Counter<Singleton>
     {
 
         Q_OBJECT
