@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QBasicTimer>
@@ -28,7 +29,7 @@
 #include <QWidget>
 
 //* used to automatically save size of top level widgets
-class WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
+class BASE_QT_EXPORT WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
 {
 
     public:

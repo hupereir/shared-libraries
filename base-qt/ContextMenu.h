@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseContextMenu.h"
 
 #include <QAction>
@@ -27,7 +28,7 @@
 #include <QPointer>
 
 // implements context menu, installable on widgets
-class ContextMenu: public BaseContextMenu
+class BASE_QT_EXPORT ContextMenu: public BaseContextMenu
 {
 
     Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomDialog.h"
 #include "FileRecord.h"
 #include "FileRecordModel.h"
@@ -30,7 +31,7 @@
 class TreeView;
 
 //* QDialog used to commit selected files
-class ScratchFileRemoveDialog: public CustomDialog
+class BASE_QT_EXPORT ScratchFileRemoveDialog: public CustomDialog
 {
 
     //* Qt meta object

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "File.h"
 #include "QOrderedSet.h"
@@ -27,7 +28,7 @@
 #include <QObject>
 
 //* used to automatically
-class ScratchFileMonitor: public QObject, private Base::Counter<ScratchFileMonitor>
+class BASE_QT_EXPORT ScratchFileMonitor: public QObject, private Base::Counter<ScratchFileMonitor>
 {
 
     Q_OBJECT

@@ -20,9 +20,10 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QWidget>
 
-class EmbeddedWidget: public QWidget
+class BASE_QT_EXPORT EmbeddedWidget: public QWidget
 {
     Q_OBJECT
 

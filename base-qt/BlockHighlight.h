@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QApplication>
 #include <QBasicTimer>
 #include <QTimerEvent>
@@ -30,7 +31,7 @@
 class TextEditor;
 
 //* handles current block highlighting
-class BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
+class BASE_QT_EXPORT BlockHighlight: public QObject, private Base::Counter<BlockHighlight>
 {
 
   Q_OBJECT

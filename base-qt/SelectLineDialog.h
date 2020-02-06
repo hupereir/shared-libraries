@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseDialog.h"
 #include "Counter.h"
 
@@ -29,7 +30,7 @@ class LineEditor;
 class SelectLineWidget;
 
 //* find_text dialog for text editor widgets
-class SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialog>
+class BASE_QT_EXPORT SelectLineDialog: public BaseDialog, private Base::Counter<SelectLineDialog>
 {
 
     //* Qt meta object declaration

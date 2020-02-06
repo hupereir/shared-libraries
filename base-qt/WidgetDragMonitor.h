@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "MultipleClickCounter.h"
 #include "XcbDefines.h"
@@ -30,7 +31,7 @@
 #include <QWidget>
 
 //* used to automatically save size of top level widgets
-class WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor>
+class BASE_QT_EXPORT WidgetDragMonitor: public QObject, private Base::Counter<WidgetDragMonitor>
 {
 
     Q_OBJECT

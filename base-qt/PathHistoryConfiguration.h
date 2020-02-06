@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
 #include <QWidget>
 
 //! configure files in recent files menu
-class PathHistoryConfiguration: public QWidget, public OptionWidgetList<PathHistoryConfiguration>, private Base::Counter<PathHistoryConfiguration>
+class BASE_QT_EXPORT PathHistoryConfiguration: public QWidget, public OptionWidgetList<PathHistoryConfiguration>, private Base::Counter<PathHistoryConfiguration>
 {
 
     Q_OBJECT

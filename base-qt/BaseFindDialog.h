@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "AbstractFindWidget.h"
 #include "BaseDialog.h"
 #include "Counter.h"
 
 //* find dialog for text editor widgets
-class BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
+class BASE_QT_EXPORT BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>
 {
 
     //* Qt meta object declaration

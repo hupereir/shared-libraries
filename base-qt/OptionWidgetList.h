@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Debug.h"
 #include "OptionWidget.h"
 
@@ -31,7 +32,7 @@
 
 //* abstract container for OptionWidgets
 template<class W>
-class OptionWidgetList: public OptionWidget
+class BASE_QT_EXPORT OptionWidgetList: public OptionWidget
 {
 
     public:

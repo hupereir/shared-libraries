@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomSlider.h"
 #include "OptionWidget.h"
 
 #include <cmath>
 
 //* QSlider associated to an option for configuration dialogs
-class OptionSlider: public CustomSlider, public OptionWidget
+class BASE_QT_EXPORT OptionSlider: public CustomSlider, public OptionWidget
 {
 
     Q_OBJECT

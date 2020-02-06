@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomDialog.h"
 
 class TextEncodingWidget;
 
-class TextEncodingDialog: public CustomDialog
+class BASE_QT_EXPORT TextEncodingDialog: public CustomDialog
 {
 
     Q_OBJECT

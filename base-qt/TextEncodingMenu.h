@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QAction>
 #include <QHash>
 #include <QMenu>
 
-class TextEncodingMenu: public QMenu, private Base::Counter<TextEncodingMenu>
+class BASE_QT_EXPORT TextEncodingMenu: public QMenu, private Base::Counter<TextEncodingMenu>
 {
 
     Q_OBJECT

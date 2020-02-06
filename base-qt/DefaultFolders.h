@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "File.h"
 
 #include "CppUtil.h"
@@ -28,7 +29,7 @@
 #include <QMap>
 #include <QObject>
 
-class DefaultFolders: public QObject
+class BASE_QT_EXPORT DefaultFolders: public QObject
 {
 
     Q_OBJECT

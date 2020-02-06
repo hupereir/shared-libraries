@@ -21,6 +21,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "DetailsDialog.h"
 #include "Counter.h"
 
@@ -28,7 +29,7 @@
 #include <QLabel>
 
 //* simplified question dialog
-class QuestionDialog: public DetailsDialog
+class BASE_QT_EXPORT QuestionDialog: public DetailsDialog
 {
 
     public:

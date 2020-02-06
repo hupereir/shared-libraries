@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "TextSelection.h"
 
@@ -35,7 +36,7 @@ class ScrollBarMonitor;
 class ItemModel;
 
 //* customized tree view
-class TreeView: public QTreeView, private Base::Counter<TreeView>
+class BASE_QT_EXPORT TreeView: public QTreeView, private Base::Counter<TreeView>
 {
 
     //* Qt meta object declaration
@@ -195,7 +196,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //@}
 
     //* container class for embedded Find dialog
-    class Container: public QWidget, private Base::Counter<Container>
+    class BASE_QT_EXPORT Container: public QWidget, private Base::Counter<Container>
     {
 
         public:
@@ -446,7 +447,7 @@ class TreeView: public QTreeView, private Base::Counter<TreeView>
     //* scrollbar recursion lock
     bool scrollBarRecursionLock_ = false;
 
-    friend class Container;
+    friend BASE_QT_EXPORT class Container;
 
 };
 

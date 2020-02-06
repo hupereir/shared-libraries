@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "Debug.h"
@@ -30,7 +31,7 @@
 #include <QLayout>
 
 //* customized QDialog
-class CustomDialog: public BaseDialog, private Base::Counter<CustomDialog>
+class BASE_QT_EXPORT CustomDialog: public BaseDialog, private Base::Counter<CustomDialog>
 {
 
     Q_OBJECT

@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "TextFormat.h"
 
 #include <QCheckBox>
 #include <QMap>
 
 //! font formating
-class FontInfo: public QWidget
+class BASE_QT_EXPORT FontInfo: public QWidget
 {
 
     Q_OBJECT

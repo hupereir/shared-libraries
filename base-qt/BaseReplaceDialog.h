@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseFindDialog.h"
 #include "BaseReplaceWidget.h"
 
 //* replace_text dialogs
-class BaseReplaceDialog: public BaseFindDialog
+class BASE_QT_EXPORT BaseReplaceDialog: public BaseFindDialog
 {
 
     //* Qt meta object declaration

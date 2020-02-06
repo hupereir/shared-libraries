@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseFileInfo.h"
 #include "Counter.h"
 #include "CustomPixmap.h"
@@ -30,7 +31,7 @@
 #include <QObject>
 
 //* returns icon for a given FileInfo
-class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconProvider>
+class BASE_QT_EXPORT BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconProvider>
 {
 
     public:
@@ -50,7 +51,7 @@ class BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconPr
     { icons_.clear(); }
 
     //* key, used for hash
-    class Key
+    class BASE_QT_EXPORT Key
     {
         public:
 

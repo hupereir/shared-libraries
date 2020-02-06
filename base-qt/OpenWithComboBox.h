@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "File.h"
 
@@ -27,7 +28,7 @@
 #include <QStringList>
 
 //* Customized QCombobox to handle case sensitive auto completion
-class OpenWithComboBox: public QComboBox, private Base::Counter<OpenWithComboBox>
+class BASE_QT_EXPORT OpenWithComboBox: public QComboBox, private Base::Counter<OpenWithComboBox>
 {
 
     //* Qt meta object declaration

@@ -20,9 +20,10 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "LineEditor.h"
 
-class PasswordEditor: public LineEditor
+class BASE_QT_EXPORT PasswordEditor: public LineEditor
 {
 
     //* Qt meta object declaration

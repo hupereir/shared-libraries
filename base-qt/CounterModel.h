@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "ListModel.h"
 #include "CounterMap.h"
 #include "Debug.h"
@@ -35,7 +36,7 @@ inline bool operator == (const CounterPair& first, const CounterPair& second )
 { return first.first == second.first; }
 
 //* qlistview for object counters
-class CounterModel: public ListModel<CounterPair>
+class BASE_QT_EXPORT CounterModel: public ListModel<CounterPair>
 {
 
     Q_OBJECT
@@ -73,7 +74,7 @@ class CounterModel: public ListModel<CounterPair>
     private:
 
     //* used to sort IconCaches
-    class SortFTor: public ItemModel::SortFTor
+    class BASE_QT_EXPORT SortFTor: public ItemModel::SortFTor
     {
 
         public:

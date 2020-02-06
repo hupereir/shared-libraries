@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "PathHistory.h"
 #include "File.h"
 
@@ -29,7 +30,7 @@
 class XmlDocument;
 
 //* Xml interface to PathHistory
-class XmlPathHistory: public PathHistory
+class BASE_QT_EXPORT XmlPathHistory: public PathHistory
 {
 
     //* Qt meta object declaration

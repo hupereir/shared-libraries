@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "InformationDialog.h"
 
 #include <QCheckBox>
 
 //* simple information dialog
-class SingleTimeDialog: public InformationDialog
+class BASE_QT_EXPORT SingleTimeDialog: public InformationDialog
 {
 
     public:

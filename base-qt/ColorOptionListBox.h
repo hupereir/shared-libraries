@@ -20,10 +20,11 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionListBox.h"
 
 
-class ColorOptionListBox: public OptionListBox
+class BASE_QT_EXPORT ColorOptionListBox: public OptionListBox
 {
 
     Q_OBJECT

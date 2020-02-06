@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QApplication>
@@ -29,7 +30,7 @@
 #include <QStatusBar>
 
 //* local label for additional slots
-class StatusBarLabel: public QLabel
+class BASE_QT_EXPORT StatusBarLabel: public QLabel
 {
 
     //* Qt meta object macro
@@ -55,7 +56,7 @@ class StatusBarLabel: public QLabel
 };
 
 //* custom status bar
-class BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
+class BASE_QT_EXPORT BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
 {
 
     public:

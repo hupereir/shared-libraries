@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QPixmap>
 
 //* customized QPixmap to look for icon of given name in list of directory
-class CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
+class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
 {
 
     public:

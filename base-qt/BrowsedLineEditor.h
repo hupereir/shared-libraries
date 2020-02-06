@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "File.h"
 
@@ -30,7 +31,7 @@
 
 class LineEditor;
 
-class BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor>
+class BASE_QT_EXPORT BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor>
 {
 
     //* Qt meta object declaration

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BrowsedLineEditor.h"
 #include "OptionWidget.h"
 
@@ -34,7 +35,7 @@ class OptionModel;
 class TreeView;
 
 //* ListBox for Special options, and buttons to add/remove values
-class OptionListBox: public QWidget, public OptionWidget
+class BASE_QT_EXPORT OptionListBox: public QWidget, public OptionWidget
 {
 
     //* Qt meta object declaration

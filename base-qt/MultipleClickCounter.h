@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QApplication>
 #include <QBasicTimer>
 
@@ -27,7 +28,7 @@
 #include "Debug.h"
 
 //* handles multiple clicks and timeout
-class MultipleClickCounter: public QObject, private Base::Counter<MultipleClickCounter>
+class BASE_QT_EXPORT MultipleClickCounter: public QObject, private Base::Counter<MultipleClickCounter>
 {
 
     Q_OBJECT

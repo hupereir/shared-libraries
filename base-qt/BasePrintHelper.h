@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "TimeStamp.h"
 #include "Debug.h"
 #include "File.h"
@@ -28,7 +29,7 @@
 #include <QPrinter>
 
 //* printing utility
-class BasePrintHelper: public QObject
+class BASE_QT_EXPORT BasePrintHelper: public QObject
 {
 
     Q_OBJECT

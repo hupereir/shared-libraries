@@ -20,9 +20,10 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <Qt>
 
-class KeyModifier
+class BASE_QT_EXPORT KeyModifier
 {
 
   public:

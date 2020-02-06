@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "XcbDefines.h"
 #include "NonCopyable.h"
 
@@ -29,13 +30,13 @@
 
 #include <memory>
 
-class XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
+class BASE_QT_EXPORT XcbUtil: private XcbDefines, private Base::NonCopyable<XcbUtil>
 {
 
     public:
 
     //* delete object allocated with malloc
-    class PodDeleter
+    class BASE_QT_EXPORT PodDeleter
     {
         public:
 

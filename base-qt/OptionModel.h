@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Options.h"
@@ -40,7 +41,7 @@ namespace Base
 }
 
 //___________________________________________________________________
-class OptionModel: public TreeModel<Options::Pair>, private Base::Counter<OptionModel>
+class BASE_QT_EXPORT OptionModel: public TreeModel<Options::Pair>, private Base::Counter<OptionModel>
 {
 
     Q_OBJECT
@@ -110,7 +111,7 @@ class OptionModel: public TreeModel<Options::Pair>, private Base::Counter<Option
     private:
 
     //* used to sort IconCaches
-    class SortFTor: public ItemModel::SortFTor
+    class BASE_QT_EXPORT SortFTor: public ItemModel::SortFTor
     {
 
         public:

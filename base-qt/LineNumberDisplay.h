@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -34,7 +35,7 @@
 class TextEditor;
 
 //* display line number of a text editor
-class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay>
+class BASE_QT_EXPORT LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay>
 {
 
     //* Qt meta object
@@ -74,7 +75,7 @@ class LineNumberDisplay: public QObject, private Base::Counter<LineNumberDisplay
     void _blockCountChanged();
 
     //* map block number and position
-    class LineNumberData final
+    class BASE_QT_EXPORT LineNumberData final
     {
 
         public:

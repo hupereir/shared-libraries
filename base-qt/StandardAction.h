@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QAction>
 
-class StandardAction: public QAction, private Base::Counter<StandardAction>
+class BASE_QT_EXPORT StandardAction: public QAction, private Base::Counter<StandardAction>
 {
 
     Q_OBJECT

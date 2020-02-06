@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QAbstractButton>
@@ -28,7 +29,7 @@
 
 #include <memory>
 
-class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
+class BASE_QT_EXPORT ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
 {
 
     Q_OBJECT
@@ -56,7 +57,7 @@ class ColorGrabObject: public QObject, private Base::Counter<ColorGrabObject>
     void _clearCapture();
 
     // grab deleter
-    class Deleter
+    class BASE_QT_EXPORT Deleter
     {
         public:
 

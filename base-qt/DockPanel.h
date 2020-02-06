@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -43,7 +44,7 @@ namespace Private
 }
 
 //* detachable generic panel
-class DockPanel: public QWidget, private Base::Counter<DockPanel>
+class BASE_QT_EXPORT DockPanel: public QWidget, private Base::Counter<DockPanel>
 {
 
     //* Qt meta object declaration

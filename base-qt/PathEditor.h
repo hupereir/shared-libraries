@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
 #include "File.h"
@@ -45,7 +46,7 @@ namespace Private
 class PathHistory;
 
 //* path editor
-class PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
+class BASE_QT_EXPORT PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
 {
 
     Q_OBJECT

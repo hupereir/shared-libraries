@@ -20,18 +20,19 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QTextBlock>
 #include <QTextDocument>
 #include <iterator>
 
 //* block range
-class TextBlockRange
+class BASE_QT_EXPORT TextBlockRange
 {
 
     public:
 
     //* block iterator
-    class iterator : public std::iterator<std::forward_iterator_tag, QTextBlock>
+    class BASE_QT_EXPORT iterator : public std::iterator<std::forward_iterator_tag, QTextBlock>
     {
 
         public:

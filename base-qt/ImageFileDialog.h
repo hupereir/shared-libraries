@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "File.h"
 
@@ -29,7 +30,7 @@
 #include <QFileDialog>
 #include <QLabel>
 
-class ImageFileDialog: public QFileDialog
+class BASE_QT_EXPORT ImageFileDialog: public QFileDialog
 {
 
     Q_OBJECT
@@ -71,7 +72,7 @@ class ImageFileDialog: public QFileDialog
     //* current file
     File currentPath_;
 
-    class Label: public QLabel, private Base::Counter<Label>
+    class BASE_QT_EXPORT Label: public QLabel, private Base::Counter<Label>
     {
         public:
 

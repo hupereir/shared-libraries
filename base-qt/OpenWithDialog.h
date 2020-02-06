@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomDialog.h"
 #include "File.h"
 #include "OpenWithComboBox.h"
@@ -27,7 +28,7 @@
 #include <QIcon>
 
 //* QDialog used to commit selected files
-class OpenWithDialog: public CustomDialog
+class BASE_QT_EXPORT OpenWithDialog: public CustomDialog
 {
 
     Q_OBJECT

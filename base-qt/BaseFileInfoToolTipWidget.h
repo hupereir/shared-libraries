@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseFileInfo.h"
 #include "BaseToolTipWidget.h"
 
@@ -29,7 +30,7 @@
 
 class GridLayoutItem;
 
-class BaseFileInfoToolTipWidget: public BaseToolTipWidget
+class BASE_QT_EXPORT BaseFileInfoToolTipWidget: public BaseToolTipWidget
 {
 
     Q_OBJECT

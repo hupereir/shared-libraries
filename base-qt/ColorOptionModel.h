@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionModel.h"
 
 #include "Color.h"
@@ -27,7 +28,7 @@
 #include <QHash>
 
 //* Color option model. Stores Color option information for display in lists
-class ColorOptionModel: public OptionModel
+class BASE_QT_EXPORT ColorOptionModel: public OptionModel
 {
 
     public:

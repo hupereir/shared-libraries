@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CommandLineArguments.h"
 
 #include <QDomDocument>
@@ -27,7 +28,7 @@
 #include <QString>
 
 //! Xml interface to time manipulation object
-class XmlCommandLineArguments:public CommandLineArguments
+class BASE_QT_EXPORT XmlCommandLineArguments:public CommandLineArguments
 {
 
     public:

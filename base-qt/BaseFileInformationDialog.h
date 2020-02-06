@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomDialog.h"
 #include "GridLayoutItem.h"
 #include "TimeStamp.h"
@@ -34,7 +35,7 @@ class FilePermissionsWidget;
 class GridLayout;
 
 //* file informations
-class BaseFileInformationDialog: public CustomDialog
+class BASE_QT_EXPORT BaseFileInformationDialog: public CustomDialog
 {
 
     Q_OBJECT

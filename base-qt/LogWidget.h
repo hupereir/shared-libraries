@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "TextEditor.h"
 #include "TextFormat.h"
 
 #include <QString>
 #include <QColor>
 
-class LogWidget: public TextEditor
+class BASE_QT_EXPORT LogWidget: public TextEditor
 {
 
     Q_OBJECT

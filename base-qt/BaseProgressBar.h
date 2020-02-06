@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QString>
 #include <QPaintEvent>
 #include <QProgressBar>
 
 //* display command progress and remaining time
-class BaseProgressBar:public QProgressBar
+class BASE_QT_EXPORT BaseProgressBar:public QProgressBar
 {
 
     Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "FileList.h"
@@ -31,7 +32,7 @@
 \class   RecentFilesMenu
 \brief   customized popup menu to open a previously opened file
 */
-class RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
+class BASE_QT_EXPORT RecentFilesMenu: public QMenu, private Base::Counter<RecentFilesMenu>
 {
 
     //* Qt meta object declaration

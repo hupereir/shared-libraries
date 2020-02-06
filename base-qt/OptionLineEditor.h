@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "LineEditor.h"
 #include "OptionWidget.h"
 
 //* QLineEdit associated to an option for configuration dialogs
-class OptionLineEditor: public LineEditor, public OptionWidget
+class BASE_QT_EXPORT OptionLineEditor: public LineEditor, public OptionWidget
 {
 
     Q_OBJECT

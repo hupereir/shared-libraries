@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "FileRecord.h"
 
@@ -28,7 +29,7 @@
 #include <QThread>
 
 //* independent thread used to automatically save file
-class ValidFileThread: public QThread, private Base::Counter<ValidFileThread>
+class BASE_QT_EXPORT ValidFileThread: public QThread, private Base::Counter<ValidFileThread>
 {
 
     Q_OBJECT

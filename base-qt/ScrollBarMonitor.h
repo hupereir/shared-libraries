@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QAbstractScrollArea>
 
-class ScrollBarMonitor: public QObject, private Base::Counter<ScrollBarMonitor>
+class BASE_QT_EXPORT ScrollBarMonitor: public QObject, private Base::Counter<ScrollBarMonitor>
 {
 
     public:

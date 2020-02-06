@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "EmbeddedWidget.h"
 
@@ -30,7 +31,7 @@
 class LineEditor;
 
 //* find_text dialog for text editor widgets
-class SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineWidget>
+class BASE_QT_EXPORT SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineWidget>
 {
 
     //* Qt meta object declaration

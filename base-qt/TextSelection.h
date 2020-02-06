@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Debug.h"
 
 #include <QString>
 
 //* string to be found and options
-class TextSelection
+class BASE_QT_EXPORT TextSelection
 {
     public:
 

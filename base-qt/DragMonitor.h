@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QObject>
 #include <QWidget>
 
 //* used to install
-class DragMonitor: public QObject, private Base::Counter<DragMonitor>
+class BASE_QT_EXPORT DragMonitor: public QObject, private Base::Counter<DragMonitor>
 {
 
     Q_OBJECT

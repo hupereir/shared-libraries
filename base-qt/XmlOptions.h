@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "File.h"
 #include "Options.h"
 
@@ -33,7 +34,7 @@ namespace Private
 }
 
 //* Option file parser based on xml
-class XmlOptions
+class BASE_QT_EXPORT XmlOptions
 {
 
     public:

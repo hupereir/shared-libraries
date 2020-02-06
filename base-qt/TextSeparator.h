@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "NonCopyable.h"
 
 #include <QSet>
 #include <QString>
 
 //* text separator between words
-class TextSeparator: private Base::NonCopyable<TextSeparator>
+class BASE_QT_EXPORT TextSeparator: private Base::NonCopyable<TextSeparator>
 {
 
     public:

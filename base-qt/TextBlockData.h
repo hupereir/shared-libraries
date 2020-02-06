@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "TextBlockFlags.h"
 #include "Counter.h"
 #include "Debug.h"
@@ -27,7 +28,7 @@
 #include <QTextBlockUserData>
 
 //* TextBlock data
-class TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockData>
+class BASE_QT_EXPORT TextBlockData: public QTextBlockUserData, private Base::Counter<TextBlockData>
 {
 
     public:

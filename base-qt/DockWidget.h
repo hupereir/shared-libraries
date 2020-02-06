@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -27,7 +28,7 @@
 
 #include <memory>
 
-class DockWidget: public QDockWidget
+class BASE_QT_EXPORT DockWidget: public QDockWidget
 {
 
     Q_OBJECT

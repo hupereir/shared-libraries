@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QFile>
@@ -27,7 +28,7 @@
 #include <QWidget>
 #include <QCheckBox>
 
-class FilePermissionsWidget: public QWidget, private Base::Counter<FilePermissionsWidget>
+class BASE_QT_EXPORT FilePermissionsWidget: public QWidget, private Base::Counter<FilePermissionsWidget>
 {
 
     Q_OBJECT

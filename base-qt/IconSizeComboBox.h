@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "IconSize.h"
 
 #include <QComboBox>
 
-class IconSizeComboBox: public QComboBox, private Base::Counter<IconSizeComboBox>
+class BASE_QT_EXPORT IconSizeComboBox: public QComboBox, private Base::Counter<IconSizeComboBox>
 {
 
     //* Qt meta object declaration

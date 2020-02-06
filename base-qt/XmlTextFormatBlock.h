@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "TextFormatBlock.h"
 #include <QDomElement>
 #include <QDomDocument>
@@ -32,7 +33,7 @@ namespace TextFormat
     }
 
     //* text format with Xml abilities
-    class XmlBlock:public Block
+    class BASE_QT_EXPORT XmlBlock:public Block
     {
 
         public:

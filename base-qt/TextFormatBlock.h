@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Functors.h"
 #include "TextFormat.h"
@@ -31,7 +32,7 @@
 
 namespace TextFormat
 {
-    class Block: private Base::Counter<Block>
+    class BASE_QT_EXPORT Block: private Base::Counter<Block>
     {
 
         public:
@@ -113,7 +114,7 @@ namespace TextFormat
         using SamePositionEndFTor = Base::Functor::Unary<Block, int, &Block::end>;
 
         //* get block containing a given position
-        class ContainsFTor
+        class BASE_QT_EXPORT ContainsFTor
         {
 
             public:

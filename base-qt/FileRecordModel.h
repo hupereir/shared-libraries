@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "FileRecord.h"
@@ -30,7 +31,7 @@
 #include <QStringList>
 
 //* qlistview for object counters
-class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileRecordModel>
+class BASE_QT_EXPORT FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileRecordModel>
 {
 
     Q_OBJECT
@@ -116,7 +117,7 @@ class FileRecordModel: public ListModel<FileRecord>, private Base::Counter<FileR
     void _updateConfiguration();
 
     //* used to sort Counters
-    class SortFTor: public ItemModel::SortFTor
+    class BASE_QT_EXPORT SortFTor: public ItemModel::SortFTor
     {
 
         public:

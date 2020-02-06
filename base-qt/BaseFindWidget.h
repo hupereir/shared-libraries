@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "AbstractFindWidget.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
@@ -34,7 +35,7 @@
 #include <QPalette>
 
 //* find widget for text editors and lists
-class BaseFindWidget: public AbstractFindWidget, private Base::Counter<BaseFindWidget>
+class BASE_QT_EXPORT BaseFindWidget: public AbstractFindWidget, private Base::Counter<BaseFindWidget>
 {
 
     Q_OBJECT

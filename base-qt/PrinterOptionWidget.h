@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "BasePrintHelper.h"
 
@@ -28,7 +29,7 @@
 #include <QPushButton>
 #include <QWidget>
 
-class PrinterOptionWidget: public QWidget, private Base::Counter<PrinterOptionWidget>
+class BASE_QT_EXPORT PrinterOptionWidget: public QWidget, private Base::Counter<PrinterOptionWidget>
 {
 
     Q_OBJECT

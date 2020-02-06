@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -27,7 +28,7 @@
 #include <QHash>
 
 //* provides tool button style selection menu
-class ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMenu>
+class BASE_QT_EXPORT ToolButtonStyleMenu: public QMenu, private Base::Counter<ToolButtonStyleMenu>
 {
 
     Q_OBJECT

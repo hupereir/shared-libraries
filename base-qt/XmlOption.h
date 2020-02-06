@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Option.h"
 
 #include <QDomDocument>
@@ -42,7 +43,7 @@ namespace Base
 }
 
 //* Xml implementation of the Option object
-class XmlOption:public Option
+class BASE_QT_EXPORT XmlOption:public Option
 {
 
     public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "CustomPixmap.h"
 #include "Debug.h"
@@ -27,7 +28,7 @@
 #include <QLabel>
 #include <QToolButton>
 
-class CustomToolButton: public QToolButton, private Base::Counter<CustomToolButton>
+class BASE_QT_EXPORT CustomToolButton: public QToolButton, private Base::Counter<CustomToolButton>
 {
 
     Q_OBJECT

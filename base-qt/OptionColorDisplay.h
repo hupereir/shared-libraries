@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "ColorDisplay.h"
 #include "Color.h"
 #include "OptionWidget.h"
 
 //! QColorDisplay associated to an option for configuration dialogs
-class OptionColorDisplay: public ColorDisplay, public OptionWidget
+class BASE_QT_EXPORT OptionColorDisplay: public ColorDisplay, public OptionWidget
 {
 
     Q_OBJECT

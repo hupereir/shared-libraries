@@ -20,9 +20,10 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <inttypes.h>
 
-class XcbDefines
+class BASE_QT_EXPORT XcbDefines
 {
 
     public:

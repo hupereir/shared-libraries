@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseFileInfo.h"
 #include "ListModel.h"
 #include "TimeStamp.h"
@@ -41,7 +42,7 @@ namespace Base
 
 //* FileInfo model. Stores file information for display in lists
 template<typename T>
-class BaseFileInfoModel : public ListModel<T>
+class BASE_QT_EXPORT BaseFileInfoModel : public ListModel<T>
 {
 
     public:
@@ -88,7 +89,7 @@ class BaseFileInfoModel : public ListModel<T>
     //@}
 
     //* used to sort FileInfo objects
-    class SortFTor: public ItemModel::SortFTor
+    class BASE_QT_EXPORT SortFTor: public ItemModel::SortFTor
     {
 
         public:

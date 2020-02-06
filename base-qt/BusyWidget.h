@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QBasicTimer>
@@ -29,7 +30,7 @@
 #include <QPaintEvent>
 #include <QPainterPath>
 
-class BusyWidget: public QWidget, private Base::Counter<BusyWidget>
+class BASE_QT_EXPORT BusyWidget: public QWidget, private Base::Counter<BusyWidget>
 {
 
     Q_OBJECT

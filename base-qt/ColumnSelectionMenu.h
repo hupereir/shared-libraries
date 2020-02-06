@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -31,7 +32,7 @@
 #include <memory>
 
 //_______________________________________________________________
-class ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMenu>
+class BASE_QT_EXPORT ColumnSelectionMenu:public QMenu, private Base::Counter<ColumnSelectionMenu>
 {
 
     //* Qt meta object declaration

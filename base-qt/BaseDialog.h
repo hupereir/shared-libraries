@@ -21,12 +21,13 @@
 *******************************************************************************/
 
 
+#include "base_qt_export.h"
 #include "WidgetMonitor.h"
 
 #include <QDialog>
 
 //* base dialog
-class BaseDialog: public QDialog
+class BASE_QT_EXPORT BaseDialog: public QDialog
 {
 
     Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QIcon>
@@ -36,7 +37,7 @@
 class MessageWidgetPrivate;
 
 //* QDialog used to ask if a new file should be created
-class MessageWidget: public QWidget, private Base::Counter<MessageWidget>
+class BASE_QT_EXPORT MessageWidget: public QWidget, private Base::Counter<MessageWidget>
 {
 
     Q_OBJECT

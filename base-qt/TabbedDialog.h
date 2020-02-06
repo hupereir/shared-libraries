@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "ListModel.h"
@@ -36,7 +37,7 @@ class SimpleListView;
 
 //* tabbed dialog
 /** a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
-class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
+class BASE_QT_EXPORT TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
 {
 
     Q_OBJECT
@@ -129,7 +130,7 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     void _display( const QModelIndex& );
 
     //* item model
-    class Item final: private Base::Counter<Item>
+    class BASE_QT_EXPORT Item final: private Base::Counter<Item>
     {
 
         public:
@@ -191,7 +192,7 @@ class TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
     };
 
     //* model
-    class Model: public ListModel<Item>
+    class BASE_QT_EXPORT Model: public ListModel<Item>
     {
 
         public:

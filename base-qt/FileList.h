@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
@@ -30,7 +31,7 @@
 #include <QObject>
 
 //* handles list of files saved into resource file for later reopening
-class FileList: public QObject, private Base::Counter<FileList>
+class BASE_QT_EXPORT FileList: public QObject, private Base::Counter<FileList>
 {
 
     //* Qt meta object declaration

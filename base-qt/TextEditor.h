@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BlockHighlight.h"
 #include "BoxSelection.h"
 #include "Counter.h"
@@ -64,7 +65,7 @@ using BaseEditor = QTextEdit;
 #endif
 
 //* Customized QTextEdit object
-class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<TextEditor>
+class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Base::Counter<TextEditor>
 {
 
     Q_OBJECT
@@ -405,7 +406,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     //@}
 
     //* container class for embedded Find dialog
-    class Container: public QWidget, private Base::Counter<Container>
+    class BASE_QT_EXPORT Container: public QWidget, private Base::Counter<Container>
     {
 
         public:
@@ -1009,7 +1010,7 @@ class TextEditor: public BaseEditor, public Base::Key, private Base::Counter<Tex
     /** this is a bitwise or of the Modifiers enumeration */
     Modifiers modifiers_ = Modifier::None;
 
-    friend class Container;
+    friend BASE_QT_EXPORT class Container;
 
 };
 

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "CustomToolButton.h"
 #include "Debug.h"
@@ -29,7 +30,7 @@
 #include <QHash>
 
 //* provides icon size selection menu
-class IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
+class BASE_QT_EXPORT IconSizeMenu: public QMenu, private Base::Counter<IconSizeMenu>
 {
 
     Q_OBJECT

@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionWidget.h"
 
 #include <QCheckBox>
 
 //! QCheckBox associated to an option for configuration dialogs
-class OptionCheckBox: public QCheckBox, public OptionWidget
+class BASE_QT_EXPORT OptionCheckBox: public QCheckBox, public OptionWidget
 {
 
     Q_OBJECT

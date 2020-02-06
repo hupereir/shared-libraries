@@ -19,12 +19,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QToolButton>
 
 //* used to pick color from screen
-class ColorGrabButton : public QToolButton, private Base::Counter<ColorGrabButton>
+class BASE_QT_EXPORT ColorGrabButton : public QToolButton, private Base::Counter<ColorGrabButton>
 {
 
     Q_OBJECT

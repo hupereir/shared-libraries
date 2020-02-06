@@ -21,6 +21,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "DetailsDialog.h"
 
 #include <QString>
@@ -28,7 +29,7 @@
 #include <QWidget>
 
 //* simple information dialog
-class InformationDialog: public DetailsDialog
+class BASE_QT_EXPORT InformationDialog: public DetailsDialog
 {
 
     public:

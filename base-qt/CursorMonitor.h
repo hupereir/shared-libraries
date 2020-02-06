@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QBasicTimer>
@@ -29,7 +30,7 @@
 #include <QWidget>
 
 //* used to automatically hide mouse cursor over a certain widget
-class CursorMonitor: public QObject, private Base::Counter<CursorMonitor>
+class BASE_QT_EXPORT CursorMonitor: public QObject, private Base::Counter<CursorMonitor>
 {
 
     public:

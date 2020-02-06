@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Color.h"
 
 #include <QDomDocument>
@@ -37,7 +38,7 @@ namespace Base
 }
 
 //* xml implementation of the color object
-class XmlColor: public Base::Color
+class BASE_QT_EXPORT XmlColor: public Base::Color
 {
 
     public:

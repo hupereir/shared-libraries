@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "WidgetDragMonitor.h"
@@ -41,7 +42,7 @@ namespace Private
 }
 
 //* Tab Child container
-class TabWidget: public QWidget, private Base::Counter<TabWidget>
+class BASE_QT_EXPORT TabWidget: public QWidget, private Base::Counter<TabWidget>
 {
 
     //* Qt meta object declaration

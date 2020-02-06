@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QClipboard>
@@ -32,7 +33,7 @@
 class TextEditor;
 
 //* handles box selection
-class BoxSelection final: private Base::Counter<BoxSelection>
+class BASE_QT_EXPORT BoxSelection final: private Base::Counter<BoxSelection>
 {
 
     public:
@@ -114,7 +115,7 @@ class BoxSelection final: private Base::Counter<BoxSelection>
     //@}
 
     //* store selection cursors and  selection columns
-    class CursorList: public  QList<QTextCursor>, private Base::Counter<CursorList>
+    class BASE_QT_EXPORT CursorList: public  QList<QTextCursor>, private Base::Counter<CursorList>
     {
 
         public:

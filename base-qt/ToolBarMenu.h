@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QMenu>
@@ -28,7 +29,7 @@ class ToolButtonStyleMenu;
 class IconSizeMenu;
 
 //* provides toolbar manipulation menu
-class ToolBarMenu: public QMenu, private Base::Counter<ToolBarMenu>
+class BASE_QT_EXPORT ToolBarMenu: public QMenu, private Base::Counter<ToolBarMenu>
 {
 
     public:

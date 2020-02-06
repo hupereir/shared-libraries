@@ -21,6 +21,7 @@
 *******************************************************************************/
 
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QEvent>
@@ -30,7 +31,7 @@
 class TextEditor;
 
 // margin widget
-class TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMarginWidget>
+class BASE_QT_EXPORT TextEditorMarginWidget: public QWidget, private Base::Counter<TextEditorMarginWidget>
 {
 
     Q_OBJECT

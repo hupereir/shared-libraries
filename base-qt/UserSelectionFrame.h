@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "CustomComboBox.h"
 
 #include <QBasicTimer>
 #include <QSet>
 
-class UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFrame>
+class BASE_QT_EXPORT UserSelectionFrame: public QWidget, private Base::Counter<UserSelectionFrame>
 {
 
     //* Qt meta object declaration

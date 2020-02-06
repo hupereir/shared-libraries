@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QObject>
@@ -27,7 +28,7 @@
 #include <QIcon>
 
 //* FileInfo model. Stores file information for display in lists
-class MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconProvider>
+class BASE_QT_EXPORT MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconProvider>
 {
 
     public:

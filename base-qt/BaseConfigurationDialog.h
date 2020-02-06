@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
 #include "TabbedDialog.h"
@@ -29,7 +30,7 @@
 class CustomDialog;
 
 //* configuration dialog
-class BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList<BaseConfigurationDialog>
+class BASE_QT_EXPORT BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList<BaseConfigurationDialog>
 {
 
     Q_OBJECT

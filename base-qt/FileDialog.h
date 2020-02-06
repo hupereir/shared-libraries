@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "File.h"
 
@@ -29,7 +30,7 @@
 #include <QStringList>
 
 //* customized file selection dialog, to store last selected directory
-class FileDialog: public QObject, private Base::Counter<FileDialog>
+class BASE_QT_EXPORT FileDialog: public QObject, private Base::Counter<FileDialog>
 {
 
     public:
@@ -124,7 +125,7 @@ class FileDialog: public QObject, private Base::Counter<FileDialog>
     QFileDialog::Options options_ = 0;
 
     //* needed to allow ImageFileDialog to acces working directory
-    friend class ImageFileDialog;
+    friend BASE_QT_EXPORT class ImageFileDialog;
 
 };
 

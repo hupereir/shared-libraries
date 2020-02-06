@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include "XcbUtil.h"
@@ -29,7 +30,7 @@
 #endif
 
 //* encapsulated xcb connection
-class XcbConnection final: private Base::Counter<XcbConnection>
+class BASE_QT_EXPORT XcbConnection final: private Base::Counter<XcbConnection>
 {
     public:
 

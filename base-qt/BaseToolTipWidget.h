@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QBasicTimer>
@@ -30,7 +31,7 @@
 
 class GridLayoutItem;
 
-class BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget>
+class BASE_QT_EXPORT BaseToolTipWidget: public QWidget, private Base::Counter<BaseToolTipWidget>
 {
 
     Q_OBJECT

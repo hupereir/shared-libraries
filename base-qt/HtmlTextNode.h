@@ -28,6 +28,7 @@
   \date    $Date$
 */
 
+#include "base_qt_export.h"
 #include <QDomElement>
 #include <QDomDocument>
 #include <QString>
@@ -36,7 +37,7 @@
   \class  HtmlTextNode
   \brief  Some Html utilities
 */
-class HtmlTextNode
+class BASE_QT_EXPORT HtmlTextNode
 {
   public:
 

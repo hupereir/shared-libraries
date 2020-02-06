@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "IconCache.h"
@@ -28,7 +29,7 @@
 #include <array>
 
 //* qlistview for object IconCaches
-class IconCacheModel: public ListModel<Base::IconPair>, private Base::Counter<IconCacheModel>
+class BASE_QT_EXPORT IconCacheModel: public ListModel<Base::IconPair>, private Base::Counter<IconCacheModel>
 {
 
     Q_OBJECT
@@ -77,7 +78,7 @@ class IconCacheModel: public ListModel<Base::IconPair>, private Base::Counter<Ic
     private:
 
     //* used to sort IconCaches
-    class SortFTor: public ItemModel::SortFTor
+    class BASE_QT_EXPORT SortFTor: public ItemModel::SortFTor
     {
 
         public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QAction>
 #include <QDialog>
 #include <QIcon>
@@ -28,7 +29,7 @@
 #include <QString>
 
 //* some convernience methods
-class QtUtil
+class BASE_QT_EXPORT QtUtil
 {
 
     public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseStatusBar.h"
 #include "Debug.h"
 
@@ -29,7 +30,7 @@
 #include <memory>
 
 //* customized status bar for selection frame
-class ProgressStatusBar: public BaseStatusBar
+class BASE_QT_EXPORT ProgressStatusBar: public BaseStatusBar
 {
 
     Q_OBJECT

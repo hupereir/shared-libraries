@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QAction>
@@ -30,7 +31,7 @@
 
 
 //* some basic runtime debuging
-class CustomMenu: public QMenu, private Base::Counter<CustomMenu>
+class BASE_QT_EXPORT CustomMenu: public QMenu, private Base::Counter<CustomMenu>
 {
 
     //* Qt meta object declaration

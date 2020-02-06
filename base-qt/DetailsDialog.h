@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomDialog.h"
 
 #include <QLabel>
@@ -28,7 +29,7 @@
 #include <memory>
 
 //* customized QDialog
-class DetailsDialog: public CustomDialog
+class BASE_QT_EXPORT DetailsDialog: public CustomDialog
 {
 
     Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionWidget.h"
 
 #include <QSpinBox>
@@ -28,7 +29,7 @@
 #include <cmath>
 
 //* QSpinBox associated to an option for configuration dialogs
-class OptionSpinBox: public QWidget, public OptionWidget
+class BASE_QT_EXPORT OptionSpinBox: public QWidget, public OptionWidget
 {
 
     Q_OBJECT

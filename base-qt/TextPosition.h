@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QTextStream>
 #include <QTextDocument>
 
 //* stores paragraph and index (in paragraph) into unique structure
-class TextPosition final: private Base::Counter<TextPosition>
+class BASE_QT_EXPORT TextPosition final: private Base::Counter<TextPosition>
 {
     public:
 

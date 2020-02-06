@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Functors.h"
 
 #include <QTcpSocket>
 
-class BaseSocketInterface: public QObject
+class BASE_QT_EXPORT BaseSocketInterface: public QObject
 {
 
     Q_OBJECT

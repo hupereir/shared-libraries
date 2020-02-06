@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "IconViewItem.h"
 #include "TextSelection.h"
@@ -46,7 +47,7 @@ class BaseFindDialog;
 class ItemModel;
 
 //* icon view
-class IconView: public QAbstractItemView, private Base::Counter<IconView>
+class BASE_QT_EXPORT IconView: public QAbstractItemView, private Base::Counter<IconView>
 {
 
     Q_OBJECT
@@ -166,7 +167,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //@}
 
     //* container class for embedded Find dialog
-    class Container: public QWidget, private Base::Counter<Container>
+    class BASE_QT_EXPORT Container: public QWidget, private Base::Counter<Container>
     {
 
         public:
@@ -483,7 +484,7 @@ class IconView: public QAbstractItemView, private Base::Counter<IconView>
     //* hovered index
     QModelIndex hoverIndex_;
 
-    friend class Container;
+    friend BASE_QT_EXPORT class Container;
 
 };
 

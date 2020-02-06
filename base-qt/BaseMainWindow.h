@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
@@ -39,7 +40,7 @@ class ToolBarMenu;
 \class BaseMainWindow
 \brief customized QDialog
 */
-class BaseMainWindow: public QMainWindow
+class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
 {
 
     Q_OBJECT

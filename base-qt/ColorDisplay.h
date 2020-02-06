@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "LineEditor.h"
 
 //* used to display colors and a choose button
-class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
+class BASE_QT_EXPORT ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
 {
 
     //* Qt metaobject macro
@@ -46,7 +47,7 @@ class ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>
     protected:
 
     //* internal customized label to have correct background color
-    class Editor : public LineEditor
+    class BASE_QT_EXPORT Editor : public LineEditor
     {
 
         public:

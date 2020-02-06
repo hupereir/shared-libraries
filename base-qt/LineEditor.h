@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QContextMenuEvent>
@@ -36,7 +37,7 @@
 class BaseContextMenu;
 
 //* used to insert buttons into a line editor
-class LineEditorButton: public QToolButton, private Base::Counter<LineEditorButton>
+class BASE_QT_EXPORT LineEditorButton: public QToolButton, private Base::Counter<LineEditorButton>
 {
 
     Q_OBJECT
@@ -87,7 +88,7 @@ class LineEditorButton: public QToolButton, private Base::Counter<LineEditorButt
 
 };
 
-class LineEditor: public QLineEdit, private Base::Counter<LineEditor>
+class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 {
 
     //* Qt meta object declaration

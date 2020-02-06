@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -28,7 +29,7 @@
 #include <QLabel>
 
 //* readonly font name display and font dialog
-class FontEditor: public QWidget, private Base::Counter<FontEditor>
+class BASE_QT_EXPORT FontEditor: public QWidget, private Base::Counter<FontEditor>
 {
 
     //* Qt meta object declaration

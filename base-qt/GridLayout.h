@@ -21,12 +21,13 @@
 *******************************************************************************/
 
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QGridLayout>
 #include <QList>
 
-class GridLayout: public QGridLayout, private Base::Counter<GridLayout>
+class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridLayout>
 {
 
     Q_OBJECT

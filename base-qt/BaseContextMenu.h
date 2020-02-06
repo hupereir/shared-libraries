@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QMenu>
 #include <QPointer>
 
 // implements context menu, installable on widgets
-class BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
+class BASE_QT_EXPORT BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
 {
 
     public:

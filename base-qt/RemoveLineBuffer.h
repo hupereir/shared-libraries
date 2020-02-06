@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QString>
 #include <QObject>
 
@@ -27,7 +28,7 @@
 #include "Debug.h"
 
 //* handles consecutive calls to remove line in a single Clipboard block
-class RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
+class BASE_QT_EXPORT RemoveLineBuffer: public QObject, private Base::Counter<RemoveLineBuffer>
 {
 
   Q_OBJECT

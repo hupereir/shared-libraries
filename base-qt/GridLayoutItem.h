@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QLabel>
@@ -29,7 +30,7 @@
 class GridLayout;
 
 //_______________________________________________________
-class GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
+class BASE_QT_EXPORT GridLayoutItem: public QObject, private Base::Counter<GridLayoutItem>
 {
 
     Q_OBJECT

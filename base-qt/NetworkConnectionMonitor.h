@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QBasicTimer>
@@ -30,7 +31,7 @@
 namespace Network
 {
 
-    class ConnectionMonitor: public QObject, private Base::Counter<ConnectionMonitor>
+    class BASE_QT_EXPORT ConnectionMonitor: public QObject, private Base::Counter<ConnectionMonitor>
     {
 
         Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "XmlError.h"
 
@@ -28,7 +29,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 
-class XmlDocument final: private Base::Counter<XmlDocument>
+class BASE_QT_EXPORT XmlDocument final: private Base::Counter<XmlDocument>
 {
 
     public:

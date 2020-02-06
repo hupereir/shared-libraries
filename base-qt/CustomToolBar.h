@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "OptionComboBox.h"
@@ -31,7 +32,7 @@
 #include <QHash>
 
 //* customized tool bar to handle position and visibility from Options
-class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
+class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
 {
 
     Q_OBJECT
@@ -130,7 +131,7 @@ class CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
 
 
     //* location option combo box
-    class LocationComboBox: public OptionComboBox
+    class BASE_QT_EXPORT LocationComboBox: public OptionComboBox
     {
 
         public:

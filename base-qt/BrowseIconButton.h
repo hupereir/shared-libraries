@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomToolButton.h"
 #include "Counter.h"
 #include "Debug.h"
@@ -27,7 +28,7 @@
 #include <QString>
 
 //* customized tool button to display tooltip in a dedicated label
-class BrowseIconButton: public CustomToolButton
+class BASE_QT_EXPORT BrowseIconButton: public CustomToolButton
 {
 
     //* Qt meta object macros

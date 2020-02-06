@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Key.h"
@@ -29,7 +30,7 @@
 
 //* customized TextDocument to derive from Base::Key
 /** this is needed to easily handled multiple text editors that share the same document */
-class CustomTextDocument: public QTextDocument, public Base::Key, private Base::Counter<CustomTextDocument>
+class BASE_QT_EXPORT CustomTextDocument: public QTextDocument, public Base::Key, private Base::Counter<CustomTextDocument>
 {
 
     Q_OBJECT

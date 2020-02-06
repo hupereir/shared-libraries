@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseFileInfoToolTipWidget.h"
 #include "OptionWidget.h"
 
@@ -27,7 +28,7 @@
 #include <QCheckBox>
 #include <QHash>
 
-class BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
+class BASE_QT_EXPORT BaseFileInfoConfigurationWidget: public QWidget, public OptionWidget
 {
 
     Q_OBJECT

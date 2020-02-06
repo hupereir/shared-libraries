@@ -20,9 +20,10 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QStyledItemDelegate>
 
-class TreeViewItemDelegate: public QStyledItemDelegate
+class BASE_QT_EXPORT TreeViewItemDelegate: public QStyledItemDelegate
 {
 
     Q_OBJECT

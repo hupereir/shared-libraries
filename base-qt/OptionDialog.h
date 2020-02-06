@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomDialog.h"
 #include "OptionModel.h"
 #include "XmlOptions.h"
@@ -28,7 +29,7 @@
 class TreeView;
 
 //* displays Counter names and counts
-class OptionDialog: public CustomDialog
+class BASE_QT_EXPORT OptionDialog: public CustomDialog
 {
 
     Q_OBJECT

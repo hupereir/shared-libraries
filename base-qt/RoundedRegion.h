@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QRegion>
 #include <QRect>
 
 //! rounded QRegion based on a rect
-class RoundedRegion final: private Base::Counter<RoundedRegion>
+class BASE_QT_EXPORT RoundedRegion final: private Base::Counter<RoundedRegion>
 {
 
     public:

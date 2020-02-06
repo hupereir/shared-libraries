@@ -20,9 +20,10 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "IconView.h"
 
-class BaseFileInfoIconView: public IconView
+class BASE_QT_EXPORT BaseFileInfoIconView: public IconView
 {
 
     Q_OBJECT

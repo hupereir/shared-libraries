@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "CustomPixmap.h"
 
@@ -29,7 +30,7 @@
 #include <QStyleOption>
 
 //* graphics item
-class IconViewItem final: private Base::Counter<IconViewItem>
+class BASE_QT_EXPORT IconViewItem final: private Base::Counter<IconViewItem>
 {
 
     public:

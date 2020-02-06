@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "EmbeddedWidget.h"
 #include "TextSelection.h"
 
@@ -27,7 +28,7 @@
 #include <QWidget>
 
 //* abstract find widget class
-class AbstractFindWidget: public EmbeddedWidget
+class BASE_QT_EXPORT AbstractFindWidget: public EmbeddedWidget
 {
 
     Q_OBJECT

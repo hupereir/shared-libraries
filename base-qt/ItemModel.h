@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QAbstractItemModel>
 #include <QColor>
 
 //* Job model. Stores job information for display in lists
-class ItemModel : public QAbstractItemModel
+class BASE_QT_EXPORT ItemModel : public QAbstractItemModel
 {
 
     Q_OBJECT
@@ -114,7 +115,7 @@ class ItemModel : public QAbstractItemModel
     {}
 
     //* used to sort items in list
-    class SortFTor
+    class BASE_QT_EXPORT SortFTor
     {
 
         public:

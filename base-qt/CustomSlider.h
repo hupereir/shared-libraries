@@ -21,6 +21,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -28,7 +29,7 @@
 #include <QSpinBox>
 
 //* customized QSlider associated to a QSpinBox
-class CustomSlider: public QWidget, private Base::Counter<CustomSlider>
+class BASE_QT_EXPORT CustomSlider: public QWidget, private Base::Counter<CustomSlider>
 {
 
     //* Qt meta object declaration

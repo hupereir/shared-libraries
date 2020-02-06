@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionWidget.h"
 #include "FontInfo.h"
 #include "TextFormat.h"
 
 //! font formating options
-class OptionFontInfo: public FontInfo, public OptionWidget
+class BASE_QT_EXPORT OptionFontInfo: public FontInfo, public OptionWidget
 {
 
     Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "LineEditor.h"
 
@@ -27,7 +28,7 @@
 
 class TreeView;
 class TextEncodingModel;
-class TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidget>
+class BASE_QT_EXPORT TextEncodingWidget: public QWidget, private Base::Counter<TextEncodingWidget>
 {
 
 

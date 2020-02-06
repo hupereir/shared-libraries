@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "TimeStamp.h"
 
 #include <QDomDocument>
@@ -27,7 +28,7 @@
 #include <QString>
 
 //* Xml interface to time manipulation object
-class XmlTimeStamp:public TimeStamp
+class BASE_QT_EXPORT XmlTimeStamp:public TimeStamp
 {
 
     public:

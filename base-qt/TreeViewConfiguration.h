@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionWidget.h"
 
 #include <QGroupBox>
@@ -28,7 +29,7 @@
 #include <QList>
 
 //* Configuration vbox for TreeView columns
-class TreeViewConfiguration: public QGroupBox, public OptionWidget
+class BASE_QT_EXPORT TreeViewConfiguration: public QGroupBox, public OptionWidget
 {
 
     Q_OBJECT

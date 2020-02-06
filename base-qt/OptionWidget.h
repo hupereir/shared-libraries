@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Options.h"
 
 #include <QObject>
 #include <QString>
 
-class OptionWidget
+class BASE_QT_EXPORT OptionWidget
 {
     public:
 

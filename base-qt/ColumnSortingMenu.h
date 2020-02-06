@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -31,7 +32,7 @@
 #include <QHash>
 
 //_______________________________________________________________
-class ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
+class BASE_QT_EXPORT ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
 {
 
     //* Qt meta object declaration

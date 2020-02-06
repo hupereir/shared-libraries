@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QSize>
 #include <QMap>
 
 //* default icon sizes
-class IconSize final
+class BASE_QT_EXPORT IconSize final
 {
 
     public:

@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomComboBox.h"
 #include "OptionWidget.h"
 
 //* QComboBox associated to an option for configuration dialogs
-class OptionComboBox: public CustomComboBox, public OptionWidget
+class BASE_QT_EXPORT OptionComboBox: public CustomComboBox, public OptionWidget
 {
 
     Q_OBJECT

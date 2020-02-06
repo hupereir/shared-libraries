@@ -19,6 +19,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "CustomDialog.h"
 #include "BasePrintHelper.h"
 
@@ -34,7 +35,7 @@ namespace Private
     class NavigationWidget;
 }
 
-class PrintPreviewDialog: public CustomDialog
+class BASE_QT_EXPORT PrintPreviewDialog: public CustomDialog
 {
 
     Q_OBJECT

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "FileRecordModel.h"
 #include "OptionWidgetList.h"
@@ -32,7 +33,7 @@ class FileList;
 class TreeView;
 
 //* configure files in recent files menu
-class RecentFilesConfiguration: public QWidget, public OptionWidgetList<RecentFilesConfiguration>, private Base::Counter<RecentFilesConfiguration>
+class BASE_QT_EXPORT RecentFilesConfiguration: public QWidget, public OptionWidgetList<RecentFilesConfiguration>, private Base::Counter<RecentFilesConfiguration>
 {
 
     Q_OBJECT

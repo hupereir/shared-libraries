@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "ItemModel.h"
 
 #include <QList>
@@ -28,7 +29,7 @@
 
 //* Job model. Stores job information for display in lists
 template<typename T, typename EqualTo = std::equal_to<T>>
-class ListModel : public ItemModel
+class BASE_QT_EXPORT ListModel : public ItemModel
 {
 
     public:

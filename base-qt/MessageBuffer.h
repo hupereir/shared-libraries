@@ -20,10 +20,11 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QString>
 
 //* buffer class and current position
-class MessageBuffer
+class BASE_QT_EXPORT MessageBuffer
 {
     public:
 

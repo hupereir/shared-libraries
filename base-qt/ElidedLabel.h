@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include <QString>
 #include <QLabel>
 #include <QResizeEvent>
 
 //* label with automatically elided text
-class ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
+class BASE_QT_EXPORT ElidedLabel: public QLabel, private Base::Counter<ElidedLabel>
 {
 
     Q_OBJECT

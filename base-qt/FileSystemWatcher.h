@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -28,7 +29,7 @@
 #include <QStringList>
 #include <QTimerEvent>
 
-class FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSystemWatcher>
+class BASE_QT_EXPORT FileSystemWatcher: public QFileSystemWatcher, private Base::Counter<FileSystemWatcher>
 {
     Q_OBJECT
 

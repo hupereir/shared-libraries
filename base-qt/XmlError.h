@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "File.h"
 
@@ -29,7 +30,7 @@
 #include <QTextStream>
 
 //* Xml parsing error container
-class XmlError final: private Base::Counter<XmlError>
+class BASE_QT_EXPORT XmlError final: private Base::Counter<XmlError>
 {
 
     public:

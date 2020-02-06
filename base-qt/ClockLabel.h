@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include <QDateTime>
 #include <QBasicTimer>
 #include <QLabel>
@@ -28,7 +29,7 @@
 #include "TimeStamp.h"
 
 //* clock timer. Emit signal when current time is changed
-class ClockTimer: public QObject, private Base::Counter<ClockTimer>
+class BASE_QT_EXPORT ClockTimer: public QObject, private Base::Counter<ClockTimer>
 {
 
     //* Qt meta object declaration
@@ -63,7 +64,7 @@ class ClockTimer: public QObject, private Base::Counter<ClockTimer>
 };
 
 //* self-updated label displaying current date and time
-class ClockLabel:public QLabel
+class BASE_QT_EXPORT ClockLabel:public QLabel
 {
 
     public:

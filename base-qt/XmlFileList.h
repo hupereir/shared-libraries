@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "FileList.h"
 #include "File.h"
 
@@ -29,7 +30,7 @@
 class XmlDocument;
 
 //* Xml interface to FileList
-class XmlFileList: public FileList
+class BASE_QT_EXPORT XmlFileList: public FileList
 {
 
     //* Qt meta object declaration

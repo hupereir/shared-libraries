@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Margins.h"
 
 #include <QWidget>
@@ -29,7 +30,7 @@
 
 class WinUtilPrivate;
 
-class WinUtil final
+class BASE_QT_EXPORT WinUtil final
 {
 
     public:

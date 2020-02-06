@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Color.h"
 #include "Counter.h"
 
 #include <QComboBox>
 
-class ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
+class BASE_QT_EXPORT ColorComboBox: public QComboBox, private Base::Counter<ColorComboBox>
 {
 
     //* Qt meta object declaration

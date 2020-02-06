@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "FileRecord.h"
 
 #include <QList>
 
-class PathHistory:  public QObject, private Base::Counter<PathHistory>
+class BASE_QT_EXPORT PathHistory:  public QObject, private Base::Counter<PathHistory>
 {
 
     //* Qt meta object declaration

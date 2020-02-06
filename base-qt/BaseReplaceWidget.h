@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "BaseFindWidget.h"
 
 #include <QMenu>
 
 //* find dialog for text editor widgets
-class BaseReplaceWidget: public BaseFindWidget
+class BASE_QT_EXPORT BaseReplaceWidget: public BaseFindWidget
 {
 
     //* Qt meta object declaration

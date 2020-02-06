@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "OptionWidget.h"
 
 #include <QRadioButton>
 
 //! QRadioButton associated to an option for configuration dialogs
-class OptionRadioButton: public QRadioButton, public OptionWidget
+class BASE_QT_EXPORT OptionRadioButton: public QRadioButton, public OptionWidget
 {
 
     Q_OBJECT

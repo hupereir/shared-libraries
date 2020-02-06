@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QString>
@@ -31,7 +32,7 @@
 namespace Base
 {
     //* cache item
-    class IconCacheItem: public QIcon, private Counter<IconCacheItem>
+    class BASE_QT_EXPORT IconCacheItem: public QIcon, private Counter<IconCacheItem>
     {
 
         public:

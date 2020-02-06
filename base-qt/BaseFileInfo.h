@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Debug.h"
 #include "File.h"
 #include "Functors.h"
@@ -53,7 +54,7 @@ namespace Xml
 }
 
 //* store a file and needed informations for Ftp transfer
-class BaseFileInfo
+class BASE_QT_EXPORT BaseFileInfo
 {
 
     public:
@@ -304,7 +305,7 @@ class BaseFileInfo
     //@}
 
     //* used to count files of a given type
-    class SameTypeFTor
+    class BASE_QT_EXPORT SameTypeFTor
     {
         public:
 
@@ -334,7 +335,7 @@ class BaseFileInfo
     using IsRemoteFTor = Base::Functor::UnaryTrue<BaseFileInfo, &BaseFileInfo::isRemote>;
 
     //* used to retrieve folders
-    class IsFolderFTor
+    class BASE_QT_EXPORT IsFolderFTor
     {
         public:
 
@@ -351,7 +352,7 @@ class BaseFileInfo
     using SameFileFTor = Base::Functor::Unary<BaseFileInfo, const File&, &BaseFileInfo::file>;
 
     //* file info list
-    class Description
+    class BASE_QT_EXPORT Description
     {
 
         public:

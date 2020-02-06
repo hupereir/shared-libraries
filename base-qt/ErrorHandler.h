@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "NonCopyable.h"
 
 #include <QApplication>
 #include <QStringList>
 
-class ErrorHandler: private Base::NonCopyable<ErrorHandler>
+class BASE_QT_EXPORT ErrorHandler: private Base::NonCopyable<ErrorHandler>
 {
 
     public:

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 
@@ -31,7 +32,7 @@
 class LineEditor;
 
 //* Customized QCombobox to handle case sensitive auto completion
-class CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
+class BASE_QT_EXPORT CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
 {
 
     //* Qt meta object declaration

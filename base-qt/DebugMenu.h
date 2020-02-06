@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QMenu>
@@ -28,7 +29,7 @@ class CounterDialog;
 class IconCacheDialog;
 
 //* some basic runtime debuging
-class DebugMenu: public QMenu, private Base::Counter<DebugMenu>
+class BASE_QT_EXPORT DebugMenu: public QMenu, private Base::Counter<DebugMenu>
 {
 
     //* Qt meta object declaration

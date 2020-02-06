@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_qt_export.h"
 #include "FileRecord.h"
 
 #include <QDomElement>
@@ -39,7 +40,7 @@ namespace Base
 }
 
 //* xml interface to FileRecord
-class XmlFileRecord: public FileRecord
+class BASE_QT_EXPORT XmlFileRecord: public FileRecord
 {
 
     public:
@@ -56,7 +57,7 @@ class XmlFileRecord: public FileRecord
     QDomElement domElement( QDomDocument& ) const;
 
     using List = QList<XmlFileRecord>;
-    class Helper
+    class BASE_QT_EXPORT Helper
     {
         public:
 
