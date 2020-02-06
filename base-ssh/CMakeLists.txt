@@ -46,7 +46,7 @@ set(base_ssh_SOURCES
   SshWriteFileSocket.cpp
 )
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
   add_library(base-ssh SHARED ${base_ssh_SOURCES})
   set_target_properties(base-ssh PROPERTIES VERSION ${BASE_SSH_VERSION} SOVERSION ${BASE_SSH_SOVERSION})
   install(TARGETS base-ssh DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

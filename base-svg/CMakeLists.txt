@@ -49,7 +49,7 @@ set(base_svg_SOURCES
 
 set(base_svg_RESOURCES baseSvg.qrc)
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
   add_library(base-svg SHARED ${base_svg_SOURCES} ${base_svg_RESOURCES})
   set_target_properties(base-svg PROPERTIES VERSION ${BASE_SVG_VERSION} SOVERSION ${BASE_SVG_SOVERSION})
   install(TARGETS base-svg DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

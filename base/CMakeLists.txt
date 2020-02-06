@@ -37,7 +37,7 @@ set(base_SOURCES
   Util.cpp
 )
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
   add_library(base SHARED ${base_SOURCES})
   set_target_properties(base PROPERTIES VERSION ${BASE_VERSION} SOVERSION ${BASE_SOVERSION})
   install(TARGETS base DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

@@ -25,7 +25,7 @@ set(base_help_SOURCES
   HelpModel.cpp
  )
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
   add_library(base-help SHARED ${base_help_SOURCES})
   set_target_properties(base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION})
   install(TARGETS base-help DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

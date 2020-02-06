@@ -39,7 +39,7 @@ set(base_spellcheck_SOURCES
   TexString.cpp
  )
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
   add_library(base-spellcheck SHARED ${base_spellcheck_SOURCES})
   set_target_properties(base-spellcheck PROPERTIES VERSION ${BASE_SPELLCHECK_VERSION} SOVERSION ${BASE_SPELLCHECK_SOVERSION})
   install(TARGETS base-spellcheck DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

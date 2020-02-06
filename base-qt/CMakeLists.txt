@@ -207,7 +207,7 @@ set(base_qt_SOURCES
 
 set(base_qt_RESOURCES basePixmaps.qrc)
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
   add_library(base-qt SHARED ${base_qt_SOURCES} ${base_qt_RESOURCES})
   set_target_properties(base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION})
   install(TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

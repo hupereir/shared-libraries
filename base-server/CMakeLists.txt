@@ -35,7 +35,7 @@ set(base_server_SOURCES
   ServerConfiguration.cpp
 )
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
 
   add_library(base-server SHARED ${base_server_SOURCES})
   set_target_properties(base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION})

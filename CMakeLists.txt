@@ -20,6 +20,9 @@ if(WIN32)
 
 endif()
 
+########### options ###############
+option( USE_SHARED_LIBS "Use Shared Libraries" ON )
+
 ########### aspell ###############
 find_package(ASPELL)
 
@@ -27,7 +30,6 @@ find_package(ASPELL)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 ########### make shared libraries #########
-set(ENABLE_SHARED 1)
 
 add_subdirectory(base)
 add_subdirectory(base-qt)

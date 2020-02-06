@@ -38,7 +38,7 @@ set(base_transparency_SOURCES
   TransparentWidget.cpp
 )
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
   add_library(base-transparency SHARED ${base_transparency_SOURCES})
   set_target_properties(base-transparency PROPERTIES VERSION ${BASE_TRANSPARENCY_VERSION} SOVERSION ${BASE_TRANSPARENCY_SOVERSION})
   install(TARGETS base-transparency DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

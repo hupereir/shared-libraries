@@ -26,7 +26,7 @@ set(base_notifications_SOURCES
   TaskBarProgressNotifications.cpp
 )
 
-if(ENABLE_SHARED)
+if(USE_SHARED_LIBS)
 
   add_library(base-notifications SHARED ${base_notifications_SOURCES})
   set_target_properties(base-notifications PROPERTIES VERSION ${BASE_NOTIFICATIONS_VERSION} SOVERSION ${BASE_NOTIFICATIONS_VERSION})
