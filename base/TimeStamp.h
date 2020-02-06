@@ -232,8 +232,8 @@ class BASE_EXPORT TimeStamp:private Base::Counter<TimeStamp>
 
     //*@name serializer
     //@{
-    friend QDataStream& operator << ( QDataStream&, const TimeStamp& );
-    friend QDataStream& operator >> ( QDataStream&, TimeStamp& );
+    friend BASE_EXPORT QDataStream& operator << ( QDataStream&, const TimeStamp& );
+    friend BASE_EXPORT QDataStream& operator >> ( QDataStream&, TimeStamp& );
     //@}
 
     //* less than operator

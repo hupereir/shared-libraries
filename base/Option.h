@@ -30,7 +30,7 @@
 #include <QTextStream>
 
 //* stream boolean
-QTextStream& operator >> ( QTextStream& in, bool& value );
+BASE_EXPORT QTextStream& operator >> ( QTextStream& in, bool& value );
 
 /**
 \class   Option
@@ -220,16 +220,15 @@ class BASE_EXPORT Option:private Base::Counter<Option>
     //*@name serializer
     //@{
 
-    friend QDataStream &operator << (QDataStream&, const Option& option );
-    friend QDataStream &operator >> (QDataStream&, Option& option );
-
+    friend BASE_EXPORT QDataStream &operator << (QDataStream&, const Option& option );
+    friend BASE_EXPORT QDataStream &operator >> (QDataStream&, Option& option );
 
     //@}
 
     //*@name text streamer
     //@{
-    friend QTextStream &operator << ( QTextStream &out, const Option& option );
-    friend QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
+    friend BASE_EXPORT QTextStream &operator << ( QTextStream &out, const Option& option );
+    friend BASE_EXPORT QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
     //@}
 
     //* less than operator

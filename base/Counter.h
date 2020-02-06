@@ -28,7 +28,7 @@
 namespace Base
 {
     template<typename T>
-    class BASE_EXPORT Counter
+    class Counter
     {
 
         public:
@@ -56,8 +56,8 @@ namespace Base
         private:
 
         //* count
-        static bool initialized;
-        static int count;
+        static  bool initialized;
+        static  int count;
     };
 
 }

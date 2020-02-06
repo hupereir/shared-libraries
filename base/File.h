@@ -317,7 +317,7 @@ inline bool operator != (const File& first, const File& second)
 { return first.get() != second.get(); }
 
 //* specialized copy constructor
-template<> File::File( File& );
-template<> File::File( const File& );
+template<> BASE_EXPORT File::File( File& );
+template<> BASE_EXPORT File::File( const File& );
 
 #endif

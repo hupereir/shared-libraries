@@ -95,12 +95,12 @@ namespace Base
     { return first.get() == second.get(); }
 
     //* less than operator
-    bool operator < (const Color&, const Color&);
+    BASE_EXPORT bool operator < (const Color&, const Color&);
 
 }
 
 //* streamers
-QTextStream& operator << ( QTextStream&, const Base::Color& );
-QTextStream& operator >> ( QTextStream&, Base::Color& );
+BASE_EXPORT QTextStream& operator << ( QTextStream&, const Base::Color& );
+BASE_EXPORT QTextStream& operator >> ( QTextStream&, Base::Color& );
 
 #endif

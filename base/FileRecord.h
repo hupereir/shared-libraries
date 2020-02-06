@@ -247,10 +247,10 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
     }
 
     //* less than operator
-    friend bool operator < (const FileRecord&, const FileRecord& );
+    friend BASE_EXPORT bool operator < (const FileRecord&, const FileRecord& );
 
     //* less than operator
-    friend bool operator == (const FileRecord&, const FileRecord& );
+    friend BASE_EXPORT bool operator == (const FileRecord&, const FileRecord& );
 
 };
 

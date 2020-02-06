@@ -20,12 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
-
 namespace Base
 {
     template <class T>
-    class BASE_EXPORT NonCopyable
+    class NonCopyable
     {
         protected:
 
