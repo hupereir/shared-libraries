@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_server_export.h"
 #include "ApplicationId.h"
 
 #include "CommandLineArguments.h"
@@ -40,7 +41,7 @@ namespace Server
 
     //_________________________________________
     //* command to be send over the server
-    class ServerCommand final:private Base::Counter<ServerCommand>
+    class BASE_SERVER_EXPORT ServerCommand final:private Base::Counter<ServerCommand>
     {
 
         public:
@@ -161,8 +162,8 @@ namespace Server
 
         //*@name serializer
         //@{
-        friend QDataStream& operator << (QDataStream&, const ServerCommand& );
-        friend QDataStream& operator >> (QDataStream&, ServerCommand& );
+        friend BASE_SERVER_EXPORT QDataStream& operator << (QDataStream&, const ServerCommand& );
+        friend BASE_SERVER_EXPORT QDataStream& operator >> (QDataStream&, ServerCommand& );
         //@}
     };
 

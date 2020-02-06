@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_server_export.h"
 #include <QWidget>
 #include "Counter.h"
 #include "OptionWidgetList.h"
@@ -28,7 +29,7 @@ namespace Server
 {
 
   //! transparency common configuration
-  class ServerConfiguration: public QWidget, public OptionWidgetList<ServerConfiguration>, private Base::Counter<ServerConfiguration>
+  class BASE_SERVER_EXPORT ServerConfiguration: public QWidget, public OptionWidgetList<ServerConfiguration>, private Base::Counter<ServerConfiguration>
   {
 
     Q_OBJECT

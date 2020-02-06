@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_server_export.h"
 #include "Counter.h"
 
 #include <QDataStream>
@@ -29,7 +30,7 @@ namespace Server
 {
 
     //* Stores application name and user to uniquely identify an application.
-    class ApplicationId final:private Base::Counter<ApplicationId>
+    class BASE_SERVER_EXPORT ApplicationId final:private Base::Counter<ApplicationId>
     {
         public:
 
@@ -93,8 +94,8 @@ namespace Server
 
         //*@name serializer
         //@{
-        friend QDataStream& operator << (QDataStream&, const ApplicationId& );
-        friend QDataStream& operator >> (QDataStream&, ApplicationId& );
+        friend BASE_SERVER_EXPORT QDataStream& operator << (QDataStream&, const ApplicationId& );
+        friend BASE_SERVER_EXPORT QDataStream& operator >> (QDataStream&, ApplicationId& );
         //@}
 
     };

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_server_export.h"
 #include "ApplicationManager.h"
 #include "BaseCoreApplication.h"
 #include "CommandLineArguments.h"
@@ -28,7 +29,7 @@
 #include <QObject>
 
 //* Main Window singleton object
-class BaseApplication: public BaseCoreApplication
+class BASE_SERVER_EXPORT BaseApplication: public BaseCoreApplication
 {
 
     //* Qt meta object declaration

@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_server_export.h"
 #include "Client.h"
 #include "CommandLineArguments.h"
 #include "CommandLineParser.h"
@@ -42,7 +43,7 @@ namespace Server
 {
 
     //* ensures only one instance of an application is running
-    class ApplicationManager: public QObject, private Base::Counter<ApplicationManager>
+    class BASE_SERVER_EXPORT ApplicationManager: public QObject, private Base::Counter<ApplicationManager>
     {
 
         //* Qt meta object macro
@@ -151,7 +152,7 @@ namespace Server
         using ClientList = QList<ClientPtr>;
 
         //* used to retrieve clients for a given state
-        class SameStateFTor: public Client::SameStateFTor
+        class BASE_SERVER_EXPORT SameStateFTor: public Client::SameStateFTor
         {
             public:
 
