@@ -51,6 +51,9 @@ class BASE_QT_EXPORT XcbUtil: private XcbDefines, private Base::NonCopyable<XcbU
     //* singleton
     static XcbUtil& get();
 
+    //* destructor
+    ~XcbUtil();
+
     //*@name accessors
     //@{
 

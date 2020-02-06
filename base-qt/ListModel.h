@@ -29,7 +29,7 @@
 
 //* Job model. Stores job information for display in lists
 template<typename T, typename EqualTo = std::equal_to<T>>
-class BASE_QT_EXPORT ListModel : public ItemModel
+class ListModel : public ItemModel
 {
 
     public:

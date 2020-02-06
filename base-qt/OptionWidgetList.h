@@ -32,7 +32,7 @@
 
 //* abstract container for OptionWidgets
 template<class W>
-class BASE_QT_EXPORT OptionWidgetList: public OptionWidget
+class OptionWidgetList: public OptionWidget
 {
 
     public:

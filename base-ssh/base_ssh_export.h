@@ -2,6 +2,7 @@
 #define base_ssh_export_h
 
 #if defined (_WIN32)
+  #include <QtCore/QtGlobal>
   #ifdef base_ssh_EXPORTS
     /* We are building this library */
     #define BASE_SSH_EXPORT Q_DECL_EXPORT

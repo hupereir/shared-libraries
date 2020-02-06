@@ -20,6 +20,8 @@
 *
 *******************************************************************************/
 
+#include "base_ssh_export.h"
+
 namespace Ssh
 {
     namespace Util

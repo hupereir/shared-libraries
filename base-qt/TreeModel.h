@@ -29,7 +29,8 @@
 #include <algorithm>
 
 //* generic class to store structure in a model
-template<class T> class TreeModel : public ItemModel
+template<class T>
+class TreeModel : public ItemModel
 {
 
     public:
