@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_transparency_export.h"
 #include "Counter.h"
 
 #include <QColor>
@@ -28,7 +29,7 @@
 
 namespace Transparency
 {
-    class ShadowLabel: public QLabel, private Base::Counter<ShadowLabel>
+    class BASE_TRANSPARENCY_EXPORT ShadowLabel: public QLabel, private Base::Counter<ShadowLabel>
     {
 
         public:

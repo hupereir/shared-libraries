@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_transparency_export.h"
 #include "NonCopyable.h"
 
 namespace Transparency
 {
 
     //* initialize compositing, if available
-    class CompositeEngine: private Base::NonCopyable<CompositeEngine>
+    class BASE_TRANSPARENCY_EXPORT CompositeEngine: private Base::NonCopyable<CompositeEngine>
     {
         public:
 

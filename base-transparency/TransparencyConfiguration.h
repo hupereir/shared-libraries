@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_transparency_export.h"
 #include "Counter.h"
 #include "OptionWidgetList.h"
 
@@ -28,7 +29,7 @@
 namespace Transparency
 {
     //! transparency common configuration
-    class TransparencyConfiguration: public QWidget, public OptionWidgetList<TransparencyConfiguration>, private Base::Counter<TransparencyConfiguration>
+    class BASE_TRANSPARENCY_EXPORT TransparencyConfiguration: public QWidget, public OptionWidgetList<TransparencyConfiguration>, private Base::Counter<TransparencyConfiguration>
     {
 
         Q_OBJECT

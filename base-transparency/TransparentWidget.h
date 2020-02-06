@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_transparency_export.h"
 #include "Counter.h"
 #include "Margins.h"
 
@@ -33,7 +34,7 @@ namespace Transparency
 {
 
     //* transparent widget
-    class TransparentWidget: public QWidget, private Base::Counter<TransparentWidget>
+    class BASE_TRANSPARENCY_EXPORT TransparentWidget: public QWidget, private Base::Counter<TransparentWidget>
     {
 
         //* Qt meta object declaration

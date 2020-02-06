@@ -28,6 +28,7 @@
 \date $Date$
 */
 
+#include "base_transparency_export.h"
 #include <cmath>
 #include <QImage>
 #include <QPainter>
@@ -35,7 +36,7 @@
 namespace Transparency
 {
     //! Exponential blur, Jani Huhtanen, 2006
-    class Effects
+    class BASE_TRANSPARENCY_EXPORT Effects
     {
 
         public:
