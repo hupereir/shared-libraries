@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_ssh_export.h"
 #include "Counter.h"
 #include "SshUtil.h"
 
@@ -38,7 +39,7 @@ namespace Ssh
 {
 
     //* ssh socket
-    class ReadFileSocket: public QIODevice, private Base::Counter<ReadFileSocket>
+    class BASE_SSH_EXPORT ReadFileSocket: public QIODevice, private Base::Counter<ReadFileSocket>
     {
 
         Q_OBJECT

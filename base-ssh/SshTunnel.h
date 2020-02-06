@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_ssh_export.h"
 #include "Counter.h"
 
 #include <QByteArray>
@@ -32,7 +33,7 @@ namespace Ssh
     class Socket;
 
     //* tunnel
-    class Tunnel: public QObject, private Base::Counter<Tunnel>
+    class BASE_SSH_EXPORT Tunnel: public QObject, private Base::Counter<Tunnel>
     {
 
         Q_OBJECT

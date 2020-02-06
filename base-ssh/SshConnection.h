@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_ssh_export.h"
 #include "Counter.h"
 #include "CppUtil.h"
 #include "SshConnectionAttributes.h"
@@ -37,7 +38,7 @@
 namespace Ssh
 {
     //_________________________________________________________
-    class Connection: public QObject, private Base::Counter<Connection>
+    class BASE_SSH_EXPORT Connection: public QObject, private Base::Counter<Connection>
     {
 
         Q_OBJECT

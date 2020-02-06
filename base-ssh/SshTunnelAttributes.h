@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_ssh_export.h"
 #include "Counter.h"
 
 #include <QList>
@@ -30,7 +31,7 @@ namespace Ssh
 {
 
     //_________________________________________________________
-    class TunnelAttributes: private Base::Counter<TunnelAttributes>
+    class BASE_SSH_EXPORT TunnelAttributes: private Base::Counter<TunnelAttributes>
     {
         public:
 

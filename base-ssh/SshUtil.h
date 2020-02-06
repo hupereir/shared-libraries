@@ -26,14 +26,14 @@ namespace Ssh
     {
 
         //* proper ssh session cleaning
-        class SessionDeleter
+        class BASE_SSH_EXPORT SessionDeleter
         {
             public:
             void operator() (void*) const;
         };
 
         //* keeps session as blocking as long as object exists
-        class SessionBlocker
+        class BASE_SSH_EXPORT SessionBlocker
         {
             public:
 
@@ -50,21 +50,21 @@ namespace Ssh
         };
 
         //* proper sftp session cleaning
-        class SftpDeleter
+        class BASE_SSH_EXPORT SftpDeleter
         {
             public:
             void operator() (void*) const;
         };
 
         //* proper ssh channel cleaning
-        class ChannelDeleter
+        class BASE_SSH_EXPORT ChannelDeleter
         {
             public:
             void operator() (void*) const;
         };
 
         //* proper sftp file handle cleaning
-        class FileHandleDeleter
+        class BASE_SSH_EXPORT FileHandleDeleter
         {
             public:
             void operator() (void*) const;

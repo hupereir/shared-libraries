@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_ssh_export.h"
 #include "SshTunnelAttributes.h"
 #include "Counter.h"
 #include "Functors.h"
@@ -31,7 +32,7 @@ namespace Ssh
 {
 
     //_________________________________________________________
-    class ConnectionAttributes: private Base::Counter<ConnectionAttributes>
+    class BASE_SSH_EXPORT ConnectionAttributes: private Base::Counter<ConnectionAttributes>
     {
         public:
 
@@ -157,7 +158,7 @@ namespace Ssh
         TunnelAttributes::Set tunnels_;
 
         //* equal to operator
-        friend bool operator == (const ConnectionAttributes&, const ConnectionAttributes&);
+        friend BASE_SSH_EXPORT bool operator == (const ConnectionAttributes&, const ConnectionAttributes&);
 
     };
 

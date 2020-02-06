@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_ssh_export.h"
 #include "Counter.h"
 
 #include <QAbstractSocket>
@@ -35,7 +36,7 @@ namespace Ssh
 
     class BaseSocket;
 
-    class FileTransferObject: public QObject, private Base::Counter<FileTransferObject>
+    class BASE_SSH_EXPORT FileTransferObject: public QObject, private Base::Counter<FileTransferObject>
     {
 
         Q_OBJECT
