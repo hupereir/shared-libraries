@@ -7,6 +7,9 @@ SET(SHARED_LIBRARIES_VERSION_MINOR 0)
 SET(SHARED_LIBRARIES_VERSION_PATCH 3)
 set(SHARED_LIBRARIES_VERSION ${SHARED_LIBRARIES_VERSION_MAJOR}.${SHARED_LIBRARIES_VERSION_MINOR}.${SHARED_LIBRARIES_VERSION_PATCH})
 
+########### options ###############
+option( USE_SHARED_LIBS "Use Shared Libraries" ON )
+
 ########### modules #################
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/base-cmake")
 include(Macros)
@@ -19,9 +22,6 @@ if(WIN32)
   set(CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import ")
 
 endif()
-
-########### options ###############
-option( USE_SHARED_LIBS "Use Shared Libraries" ON )
 
 ########### aspell ###############
 find_package(ASPELL)

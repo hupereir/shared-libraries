@@ -58,7 +58,7 @@ macro(add_win32_executable target version)
 
   ### use static gcc linking
   if(${CMAKE_COMPILER_IS_GNUCXX})
-    if(${ENABLE_SHARED})
+    if(${USE_SHARED_LIBS})
       set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -static-libstdc++ -lpthread -s")
     else()
       set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -static-libstdc++ -static -lpthread -s")
