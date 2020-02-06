@@ -20,12 +20,13 @@
 *
 *******************************************************************************/
 
+#include "base_notifications_export.h"
 #include <QImage>
 #include <QMetaType>
 
 namespace Notifications
 {
-    class ImageData
+    class BASE_NOTIFICATIONS_EXPORT ImageData
     {
 
         public:

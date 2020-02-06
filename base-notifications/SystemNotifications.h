@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_notifications_export.h"
 #include "Counter.h"
 #include "Notification.h"
 
@@ -34,7 +35,7 @@ namespace Private
     class SystemNotificationsP;
 };
 
-class SystemNotifications: public QObject, private Base::Counter<SystemNotifications>
+class BASE_NOTIFICATIONS_EXPORT SystemNotifications: public QObject, private Base::Counter<SystemNotifications>
 {
 
     Q_OBJECT

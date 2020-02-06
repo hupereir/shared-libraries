@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_notifications_export.h"
 #include <QIcon>
 #include <QString>
 #include <QStringList>
 
-class Notification
+class BASE_NOTIFICATIONS_EXPORT Notification
 {
 
     public:

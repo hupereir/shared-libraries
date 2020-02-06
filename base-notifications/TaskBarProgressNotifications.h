@@ -23,12 +23,13 @@
  *
  */
 
+#include "base_notifications_export.h"
 #include "Counter.h"
 
 #include <QObject>
 #include <QVariantMap>
 
-class TaskBarProgressNotifications : public QObject, private Base::Counter<TaskBarProgressNotifications>
+class BASE_NOTIFICATIONS_EXPORT TaskBarProgressNotifications : public QObject, private Base::Counter<TaskBarProgressNotifications>
 {
     Q_OBJECT
 
