@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_filesystem_export.h"
 #include "BaseFileIconProvider.h"
 #include "Counter.h"
 #include "FileRecord.h"
@@ -29,7 +30,7 @@
 #include <QIcon>
 
 //* icon provider for file records
-class FileIconProvider : public BaseFileIconProvider
+class BASE_FILESYSTEM_EXPORT FileIconProvider : public BaseFileIconProvider
 {
 
     public:

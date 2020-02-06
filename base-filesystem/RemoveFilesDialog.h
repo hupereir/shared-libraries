@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_filesystem_export.h"
 #include "CustomDialog.h"
 #include "FileSystemModel.h"
 
@@ -30,7 +31,7 @@ class TreeView;
 class TextEditor;
 
 //* QDialog used to commit selected files
-class RemoveFilesDialog: public CustomDialog
+class BASE_FILESYSTEM_EXPORT RemoveFilesDialog: public CustomDialog
 {
 
     Q_OBJECT

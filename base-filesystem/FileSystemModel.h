@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_filesystem_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "FileRecord.h"
@@ -32,7 +33,7 @@
 class FileIconProvider;
 
 //* qlistview for object counters
-class FileSystemModel: public ListModel<FileRecord>, private Base::Counter<FileSystemModel>
+class BASE_FILESYSTEM_EXPORT FileSystemModel: public ListModel<FileRecord>, private Base::Counter<FileSystemModel>
 {
 
     Q_OBJECT
@@ -96,7 +97,7 @@ class FileSystemModel: public ListModel<FileRecord>, private Base::Counter<FileS
     FileIconProvider* iconProvider_ = nullptr;
 
     //* used to sort Counters
-    class SortFTor: public ItemModel::SortFTor
+    class BASE_FILESYSTEM_EXPORT SortFTor: public ItemModel::SortFTor
     {
 
         public:

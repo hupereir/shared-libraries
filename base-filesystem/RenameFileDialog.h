@@ -20,13 +20,14 @@
 *
 *******************************************************************************/
 
+#include "base_filesystem_export.h"
 #include "CustomDialog.h"
 #include "FileRecord.h"
 
 class LineEditor;
 
 //* Edit/create keyword popup dialog
-class RenameFileDialog: public CustomDialog
+class BASE_FILESYSTEM_EXPORT RenameFileDialog: public CustomDialog
 {
 
     Q_OBJECT

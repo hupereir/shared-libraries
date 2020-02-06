@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "base_filesystem_export.h"
 #include "File.h"
 #include "FileSystemModel.h"
 #include "FileThread.h"
@@ -34,7 +35,7 @@ class PathEditor;
 class FileRecordToolTipWidget;
 
 //* customized ListView for file/directory navigation
-class BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystemWidget>
+class BASE_FILESYSTEM_EXPORT BaseFileSystemWidget: public QWidget, private Base::Counter<BaseFileSystemWidget>
 {
 
     //* Qt meta object declaration

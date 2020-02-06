@@ -20,11 +20,12 @@
 *
 *******************************************************************************/
 
+#include "base_filesystem_export.h"
 #include "BaseFileInformationDialog.h"
 #include "FileRecord.h"
 
 //* file informations
-class FileInformationDialog: public BaseFileInformationDialog
+class BASE_FILESYSTEM_EXPORT FileInformationDialog: public BaseFileInformationDialog
 {
 
     Q_OBJECT
