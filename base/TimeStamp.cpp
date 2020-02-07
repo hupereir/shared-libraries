@@ -21,6 +21,7 @@
 #include "TimeStamp.h"
 #include "Util.h"
 
+#include <QLocale>
 #include <QObject>
 
 //________________________________________________________________________________
@@ -79,9 +80,10 @@ QString TimeStamp::toString( TimeStamp::Format format ) const
 //________________________________________________________________________________
 TimeStamp& TimeStamp::setMonth( const QString& value )
 {
+    const QLocale locale;
     for( int index = 0; index < 12; ++index )
     {
-        if( !value.compare( QDate::shortMonthName( index+1 ), Qt::CaseInsensitive ) )
+        if( !value.compare( locale.monthName( index+1, QLocale::ShortFormat ), Qt::CaseInsensitive ) )
         {
             tm_.tm_mon = index;
             break;

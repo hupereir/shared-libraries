@@ -46,7 +46,7 @@ bool File::isAbsolute( const QString& value )
 TimeStamp File::created() const
 {
     if( !exists() ) return TimeStamp();
-    return TimeStamp(QFileInfo( *this ).created().toTime_t());
+    return TimeStamp(QFileInfo( *this ).birthTime().toTime_t());
 }
 
 //_____________________________________________________________________
