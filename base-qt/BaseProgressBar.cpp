@@ -20,7 +20,7 @@
 #include "BaseProgressBar.h"
 #include "Debug.h"
 
-#include <QStyleOptionProgressBarV2>
+#include <QStyleOptionProgressBar>
 #include <QStylePainter>
 
 //___________________________________________________________
@@ -41,7 +41,7 @@ void BaseProgressBar::paintEvent( QPaintEvent* event )
 
         QStylePainter painter(this);
         painter.setClipRegion( event->region() );
-        QStyleOptionProgressBarV2 opt;
+        QStyleOptionProgressBar opt;
         initStyleOption(&opt);
         opt.text = text_;
         painter.drawControl(QStyle::CE_ProgressBar, opt);
