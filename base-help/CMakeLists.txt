@@ -30,6 +30,7 @@ if(USE_SHARED_LIBS)
   set_target_properties(base-help PROPERTIES VERSION ${BASE_HELP_VERSION} SOVERSION ${BASE_HELP_SOVERSION})
   install(TARGETS base-help DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
+  add_definitions(-DBASE_HELP_STATIC_DEFINE)
   add_library(base-help STATIC ${base_help_SOURCES})
 endif()
 

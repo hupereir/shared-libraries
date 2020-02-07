@@ -44,6 +44,7 @@ if(USE_SHARED_LIBS)
   set_target_properties(base-spellcheck PROPERTIES VERSION ${BASE_SPELLCHECK_VERSION} SOVERSION ${BASE_SPELLCHECK_SOVERSION})
   install(TARGETS base-spellcheck DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
+  add_definitions(-DBASE_SPELLCHECK_STATIC_DEFINE)
   add_library(base-spellcheck STATIC ${base_spellcheck_SOURCES})
 endif()
 

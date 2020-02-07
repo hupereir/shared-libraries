@@ -1,7 +1,7 @@
 #ifndef base_filesystem_export_h
 #define base_filesystem_export_h
 
-#if defined (_WIN32)
+#if defined _WIN32 && !defined BASE_FILESYSTEM_STATIC_DEFINE
   #include <QtCore/QtGlobal>
   #ifdef base_filesystem_EXPORTS
     /* We are building this library */

@@ -1,7 +1,7 @@
 #ifndef base_transparency_export_h
 #define base_transparency_export_h
 
-#if defined (_WIN32)
+#if defined _WIN32 && !defined BASE_TRANSPARENCY_STATIC_DEFINE
   #include <QtCore/QtGlobal>
   #ifdef base_transparency_EXPORTS
     /* We are building this library */

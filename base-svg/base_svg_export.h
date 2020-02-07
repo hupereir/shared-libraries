@@ -1,7 +1,7 @@
 #ifndef base_svg_export_h
 #define base_svg_export_h
 
-#if defined (_WIN32)
+#if defined _WIN32 && !defined BASE_SVG_STATIC_DEFINE
   #include <QtCore/QtGlobal>
   #ifdef base_svg_EXPORTS
     /* We are building this library */

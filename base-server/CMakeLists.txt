@@ -36,15 +36,12 @@ set(base_server_SOURCES
 )
 
 if(USE_SHARED_LIBS)
-
   add_library(base-server SHARED ${base_server_SOURCES})
   set_target_properties(base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION})
   install(TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
 else()
-
+  add_definitions(-DBASE_SERVER_STATIC_DEFINE)
   add_library(base-server STATIC ${base_server_SOURCES})
-
 endif()
 
 target_link_libraries(base-server base base-qt)

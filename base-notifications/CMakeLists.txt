@@ -27,15 +27,12 @@ set(base_notifications_SOURCES
 )
 
 if(USE_SHARED_LIBS)
-
   add_library(base-notifications SHARED ${base_notifications_SOURCES})
   set_target_properties(base-notifications PROPERTIES VERSION ${BASE_NOTIFICATIONS_VERSION} SOVERSION ${BASE_NOTIFICATIONS_VERSION})
   install(TARGETS base-notifications DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
 else()
-
+  add_definitions(-DBASE_NOTIFICATIONS_STATIC_DEFINE)
   add_library(base-notifications STATIC ${base_notifications_SOURCES})
-
 endif()
 
 target_link_libraries(base-notifications base base-qt)

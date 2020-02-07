@@ -31,6 +31,7 @@ if(USE_SHARED_LIBS)
   set_target_properties(base-filesystem PROPERTIES VERSION ${BASE_FILESYSTEM_VERSION} SOVERSION ${BASE_FILESYSTEM_SOVERSION})
   install(TARGETS base-filesystem DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
+  add_definitions(-DBASE_FILESYSTEM_STATIC_DEFINE)
   add_library(base-filesystem STATIC ${base_filesystem_SOURCES} ${base_filesystem_RESOURCES})
 endif()
 
