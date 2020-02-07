@@ -69,12 +69,7 @@ macro(add_win32_executable target version)
   GET_TARGET_PROPERTY(TARGET_PATH ${target} LOCATION)
 
   ### Compress target
-  if(USE_SHARED_LIBS)
-
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import")
-    set(CMAKE_SHARED_LIBRARY_CXX_FLAGS  "${CMAKE_SHARED_LIBRARY_CXX_FLAGS} -Wl,--enable-auto-import ")
-
-  else()
+  if(NOT USE_SHARED_LIBS)
 
     find_program(UPX upx)
     if(UPX)
