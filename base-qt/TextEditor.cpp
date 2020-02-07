@@ -2183,7 +2183,8 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
         QString text( found.selectedText() );
 
         // parse text
-        auto match = regexp.match( text );
+        QRegularExpressionMatch match;
+        text.lastIndexOf( regexp, -1, &match );
         if( !match.hasMatch() )
         {
             // no match found
