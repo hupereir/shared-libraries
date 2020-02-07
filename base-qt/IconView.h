@@ -126,15 +126,12 @@ class BASE_QT_EXPORT IconView: public QAbstractItemView, private Base::Counter<I
     //* set icon size manually and disable option
     void setIconSize( const QSize& size )
     {
-
         if( size != iconSize() )
         {
             QAbstractItemView::setIconSize( size );
             _updateIconSizes( size.width() );
         }
-
         iconSizeFromOptions_ = false;
-
     }
 
     //* option name

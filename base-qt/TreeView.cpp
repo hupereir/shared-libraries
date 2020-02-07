@@ -261,7 +261,7 @@ bool TreeView::setOptionName( const QString& value )
 
     // sort order
     bool sortChanged( false );
-    tmp = value + "_SORT_ORDER";
+    tmp = value + QStringLiteral( "_SORT_ORDER" );
     if( sortOrderOptionName_ != tmp  )
     {
         sortOrderOptionName_ = tmp;
@@ -269,7 +269,7 @@ bool TreeView::setOptionName( const QString& value )
     }
 
     // sort column
-    tmp = value + "_SORT_COLUMN";
+    tmp = value + QStringLiteral( "_SORT_COLUMN" );
     if( sortColumnOptionName_ != tmp  )
     {
 
@@ -280,7 +280,7 @@ bool TreeView::setOptionName( const QString& value )
 
     // show header
     bool showHeaderChanged( false );
-    tmp = value + "_SHOW_HEADER";
+    tmp = value + QStringLiteral( "_SHOW_HEADER" );
     if( showHeaderOptionName_ != tmp )
     {
         showHeaderOptionName_ = tmp;
@@ -1135,10 +1135,8 @@ QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 
 //_________________________________________________________
 TreeView::Container::Container( QWidget* parent ):
-    QWidget( parent ),
-    Counter( QStringLiteral("TreeView::Container") ),
-    treeView_( new TreeView )
-{ _initialize(); }
+    Container( parent, new TreeView )
+{}
 
 //_________________________________________________________
 TreeView::Container::Container( QWidget* parent, TreeView* treeView ):
@@ -1154,7 +1152,7 @@ void TreeView::Container::_initialize()
     treeView_->setParent( this );
 
     // setup layout
-    QVBoxLayout* vLayout = new QVBoxLayout;
+    auto vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(2);
     setLayout( vLayout );

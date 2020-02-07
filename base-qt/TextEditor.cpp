@@ -2080,7 +2080,7 @@ bool TextEditor::_findForward( const TextSelection& selection, bool rewind )
 
         // parse text
         auto match = regexp.match( text );
-        if( match.hasMatch() )
+        if( !match.hasMatch() )
         {
             // no match found
             // if not rewind, stop here
@@ -2928,10 +2928,8 @@ void TextEditor::_selectLineFromDialog()
 
 //_________________________________________________________
 TextEditor::Container::Container( QWidget* parent ):
-    QWidget( parent ),
-    Counter( QStringLiteral("TextEditor::Container") ),
-    editor_( new TextEditor )
-{ _initialize(); }
+    Container( parent, new TextEditor )
+{}
 
 //_________________________________________________________
 TextEditor::Container::Container( QWidget* parent, TextEditor* editor ):
@@ -2946,7 +2944,7 @@ void TextEditor::Container::_initialize()
     Debug::Throw( QStringLiteral("TextEditor::Container::_initialize.\n") );
     editor_->setParent( this );
 
-    QVBoxLayout* vLayout = new QVBoxLayout;
+    auto vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(2);
     setLayout( vLayout );

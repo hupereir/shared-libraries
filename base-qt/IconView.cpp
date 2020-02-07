@@ -176,7 +176,7 @@ bool IconView::setOptionName( const QString& value )
 
     // sort order
     bool sortChanged( false );
-    tmp = value + "_SORT_ORDER";
+    tmp = value + QStringLiteral( "_SORT_ORDER" );
     if( sortOrderOptionName_ != tmp  )
     {
         sortOrderOptionName_ = tmp;
@@ -184,7 +184,7 @@ bool IconView::setOptionName( const QString& value )
     }
 
     // sort column
-    tmp = value + "_SORT_COLUMN";
+    tmp = value + QStringLiteral( "_SORT_COLUMN" );
     if( sortColumnOptionName_ != tmp  )
     {
 
@@ -1335,7 +1335,7 @@ QStyleOptionViewItem IconView::_viewOptions( const QModelIndex& index ) const
 {
 
     // setup option
-    QStyleOptionViewItem option = viewOptions();
+    auto option = viewOptions();
     option.showDecorationSelected = true;
 
     // state
@@ -1397,7 +1397,7 @@ void IconView::_findFromDialog()
 
     // set default text
     // update find text
-    QString text( selection().text() );
+    auto text( selection().text() );
     if( !text.isEmpty() )
     {
         const int maxLength( 1024 );
@@ -1535,10 +1535,8 @@ QModelIndex IconView::_indexBefore( const QModelIndex& current ) const
 
 //_________________________________________________________
 IconView::Container::Container( QWidget* parent ):
-    QWidget( parent ),
-    Counter( QStringLiteral("IconView::Container") ),
-    iconView_( new IconView )
-{ _initialize(); }
+    Container( parent, new IconView )
+{}
 
 //_________________________________________________________
 IconView::Container::Container( QWidget* parent, IconView* iconView ):
@@ -1554,7 +1552,7 @@ void IconView::Container::_initialize()
     iconView_->setParent( this );
 
     // setup layout
-    QVBoxLayout* vLayout = new QVBoxLayout;
+    auto vLayout = new QVBoxLayout;
     vLayout->setMargin(0);
     vLayout->setSpacing(2);
     setLayout( vLayout );
@@ -1570,7 +1568,6 @@ void IconView::Container::_initialize()
     iconView_->findWidget_->hide();
 
     connect( &iconView_->findWidget_->closeButton(), &QPushButton::clicked, [this](bool){ iconView_->setFocus(); } );
-
 }
 
 //___________________________________________________
@@ -1582,5 +1579,4 @@ void IconView::_updateIconSizes( int iconSize )
     auto iter = std::lower_bound( iconSizes_.begin(), iconSizes_.end(), iconSize );
     if( iter == iconSizes_.end() || *iter != iconSize )
     { iconSizes_.insert( iter, iconSize ); }
-
 }
