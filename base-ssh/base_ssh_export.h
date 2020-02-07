@@ -1,7 +1,7 @@
 #ifndef base_ssh_export_h
 #define base_ssh_export_h
 
-#if defined _WIN32 && !defined BASE_SSH_STATIC_DEFINE
+#if defined _WIN32 && !defined STATIC_BUILD
   #include <QtCore/QtGlobal>
   #ifdef base_ssh_EXPORTS
     /* We are building this library */

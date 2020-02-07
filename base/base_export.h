@@ -1,7 +1,7 @@
 #ifndef base_export_h
 #define base_export_h
 
-#if defined _WIN32 && !defined BASE_STATIC_DEFINE
+#if defined _WIN32 && !defined STATIC_BUILD
   #include <QtCore/QtGlobal>
   #ifdef base_EXPORTS
     /* We are building this library */
