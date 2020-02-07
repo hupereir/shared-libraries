@@ -110,7 +110,7 @@ bool BoxSelection::checkEnabled()
     if( !isEnabled() ) return false;
 
     // read font attributes
-    fontWidth_ = parent_->fontMetrics().width( " " );
+    fontWidth_ = parent_->fontMetrics().horizontalAdvance( ' ' );
     fontHeight_ = parent_->fontMetrics().height();
 
     return true;

@@ -57,7 +57,7 @@ QSize ElidedLabel::minimumSizeHint() const
 
 //___________________________________________________
 QSize ElidedLabel::sizeHint() const
-{ return QSize( fontMetrics().width(fullText_), QLabel::sizeHint().height() ); }
+{ return QSize( fontMetrics().horizontalAdvance(fullText_), QLabel::sizeHint().height() ); }
 
 //___________________________________________________
 void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
@@ -172,7 +172,7 @@ void ElidedLabel::updateElidedText()
             default: break;
         }
 
-        int lineWidth = fontMetrics.width(line);
+        int lineWidth = fontMetrics.horizontalAdvance(line);
         if (lineWidth > labelWidth)
         {
             elided = true;
