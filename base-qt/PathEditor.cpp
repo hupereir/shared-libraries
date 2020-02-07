@@ -196,7 +196,7 @@ namespace Private
         drag->setPixmap( pixmap );
         drag->setHotSpot( QPoint( (dragOrigin-rect().topLeft()).x(), 0 ) );
 
-        drag->start();
+        drag->exec();
 
     }
 
