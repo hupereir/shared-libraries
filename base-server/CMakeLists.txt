@@ -40,7 +40,6 @@ if(USE_SHARED_LIBS)
   set_target_properties(base-server PROPERTIES VERSION ${BASE_SERVER_VERSION} SOVERSION ${BASE_SERVER_SOVERSION})
   install(TARGETS base-server DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
-  add_definitions(-DBASE_SERVER_STATIC_DEFINE)
   add_library(base-server STATIC ${base_server_SOURCES})
 endif()
 

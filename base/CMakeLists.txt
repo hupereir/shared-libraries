@@ -42,7 +42,6 @@ if(USE_SHARED_LIBS)
   set_target_properties(base PROPERTIES VERSION ${BASE_VERSION} SOVERSION ${BASE_SOVERSION})
   install(TARGETS base DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
-  add_definitions(-DBASE_STATIC_DEFINE)
   add_library(base STATIC ${base_SOURCES})
 endif()
 

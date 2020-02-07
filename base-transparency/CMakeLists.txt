@@ -43,7 +43,6 @@ if(USE_SHARED_LIBS)
   set_target_properties(base-transparency PROPERTIES VERSION ${BASE_TRANSPARENCY_VERSION} SOVERSION ${BASE_TRANSPARENCY_SOVERSION})
   install(TARGETS base-transparency DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
-  add_definitions(-DBASE_TRANSPARENCY_DEFINE)
   add_library(base-transparency STATIC ${base_transparency_SOURCES})
 endif()
 

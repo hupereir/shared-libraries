@@ -212,7 +212,6 @@ if(USE_SHARED_LIBS)
   set_target_properties(base-qt PROPERTIES VERSION ${BASE_QT_VERSION} SOVERSION ${BASE_QT_SOVERSION})
   install(TARGETS base-qt DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
-  add_definitions(-DBASE_QT_STATIC_DEFINE)
   add_library(base-qt STATIC ${base_qt_SOURCES} ${base_qt_RESOURCES})
 endif()
 

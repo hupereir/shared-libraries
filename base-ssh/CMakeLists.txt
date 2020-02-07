@@ -51,7 +51,6 @@ if(USE_SHARED_LIBS)
   set_target_properties(base-ssh PROPERTIES VERSION ${BASE_SSH_VERSION} SOVERSION ${BASE_SSH_SOVERSION})
   install(TARGETS base-ssh DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
-  add_definitions(-DBASE_SSH_STATIC_DEFINE)
   add_library(base-ssh STATIC ${base_ssh_SOURCES})
 endif()
 
