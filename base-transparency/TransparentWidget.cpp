@@ -325,11 +325,10 @@ namespace Transparency
 
         // create data
         blurRegion_ = region;
-        auto&& rects = region.rects();
 
         using Vector = QVector<int32_t>;
         Vector data;
-        for( const auto& r:rects )
+        for( const auto& r:region )
         { data << r.x() << r.y() << r.width() << r.height(); }
 
         // get connection and atom
