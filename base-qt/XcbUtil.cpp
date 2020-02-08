@@ -514,7 +514,7 @@ QIcon XcbUtil::icon( WId window ) const
 
                 // create image
                 QImage image( width, height, QImage::Format_ARGB32);
-                for(int i=0; i<image.byteCount()/4; ++i)
+                for(int i=0; i<image.sizeInBytes()/4; ++i)
                 { ((uint32_t*)image.bits())[i] = imageData[i]; }
 
                 // add to icon

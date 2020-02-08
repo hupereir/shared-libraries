@@ -60,7 +60,7 @@ CustomDialog( parent )
     // file list
     mainLayout().addWidget( list_ = new TreeView( this ), 1 );
     list_->setModel( &model_ );
-    list_->sortByColumn( FileRecordModel::FileName );
+    list_->sortByColumn( FileRecordModel::FileName, Qt::DescendingOrder );
     list_->setSelectionMode( QAbstractItemView::MultiSelection );
     list_->setContextMenuPolicy( Qt::CustomContextMenu );
     list_->setMask(

@@ -158,7 +158,7 @@ QSize Private::SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &opt
     else height = pixmapHeight + textHeight + 10;
 
     width = qMax( textWidth, pixmapWidth ) + gap;
-    width = qMax( width, fontMetrics.width( QString( 10, 'X' ) ) );
+    width = qMax( width, fontMetrics.horizontalAdvance( QString( 10, 'X' ) ) );
 
     return QSize( width, height );
 }

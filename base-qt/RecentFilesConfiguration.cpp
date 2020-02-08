@@ -87,7 +87,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     box->layout()->addWidget( list_ = new TreeView( box ) );
     list_->setModel( &model_ );
-    list_->sortByColumn( XmlOptions::get().get<bool>( QStringLiteral("SORT_FILES_BY_DATE") ) ? FileRecordModel::Time : FileRecordModel::FileName );
+    list_->sortByColumn( XmlOptions::get().get<bool>( QStringLiteral("SORT_FILES_BY_DATE") ) ? FileRecordModel::Time : FileRecordModel::FileName, Qt::DescendingOrder );
     list_->setSelectionMode( QAbstractItemView::ContiguousSelection );
     list_->setOptionName( QStringLiteral("RECENT_FILES_CONFIGURATION_LIST") );
 

@@ -1272,7 +1272,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
         data->setText( text );
         data->setData( BoxSelection::mimeType, qPrintable( text ) );
         drag->setMimeData( data );
-        drag->start();
+        drag->exec();
 
         return;
     }
@@ -2413,15 +2413,15 @@ bool TextEditor::_setTabSize( int tabSize )
     Debug::Throw() << "TextEditor::_setTabSize - " << tabSize << endl;
     Q_ASSERT( tabSize > 0 );
 
-    int stopWidth( tabSize * fontMetrics().width( " " ) );
-    if( tabSize == emulatedTab_.size() && tabStopWidth() == stopWidth )
+    int stopWidth( tabSize * fontMetrics().horizontalAdvance( ' ' ) );
+    if( tabSize == emulatedTab_.size() && tabStopDistance() == stopWidth )
     { return false; }
 
     // create strings and regular expressions
     // define normal tabs
     normalTab_ = "\t";
     normalTabRegexp_.setPattern( "^(\\t)+" );
-    setTabStopWidth( stopWidth );
+    setTabStopDistance( stopWidth );
 
     // define emulated tabs
     emulatedTab_ = QString( tabSize, ' ' );

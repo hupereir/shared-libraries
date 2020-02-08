@@ -52,5 +52,5 @@ void WarningDialog::setText( const QString& text )
 {
     Debug::Throw( QStringLiteral("WarningDialog::setText\n") );
     label_->setText( text );
-    label_->setWordWrap( label_->fontMetrics().width( text ) >300 );
+    label_->setWordWrap( label_->fontMetrics().horizontalAdvance( text ) >300 );
 }
