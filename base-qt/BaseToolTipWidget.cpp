@@ -23,13 +23,14 @@
 #include "XmlOptions.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QFrame>
 #include <QLayout>
 #include <QPainter>
+#include <QScreen>
 #include <QStyle>
 #include <QStyleOptionFrame>
 #include <QToolTip>
+#include <QWindow>
 
 //_______________________________________________________
 BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
@@ -202,8 +203,7 @@ void BaseToolTipWidget::_adjustPosition()
     const QSize size( sizeHint() );
 
     // desktop size
-    QDesktopWidget* desktop( qApp->desktop() );
-    QRect desktopGeometry( desktop->screenGeometry( desktop->screenNumber( parentWidget() ) ) );
+    const auto desktopGeometry( window()->windowHandle()->screen()->geometry() );
 
     // set geometry
     int top(0);

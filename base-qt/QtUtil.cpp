@@ -25,12 +25,23 @@
 
 #include <QApplication>
 #include <QCursor>
-#include <QDesktopWidget>
 #include <QFontMetrics>
 #include <QLayout>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QScreen>
 #include <QStyleOption>
+#include <QWindow>
+
+//____________________________________________________________
+void bindToGeometry( QPoint& position, const QSize& size, const QRect& geometry )
+{
+    if( position.x() + size.width() > geometry.right()+1 ) position.setX( geometry.right() + 1 - size.width() );
+    if( position.y() + size.height() > geometry.bottom()+1 ) position.setY( geometry.bottom() + 1 - size.height() );
+
+    if( position.x() < 0 ) position.setX(0);
+    if( position.y() < 0 ) position.setY(0);
+}
 
 //____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )
@@ -38,10 +49,9 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
 
     Debug::Throw( QStringLiteral("QtUtil::moveWidget.\n") );
     if( !widget ) return;
-    QDesktopWidget* desktop( qApp->desktop() );
-    QRect geometry( desktop->screenGeometry( desktop->screenNumber( widget ) ) );
-    if( position.y() + widget->height() > geometry.bottom()+1 ) position.setY( geometry.bottom() + 1 - widget->height() );
 
+    const auto geometry( widget->window()->windowHandle()->screen()->geometry() );
+    bindToGeometry( position, widget->size(), geometry );
     widget->move( position );
 }
 
@@ -51,22 +61,12 @@ QPoint QtUtil::centerOnPointer( const QSize& size )
     Debug::Throw( QStringLiteral("QtUtil::centerOnPointer.\n") );
 
     // get cursor position
-    QPoint point( QCursor::pos() );
-
-    point.setX( point.x() - size.width()/2 );
-    point.setY( point.y() - size.height()/2 );
+    QPoint position( QCursor::pos() - QPoint( size.width()/2, size.height()/2) );
 
     // retrieve desktop
-    QDesktopWidget *desktop( qApp->desktop() );
-
-    // check point against desktop size
-    if( point.x() + size.width()> desktop->width() ) point.setX( desktop->width() - size.width() );
-    if( point.y() + size.height()> desktop->height() ) point.setY( desktop->height() - size.height() );
-
-    // check point against (0,0)
-    if( point.x() < 0 ) point.setX( 0 );
-    if( point.y() < 0 ) point.setY( 0 );
-    return point;
+    const auto geometry( qApp->primaryScreen()->geometry() );
+    bindToGeometry( position, size, geometry );
+    return position;
 }
 
 
@@ -79,29 +79,17 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
     Debug::Throw() << "QtUtil::centerOnWidget - size: (" << size.width() << "," << size.height() << ")" << endl;
 
     // get parent position and size
-    QPoint point( widget->pos() );
-    if( widget != widget->window() ) point = widget->mapToGlobal( point );
+    QPoint position( widget->pos() );
+    if( widget != widget->window() ) position = widget->mapToGlobal( position );
 
-    QSize parent_size( widget->frameSize() );
-
-    Debug::Throw() << "QtUtil::centerOnWidget - parent size: (" << parent_size.width() << "," << parent_size.height() << ")" << endl;
-    Debug::Throw() << "QtUtil::centerOnWidget - parent position: (" << point.x() << "," << point.y() << ")" << endl;
-
-    point.setX( point.x() + ( parent_size.width() - size.width() )/2 );
-    point.setY( point.y() + ( parent_size.height() - size.height() )/2 );
+    const auto parentSize( widget->frameSize() );
+    position.setX( position.x() + ( parentSize.width() - size.width() )/2 );
+    position.setY( position.y() + ( parentSize.height() - size.height() )/2 );
 
     // retrieve desktop
-    QDesktopWidget *desktop( qApp->desktop() );
-
-    // check point against desktop size
-    if( point.x() + size.width()> desktop->width() ) point.setX( desktop->width() - size.width() );
-    if( point.y() + size.height()> desktop->height() ) point.setY( desktop->height() - size.height() );
-
-    // check point against (0,0)
-    if( point.x() < 0 ) point.setX( 0 );
-    if( point.y() < 0 ) point.setY( 0 );
-    return point;
-
+    const auto geometry( widget->window()->windowHandle()->screen()->geometry() );
+    bindToGeometry( position, size, geometry );
+    return position;
 }
 
 //____________________________________________________________
@@ -110,50 +98,32 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
     Debug::Throw( QStringLiteral("QtUtil::centerOnDesktop.\n") );
 
     // retrieve desktop
-    QDesktopWidget *desktop( qApp->desktop() );
-    QSize desktop_size( desktop->frameSize() );
+    const auto geometry( qApp->primaryScreen()->geometry() );
 
-    // get parent position and size
-    QPoint point( desktop->pos() );
-
-    point.setX( point.x() + ( desktop_size.width() - size.width() )/2 );
-    point.setY( point.y() + ( desktop_size.height() - size.height() )/2 );
-
-    // check point against desktop size
-    if( point.x() + size.width()> desktop->width() ) point.setX( desktop->width() - size.width() );
-    if( point.y() + size.height()> desktop->height() ) point.setY( desktop->height() - size.height() );
-
-    // check point against (0,0)
-    if( point.x() < 0 ) point.setX( 0 );
-    if( point.y() < 0 ) point.setY( 0 );
-    return point;
+    QPoint position( geometry.center() - QPoint( size.width()/2, size.height()/2 ) );
+    bindToGeometry( position, size, geometry );
+    return position;
 }
 
 //____________________________________________________________
 QWidget* QtUtil::centerOnPointer( QWidget* widget )
 {
     Debug::Throw( QStringLiteral("QtUtil::centerOnPointer.\n") );
-    Q_CHECK_PTR( widget );
 
     // move widget
     widget->move( centerOnPointer( widget->frameSize() ) );
-    qApp->processEvents();
     return widget;
 }
 
 //____________________________________________________________
 QWidget* QtUtil::centerOnParent( QWidget* widget )
-{
-    Q_CHECK_PTR( widget );
-    return centerOnWidget( widget, widget->parentWidget() );
-}
+{ return centerOnWidget( widget, widget->parentWidget() ); }
 
 
 //____________________________________________________________
 QWidget* QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 {
     Debug::Throw( QStringLiteral("QtUtil::centerOnParent.\n") );
-    Q_CHECK_PTR( widget );
 
     // get parent widget
     if( !( parent && parent->window() ) ) centerOnDesktop( widget );
@@ -166,7 +136,6 @@ QWidget* QtUtil::centerOnWidget( QWidget* widget, QWidget* parent )
 QWidget* QtUtil::centerOnDesktop( QWidget* widget )
 {
     Debug::Throw( QStringLiteral("QtUtil::centerOnDesktop.\n") );
-    Q_CHECK_PTR( widget );
     widget->move( centerOnDesktop( widget->frameSize() ) );
     return widget;
 }
@@ -226,7 +195,7 @@ QAction* QtUtil::addMenuSection( QMenu* menu, const QIcon& icon, const QString& 
     {
         QFont font( menu->font() );
         font.setWeight( QFont::Bold );
-        width += QFontMetrics( font ).width( text ) + 24;
+        width += QFontMetrics( font ).horizontalAdvance( text ) + 24;
     }
 
     if( width > 0 )
