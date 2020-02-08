@@ -50,7 +50,7 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
     Debug::Throw( QStringLiteral("QtUtil::moveWidget.\n") );
     if( !widget ) return;
 
-    const auto geometry( widget->window()->windowHandle()->screen()->geometry() );
+    const auto geometry( widget->window()->windowHandle()->screen()->availableGeometry() );
     bindToGeometry( position, widget->size(), geometry );
     widget->move( position );
 }
@@ -64,7 +64,7 @@ QPoint QtUtil::centerOnPointer( const QSize& size )
     QPoint position( QCursor::pos() - QPoint( size.width()/2, size.height()/2) );
 
     // retrieve desktop
-    const auto geometry( qApp->primaryScreen()->geometry() );
+    const auto geometry( qApp->primaryScreen()->availableGeometry() );
     bindToGeometry( position, size, geometry );
     return position;
 }
@@ -87,7 +87,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
     position.setY( position.y() + ( parentSize.height() - size.height() )/2 );
 
     // retrieve desktop
-    const auto geometry( widget->window()->windowHandle()->screen()->geometry() );
+    const auto geometry( widget->window()->windowHandle()->screen()->availableGeometry() );
     bindToGeometry( position, size, geometry );
     return position;
 }
@@ -98,7 +98,7 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
     Debug::Throw( QStringLiteral("QtUtil::centerOnDesktop.\n") );
 
     // retrieve desktop
-    const auto geometry( qApp->primaryScreen()->geometry() );
+    const auto geometry( qApp->primaryScreen()->availableGeometry() );
 
     QPoint position( geometry.center() - QPoint( size.width()/2, size.height()/2 ) );
     bindToGeometry( position, size, geometry );

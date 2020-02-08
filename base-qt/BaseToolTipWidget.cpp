@@ -203,7 +203,7 @@ void BaseToolTipWidget::_adjustPosition()
     const QSize size( sizeHint() );
 
     // desktop size
-    const auto desktopGeometry( window()->windowHandle()->screen()->geometry() );
+    const auto desktopGeometry( qApp->primaryScreen()->availableGeometry() );
 
     // set geometry
     int top(0);
