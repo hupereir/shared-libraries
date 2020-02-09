@@ -99,7 +99,7 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
 
         //* get id matching name
         /** insert in map if name is new */
-        static Id get( QString );
+        static Id get( const QString& );
 
         //* get name matching id
         /** throw exception if not found */
@@ -192,11 +192,11 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
     }
 
     //* add property
-    FileRecord& addProperty( QString tag, QString value )
+    FileRecord& addProperty( QString tag, const QString& value )
     { return addProperty( PropertyId::get( tag ), value ); }
 
     //* add property
-    FileRecord& addProperty( PropertyId::Id, QString );
+    FileRecord& addProperty( PropertyId::Id, const QString& );
 
     //@}
 

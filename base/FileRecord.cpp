@@ -44,7 +44,7 @@ FileRecord::PropertyId::Id& FileRecord::PropertyId::_counter()
 }
 
 //_______________________________________________
-FileRecord::PropertyId::Id FileRecord::PropertyId::get( QString name )
+FileRecord::PropertyId::Id FileRecord::PropertyId::get( const QString& name )
 {
 
     // see if iterator exists in list
@@ -74,7 +74,7 @@ bool operator == (const FileRecord& first, const FileRecord& second )
 { return first.file() == second.file(); }
 
 //_______________________________________________
-FileRecord& FileRecord::addProperty( PropertyId::Id id, QString value )
+FileRecord& FileRecord::addProperty( PropertyId::Id id, const QString& value )
 {
 
     properties_[ id ] = value;
