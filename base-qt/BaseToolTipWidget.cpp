@@ -19,6 +19,7 @@
 
 #include "BaseToolTipWidget.h"
 #include "Debug.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
@@ -26,11 +27,9 @@
 #include <QFrame>
 #include <QLayout>
 #include <QPainter>
-#include <QScreen>
 #include <QStyle>
 #include <QStyleOptionFrame>
 #include <QToolTip>
-#include <QWindow>
 
 //_______________________________________________________
 BaseToolTipWidget::BaseToolTipWidget( QWidget* parent ):
@@ -203,7 +202,7 @@ void BaseToolTipWidget::_adjustPosition()
     const QSize size( sizeHint() );
 
     // desktop size
-    const auto desktopGeometry( qApp->primaryScreen()->availableGeometry() );
+    const auto desktopGeometry( QtUtil::desktopGeometry( this ) );
 
     // set geometry
     int top(0);

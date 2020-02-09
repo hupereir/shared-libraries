@@ -34,6 +34,9 @@ class BASE_QT_EXPORT QtUtil
 
     public:
 
+    //* desktop geometry
+    static QRect desktopGeometry( QWidget* = nullptr );
+
     //* move menu to position taking proper care of the screen borders
     static void moveWidget( QWidget* widget, QPoint position );
 

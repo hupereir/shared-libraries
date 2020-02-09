@@ -44,13 +44,28 @@ void bindToGeometry( QPoint& position, const QSize& size, const QRect& geometry 
 }
 
 //____________________________________________________________
+QRect QtUtil::desktopGeometry( QWidget* widget )
+{
+
+    // get screen for widget
+    if( widget && widget->window()->windowHandle() && widget->window()->windowHandle()->screen() )
+    { return widget->window()->windowHandle()->screen()->availableGeometry(); }
+
+    // get primary screen from qApp
+    if( qApp && qApp->primaryScreen() ) return qApp->primaryScreen()->availableGeometry();
+
+    // return invalid geometry
+    return QRect();
+}
+
+//____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )
 {
 
     Debug::Throw( QStringLiteral("QtUtil::moveWidget.\n") );
     if( !widget ) return;
 
-    const auto geometry( widget->window()->windowHandle()->screen()->availableGeometry() );
+    const auto geometry( desktopGeometry( widget ) );
     bindToGeometry( position, widget->size(), geometry );
     widget->move( position );
 }
@@ -64,7 +79,7 @@ QPoint QtUtil::centerOnPointer( const QSize& size )
     QPoint position( QCursor::pos() - QPoint( size.width()/2, size.height()/2) );
 
     // retrieve desktop
-    const auto geometry( qApp->primaryScreen()->availableGeometry() );
+    const auto geometry( desktopGeometry() );
     bindToGeometry( position, size, geometry );
     return position;
 }
@@ -87,7 +102,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
     position.setY( position.y() + ( parentSize.height() - size.height() )/2 );
 
     // retrieve desktop
-    const auto geometry( qApp->primaryScreen()->availableGeometry() );
+    const auto geometry( desktopGeometry( widget ) );
     bindToGeometry( position, size, geometry );
     return position;
 }
@@ -98,7 +113,7 @@ QPoint QtUtil::centerOnDesktop( const QSize& size )
     Debug::Throw( QStringLiteral("QtUtil::centerOnDesktop.\n") );
 
     // retrieve desktop
-    const auto geometry( qApp->primaryScreen()->availableGeometry() );
+    const auto geometry( desktopGeometry() );
 
     QPoint position( geometry.center() - QPoint( size.width()/2, size.height()/2 ) );
     bindToGeometry( position, size, geometry );
