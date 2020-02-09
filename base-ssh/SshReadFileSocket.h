@@ -110,7 +110,7 @@ namespace Ssh
         protected:
 
         //* timer event
-        void timerEvent( QTimerEvent* );
+        void timerEvent( QTimerEvent* ) override;
 
         //* read
         qint64 readData( char*, qint64 maxSize ) override;

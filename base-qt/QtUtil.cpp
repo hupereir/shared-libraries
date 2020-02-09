@@ -87,7 +87,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
     position.setY( position.y() + ( parentSize.height() - size.height() )/2 );
 
     // retrieve desktop
-    const auto geometry( widget->window()->windowHandle()->screen()->availableGeometry() );
+    const auto geometry( qApp->primaryScreen()->availableGeometry() );
     bindToGeometry( position, size, geometry );
     return position;
 }
