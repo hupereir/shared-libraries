@@ -62,7 +62,7 @@ class BASE_QT_EXPORT OptionComboBox: public CustomComboBox, public OptionWidget
         if( !_connected() )
         {
             connect( this, &QComboBox::editTextChanged, this, &OptionComboBox::modified );
-            connect( this, SIGNAL(currentIndexChanged(int)), SIGNAL(modified()) );
+            connect( this, QOverload<int>::of(&CustomComboBox::currentIndexChanged), this, [this](int){ emit modified(); } );
             _setConnected();
         }
     }

@@ -58,7 +58,7 @@ class BASE_QT_EXPORT OptionSpinBox: public QWidget, public OptionWidget
         setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
         if( !_connected() )
         {
-            connect(spinBox_, SIGNAL(valueChanged(int)), SIGNAL(modified()));
+            connect(spinBox_, QOverload<int>::of( &QSpinBox::valueChanged ), this, [this](bool){ emit modified(); });
             _setConnected();
         }
     }

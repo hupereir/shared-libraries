@@ -46,7 +46,7 @@ class BASE_QT_EXPORT OptionIconSizeComboBox: public IconSizeComboBox, public Opt
 
         if( !_connected() )
         {
-            connect( this, SIGNAL(currentIndexChanged(int)), SIGNAL(modified()) );
+            connect( this, QOverload<int>::of(&IconSizeComboBox::currentIndexChanged), this, [this](int){ emit modified(); } );
             _setConnected();
         }
 
