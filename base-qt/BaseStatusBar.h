@@ -33,7 +33,6 @@
 class BASE_QT_EXPORT StatusBarLabel: public QLabel
 {
 
-    //* Qt meta object macro
     Q_OBJECT
 
     public:
@@ -58,6 +57,8 @@ class BASE_QT_EXPORT StatusBarLabel: public QLabel
 //* custom status bar
 class BASE_QT_EXPORT BaseStatusBar: public QStatusBar, private Base::Counter<BaseStatusBar>
 {
+
+    Q_OBJECT
 
     public:
 
