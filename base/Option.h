@@ -228,7 +228,10 @@ class BASE_EXPORT Option:private Base::Counter<Option>
     //*@name text streamer
     //@{
     friend BASE_EXPORT QTextStream &operator << ( QTextStream &out, const Option& option );
-    friend BASE_EXPORT QTextStream &operator << ( QTextStream &out, const QList<Option>& options );
+
+    template<template<typename>class T>
+    friend QTextStream &operator << ( QTextStream &out, const T<Option>& );
+
     //@}
 
     //* less than operator
@@ -244,6 +247,15 @@ class BASE_EXPORT Option:private Base::Counter<Option>
     friend bool operator == (const Option& first, const Option& second )
     { return first.value_ == second.value_ && first.flags_ == second.flags_; }
 };
+
+//_______________________________________________________________
+template<template<typename>class T>
+    QTextStream &operator << ( QTextStream &out, const T<Option>& options )
+{
+    for( const auto& option:options )
+    { out << option << " "; }
+    return out;
+}
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( Option::Flags )
 

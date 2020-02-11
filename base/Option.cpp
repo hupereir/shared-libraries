@@ -97,10 +97,10 @@ QTextStream &operator << ( QTextStream &out, const Option& option )
     return out;
 }
 
-//________________________________________________________
-QTextStream &operator << ( QTextStream &out, const QList<Option>& options )
-{
-    for( const auto& option:options )
-    { out << option << " "; }
-    return out;
-}
+// //________________________________________________________
+// QTextStream &operator << ( QTextStream &out, const QList<Option>& options )
+// {
+//     for( const auto& option:options )
+//     { out << option << " "; }
+//     return out;
+// }

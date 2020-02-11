@@ -31,6 +31,8 @@
 #include <QStringList>
 #include <QTextStream>
 
+#include <algorithm>
+
 //* Option file parser based on Xml
 class BASE_EXPORT Options: private Base::Counter<Options>
 {
@@ -44,7 +46,7 @@ class BASE_EXPORT Options: private Base::Counter<Options>
     using Map = QMap<QString,Option>;
 
     //* shortCut for option list
-    using List = QList<Option>;
+    using List = QVector<Option>;
 
     //* shortCut for option map
     using SpecialMap = QMap<QString,List>;
@@ -73,23 +75,11 @@ class BASE_EXPORT Options: private Base::Counter<Options>
     bool isSpecialOption( const QString& name ) const;
 
     //* retrieve list of special (i.e. kept) options matching a given name
-    template <typename T> QList<T> specialOptions( const QString& name ) const
-    {
-
-        QList<T> out;
-        for( const auto& option:specialOptions( name ) )
-        { out << option.get<T>(); }
-        return out;
-
-    }
+    template <typename T> QVector<T> specialOptions( const QString& name ) const;
 
     //* retrieve list of special (i.e. kept) options matching a given name
     const List& specialOptions( const QString& name ) const
-    {
-        SpecialMap::const_iterator iter( specialOptions_.find( name ) );
-        Q_ASSERT( iter != specialOptions_.end() );
-        return iter.value();
-    }
+    { return specialOptions_.find( name ).value(); }
 
     //* returns true if option with matching name is found
     bool contains( const QString& name ) const
@@ -235,5 +225,17 @@ class BASE_EXPORT Options: private Base::Counter<Options>
     { return ( first.options_ == second.options_ ) && ( first.specialOptions_ == second.specialOptions_ ); }
 
 };
+
+//______________________________________________________________________________
+template <typename T> QVector<T> Options::specialOptions( const QString& name ) const
+{
+    const auto options = specialOptions( name );
+    if( options.isEmpty() ) return QVector<T>();
+    QVector<T> out;
+    out.reserve( options.size() );
+    std::transform( options.begin(), options.end(), std::back_inserter( out ),
+        []( const Option& option ) { return option.get<T>(); } );
+    return out;
+}
 
 #endif

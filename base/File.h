@@ -25,7 +25,7 @@
 #include "TimeStamp.h"
 
 #include <QFileInfo>
-#include <QList>
+#include <QVector>
 #include <QString>
 #include <QTextStream>
 
@@ -36,7 +36,7 @@ class BASE_EXPORT File
     public:
 
     //* shortcut to list of files
-    using List=QList<File>;
+    using List=QVector<File>;
 
     //* return list of files in a directory
     enum ListFlag
