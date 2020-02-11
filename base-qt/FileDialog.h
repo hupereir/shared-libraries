@@ -87,7 +87,7 @@ class BASE_QT_EXPORT FileDialog: public QObject, private Base::Counter<FileDialo
     }
 
     //* options
-    FileDialog& setOptions( const QFileDialog::Options& options )
+    FileDialog& setOptions( QFileDialog::Options options )
     {
         options_ = options;
         return *this;

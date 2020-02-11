@@ -147,7 +147,7 @@ namespace Transparency
         { margins_.clear(); }
 
         //* margins
-        void _setMargins( const Base::Margins& margins )
+        void _setMargins( Base::Margins margins )
         { margins_ = margins; }
 
         //* margins
@@ -163,7 +163,7 @@ namespace Transparency
         { outerPadding_.clear(); }
 
         //* outer padding
-        void _setOuterPadding( const Base::Margins& margins )
+        void _setOuterPadding( Base::Margins margins )
         { outerPadding_ = margins; }
 
         //* outer padding

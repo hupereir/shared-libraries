@@ -61,7 +61,7 @@ class BASE_QT_EXPORT OptionListBox: public QWidget, public OptionWidget
     { browsable_ = value; }
 
     //* set file dialog mode
-    void setFileMode( const QFileDialog::FileMode& mode )
+    void setFileMode( QFileDialog::FileMode mode )
     { fileMode_ = mode; }
 
     Q_SIGNALS:

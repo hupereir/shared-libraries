@@ -49,7 +49,7 @@ namespace Svg
         QSettings settings( themePaletteFileName_, QSettings::IniFormat );
         settings.sync();
 
-        auto updateColor = [&out,&settings](QPalette::ColorRole role, QString name)
+        auto updateColor = [&out,&settings](QPalette::ColorRole role, const QString &name)
         {
             if( settings.contains( name ) )
             {
@@ -59,13 +59,13 @@ namespace Svg
             }
         };
 
-        updateColor( QPalette::WindowText, "Colors:Window/ForegroundNormal" );
-        updateColor( QPalette::Window, "Colors:Window/BackgroundNormal" );
-        updateColor( QPalette::Highlight, "Colors:Selection/BackgroundNormal" );
-        updateColor( QPalette::Text, "Colors:View/ForegroundNormal" );
-        updateColor( QPalette::Base, "Colors:View/BackgroundNormal" );
-        updateColor( QPalette::ButtonText, "Colors:Button/ForegroundNormal" );
-        updateColor( QPalette::Button, "Colors:Button/BackgroundNormal" );
+        updateColor( QPalette::WindowText, QStringLiteral("Colors:Window/ForegroundNormal") );
+        updateColor( QPalette::Window, QStringLiteral("Colors:Window/BackgroundNormal") );
+        updateColor( QPalette::Highlight, QStringLiteral("Colors:Selection/BackgroundNormal") );
+        updateColor( QPalette::Text, QStringLiteral("Colors:View/ForegroundNormal") );
+        updateColor( QPalette::Base, QStringLiteral("Colors:View/BackgroundNormal") );
+        updateColor( QPalette::ButtonText, QStringLiteral("Colors:Button/ForegroundNormal") );
+        updateColor( QPalette::Button, QStringLiteral("Colors:Button/BackgroundNormal") );
         return out;
 
     }
@@ -123,7 +123,7 @@ namespace Svg
         { if( file.exists() && !oldFiles.contains( file ) ) fileSystemWatcher_->addPath( file ); }
 
         // look for theme in selected configuration files
-        QString theme( "default" );
+        QString theme( QStringLiteral("default") );
         for( const auto& file:configurationFiles )
         {
             if( !file.exists() ) continue;
@@ -133,9 +133,9 @@ namespace Svg
             // read group
             QSettings settings( file, QSettings::IniFormat );
             settings.sync();
-            if( settings.contains( "Theme/name" ) )
+            if( settings.contains( QStringLiteral("Theme/name") ) )
             {
-                theme = settings.value( "Theme/name" ).toString();
+                theme = settings.value( QStringLiteral("Theme/name") ).toString();
                 break;
             }
 
@@ -264,7 +264,7 @@ namespace Svg
         }
 
         // try use default theme
-        if( theme == "default" )
+        if( theme == QLatin1String("default") )
         {
 
             bool changed( false );
@@ -272,7 +272,7 @@ namespace Svg
             changed |= _setValid( false );
             return changed;
 
-        } else return _setTheme( "default" );
+        } else return _setTheme( QStringLiteral("default") );
 
     }
 

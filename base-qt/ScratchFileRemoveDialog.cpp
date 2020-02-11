@@ -107,7 +107,7 @@ void ScratchFileRemoveDialog::_updateActions()
 }
 
 //____________________________________________________________________
-void ScratchFileRemoveDialog::_updateContextMenu( const QPoint& position )
+void ScratchFileRemoveDialog::_updateContextMenu( QPoint position )
 {
 
     Debug::Throw( QStringLiteral("ScratchFileRemoveDialog::_updateContextMenu.\n") );

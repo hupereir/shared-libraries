@@ -44,7 +44,7 @@ namespace Ssh
         public:
 
         //* constructor
-        explicit FileTransferObject( QObject*, QString );
+        explicit FileTransferObject( QObject*, const QString &);
 
         //*@name modifiers
         //@{
@@ -65,10 +65,10 @@ namespace Ssh
         bool connect( void*, QIODevice::OpenMode );
 
         //* read (remote to local)
-        bool fromRemote( void*, QString );
+        bool fromRemote( void*, const QString &);
 
         //* write (local to remote)
-        bool toRemote( void*, QString );
+        bool toRemote( void*, const QString &);
 
         //* read (remote to local)
         bool fromRemote( void*, QIODevice* );

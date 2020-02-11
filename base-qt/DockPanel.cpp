@@ -99,14 +99,14 @@ bool DockPanel::isDetached() const
 { return panel_->isDetached(); }
 
 //___________________________________________________________
-void DockPanel::setTitle( QString title )
+void DockPanel::setTitle( const QString &title )
 {
     dock_->setWindowTitle( title );
     dockTitleLabel_->setText( title );
 }
 
 //___________________________________________________________
-void DockPanel::setOptionName( QString value )
+void DockPanel::setOptionName( const QString &value )
 { return panel_->setOptionName( value ); }
 
 //___________________________________________________________
@@ -276,7 +276,7 @@ namespace Private
     }
 
     //______________________________________________________________________
-    void LocalWidget::_updateContextMenu( const QPoint& position )
+    void LocalWidget::_updateContextMenu( QPoint position )
     {
 
         Debug::Throw( QStringLiteral("LocalWidget::_updateContextMenu.\n") );

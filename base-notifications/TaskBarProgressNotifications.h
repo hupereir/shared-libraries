@@ -71,8 +71,8 @@ class BASE_NOTIFICATIONS_EXPORT TaskBarProgressNotifications : public QObject, p
 
     void setApplicationName( const QString& value )
     {
-        path_ = QString( "/org/%1/UnityLauncher" ).arg( value );
-        launcherId_ = QString( "%1.desktop" ).arg( value );
+        path_ = QStringLiteral( "/org/%1/UnityLauncher" ).arg( value );
+        launcherId_ = QStringLiteral( "%1.desktop" ).arg( value );
     }
 
     void setPath( const QString& value )

@@ -206,7 +206,7 @@ void OpenWithDialog::_open()
             for( const auto& file:files_ )
             {
                 if( isLink_ ) QDesktopServices::openUrl( QUrl::fromEncoded( file.get().toLatin1() ) );
-                else QDesktopServices::openUrl( QUrl::fromEncoded( QString( "file://%1" ).arg( file ).toLatin1() ) );
+                else QDesktopServices::openUrl( QUrl::fromEncoded( QStringLiteral( "file://%1" ).arg( file ).toLatin1() ) );
             }
 
         } else {

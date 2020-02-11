@@ -78,7 +78,7 @@ namespace
         {
 
             OptionCheckBox* checkBox;
-            mainLayout().addWidget( checkBox = new OptionCheckBox( tr( "Use custom icon theme" ), this, "USE_ICON_THEME" ) );
+            mainLayout().addWidget( checkBox = new OptionCheckBox( tr( "Use custom icon theme" ), this, QStringLiteral("USE_ICON_THEME") ) );
             addOptionWidget( checkBox );
 
             auto box = new QWidget( this );
@@ -95,7 +95,7 @@ namespace
 
             {
                 OptionLineEditor* editor;
-                gridLayout->addWidget( editor = new OptionLineEditor( box, "ICON_THEME" ) );
+                gridLayout->addWidget( editor = new OptionLineEditor( box, QStringLiteral("ICON_THEME") ) );
                 addOptionWidget( editor );
                 label->setBuddy( editor );
                 label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
@@ -104,7 +104,7 @@ namespace
             gridLayout->addWidget( label = new QLabel( tr( "Path:" ), box ) );
             {
                 OptionBrowsedLineEditor* editor;
-                gridLayout->addWidget( editor = new OptionBrowsedLineEditor( box, "ICON_THEME_PATH" ) );
+                gridLayout->addWidget( editor = new OptionBrowsedLineEditor( box, QStringLiteral("ICON_THEME_PATH") ) );
                 addOptionWidget( editor );
                 label->setBuddy( editor );
                 label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
@@ -243,7 +243,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
             gridLayout->addWidget( label = new QLabel( tr( "Verbosity:" ), box ), ++row, 0, 1, 1 );
             label->setAlignment( Qt::AlignVCenter|Qt::AlignRight );
 
-            auto spinbox = new OptionSpinBox( box, "DEBUG_LEVEL" );
+            auto spinbox = new OptionSpinBox( box, QStringLiteral("DEBUG_LEVEL") );
             spinbox->setSpecialValueText( tr( "Silent" ) );
             spinbox->setMinimum( 0 );
             spinbox->setMaximum( 5 );
@@ -263,7 +263,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
         auto vLayout = new QVBoxLayout;
         box->setLayout( vLayout );
 
-        auto checkbox( new OptionCheckBox( tr( "Use system font" ), box, "USE_SYSTEM_FONT" ) );
+        auto checkbox( new OptionCheckBox( tr( "Use system font" ), box, QStringLiteral("USE_SYSTEM_FONT") ) );
         vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
@@ -276,7 +276,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
         QLabel* label;
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         gridLayout->addWidget( label = new QLabel( tr( "Default font:" ), box ) );
-        auto edit = new OptionFontEditor( box, "FONT_NAME" );
+        auto edit = new OptionFontEditor( box, QStringLiteral("FONT_NAME") );
         edit->setToolTip( tr( "Default font name for all widgets" ) );
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
@@ -286,7 +286,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
 
         // fixed font
         gridLayout->addWidget( label = new QLabel( tr( "Fixed font:" ), box ) );
-        edit = new OptionFontEditor( box, "FIXED_FONT_NAME" );
+        edit = new OptionFontEditor( box, QStringLiteral("FIXED_FONT_NAME") );
         edit->setToolTip( tr( "Default font name (fixed) for text widgets" ) );
         gridLayout->addWidget( edit );
         addOptionWidget( edit );
@@ -334,7 +334,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     parent->layout()->addWidget( box );
 
     {
-        auto checkbox = new OptionCheckBox( tr( "Use alternate color for items in list" ), box, "USE_ALTERNATE_COLOR" );
+        auto checkbox = new OptionCheckBox( tr( "Use alternate color for items in list" ), box, QStringLiteral("USE_ALTERNATE_COLOR") );
         vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
@@ -344,7 +344,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     }
 
     {
-        auto checkbox = new OptionCheckBox( tr( "Use different backround for selected column" ), box, "USE_SELECTED_COLUMN_COLOR" );
+        auto checkbox = new OptionCheckBox( tr( "Use different backround for selected column" ), box, QStringLiteral("USE_SELECTED_COLUMN_COLOR") );
         vLayout->addWidget( checkbox );
         addOptionWidget( checkbox );
     }
@@ -363,7 +363,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     {
         // icon size in lists
         gridLayout->addWidget( label = new QLabel( tr( "List items icon size:" ), box ) );
-        auto comboBox = new OptionIconSizeComboBox( box, "LIST_ICON_SIZE" );
+        auto comboBox = new OptionIconSizeComboBox( box, QStringLiteral("LIST_ICON_SIZE") );
         gridLayout->addWidget( comboBox );
         comboBox->setToolTip( tr( "Default size of the icons displayed in lists" ) );
         addOptionWidget( comboBox );
@@ -377,7 +377,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
     {
         // list item margins
         gridLayout->addWidget( label = new QLabel( tr( "List items margin:" ), box ) );
-        gridLayout->addWidget( spinbox = new OptionSpinBox( box, "LIST_ITEM_MARGIN" ) );
+        gridLayout->addWidget( spinbox = new OptionSpinBox( box, QStringLiteral("LIST_ITEM_MARGIN") ) );
         spinbox->setToolTip( tr( "Default margin around items in lists" ) );
         spinbox->setSuffix( tr( "px" ) );
         spinbox->setMinimum(0);
@@ -416,13 +416,13 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         hLayout->setMargin(0);
         layout->addLayout( hLayout );
 
-        auto checkbox = new OptionCheckBox( tr( "Emulate tabs" ), box, "TAB_EMULATION" );
+        auto checkbox = new OptionCheckBox( tr( "Emulate tabs" ), box, QStringLiteral("TAB_EMULATION") );
         checkbox->setToolTip( tr( "Turn on/off tab emulation using space characters" ) );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
 
         hLayout->addWidget(new QLabel( tr( "Tab size:" ), box ) );
-        auto spinbox = new OptionSpinBox( box, "TAB_SIZE" );
+        auto spinbox = new OptionSpinBox( box, QStringLiteral("TAB_SIZE") );
         spinbox->setMinimum( 2 );
         spinbox->setMaximum( 20 );
         spinbox->setToolTip( tr( "Tab size (in unit of space characters)." ) );
@@ -441,7 +441,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         box->setLayout( layout );
         parent->layout()->addWidget( box );
 
-        auto checkbox = new OptionCheckBox( tr( "Highlight current paragraph" ), box, "HIGHLIGHT_PARAGRAPH" );
+        auto checkbox = new OptionCheckBox( tr( "Highlight current paragraph" ), box, QStringLiteral("HIGHLIGHT_PARAGRAPH") );
         checkbox->setToolTip( tr( "Turn on/off current paragraph highlighting" ) );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
@@ -460,7 +460,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         parent->layout()->addWidget( box );
 
         gridLayout->addWidget( new QLabel( tr( "Opacity" ) ) );
-        OptionSlider *slider = new OptionSlider( box, "BOX_SELECTION_ALPHA" );
+        OptionSlider *slider = new OptionSlider( box, QStringLiteral("BOX_SELECTION_ALPHA") );
         slider->setRange( 0, 100 );
         slider->setToolTip( tr( "Alpha channel (i.e. opacity) of the box selection highlight color" ) );
         gridLayout->addWidget( slider );
@@ -485,11 +485,11 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         auto layout = new QVBoxLayout;
         box->setLayout( layout );
 
-        auto checkbox = new OptionCheckBox( tr( "Wrap text " ), box, "WRAP_TEXT" );
+        auto checkbox = new OptionCheckBox( tr( "Wrap text " ), box, QStringLiteral("WRAP_TEXT") );
         checkbox->setToolTip( tr( "Turn on/off line wrapping at editor border" ) );
         layout->addWidget( checkbox );
         addOptionWidget( checkbox );
-        layout->addWidget( checkbox = new OptionCheckBox( tr( "Show line numbers" ), box, "SHOW_LINE_NUMBERS" ) );
+        layout->addWidget( checkbox = new OptionCheckBox( tr( "Show line numbers" ), box, QStringLiteral("SHOW_LINE_NUMBERS") ) );
         checkbox->setToolTip( tr( "Turn on/off display of line numbers" ) );
         addOptionWidget( checkbox );
 
@@ -499,7 +499,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         layout->addLayout( hLayout );
         hLayout->setMargin(0);
         hLayout->addWidget( label = new QLabel( tr( "Automatically hide mouse cursor after: " ), box ) );
-        hLayout->addWidget( spinbox = new OptionSpinBox( box, "AUTOHIDE_CURSOR_DELAY" ) );
+        hLayout->addWidget( spinbox = new OptionSpinBox( box, QStringLiteral("AUTOHIDE_CURSOR_DELAY") ) );
         spinbox->setSuffix( tr( "s" ) );
         addOptionWidget( spinbox );
 
@@ -523,7 +523,7 @@ void BaseConfigurationDialog::_editPixmapPathList()
     if( !pixmapPathDialog_ )
     {
         pixmapPathDialog_ = new CustomDialog( this, CustomDialog::CloseButton );
-        auto listbox = new OptionListBox( pixmapPathDialog_, "PIXMAP_PATH" );
+        auto listbox = new OptionListBox( pixmapPathDialog_, QStringLiteral("PIXMAP_PATH") );
         listbox->setBrowsable( true );
         listbox->setFileMode( QFileDialog::Directory );
         pixmapPathDialog_->mainLayout().addWidget( listbox );

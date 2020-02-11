@@ -209,7 +209,7 @@ TextSelection TextEditor::selection() const
     Debug::Throw( QStringLiteral("TextEditor::selection.\n") );
 
     // copy last selection
-    TextSelection out( "" );
+    TextSelection out( QLatin1String("") );
 
     // copy attributes from last selection
     out.setFlag( TextSelection::CaseSensitive, lastSelection().flag( TextSelection::CaseSensitive ) );
@@ -619,8 +619,8 @@ void TextEditor::createReplaceWidget( bool compact )
         replaceWidget_ = new BaseReplaceWidget( this, compact );
         connect( replaceWidget_, &BaseReplaceWidget::find, this, &TextEditor::find );
         connect( replaceWidget_, &BaseReplaceWidget::replace, this, &TextEditor::replace );
-        connect( replaceWidget_, &BaseReplaceWidget::replaceInWindow, this, QOverload<TextSelection>::of( &TextEditor::replaceInWindow ) );
-        connect( replaceWidget_, &BaseReplaceWidget::replaceInSelection, this, QOverload<TextSelection>::of( &TextEditor::replaceInSelection ) );
+        connect( replaceWidget_, &BaseReplaceWidget::replaceInWindow, this, QOverload<const TextSelection&>::of( &TextEditor::replaceInWindow ) );
+        connect( replaceWidget_, &BaseReplaceWidget::replaceInSelection, this, QOverload<const TextSelection&>::of( &TextEditor::replaceInSelection ) );
         connect( replaceWidget_, &BaseReplaceWidget::menuAboutToShow, this, &TextEditor::_updateReplaceInSelection );
         connect( this, &TextEditor::matchFound, replaceWidget_, &BaseReplaceWidget::matchFound );
         connect( this, &TextEditor::noMatchFound, replaceWidget_, &BaseReplaceWidget::noMatchFound );
@@ -793,7 +793,7 @@ void TextEditor::lowerCase()
 }
 
 //______________________________________________________________________
-void TextEditor::find( TextSelection selection )
+void TextEditor::find( const TextSelection &selection )
 {
     Debug::Throw( QStringLiteral("TextEditor::find.\n") );
     bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
@@ -830,7 +830,7 @@ void TextEditor::findAgainBackward()
 }
 
 //______________________________________________________________________
-void TextEditor::replace( TextSelection selection )
+void TextEditor::replace( const TextSelection &selection )
 {
 
     Debug::Throw( QStringLiteral("TextEditor::replace.\n") );
@@ -888,7 +888,7 @@ void TextEditor::replaceAgainBackward()
 }
 
 //______________________________________________________________________
-int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
+int TextEditor::replaceInSelection( const TextSelection &selection, bool showDialog )
 {
 
     Debug::Throw( QStringLiteral("TextEditor::replaceInSelection.\n") );
@@ -928,7 +928,7 @@ int TextEditor::replaceInSelection( TextSelection selection, bool showDialog )
 }
 
 //______________________________________________________________________
-int TextEditor::replaceInWindow( TextSelection selection, bool showDialog )
+int TextEditor::replaceInWindow( const TextSelection &selection, bool showDialog )
 {
 
     Debug::Throw( QStringLiteral("TextEditor::replaceInWindow.\n") );
@@ -2419,13 +2419,13 @@ bool TextEditor::_setTabSize( int tabSize )
 
     // create strings and regular expressions
     // define normal tabs
-    normalTab_ = "\t";
-    normalTabRegexp_.setPattern( "^(\\t)+" );
+    normalTab_ = QStringLiteral("\t");
+    normalTabRegexp_.setPattern( QStringLiteral("^(\\t)+") );
     setTabStopDistance( stopWidth );
 
     // define emulated tabs
     emulatedTab_ = QString( tabSize, ' ' );
-    emulatedTabRegexp_.setPattern( QString( "^(%1)+" ).arg( emulatedTab_ ) );
+    emulatedTabRegexp_.setPattern( QStringLiteral( "^(%1)+" ).arg( emulatedTab_ ) );
 
     // update tab string according to tab emulation state
     if( _hasTabEmulation() ) tab_ = emulatedTab_;

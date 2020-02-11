@@ -190,7 +190,7 @@ void TextEncodingWidget::_updateSelection()
 }
 
 //______________________________________________________________________
-void TextEncodingWidget::_find(QString text )
+void TextEncodingWidget::_find(const QString &text )
 {
     TextSelection selection( text );
     selection.setFlag( TextSelection::BeginOfWord, true );

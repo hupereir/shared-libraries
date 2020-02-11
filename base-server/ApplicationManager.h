@@ -58,7 +58,7 @@ namespace Server
         //@{
 
         //* commandLine parser
-        static CommandLineParser commandLineParser( CommandLineArguments = CommandLineArguments(), bool ignoreWarnings = true );
+        static CommandLineParser commandLineParser( const CommandLineArguments& = CommandLineArguments(), bool ignoreWarnings = true );
 
         //* retrieve Application ID
         const ApplicationId& id() const
@@ -91,7 +91,7 @@ namespace Server
         };
 
         //* changes application state, emit signal if changed
-        bool setState( const State& state )
+        bool setState( Server::ApplicationManager::State state )
         {
             if( state == state_ ) return false;
             state_ = state;
@@ -101,7 +101,7 @@ namespace Server
         //@}
 
         //* (re)initialize server/client connections
-        void initialize( CommandLineArguments args = CommandLineArguments() );
+        void initialize( const CommandLineArguments &args = CommandLineArguments() );
 
         Q_SIGNALS:
 
@@ -131,10 +131,10 @@ namespace Server
         void _error( QAbstractSocket::SocketError );
 
         //* redistribute message when a connected client sends one
-        void _redirect( Server::ServerCommand );
+        void _redirect( const Server::ServerCommand &);
 
         //* reads signal from server
-        void _process( Server::ServerCommand );
+        void _process( const Server::ServerCommand &);
 
         //* start timeout
         void _startTimer();
@@ -177,10 +177,10 @@ namespace Server
         ClientMap::iterator _register( const ApplicationId&, ClientPtr, bool forced = false );
 
         //* redirect message
-        void _redirect( ServerCommand, ClientPtr );
+        void _redirect( const ServerCommand&, ClientPtr );
 
         //* broadcast a message to all registered clients but the sender (if valid)
-        void _broadcast( ServerCommand, ClientPtr sender = ClientPtr() );
+        void _broadcast( const ServerCommand&, ClientPtr sender = ClientPtr() );
 
         //* initialize client
         bool _initializeClient();

@@ -89,7 +89,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
     // insert reload
     QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), "&Reload", this ) );
+    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), QStringLiteral("&Reload"), this ) );
     connect( button, &QAbstractButton::clicked, this, &OptionDialog::_reload );
     button->setAutoDefault( false );
 
@@ -134,7 +134,7 @@ void OptionDialog::_reload()
 }
 
 //______________________________________________________________
-void OptionDialog::_optionModified( Options::Pair option )
+void OptionDialog::_optionModified( const Options::Pair &option )
 {
     Debug::Throw() << "OptionDialog::_optionModified - " << option.first << " value: " << option.second.raw() << endl;
     if( XmlOptions::get().raw( option.first ) != option.second.raw() )
@@ -148,7 +148,7 @@ void OptionDialog::_optionModified( Options::Pair option )
 }
 
 //______________________________________________________________
-void OptionDialog::_specialOptionModified( Options::Pair option )
+void OptionDialog::_specialOptionModified( const Options::Pair &option )
 {
     Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first << endl;
 

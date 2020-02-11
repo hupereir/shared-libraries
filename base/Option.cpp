@@ -93,7 +93,7 @@ QTextStream &operator << ( QTextStream &out, const Option& option )
 {
     if( !option.isSet() ) out << "not set";
     else out << option.raw();
-    out << QString( " (0b%1)" ).arg( QString::number( option.flags_, 2 ) );
+    out << QStringLiteral( " (0b%1)" ).arg( QString::number( option.flags_, 2 ) );
     return out;
 }
 

@@ -39,7 +39,7 @@ class BASE_SERVER_EXPORT BaseCoreApplication: public QObject
     public:
 
     //* constructor
-    explicit BaseCoreApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
+    explicit BaseCoreApplication( QObject* parent, const CommandLineArguments &arguments = CommandLineArguments() );
 
     //* destructor
     ~BaseCoreApplication() override;
@@ -57,7 +57,7 @@ class BASE_SERVER_EXPORT BaseCoreApplication: public QObject
     virtual void usage() const = 0;
 
     //* command line parser
-    virtual CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const;
+    virtual CommandLineParser commandLineParser( const CommandLineArguments &arguments = CommandLineArguments(), bool ignoreWarnings = true ) const;
 
     //* application name
     virtual QString applicationName() const = 0;
@@ -71,7 +71,7 @@ class BASE_SERVER_EXPORT BaseCoreApplication: public QObject
     virtual void sendServerCommand( Server::ServerCommand::CommandType );
 
     //* send server command
-    virtual void sendServerCommand( Server::ServerCommand );
+    virtual void sendServerCommand( const Server::ServerCommand &);
 
     Q_SIGNALS:
 
@@ -85,15 +85,15 @@ class BASE_SERVER_EXPORT BaseCoreApplication: public QObject
 
     //* process command from server
     /** returns true if command has been accepted */
-    virtual bool _processCommand( Server::ServerCommand );
+    virtual bool _processCommand( const Server::ServerCommand &);
 
     protected:
 
     //* formated usage
-    void _usage( QString applicationName, QString options = tr("[options]") ) const;
+    void _usage( const QString &applicationName, const QString &options = tr("[options]") ) const;
 
     //* argument list
-    void _setArguments( CommandLineArguments arguments )
+    void _setArguments( const CommandLineArguments &arguments )
     { arguments_ = arguments; }
 
     //* argument list

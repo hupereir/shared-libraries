@@ -31,22 +31,22 @@ namespace Server
     {
         Debug::Throw( QStringLiteral("ApplicationId::ApplicationId.\n") );
         if( user.isNull() ) user = Util::user();
-        if( display.isNull() ) display = Util::env( "DISPLAY", "0.0" );
-        user_ = user + QString("@")+display;
+        if( display.isNull() ) display = Util::env( QStringLiteral("DISPLAY"), QStringLiteral("0.0") );
+        user_ = user + QStringLiteral("@")+display;
     }
 
     //____________________________________________________
     QString ApplicationId::userName() const
     {
-        int position( user_.indexOf( "@" ) );
+        int position( user_.indexOf( QLatin1String("@") ) );
         return (position < 0 ) ? user_ : user_.left(position);
     }
 
     //______________________________________________________
     QString ApplicationId::display() const
     {
-        int position( user_.indexOf( "@" ) );
-        return (position < 0 ) ? "" : user_.mid(position+1 );
+        int position( user_.indexOf( QLatin1String("@") ) );
+        return (position < 0 ) ? QLatin1String("") : user_.mid(position+1 );
     }
 
     //______________________________________________________

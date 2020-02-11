@@ -51,7 +51,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     connect( this, &QFileDialog::directoryEntered, this, &ImageFileDialog::saveWorkingDirectory );
 
     // add image display
-    auto splitter = findChild<QSplitter*>( "splitter" );
+    auto splitter = findChild<QSplitter*>( QStringLiteral("splitter") );
     if( splitter )
     {
         auto main( new QWidget );
@@ -129,7 +129,7 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 }
 
 //______________________________________________________________________
-void ImageFileDialog::saveWorkingDirectory( QString directory )
+void ImageFileDialog::saveWorkingDirectory( const QString &directory )
 {
     Debug::Throw() << "ImageFileDialog::saveWorkingDirectory - directory: " << directory << endl;
     FileDialog::setWorkingDirectory( File( QFileInfo( directory ).absolutePath() ) );

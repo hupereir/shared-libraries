@@ -47,7 +47,7 @@ class BASE_QT_EXPORT ContextMenu: public BaseContextMenu
     void _showActions();
 
     //* raise request
-    void _raise( const QPoint& );
+    void _raise( QPoint  );
 
     using ActionPointer = QPointer<QAction>;
     using ActionList = QList<ActionPointer>;

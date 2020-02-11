@@ -45,31 +45,31 @@ QString TimeStamp::toString( TimeStamp::Format format ) const
     {
 
         case Format::Date:
-        return toString( "dd/MM/yyyy" );
+        return toString( QStringLiteral("dd/MM/yyyy") );
 
         case Format::DateUS:
-        return toString( "yyyy/MM/dd" );
+        return toString( QStringLiteral("yyyy/MM/dd") );
 
         case Format::Time:
-        return toString( "hh:mm" );
+        return toString( QStringLiteral("hh:mm") );
 
         case Format::TimeLong:
-        return toString( "hh:mm:ss" );
+        return toString( QStringLiteral("hh:mm:ss") );
 
         case Format::Short:
-        return toString( "dd/MM/yyyy hh:mm" );
+        return toString( QStringLiteral("dd/MM/yyyy hh:mm") );
 
         case Format::ShortUS:
-        return toString( "yyyy/MM/dd hh:mm" );
+        return toString( QStringLiteral("yyyy/MM/dd hh:mm") );
 
         case Format::Long:
-        return toString( "dd MMM yyyy hh::mm::ss (ddd)" );
+        return toString( QStringLiteral("dd MMM yyyy hh::mm::ss (ddd)") );
 
         case Format::DateTag:
-        return toString( "yyyyMMdd" );
+        return toString( QStringLiteral("yyyyMMdd") );
 
         case Format::JobTag:
-        return toString( "MMM dd hh:mm" );
+        return toString( QStringLiteral("MMM dd hh:mm") );
 
         default: return TimeStampUnknown;
 

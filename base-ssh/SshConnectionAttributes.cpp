@@ -37,7 +37,7 @@ namespace Ssh
     }
 
     //_____________________________________________________________
-    void ConnectionAttributes::setTunnels( const TunnelAttributes::List attributesList )
+    void ConnectionAttributes::setTunnels( const TunnelAttributes::List &attributesList )
     {
         tunnels_.clear();
         for( const auto& attributes:attributesList )

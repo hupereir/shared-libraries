@@ -90,7 +90,7 @@ namespace Private
         { return widgetDragMonitor_; }
 
         //* option name (needed to store sticky and stays-on-top state)
-        void setOptionName( QString value )
+        void setOptionName( const QString &value )
         {
             stickyOptionName_ = value + "_STICKY";
             staysOnTopOptionName_ = value + "_STAYS_ON_TOP";
@@ -122,7 +122,7 @@ namespace Private
         private:
 
         //* update context menu
-        void _updateContextMenu( const QPoint& );
+        void _updateContextMenu( QPoint  );
 
         //* toggle stays on top
         void _toggleStaysOnTop( bool );

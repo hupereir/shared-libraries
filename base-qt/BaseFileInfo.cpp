@@ -122,7 +122,7 @@ QDomElement BaseFileInfo::domElement( QDomDocument& document ) const
 mode_t BaseFileInfo::unixPermissions( QFile::Permissions value )
 {
     return std::accumulate( permissionMap.begin(), permissionMap.end(), 0,
-        [value]( int permissions, const PermissionPair& pair )
+        [value]( int permissions, PermissionPair pair )
         { return (value&pair.second) ? std::move( permissions )|pair.first : std::move( permissions ); } );
 }
 
@@ -132,7 +132,7 @@ QFile::Permissions BaseFileInfo::permissions( mode_t value )
 {
     return std::accumulate(
         permissionMap.begin(), permissionMap.end(), (QFile::Permissions) 0,
-        [value]( QFile::Permissions permissions, const PermissionPair& pair )
+        [value]( QFile::Permissions permissions, PermissionPair pair )
         { return (value&pair.first) ? std::move( permissions )|pair.second : std::move( permissions ); } );
 }
 

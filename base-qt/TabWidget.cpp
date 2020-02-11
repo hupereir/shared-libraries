@@ -80,7 +80,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
 TabWidget::~TabWidget() = default;
 
 //___________________________________________________________
-void TabWidget::setTitle( QString title )
+void TabWidget::setTitle( const QString &title )
 {
     title_ = title;
     dock_->setWindowTitle( title );
@@ -212,7 +212,7 @@ void TabWidget::_toggleSticky( bool state )
 }
 
 //______________________________________________________________________
-void TabWidget::_updateContextMenu( const QPoint& position )
+void TabWidget::_updateContextMenu( QPoint position )
 {
 
     Debug::Throw( QStringLiteral("TabWidget::_updateContextMenu.\n") );

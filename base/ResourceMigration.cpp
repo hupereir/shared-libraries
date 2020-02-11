@@ -25,13 +25,13 @@
 #include <QDir>
 
 //_________________________________________________________
-ResourceMigration::ResourceMigration( File source ):
+ResourceMigration::ResourceMigration( const File &source ):
     Counter( QStringLiteral("ResourceMigration") ),
     source_( source )
 { Debug::Throw( QStringLiteral("ResourceMigration::ResourceMigration.\n") ); }
 
 //_________________________________________________________
-bool ResourceMigration::migrate( File destination ) const
+bool ResourceMigration::migrate( const File &destination ) const
 {
 
     // check source

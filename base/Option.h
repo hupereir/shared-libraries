@@ -84,7 +84,7 @@ class BASE_EXPORT Option:private Base::Counter<Option>
     { return flags_; }
 
     //* flags
-    bool hasFlag( const Flag& flag ) const
+    bool hasFlag( Option::Flag flag ) const
     { return flags_ & flag; }
 
     //* current

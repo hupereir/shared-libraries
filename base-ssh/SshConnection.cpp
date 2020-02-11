@@ -67,7 +67,7 @@ namespace Ssh
         QString commandMessage( const Connection::CommandList& commands )
         {
             return std::accumulate( commands.begin(), commands.end(), QString(),
-                []( QString in, const Connection::Command& command ) { return std::move( in ) + commandMessage( command ) + '\n'; } );
+                []( QString in, Connection::Command command ) { return std::move( in ) + commandMessage( command ) + '\n'; } );
         }
 
     }
@@ -614,7 +614,7 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_notifyError( QString error )
+    void Connection::_notifyError( const QString &error )
     {
         Debug::Throw(0) << "Ssh::Connection::_notifyError: " << error << endl;
         error_ = error;
@@ -623,14 +623,14 @@ namespace Ssh
     }
 
     //_______________________________________________
-    void Connection::_notifyMessage( QString message )
+    void Connection::_notifyMessage( const QString &message )
     {
         Debug::Throw() << "Ssh::Connection::_notifyMessage: " << message << endl;
         emit this->message( message );
     }
 
     //_______________________________________________
-    void Connection::_notifyDebug( QString message )
+    void Connection::_notifyDebug( const QString &message )
     { Debug::Throw() << message << endl; }
 
     //_______________________________________________
@@ -666,7 +666,7 @@ namespace Ssh
             {
                 auto tunnel = new Tunnel( this, tcpSocket );
                 tunnel->sshSocket()->setLatency( tunnelLatency_);
-                tunnel->sshSocket()->setLocalHost( "localhost", iter->localPort() );
+                tunnel->sshSocket()->setLocalHost( QStringLiteral("localhost"), iter->localPort() );
                 tunnel->sshSocket()->connectToHost( session_.get(), iter->host(), iter->remotePort() );
 
                 connect( tunnel, &Tunnel::error, this, &Connection::_notifyError );

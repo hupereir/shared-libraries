@@ -35,7 +35,7 @@ class BASE_FILESYSTEM_EXPORT RenameFileDialog: public CustomDialog
     public:
 
     //* constructor
-    explicit RenameFileDialog( QWidget* parent, FileRecord );
+    explicit RenameFileDialog( QWidget* parent, const FileRecord &);
 
     //* new file name
     File file() const;

@@ -94,7 +94,7 @@ bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 }
 
 //____________________________________________
-BaseApplication::BaseApplication( QObject* parent, CommandLineArguments arguments ) :
+BaseApplication::BaseApplication( QObject* parent, const CommandLineArguments &arguments ) :
     BaseCoreApplication( parent, arguments )
 {
 
@@ -150,7 +150,7 @@ bool BaseApplication::realizeWidget()
 }
 
 //_______________________________________________
-CommandLineParser BaseApplication::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings ) const
+CommandLineParser BaseApplication::commandLineParser( const CommandLineArguments &arguments, bool ignoreWarnings ) const
 {
 
     Debug::Throw() << "BaseApplication::commandLineParser" << endl;
@@ -161,9 +161,9 @@ CommandLineParser BaseApplication::commandLineParser( CommandLineArguments argum
     // this may be system dependent, and vary from one Qt version to the other,
     // but is not very important. They are listed here only to avoid warnings from the application.
     out.setGroup( CommandLineParser::qtGroupName );
-    out.registerOption( "-style", "string", QObject::tr( "Qt widget style" ) );
-    out.registerOption( "-graphicssystem", QObject::tr( "string" ), QObject::tr( "Qt drawing backend (native|raster)" ) );
-    out.registerOption( "-platform", "string", QObject::tr( "Qt platform" ) );
+    out.registerOption( QStringLiteral("-style"), QStringLiteral("string"), QObject::tr( "Qt widget style" ) );
+    out.registerOption( QStringLiteral("-graphicssystem"), QObject::tr( "string" ), QObject::tr( "Qt drawing backend (native|raster)" ) );
+    out.registerOption( QStringLiteral("-platform"), QStringLiteral("string"), QObject::tr( "Qt platform" ) );
 
     if( !arguments.isEmpty() )
     { out.parse( arguments, ignoreWarnings ); }
@@ -208,8 +208,8 @@ void BaseApplication::_about()
 
     // modify version to remove qt4 for version
     auto version( applicationVersion() );
-    if( version.indexOf( "qt4_" ) >= 0 )
-    { version = version.replace( "qt4_", "" ) + " (qt4)"; }
+    if( version.indexOf( QLatin1String("qt4_") ) >= 0 )
+    { version = version.replace( QLatin1String("qt4_"), QLatin1String("") ) + " (qt4)"; }
 
     QString buffer;
     QTextStream in( &buffer, QIODevice::WriteOnly );
@@ -327,9 +327,9 @@ void BaseApplication::_updateFonts()
             settings.sync();
 
             // generic font
-            if( !fontFound && settings.contains( "font" ) )
+            if( !fontFound && settings.contains( QStringLiteral("font") ) )
             {
-                auto fontName( settings.value( "font" ).toStringList().join( "," ) );
+                auto fontName( settings.value( QStringLiteral("font") ).toStringList().join( QStringLiteral(",") ) );
                 QFont font;
                 font.fromString( fontName );
                 qApp->setFont( font );
@@ -340,9 +340,9 @@ void BaseApplication::_updateFonts()
             }
 
             // fixed fonts
-            if( useFixedFonts() && !fixedFontFound && settings.contains( "fixed" ))
+            if( useFixedFonts() && !fixedFontFound && settings.contains( QStringLiteral("fixed") ))
             {
-                auto fixedFontName( settings.value( "fixed" ).toStringList().join( "," ) );
+                auto fixedFontName( settings.value( QStringLiteral("fixed") ).toStringList().join( QStringLiteral(",") ) );
                 QFont font;
                 font.fromString( fixedFontName );
                 fixedFontFound = true;

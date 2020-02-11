@@ -38,7 +38,7 @@ class BASE_SERVER_EXPORT BaseApplication: public BaseCoreApplication
     public:
 
     //* constructor
-    explicit BaseApplication( QObject* parent, CommandLineArguments arguments = CommandLineArguments() );
+    explicit BaseApplication( QObject* parent, const CommandLineArguments &arguments = CommandLineArguments() );
 
     //* initialize application manager
     bool initApplicationManager() override;
@@ -83,7 +83,7 @@ class BASE_SERVER_EXPORT BaseApplication: public BaseCoreApplication
     //@{
 
     //* command line parser
-    CommandLineParser commandLineParser( CommandLineArguments arguments = CommandLineArguments(), bool ignoreWarnings = true ) const override;
+    CommandLineParser commandLineParser( const CommandLineArguments &arguments = CommandLineArguments(), bool ignoreWarnings = true ) const override;
 
     // application icon
     virtual QIcon applicationIcon() const = 0;

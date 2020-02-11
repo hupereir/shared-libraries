@@ -64,14 +64,14 @@ DefaultFolders::DefaultFolders():
 
     // there are discrepencies for folder icon names between icon themes
     // try to deal with major ones
-    if( QIcon::hasThemeIcon( "folder-download" ) ) iconNames_.insert( Type::Downloads, "folder-download" );
-    else iconNames_.insert( Type::Downloads, "folder-downloads" );
+    if( QIcon::hasThemeIcon( QStringLiteral("folder-download") ) ) iconNames_.insert( Type::Downloads, QStringLiteral("folder-download") );
+    else iconNames_.insert( Type::Downloads, QStringLiteral("folder-downloads") );
 
-    if( QIcon::hasThemeIcon( "folder-pictures" ) ) iconNames_.insert( Type::Pictures, "folder-pictures" );
-    else iconNames_.insert( Type::Pictures, "folder-image" );
+    if( QIcon::hasThemeIcon( QStringLiteral("folder-pictures") ) ) iconNames_.insert( Type::Pictures, QStringLiteral("folder-pictures") );
+    else iconNames_.insert( Type::Pictures, QStringLiteral("folder-image") );
 
-    if( QIcon::hasThemeIcon( "folder-videos" ) ) iconNames_.insert( Type::Videos, "folder-videos" );
-    else iconNames_.insert( Type::Videos, "folder-video" );
+    if( QIcon::hasThemeIcon( QStringLiteral("folder-videos") ) ) iconNames_.insert( Type::Videos, QStringLiteral("folder-videos") );
+    else iconNames_.insert( Type::Videos, QStringLiteral("folder-video") );
 
     // path map
     folders_.insert( Util::home(), Type::Home );
@@ -85,9 +85,9 @@ DefaultFolders::DefaultFolders():
 
     #if defined( Q_OS_LINUX )
     // use QSettings to get standard directories from XDG
-    QSettings settings( QString( "%1/.config/user-dirs.dirs" ).arg( Util::home() ), QSettings::IniFormat );
+    QSettings settings( QStringLiteral( "%1/.config/user-dirs.dirs" ).arg( Util::home() ), QSettings::IniFormat );
     settings.sync();
-    _insert( settings.value( "XDG_DOWNLOAD_DIR", "$HOME/Downloads" ).value<QString>().replace( "$HOME", Util::home() ), Type::Downloads );
+    _insert( settings.value( QStringLiteral("XDG_DOWNLOAD_DIR"), "$HOME/Downloads" ).value<QString>().replace( QLatin1String("$HOME"), Util::home() ), Type::Downloads );
     #endif
 
 }

@@ -124,7 +124,7 @@ class BASE_QT_EXPORT IconView: public QAbstractItemView, private Base::Counter<I
     }
 
     //* set icon size manually and disable option
-    void setIconSize( const QSize& size )
+    void setIconSize( QSize size )
     {
         if( size != iconSize() )
         {
@@ -200,7 +200,7 @@ class BASE_QT_EXPORT IconView: public QAbstractItemView, private Base::Counter<I
     void doItemsLayout() override;
 
     //* find next occurence of TextSelection
-    void find( TextSelection selection );
+    void find( const TextSelection &selection );
 
     //* find current selection forward
     void findSelectionForward()
@@ -299,7 +299,7 @@ class BASE_QT_EXPORT IconView: public QAbstractItemView, private Base::Counter<I
     void timerEvent( QTimerEvent* ) override;
 
     //* selection
-    QModelIndexList _selectedIndexes( const QRect& ) const;
+    QModelIndexList _selectedIndexes( QRect  ) const;
 
     //* hover index
     const QModelIndex& _hoverIndex() const

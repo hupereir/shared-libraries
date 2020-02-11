@@ -65,7 +65,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     // previous file history size
     OptionSpinBox *spinbox;
     hLayout->addWidget( new QLabel( tr( "Recent files history size" ), box ) );
-    hLayout->addWidget( spinbox = new OptionSpinBox( box, "DB_SIZE" ) );
+    hLayout->addWidget( spinbox = new OptionSpinBox( box, QStringLiteral("DB_SIZE") ) );
     hLayout->addStretch(1);
     spinbox->setSpecialValueText( tr( "Unlimited" ) );
     spinbox->setMinimum( 0 );
@@ -75,7 +75,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     // sort previous files by date
     OptionCheckBox* checkbox;
-    vLayout->addWidget( checkbox = new OptionCheckBox( tr( "Sort recent files by date" ), box, "SORT_FILES_BY_DATE" ) );
+    vLayout->addWidget( checkbox = new OptionCheckBox( tr( "Sort recent files by date" ), box, QStringLiteral("SORT_FILES_BY_DATE") ) );
     checkbox->setToolTip( tr( "Sort files by date rather than name in Open Previous menu." ) );
     addOptionWidget( checkbox );
 

@@ -24,7 +24,7 @@
 #include <QLabel>
 
 //_____________________________________________________
-RenameFileDialog::RenameFileDialog( QWidget* parent, FileRecord record ):
+RenameFileDialog::RenameFileDialog( QWidget* parent, const FileRecord &record ):
     CustomDialog( parent )
 {
 

@@ -117,7 +117,7 @@ class BASE_EXPORT File
     { return permissionsString( permissions() ); }
 
     //* permission string
-    QString permissionsString( const QFile::Permissions& ) const;
+    QString permissionsString( QFile::Permissions  ) const;
 
     //* file size
     qint64 fileSize() const;

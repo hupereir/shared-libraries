@@ -81,13 +81,13 @@ class BASE_QT_EXPORT BaseFileInformationDialog: public CustomDialog
     void setSize( qint64 );
 
     //* created
-    void setCreated( TimeStamp );
+    void setCreated( const TimeStamp &);
 
     //* accessed
-    void setAccessed( TimeStamp );
+    void setAccessed( const TimeStamp &);
 
     //* modified
-    void setModified( TimeStamp );
+    void setModified( const TimeStamp &);
 
     //* permissions
     void setPermissions( QFile::Permissions );

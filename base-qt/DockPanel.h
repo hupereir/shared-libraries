@@ -73,10 +73,10 @@ class BASE_QT_EXPORT DockPanel: public QWidget, private Base::Counter<DockPanel>
     //@{
 
     //* option name (needed to store sticky and stays-on-top state)
-    void setOptionName( QString );
+    void setOptionName( const QString &);
 
     //* set detachable group panel title
-    void setTitle( QString );
+    void setTitle( const QString &);
 
     //@}
 

@@ -129,7 +129,7 @@ namespace SpellCheck
         dictionary_ = dictionary;
 
         // update personal dictionary
-        QString personal_dictionary = Util::env( "HOME" ) + "/.aspell." + dictionary + ".pws";
+        QString personal_dictionary = Util::env( QStringLiteral("HOME") ) + "/.aspell." + dictionary + ".pws";
         aspell_config_replace(spellConfig_.get(), "personal", personal_dictionary.toLatin1().constData() );
 
         // reset
@@ -278,7 +278,7 @@ namespace SpellCheck
         // check text size
         if( !text_.size() )
         {
-            word_ = "";
+            word_ = QLatin1String("");
             error_ = QObject::tr( "no text to check" );
             return false;
         }

@@ -146,7 +146,7 @@ namespace Base
     }
 
     //_________________________________________________________
-    void HelpDialog::_openLink( QString link )
+    void HelpDialog::_openLink( const QString &link )
     {
         Debug::Throw() << "HelpDialog::_openLink - link: " << link << endl;
         QDesktopServices::openUrl( QUrl(link) );

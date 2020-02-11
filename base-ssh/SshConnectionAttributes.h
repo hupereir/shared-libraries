@@ -121,7 +121,7 @@ namespace Ssh
         { port_ = port; }
 
         //* set tunnels
-        void setTunnels( const TunnelAttributes::List );
+        void setTunnels( const TunnelAttributes::List &);
 
         //* add tunnel
         void addTunnel( const TunnelAttributes& );

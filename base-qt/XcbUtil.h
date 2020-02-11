@@ -85,7 +85,7 @@ class BASE_QT_EXPORT XcbUtil: private XcbDefines, private Base::NonCopyable<XcbU
     //* return formated window id
     template<class T>
     QString windowIdString( const T& id ) const
-    { return QString( "0x%1" ).arg(quint64(id), 0, 16 ); }
+    { return QStringLiteral( "0x%1" ).arg(quint64(id), 0, 16 ); }
 
     //* return true if atom is found in NET_WM_STATE
     bool hasState( QWidget* widget, AtomId atom ) const

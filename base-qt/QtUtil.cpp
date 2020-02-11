@@ -34,7 +34,7 @@
 #include <QWindow>
 
 //____________________________________________________________
-void bindToGeometry( QPoint& position, const QSize& size, const QRect& geometry )
+void bindToGeometry( QPoint& position, QSize size, QRect geometry )
 {
     if( position.x() + size.width() > geometry.right()+1 ) position.setX( geometry.right() + 1 - size.width() );
     if( position.y() + size.height() > geometry.bottom()+1 ) position.setY( geometry.bottom() + 1 - size.height() );
@@ -71,7 +71,7 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
 }
 
 //____________________________________________________________
-QPoint QtUtil::centerOnPointer( const QSize& size )
+QPoint QtUtil::centerOnPointer( QSize size )
 {
     Debug::Throw( QStringLiteral("QtUtil::centerOnPointer.\n") );
 
@@ -86,7 +86,7 @@ QPoint QtUtil::centerOnPointer( const QSize& size )
 
 
 //____________________________________________________________
-QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
+QPoint QtUtil::centerOnWidget( QSize size, QWidget* widget )
 {
     Debug::Throw( QStringLiteral("QtUtil::centerOnWidget.\n") );
     if( !widget ) return centerOnDesktop( size );
@@ -108,7 +108,7 @@ QPoint QtUtil::centerOnWidget( const QSize& size, QWidget* widget )
 }
 
 //____________________________________________________________
-QPoint QtUtil::centerOnDesktop( const QSize& size )
+QPoint QtUtil::centerOnDesktop( QSize size )
 {
     Debug::Throw( QStringLiteral("QtUtil::centerOnDesktop.\n") );
 

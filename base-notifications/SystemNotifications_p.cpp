@@ -109,14 +109,14 @@ namespace Private
         if( !dbus.isConnected() ) return;
 
         // connections
-        dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","NotificationClosed", this, SLOT(_notificationClosed(quint32,quint32)) );
-        dbus.connect( "org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications","ActionInvoked", this, SLOT(_checkActionInvoked(quint32,QString)) );
+        dbus.connect( QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QStringLiteral("org.freedesktop.Notifications"),QStringLiteral("NotificationClosed"), this, SLOT(_notificationClosed(quint32,quint32)) );
+        dbus.connect( QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QStringLiteral("org.freedesktop.Notifications"),QStringLiteral("ActionInvoked"), this, SLOT(_checkActionInvoked(quint32,QString)) );
 
         // create new interface
         dbusInterface_.reset( new QDBusInterface(
-            "org.freedesktop.Notifications",
-            "/org/freedesktop/Notifications",
-            "org.freedesktop.Notifications",
+            QStringLiteral("org.freedesktop.Notifications"),
+            QStringLiteral("/org/freedesktop/Notifications"),
+            QStringLiteral("org.freedesktop.Notifications"),
             dbus ) );
 
         #endif
@@ -160,10 +160,10 @@ namespace Private
         }
 
         if( notification.flags() & Notification::Transient )
-        { hints.insert( "transient", QVariant( true ) ); }
+        { hints.insert( QStringLiteral("transient"), QVariant( true ) ); }
 
         if( !notification.category().isEmpty() )
-        { hints.insert( "category", QVariant( notification.category() ) ); }
+        { hints.insert( QStringLiteral("category"), QVariant( notification.category() ) ); }
 
         // copy application name
         if( notification.applicationName().isEmpty() ) notification.setApplicationName( applicationName_ );
@@ -179,7 +179,7 @@ namespace Private
         { id = lastNotificationId_; }
 
         // send
-        auto pendingCall = dbusInterface_->asyncCall( "Notify", "Notification", (uint) id,
+        auto pendingCall = dbusInterface_->asyncCall( QStringLiteral("Notify"), "Notification", (uint) id,
             notification.applicationName(),
             notification.summary(),
             notification.body(),
@@ -219,7 +219,7 @@ namespace Private
     }
 
     //____________________________________________
-    void SystemNotificationsP::_checkActionInvoked( quint32 id, QString key )
+    void SystemNotificationsP::_checkActionInvoked( quint32 id, const QString &key )
     {
         // find matching notification in map, and check action key
         auto iter = notificationIds_.find( id );

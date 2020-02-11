@@ -196,7 +196,7 @@ QMimeData* FileSystemModel::mimeData(const QModelIndexList &indexes) const
             QString fullText;
             QTextStream buffer( &fullText );
             for( const auto& filename:filenames )
-            { buffer << QString( "file://%1" ).arg(filename) << endl; }
+            { buffer << QStringLiteral( "file://%1" ).arg(filename) << endl; }
             mimeData->setText( fullText );
         }
 
@@ -204,7 +204,7 @@ QMimeData* FileSystemModel::mimeData(const QModelIndexList &indexes) const
         {
             QList<QUrl> urlList;
             std::transform( filenames.begin(), filenames.end(), std::back_inserter( urlList ),
-                []( const QString& filename ) { return QUrl( QString( "file://%1" ).arg(filename) ); } );
+                []( const QString& filename ) { return QUrl( QStringLiteral( "file://%1" ).arg(filename) ); } );
             mimeData->setUrls( urlList );
         }
 

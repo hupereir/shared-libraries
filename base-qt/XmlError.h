@@ -69,7 +69,7 @@ class BASE_QT_EXPORT XmlError final: private Base::Counter<XmlError>
     {
 
         QString out;
-        if( !file_.isEmpty() ) out = QString( "%1: " ).arg( file_ );
+        if( !file_.isEmpty() ) out = QStringLiteral( "%1: " ).arg( file_ );
         out += QString( QObject::tr( "message: %1 at line %2, column %3" ) ).arg( error_ ).arg( line_ ).arg( column_ );
         return out;
 
@@ -117,7 +117,7 @@ class BASE_QT_EXPORT XmlError final: private Base::Counter<XmlError>
         for( const auto& error:list )
         { out.append( error.toString() ); }
 
-        return out.join( "\n" );
+        return out.join( QStringLiteral("\n") );
     }
 
     private:

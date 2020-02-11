@@ -51,7 +51,7 @@ class BASE_QT_EXPORT ScratchFileRemoveDialog: public CustomDialog
     void _updateActions();
 
     //* context menu
-    void _updateContextMenu( const QPoint& );
+    void _updateContextMenu( QPoint  );
 
     //* install actions
     void _installActions();

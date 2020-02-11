@@ -50,10 +50,10 @@ class BASE_QT_EXPORT OptionDialog: public CustomDialog
     void _reload();
 
     //* option modified
-    void _optionModified( Options::Pair );
+    void _optionModified( const Options::Pair &);
 
     //* option modified
-    void _specialOptionModified( Options::Pair );
+    void _specialOptionModified( const Options::Pair &);
 
     //* option model
     OptionModel model_;

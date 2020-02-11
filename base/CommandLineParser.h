@@ -56,7 +56,7 @@ class BASE_EXPORT CommandLineParser: private Base::Counter<CommandLineParser>
         public:
 
         //* constructor
-        explicit Tag( QString longName, QString shortName = QString() ):
+        explicit Tag( const QString &longName, const QString &shortName = QString() ):
             Counter( QStringLiteral("CommandLineParser::Tag") ),
             longName_( longName ),
             shortName_( shortName )
@@ -145,7 +145,7 @@ class BASE_EXPORT CommandLineParser: private Base::Counter<CommandLineParser>
     //@{
 
     //* register group
-    void setGroup( QString groupName )
+    void setGroup( const QString &groupName )
     {
         currentGroup_ = groupName;
         if( !groupNames_.contains( currentGroup_ ) )
@@ -153,7 +153,7 @@ class BASE_EXPORT CommandLineParser: private Base::Counter<CommandLineParser>
     }
 
     //* register option
-    void registerOption( const QString& tag, const QString& type, QString helpText )
+    void registerOption( const QString& tag, const QString& type, const QString &helpText )
     { registerOption( Tag( tag ), type, helpText ); }
 
     //* register option
@@ -194,7 +194,7 @@ class BASE_EXPORT CommandLineParser: private Base::Counter<CommandLineParser>
         public:
 
         //* constructor
-        explicit Flag( QString helpText = QString() ):
+        explicit Flag( const QString &helpText = QString() ):
             Counter( QStringLiteral("CommandLineParser::Flag") ),
             helpText_( helpText )
         {}
@@ -217,7 +217,7 @@ class BASE_EXPORT CommandLineParser: private Base::Counter<CommandLineParser>
         public:
 
         //* constructor
-        explicit Option( QString type = QString(), QString helpText = QString() ):
+        explicit Option( const QString &type = QString(), const QString &helpText = QString() ):
             Flag( helpText ),
             type_( type )
         {}

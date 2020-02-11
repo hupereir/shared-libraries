@@ -128,7 +128,7 @@ namespace Private
         // editor
         hLayout->addWidget( editor_ = new QLineEdit( this ) );
         editor_->installEventFilter( this );
-        editor_->setText( "1" );
+        editor_->setText( QStringLiteral("1") );
 
         // validator
         validator_.setBottom( 1 );

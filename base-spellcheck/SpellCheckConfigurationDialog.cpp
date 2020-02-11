@@ -35,7 +35,7 @@ namespace SpellCheck
 
         // base configuration
         // TODO: move icon names to enum
-        auto page = &addPage( IconEngine::get( "tools-check-spelling" ), tr( "Configuration" ), tr( "Aspell configuration" ) );
+        auto page = &addPage( IconEngine::get( QStringLiteral("tools-check-spelling") ), tr( "Configuration" ), tr( "Aspell configuration" ) );
         auto spellCheckConfiguration = new SpellCheckConfiguration( page );
         page->layout()->addWidget( spellCheckConfiguration );
         addOptionWidget( spellCheckConfiguration );

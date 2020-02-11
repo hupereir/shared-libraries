@@ -190,8 +190,8 @@ namespace Transparency
 
         // colors
         QColor color;
-        _setForegroundColor( (color = QColor( XmlOptions::get().get<Base::Color>("TRANSPARENCY_FOREGROUND_COLOR"))).isValid() ? color:palette().color( QPalette::WindowText ) );
-        _setShadowColor( QColor( XmlOptions::get().get<Base::Color>("TRANSPARENCY_SHADOW_COLOR")) );
+        _setForegroundColor( (color = QColor( XmlOptions::get().get<Base::Color>(QStringLiteral("TRANSPARENCY_FOREGROUND_COLOR")))).isValid() ? color:palette().color( QPalette::WindowText ) );
+        _setShadowColor( QColor( XmlOptions::get().get<Base::Color>(QStringLiteral("TRANSPARENCY_SHADOW_COLOR"))) );
         _setForegroundIntensity( XmlOptions::get().get<int>( QStringLiteral("TRANSPARENCY_FOREGROUND_INTENSITY") ) );
 
         // shadow offset
@@ -201,7 +201,7 @@ namespace Transparency
         inverseColorsAction_->setChecked( XmlOptions::get().get<bool>( QStringLiteral("TRANSPARENCY_INVERSE_COLORS") ) );
 
         // tint
-        auto tintColor = XmlOptions::get().get<Base::Color>( "TRANSPARENCY_TINT_COLOR" );
+        auto tintColor = XmlOptions::get().get<Base::Color>( QStringLiteral("TRANSPARENCY_TINT_COLOR") );
         int tintIntensity(  XmlOptions::get().get<int>( QStringLiteral("TRANSPARENCY_TINT_INTENSITY") ) );
         if( tintColor.isValid() && tintIntensity )
         {

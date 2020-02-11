@@ -99,7 +99,7 @@ namespace Private
         void _notificationClosed( quint32, quint32 );
 
         //* check action invoked
-        void _checkActionInvoked( quint32, QString );
+        void _checkActionInvoked( quint32, const QString &);
 
         #endif
 

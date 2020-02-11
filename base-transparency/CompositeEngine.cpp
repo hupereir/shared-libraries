@@ -74,7 +74,7 @@ namespace Transparency
         xcb_connection_t* connection( XcbUtil::get().connection<xcb_connection_t>() );
 
         // atom
-        const QString atomName( QString( "_NET_WM_CM_S%1" ).arg( XcbUtil::get().defaultScreenNumber() ) );
+        const QString atomName( QStringLiteral( "_NET_WM_CM_S%1" ).arg( XcbUtil::get().defaultScreenNumber() ) );
         xcb_atom_t atom( *XcbUtil::get().atom<xcb_atom_t>( atomName ) );
 
         // selection owner

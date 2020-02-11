@@ -61,7 +61,7 @@ namespace Base
         void _updateConfiguration();
 
         //* open link
-        void _openLink( QString );
+        void _openLink( const QString &);
 
         //* model
         HelpModel model_;

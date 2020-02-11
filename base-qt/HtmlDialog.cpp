@@ -86,7 +86,7 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
 }
 
 //__________________________________________________
-void HtmlDialog::setOptionWidgets( QList<QWidget*> widgets )
+void HtmlDialog::setOptionWidgets( const QList<QWidget*> &widgets )
 {
 
     Debug::Throw( QStringLiteral("HtmlDialog::setOptionWidgets\n") );
@@ -123,5 +123,5 @@ void HtmlDialog::_browseCommand()
 void HtmlDialog::_saveCommands()
 {
     Debug::Throw( QStringLiteral("HtmlDialog::_saveCommands.\n") );
-    XmlOptions::get().add( "HTML_COMMAND", Option( command(), Option::Flag::Recordable|Option::Flag::Current ) );
+    XmlOptions::get().add( QStringLiteral("HTML_COMMAND"), Option( command(), Option::Flag::Recordable|Option::Flag::Current ) );
 }

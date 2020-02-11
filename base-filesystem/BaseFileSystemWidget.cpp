@@ -105,7 +105,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     setLayout( layout );
 
     // toolbar
-    auto toolbar = new Local::ToolBar( tr( "Navigation Toolbar" ), this, "NAVIGATION_TOOLBAR" );
+    auto toolbar = new Local::ToolBar( tr( "Navigation Toolbar" ), this, QStringLiteral("NAVIGATION_TOOLBAR") );
     layout->addWidget( toolbar );
 
     // path editor
@@ -123,7 +123,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
 
     pathEditor_->setRootPathList( rootPathList );
 
-    connect( pathEditor_, &PathEditor::pathChanged, [this](File){ _update(); } );
+    connect( pathEditor_, &PathEditor::pathChanged, [this](const File&){ _update(); } );
     connect( pathEditor_, &PathEditor::pathChanged, this, &BaseFileSystemWidget::_updateNavigationActions );
     connect( pathEditor_, &PathEditor::pathChanged, this, &BaseFileSystemWidget::_updateFileSystemWatcher );
 
@@ -218,7 +218,7 @@ void BaseFileSystemWidget::clear()
 }
 
 //_________________________________________________________
-void BaseFileSystemWidget::setPath( File path, bool forced )
+void BaseFileSystemWidget::setPath( const File &path, bool forced )
 {
 
     Debug::Throw() << "BaseFileSystemWidget::setPath - path: " << path << endl;
@@ -419,7 +419,7 @@ void BaseFileSystemWidget::_showToolTip( const QModelIndex& index )
 void BaseFileSystemWidget::_toggleShowHiddenFiles( bool state )
 {
     Debug::Throw( QStringLiteral("BaseFileSystemWidget::_toggleShowHiddenFiles.\n") );
-    XmlOptions::get().set( "SHOW_HIDDEN_FILES", state );
+    XmlOptions::get().set( QStringLiteral("SHOW_HIDDEN_FILES"), state );
 }
 
 //______________________________________________________

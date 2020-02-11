@@ -58,7 +58,7 @@ class BASE_QT_EXPORT BrowsedLineEditor: public QWidget, private Base::Counter<Br
 
     //* set target application
     /** it is used to browse application path and update, if not found */
-    void setTargetApplication( File );
+    void setTargetApplication( const File &);
 
     //* native dialogs
     void setUseNativeFileDialog( bool value )
@@ -69,7 +69,7 @@ class BASE_QT_EXPORT BrowsedLineEditor: public QWidget, private Base::Counter<Br
     { acceptMode_ = mode; }
 
     //* file mode
-    void setFileMode( const QFileDialog::FileMode& mode )
+    void setFileMode( QFileDialog::FileMode mode )
     { fileMode_ = mode; }
 
     //@}

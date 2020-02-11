@@ -55,7 +55,7 @@ class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<Custo
     }
 
     //* get name from toobar area
-    static QString areaToName( const Qt::ToolBarArea& value )
+    static QString areaToName( Qt::ToolBarArea value )
     {
 
         for( auto&& iter = _toolbarAreas().begin(); iter != _toolbarAreas().end(); iter++ )

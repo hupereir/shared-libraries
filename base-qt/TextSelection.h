@@ -79,11 +79,11 @@ class BASE_QT_EXPORT TextSelection
     { flags_ = flags; }
 
     //* flags
-    bool flag( const Flag& flag ) const
+    bool flag( TextSelection::Flag flag ) const
     { return flags_ & flag; }
 
     //* flags
-    void setFlag( const Flag& flag, bool value )
+    void setFlag( TextSelection::Flag flag, bool value )
     {
         if( value ) flags_ |= flag;
         else flags_ &= (~flag);

@@ -35,7 +35,7 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
         {
 
             case Icon: return iconPair.first;
-            case Files: return iconPair.second.files().join( "\n" );
+            case Files: return iconPair.second.files().join( QStringLiteral("\n") );
             case Sizes: return _availableSizes( iconPair );
 
             default: break;
@@ -94,7 +94,7 @@ bool IconCacheModel::SortFTor::operator () ( Base::IconPair first, Base::IconPai
     {
 
         case Icon: return first.first < second.first;
-        case Files: return first.second.files().join( "" ) < second.second.files().join( "" );
+        case Files: return first.second.files().join( QLatin1String("") ) < second.second.files().join( QLatin1String("") );
         case Sizes: return _availableSizes( first ) < _availableSizes( second );
         default: return true;
     }

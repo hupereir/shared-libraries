@@ -50,7 +50,7 @@ class BASE_QT_EXPORT IconSizeComboBox: public QComboBox, private Base::Counter<I
     //@{
 
     //* select icon size
-    void selectIconSize( const IconSize::Size& );
+    void selectIconSize( IconSize::Size  );
 
     //@}
 

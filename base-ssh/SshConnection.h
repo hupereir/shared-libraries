@@ -197,13 +197,13 @@ namespace Ssh
         void _disconnectTunnels();
 
         //* message handling
-        void _notifyMessage( QString );
+        void _notifyMessage( const QString &);
 
         //* error handling
-        void _notifyError( QString );
+        void _notifyError( const QString &);
 
         //* error handling
-        void _notifyDebug( QString );
+        void _notifyDebug( const QString &);
 
         //* new tcp connection (from QTcpServer)
         void _newConnection();

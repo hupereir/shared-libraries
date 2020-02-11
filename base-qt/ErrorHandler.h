@@ -38,7 +38,7 @@ class BASE_QT_EXPORT ErrorHandler: private Base::NonCopyable<ErrorHandler>
     static void initialize();
 
     //* adds a disabled message in the list
-    void disableMessage( QString message )
+    void disableMessage( const QString &message )
     { disabledMessages_.append( message ); }
 
     //* adds a disabled message in the list

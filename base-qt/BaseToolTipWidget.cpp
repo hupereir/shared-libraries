@@ -77,7 +77,7 @@ void BaseToolTipWidget::setDefaultDelay( int value )
 { if( value >= 0 ) defaultDelay_ = value; }
 
 //_____________________________________________
-void BaseToolTipWidget::setIndexRect( const QRect& rect )
+void BaseToolTipWidget::setIndexRect( QRect rect )
 {
     rect_ = rect;
     if( isVisible() && !hiddenTimer_.isActive() ) _adjustPosition();

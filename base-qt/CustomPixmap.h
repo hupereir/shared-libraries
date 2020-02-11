@@ -39,7 +39,7 @@ class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomP
     Q_DECLARE_FLAGS( Flags, Flag )
 
     //* constructor
-    explicit CustomPixmap( const QSize&, Flags flags = 0 );
+    explicit CustomPixmap( QSize , Flags flags = 0 );
 
     //* constructor
     explicit CustomPixmap( const QPixmap& pixmap ):
@@ -79,7 +79,7 @@ class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomP
     };
 
     //* rotation
-    CustomPixmap rotated( const Rotation& value ) const;
+    CustomPixmap rotated( CustomPixmap::Rotation value ) const;
 
     //* returns a transparent pixmap
     CustomPixmap transparent( qreal ) const;

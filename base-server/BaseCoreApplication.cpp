@@ -27,7 +27,7 @@
 #include <signal.h>
 
 //____________________________________________
-BaseCoreApplication::BaseCoreApplication( QObject* parent, CommandLineArguments arguments ) :
+BaseCoreApplication::BaseCoreApplication( QObject* parent, const CommandLineArguments &arguments ) :
     QObject( parent ),
     arguments_( arguments )
 {
@@ -58,7 +58,7 @@ BaseCoreApplication::~BaseCoreApplication()
 bool BaseCoreApplication::initApplicationManager()
 {
 
-    Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.get().join( " " ) << endl;
+    Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.get().join( QStringLiteral(" ") ) << endl;
 
     // check if already initialized
     if( _hasApplicationManager() ) return true;
@@ -68,20 +68,20 @@ bool BaseCoreApplication::initApplicationManager()
 
     // parse arguments
     auto parser( commandLineParser( arguments_ ) );
-    if( parser.hasFlag( "--help" ) )
+    if( parser.hasFlag( QStringLiteral("--help") ) )
     {
 
         usage();
         return false;
 
-    } else if( parser.hasFlag( "--version" ) ) {
+    } else if( parser.hasFlag( QStringLiteral("--version") ) ) {
 
         QTextStream(stdout)
             << "Qt: " << qVersion() << endl
             <<  applicationName() << ": " << applicationVersion() << endl;
         return false;
 
-    } else if( parser.hasFlag( "--no-server" ) ) {
+    } else if( parser.hasFlag( QStringLiteral("--no-server") ) ) {
 
         realizeWidget();
         return true;
@@ -114,7 +114,7 @@ bool BaseCoreApplication::realizeWidget()
 }
 
 //_______________________________________________
-CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings ) const
+CommandLineParser BaseCoreApplication::commandLineParser( const CommandLineArguments &arguments, bool ignoreWarnings ) const
 {
 
     Debug::Throw() << "BaseCoreApplication::commandLineParser" << endl;
@@ -122,8 +122,8 @@ CommandLineParser BaseCoreApplication::commandLineParser( CommandLineArguments a
     CommandLineParser out( Server::ApplicationManager::commandLineParser() );
 
     out.setGroup( CommandLineParser::applicationGroupName );
-    out.registerFlag( CommandLineParser::Tag( "--help", "-h" ), QObject::tr( "print this help and exit" ) );
-    out.registerFlag( CommandLineParser::Tag( "--version", "-v" ), QObject::tr( "print application version and exits" ) );
+    out.registerFlag( CommandLineParser::Tag( QStringLiteral("--help"), QStringLiteral("-h") ), QObject::tr( "print this help and exit" ) );
+    out.registerFlag( CommandLineParser::Tag( QStringLiteral("--version"), QStringLiteral("-v") ), QObject::tr( "print application version and exits" ) );
 
     if( !arguments.isEmpty() )
     { out.parse( arguments, ignoreWarnings ); }
@@ -140,14 +140,14 @@ void BaseCoreApplication::sendServerCommand( Server::ServerCommand::CommandType 
 }
 
 //__________________________________________________________________
-void BaseCoreApplication::sendServerCommand( Server::ServerCommand command )
+void BaseCoreApplication::sendServerCommand( const Server::ServerCommand &command )
 {
     Debug::Throw( QStringLiteral("BaseCoreApplication::sendServerCommand.\n") );
     if( _hasApplicationManager() ) _applicationManager().client().sendCommand( command );
 }
 
 //________________________________________________
-bool BaseCoreApplication::_processCommand( Server::ServerCommand command )
+bool BaseCoreApplication::_processCommand( const Server::ServerCommand &command )
 {
 
     Debug::Throw() << "BaseCoreApplication::_processCommand: " << command.commandName() << endl;
@@ -186,7 +186,7 @@ void BaseCoreApplication::_updateConfiguration()
 }
 
 //_______________________________________________
-void BaseCoreApplication::_usage( QString application, QString options ) const
+void BaseCoreApplication::_usage( const QString &application, const QString &options ) const
 {
     QTextStream( stdout ) << tr( "Usage: " ) << endl;
     QTextStream( stdout ) << "  " << application << " " << options << endl;

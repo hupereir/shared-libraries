@@ -69,7 +69,7 @@ namespace Server
         using List = QList<ServerCommand>;
 
         //* constructor
-        explicit ServerCommand( const ApplicationId& id = ApplicationId(), const CommandType& command = CommandType::None );
+        explicit ServerCommand( const ApplicationId& id = ApplicationId(), Server::ServerCommand::CommandType command = CommandType::None );
 
         //*@name accessors
         //@{
@@ -121,7 +121,7 @@ namespace Server
         { id_ = id; }
 
         //* command
-        void setCommand( const CommandType& command )
+        void setCommand( Server::ServerCommand::CommandType command )
         { command_ = command; }
 
         //* argument

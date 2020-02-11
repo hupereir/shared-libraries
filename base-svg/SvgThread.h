@@ -45,14 +45,14 @@ namespace Svg
         explicit SvgThread( QObject* );
 
         //* create style sheet
-        void createStyleSheet( QPalette palette )
+        void createStyleSheet( const QPalette &palette )
         {
             QMutexLocker lock( &mutex_ );
             renderer_.createStyleSheet( palette );
         }
 
         //* svg file
-        void setSvgFile( QString file )
+        void setSvgFile( const QString &file )
         {
             QMutexLocker lock( &mutex_ );
             renderer_.load( file );

@@ -80,7 +80,7 @@ class BASE_QT_EXPORT OpenWithDialog: public CustomDialog
     }
 
     //* file
-    void setFiles( const File::List value )
+    void setFiles( const File::List &value )
     {
         isLink_ = false;
         files_ = value;
@@ -94,7 +94,7 @@ class BASE_QT_EXPORT OpenWithDialog: public CustomDialog
     void setOptionName( const QString& value )
     {
         optionName_ = value;
-        CustomDialog::setOptionName( QString( "%1_DIALOG" ).arg( value ) );
+        CustomDialog::setOptionName( QStringLiteral( "%1_DIALOG" ).arg( value ) );
     }
 
     //* realize

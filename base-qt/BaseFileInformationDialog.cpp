@@ -161,20 +161,20 @@ void BaseFileInformationDialog::setType( const QString& value )
 //_________________________________________________________
 void BaseFileInformationDialog::setSize( qint64 size )
 {
-    if( size > 0 ) sizeItem_->setText( QString( "%1 (%2)" ).arg( File::sizeString( size ) ).arg( File::rawSizeString( size ) ) );
+    if( size > 0 ) sizeItem_->setText( QStringLiteral( "%1 (%2)" ).arg( File::sizeString( size ) ).arg( File::rawSizeString( size ) ) );
     else sizeItem_->setText( QString() );
 }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setCreated( TimeStamp timeStamp )
+void BaseFileInformationDialog::setCreated( const TimeStamp &timeStamp )
 { createdItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setAccessed( TimeStamp timeStamp )
+void BaseFileInformationDialog::setAccessed( const TimeStamp &timeStamp )
 { accessedItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________
-void BaseFileInformationDialog::setModified( TimeStamp timeStamp )
+void BaseFileInformationDialog::setModified( const TimeStamp &timeStamp )
 { modifiedItem_->setText( timeStamp.isValid() ? timeStamp.toString():QString() ); }
 
 //_________________________________________________________

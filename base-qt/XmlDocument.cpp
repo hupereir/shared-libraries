@@ -25,7 +25,7 @@
 //___________________________________________________________________
 XmlDocument::XmlDocument():
     Counter( QStringLiteral("XmlDocument") ),
-    topNodeTagName_( "Resources" )
+    topNodeTagName_( QStringLiteral("Resources") )
 {}
 
 //___________________________________________________________________

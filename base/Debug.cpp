@@ -88,7 +88,7 @@ void Debug::Throw( int level, const QString& str )
     if( _get().level_ >= level )
     {
         _get().debugStream_.get()
-            << TimeStamp::now().toString( "yyyy/MM/dd HH:mm:ss" ) << " "
+            << TimeStamp::now().toString( QStringLiteral("yyyy/MM/dd HH:mm:ss") ) << " "
             << str
             << flush;
     }
@@ -102,7 +102,7 @@ Debug::Stream& Debug::Throw( int level )
     {
 
         // add timestamp
-        _get().debugStream_.get() << TimeStamp::now().toString( "yyyy/MM/dd HH:mm:ss" ) << " ";
+        _get().debugStream_.get() << TimeStamp::now().toString( QStringLiteral("yyyy/MM/dd HH:mm:ss") ) << " ";
         return _get().debugStream_;
 
     } else return _get().nullStream_;

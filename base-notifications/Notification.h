@@ -109,7 +109,7 @@ class BASE_NOTIFICATIONS_EXPORT Notification
 
     //* merge two notifications
     void merge( const Notification& other )
-    { body_+= QString( "\n" ) + other.body_; }
+    { body_+= QStringLiteral( "\n" ) + other.body_; }
 
     //* flags
     void setFlag( Flag flag, bool value = true )

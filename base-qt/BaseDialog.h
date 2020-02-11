@@ -76,7 +76,7 @@ class BASE_QT_EXPORT BaseDialog: public QDialog
     { monitor_.setOptionName( name ); }
 
     //* set icon size
-    void setIconSize( const QSize& size )
+    void setIconSize( QSize size )
     { iconSize_ = size; }
 
     //* uniconify

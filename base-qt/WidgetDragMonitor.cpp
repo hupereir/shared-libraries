@@ -200,7 +200,7 @@ void WidgetDragMonitor::timerEvent( QTimerEvent* event )
 }
 
 //________________________________________________
-XcbDefines::Direction WidgetDragMonitor::_direction( QWidget* widget, const QPoint& point ) const
+XcbDefines::Direction WidgetDragMonitor::_direction( QWidget* widget, QPoint point ) const
 {
     const int halfWidth( widget->width()/2 );
     const int halfHeight( widget->height()/2 );

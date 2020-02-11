@@ -31,10 +31,10 @@ class BASE_EXPORT ResourceMigration final: private Base::Counter<ResourceMigrati
     public:
 
     //* constructor
-    explicit ResourceMigration( File );
+    explicit ResourceMigration( const File &);
 
     //* perform migration
-    bool migrate( File ) const;
+    bool migrate( const File &) const;
 
     private:
 

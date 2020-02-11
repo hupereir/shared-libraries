@@ -453,9 +453,9 @@ QString PathEditor::prettyPath() const
     auto path = this->path().removeTrailingSlash();
     if( ( truncate_ || path.isEmpty() ) )
     {
-        if( path == File( home_ ).removeTrailingSlash() ) return "Home";
+        if( path == File( home_ ).removeTrailingSlash() ) return QStringLiteral("Home");
         else if( std::any_of( rootPathList_.begin(), rootPathList_.end(), [&path]( File root )
-        { return path == root.removeTrailingSlash(); } ) ) return "Root";
+        { return path == root.removeTrailingSlash(); } ) ) return QStringLiteral("Root");
     }
 
     return path;
@@ -562,7 +562,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
     {
 
         // search proper root path
-        QString root( "/" );
+        QString root( QStringLiteral("/") );
         QString path( constPath );
 
         for( const auto& file:rootPathList_ )
@@ -603,8 +603,8 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
         }
 
-        if( hasHome && root == home_ ) item->setPath( File( root ), "Home" );
-        else item->setPath( File( root ), "Root" );
+        if( hasHome && root == home_ ) item->setPath( File( root ), QStringLiteral("Home") );
+        else item->setPath( File( root ), QStringLiteral("Root") );
         index++;
 
         // create path items
@@ -634,7 +634,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
 
             }
 
-            if( hasHome && section == home_ ) item->setPath( File( section ), "Home" );
+            if( hasHome && section == home_ ) item->setPath( File( section ), QStringLiteral("Home") );
             else item->setPath( File( section ) );
             index++;
         }

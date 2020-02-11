@@ -470,7 +470,7 @@ QString BaseFileInfo::Description::get( const QList<T>& files ) const
             else if( nFolders > 1 ) buffer = QObject::tr( "%1 Folders" ).arg( nFolders );
 
             const int nDocuments( std::count_if( files.begin(), files.end(), BaseFileInfo::IsDocumentFTor() ) );
-            if( nDocuments > 0 && nFolders > 0 ) buffer += ", ";
+            if( nDocuments > 0 && nFolders > 0 ) buffer += QLatin1String(", ");
             if( nDocuments == 1 ) buffer += QObject::tr( "one File" );
             else if( nDocuments > 1 ) buffer += QObject::tr( "%1 Files" ).arg( nDocuments );
 

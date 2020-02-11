@@ -43,7 +43,7 @@ class BASE_QT_EXPORT CustomToolButton: public QToolButton, private Base::Counter
     { updateFromOptions_ = value; }
 
     //* rotation
-    bool rotate( const CustomPixmap::Rotation& );
+    bool rotate( CustomPixmap::Rotation  );
 
     //* size hint
     QSize sizeHint() const override;

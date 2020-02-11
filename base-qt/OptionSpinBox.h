@@ -49,7 +49,7 @@ class BASE_QT_EXPORT OptionSpinBox: public QWidget, public OptionWidget
     }
 
     //* scale (i.e. option = value()/scale)
-    void setScale( const double& scale )
+    void setScale( double scale )
     { scale_ = scale; }
 
     //* read value from option

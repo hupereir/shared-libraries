@@ -41,13 +41,13 @@ class BASE_QT_EXPORT QtUtil
     static void moveWidget( QWidget* widget, QPoint position );
 
     //* center widget on pointer
-    static QPoint centerOnPointer( const QSize& size );
+    static QPoint centerOnPointer( QSize size );
 
     //* return topleft point so that size is centered on widget
-    static QPoint centerOnWidget( const QSize& size, QWidget* parent );
+    static QPoint centerOnWidget( QSize size, QWidget* parent );
 
     //* return topleft point so that size is centered on pointer
-    static QPoint centerOnDesktop( const QSize& size );
+    static QPoint centerOnDesktop( QSize size );
 
     //* center widget on pointer
     static QWidget* centerOnPointer( QWidget* widget );

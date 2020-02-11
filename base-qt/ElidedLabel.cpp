@@ -90,7 +90,7 @@ void ElidedLabel::mouseReleaseEvent( QMouseEvent *event )
             {
 
                 static const QRegularExpression regExp( QStringLiteral("<[^>]*>") );
-                text.replace( regExp, "" );
+                text.replace( regExp, QLatin1String("") );
 
                 // account for stripped characters
                 charsAfterSelection -= fullText_.length() - text.length();
@@ -188,7 +188,7 @@ void ElidedLabel::updateElidedText()
     if( elided )
     {
 
-        QLabel::setText(elidedLines.join("\n"));
+        QLabel::setText(elidedLines.join(QStringLiteral("\n")));
         setToolTip( fullText_ );
 
     } else {

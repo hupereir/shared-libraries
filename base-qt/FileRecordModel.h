@@ -95,7 +95,7 @@ class BASE_QT_EXPORT FileRecordModel: public ListModel<FileRecord>, private Base
     }
 
     //* set values (overloaded)
-    void update( List values )
+    void update( const List &values )
     {
         _updateColumns( values );
         ListModel<FileRecord>::update( values );

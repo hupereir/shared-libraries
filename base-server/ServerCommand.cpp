@@ -49,7 +49,7 @@ namespace Server
     }
 
     //___________________________________________
-    ServerCommand::ServerCommand( const ApplicationId& id, const CommandType& command ):
+    ServerCommand::ServerCommand( const ApplicationId& id, Server::ServerCommand::CommandType command ):
         Counter( QStringLiteral("ServerCommand") ),
         timestamp_( TimeStamp::now() ),
         id_( id ),

@@ -46,7 +46,7 @@ QString Util::user()
     // first try look for USERNAME environment variable
     // if failed, try USER
     // if failed, return unknown.
-    return env( "USERNAME", env( "USER", QObject::tr( "unknown user" ) ) );
+    return env( QStringLiteral("USERNAME"), env( QStringLiteral("USER"), QObject::tr( "unknown user" ) ) );
     #endif
 }
 
@@ -99,7 +99,7 @@ QString Util::host( bool shortName )
     if( ! shortName ) return out;
     else {
 
-        int pos( out.indexOf( "." ) );
+        int pos( out.indexOf( QLatin1String(".") ) );
         return ( pos <0 ) ? out:out.left( pos );
 
     }

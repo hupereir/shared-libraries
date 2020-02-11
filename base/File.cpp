@@ -98,7 +98,7 @@ QFile::Permissions File::permissions() const
 { return QFileInfo( *this ).permissions(); }
 
 //_____________________________________________________________________
-QString File::permissionsString( const QFile::Permissions& mode ) const
+QString File::permissionsString( QFile::Permissions mode ) const
 {
     QString out;
     QTextStream what( &out );
@@ -138,7 +138,7 @@ qint64 File::fileSize() const
 QString File::sizeString( qint64 sizeInt )
 {
     if( sizeInt < 0 ) return QString();
-    if( sizeInt == 0 ) return "0 B";
+    if( sizeInt == 0 ) return QStringLiteral("0 B");
 
     qreal size = sizeInt;
     static const QString unit[] =
@@ -162,7 +162,7 @@ QString File::sizeString( qint64 sizeInt )
 
     }
 
-    return QString( "%1 %2").arg( out ).arg( unit[power] );
+    return QStringLiteral( "%1 %2").arg( out ).arg( unit[power] );
 
 }
 
@@ -170,7 +170,7 @@ QString File::sizeString( qint64 sizeInt )
 QString File::rawSizeString( qint64 sizeInt )
 {
     if( sizeInt < 0 ) return QString();
-    if( sizeInt == 0 ) return "0";
+    if( sizeInt == 0 ) return QStringLiteral("0");
 
     // format size to have space characters every three digits
     QString out = QString::number( sizeInt );
@@ -264,8 +264,8 @@ File File::extension() const
 
     // loop over characters
     const auto local( localName().get() );
-    const int dotpos = local.lastIndexOf(".");
-    return File( dotpos < 0 ? "" : local.mid( dotpos+1 ) );
+    const int dotpos = local.lastIndexOf(QLatin1String("."));
+    return File( dotpos < 0 ? QLatin1String("") : local.mid( dotpos+1 ) );
 
 }
 
@@ -281,7 +281,7 @@ File File::truncatedName() const
     int slashpos = value_.lastIndexOf( '/' );
 
     if( dotpos < 0 ) return *this;
-    else if( slashpos < 0 ) return File( dotpos >= 0 ? value_.left(dotpos):"");
+    else if( slashpos < 0 ) return File( dotpos >= 0 ? value_.left(dotpos):QLatin1String(""));
     else if( slashpos < dotpos ) return File( value_.left(dotpos) );
     else return *this;
 
@@ -310,7 +310,7 @@ File File::find( const File& file, bool caseSensitive ) const
     const QDir dir( fullname );
     for( const auto& value:dir.entryList( filter ) )
     {
-        if( value == "." || value == ".." ) continue;
+        if( value == QLatin1String(".") || value == QLatin1String("..") ) continue;
 
         QFileInfo fileInfo;
         fileInfo.setFile( dir, value );
@@ -359,7 +359,7 @@ File::List File::listFiles( ListFlags flags ) const
     for( const auto& value:dir.entryList( filter ) )
     {
 
-        if( value == "." || value == ".." ) continue;
+        if( value == QLatin1String(".") || value == QLatin1String("..") ) continue;
 
         QFileInfo fileInfo;
         fileInfo.setFile( dir, value );
@@ -420,7 +420,7 @@ File File::version() const
 {
 
     File out;
-    for( int version = 0; (out = File( QString( "%1_%2" ).arg( this->expanded().get(), QString::number( version ) ) ) ).exists(); ++version )
+    for( int version = 0; (out = File( QStringLiteral( "%1_%2" ).arg( this->expanded().get(), QString::number( version ) ) ) ).exists(); ++version )
     {}
 
     return out;
@@ -485,7 +485,7 @@ bool File::removeRecursive() const
     for( const auto& value:dir.entryList( filter ) )
     {
         // skip "." and ".."
-        if( value == "." || value == ".." ) continue;
+        if( value == QLatin1String(".") || value == QLatin1String("..") ) continue;
         File file = File( value ).addPath( *this );
         if( file.isLink() || !file.isDirectory() )
         {

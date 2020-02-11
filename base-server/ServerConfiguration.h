@@ -37,7 +37,7 @@ namespace Server
     public:
 
     //! constructor
-    explicit ServerConfiguration( QWidget*, QString title = QString() );
+    explicit ServerConfiguration( QWidget*, const QString &title = QString() );
 
     Q_SIGNALS:
 

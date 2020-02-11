@@ -424,7 +424,7 @@ void TreeView::saveSortOrder()
 }
 
 //______________________________________________________________________
-void TreeView::find( TextSelection selection )
+void TreeView::find( const TextSelection &selection )
 {
     Debug::Throw( QStringLiteral("TreeView::find.\n") );
     bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
@@ -931,7 +931,7 @@ void TreeView::_installActions()
 }
 
 //___________________________________
-void TreeView::_raiseHeaderMenu( const QPoint & pos )
+void TreeView::_raiseHeaderMenu( QPoint pos )
 {
     Debug::Throw( QStringLiteral("TreeView::_raiseHeaderMenu.\n") );
 

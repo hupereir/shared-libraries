@@ -52,8 +52,8 @@ namespace Svg
             isValid_ = _hasPrefix();
             if( !_hasMargins() )
             {
-                hasShadowMargins_ = _hasMargins( "shadow" );
-                hasShadowPrefix_ = _hasPrefix( "shadow", Ring );
+                hasShadowMargins_ = _hasMargins( QStringLiteral("shadow") );
+                hasShadowPrefix_ = _hasPrefix( QStringLiteral("shadow"), Ring );
                 hasShadow_ = hasShadowMargins_ && hasShadowPrefix_;
             }
 
@@ -61,18 +61,18 @@ namespace Svg
 
             // centering hints
             overlayHints_ = OverlayNone;
-            if( elementExists( "hint-overlay-pos-right" ) ) overlayHints_ |= OverlayPosRight;
-            if( elementExists( "hint-overlay-pos-bottom" ) ) overlayHints_ |= OverlayPosBottom;
+            if( elementExists( QStringLiteral("hint-overlay-pos-right") ) ) overlayHints_ |= OverlayPosRight;
+            if( elementExists( QStringLiteral("hint-overlay-pos-bottom") ) ) overlayHints_ |= OverlayPosBottom;
 
-            if( elementExists( "hint-overlay-stretch") ) overlayHints_ |= OverlayStretch;
-            else if( elementExists( "hint-overlay-tile-horizontal" ) ) overlayHints_ |= OverlayTileHorizontal;
-            else if( elementExists( "hint-overlay-tile-vertical") ) overlayHints_ |= OverlayTileVertical;
+            if( elementExists( QStringLiteral("hint-overlay-stretch")) ) overlayHints_ |= OverlayStretch;
+            else if( elementExists( QStringLiteral("hint-overlay-tile-horizontal") ) ) overlayHints_ |= OverlayTileHorizontal;
+            else if( elementExists( QStringLiteral("hint-overlay-tile-vertical")) ) overlayHints_ |= OverlayTileVertical;
 
             hints_ = Hint::HintNone;
-            if( elementExists( "hint-compose-over-border" ) ) hints_ = Hint::HintComposeOverBorder;
+            if( elementExists( QStringLiteral("hint-compose-over-border") ) ) hints_ = Hint::HintComposeOverBorder;
 
-            if( _hasPrefix( "mask-overlay" ) ) maskPrefix_ = "mask-overlay";
-            else if( _hasPrefix( "mask" ) ) maskPrefix_ = "mask";
+            if( _hasPrefix( QStringLiteral("mask-overlay") ) ) maskPrefix_ = QStringLiteral("mask-overlay");
+            else if( _hasPrefix( QStringLiteral("mask") ) ) maskPrefix_ = QStringLiteral("mask");
             else maskPrefix_ = QString();
 
         } else {
@@ -116,7 +116,7 @@ namespace Svg
                 QImage shadowImage( size, QImage::Format_ARGB32_Premultiplied );
                 shadowImage.fill( Qt::transparent );
 
-                _render( shadowImage, "shadow", Ring );
+                _render( shadowImage, QStringLiteral("shadow"), Ring );
 
                 painter.drawImage( QPoint(0,0), shadowImage );
 
@@ -142,7 +142,7 @@ namespace Svg
     bool SvgRenderer::_hasPrefix( QString prefix, SvgElements mask ) const
     {
 
-        if( !prefix.isEmpty() ) prefix+="-";
+        if( !prefix.isEmpty() ) prefix+=QLatin1String("-");
 
         // check base class
         if( !BaseSvgRenderer::isValid() ) return false;
@@ -168,7 +168,7 @@ namespace Svg
     bool SvgRenderer::_hasMargins( QString prefix, SvgElements mask ) const
     {
 
-        if( !prefix.isEmpty() ) prefix+="-";
+        if( !prefix.isEmpty() ) prefix+=QLatin1String("-");
 
         // check base class
         if( !BaseSvgRenderer::isValid() ) return false;
@@ -267,7 +267,7 @@ namespace Svg
         {
             QImage centerImage( size, QImage::Format_ARGB32_Premultiplied );
             centerImage.fill( Qt::transparent );
-            _render( centerImage, "", Center, false );
+            _render( centerImage, QLatin1String(""), Center, false );
             painter.drawImage( QPoint(0,0), centerImage );
         }
 
@@ -291,7 +291,7 @@ namespace Svg
         mainImage.fill( Qt::transparent );
 
         //
-        if( hints_ == Hint::HintComposeOverBorder ) _render( mainImage, "", Ring );
+        if( hints_ == Hint::HintComposeOverBorder ) _render( mainImage, QLatin1String(""), Ring );
         else  _render( mainImage );
 
         painter.drawImage( QPoint(0,0), mainImage );
@@ -309,7 +309,7 @@ namespace Svg
         if( !targetRect.isValid() ) return;
 
         // check prefix
-        if( !prefix.isEmpty() ) prefix += "-";
+        if( !prefix.isEmpty() ) prefix += QLatin1String("-");
 
         // paint svg onto image
         QPainter painter( &target );

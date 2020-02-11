@@ -75,7 +75,7 @@ namespace Ssh
 
         //* set local port
         /* it is not really necessary but libssh asks for it, for book keeping */
-        void setLocalHost( QString host, quint16 port )
+        void setLocalHost( const QString &host, quint16 port )
         {
             localHost_ = host;
             localPort_ = port;

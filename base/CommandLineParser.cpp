@@ -199,7 +199,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
         QString tagName( arguments[index] );
         if( tagName.isEmpty() ) continue;
 
-        if( tagName == "-" )
+        if( tagName == QLatin1String("-") )
         {
             if( autoOrphan && !ignoreWarnings )
             {

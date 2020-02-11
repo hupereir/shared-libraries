@@ -33,7 +33,7 @@
 #endif
 
 //______________________________________
-KeyModifier::KeyModifier( const Qt::Key& key ):
+KeyModifier::KeyModifier( Qt::Key key ):
 key_( key )
 {}
 

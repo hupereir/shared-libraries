@@ -40,7 +40,7 @@ namespace Svg
         {}
 
         //* constructor
-        explicit SvgId( QString name, QSize size ):
+        explicit SvgId( const QString &name, QSize size ):
             id_( name ),
             size_( size )
         {}

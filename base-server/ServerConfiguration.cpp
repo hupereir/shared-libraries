@@ -30,7 +30,7 @@
 namespace Server
 {
     //________________________________________________________________________
-    ServerConfiguration::ServerConfiguration( QWidget* parent, QString title ):
+    ServerConfiguration::ServerConfiguration( QWidget* parent, const QString &title ):
         QWidget( parent ),
         OptionWidgetList( this ),
         Counter( QStringLiteral("ServerConfiguration") )
@@ -64,13 +64,13 @@ namespace Server
 
         // host
         gridLayout->addWidget( new QLabel( tr( "Host:" ), box ) );
-        gridLayout->addWidget( editor = new OptionLineEditor( box, "SERVER_HOST" ) );
+        gridLayout->addWidget( editor = new OptionLineEditor( box, QStringLiteral("SERVER_HOST") ) );
         editor->setToolTip( tooltip );
         addOptionWidget( editor );
 
         // shadow color
         gridLayout->addWidget( new QLabel( tr( "Port:" ), box ) );
-        gridLayout->addWidget( spinBox = new OptionSpinBox( box, "SERVER_PORT" ) );
+        gridLayout->addWidget( spinBox = new OptionSpinBox( box, QStringLiteral("SERVER_PORT") ) );
         spinBox->setMinimum(0);
         spinBox->setMaximum(10000);
         spinBox->setToolTip( tooltip );

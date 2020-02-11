@@ -48,7 +48,7 @@ class BASE_QT_EXPORT ImageFileDialog: public QFileDialog
     }
 
     //* stores working directory when changed
-    void saveWorkingDirectory( QString directory );
+    void saveWorkingDirectory( const QString &directory );
 
     protected:
 

@@ -31,7 +31,7 @@
 #include <QFileIconProvider>
 
 //_________________________________________________
-CustomPixmap::CustomPixmap( const QSize& size, Flags flags ):
+CustomPixmap::CustomPixmap( QSize size, Flags flags ):
     QPixmap( size*qApp->devicePixelRatio() ),
     Counter( QStringLiteral("CustomPixmap") )
 {
@@ -79,7 +79,7 @@ CustomPixmap& CustomPixmap::find( const QString& file )
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::rotated( const CustomPixmap::Rotation& rotation ) const
+CustomPixmap CustomPixmap::rotated( CustomPixmap::Rotation rotation ) const
 {
     if( rotation == Rotation::None ) return *this;
 

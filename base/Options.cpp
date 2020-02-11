@@ -40,69 +40,69 @@ void Options::installDefaultOptions()
     generic options (default values)
     common to all applications
     */
-    keep( "PIXMAP_PATH" );
-    add( "PIXMAP_PATH", Option( ":/icons/32x32", Option::Flag::Recordable|Option::Flag::Current ) );
-    add( "PIXMAP_PATH", Option( ":/icons/48x48", Option::Flag::Recordable ) );
-    add( "PIXMAP_PATH", Option( ":/icons/64x64", Option::Flag::Recordable ) );
-    add( "PIXMAP_PATH", Option( ":/icons/128x128", Option::Flag::Recordable ) );
+    keep( QStringLiteral("PIXMAP_PATH") );
+    add( QStringLiteral("PIXMAP_PATH"), Option( ":/icons/32x32", Option::Flag::Recordable|Option::Flag::Current ) );
+    add( QStringLiteral("PIXMAP_PATH"), Option( ":/icons/48x48", Option::Flag::Recordable ) );
+    add( QStringLiteral("PIXMAP_PATH"), Option( ":/icons/64x64", Option::Flag::Recordable ) );
+    add( QStringLiteral("PIXMAP_PATH"), Option( ":/icons/128x128", Option::Flag::Recordable ) );
 
-    set<int>( "DEBUG_LEVEL", 0 );
-    set<bool>( "SORT_FILES_BY_DATE", true );
+    set<int>( QStringLiteral("DEBUG_LEVEL"), 0 );
+    set<bool>( QStringLiteral("SORT_FILES_BY_DATE"), true );
 
     // style
 
     #if defined(Q_OS_WIN)
     set<bool>( "FORCE_PLASTIQUE_STYLE", true );
     #else
-    set<bool>( "FORCE_PLASTIQUE_STYLE", false );
+    set<bool>( QStringLiteral("FORCE_PLASTIQUE_STYLE"), false );
     #endif
 
     // fonts
-    set<bool>( "USE_SYSTEM_FONT", true );
-    set( "FIXED_FONT_NAME", "Sans Serif,10" );
-    set( "FONT_NAME", "Monospace,10" );
+    set<bool>( QStringLiteral("USE_SYSTEM_FONT"), true );
+    set( QStringLiteral("FIXED_FONT_NAME"), "Sans Serif,10" );
+    set( QStringLiteral("FONT_NAME"), "Monospace,10" );
 
     // toolbars default configuration
-    set<int>( "TOOLBUTTON_ICON_SIZE", 0 );
-    set<int>( "TOOLBUTTON_TEXT_POSITION", -1 );
+    set<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE"), 0 );
+    set<int>( QStringLiteral("TOOLBUTTON_TEXT_POSITION"), -1 );
 
     // text editors default configuration
-    set<bool>( "TAB_EMULATION", true );
-    set<int>( "TAB_SIZE", 2 );
-    set<bool>( "WRAP_TEXT", false );
-    set<bool>( "SHOW_LINE_NUMBERS", false );
-    set<int>( "AUTOHIDE_CURSOR_DELAY", 5 );
+    set<bool>( QStringLiteral("TAB_EMULATION"), true );
+    set<int>( QStringLiteral("TAB_SIZE"), 2 );
+    set<bool>( QStringLiteral("WRAP_TEXT"), false );
+    set<bool>( QStringLiteral("SHOW_LINE_NUMBERS"), false );
+    set<int>( QStringLiteral("AUTOHIDE_CURSOR_DELAY"), 5 );
 
-    set<bool>( "HIGHLIGHT_PARAGRAPH", true );
-    set( "HIGHLIGHT_COLOR", Base::Color( "#fffdd4" ) );
+    set<bool>( QStringLiteral("HIGHLIGHT_PARAGRAPH"), true );
+    set( QStringLiteral("HIGHLIGHT_COLOR"), Base::Color( "#fffdd4" ) );
 
     // help dialog
-    set<int>( "HELP_DIALOG_WIDTH", 750 );
-    set<int>( "HELP_DIALOG_HEIGHT", 500 );
+    set<int>( QStringLiteral("HELP_DIALOG_WIDTH"), 750 );
+    set<int>( QStringLiteral("HELP_DIALOG_HEIGHT"), 500 );
 
     // list configuration
-    set<bool>( "USE_ALTERNATE_COLOR", false );
-    set<bool>( "USE_SELECTED_COLUMN_COLOR", true );
+    set<bool>( QStringLiteral("USE_ALTERNATE_COLOR"), false );
+    set<bool>( QStringLiteral("USE_SELECTED_COLUMN_COLOR"), true );
 
     /* warning: this must match one of the default icon size */
-    set<int>( "LIST_ICON_SIZE", 22 );
-    set<int>( "LIST_ITEM_MARGIN", 0 );
+    set<int>( QStringLiteral("LIST_ICON_SIZE"), 22 );
+    set<int>( QStringLiteral("LIST_ITEM_MARGIN"), 0 );
 
     // box selection
-    set<int>( "BOX_SELECTION_ALPHA", 20 );
+    set<int>( QStringLiteral("BOX_SELECTION_ALPHA"), 20 );
 
     // dictionaries and filter
-    set( "SPELLCHECK_DISABLED_DICTIONARIES", " " );
-    set( "SPELLCHECK_DISABLED_FILTERS", " " );
+    set( QStringLiteral("SPELLCHECK_DISABLED_DICTIONARIES"), " " );
+    set( QStringLiteral("SPELLCHECK_DISABLED_FILTERS"), " " );
 
     // icon theme
-    set<bool>( "USE_ICON_THEME", false );
-    set( "ICON_THEME", "oxygen" );
-    set( "ICON_THEME_PATH", "/usr/share/icons" );
+    set<bool>( QStringLiteral("USE_ICON_THEME"), false );
+    set( QStringLiteral("ICON_THEME"), "oxygen" );
+    set( QStringLiteral("ICON_THEME_PATH"), "/usr/share/icons" );
 
     // default preferences dialog size
-    set<int>( "PREFERENCE_DIALOG_WIDTH", 600 );
-    set<int>( "PREFERENCE_DIALOG_HEIGHT", 500 );
+    set<int>( QStringLiteral("PREFERENCE_DIALOG_WIDTH"), 600 );
+    set<int>( QStringLiteral("PREFERENCE_DIALOG_HEIGHT"), 500 );
 
     setAutoDefault( false );
 

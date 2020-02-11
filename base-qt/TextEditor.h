@@ -173,19 +173,19 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     { return QPoint(  horizontalScrollBar()->value(), verticalScrollBar()->value() ); }
 
     //* widget to viewport translation
-    QRect toViewport( const QRect& rect ) const
+    QRect toViewport( QRect rect ) const
     { return rect.translated( -scrollbarPosition() ); }
 
     //* widget to viewport translation
-    QPoint toViewport( const QPoint& point ) const
+    QPoint toViewport( QPoint point ) const
     { return point - scrollbarPosition(); }
 
     //* widget from viewport translation
-    QRect fromViewport( const QRect& rect ) const
+    QRect fromViewport( QRect rect ) const
     { return rect.translated( scrollbarPosition() ); }
 
     //* widget from viewport translation
-    QPoint fromViewport( const QPoint& point ) const
+    QPoint fromViewport( QPoint point ) const
     { return point + scrollbarPosition(); }
 
     //* modifiers
@@ -193,7 +193,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     { return modifiers_; }
 
     //* modifiers
-    bool modifier( const Modifier& key ) const
+    bool modifier( TextEditor::Modifier key ) const
     { return modifiers_&key; }
 
     // return true if block is an empty line
@@ -447,7 +447,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     virtual void lowerCase();
 
     //* find next occurence of TextSelection
-    virtual void find( TextSelection selection );
+    virtual void find( const TextSelection &selection );
 
     //* find current selection forward
     virtual void findSelectionForward();
@@ -462,15 +462,15 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     virtual void findAgainBackward();
 
     //* find next occurence of TextSelection
-    virtual void replace( TextSelection selection );
+    virtual void replace( const TextSelection &selection );
 
     //* replace selection in range
-    inline virtual int replaceInSelection( TextSelection selection ) { return replaceInSelection( selection, true ); }
-    virtual int replaceInSelection( TextSelection selection, bool showDialog );
+    inline virtual int replaceInSelection( const TextSelection &selection ) { return replaceInSelection( selection, true ); }
+    virtual int replaceInSelection( const TextSelection &selection, bool showDialog );
 
     //* replace selection in window, returns number of replacements
-    inline virtual int replaceInWindow( TextSelection selection ) { return replaceInWindow( selection, true ); }
-    virtual int replaceInWindow( TextSelection selection, bool showDialog );
+    inline virtual int replaceInWindow( const TextSelection &selection ) { return replaceInWindow( selection, true ); }
+    virtual int replaceInWindow( const TextSelection &selection, bool showDialog );
 
     //* replace again forward
     virtual void replaceAgainForward();
@@ -717,7 +717,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     //@}
 
     //* modifiers
-    bool _setModifier( const Modifier& key, bool value )
+    bool _setModifier( TextEditor::Modifier key, bool value )
     {
         if( modifier( key ) == value ) return false;
         if( value ) modifiers_ |= key;

@@ -50,7 +50,7 @@ namespace Svg
 
         //* create pixmap
         /** the size is stored into a cache to avoid duplicate pixmaps manipulations */
-        static QPixmap get( SvgId id )
+        static QPixmap get( const SvgId &id )
         { return get()._get( id ); }
 
         //* is valid

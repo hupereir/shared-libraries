@@ -223,7 +223,7 @@ namespace Ssh
         {
 
             timer_.stop();
-            setErrorString( "channel closed" );
+            setErrorString( QStringLiteral("channel closed") );
             emit readChannelFinished();
             return true;
 
@@ -260,7 +260,7 @@ namespace Ssh
         if( atEnd() )
         {
             timer_.stop();
-            setErrorString( "channel closed" );
+            setErrorString( QStringLiteral("channel closed") );
             emit readChannelFinished();
         }
 

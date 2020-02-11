@@ -162,10 +162,10 @@ class BASE_QT_EXPORT BoxSelection final: private Base::Counter<BoxSelection>
     bool fromString( QString );
 
     //* copy selection content to clipboard
-    bool toClipboard( const QClipboard::Mode& ) const;
+    bool toClipboard( QClipboard::Mode  ) const;
 
     //* copy clipboard content to boxSelection
-    bool fromClipboard( const QClipboard::Mode& );
+    bool fromClipboard( QClipboard::Mode  );
 
     //* remove selected text
     bool removeSelectedText() const;

@@ -54,9 +54,9 @@ namespace SpellCheck
         if( flags & ASpell )
         {
             gridLayout->addWidget( new QLabel( tr( "Aspell command:" ), this ), 0, 0, 1, 1 );
-            auto editor( new OptionBrowsedLineEditor( this, "ASPELL" ) );
+            auto editor( new OptionBrowsedLineEditor( this, QStringLiteral("ASPELL") ) );
             gridLayout->addWidget( editor, 0, 1, 1, 2 );
-            editor->setToolTip( "Aspell command used to retrieve filtering modes and dictionaries." );
+            editor->setToolTip( QStringLiteral("Aspell command used to retrieve filtering modes and dictionaries.") );
             addOptionWidget( editor );
         }
 
@@ -64,7 +64,7 @@ namespace SpellCheck
         if( flags & Dictionary )
         {
             gridLayout->addWidget( new QLabel( tr( "Default dictionary:" ), this ), 1, 0, 1, 1 );
-            dictionariesComboBox_ =  new OptionComboBox( this, "DICTIONARY" );
+            dictionariesComboBox_ =  new OptionComboBox( this, QStringLiteral("DICTIONARY") );
             gridLayout->addWidget( dictionariesComboBox_, 1, 1, 1, 1 );
             dictionariesComboBox_->setToolTip(
                 tr( "Default dictionary used with files for which\n"
@@ -82,7 +82,7 @@ namespace SpellCheck
         if( flags & Filter )
         {
             gridLayout->addWidget( new QLabel( tr( "Default filter:" ), this ), 2, 0, 1, 1 );
-            filtersComboBox_ = new OptionComboBox( this, "DICTIONARY_FILTER" );
+            filtersComboBox_ = new OptionComboBox( this, QStringLiteral("DICTIONARY_FILTER") );
             gridLayout->addWidget( filtersComboBox_, 2, 1, 1, 1 );
             filtersComboBox_->setToolTip(
                 tr( "Default filtering mode used with files for which\n"

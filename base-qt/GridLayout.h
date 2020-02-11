@@ -76,7 +76,7 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
     { columnAlignments_[column] = alignment; }
 
     //* set orientation
-    void setOrientation( const Qt::Orientation& orientation )
+    void setOrientation( Qt::Orientation orientation )
     { orientation_ = orientation; }
 
     //* add widget

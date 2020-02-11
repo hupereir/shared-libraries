@@ -227,7 +227,7 @@ bool BoxSelection::fromString( QString input )
     if( state() != State::Finished ) return false;
 
     // replace all tab characters by emulated tabs
-    input.replace( "\t", parent_->emulatedTabCharacter() );
+    input.replace( QLatin1String("\t"), parent_->emulatedTabCharacter() );
 
     // try split
     auto inputList( input.split( QLatin1Char('\n') ) );
@@ -284,7 +284,7 @@ bool BoxSelection::fromString( QString input )
 }
 
 //________________________________________________________________________
-bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
+bool BoxSelection::toClipboard( QClipboard::Mode mode ) const
 {
     Debug::Throw(debugLevel) << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << endl;
 
@@ -311,7 +311,7 @@ bool BoxSelection::toClipboard( const QClipboard::Mode& mode ) const
 }
 
 //________________________________________________________________________
-bool BoxSelection::fromClipboard( const QClipboard::Mode& mode )
+bool BoxSelection::fromClipboard( QClipboard::Mode mode )
 {
 
     Debug::Throw( debugLevel, QStringLiteral("BoxSelection::fromClipboard.\n") );

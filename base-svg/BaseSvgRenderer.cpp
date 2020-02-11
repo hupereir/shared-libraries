@@ -41,20 +41,20 @@ namespace Svg
         palette.setCurrentColorGroup( QPalette::Active );
         styleSheet_.clear();
 
-        auto addColor = [](QString name, QColor color )
-        { return QString( ".ColorScheme-%1 {\n  color:%2;\n  stop-color:%2;\n}\n" ).arg( name, color.name()); };
+        auto addColor = [](const QString &name, QColor color )
+        { return QStringLiteral( ".ColorScheme-%1 {\n  color:%2;\n  stop-color:%2;\n}\n" ).arg( name, color.name()); };
 
-        styleSheet_ += addColor( "Text", palette.color( QPalette::WindowText ) );
-        styleSheet_ += addColor( "Background", palette.color( QPalette::Window ) );
-        styleSheet_ += addColor( "Highlight", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ViewText", palette.color( QPalette::Text ) );
-        styleSheet_ += addColor( "ViewBackground", palette.color( QPalette::Base ) );
-        styleSheet_ += addColor( "ViewHover", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ViewFocus", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ButtonText", palette.color( QPalette::ButtonText ) );
-        styleSheet_ += addColor( "ButtonBackground", palette.color( QPalette::Button ) );
-        styleSheet_ += addColor( "ButtonHover", palette.color( QPalette::Highlight ) );
-        styleSheet_ += addColor( "ButtonFocus", palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( QStringLiteral("Text"), palette.color( QPalette::WindowText ) );
+        styleSheet_ += addColor( QStringLiteral("Background"), palette.color( QPalette::Window ) );
+        styleSheet_ += addColor( QStringLiteral("Highlight"), palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( QStringLiteral("ViewText"), palette.color( QPalette::Text ) );
+        styleSheet_ += addColor( QStringLiteral("ViewBackground"), palette.color( QPalette::Base ) );
+        styleSheet_ += addColor( QStringLiteral("ViewHover"), palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( QStringLiteral("ViewFocus"), palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( QStringLiteral("ButtonText"), palette.color( QPalette::ButtonText ) );
+        styleSheet_ += addColor( QStringLiteral("ButtonBackground"), palette.color( QPalette::Button ) );
+        styleSheet_ += addColor( QStringLiteral("ButtonHover"), palette.color( QPalette::Highlight ) );
+        styleSheet_ += addColor( QStringLiteral("ButtonFocus"), palette.color( QPalette::Highlight ) );
     }
 
     //________________________________________________

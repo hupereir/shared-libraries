@@ -50,7 +50,7 @@ namespace Private
         int _layoutText(QTextLayout*, int) const;
 
         //* focus
-        void _drawFocus( QPainter*, const QStyleOptionViewItem&, const QRect& ) const;
+        void _drawFocus( QPainter*, const QStyleOptionViewItem&, QRect  ) const;
 
     };
 

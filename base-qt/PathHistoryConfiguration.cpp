@@ -39,7 +39,7 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
     layout->setSpacing(5);
 
     OptionCheckBox* checkbox;
-    layout->addWidget( checkbox = new OptionCheckBox( tr( "Save/restore history across sessions" ), this, "SAVE_HISTORY" ) );
+    layout->addWidget( checkbox = new OptionCheckBox( tr( "Save/restore history across sessions" ), this, QStringLiteral("SAVE_HISTORY") ) );
     addOptionWidget( checkbox );
 
     QHBoxLayout* hLayout = new QHBoxLayout;
@@ -52,7 +52,7 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
     QLabel* label;
     OptionSpinBox* spinbox;
     hLayout->addWidget( label = new QLabel( tr( "Maximum history size" ), this ) );
-    hLayout->addWidget( spinbox = new OptionSpinBox( this, "HISTORY_SIZE" ) );
+    hLayout->addWidget( spinbox = new OptionSpinBox( this, QStringLiteral("HISTORY_SIZE") ) );
     spinbox->setMinimum(0);
     spinbox->setMaximum(100);
     spinbox->setSpecialValueText( tr( "Unlimited" ) );

@@ -63,7 +63,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
 }
 
 //_____________________________________________________________
-void BrowsedLineEditor::setTargetApplication( File target )
+void BrowsedLineEditor::setTargetApplication( const File &target )
 {
     targetApplication_ = target;
     if( target.isEmpty() ) findTargetButton_.reset();

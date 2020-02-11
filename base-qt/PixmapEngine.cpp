@@ -42,7 +42,7 @@ bool PixmapEngine::reload()
     Debug::Throw( QStringLiteral("PixmapEngine::reload.\n") );
 
     // load path from options
-    auto pathList( XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" ) );
+    auto pathList( XmlOptions::get().specialOptions<File>( QStringLiteral("PIXMAP_PATH") ) );
     if( pathList == pixmapPath_ ) return false;
 
     pixmapPath_ = pathList;
@@ -69,7 +69,7 @@ const QPixmap& PixmapEngine::_get( const QString& file, bool fromCache )
     if( QFileInfo( file ).isAbsolute() ) { out = QPixmap( file ); }
     else {
 
-        if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<File>( "PIXMAP_PATH" );
+        if( pixmapPath_.empty() ) pixmapPath_ = XmlOptions::get().specialOptions<File>( QStringLiteral("PIXMAP_PATH") );
         for( const auto& path:pixmapPath_ )
         {
 

@@ -34,7 +34,7 @@ namespace SpellCheck
         public:
 
         //* constructor
-        explicit Position( int position, const TexString::Conversion conversion ):
+        explicit Position( int position, const TexString::Conversion &conversion ):
             position_(position),
             conversion_(conversion)
         {}

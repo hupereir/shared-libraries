@@ -50,7 +50,7 @@ IconSize::Size IconSizeComboBox::iconSize() const
 { return static_cast<IconSize::Size>( itemData( currentIndex() ).value<int>() ); }
 
 //_________________________________________________________
-void IconSizeComboBox::selectIconSize( const IconSize::Size& iconSize )
+void IconSizeComboBox::selectIconSize( IconSize::Size iconSize )
 {
 
     Debug::Throw() << "IconSizeComboBox::selectIconSize - size: " << iconSize << endl;

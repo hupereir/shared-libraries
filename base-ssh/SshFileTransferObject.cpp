@@ -34,7 +34,7 @@ namespace Ssh
     static const qint64 maxBufferSize = 1<<16;
 
     //____________________________________________________________________________
-    FileTransferObject::FileTransferObject( QObject* parent, QString remoteFileName ):
+    FileTransferObject::FileTransferObject( QObject* parent, const QString &remoteFileName ):
         QObject( parent ),
         Counter( QStringLiteral("Ssh::FiletransferObject") ),
         remoteFileName_( remoteFileName )
@@ -78,7 +78,7 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    bool FileTransferObject::fromRemote( void* session, QString localFileName)
+    bool FileTransferObject::fromRemote( void* session, const QString &localFileName)
     {
 
         deviceOwned_ = true;
@@ -128,7 +128,7 @@ namespace Ssh
     }
 
     //____________________________________________________________________________
-    bool FileTransferObject::toRemote( void* session, QString localFileName )
+    bool FileTransferObject::toRemote( void* session, const QString &localFileName )
     {
 
         deviceOwned_ = true;

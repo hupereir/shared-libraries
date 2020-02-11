@@ -29,7 +29,7 @@ class BASE_QT_EXPORT KeyModifier
   public:
 
   //! constructor
-  explicit KeyModifier( const Qt::Key& );
+  explicit KeyModifier( Qt::Key  );
 
   //! state
   enum class State

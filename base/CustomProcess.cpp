@@ -38,7 +38,7 @@ CustomProcess::~CustomProcess()
 { if( state() != QProcess::NotRunning ) kill(); }
 
 //____________________________________________________
-void CustomProcess::start( QString arguments, OpenMode mode )
+void CustomProcess::start( const QString &arguments, OpenMode mode )
 {
     static const QRegularExpression regExp(QStringLiteral("\\s"));
     return start( arguments.split( regExp, QString::SkipEmptyParts ), mode );

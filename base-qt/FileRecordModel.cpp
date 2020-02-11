@@ -180,7 +180,7 @@ QMimeData* FileRecordModel::mimeData(const QModelIndexList &indexes) const
             QString fullText;
             QTextStream buffer( &fullText );
             for( const auto& filename:filenames )
-            { buffer << QString( "file://%1" ).arg(filename) << endl; }
+            { buffer << QStringLiteral( "file://%1" ).arg(filename) << endl; }
             mimeData->setText( fullText );
         }
 
@@ -188,7 +188,7 @@ QMimeData* FileRecordModel::mimeData(const QModelIndexList &indexes) const
         {
             QList<QUrl> urlList;
             for( const auto& filename:filenames )
-            { urlList.append( QUrl( QString( "file://%1" ).arg(filename) ) ); }
+            { urlList.append( QUrl( QStringLiteral( "file://%1" ).arg(filename) ) ); }
             mimeData->setUrls( urlList );
         }
 

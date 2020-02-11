@@ -184,7 +184,7 @@ int Private::SimpleListViewDelegate::_layoutText(QTextLayout *layout, int maxWid
 }
 
 //_________________________________________________________
-void Private::SimpleListViewDelegate::_drawFocus( QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect ) const
+void Private::SimpleListViewDelegate::_drawFocus( QPainter *painter, const QStyleOptionViewItem &option, QRect rect ) const
 {
     if (option.state & QStyle::State_HasFocus)
     {

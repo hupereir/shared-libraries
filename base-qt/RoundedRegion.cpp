@@ -29,7 +29,7 @@
 #include "RoundedRegion.h"
 
 //_________________________________________________________
-RoundedRegion::RoundedRegion( const QRect& rect, Corners corners ):
+RoundedRegion::RoundedRegion( QRect rect, Corners corners ):
   Counter( QStringLiteral("RoundedRegon") ),
   region_( rect )
 {

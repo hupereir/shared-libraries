@@ -111,7 +111,7 @@ QString UserSelectionFrame::user() const
 {
     Debug::Throw( QStringLiteral("UserSelectionFrame::user.\n") );
     QString user(  comboBox_->currentText() );
-    if( user.isNull() || user.isEmpty() ) return "";
+    if( user.isNull() || user.isEmpty() ) return QLatin1String("");
     return user.trimmed();
 }
 

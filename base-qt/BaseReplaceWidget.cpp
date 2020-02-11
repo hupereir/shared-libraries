@@ -123,7 +123,7 @@ void BaseReplaceWidget::synchronize()
     { replaceEditor_->addItem( string ); }
 
     // clear replace combobox text
-    replaceEditor_->setEditText("");
+    replaceEditor_->setEditText(QLatin1String(""));
 
     // set focus to find editor
     editor().setFocus();

@@ -41,7 +41,7 @@ namespace Base
         {}
 
         //* add to operator
-        Margins& operator += (const Margins& other )
+        Margins& operator += (Base::Margins other )
         {
             left_ += other.left_;
             top_ += other.top_;
@@ -51,7 +51,7 @@ namespace Base
         }
 
         //* remove from operator
-        Margins& operator -= (const Margins& other )
+        Margins& operator -= (Base::Margins other )
         {
             left_ -= other.left_;
             top_ -= other.top_;
@@ -98,7 +98,7 @@ namespace Base
         { return top_+bottom_; }
 
         //* return adjusted rect
-        QRect adjustedRect( const QRect& source ) const
+        QRect adjustedRect( QRect source ) const
         { return source.adjusted( left_, top_, -right_, -bottom_ ); }
 
         //* top left point
@@ -145,7 +145,7 @@ namespace Base
         int bottom_ = 0;
 
         //* streamer
-        friend QTextStream& operator << ( QTextStream& out, const Margins& margins )
+        friend QTextStream& operator << ( QTextStream& out, Base::Margins margins )
         {
             out << "(" << margins.left_ << "," << margins.top_ << "," << margins.right_ << "," << margins.bottom_ << ")";
             return out;

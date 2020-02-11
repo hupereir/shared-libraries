@@ -38,7 +38,7 @@ namespace Server
     {
 
         Debug::Throw( QStringLiteral("ApplicationManager::ApplicationManager.\n") );
-        setApplicationName( "Generic Application" );
+        setApplicationName( QStringLiteral("Generic Application") );
 
         if( !XmlOptions::get().contains( QStringLiteral("SERVER_HOST") ) )
         { XmlOptions::get().setRaw( QStringLiteral("SERVER_HOST"), host_.toString(), true ); }
@@ -49,18 +49,18 @@ namespace Server
     }
 
     //_________________________________________
-    CommandLineParser ApplicationManager::commandLineParser( CommandLineArguments arguments, bool ignoreWarnings )
+    CommandLineParser ApplicationManager::commandLineParser( const CommandLineArguments &arguments, bool ignoreWarnings )
     {
 
         Debug::Throw() << "ApplicationManager::commandLineParser" << endl;
 
         CommandLineParser out;
         out.setGroup( CommandLineParser::serverGroupName );
-        out.registerFlag( CommandLineParser::Tag( "--replace", "-r" ), tr( "replace existing application instance with new one" ) );
-        out.registerFlag( CommandLineParser::Tag( "--abort", "-q" ), tr( "exit existing instance" ) );
-        out.registerFlag( "--no-server", tr( "ignore server mode. Run new application instance" ) );
-        out.registerOption( "--server-host", tr( "string" ), tr( "use specified host for server communication" ) );
-        out.registerOption( "--server-port", tr( "integer" ), tr( "use specified port for server communication" ) );
+        out.registerFlag( CommandLineParser::Tag( QStringLiteral("--replace"), QStringLiteral("-r") ), tr( "replace existing application instance with new one" ) );
+        out.registerFlag( CommandLineParser::Tag( QStringLiteral("--abort"), QStringLiteral("-q") ), tr( "exit existing instance" ) );
+        out.registerFlag( QStringLiteral("--no-server"), tr( "ignore server mode. Run new application instance" ) );
+        out.registerOption( QStringLiteral("--server-host"), tr( "string" ), tr( "use specified host for server communication" ) );
+        out.registerOption( QStringLiteral("--server-port"), tr( "integer" ), tr( "use specified port for server communication" ) );
 
         if( !arguments.isEmpty() )
         { out.parse( arguments, ignoreWarnings ); }
@@ -70,7 +70,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::initialize( CommandLineArguments arguments )
+    void ApplicationManager::initialize( const CommandLineArguments &arguments )
     {
 
         Debug::Throw( QStringLiteral("ApplicationManager::init.\n") );
@@ -80,19 +80,19 @@ namespace Server
 
         // overwrite host from command line arguments
         auto parser = commandLineParser( arguments_ );
-        if( parser.hasOption( "--server-host" ) )
+        if( parser.hasOption( QStringLiteral("--server-host") ) )
         {
 
-            QString host( parser.option( "--server-host" ) );
+            QString host( parser.option( QStringLiteral("--server-host") ) );
             host_ = QHostAddress( host );
 
         } else host_ = QHostAddress( QString( XmlOptions::get().raw( QStringLiteral("SERVER_HOST") ) ) );
 
         // overwrite port from command line arguments
-        if( parser.hasOption( "--server-port" ) )
+        if( parser.hasOption( QStringLiteral("--server-port") ) )
         {
 
-            int port( parser.option( "--server-port" ).toUInt() );
+            int port( parser.option( QStringLiteral("--server-port") ).toUInt() );
             port_ = port;
 
         } else port_ = XmlOptions::get().get<int>( QStringLiteral("SERVER_PORT") );
@@ -152,7 +152,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::_redirect( ServerCommand command, ClientPtr sender )
+    void ApplicationManager::_redirect( const ServerCommand &command, ClientPtr sender )
     {
 
         Debug::Throw() << "ApplicationManager::_redirect -"
@@ -187,7 +187,7 @@ namespace Server
                 if( sender == existingClient )
                 {
 
-                    if( parser.hasFlag( "--abort" ) )
+                    if( parser.hasFlag( QStringLiteral("--abort") ) )
                     {
 
                         // abort existing client
@@ -203,7 +203,7 @@ namespace Server
 
                     }
 
-                } else if( parser.hasFlag( "--replace" ) ) {
+                } else if( parser.hasFlag( QStringLiteral("--replace") ) ) {
 
                     // tell existing client to die
                     ServerCommand abortCommand( command.id(), ServerCommand::CommandType::Abort );
@@ -218,7 +218,7 @@ namespace Server
                     // update iterator pid
                     const_cast<ApplicationId*>( &clientIterator.key() )->setProcessId( command.id().processId() );
 
-                } else if( parser.hasFlag( "--abort" ) ) {
+                } else if( parser.hasFlag( QStringLiteral("--abort") ) ) {
 
                     // tell existing client to die
                     ServerCommand abortCommand( command.id(), ServerCommand::CommandType::Abort );
@@ -279,7 +279,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::_broadcast( ServerCommand command, ClientPtr sender )
+    void ApplicationManager::_broadcast( const ServerCommand &command, ClientPtr sender )
     {
 
         Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << endl;
@@ -296,7 +296,7 @@ namespace Server
         {
             // create client from pending connection
             auto client = std::make_shared<Client>( this, server_->nextPendingConnection() );
-            connect( client.get(), &Client::commandAvailable, this, QOverload<Server::ServerCommand>::of( &ApplicationManager::_redirect ) );
+            connect( client.get(), &Client::commandAvailable, this, QOverload<const Server::ServerCommand&>::of( &ApplicationManager::_redirect ) );
             connect( &client->socket(), &QAbstractSocket::disconnected, this, &ApplicationManager::_clientConnectionClosed );
             connectedClients_.append( client );
         }
@@ -372,7 +372,7 @@ namespace Server
     }
 
     //_____________________________________________________
-    void ApplicationManager::_redirect( ServerCommand command )
+    void ApplicationManager::_redirect( const ServerCommand &command )
     {
 
         Debug::Throw( QStringLiteral("Application::_redirect.\n") );
@@ -383,7 +383,7 @@ namespace Server
 
 
     //_____________________________________________________
-    void ApplicationManager::_process( ServerCommand command )
+    void ApplicationManager::_process( const ServerCommand &command )
     {
 
         Debug::Throw() << "ApplicationManager::_process -"

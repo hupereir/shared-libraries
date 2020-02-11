@@ -58,7 +58,7 @@ namespace Transparency
 
             if( flags&Background )
             {
-                box = new QGroupBox( "Foreground", this );
+                box = new QGroupBox( QStringLiteral("Foreground"), this );
                 layout()->addWidget( box );
             } else box = this;
 
@@ -70,7 +70,7 @@ namespace Transparency
         {
             if( flags&Foreground )
             {
-                box = new QGroupBox( "Background", this );
+                box = new QGroupBox( QStringLiteral("Background"), this );
                 layout()->addWidget( box );
             } else box = this;
 
@@ -98,19 +98,19 @@ namespace Transparency
 
         // foreground color
         gridLayout->addWidget( new QLabel( tr( "Foreground Color:" ), parent ) );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, "TRANSPARENCY_FOREGROUND_COLOR" ) );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, QStringLiteral("TRANSPARENCY_FOREGROUND_COLOR") ) );
         colorDisplay->setToolTip( tr( "Text/display foreground color" ) );
         addOptionWidget( colorDisplay );
 
         // shadow color
         gridLayout->addWidget( new QLabel( tr( "Highlight color:" ), parent ) );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, "TRANSPARENCY_SHADOW_COLOR" ) );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, QStringLiteral("TRANSPARENCY_SHADOW_COLOR") ) );
         colorDisplay->setToolTip( tr( "Text/display highlight color" ) );
         addOptionWidget( colorDisplay );
 
         // foreground intensity
         gridLayout->addWidget( new QLabel( tr( "Foreground intensity:" ), parent ) );
-        gridLayout->addWidget( slider = new OptionSlider( parent, "TRANSPARENCY_FOREGROUND_INTENSITY" ) );
+        gridLayout->addWidget( slider = new OptionSlider( parent, QStringLiteral("TRANSPARENCY_FOREGROUND_INTENSITY") ) );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
         slider->setSuffix( tr( "%" ) );
@@ -119,7 +119,7 @@ namespace Transparency
 
         // foreground highlight offset
         gridLayout->addWidget( new QLabel( tr( "Highlight size: " ), parent ) );
-        gridLayout->addWidget( spinbox = new OptionSpinBox( parent, "TRANSPARENCY_SHADOW_OFFSET" ) );
+        gridLayout->addWidget( spinbox = new OptionSpinBox( parent, QStringLiteral("TRANSPARENCY_SHADOW_OFFSET") ) );
         spinbox->setMinimum( 0 );
         spinbox->setMaximum( 10 );
         spinbox->setSuffix( tr( "px" ) );
@@ -129,7 +129,7 @@ namespace Transparency
         addOptionWidget( spinbox );
 
         // inverse colors
-        gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Inverse colors" ), parent, "TRANSPARENCY_INVERSE_COLORS" ), 4, 1, 1, 1 );
+        gridLayout->addWidget( checkbox = new OptionCheckBox( tr( "Inverse colors" ), parent, QStringLiteral("TRANSPARENCY_INVERSE_COLORS") ), 4, 1, 1, 1 );
         addOptionWidget( checkbox );
         checkbox->setToolTip( tr( "Inverse foreground and highlight color, typically for dark themes" ) );
 
@@ -151,13 +151,13 @@ namespace Transparency
 
         // background color
         gridLayout->addWidget( new QLabel( tr( "Background color:" ), parent ) );
-        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, "TRANSPARENCY_TINT_COLOR" ) );
+        gridLayout->addWidget( colorDisplay = new OptionColorDisplay( parent, QStringLiteral("TRANSPARENCY_TINT_COLOR") ) );
         colorDisplay->setToolTip( tr( "Transparent background tint color" ) );
         addOptionWidget( colorDisplay );
 
         // background intensity
         gridLayout->addWidget( new QLabel( tr( "Background intensity:" ), parent ) );
-        gridLayout->addWidget( slider = new OptionSlider( parent, "TRANSPARENCY_TINT_INTENSITY" ) );
+        gridLayout->addWidget( slider = new OptionSlider( parent, QStringLiteral("TRANSPARENCY_TINT_INTENSITY") ) );
         slider->setScale( 1.0/2.55 );
         slider->setRange( 0, 100 );
         slider->setSuffix( tr( "%" ) );

@@ -88,7 +88,7 @@ class BASE_QT_EXPORT IconViewItem final: private Base::Counter<IconViewItem>
     }
 
     //* set position
-    void setPosition( const QPoint& position )
+    void setPosition( QPoint position )
     { position_ = position; }
 
     //* set location

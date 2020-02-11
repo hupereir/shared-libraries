@@ -343,7 +343,7 @@ void IconView::doItemsLayout()
 }
 
 //______________________________________________________________________
-void IconView::find( TextSelection selection )
+void IconView::find( const TextSelection &selection )
 {
     Debug::Throw( QStringLiteral("IconView::find.\n") );
     bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
@@ -917,7 +917,7 @@ void IconView::timerEvent(QTimerEvent *event)
 }
 
 //____________________________________________________________________
-QModelIndexList IconView::_selectedIndexes( const QRect& constRect ) const
+QModelIndexList IconView::_selectedIndexes( QRect constRect ) const
 {
 
     QModelIndexList indexes;

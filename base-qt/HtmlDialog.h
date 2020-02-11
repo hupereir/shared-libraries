@@ -43,11 +43,11 @@ class BASE_QT_EXPORT HtmlDialog: public CustomDialog
     explicit HtmlDialog( QWidget* parent );
 
     //* set command manually
-    void setCommand( QString command )
+    void setCommand( const QString &command )
     { commandEditor_->setEditText( command ); }
 
     //* add commands to the combo-box list
-    void addCommand( QString command )
+    void addCommand( const QString &command )
     { commandEditor_->addItem( command ); }
 
     //* command
@@ -63,7 +63,7 @@ class BASE_QT_EXPORT HtmlDialog: public CustomDialog
     { return File( destinationEditor_->editor().text() ); }
 
     // options
-    void setOptionWidgets( QList<QWidget*> );
+    void setOptionWidgets( const QList<QWidget*> &);
 
     private:
 

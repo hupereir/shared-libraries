@@ -48,7 +48,7 @@ class BASE_QT_EXPORT WinUtil final
     void update( const QPixmap&, double = 1.0 ) const;
 
     //* enable blur behind
-    void enableBlurBehind( const Base::Margins& = Base::Margins() );
+    void enableBlurBehind( Base::Margins  = Base::Margins() );
 
     //* toggle hide from taskbar for Windows
     bool toggleHideFromTaskBar( bool ) const;

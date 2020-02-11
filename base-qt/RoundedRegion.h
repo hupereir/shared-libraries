@@ -50,7 +50,7 @@ class BASE_QT_EXPORT RoundedRegion final: private Base::Counter<RoundedRegion>
     Q_DECLARE_FLAGS( Corners, Corner );
 
     //* constructor
-    explicit RoundedRegion( const QRect&, Corners = Corner::All );
+    explicit RoundedRegion( QRect , Corners = Corner::All );
 
     //* accessor
     const QRegion& get() const

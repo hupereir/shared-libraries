@@ -45,7 +45,7 @@ void ErrorHandler::exit()
 void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, const QString& message )
 {
 
-    const QString fullMessage = QString( "%1 file: %2 line: %3 function: %4" )
+    const QString fullMessage = QStringLiteral( "%1 file: %2 line: %3 function: %4" )
         .arg( message )
         .arg( context.file )
         .arg( context.line )

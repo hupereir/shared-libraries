@@ -53,7 +53,7 @@ class BASE_EXPORT CustomProcess: public QProcess, private Base::Counter<CustomPr
     add arguments.
     every space separated argument is added separately
     */
-    void start( QString arguments, OpenMode mode = ReadWrite );
+    void start( const QString &arguments, OpenMode mode = ReadWrite );
 
     //* run
     void start( const QStringList&, OpenMode = ReadWrite );

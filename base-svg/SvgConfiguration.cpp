@@ -46,7 +46,7 @@ namespace Svg
         //! constructor
         explicit StyleOptionWidget( QWidget* parent ):
             CustomComboBox( parent ),
-            OptionWidget( "DUMMY_OPTION" )
+            OptionWidget( QStringLiteral("DUMMY_OPTION") )
         {
 
             setEditable( false );
@@ -69,11 +69,11 @@ namespace Svg
         //! read
         virtual void read( const Options& options )
         {
-            if( options.get<bool>( "USE_SVG" ) )
+            if( options.get<bool>( QStringLiteral("USE_SVG") ) )
             {
 
                 #if defined(Q_OS_LINUX)
-                if( options.get<bool>( "SVG_USE_PLASMA_INTERFACE" ) ) setCurrentIndex(2);
+                if( options.get<bool>( QStringLiteral("SVG_USE_PLASMA_INTERFACE") ) ) setCurrentIndex(2);
                 else
                 #endif
                 { setCurrentIndex(1); }
@@ -91,9 +91,9 @@ namespace Svg
         //! write
         virtual void write( Options& options ) const
         {
-            options.set<bool>( "USE_SVG", currentIndex() != 0 );
+            options.set<bool>( QStringLiteral("USE_SVG"), currentIndex() != 0 );
             #if defined(Q_OS_LINUX)
-            options.set<bool>( "SVG_USE_PLASMA_INTERFACE", currentIndex() == 2 );
+            options.set<bool>( QStringLiteral("SVG_USE_PLASMA_INTERFACE"), currentIndex() == 2 );
             #endif
         }
 
@@ -161,7 +161,7 @@ namespace Svg
         // SVG file
         vLayout->addWidget( label = new QLabel( tr( "Svg files:" ), box ) );
 
-        OptionListBox *listbox = new OptionListBox( box, "SVG_BACKGROUND" );
+        OptionListBox *listbox = new OptionListBox( box, QStringLiteral("SVG_BACKGROUND") );
         listbox->setBrowsable( true );
         listbox->setToolTip( tr( "Pathname to load background svg" ) );
         vLayout->addWidget( listbox );
@@ -188,7 +188,7 @@ namespace Svg
         gridLayout->addWidget( label = new QLabel( tr( "Image path:" ), box ) );
 
         OptionComboBox* plasmaImagePath;
-        gridLayout->addWidget( plasmaImagePath = new OptionComboBox( box, "SVG_PLASMA_IMAGE_PATH" ) );
+        gridLayout->addWidget( plasmaImagePath = new OptionComboBox( box, QStringLiteral("SVG_PLASMA_IMAGE_PATH") ) );
         plasmaImagePath->setUseValue( false );
         plasmaImagePath->addItems( { "dialogs/background", "widgets/background", "widgets/translucentbackground" } );
         plasmaImagePath->setToolTip( tr( "Relative path of the svg file used for the background" ) );
@@ -197,7 +197,7 @@ namespace Svg
 
         gridLayout->addWidget( label = new QLabel( tr( "Draw overlay" ), box ) );
         OptionCheckBox* checkbox;
-        gridLayout->addWidget( checkbox = new OptionCheckBox( QString(), box, "SVG_DRAW_OVERLAY" ) );
+        gridLayout->addWidget( checkbox = new OptionCheckBox( QString(), box, QStringLiteral("SVG_DRAW_OVERLAY") ) );
         checkbox->setToolTip( tr( "If checked, overlay pictures, if any, found in the SVG file, are drawn on top of the background" ) );
         addOptionWidget( checkbox );
         label->setBuddy( checkbox );

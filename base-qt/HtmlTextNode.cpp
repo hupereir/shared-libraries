@@ -33,7 +33,7 @@ HtmlTextNode::HtmlTextNode( const QString& text, QDomElement& parent, QDomDocume
     bool first = true;
     for( const auto& line:lines )
     {
-        if( !first ) parent.appendChild( document.createElement( "br" ) );
+        if( !first ) parent.appendChild( document.createElement( QStringLiteral("br") ) );
         parent.appendChild( document.createTextNode( line.toUtf8() ) );
         first = false;
     }

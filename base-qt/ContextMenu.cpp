@@ -35,7 +35,7 @@ ContextMenu::ContextMenu( QWidget* parent ):
 }
 
 //___________________________________________________
-void ContextMenu::_raise( const QPoint& position )
+void ContextMenu::_raise( QPoint position )
 {
 
     QAbstractScrollArea* view(  qobject_cast<QAbstractScrollArea*>( parentWidget() ) );

@@ -125,7 +125,7 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
     };
 
     //* true if property is available
-    bool hasProperty( QString tag ) const
+    bool hasProperty( const QString &tag ) const
     { return hasProperty( PropertyId::get( tag ) ); }
 
     //* true if property is available
@@ -140,14 +140,14 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
     { return properties_; }
 
     //* retrieve property
-    QString property( QString tag ) const
+    QString property( const QString &tag ) const
     { return property( PropertyId::get( tag ) ); }
 
     //* retrieve property
     QString property( PropertyId::Id id ) const
     {
         PropertyMap::const_iterator iter(  properties_.find( id ) );
-        return ( iter == properties_.end() ) ? "":iter.value();
+        return ( iter == properties_.end() ) ? QLatin1String(""):iter.value();
     }
 
     //@}
@@ -192,7 +192,7 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
     }
 
     //* add property
-    FileRecord& addProperty( QString tag, const QString& value )
+    FileRecord& addProperty( const QString &tag, const QString& value )
     { return addProperty( PropertyId::get( tag ), value ); }
 
     //* add property

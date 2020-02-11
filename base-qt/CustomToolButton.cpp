@@ -47,7 +47,7 @@ CustomToolButton::CustomToolButton( QWidget* parent ):
 }
 
 //______________________________________________________________________
-bool CustomToolButton::rotate( const CustomPixmap::Rotation& value )
+bool CustomToolButton::rotate( CustomPixmap::Rotation value )
 {
     Debug::Throw( QStringLiteral("CustomToolButton::rotate.\n") );
     if( rotation_ == value ) return false;

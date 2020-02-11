@@ -92,7 +92,7 @@ class BASE_FILESYSTEM_EXPORT BaseFileSystemWidget: public QWidget, private Base:
     void clear();
 
     //* base directory
-    void setPath( File, bool forced = false );
+    void setPath( const File&, bool forced = false );
 
     //@}
 

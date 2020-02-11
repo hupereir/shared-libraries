@@ -30,9 +30,9 @@ void installSvgOptions()
 {
     XmlOptions::get().setAutoDefault( true );
     XmlOptions::get().keep( QStringLiteral("SVG_BACKGROUND") );
-    XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-air.svgz" ) );
-    XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-dark.svgz", Option::Flag::Recordable|Option::Flag::Current ) );
-    XmlOptions::get().add( "SVG_BACKGROUND", Option( ":/svg/background-light.svgz" ) );
+    XmlOptions::get().add( QStringLiteral("SVG_BACKGROUND"), Option( ":/svg/background-air.svgz" ) );
+    XmlOptions::get().add( QStringLiteral("SVG_BACKGROUND"), Option( ":/svg/background-dark.svgz", Option::Flag::Recordable|Option::Flag::Current ) );
+    XmlOptions::get().add( QStringLiteral("SVG_BACKGROUND"), Option( ":/svg/background-light.svgz" ) );
     XmlOptions::get().set<bool>( QStringLiteral("USE_SVG"), true );
     XmlOptions::get().set<bool>( QStringLiteral("SVG_USE_PLASMA_INTERFACE"), true );
     XmlOptions::get().set<bool>( QStringLiteral("SVG_DRAW_OVERLAY"), false );

@@ -89,7 +89,7 @@ class BASE_QT_EXPORT TabWidget: public QWidget, private Base::Counter<TabWidget>
     //@{
 
     //* change title
-    void setTitle( QString );
+    void setTitle( const QString &);
 
     //* update actions
     void updateActions( bool );
@@ -119,7 +119,7 @@ class BASE_QT_EXPORT TabWidget: public QWidget, private Base::Counter<TabWidget>
     void _toggleSticky( bool );
 
     //* update context menu
-    void _updateContextMenu( const QPoint& );
+    void _updateContextMenu( QPoint  );
 
     //* actions
     void _installActions();

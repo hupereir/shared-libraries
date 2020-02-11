@@ -105,7 +105,7 @@ class BASE_QT_EXPORT WidgetDragMonitor: public QObject, private Base::Counter<Wi
     void _resetDrag();
 
     //* get corner from (relative) position
-    XcbDefines::Direction _direction( QWidget* widget, const QPoint& ) const;
+    XcbDefines::Direction _direction( QWidget* widget, QPoint  ) const;
 
     //* mode
     Mode mode_;

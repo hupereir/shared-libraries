@@ -61,7 +61,7 @@ class BASE_QT_EXPORT TextEncodingWidget: public QWidget, private Base::Counter<T
     void _updateSelection();
 
     //* find
-    void _find(QString);
+    void _find(const QString&);
 
     //* load text codecs
     void _loadTextCodecs();

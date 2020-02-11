@@ -88,7 +88,7 @@ class BASE_QT_EXPORT BaseToolTipWidget: public QWidget, private Base::Counter<Ba
     void setDefaultDelay( int );
 
     //* set index rect
-    void setIndexRect( const QRect& );
+    void setIndexRect( QRect  );
 
     //* preferred position
     void setPreferredPosition( Position );

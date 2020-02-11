@@ -146,7 +146,7 @@ class BASE_QT_EXPORT TreeView: public QTreeView, private Base::Counter<TreeView>
     void setItemMargin( int );
 
     //* set icon size manually and disable option
-    void setIconSize( const QSize& size )
+    void setIconSize( QSize size )
     {
         if( size != iconSize() )
         { QTreeView::setIconSize( size ); }
@@ -249,7 +249,7 @@ class BASE_QT_EXPORT TreeView: public QTreeView, private Base::Counter<TreeView>
     void saveSortOrder();
 
     //* find next occurence of TextSelection
-    void find( TextSelection selection );
+    void find( const TextSelection &selection );
 
     //* find current selection forward
     void findSelectionForward()
@@ -314,7 +314,7 @@ class BASE_QT_EXPORT TreeView: public QTreeView, private Base::Counter<TreeView>
     private:
 
     //* header menu
-    void _raiseHeaderMenu( const QPoint& );
+    void _raiseHeaderMenu( QPoint  );
 
     //* find text from dialog
     void _findFromDialog();
