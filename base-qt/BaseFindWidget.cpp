@@ -203,7 +203,7 @@ void BaseFindWidget::changeEvent( QEvent* event )
         default: break;
     }
 
-    return QWidget::changeEvent( event );
+    QWidget::changeEvent( event );
 }
 
 //________________________________________________________________________

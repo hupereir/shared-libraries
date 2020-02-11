@@ -165,7 +165,7 @@ namespace Network
     {
 
         if( event->timerId() == deviceTimer_.timerId() ) checkDevice();
-        else return QObject::timerEvent( event );
+        else QObject::timerEvent( event );
 
     }
 

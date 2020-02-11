@@ -28,6 +28,8 @@
 class BASE_QT_EXPORT ScrollBarMonitor: public QObject, private Base::Counter<ScrollBarMonitor>
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

@@ -162,7 +162,7 @@ QString File::sizeString( qint64 sizeInt )
 
     }
 
-    return QStringLiteral( "%1 %2").arg( out ).arg( unit[power] );
+    return QStringLiteral( "%1 %2").arg( out, unit[power] );
 
 }
 
@@ -183,7 +183,7 @@ QString File::rawSizeString( qint64 sizeInt )
 
 //_____________________________________________________________________
 bool File::exists() const
-{ return QFileInfo( *this ).exists(); }
+{ return QFileInfo::exists(get()); }
 
 //_____________________________________________________________________
 bool File::isWritable() const

@@ -64,5 +64,5 @@ void MultipleClickCounter::timerEvent( QTimerEvent* event )
         Debug::Throw() << "MultipleClickCounter::timerEvent" << endl;
         timer_.stop();
         toReset_ = true;
-    } else return QObject::timerEvent( event );
+    } else QObject::timerEvent( event );
 }

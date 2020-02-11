@@ -32,6 +32,8 @@
 class BASE_QT_EXPORT WidgetMonitor: public QObject, private Base::Counter<WidgetMonitor>
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

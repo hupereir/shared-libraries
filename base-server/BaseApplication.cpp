@@ -46,6 +46,8 @@ namespace Server
     //! event filter used to change appearance of QMessageBox before show, to match KDE layout
     class AppEventFilter: public QObject
     {
+        Q_OBJECT
+
         public:
         virtual bool eventFilter( QObject*, QEvent* );
     };
@@ -377,3 +379,5 @@ void BaseApplication::_updateIconTheme()
         QIcon::setThemeName( XmlOptions::get().raw( QStringLiteral("ICON_THEME") ) );
     }
 }
+
+#include "BaseApplication.moc"

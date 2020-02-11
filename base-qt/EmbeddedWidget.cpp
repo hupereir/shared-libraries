@@ -27,6 +27,5 @@ void EmbeddedWidget::showEvent( QShowEvent* event )
         for( const auto& sibling:parentWidget()->findChildren<EmbeddedWidget*>() )
         { if( sibling->isVisible() && sibling != this ) sibling->hide(); }
     }
-
-    return QWidget::showEvent( event );
+    QWidget::showEvent( event );
 }

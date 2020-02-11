@@ -177,11 +177,11 @@ namespace Transparency
         { return backgroundChanged_; }
 
         //* paint background on devide
-        virtual void _paintBackground( QPaintDevice&, const QRect& );
+        virtual void _paintBackground( QPaintDevice&, QRect );
 
         //* paint main widget on devide
         /*! this must be re-implemented by derived classes */
-        virtual void _paint( QPaintDevice&, const QRect& )
+        virtual void _paint( QPaintDevice&, QRect )
         {}
 
         //* update input shape (to prevent input events in outerPadding region)

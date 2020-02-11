@@ -33,6 +33,8 @@
 class BASE_FILESYSTEM_EXPORT FileIconProvider : public BaseFileIconProvider
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

@@ -188,15 +188,14 @@ bool WidgetDragMonitor::eventFilter( QObject* object, QEvent* event )
 //_______________________________________________________
 void WidgetDragMonitor::timerEvent( QTimerEvent* event )
 {
-    if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event );
-
-    timer_.stop();
-    if( button_ != Qt::LeftButton ) return;
-
-    if( !enabled_ ) emit stateChangeRequest();
-    if( !enabled_ ) return;
-
-    QMetaObject::invokeMethod( this, &WidgetDragMonitor::_startDrag, Qt::QueuedConnection );
+    if( event->timerId() == timer_.timerId() )
+    {
+        timer_.stop();
+        if( button_ != Qt::LeftButton ) return;
+        if( !enabled_ ) emit stateChangeRequest();
+        if( !enabled_ ) return;
+        QMetaObject::invokeMethod( this, &WidgetDragMonitor::_startDrag, Qt::QueuedConnection );
+    } else QObject::timerEvent( event );
 }
 
 //________________________________________________

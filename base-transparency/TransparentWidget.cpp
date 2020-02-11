@@ -154,7 +154,7 @@ namespace Transparency
     }
 
     //________________________________________________________________________
-    void TransparentWidget::_paintBackground( QPaintDevice& device, const QRect& rect )
+    void TransparentWidget::_paintBackground( QPaintDevice& device, QRect rect )
     {
         Debug::Throw( QStringLiteral("TransparentWidget::_paintBackground.\n") );
         QPainter painter( &device );

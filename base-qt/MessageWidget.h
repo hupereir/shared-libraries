@@ -44,7 +44,6 @@ class BASE_QT_EXPORT MessageWidget: public QWidget, private Base::Counter<Messag
     Q_PROPERTY( qreal height READ height WRITE setFixedHeight )
 
     public:
-
     enum class MessageType
     {
         Positive,

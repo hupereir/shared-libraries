@@ -407,7 +407,7 @@ PathEditor::PathEditor( QWidget* parent ):
         button->setFocusPolicy( Qt::StrongFocus );
 
         connect( editor_->lineEdit(), &QLineEdit::returnPressed, this, &PathEditor::_returnPressed );
-        connect( editor_, QOverload<int>::of( &QComboBox::activated ), [this](int){ _returnPressed(); } );
+        connect( editor_, QOverload<int>::of( &QComboBox::activated ), this, [this](int){ _returnPressed(); } );
         connect( button, &QAbstractButton::clicked, this, &PathEditor::_showBrowser );
 
         addWidget( editorContainer_ );

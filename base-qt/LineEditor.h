@@ -140,11 +140,11 @@ class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEdi
 
     //* add a button
     void addLeftWidget( QWidget* widget )
-    { return _addWidget( widget, leftContainer_ ); }
+    { _addWidget( widget, leftContainer_ ); }
 
     //* add a button
     void addRightWidget( QWidget* widget )
-    { return _addWidget( widget, rightContainer_ ); }
+    { _addWidget( widget, rightContainer_ ); }
 
     //* install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu* );

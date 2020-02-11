@@ -47,18 +47,14 @@ namespace SpellCheck
     //____________________________________________________________________
     void FilterMenu::select( const QString& filter )
     {
-
         Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
         const auto iter = Base::findByValue( actions_, filter );
-        if( iter != actions_.end() ) iter.key()->setChecked( true );
-        return;
-
+        if( iter != actions_.cend() ) iter.key()->setChecked( true );
     }
 
     //____________________________________________________________________
     void FilterMenu::reset()
     {
-
         Debug::Throw( QStringLiteral("FilterMenu::reset.\n") );
 
         // store selected filter
@@ -102,20 +98,16 @@ namespace SpellCheck
             actions_.insert( action, filter );
             group_->addAction( action );
         }
-
     }
 
     //______________________________________________________________________________________
     void FilterMenu::_selectFilter( QAction*  action )
     {
-
         Debug::Throw( QStringLiteral("FilterMenu::_filter.\n") );
         const auto iter( actions_.find( action ) );
-        if( iter == actions_.end() ) return;
+        if( iter == actions_.cend() ) return;
 
         select( iter.value() );
         emit selectionChanged( iter.value() );
-        return;
-
     }
 }

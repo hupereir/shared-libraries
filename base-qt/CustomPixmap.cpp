@@ -245,13 +245,4 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
     }
 
     return out;
-
 }
-
-//______________________________________________________________________________________
-qreal CustomPixmap::devicePixelRatio() const
-{ return QPixmap::devicePixelRatio(); }
-
-//______________________________________________________________________________________
-void CustomPixmap::setDevicePixelRatio( qreal value )
-{ return QPixmap::setDevicePixelRatio( value ); }

@@ -46,7 +46,6 @@ void CustomComboBox::setEditable( bool value )
 {
     Debug::Throw( QStringLiteral("CustomComboBox::setEditable.\n") );
     QComboBox::setEditable( value );
-
     if( !value ) editor_.reset();
     else if( !editor_ ) {
         editor_.reset( new LineEditor( this ) );
@@ -76,20 +75,21 @@ void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSens
 //___________________________________________________
 void CustomComboBox::keyPressEvent( QKeyEvent* event )
 {
-    if( navigationEnabled_ ) return QComboBox::keyPressEvent( event );
-    switch( event->key() )
+    if( !navigationEnabled_ )
     {
-        case Qt::Key_Up:
-        case Qt::Key_PageUp:
-        case Qt::Key_Down:
-        case Qt::Key_PageDown:
-        if( event->modifiers() ) break;
-        else return;
+        switch( event->key() )
+        {
+            case Qt::Key_Up:
+            case Qt::Key_PageUp:
+            case Qt::Key_Down:
+            case Qt::Key_PageDown:
+            if( event->modifiers() ) break;
+            else return;
 
-        default: break;
+            default: break;
 
+        }
     }
 
-    // parent class
     return QComboBox::keyPressEvent( event );
 }

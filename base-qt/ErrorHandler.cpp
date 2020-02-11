@@ -45,11 +45,9 @@ void ErrorHandler::exit()
 void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, const QString& message )
 {
 
-    const QString fullMessage = QStringLiteral( "%1 file: %2 line: %3 function: %4" )
-        .arg( message )
-        .arg( context.file )
-        .arg( context.line )
-        .arg( context.function );
+    const QString fullMessage = QStringLiteral( "%1 file: %2 line: %4 function: %3" )
+        .arg( message, context.file, context.function )
+        .arg( context.line );
 
     // check if message is to be disabled
     bool disabled = std::any_of( get().disabledMessages_.begin(), get().disabledMessages_.end(),

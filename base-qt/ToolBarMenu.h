@@ -32,6 +32,8 @@ class IconSizeMenu;
 class BASE_QT_EXPORT ToolBarMenu: public QMenu, private Base::Counter<ToolBarMenu>
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

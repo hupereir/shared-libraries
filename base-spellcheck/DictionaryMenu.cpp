@@ -53,8 +53,7 @@ namespace SpellCheck
     {
         Debug::Throw() << "DictionaryMenu::select - dictionary: " << dictionary << endl;
         const auto iter = Base::findByValue( actions_, dictionary );
-        if( iter != actions_.end() ) iter.key()->setChecked( true );
-        return;
+        if( iter != actions_.cend() ) iter.key()->setChecked( true );
     }
 
     //____________________________________________________________________
@@ -116,11 +115,9 @@ namespace SpellCheck
 
         Debug::Throw( QStringLiteral("DictionaryMenu::_selectDictionary.\n") );
         const auto iter( actions_.find( action ) );
-        if( iter == actions_.end() ) return;
+        if( iter == actions_.cend() ) return;
 
         select( iter.value() );
         emit selectionChanged( iter.value() );
-        return;
-
     }
 }

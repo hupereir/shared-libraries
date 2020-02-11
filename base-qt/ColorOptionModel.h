@@ -31,6 +31,8 @@
 class BASE_QT_EXPORT ColorOptionModel: public OptionModel
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

@@ -28,6 +28,8 @@
 //_______________________________________________________
 class EditDialog: public CustomDialog
 {
+    Q_OBJECT
+
     public:
 
     //* constructor
@@ -149,3 +151,5 @@ void ColorOptionListBox::_edit()
     return;
 
 }
+
+#include "ColorOptionListBox.moc"

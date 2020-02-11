@@ -33,6 +33,8 @@ namespace Private
     class SimpleListViewDelegate : public QAbstractItemDelegate, private Base::Counter<SimpleListViewDelegate>
     {
 
+        Q_OBJECT
+
         public:
 
         //* constructor

@@ -1101,9 +1101,6 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
     if( event->button() == Qt::LeftButton )
     {
 
-        // increment multiple clicks
-        auto cursor( textCursor() );
-
         // increment counter
         clickCounter_.increment( cursorForPosition( event->pos() ).position() );
         switch( clickCounter_.counts() )
@@ -1120,7 +1117,8 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
                 {
                     // store position for drag
                     dragStart_ = event->pos();
-                    return BaseEditor::mousePressEvent( event );
+                    BaseEditor::mousePressEvent( event );
+                    return;
                 }
 
                 // if single click outside of existing box selection, clear the selection
@@ -1150,8 +1148,8 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
 
                 }
 
-                return BaseEditor::mousePressEvent( event );
-                break;
+                BaseEditor::mousePressEvent( event );
+                return;
 
             }
 
@@ -1277,7 +1275,7 @@ void TextEditor::mouseMoveEvent( QMouseEvent* event )
         return;
     }
 
-    return BaseEditor::mouseMoveEvent( event );
+    BaseEditor::mouseMoveEvent( event );
 
 }
 
@@ -1292,21 +1290,19 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
     // no need to check for enability because there is no way for the box to start if disabled
     if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::State::Started )
     {
-
         boxSelection_.finish( event->pos() );
         _synchronizeBoxSelection();
-        return BaseEditor::mouseReleaseEvent( event );
-
+        BaseEditor::mouseReleaseEvent( event );
+        return;
     }
 
     if( event->button() == Qt::LeftButton && boxSelection_.state() == BoxSelection::State::Finished )
     {
-
         boxSelection_.clear();
         _synchronizeBoxSelection();
         emit copyAvailable( false );
-        return BaseEditor::mouseReleaseEvent( event );
-
+        BaseEditor::mouseReleaseEvent( event );
+        return;
     }
 
     if( event->button() == Qt::LeftButton && clickCounter_.counts() > 1 )
@@ -1332,7 +1328,6 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
 
     // process event
     BaseEditor::mouseReleaseEvent( event );
-
 }
 
 //________________________________________________
@@ -1341,7 +1336,6 @@ void TextEditor::wheelEvent( QWheelEvent* event )
 
     if( event->modifiers() & Qt::ControlModifier )
     {
-
         event->accept();
 
         // calculate delta
@@ -1354,14 +1348,9 @@ void TextEditor::wheelEvent( QWheelEvent* event )
         const auto offsetInt = int( wheelOffsetAccumulated_ + offset );
         if( offsetInt != 0 ) _incrementFontSize( offsetInt );
         wheelOffsetAccumulated_ += offset - offsetInt;
-
-        return;
-
     } else {
-
         wheelOffsetAccumulated_ = 0;
-        return BaseEditor::wheelEvent( event );
-
+        BaseEditor::wheelEvent( event );
     }
 
 }
@@ -1386,7 +1375,6 @@ void TextEditor::dropEvent( QDropEvent* event )
         boxSelection_.state() == BoxSelection::State::Empty &&
         !textCursor().hasSelection() )
     {
-
         Debug::Throw( QStringLiteral("TextEditor::dropEvent - dropping box selection.\n") );
 
         // retrieve text from mimeType
@@ -1401,7 +1389,6 @@ void TextEditor::dropEvent( QDropEvent* event )
         event->acceptProposedAction();
         BaseEditor::dropEvent( &dropEvent );
         return;
-
     }
 
     if(
@@ -1444,8 +1431,6 @@ void TextEditor::dropEvent( QDropEvent* event )
         event->acceptProposedAction();
         BaseEditor::dropEvent( &dropEvent );
         return;
-
-
     }
 
     // check if there is one valid box selection that contains the drop point
@@ -1455,18 +1440,14 @@ void TextEditor::dropEvent( QDropEvent* event )
         boxSelection_.state() == BoxSelection::State::Finished &&
         toViewport( boxSelection_.rect() ).contains( event->pos() ) )
     {
-
         if( event->source() == this )
         {
-
             // current selection is inserted in itself. Doing nothing
             Debug::Throw( QStringLiteral("TextEditor::dropEvent - [box] doing nothing.\n") );
             event->acceptProposedAction();
             BaseEditor::dropEvent( &dropEvent );
             return;
-
         } else {
-
             // insert mine data in current box selection
             Debug::Throw( QStringLiteral("TextEditor::dropEvent - [box] inserting selection.\n") );
             boxSelection_.fromString( event->mimeData()->text() );
@@ -1475,7 +1456,6 @@ void TextEditor::dropEvent( QDropEvent* event )
             event->acceptProposedAction();
             BaseEditor::dropEvent( &dropEvent );
             return;
-
         }
     }
 
@@ -1484,26 +1464,21 @@ void TextEditor::dropEvent( QDropEvent* event )
     {
         auto cursor( textCursor() );
         auto newCursor( cursorForPosition( event->pos() ) );
-
         bool contained(
             newCursor.position() >= qMin( cursor.position(), cursor.anchor() ) &&
             newCursor.position() <= qMax( cursor.position(), cursor.anchor() ) );
-
         if( contained && event->source() != this )
         {
-
             // drag action is from another widget and ends in selection. Replace this selection
             Debug::Throw( QStringLiteral("TextEditor::dropEvent - inserting selection.\n") );
             cursor.insertText( event->mimeData()->text() );
             event->acceptProposedAction();
             BaseEditor::dropEvent( &dropEvent );
             return;
-
         }
 
         if( event->source() == this )
         {
-
             // drag action is from this widget
             // insert selection at current location and remove old selection
             Debug::Throw( QStringLiteral("TextEditor::dropEvent - moving selection.\n") );
@@ -1517,14 +1492,12 @@ void TextEditor::dropEvent( QDropEvent* event )
             event->acceptProposedAction();
             BaseEditor::dropEvent( &dropEvent );
             return;
-
         }
 
     }
 
     // for all other cases, use default
-    return BaseEditor::dropEvent( event );
-
+    BaseEditor::dropEvent( event );
 }
 
 //________________________________________________
@@ -1572,13 +1545,17 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
             (event->key() >= Qt::Key_F1 &&  event->key() <= Qt::Key_F25) ||
             (event->key() >= Qt::Key_Super_L && event->key() <= Qt::Key_Direction_R ) ||
             (event->modifiers() != Qt::NoModifier && event->modifiers() != Qt::ShiftModifier ) )
-        { return BaseEditor::keyPressEvent( event ); }
+        {
+            BaseEditor::keyPressEvent( event );
+            return;
+        }
 
         // if cursor move clear selection
         if( event->key() >= Qt::Key_Home && event->key() <= Qt::Key_Down )
         {
             boxSelection_.clear();
-            return BaseEditor::keyPressEvent( event );
+            BaseEditor::keyPressEvent( event );
+            return;
         }
 
         // if delete or backspace remove selection
@@ -1599,16 +1576,12 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
                 position -= document()->findBlock( position ).position();
                 int n( position % emulatedTabCharacter().size() );
                 boxSelection_.fromString( emulatedTabCharacter().right( emulatedTabCharacter().size()-n ) );
-
             }
 
             boxSelection_.clear();
-
         } else if( !(event->text().isNull() || event->text().isEmpty() ) ) {
-
             boxSelection_.fromString( event->text() );
             boxSelection_.clear();
-
         }
 
         return;
@@ -1646,12 +1619,10 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
 void TextEditor::focusInEvent( QFocusEvent* event )
 {
     Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
-
     if(
         _setModifier( Modifier::CapsLock, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::State::On ) ||
         _setModifier( Modifier::NumLock, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::State::On ) )
     { emit modifiersChanged( modifiers() );}
-
     emit hasFocus( this );
     BaseEditor::focusInEvent( event );
 }
@@ -1659,7 +1630,6 @@ void TextEditor::focusInEvent( QFocusEvent* event )
 //________________________________________________
 void TextEditor::contextMenuEvent( QContextMenuEvent* event )
 {
-
     Debug::Throw( QStringLiteral("TextEditor::contextMenuEvent.\n") );
     contextMenuPosition_ = event->pos();
 
@@ -1668,7 +1638,6 @@ void TextEditor::contextMenuEvent( QContextMenuEvent* event )
     installContextMenuActions( &menu );
     if( !menu.isEmpty() )
     { menu.exec( event->globalPos() ); }
-
 }
 
 //______________________________________________________________
@@ -1755,9 +1724,7 @@ void TextEditor::paintEvent( QPaintEvent* event )
 
     // base class painting
     BaseEditor::paintEvent( event );
-
     return;
-
 }
 
 //______________________________________________________________
@@ -1772,7 +1739,7 @@ void TextEditor::timerEvent(QTimerEvent *event)
         QMouseEvent mouseEvent(QEvent::MouseMove, position, globalPosition, Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
         mouseMoveEvent(&mouseEvent);
 
-    } else return BaseEditor::timerEvent( event );
+    } else BaseEditor::timerEvent( event );
 
 }
 
@@ -1806,13 +1773,11 @@ void TextEditor::changeEvent(QEvent *event)
 //______________________________________________________________
 void TextEditor::scrollContentsBy( int dx, int dy )
 {
-
     // mark margins dirty if vertical scroll is non empty
     if( dy != 0 ) marginWidget_->setDirty();
 
     // base class call
     BaseEditor::scrollContentsBy( dx, dy );
-
 }
 
 //______________________________________________________________
@@ -2973,8 +2938,8 @@ void TextEditor::Container::_initialize()
     editor_->selectLineWidget_->hide();
 
     // make connections so that focus is restored on close
-    connect( &editor_->findWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ editor_->setFocus(); } );
-    connect( &editor_->replaceWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ editor_->setFocus(); } );
-    connect( &editor_->selectLineWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ editor_->setFocus(); } );
+    connect( &editor_->findWidget_->closeButton(), &QAbstractButton::clicked, this, [this](bool){ editor_->setFocus(); } );
+    connect( &editor_->replaceWidget_->closeButton(), &QAbstractButton::clicked, this, [this](bool){ editor_->setFocus(); } );
+    connect( &editor_->selectLineWidget_->closeButton(), &QAbstractButton::clicked, this, [this](bool){ editor_->setFocus(); } );
 
 }

@@ -29,6 +29,8 @@
 class BASE_QT_EXPORT SingleTimeDialog: public InformationDialog
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

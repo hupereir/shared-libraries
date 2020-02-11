@@ -58,17 +58,18 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
 
 //_______________________________________________________________
 void CustomToolBar::paintEvent( QPaintEvent* event )
-{ if( !transparent_ ) return QToolBar::paintEvent( event ); }
+{ if( !transparent_ ) QToolBar::paintEvent( event ); }
 
 //_______________________________________________________________
 void CustomToolBar::moveEvent( QMoveEvent* event )
 {
-    if( isFloating() || optionName_.isEmpty() ) return QToolBar::moveEvent( event );
-
-    auto parent( qobject_cast<QMainWindow*>( parentWidget() ) );
-    if( parent )
-    { XmlOptions::get().set<int>( locationOptionName_, parent->toolBarArea( this ) ); }
-
+    if( !( isFloating() || optionName_.isEmpty() ) )
+    {
+        auto parent( qobject_cast<QMainWindow*>( parentWidget() ) );
+        if( parent )
+        { XmlOptions::get().set<int>( locationOptionName_, parent->toolBarArea( this ) ); }
+    }
+    QToolBar::moveEvent( event );
 }
 
 //_______________________________________________________________

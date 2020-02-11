@@ -99,7 +99,11 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
 {
 
     // default implementation if not rotated
-    if( rotation_ == CustomPixmap::Rotation::None ) return QToolButton::paintEvent( event );
+    if( rotation_ == CustomPixmap::Rotation::None )
+    {
+        QToolButton::paintEvent( event );
+        return;
+    }
 
     // rotated paint
     QStylePainter painter(this);
@@ -135,17 +139,13 @@ void CustomToolButton::paintEvent( QPaintEvent* event )
     option.icon = icon();
     painter.drawControl(QStyle::CE_ToolButtonLabel, option);
     painter.end();
-
-    return;
 }
 
 //_________________________________________________________________
 void CustomToolButton::_updateConfiguration()
 {
     Debug::Throw( QStringLiteral("CustomToolButton::_updateConfiguration.\n"));
-
     if( !updateFromOptions_ ) return;
-
     int iconSize( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE") ) );
     if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
     setIconSize( QSize( iconSize, iconSize ) );
@@ -155,5 +155,4 @@ void CustomToolButton::_updateConfiguration()
     else setToolButtonStyle( static_cast<Qt::ToolButtonStyle>( toolButtonTextPosition ) );
 
     adjustSize();
-
 }

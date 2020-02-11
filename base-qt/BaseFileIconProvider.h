@@ -34,6 +34,8 @@
 class BASE_QT_EXPORT BaseFileIconProvider: public QObject, private Base::Counter<BaseFileIconProvider>
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

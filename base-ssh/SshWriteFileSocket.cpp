@@ -50,13 +50,11 @@ namespace Ssh
     //_______________________________________________________________________
     void WriteFileSocket::connect( void* session, const QString& file, qint64 size, QFile::Permissions permissions )
     {
-
         /*
         TODO
         TryConnect always return true (either succeeds or fails but never require rerun
         One can therefore call it directly, remove it from the timer and remove the "waitForConnected" method
         */
-
         // store session, host and port
         session_ = session;
         remoteFileName_ = file;
@@ -104,21 +102,18 @@ namespace Ssh
     void WriteFileSocket::timerEvent( QTimerEvent* event )
     {
         // check timer id
-        if( event->timerId() != timer_.timerId() ) return QIODevice::timerEvent( event );
-
-        #if WITH_SSH
-
-        if( !isConnected() ) _tryConnect();
-        else timer_.stop();
-        return;
-
-        #else
-
-        timer_.stop();
-        setErrorString( "no ssh" );
-        return;
-
-        #endif
+        if( event->timerId() == timer_.timerId() )
+        {
+            #if WITH_SSH
+            if( !isConnected() ) _tryConnect();
+            else timer_.stop();
+            return;
+            #else
+            timer_.stop();
+            setErrorString( "no ssh" );
+            return;
+            #endif
+        } else QIODevice::timerEvent( event );
     }
 
     //_______________________________________________________________________

@@ -35,6 +35,8 @@ namespace Svg
     class BASE_SVG_EXPORT SvgRenderer: public BaseSvgRenderer
     {
 
+        Q_OBJECT
+
         public:
 
         //* constructor

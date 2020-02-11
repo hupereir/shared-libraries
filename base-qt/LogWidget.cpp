@@ -122,7 +122,7 @@ void LogWidget::keyPressEvent( QKeyEvent* event )
         default: break;
     }
 
-    return TextEditor::keyPressEvent( event );
+    TextEditor::keyPressEvent( event );
 
 }
 
@@ -130,7 +130,7 @@ void LogWidget::keyPressEvent( QKeyEvent* event )
 void LogWidget::wheelEvent( QWheelEvent* event )
 {
     locked_ = verticalScrollBar()->value() != verticalScrollBar()->maximum();
-    return TextEditor::wheelEvent( event );
+    TextEditor::wheelEvent( event );
 }
 
 //______________________________________________________

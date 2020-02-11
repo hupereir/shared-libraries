@@ -579,18 +579,13 @@ void TreeView::mouseMoveEvent( QMouseEvent *event )
 
     if( hasMouseTracking() && event->buttons() == Qt::NoButton )
     {
-
         // when mouse tracking is on, need to intercept mouseMoveEvents
         // because they break drag and drop
         _setHoverIndex( indexAt( event->pos() ) );
-
     } else {
-
         if( !indexAt( event->pos() ).isValid() )
         { _setHoverIndex( QModelIndex() ); }
-
-        return QTreeView::mouseMoveEvent( event );
-
+        QTreeView::mouseMoveEvent( event );
     }
 
 }
@@ -600,23 +595,19 @@ void TreeView::mousePressEvent( QMouseEvent* event )
 {
     // clear hover index
     _setHoverIndex( QModelIndex() );
-
     if( (event->button() == Qt::RightButton) && selectionModel() && !indexAt( event->pos() ).isValid() )
     { selectionModel()->clear(); }
-
-    return QTreeView::mousePressEvent( event );
+    QTreeView::mousePressEvent( event );
 }
 
 //__________________________________________________________
 void TreeView::paintEvent( QPaintEvent* event )
 {
-
     if(
         useSelectedColumnColor_ && visibleColumnCount() >= 2 &&
         header() && header()->isVisible() &&
         header()->isSortIndicatorShown() )
     {
-
         // get selected column
         int selectedColumn( header()->sortIndicatorSection() );
         QRect rect( visualRect( model()->index( 0, selectedColumn ) ) );
@@ -629,10 +620,9 @@ void TreeView::paintEvent( QPaintEvent* event )
         painter.setPen( Qt::NoPen );
         painter.drawRect( rect );
         painter.end();
-
     }
 
-    return QTreeView::paintEvent( event );
+    QTreeView::paintEvent( event );
 
 }
 
@@ -1167,5 +1157,5 @@ void TreeView::Container::_initialize()
     vLayout->addWidget( treeView_->findWidget_ );
     treeView_->findWidget_->hide();
 
-    connect( &treeView_->findWidget_->closeButton(), &QAbstractButton::clicked, [this](bool){ treeView_->setFocus(); } );
+    connect( &treeView_->findWidget_->closeButton(), &QAbstractButton::clicked, this, [this](bool){ treeView_->setFocus(); } );
 }

@@ -54,6 +54,8 @@ namespace
         class ToolBar: public CustomToolBar
         {
 
+            Q_OBJECT
+
             public:
 
             //* constructor
@@ -123,7 +125,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
 
     pathEditor_->setRootPathList( rootPathList );
 
-    connect( pathEditor_, &PathEditor::pathChanged, [this](const File&){ _update(); } );
+    connect( pathEditor_, &PathEditor::pathChanged, this, [this](const File&){ _update(); } );
     connect( pathEditor_, &PathEditor::pathChanged, this, &BaseFileSystemWidget::_updateNavigationActions );
     connect( pathEditor_, &PathEditor::pathChanged, this, &BaseFileSystemWidget::_updateFileSystemWatcher );
 
@@ -435,7 +437,6 @@ void BaseFileSystemWidget::_open()
 
     Debug::Throw( QStringLiteral("BaseFileSystemWidget:_open.\n") );
     const auto selection( model_.get( list_->selectionModel()->selectedRows() ) );
-    FileSystemModel::List validSelection;
     for( const auto& record:selection )
     {
         if( record.hasFlag( BaseFileInfo::Document ) )
@@ -536,7 +537,7 @@ void BaseFileSystemWidget::_installActions()
     // hidden files
     addAction( hiddenFilesAction_ = new QAction( tr( "Show Hidden Files" ), this ) );
     hiddenFilesAction_->setCheckable( true );
-    connect( hiddenFilesAction_, &QAction::toggled, [this](bool) { _update(); } );
+    connect( hiddenFilesAction_, &QAction::toggled, this, [this](bool) { _update(); } );
     connect( hiddenFilesAction_, &QAction::toggled, this, &BaseFileSystemWidget::_toggleShowHiddenFiles );
 
     // previous directory (from history)
@@ -591,3 +592,5 @@ void BaseFileSystemWidget::_installActions()
     filePropertiesAction_->setToolTip( tr( "Display current file properties" ) );
 
 }
+
+#include "BaseFileSystemWidget.moc"

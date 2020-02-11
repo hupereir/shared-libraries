@@ -39,7 +39,7 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
     connect( group, &QActionGroup::triggered, this, &TextEncodingMenu::_selected );
 
     // use MIBs to get rid of aliases
-    QList<TextEncodingString> codecStrings;
+    QVector<TextEncodingString> codecStrings;
     for( const auto& codecId:QTextCodec::availableMibs() )
     {
         if( auto codec = QTextCodec::codecForMib( codecId ) )
@@ -73,9 +73,9 @@ void TextEncodingMenu::select( const QByteArray& constValue )
     if( !codec ) return;
 
     // get 'standard name'
-    auto value( codec->name() );
-    auto iter = Base::findByValue( actions_, value );
-    if( iter != actions_.end() ) iter.key()->setChecked( true );
+    const auto value( codec->name() );
+    const auto iter = Base::findByValue( actions_, value );
+    if( iter != actions_.cend() ) iter.key()->setChecked( true );
 
 }
 

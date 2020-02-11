@@ -107,7 +107,7 @@ void DockPanel::setTitle( const QString &title )
 
 //___________________________________________________________
 void DockPanel::setOptionName( const QString &value )
-{ return panel_->setOptionName( value ); }
+{ panel_->setOptionName( value ); }
 
 //___________________________________________________________
 void DockPanel::_toggleDock()

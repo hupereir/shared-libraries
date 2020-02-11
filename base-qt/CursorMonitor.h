@@ -33,6 +33,8 @@
 class BASE_QT_EXPORT CursorMonitor: public QObject, private Base::Counter<CursorMonitor>
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

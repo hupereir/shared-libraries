@@ -47,7 +47,7 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
 
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Update" ), this ) );
-    connect( button, &QPushButton::clicked, [this](bool){ updateCache(); } );
+    connect( button, &QPushButton::clicked, this, [this](bool){ updateCache(); } );
     button->setAutoDefault( false );
 
 }

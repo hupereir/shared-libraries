@@ -43,7 +43,7 @@ class BASE_QT_EXPORT ImageFileDialog: public QFileDialog
     //* select file
     void selectFile( const File& filename )
     {
-        emit _currentChanged( filename );
+        _currentChanged( filename );
         QFileDialog::selectFile( filename );
     }
 

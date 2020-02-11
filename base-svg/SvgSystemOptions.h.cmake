@@ -31,7 +31,7 @@
 void installSvgSystemOptions( void )
 {
     XmlOptions::get().setAutoDefault( true );
-    XmlOptions::get().set( "KDE_CONFIG", Option( "@KDE_CONFIG@", Option::Flag::None ) );
+    XmlOptions::get().set( QStringLiteral( "KDE_CONFIG" ), Option( QStringLiteral( "@KDE_CONFIG@" ), Option::Flag::None ) );
     XmlOptions::get().setAutoDefault( false );
 }
 

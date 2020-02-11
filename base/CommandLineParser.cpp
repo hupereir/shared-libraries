@@ -63,7 +63,7 @@ void CommandLineParser::usage() const
         if( !group.flags_.isEmpty() )
         {
             const QList<Tag> flagKeys( group.flags_.keys() );
-            maxFlagLength = std::max_element( flagKeys.constBegin(), flagKeys.constEnd(), MinLengthFTor() )->size();
+            maxFlagLength = std::max_element( flagKeys.cbegin(), flagKeys.cend(), MinLengthFTor() )->size();
         }
 
         int maxOptionLength(0);
@@ -72,14 +72,14 @@ void CommandLineParser::usage() const
         {
             const QList<Tag> optionKeys( group.options_.keys() );
             const QList<Option> optionValues( group.options_.values() );
-            maxOptionLength = std::max_element( optionKeys.constBegin(), optionKeys.constEnd(), MinLengthFTor() )->size();
-            maxTypeLength = 1 + std::max_element( optionValues.constBegin(), optionValues.constEnd(), MinTypeLengthFTor() )->type_.size();
+            maxOptionLength = std::max_element( optionKeys.cbegin(), optionKeys.cend(), MinLengthFTor() )->size();
+            maxTypeLength = 1 + std::max_element( optionValues.cbegin(), optionValues.cend(), MinTypeLengthFTor() )->type_.size();
         }
 
         int maxLength = 1+ qMax( maxFlagLength, maxOptionLength );
 
         // print flags
-        for( auto&& iter = group.flags_.constBegin(); iter != group.flags_.constEnd(); ++iter )
+        for( auto&& iter = group.flags_.cbegin(); iter != group.flags_.cend(); ++iter )
         {
             stream << "  ";
             stream << iter.key().toString().leftJustified( maxLength + maxTypeLength + 1 );
@@ -87,7 +87,7 @@ void CommandLineParser::usage() const
         }
 
         // print options
-        for( auto&& iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
+        for( auto&& iter = group.options_.cbegin(); iter != group.options_.cend(); ++iter )
         {
             stream << "  ";
             stream << iter.key().toString().leftJustified( maxLength );
@@ -113,15 +113,15 @@ CommandLineArguments CommandLineParser::arguments() const
     CommandLineArguments out( { applicationName_ } );
 
     // add flags
-    for( auto&& iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
+    for( auto&& iter = groups_.cbegin(); iter != groups_.cend(); ++iter )
     {
         const Group& group = iter.value();
 
-        for( auto&& iter = group.flags_.constBegin(); iter != group.flags_.constEnd(); ++iter )
+        for( auto&& iter = group.flags_.cbegin(); iter != group.flags_.cend(); ++iter )
         { if( iter.value().set_ ) out.append( iter.key().longName() ); }
 
         // add options
-        for( auto&& iter = group.options_.constBegin(); iter != group.options_.constEnd(); ++iter )
+        for( auto&& iter = group.options_.cbegin(); iter != group.options_.cend(); ++iter )
         { if( iter.value().set_ && !iter.value().value_.isEmpty() ) out.append<QStringList>( { iter.key().longName(), iter.value().value_ } ); }
 
     }
@@ -399,7 +399,7 @@ bool CommandLineParser::_isTag( const QString& tag ) const
 CommandLineParser::Group::FlagMap CommandLineParser::_allFlags() const
 {
     Group::FlagMap out;
-    for( auto&& iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
+    for( auto&& iter = groups_.cbegin(); iter != groups_.cend(); ++iter )
     { out.unite( iter.value().flags_ ); }
 
     return out;
@@ -409,7 +409,7 @@ CommandLineParser::Group::FlagMap CommandLineParser::_allFlags() const
 CommandLineParser::Group::OptionMap CommandLineParser::_allOptions() const
 {
     Group::OptionMap out;
-    for( auto&& iter = groups_.constBegin(); iter != groups_.constEnd(); ++iter )
+    for( auto&& iter = groups_.cbegin(); iter != groups_.cend(); ++iter )
     { out.unite( iter.value().options_ ); }
 
     return out;
@@ -422,8 +422,8 @@ CommandLineParser::Group::FlagMap::iterator CommandLineParser::_findTag( Group::
     if( iter == flags.end() )
     {
         const auto tags = flags.keys();
-        auto tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
-        if( tagIter != tags.constEnd() ) iter = flags.find( *tagIter );
+        auto tagIter = std::find_if( tags.cbegin(), tags.cend(), SameTagFTor( tag ) );
+        if( tagIter != tags.cend() ) iter = flags.find( *tagIter );
     }
 
     return iter;
@@ -431,7 +431,17 @@ CommandLineParser::Group::FlagMap::iterator CommandLineParser::_findTag( Group::
 
 //_______________________________________________________
 CommandLineParser::Group::FlagMap::const_iterator CommandLineParser::_findTag( const Group::FlagMap& flags, const QString& tag ) const
-{ return _findTag( const_cast<Group::FlagMap&>(flags), tag ); }
+{
+    auto iter = flags.find( Tag( tag ) );
+    if( iter == flags.cend() )
+    {
+        const auto tags = flags.keys();
+        auto tagIter = std::find_if( tags.cbegin(), tags.cend(), SameTagFTor( tag ) );
+        if( tagIter != tags.cend() ) iter = flags.find( *tagIter );
+    }
+
+    return iter;
+}
 
 //_______________________________________________________
 CommandLineParser::Group::OptionMap::iterator CommandLineParser::_findTag( Group::OptionMap& options, const QString& tag ) const
@@ -440,8 +450,8 @@ CommandLineParser::Group::OptionMap::iterator CommandLineParser::_findTag( Group
     if( iter == options.end() )
     {
         const Tag::List tags = options.keys();
-        auto tagIter = std::find_if( tags.constBegin(), tags.constEnd(), SameTagFTor( tag ) );
-        if( tagIter != tags.constEnd() ) iter = options.find( *tagIter );
+        auto tagIter = std::find_if( tags.cbegin(), tags.cend(), SameTagFTor( tag ) );
+        if( tagIter != tags.cend() ) iter = options.find( *tagIter );
     }
 
     return iter;
@@ -449,8 +459,17 @@ CommandLineParser::Group::OptionMap::iterator CommandLineParser::_findTag( Group
 
 //_______________________________________________________
 CommandLineParser::Group::OptionMap::const_iterator CommandLineParser::_findTag( const Group::OptionMap& options, const QString& tag ) const
-{ return _findTag( const_cast<Group::OptionMap&>( options ), tag ); }
+{
+    auto iter( options.find( Tag( tag ) ) );
+    if( iter == options.cend() )
+    {
+        const Tag::List tags = options.keys();
+        auto tagIter = std::find_if( tags.cbegin(), tags.cend(), SameTagFTor( tag ) );
+        if( tagIter != tags.cend() ) iter = options.find( *tagIter );
+    }
 
+    return iter;
+}
 //_______________________________________________________
 void CommandLineParser::Group::clear()
 {

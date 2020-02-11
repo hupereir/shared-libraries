@@ -125,7 +125,7 @@ void WidgetMonitor::timerEvent( QTimerEvent* event )
         if( mode_&Mode::Size ) _saveWindowSize();
         if( mode_&Mode::Position ) _saveWindowPosition();
 
-    } else return QObject::timerEvent( event );
+    } else QObject::timerEvent( event );
 
 }
 

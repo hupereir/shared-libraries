@@ -310,8 +310,11 @@ void IconView::doItemsLayout()
     const int rowCount( model_->rowCount() );
 
     // first remove invalid items
-    for( const auto& key:items_.keys() )
-    { if( key >= rowCount ) items_.remove( key ); }
+    for( auto iter = items_.begin(); iter != items_.end(); )
+    {
+        if( iter.key() >= rowCount ) iter = items_.erase( iter );
+        else ++iter;
+    }
 
     // update existing items and insert new ones
     for( int row = 0; row < rowCount; ++row )
@@ -321,8 +324,8 @@ void IconView::doItemsLayout()
         const auto index( model_->index( row, 0 ) );
 
         // make sure row is in map
-        auto iter( items_.lowerBound( row ) );
-        if( iter != items_.end() && Base::areEquivalent( row, iter.key() ) )
+        const auto iter( items_.lowerBound( row ) );
+        if( iter != items_.cend() && Base::areEquivalent( row, iter.key() ) )
         {
 
             _updateItem( iter.value(), index );
@@ -431,7 +434,7 @@ QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
         {
             int row( (item.row()+1)*columnCount_ + item.column() );
             if( row < items_.size() ) targetIndex = model_->index( row, 0 );
-            else if( items_.values().back().row() > item.row() ) targetIndex = model_->index( items_.size()-1, 0 );
+            else if( items_.last().row() > item.row() ) targetIndex = model_->index( items_.size()-1, 0 );
             else targetIndex = QModelIndex();
             break;
         }
@@ -649,8 +652,11 @@ void IconView::keyPressEvent( QKeyEvent* event )
         case Qt::Key_PageUp: index = moveCursor( MovePageUp, event->modifiers() ); break;
         case Qt::Key_PageDown: index = moveCursor( MovePageDown, event->modifiers() ); break;
 
-        default: return QAbstractItemView::keyPressEvent( event );
-
+        default:
+        {
+            QAbstractItemView::keyPressEvent( event );
+            return;
+        }
     }
 
 
@@ -689,8 +695,6 @@ void IconView::keyPressEvent( QKeyEvent* event )
 
     }
 
-    return;
-
 }
 
 //____________________________________________________________________
@@ -710,7 +714,10 @@ void IconView::mousePressEvent( QMouseEvent* event )
 
     // process non left button
     if( dragButton_ != Qt::LeftButton )
-    { return QAbstractItemView::mousePressEvent( event ); }
+    {
+        QAbstractItemView::mousePressEvent( event );
+        return;
+    }
 
     const bool shiftPressed( event->modifiers() & Qt::ShiftModifier );
     const auto index = indexAt( event->pos() );
@@ -721,7 +728,8 @@ void IconView::mousePressEvent( QMouseEvent* event )
         if( selectionModel()->isSelected( index ) && dragEnabled() && !shiftPressed )
         {
             anchorIndex_ = index;
-            return QAbstractItemView::mousePressEvent( event );
+            QAbstractItemView::mousePressEvent( event );
+            return;
         }
 
         if( shiftPressed && anchorIndex_.isValid() && selectionModel()->isSelected( anchorIndex_ ) )
@@ -842,12 +850,10 @@ void IconView::wheelEvent( QWheelEvent* event )
         if( offsetInt != 0 ) _incrementIconSize( offsetInt );
         wheelOffsetAccumulated_ += offset - offsetInt;
 
-        return;
-
     } else {
 
         wheelOffsetAccumulated_ = 0;
-        return QAbstractItemView::wheelEvent( event );
+        QAbstractItemView::wheelEvent( event );
 
     }
 
@@ -912,7 +918,7 @@ void IconView::timerEvent(QTimerEvent *event)
         if( position.y() < 0 ) verticalScrollBar()->setValue( verticalScrollBar()->value() - verticalScrollBar()->singleStep() );
         else if( position.y() > rect.height() ) verticalScrollBar()->setValue( verticalScrollBar()->value() + verticalScrollBar()->singleStep() );
 
-    } else return QAbstractItemView::timerEvent( event );
+    } else QAbstractItemView::timerEvent( event );
 
 }
 
@@ -1567,7 +1573,7 @@ void IconView::Container::_initialize()
     vLayout->addWidget( iconView_->findWidget_ );
     iconView_->findWidget_->hide();
 
-    connect( &iconView_->findWidget_->closeButton(), &QPushButton::clicked, [this](bool){ iconView_->setFocus(); } );
+    connect( &iconView_->findWidget_->closeButton(), &QPushButton::clicked, this, [this](bool){ iconView_->setFocus(); } );
 }
 
 //___________________________________________________

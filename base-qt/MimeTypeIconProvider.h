@@ -31,6 +31,8 @@
 class BASE_QT_EXPORT MimeTypeIconProvider : public QObject, private Base::Counter<MimeTypeIconProvider>
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

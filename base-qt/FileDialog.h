@@ -33,6 +33,8 @@
 class BASE_QT_EXPORT FileDialog: public QObject, private Base::Counter<FileDialog>
 {
 
+    Q_OBJECT
+
     public:
 
     //* creator

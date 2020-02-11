@@ -57,7 +57,7 @@ namespace Private
             }
 
             connect( actionGroup, &QActionGroup::triggered, this, &OptionMenu::_setOrientation );
-            menu->actions().front()->setChecked( true );
+            (*menu->actions().begin())->setChecked( true );
 
         }
 
@@ -77,7 +77,7 @@ namespace Private
                 actionGroup->addAction( iter.key() );
             }
 
-            menu->actions().front()->setChecked( true );
+            (*menu->actions().begin())->setChecked( true );
             connect( actionGroup, &QActionGroup::triggered, this, &OptionMenu::_setPageMode );
 
         }

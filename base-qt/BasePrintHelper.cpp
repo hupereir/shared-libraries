@@ -144,7 +144,7 @@ void BasePrintHelper::_newPage( QPrinter* printer, QPainter* painter )
 
     // setup painter
     painter->save();
-    painter->setPen( QColor( "#888888" ) );
+    painter->setPen( QColor( 136, 136, 136 ) );
 
     // header
     painter->drawLine( headerRect_.bottomLeft()+QPoint(0,1), headerRect_.bottomRight()+QPoint(0,1) );

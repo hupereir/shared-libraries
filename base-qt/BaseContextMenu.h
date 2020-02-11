@@ -30,6 +30,8 @@
 class BASE_QT_EXPORT BaseContextMenu: public QMenu, private Base::Counter<BaseContextMenu>
 {
 
+    Q_OBJECT
+
     public:
 
     //* contructor

@@ -161,7 +161,7 @@ void BaseFileInformationDialog::setType( const QString& value )
 //_________________________________________________________
 void BaseFileInformationDialog::setSize( qint64 size )
 {
-    if( size > 0 ) sizeItem_->setText( QStringLiteral( "%1 (%2)" ).arg( File::sizeString( size ) ).arg( File::rawSizeString( size ) ) );
+    if( size > 0 ) sizeItem_->setText( QStringLiteral( "%1 (%2)" ).arg( File::sizeString( size ), File::rawSizeString( size ) ) );
     else sizeItem_->setText( QString() );
 }
 

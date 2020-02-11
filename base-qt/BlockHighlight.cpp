@@ -66,22 +66,21 @@ void BlockHighlight::clear()
 //______________________________________________________________________
 void BlockHighlight::highlight()
 {
-
-    if( !isEnabled() ) return;
-
-    clear();
-    timer_.start(50, this );
-
+    if( isEnabled() )
+    {
+        clear();
+        timer_.start(50, this );
+    }
 }
 
 //______________________________________________________________________
 void BlockHighlight::timerEvent( QTimerEvent* event )
 {
-
-    if( event->timerId() != timer_.timerId() ) return QObject::timerEvent( event );
-    timer_.stop();
-    _highlight();
-
+    if( event->timerId() == timer_.timerId() )
+    {
+        timer_.stop();
+        _highlight();
+    } else QObject::timerEvent( event );
 }
 
 //______________________________________________________________________

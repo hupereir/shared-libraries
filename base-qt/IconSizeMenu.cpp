@@ -56,22 +56,15 @@ IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
 //_____________________________________________________________________________
 void IconSizeMenu::select( IconSize::Size size )
 {
-
     Debug::Throw( QStringLiteral("IconSizeMenu::select.\n") );
     const auto iter = Base::findByValue( actions_, size );
-    if( iter != actions_.end() ) iter.key()->setChecked( true );
-
+    if( iter != actions_.cend() ) iter.key()->setChecked( true );
 }
 
 //_____________________________________________________________________________
 void IconSizeMenu::_selected( QAction* action )
 {
-
     Debug::Throw( QStringLiteral("IconSizeMenu::_selected.\n") );
-
-    // find matching actions
     const auto iter = actions_.find( action );
-    Q_ASSERT( iter != actions_.end() );
     emit iconSizeSelected( iter.value() );
-
 }

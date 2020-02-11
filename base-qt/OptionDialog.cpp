@@ -108,7 +108,6 @@ void OptionDialog::_reload()
     for( auto&& iter = specialOptions.begin(); iter != specialOptions.end(); ++iter )
     {
         model_.add( Options::Pair( iter.key(), Option() ) );
-        OptionModel::List options;
         for( const auto& option:iter.value() )
         { model_.add( Options::Pair( iter.key(), option ) ); }
 

@@ -84,7 +84,7 @@ namespace Ssh
         deviceOwned_ = true;
         auto device = new QFile( localFileName, this );
 
-        emit debug( tr( "Transfering remote file %1 to local file %2" ).arg( remoteFileName_ ).arg( localFileName ) );
+        emit debug( tr( "Transfering remote file %1 to local file %2" ).arg( remoteFileName_, localFileName ) );
 
         if( device->open( QIODevice::WriteOnly ) ) return fromRemote( session, device );
         else
@@ -133,7 +133,7 @@ namespace Ssh
 
         deviceOwned_ = true;
 
-        emit debug( tr( "Transfering local file %1 to remote file %2" ).arg( localFileName ).arg( remoteFileName_ ) );
+        emit debug( tr( "Transfering local file %1 to remote file %2" ).arg( localFileName, remoteFileName_ ) );
 
         auto device = new QFile( localFileName, this );
         if( device->open( QIODevice::ReadOnly ) ) return toRemote( session, device );

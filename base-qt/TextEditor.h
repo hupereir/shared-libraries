@@ -694,10 +694,10 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     { return currentBlockRect_; }
 
     //* current block rect
-    virtual bool _setCurrentBlockRect( const QRect& rect )
+    virtual bool _setCurrentBlockRect( QRect rect )
     {
         if( rect == currentBlockRect_ ) return false;
-        currentBlockRect_ = rect;
+        currentBlockRect_ = std::move( rect );
         return true;
     }
 

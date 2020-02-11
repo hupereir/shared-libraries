@@ -304,7 +304,7 @@ bool XcbUtil::isSupported( AtomId atomId ) const
     if( !isX11() ) return false;
 
     Private::SupportedAtomHash::const_iterator iter( d->supportedAtomId_.find( atomId ) );
-    if( iter != d->supportedAtomId_.end() )
+    if( iter != d->supportedAtomId_.cend() )
     { return iter.value(); }
 
     bool found( false );

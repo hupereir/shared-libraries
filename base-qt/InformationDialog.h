@@ -32,6 +32,8 @@
 class BASE_QT_EXPORT InformationDialog: public DetailsDialog
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

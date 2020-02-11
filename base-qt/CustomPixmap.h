@@ -110,12 +110,6 @@ class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomP
     CustomPixmap active() const
     { return highlighted( 0.2 ); }
 
-    //* device pixel ratio
-    qreal devicePixelRatio() const;
-
-    //* device pixel ratio
-    void setDevicePixelRatio( qreal );
-
 };
 
 

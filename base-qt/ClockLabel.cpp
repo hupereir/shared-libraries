@@ -37,19 +37,12 @@ ClockTimer::ClockTimer( QWidget *parent ):
 //__________________________________________________________
 void ClockTimer::timerEvent( QTimerEvent* event )
 {
-
-    Debug::Throw( QStringLiteral("ClockTimer::timerEvent.\n") );
-    TimeStamp newTime( TimeStamp::now() );
-
     if( event->timerId() == timer_.timerId() )
     {
-
         time_ = TimeStamp::now();
         timer_.start( 1000 * interval(), this );
         emit timeChanged( time_.toString( format ) );
-
-    } else return QObject::timerEvent( event );
-
+    } else QObject::timerEvent( event );
 }
 
 //________________________________________________________________

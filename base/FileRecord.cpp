@@ -49,7 +49,7 @@ FileRecord::PropertyId::Id FileRecord::PropertyId::get( const QString& name )
 
     // see if iterator exists in list
     IdMap::const_iterator iter;
-    if( ( iter = _idMap().find( name ) ) != _idMap().end() )
+    if( ( iter = _idMap().find( name ) ) != _idMap().cend() )
     { return iter.value(); }
 
     // insert otherwise, increment counter and return proper value

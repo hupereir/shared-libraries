@@ -33,7 +33,7 @@ ColorGrabObject::ColorGrabObject( QAbstractButton* parent ):
     Counter( QStringLiteral("ColorGrabObject") )
 {
     Debug::Throw( QStringLiteral("ColorGrabObject::ColorGrabObject.\n") );
-    connect( parent, &QAbstractButton::clicked, [this](bool){ _grabColor(); } );
+    connect( parent, &QAbstractButton::clicked, this, [this](bool){ _grabColor(); } );
 }
 
 //________________________________________________________

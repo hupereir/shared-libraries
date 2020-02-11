@@ -45,7 +45,7 @@ CustomDialog( parent, OkButton, Qt::Window )
 
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
-    connect( button, &QPushButton::clicked, [this](bool){ updateCounters(); } );
+    connect( button, &QPushButton::clicked, this, [this](bool){ updateCounters(); } );
     button->setAutoDefault( false );
 
     connect( new QShortcut( QKeySequence::Refresh, this ), &QShortcut::activated, this, &CounterDialog::updateCounters );

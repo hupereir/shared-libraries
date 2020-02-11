@@ -33,7 +33,7 @@ void FileSystemWatcher::timerEvent( QTimerEvent* event )
 
         directories_.clear();
 
-    } else return QFileSystemWatcher::timerEvent( event );
+    } else QFileSystemWatcher::timerEvent( event );
 
 }
 

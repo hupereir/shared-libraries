@@ -31,10 +31,10 @@
 
 #include <algorithm>
 
-
-//! model
 class TextEncodingModel: public ListModel<TextEncodingString>
 {
+
+    Q_OBJECT
 
     public:
 
@@ -199,3 +199,5 @@ void TextEncodingWidget::_find(const QString &text )
     list_->find( selection );
     locked_ = false;
 }
+
+#include "TextEncodingWidget.moc"

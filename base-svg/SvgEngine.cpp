@@ -124,8 +124,8 @@ namespace Svg
         for( auto&& iter = cache.begin(); iter != cache.end(); ++iter )
         {
             // insert only if not already in cache
-            auto foundIter( cache_.lowerBound( iter.key() ) );
-            if( foundIter == cache_.end() || !Base::areEquivalent( foundIter.key(), iter.key() ) )
+            const auto foundIter( cache_.lowerBound( iter.key() ) );
+            if( foundIter == cache_.cend() || !Base::areEquivalent( foundIter.key(), iter.key() ) )
             { Base::insert( cache_, foundIter, iter.key(), QPixmap::fromImage( iter.value() ) ); }
         }
 

@@ -306,7 +306,7 @@ void SimpleListView::mouseMoveEvent( QMouseEvent *event )
     if( !indexAt( event->pos() ).isValid() )
     { _setHoverIndex( QModelIndex() ); }
 
-    return QListView::mouseMoveEvent( event );
+    QListView::mouseMoveEvent( event );
 }
 
 //__________________________________________________________
@@ -318,7 +318,7 @@ void SimpleListView::mousePressEvent( QMouseEvent* event )
     if( (event->button() == Qt::RightButton) && selectionModel() && !indexAt( event->pos() ).isValid() )
     { selectionModel()->clear(); }
 
-    return QListView::mousePressEvent( event );
+    QListView::mousePressEvent( event );
 }
 
 //____________________________________________________________________

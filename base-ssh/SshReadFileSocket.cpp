@@ -122,28 +122,24 @@ namespace Ssh
     //_______________________________________________________________________
     void ReadFileSocket::timerEvent( QTimerEvent* event )
     {
-        // check timer id
-        if( event->timerId() != timer_.timerId() ) return QIODevice::timerEvent( event );
-
-        #if WITH_SSH
-        if( !isConnected() ) _tryConnect();
-        else _tryRead();
-        return;
-
-        #else
-
-        timer_.stop();
-        bytesAvailable_ = -1;
-        setErrorString( "no ssh" );
-        return;
-
-        #endif
+        if( event->timerId() == timer_.timerId() )
+        {
+            #if WITH_SSH
+            if( !isConnected() ) _tryConnect();
+            else _tryRead();
+            return;
+            #else
+            timer_.stop();
+            bytesAvailable_ = -1;
+            setErrorString( "no ssh" );
+            return;
+            #endif
+        } else QIODevice::timerEvent( event );
     }
 
     //_______________________________________________________________________
     bool ReadFileSocket::_tryConnect()
     {
-
         Debug::Throw( QStringLiteral("Ssh::ReadFileSocket::_tryConnect.\n") );
         if( isConnected() ) return true;
 

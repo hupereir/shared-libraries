@@ -263,6 +263,9 @@ namespace Private
     //___________________________________________________________
     class SizeGrip: public QSizeGrip
     {
+
+        Q_OBJECT
+
         public:
 
         explicit SizeGrip( QWidget* parent ):
@@ -351,3 +354,5 @@ namespace Private
     }
 
 }
+
+#include "TabWidget.moc"

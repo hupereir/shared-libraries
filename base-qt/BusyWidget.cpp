@@ -157,7 +157,7 @@ void BusyWidget::timerEvent( QTimerEvent* event )
         if( animation_->state() == QAbstractAnimation::Stopped ) animation_->start();
         if( !isVisible() ) show();
 
-    } else return QWidget::timerEvent( event );
+    } else QWidget::timerEvent( event );
 
 }
 

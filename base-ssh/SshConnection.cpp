@@ -318,19 +318,11 @@ namespace Ssh
     //_______________________________________________
     void Connection::timerEvent( QTimerEvent* event )
     {
-
         if( event->timerId() == timer_.timerId() )
         {
-
             if( ( timerLocked_ || !_processCommands() ) && timer_.isActive() )
             { timer_.stop(); }
-
-        } else {
-
-            return QObject::timerEvent( event );
-
-        }
-
+        } QObject::timerEvent( event );
     }
 
     //_______________________________________________
@@ -655,8 +647,10 @@ namespace Ssh
             // find tunnel attributes matching host
             TunnelAttributes attributes;
             attributes.setLocalPort( tcpServer->serverPort() );
-            auto iter( connectionAttributes_.tunnels().constFind( attributes ) );
-            if( iter == connectionAttributes_.tunnels().end() )
+
+            const auto tunnels( connectionAttributes_.tunnels() );
+            const auto iter( tunnels.constFind( attributes ) );
+            if( iter == tunnels.cend() )
             {
                 Debug::Throw(0) << "Ssh::Connection::_newConnection - unable to find tunnel attributes matching port " << tcpServer->serverPort() << endl;
                 continue;

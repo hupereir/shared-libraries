@@ -36,15 +36,15 @@ void BaseProgressBar::paintEvent( QPaintEvent* event )
 {
 
     // default painting if no text is set
-    if( text_.isEmpty() ) return QProgressBar::paintEvent( event );
-    else {
-
+    if( text_.isEmpty() )
+    {
+        QProgressBar::paintEvent( event );
+    } else {
         QStylePainter painter(this);
         painter.setClipRegion( event->region() );
         QStyleOptionProgressBar opt;
         initStyleOption(&opt);
         opt.text = text_;
         painter.drawControl(QStyle::CE_ProgressBar, opt);
-
     }
 }

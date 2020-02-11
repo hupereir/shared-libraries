@@ -32,6 +32,8 @@ namespace Transparency
     class BASE_TRANSPARENCY_EXPORT ShadowLabel: public QLabel, private Base::Counter<ShadowLabel>
     {
 
+        Q_OBJECT
+
         public:
 
         //* construct from any args that make a QLabel

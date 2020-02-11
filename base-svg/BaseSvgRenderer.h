@@ -35,6 +35,8 @@ namespace Svg
     class BASE_SVG_EXPORT BaseSvgRenderer: public QSvgRenderer, private Base::Counter<BaseSvgRenderer>
     {
 
+        Q_OBJECT
+
         public:
 
         //* constructor

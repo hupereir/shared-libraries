@@ -170,7 +170,7 @@ LineEditor::LineEditor( QWidget* parent ):
     addRightWidget( clearButton_ );
 
     // setup connections
-    connect( clearButton_, &LineEditorButton::clicked, [this](bool){ clear(); } );
+    connect( clearButton_, &LineEditorButton::clicked, this, [this](bool){ clear(); } );
 
     setStyle( proxyStyle_.data() );
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );

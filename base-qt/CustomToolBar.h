@@ -103,7 +103,7 @@ class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<Custo
     void setMovable( bool value )
     {
         lockFromOptions_ = false;
-        return QToolBar::setMovable( value );
+        QToolBar::setMovable( value );
     }
 
     //* icon size
@@ -111,7 +111,7 @@ class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<Custo
     void setIconSize( QSize size )
     {
         iconSizeFromOptions_ = false;
-        return QToolBar::setIconSize( size );
+        QToolBar::setIconSize( size );
     }
 
     //* toolbutton style
@@ -119,7 +119,7 @@ class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<Custo
     void setToolButtonStyle( Qt::ToolButtonStyle style )
     {
         toolButtonStyleFromOptions_ = false;
-        return QToolBar::setToolButtonStyle( style );
+        QToolBar::setToolButtonStyle( style );
     }
 
     //* true if visible in menu

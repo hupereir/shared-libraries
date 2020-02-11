@@ -164,7 +164,7 @@ void BaseToolTipWidget::paintEvent( QPaintEvent* event )
     QStyleOptionFrame opt;
     opt.init(this);
     style()->drawPrimitive(QStyle::PE_PanelTipLabel, &opt, &painter, this );
-    return QWidget::paintEvent( event );
+    QWidget::paintEvent( event );
 }
 
 //_______________________________________________________
@@ -179,14 +179,12 @@ void BaseToolTipWidget::timerEvent( QTimerEvent* event )
 
         timer_.stop();
         show();
-        return;
 
     } else if( event->timerId() == hiddenTimer_.timerId() ) {
 
         hiddenTimer_.stop();
-        return;
 
-    } else return QWidget::timerEvent( event );
+    } else QWidget::timerEvent( event );
 }
 
 //_______________________________________________________
