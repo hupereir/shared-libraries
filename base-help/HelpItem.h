@@ -24,7 +24,7 @@
 #include "Counter.h"
 #include "Debug.h"
 
-#include <QList>
+#include <QVector>
 
 //* Help system namespace
 namespace Base
@@ -35,6 +35,9 @@ namespace Base
     {
 
         public:
+
+        //* shortcut to help item list
+        using List = QVector<HelpItem>;
 
         //* constructor
         explicit HelpItem( const QString& label = QString(), const QString& text = QString() ):
@@ -58,9 +61,6 @@ namespace Base
         //* item text
         const QString& text() const
         { return text_; }
-
-        //* shortcut to help item list
-        using List = QList< HelpItem >;
 
         private:
 

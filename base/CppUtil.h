@@ -28,6 +28,15 @@
 namespace Base
 {
 
+    //* copy one container to another
+    template<class T, class U>
+        T makeT( const U& in )
+    {
+        T out;
+        std::copy( in.begin(), in.end(), std::back_inserter( out ) );
+        return out;
+    }
+
     //* equivalent-to pseudo-operator
     /** it is used for smart insertion in maps and hashed */
     template<class T, class U>

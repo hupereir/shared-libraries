@@ -27,12 +27,12 @@
 #include "Operators.h"
 #include "TimeStamp.h"
 
-#include <QString>
-#include <QTextStream>
-#include <QList>
-#include <QPair>
 #include <QDomElement>
 #include <QDomDocument>
+#include <QPair>
+#include <QString>
+#include <QTextStream>
+#include <QVector>
 
 #include <algorithm>
 
@@ -59,7 +59,7 @@ class BASE_QT_EXPORT BaseFileInfo
 
     public:
 
-    using List=QList<BaseFileInfo>;
+    using List=QVector<BaseFileInfo>;
 
     //* file properties
     enum Type
@@ -375,7 +375,7 @@ class BASE_QT_EXPORT BaseFileInfo
         ~Description() = default;
 
         template<class T>
-        QString get( const QList<T>& ) const;
+        QString get( const T& ) const;
 
         private:
 
@@ -448,7 +448,7 @@ inline bool operator < (const BaseFileInfo& first, const BaseFileInfo& second)
 
 //________________________________________________________________
 template <typename T>
-QString BaseFileInfo::Description::get( const QList<T>& files ) const
+QString BaseFileInfo::Description::get( const T& files ) const
 {
     if( files.empty() ) return QString();
 

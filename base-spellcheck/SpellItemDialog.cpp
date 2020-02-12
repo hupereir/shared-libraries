@@ -18,6 +18,8 @@
 *******************************************************************************/
 
 #include "SpellItemDialog.h"
+
+#include "CppUtil.h"
 #include "TreeView.h"
 
 #include <QHeaderView>
@@ -49,7 +51,7 @@ namespace SpellCheck
 
     //_______________________________________________
     void SpellItemDialog::setItems( const QOrderedSet<QString>& items )
-    { model_.set( items.toList() ); }
+    { model_.set( Base::makeT<SpellItemModel::List>( items ) ); }
 
     //_______________________________________________
     void SpellItemDialog::setDisabledItems( const QString& items )

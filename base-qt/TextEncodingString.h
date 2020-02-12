@@ -21,14 +21,18 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
+
 #include <QList>
 #include <QRegularExpression>
 #include <QString>
+#include <QVector>
 
 //* model content
 class BASE_QT_EXPORT TextEncodingString final
 {
     public:
+
+    using List = QVector<TextEncodingString>;
 
     //* universal constructor
     template<typename... Args>

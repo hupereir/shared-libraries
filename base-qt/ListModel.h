@@ -44,9 +44,9 @@ class ListModel : public ItemModel
     using Pointer = T*;
 
     //* value list
-    using List = QList<ValueType>;
-    using ListIterator = QListIterator<ValueType>;
-    using MutableListIterator = QMutableListIterator<ValueType>;
+    using List = QVector<ValueType>;
+    using ListIterator = QVectorIterator<ValueType>;
+    using MutableListIterator = QMutableVectorIterator<ValueType>;
 
     //* constructor
     explicit ListModel(QObject* parent = nullptr ):

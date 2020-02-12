@@ -163,7 +163,7 @@ void TextEncodingWidget::_loadTextCodecs()
 {
 
     // use MIBs to get rid of aliases
-    QList<TextEncodingString> codecStrings;
+    TextEncodingString::List codecStrings;
     for( const auto& codecId:QTextCodec::availableMibs() )
     {
         if( auto codec = QTextCodec::codecForMib( codecId ) )

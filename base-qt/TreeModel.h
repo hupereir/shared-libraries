@@ -24,7 +24,7 @@
 #include "ItemModel.h"
 #include "TreeItem.h"
 
-#include <QList>
+#include <QVector>
 
 #include <algorithm>
 
@@ -48,10 +48,10 @@ class TreeModel : public ItemModel
     using Pointer = T*;
 
     //* list of values
-    using List = QList<ValueType>;
+    using List = QVector<ValueType>;
 
     //* iterator
-    using ListIterator = QListIterator<ValueType>;
+    using ListIterator = QVectorIterator<ValueType>;
 
     //* item
     using Item = TreeItem<T>;

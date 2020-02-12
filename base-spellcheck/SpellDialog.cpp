@@ -603,7 +603,7 @@ namespace SpellCheck
         // clear list of suggestions
         model_.clear();
         const auto suggestions( interface_.suggestions( word ) );
-        model_.add( suggestions );
+        model_.add( Model::List::fromList( suggestions ) );
 
         // select the first suggestion, if any
         if( !suggestions.isEmpty() )

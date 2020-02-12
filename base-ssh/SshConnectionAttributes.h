@@ -26,7 +26,7 @@
 #include "Functors.h"
 
 #include <QString>
-#include <QList>
+#include <QVector>
 
 namespace Ssh
 {
@@ -39,8 +39,8 @@ namespace Ssh
         //* used to drag and drop in models
         static const QString MimeType;
 
-        using List = QList<ConnectionAttributes>;
-        using ListIterator = QListIterator<ConnectionAttributes>;
+        using List = QVector<ConnectionAttributes>;
+        using ListIterator = QVectorIterator<ConnectionAttributes>;
 
         //* constructor
         explicit ConnectionAttributes():

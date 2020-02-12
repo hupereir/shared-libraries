@@ -23,9 +23,9 @@
 #include "base_ssh_export.h"
 #include "Counter.h"
 
-#include <QList>
 #include <QSet>
 #include <QString>
+#include <QVector>
 
 namespace Ssh
 {
@@ -36,7 +36,7 @@ namespace Ssh
         public:
 
         using Set = QSet<TunnelAttributes>;
-        using List = QList<TunnelAttributes>;
+        using List = QVector<TunnelAttributes>;
 
         //* constructor
         explicit TunnelAttributes():

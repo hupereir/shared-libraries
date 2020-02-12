@@ -28,9 +28,9 @@
 #include "QOrderedSet.h"
 #include "TimeStamp.h"
 
-#include <QList>
 #include <QHash>
 #include <QStringList>
+#include <QVector>
 
 //* handles previously opened file and tags
 class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
@@ -40,7 +40,7 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
 
     //* shortcut to list of records
     using Set = QOrderedSet<FileRecord>;
-    using List = QList<FileRecord>;
+    using List = QVector<FileRecord>;
 
     //* mimetype for drag and drop operations
     static const QString MimeType;

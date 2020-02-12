@@ -22,8 +22,9 @@
 
 #include "TreeItemBase.h"
 
-#include <QList>
 #include <QHash>
+#include <QVector>
+
 #include <algorithm>
 
 //* generic "isChild" method
@@ -52,13 +53,13 @@ template<class T> class TreeItem: public TreeItemBase
     using ConstReference = const T&;
 
     //* list of references
-    using ValueList = QList<T>;
+    using ValueList = QVector<T>;
 
     //* pointer
     using Pointer = T*;
 
     //* list of vector
-    using List = QList<TreeItem>;
+    using List = QVector<TreeItem>;
 
     //* map items to internal id
     using Map = QHash<int, TreeItem*>;
