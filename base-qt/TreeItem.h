@@ -64,11 +64,16 @@ template<class T> class TreeItem: public TreeItemBase
     //* map items to internal id
     using Map = QHash<int, TreeItem*>;
 
+    //* empty constructor
+    TreeItem():
+        TreeItemBase(0)
+    {}
+
     //* root constructor
     TreeItem( Map& itemMap ):
         TreeItemBase(0),
-        map_( itemMap )
-    { map_[id()] = this; }
+        map_( &itemMap )
+    { (*map_)[id()] = this; }
 
     //* copy constructor
     TreeItem( const TreeItem& item ):
@@ -80,7 +85,7 @@ template<class T> class TreeItem: public TreeItemBase
     {
 
         // store id in map
-        map_[id()] = this;
+        (*map_)[id()] = this;
 
         // reassign parents
         for( auto& child:children_ ) { child.parent_ = this; }
@@ -97,12 +102,13 @@ template<class T> class TreeItem: public TreeItemBase
         parent_ = item.parent_;
         value_ = item.value_;
         children_ = item.children_;
+        map_ = item.map_;
 
         // erase current id from map
         // update and store in map
         _eraseFromMap();
         _setId( item.id() );
-        map_[id()] = this;
+        (*map_)[id()] = this;
 
         // reassign parents
         for( auto& child:children_ ) { child.parent_ = this; }
@@ -219,7 +225,7 @@ template<class T> class TreeItem: public TreeItemBase
         // try add to this list of children
         if( Base::isChild( value, get() ) )
         {
-            children_.append( TreeItem( map_, this, value ) );
+            children_.append( TreeItem( *map_, this, value ) );
             return true;
         }
 
@@ -231,7 +237,7 @@ template<class T> class TreeItem: public TreeItemBase
         // add to this if top level
         if( !( added || hasParent() ) )
         {
-            children_.append( TreeItem( map_, this, value ) );
+            children_.append( TreeItem( *map_, this, value ) );
             return true;
         }
 
@@ -366,10 +372,10 @@ template<class T> class TreeItem: public TreeItemBase
     /** used to insert T in the tree structure */
     TreeItem( Map& itemMap, const TreeItem* parent, ConstReference value ):
         TreeItemBase( ++_runningId() ),
-        map_( itemMap ),
+        map_( &itemMap ),
         parent_( parent ),
         value_( value )
-    { map_[id()] = this; }
+    { (*map_)[id()] = this; }
 
     //* value
     Reference _get()
@@ -378,15 +384,15 @@ template<class T> class TreeItem: public TreeItemBase
     //* erase from map
     void _eraseFromMap()
     {
-        auto iter( map_.find( id() ) );
-        if( iter != map_.end() && iter.value() == this )
-        { map_.erase( iter ); }
+        auto iter( map_->find( id() ) );
+        if( iter != map_->end() && iter.value() == this )
+        { map_->erase( iter ); }
     }
 
     private:
 
     //* item map
-    Map& map_;
+    Map* map_ = nullptr;
 
     //* parent
     const TreeItem* parent_ = nullptr;
