@@ -20,7 +20,6 @@
 #include "SshConnection.h"
 #include "Debug.h"
 #include "File.h"
-#include "Sleep.h"
 #include "SshLoginDialog.h"
 #include "SshSocket.h"
 #include "SshTunnel.h"
