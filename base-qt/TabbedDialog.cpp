@@ -25,6 +25,7 @@
 #include "SimpleListView.h"
 
 #include <QApplication>
+#include <QMimeData>
 #include <QScrollArea>
 #include <QShortcut>
 #include <QToolTip>
@@ -67,7 +68,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     buttonBox_->layout()->setMargin(5);
 
     // connections
-    // connect( model_, &ConnectionAttributesModel::itemOrderChanged, this, &ConnectionListWidget::_reorder );
+    connect( model_, &Private::TabbedDialogModel::itemOrderChanged, this, &TabbedDialog::_reorder );
     connect( list_->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &TabbedDialog::_display );
     connect( new QShortcut( QKeySequence::Quit, this ), &QShortcut::activated, this, &TabbedDialog::close );
 
@@ -167,9 +168,30 @@ void TabbedDialog::_display( const QModelIndex& index )
     stackedWidget_->setCurrentWidget( model_->get( index ).widget() );
 }
 
-//_______________________________________________________________________________________
+
+//_________________________________________________________
+void TabbedDialog::_reorder( int oldRow, int newRow )
+{
+
+    Debug::Throw() << "TabbedDialog::_reorder - old: " << oldRow << " new: " << newRow << endl;
+    if( newRow > oldRow ) newRow--;
+
+    auto dataList( model_->get() );
+    dataList.move( oldRow, newRow );
+    model_->set( dataList );
+
+    // restore selection
+    list_->selectionModel()->select( model_->index( newRow, 0 ),  QItemSelectionModel::Clear|QItemSelectionModel::Select|QItemSelectionModel::Rows );
+    return;
+
+}
+
 namespace Private
 {
+    //_______________________________________________________________________________________
+    static const QString MimeType( QStringLiteral("base-qt/private/tabbed-dialog-item") );
+
+    //_______________________________________________________________________________________
     QVariant TabbedDialogModel::data( const QModelIndex& index, int role ) const
     {
 
@@ -191,6 +213,59 @@ namespace Private
             default: return QVariant();
         }
 
+    }
+
+    //______________________________________________________________________
+    QStringList TabbedDialogModel::mimeTypes() const
+    { return { MimeType, "text/plain" }; }
+
+    //______________________________________________________________________
+    QMimeData* TabbedDialogModel::mimeData(const QModelIndexList &indexes) const
+    {
+
+        // create mime data
+        QMimeData *mime = new QMimeData;
+
+        // add keywords mimetype
+        for( const auto& index:indexes )
+        { if( index.isValid() ) mime->setData( MimeType, qPrintable( QString::number(index.row()) ) ); }
+
+        // add plain text mimetype
+        QString buffer;
+        for( const auto& index:indexes )
+        {
+            if( !index.isValid() ) continue;
+            const auto& data( get( index ) );
+            buffer += data.name();
+        }
+
+        // set plain text data
+        mime->setData( QStringLiteral("text/plain"), qPrintable( buffer ) );
+
+        return mime;
+
+    }
+
+    //__________________________________________________________________
+    bool TabbedDialogModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int row, int column, const QModelIndex& parent)
+    {
+
+        Debug::Throw( QStringLiteral("TabbedDialogModel::dropMimeData\n") );
+
+        // check action
+        if( action == Qt::IgnoreAction) return true;
+        if( row < 0 ) return false;
+        if( data->hasFormat( MimeType ) )
+        {
+
+            // retrieve row of dragged item and send signal
+            const int oldRow( data->data( MimeType ).toInt() );
+            emit itemOrderChanged( oldRow, row );
+            return true;
+
+        }
+
+        return false;
     }
 
 }

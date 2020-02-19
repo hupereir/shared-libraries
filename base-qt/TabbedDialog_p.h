@@ -87,7 +87,7 @@ namespace Private
     class TabbedDialogModel: public ListModel<TabbedDialogItem>
     {
 
-	Q_OBJECT
+        Q_OBJECT
 
         public:
 
@@ -102,8 +102,11 @@ namespace Private
         //@{
 
         //* flags
-        Qt::ItemFlags flags(const QModelIndex& ) const override
-        { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
+        Qt::ItemFlags flags(const QModelIndex& index ) const override
+        {
+            if( !index.isValid() ) return Qt::ItemIsDropEnabled;
+            return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
+        }
 
         //* return data
         QVariant data(const QModelIndex &index, int role) const override;
@@ -116,19 +119,21 @@ namespace Private
         int columnCount(const QModelIndex& = QModelIndex()) const override
         { return nColumns; }
 
-//         //* mime type
-//         QStringList mimeTypes() const override;
+        //* mime type
+        QStringList mimeTypes() const override;
 
-//         //* mime data
-//         QMimeData* mimeData( const QModelIndexList& ) const override;
+        //* mime data
+        QMimeData* mimeData( const QModelIndexList& ) const override;
 
-//         //* drop mine data
-//         bool dropMimeData(const QMimeData*, Qt::DropAction, int, int, const QModelIndex&) override;
+        //* drop mine data
+        bool dropMimeData(const QMimeData*, Qt::DropAction, int, int, const QModelIndex&) override;
 
-
-          Q_SIGNALS:
-          void itemOrderChanged( int, int);
         //@}
+
+        Q_SIGNALS:
+
+        //* emitted when an item is dragged in the list
+        void itemOrderChanged( int, int);
 
     };
 
