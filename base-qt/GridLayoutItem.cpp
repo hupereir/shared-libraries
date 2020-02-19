@@ -33,7 +33,7 @@ GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, Flags flags
     layout->addWidget( key_ = new QLabel( parent ), layout->currentRow(), layout->currentColumn(), Qt::AlignRight|Qt::AlignTop );
 
     auto palette( key_->palette() );
-    palette.setColor( QPalette::WindowText, QtUtil::lightTextColor( palette ) );
+    palette.setColor( key_->foregroundRole(), QtUtil::lightTextColor( palette, QPalette::Normal, key_->foregroundRole() ) );
     key_->setPalette( palette );
 
     // elision flag
