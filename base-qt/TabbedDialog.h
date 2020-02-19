@@ -35,6 +35,11 @@
 
 class SimpleListView;
 
+namespace Private
+{
+    class TabbedDialogModel;
+}
+
 //* tabbed dialog
 /** a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
 class BASE_QT_EXPORT TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
@@ -129,101 +134,11 @@ class BASE_QT_EXPORT TabbedDialog: public BaseDialog, private Base::Counter<Tabb
     //* display item page
     void _display( const QModelIndex& );
 
-    //* item model
-    class BASE_QT_EXPORT Item final: private Base::Counter<Item>
-    {
-
-        public:
-
-        //* constructor
-        explicit Item():
-            Counter( QStringLiteral("TabbedDialog::Item") )
-        {}
-
-        //* constructor
-        explicit Item( const QString& name, QWidget* widget ):
-            Counter( QStringLiteral("TabbedDialog::Item") ),
-            name_( name ),
-            widget_( widget )
-        {}
-
-        //* name
-        void setName( const QString& name )
-        { name_ = name; }
-
-        //* widget
-        void setWidget( QWidget* widget )
-        { widget_ = widget; }
-
-        //* icon
-        void setIcon( const QIcon& icon )
-        { icon_ = icon; }
-
-        //* name
-        const QString& name() const
-        { return name_; }
-
-        //* widget
-        QWidget* widget() const
-        { return widget_; }
-
-        //* icon
-        const QIcon& icon() const
-        { return icon_; }
-
-        //* name
-        QString name_;
-
-        //* associated widget
-        QWidget* widget_ = nullptr;
-
-        //* icon
-        QIcon icon_;
-
-
-        //* equal to operator
-        friend bool operator == (const Item& first, const Item& second)
-        { return first.widget_ == second.widget_;  }
-
-        //* less than operator
-        friend bool operator < (const Item& first, const Item& second)
-        { return first.widget_ < second.widget_; }
-
-    };
+    //* reorder items using drag and drop from the list
+    void _reorder( int, int );
 
     //* model
-    class BASE_QT_EXPORT Model: public ListModel<Item>
-    {
-
-        public:
-
-        //* column type enumeration
-        enum { nColumns = 1 };
-
-        //*@name methods reimplemented from base class
-        //@{
-
-        //* flags
-        Qt::ItemFlags flags(const QModelIndex& ) const override
-        { return Qt::ItemIsEnabled |  Qt::ItemIsSelectable; }
-
-        //* return data
-        QVariant data(const QModelIndex &index, int role) const override;
-
-        //* header data
-        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override
-        { return QVariant(); }
-
-        //* number of columns for a given index
-        int columnCount(const QModelIndex& = QModelIndex()) const override
-        { return nColumns; }
-
-        //@}
-
-    };
-
-    //* model
-    Model model_;
+    Private::TabbedDialogModel* model_ = nullptr;
 
     //* Configuration list
     SimpleListView* list_ = nullptr;

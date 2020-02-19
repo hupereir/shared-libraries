@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "TabbedDialog.h"
+#include "TabbedDialog_p.h"
 
 #include "IconSize.h"
 #include "QtUtil.h"
@@ -59,13 +60,14 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // configure list
     list_->setProperty( "_kde_side_panel_view", true );
-    list_->setModel( &model_ );
+    list_->setModel( model_ = new Private::TabbedDialogModel( this ) );
 
     // button box
     stackedLayout->addWidget( buttonBox_ = new QDialogButtonBox( this ), 0 );
     buttonBox_->layout()->setMargin(5);
 
     // connections
+    // connect( model_, &ConnectionAttributesModel::itemOrderChanged, this, &ConnectionListWidget::_reorder );
     connect( list_->selectionModel(), &QItemSelectionModel::currentRowChanged, this, &TabbedDialog::_display );
     connect( new QShortcut( QKeySequence::Quit, this ), &QShortcut::activated, this, &TabbedDialog::close );
 
@@ -112,13 +114,13 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     stackedWidget_->addWidget( base );
 
     // add to item
-    Item item( title, base );
+    Private::TabbedDialogItem item( title, base );
     if( !icon.isNull() ) item.setIcon( icon );
-    model_.add( item );
+    model_->add( item );
 
     // set current index
-    if( (!list_->selectionModel()->currentIndex().isValid()) && model_.hasIndex(0,0) )
-    { list_->selectionModel()->setCurrentIndex( model_.index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
+    if( (!list_->selectionModel()->currentIndex().isValid()) && model_->hasIndex(0,0) )
+    { list_->selectionModel()->setCurrentIndex( model_->index(0,0), QItemSelectionModel::SelectCurrent | QItemSelectionModel::Rows ); }
 
     auto layout = new QVBoxLayout;
     layout->setSpacing( 5 );
@@ -146,13 +148,13 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
 
 //__________________________________________________
 QWidget* TabbedDialog::_findPage( const QModelIndex& index ) const
-{ return index.isValid() ? model_.get( index ).widget():nullptr; }
+{ return index.isValid() ? model_->get( index ).widget():nullptr; }
 
 //__________________________________________________
 void TabbedDialog::_clear()
 {
     Debug::Throw( QStringLiteral("TabbedDialog::_clear.\n") );
-    model_.clear();
+    model_->clear();
     while( stackedWidget_->currentWidget() )
     { delete  stackedWidget_->currentWidget(); }
 }
@@ -162,29 +164,34 @@ void TabbedDialog::_display( const QModelIndex& index )
 {
     Debug::Throw( QStringLiteral("TabbedDialog::_display.\n") );
     if( !index.isValid() ) return;
-    stackedWidget_->setCurrentWidget( model_.get( index ).widget() );
+    stackedWidget_->setCurrentWidget( model_->get( index ).widget() );
 }
 
 //_______________________________________________________________________________________
-QVariant TabbedDialog::Model::data( const QModelIndex& index, int role ) const
+namespace Private
 {
-
-    // check index
-    if( !contains( index ) ) return QVariant();
-
-    // retrieve associated file info
-    Item item( get()[index.row()] );
-
-    // return text associated to file and column
-    switch( role )
+    QVariant TabbedDialogModel::data( const QModelIndex& index, int role ) const
     {
-        case Qt::DisplayRole:
-        return item.name();
 
-        case Qt::DecorationRole:
-        return item.icon().isNull() ? QVariant():item.icon();
+        // check index
+        if( !contains( index ) ) return QVariant();
 
-        default: return QVariant();
+        // retrieve associated file info
+        auto item( get()[index.row()] );
+
+        // return text associated to file and column
+        switch( role )
+        {
+            case Qt::DisplayRole:
+            return item.name();
+
+            case Qt::DecorationRole:
+            return item.icon().isNull() ? QVariant():item.icon();
+
+            default: return QVariant();
+        }
+
     }
 
 }
+
