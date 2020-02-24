@@ -334,7 +334,7 @@ void IconView::doItemsLayout()
 
             IconViewItem item;
              _updateItem( item, index );
-            Base::insert( items_, iter, row, item );
+            items_.insert( iter, row, item );
         }
 
     }

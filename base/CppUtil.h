@@ -45,15 +45,6 @@ namespace Base
 
     //* efficient map insertion
     template<class T>
-        inline typename T::iterator insert(
-        T& map,
-        const typename T::const_iterator iterator,
-        const typename T::key_type& key,
-        const typename T::mapped_type& value )
-    { return map.insert( iterator, key, value ); }
-
-    //* efficient map insertion
-    template<class T>
         inline typename T::iterator insert( T& map, const typename T::key_type& key, const typename T::mapped_type& value )
     {
         auto iterator = map.lowerBound( key );
@@ -62,7 +53,7 @@ namespace Base
             iterator.value() = value;
             return iterator;
         } else {
-            return insert( map, iterator, key, value );
+            return map.insert( iterator, key, value );
         }
 
     }
