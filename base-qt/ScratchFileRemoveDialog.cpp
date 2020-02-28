@@ -33,7 +33,7 @@
 
 //____________________________________________________________________________
 ScratchFileRemoveDialog::ScratchFileRemoveDialog( QWidget* parent, const FileRecordModel::List& files ):
-CustomDialog( parent )
+Dialog( parent )
 {
 
     Debug::Throw( QStringLiteral("ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n") );

@@ -21,13 +21,13 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "CounterModel.h"
 
 class TreeView;
 
 //* displays Counter names and counts
-class BASE_QT_EXPORT CounterDialog: public CustomDialog
+class BASE_QT_EXPORT CounterDialog: public Dialog
 {
 
     //* Qt meta object declaration

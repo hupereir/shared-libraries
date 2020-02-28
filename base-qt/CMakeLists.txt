@@ -55,6 +55,7 @@ set(base_qt_SOURCES
   BaseMainWindow.cpp
   BaseConfigurationDialog.cpp
   BaseDialog.cpp
+  BaseMenu.cpp
   BasePrintHelper.cpp
   BaseProgressBar.cpp
   BaseReplaceDialog.cpp
@@ -81,11 +82,10 @@ set(base_qt_SOURCES
   CounterDialog.cpp
   CounterModel.cpp
   CursorMonitor.cpp
-  CustomDialog.cpp
-  CustomMenu.cpp
   DebugMenu.cpp
   DefaultFolders.cpp
   DetailsDialog.cpp
+  Dialog.cpp
   DockPanel.cpp
   DockWidget.cpp
   DragMonitor.cpp

@@ -20,7 +20,7 @@
 #include "OptionListBox.h"
 
 #include "ContextMenu.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "Debug.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
@@ -36,7 +36,7 @@
 #include <algorithm>
 
 //_______________________________________________________
-class EditDialog: public CustomDialog
+class EditDialog: public Dialog
 {
     public:
 
@@ -63,7 +63,7 @@ class EditDialog: public CustomDialog
 
 //_______________________________________________________
 EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode mode ):
-    CustomDialog( parent )
+    Dialog( parent )
 {
 
     setOptionName( QStringLiteral("OPTIONLISTBOX_EDIT") );

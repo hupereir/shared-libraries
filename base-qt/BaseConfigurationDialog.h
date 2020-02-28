@@ -27,7 +27,7 @@
 
 #include <QLayout>
 
-class CustomDialog;
+class Dialog;
 
 //* configuration dialog
 class BASE_QT_EXPORT BaseConfigurationDialog: public TabbedDialog, public OptionWidgetList<BaseConfigurationDialog>
@@ -136,10 +136,10 @@ class BASE_QT_EXPORT BaseConfigurationDialog: public TabbedDialog, public Option
     const Options backupOptions_;
 
     //* pixmap path dialog
-    CustomDialog* pixmapPathDialog_ = nullptr;
+    Dialog* pixmapPathDialog_ = nullptr;
 
     //* icon theme dialog
-    CustomDialog* iconThemeDialog_ = nullptr;
+    Dialog* iconThemeDialog_ = nullptr;
 
 };
 

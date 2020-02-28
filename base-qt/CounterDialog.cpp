@@ -31,7 +31,7 @@
 
 //__________________________________________________________________________
 CounterDialog::CounterDialog( QWidget* parent ):
-CustomDialog( parent, OkButton, Qt::Window )
+Dialog( parent, OkButton, Qt::Window )
 {
 
     Debug::Throw( QStringLiteral("CounterDialog::CounterDialog.\n") );

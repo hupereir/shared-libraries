@@ -32,7 +32,7 @@
 
 //____________________________________________________________________________
 RemoveFilesDialog::RemoveFilesDialog( QWidget* parent, const FileSystemModel::List& files ):
-    CustomDialog( parent )
+    Dialog( parent )
 {
 
     Debug::Throw( QStringLiteral("RemoveFilesDialog::RemoveFilesDialog.\n") );

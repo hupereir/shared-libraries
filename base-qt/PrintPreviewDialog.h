@@ -20,7 +20,7 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "BasePrintHelper.h"
 
 #include <QPrintPreviewWidget>
@@ -35,7 +35,7 @@ namespace Private
     class NavigationWidget;
 }
 
-class BASE_QT_EXPORT PrintPreviewDialog: public CustomDialog
+class BASE_QT_EXPORT PrintPreviewDialog: public Dialog
 {
 
     Q_OBJECT
@@ -43,7 +43,7 @@ class BASE_QT_EXPORT PrintPreviewDialog: public CustomDialog
     public:
 
     //* constructor
-    explicit PrintPreviewDialog( QWidget* = nullptr, CustomDialog::Flags = 0 );
+    explicit PrintPreviewDialog( QWidget* = nullptr, Dialog::Flags = 0 );
 
     //* set print helper
     void setHelper( BasePrintHelper* );

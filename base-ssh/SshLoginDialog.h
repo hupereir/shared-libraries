@@ -21,7 +21,7 @@
 *******************************************************************************/
 
 #include "base_ssh_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "LineEditor.h"
 #include "SshConnectionAttributes.h"
 
@@ -32,7 +32,7 @@ class PasswordEditor;
 
 namespace Ssh
 {
-    class BASE_SSH_EXPORT LoginDialog: public CustomDialog
+    class BASE_SSH_EXPORT LoginDialog: public Dialog
     {
 
         //* Qt meta object declaration

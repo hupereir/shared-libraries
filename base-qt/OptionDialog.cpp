@@ -33,7 +33,7 @@
 
 //__________________________________________________________________________
 OptionDialog::OptionDialog( QWidget* parent ):
-    CustomDialog( parent, CloseButton )
+    Dialog( parent, CloseButton )
 {
 
     Debug::Throw( QStringLiteral("OptionDialog::OptionDialog.\n") );

@@ -22,11 +22,11 @@
 #include "Color.h"
 #include "ColorDisplay.h"
 #include "ColorOptionModel.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "TreeView.h"
 
 //_______________________________________________________
-class EditDialog: public CustomDialog
+class EditDialog: public Dialog
 {
     Q_OBJECT
 
@@ -55,7 +55,7 @@ class EditDialog: public CustomDialog
 
 //_______________________________________________________
 EditDialog::EditDialog( QWidget* parent ):
-    CustomDialog( parent )
+    Dialog( parent )
 {
 
     setOptionName( QStringLiteral("OPTIONLISTBOX_EDIT") );

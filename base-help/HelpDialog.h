@@ -22,7 +22,7 @@
 
 #include "base_help_export.h"
 #include "Counter.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "HelpModel.h"
 
 #include <QPushButton>
@@ -35,7 +35,7 @@ namespace Base
 {
 
     //* reference manual display dialog
-    class BASE_HELP_EXPORT HelpDialog:public CustomDialog
+    class BASE_HELP_EXPORT HelpDialog:public Dialog
     {
 
         Q_OBJECT

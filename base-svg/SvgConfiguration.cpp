@@ -19,7 +19,7 @@
 
 #include "SvgConfiguration.h"
 
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "OptionListBox.h"

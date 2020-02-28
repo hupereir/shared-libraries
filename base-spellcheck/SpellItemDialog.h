@@ -21,7 +21,7 @@
 *******************************************************************************/
 
 #include "base_spellcheck_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "SpellItemModel.h"
 #include "QOrderedSet.h"
 
@@ -32,7 +32,7 @@ class TreeView;
 namespace SpellCheck
 {
     //* spell checker popup dialog
-    class BASE_SPELLCHECK_EXPORT SpellItemDialog: public CustomDialog
+    class BASE_SPELLCHECK_EXPORT SpellItemDialog: public Dialog
     {
 
         //* Qt meta object declaration

@@ -1,5 +1,5 @@
-#ifndef CustomMenu_h
-#define CustomMenu_h
+#ifndef BaseMenu_h
+#define BaseMenu_h
 
 /******************************************************************************
 *
@@ -31,7 +31,7 @@
 
 
 //* some basic runtime debuging
-class BASE_QT_EXPORT CustomMenu: public QMenu, private Base::Counter<CustomMenu>
+class BASE_QT_EXPORT BaseMenu: public QMenu, private Base::Counter<BaseMenu>
 {
 
     //* Qt meta object declaration
@@ -40,10 +40,10 @@ class BASE_QT_EXPORT CustomMenu: public QMenu, private Base::Counter<CustomMenu>
     public:
 
     //* constructor
-    explicit CustomMenu( QWidget* = nullptr );
+    explicit BaseMenu( QWidget* = nullptr );
 
     //* constructor
-    explicit CustomMenu( const QString&, QWidget* = nullptr );
+    explicit BaseMenu( const QString&, QWidget* = nullptr );
 
     //*@name modifiers
     //@{

@@ -29,7 +29,7 @@
 
 //__________________________________________________________________________
 SystemEnvironmentDialog::SystemEnvironmentDialog( QWidget* parent ):
-CustomDialog( parent, CloseButton )
+Dialog( parent, CloseButton )
 {
 
     Debug::Throw( QStringLiteral("SystemEnvironmentDialog::SystemEnvironmentDialog.\n") );

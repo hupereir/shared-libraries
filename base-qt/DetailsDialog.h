@@ -21,7 +21,7 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 
 #include <QLabel>
 #include <QWidget>
@@ -29,7 +29,7 @@
 #include <memory>
 
 //* customized QDialog
-class BASE_QT_EXPORT DetailsDialog: public CustomDialog
+class BASE_QT_EXPORT DetailsDialog: public Dialog
 {
 
     Q_OBJECT
@@ -38,9 +38,9 @@ class BASE_QT_EXPORT DetailsDialog: public CustomDialog
 
     //* constructor
     explicit DetailsDialog( QWidget* parent,
-        CustomDialog::Flags flags = CustomDialog::Flags( OkButton | CancelButton ),
+        Dialog::Flags flags = Dialog::Flags( OkButton | CancelButton ),
         Qt::WindowFlags WindowFlags = 0 ):
-        CustomDialog( parent, flags, WindowFlags )
+        Dialog( parent, flags, WindowFlags )
     {}
 
     //* set text details

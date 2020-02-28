@@ -25,7 +25,7 @@
 
 //_____________________________________________________
 RenameFileDialog::RenameFileDialog( QWidget* parent, const FileRecord &record ):
-    CustomDialog( parent )
+    Dialog( parent )
 {
 
     Debug::Throw( QStringLiteral("RenameFileDialog::RenameFileDialog.\n") );

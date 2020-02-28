@@ -31,7 +31,7 @@
 
 //_________________________________________________________
 BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
-    CustomDialog( parent, CloseButton )
+    Dialog( parent, CloseButton )
 {
 
     Debug::Throw( QStringLiteral("BaseFileInformationDialog::BaseFileInformationDialog.\n") );

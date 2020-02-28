@@ -30,7 +30,7 @@ namespace SpellCheck
 
     //_______________________________________________
     SpellItemDialog::SpellItemDialog( QWidget* parent ):
-        CustomDialog( parent )
+        Dialog( parent )
     {
 
         // add label

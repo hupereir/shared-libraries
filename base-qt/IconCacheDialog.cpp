@@ -29,7 +29,7 @@
 
 //__________________________________________________________________________
 IconCacheDialog::IconCacheDialog( QWidget* parent ):
-    CustomDialog( parent, OkButton, Qt::Window )
+    Dialog( parent, OkButton, Qt::Window )
 {
 
     Debug::Throw( QStringLiteral("IconCacheDialog::IconCacheDialog.\n") );

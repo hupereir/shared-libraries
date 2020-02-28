@@ -21,11 +21,11 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "OptionModel.h"
 
 //* displays Counter names and counts
-class BASE_QT_EXPORT SystemEnvironmentDialog: public CustomDialog
+class BASE_QT_EXPORT SystemEnvironmentDialog: public Dialog
 {
 
     Q_OBJECT

@@ -17,22 +17,22 @@
 *
 *******************************************************************************/
 
-#include "CustomMenu.h"
+#include "BaseMenu.h"
 
 //_______________________________________________________
-CustomMenu::CustomMenu( QWidget* parent ):
+BaseMenu::BaseMenu( QWidget* parent ):
 QMenu( parent ),
-Counter( QStringLiteral("CustomMenu") )
+Counter( QStringLiteral("BaseMenu") )
 {}
 
 //_______________________________________________________
-CustomMenu::CustomMenu( const QString& title, QWidget* parent ):
+BaseMenu::BaseMenu( const QString& title, QWidget* parent ):
 QMenu( title, parent ),
-Counter( QStringLiteral("CustomMenu") )
+Counter( QStringLiteral("BaseMenu") )
 {}
 
 //_______________________________________________________
-void CustomMenu::addInvisibleAction( QAction* action )
+void BaseMenu::addInvisibleAction( QAction* action )
 {
     QMenu::addAction( action );
     action->setVisible( false );
@@ -40,14 +40,14 @@ void CustomMenu::addInvisibleAction( QAction* action )
 }
 
 //_______________________________________________________
-void CustomMenu::clear()
+void BaseMenu::clear()
 {
     QMenu::clear();
     invisibleActions_.clear();
 }
 
 //_______________________________________________________
-void CustomMenu::keyPressEvent( QKeyEvent* event )
+void BaseMenu::keyPressEvent( QKeyEvent* event )
 {
 
     if( event->key() == Qt::Key_Shift )
@@ -59,7 +59,7 @@ void CustomMenu::keyPressEvent( QKeyEvent* event )
 }
 
 //_______________________________________________________
-void CustomMenu::keyReleaseEvent( QKeyEvent* event )
+void BaseMenu::keyReleaseEvent( QKeyEvent* event )
 {
 
     if( event->key() == Qt::Key_Shift )

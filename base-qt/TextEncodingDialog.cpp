@@ -23,7 +23,7 @@
 
 //__________________________________________________________________________
 TextEncodingDialog::TextEncodingDialog( QWidget* parent ):
-    CustomDialog( parent, OkButton|CancelButton )
+    Dialog( parent, OkButton|CancelButton )
 {
     setWindowTitle( tr( "Text encoding" ) );
     setOptionName( QStringLiteral("TEXT_ENCODING_DIALOG") );

@@ -278,8 +278,8 @@ namespace Private
 }
 
 //_________________________________________________________________
-PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, CustomDialog::Flags flags ):
-    CustomDialog( parent, flags )
+PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, Dialog::Flags flags ):
+    Dialog( parent, flags )
 {
     Debug::Throw( QStringLiteral("PrintPreviewDialog::PrintPreviewDialog.\n") );
     setOptionName( QStringLiteral("PRINT_PREVIEW_DIALOG") );

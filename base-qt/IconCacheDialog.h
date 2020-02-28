@@ -21,14 +21,14 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "Counter.h"
 #include "IconCacheModel.h"
 
 class TreeView;
 
 //* displays IconCache names and counts
-class BASE_QT_EXPORT IconCacheDialog: public CustomDialog
+class BASE_QT_EXPORT IconCacheDialog: public Dialog
 {
 
     //* Qt meta object declaration

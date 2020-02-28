@@ -18,18 +18,18 @@
 *******************************************************************************/
 
 #include "BaseIconNames.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "IconEngine.h"
 
 #include <QFrame>
 
 //____________________________________________________________
-CustomDialog::CustomDialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags):
+Dialog::Dialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags):
     BaseDialog( parent, wflags ),
-    Counter( QStringLiteral("CustomDialog") )
+    Counter( QStringLiteral("Dialog") )
 {
 
-    Debug::Throw( QStringLiteral("CustomDialog::CustomDialog.\n") );
+    Debug::Throw( QStringLiteral("Dialog::Dialog.\n") );
 
     // create vbox layout
     auto layout = new QVBoxLayout;

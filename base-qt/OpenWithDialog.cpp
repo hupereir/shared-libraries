@@ -41,7 +41,7 @@
 
 //____________________________________________________________________________
 OpenWithDialog::OpenWithDialog( QWidget* parent ):
-    CustomDialog( parent, OkButton|CancelButton|Separator )
+    Dialog( parent, OkButton|CancelButton|Separator )
 {
     Debug::Throw( QStringLiteral("OpenWithDialog::OpenWithDialog.\n") );
     okButton().setText( tr( "Open" ) );

@@ -20,7 +20,7 @@
 *******************************************************************************/
 
 #include "BasePrintHelper.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 
 #include <QHash>
 #include <QIntValidator>

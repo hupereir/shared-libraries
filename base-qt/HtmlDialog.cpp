@@ -32,7 +32,7 @@
 
 //___________________________________________________
 HtmlDialog::HtmlDialog( QWidget* parent ):
-    CustomDialog( parent, OkButton|CancelButton|Separator ),
+    Dialog( parent, OkButton|CancelButton|Separator ),
     tabWidget_( 0 )
 {
 

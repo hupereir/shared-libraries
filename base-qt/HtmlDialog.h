@@ -22,7 +22,7 @@
 
 #include "base_qt_export.h"
 #include "BrowsedLineEditor.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "ComboBox.h"
 #include "LineEditor.h"
 #include "File.h"
@@ -32,7 +32,7 @@
 #include <QTabWidget>
 
 //* new attachment popup dialog
-class BASE_QT_EXPORT HtmlDialog: public CustomDialog
+class BASE_QT_EXPORT HtmlDialog: public Dialog
 {
 
     Q_OBJECT

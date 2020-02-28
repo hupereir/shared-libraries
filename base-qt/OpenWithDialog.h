@@ -21,14 +21,14 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "File.h"
 #include "OpenWithComboBox.h"
 
 #include <QIcon>
 
 //* QDialog used to commit selected files
-class BASE_QT_EXPORT OpenWithDialog: public CustomDialog
+class BASE_QT_EXPORT OpenWithDialog: public Dialog
 {
 
     Q_OBJECT
@@ -94,7 +94,7 @@ class BASE_QT_EXPORT OpenWithDialog: public CustomDialog
     void setOptionName( const QString& value )
     {
         optionName_ = value;
-        CustomDialog::setOptionName( QStringLiteral( "%1_DIALOG" ).arg( value ) );
+        Dialog::setOptionName( QStringLiteral( "%1_DIALOG" ).arg( value ) );
     }
 
     //* realize

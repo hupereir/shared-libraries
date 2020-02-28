@@ -22,7 +22,7 @@
 
 #include "base_spellcheck_export.h"
 #include "Counter.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "ListModel.h"
 #include "SpellInterface.h"
 #include "TextPosition.h"
@@ -39,7 +39,7 @@ namespace SpellCheck
 {
 
     //* spell checker popup dialog
-    class BASE_SPELLCHECK_EXPORT SpellDialog: public CustomDialog
+    class BASE_SPELLCHECK_EXPORT SpellDialog: public Dialog
     {
 
         //* Qt meta object declaration

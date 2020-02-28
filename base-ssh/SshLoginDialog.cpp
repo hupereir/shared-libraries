@@ -29,7 +29,7 @@ namespace Ssh
 
     //___________________________________________________________________________
     LoginDialog::LoginDialog( QWidget* parent ):
-        CustomDialog( parent, OkButton|CancelButton|Separator )
+        Dialog( parent, OkButton|CancelButton|Separator )
     {
 
         Debug::Throw( QStringLiteral("LoginDialog::LoginDialog.\n") );

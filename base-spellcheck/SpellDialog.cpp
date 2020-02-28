@@ -41,7 +41,7 @@ namespace SpellCheck
 {
     //_______________________________________________
     SpellDialog::SpellDialog( TextEditor* parent, bool readOnly ):
-        CustomDialog( parent, CloseButton|Separator ),
+        Dialog( parent, CloseButton|Separator ),
         editor_( parent ),
         readOnly_( readOnly )
     {

@@ -21,7 +21,7 @@
 
 #include "BaseIconNames.h"
 #include "GridLayout.h"
-#include "CustomDialog.h"
+#include "Dialog.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
@@ -54,7 +54,7 @@ namespace
     {
 
         //_________________________________________________________
-        class IconThemeDialog: public CustomDialog, public OptionWidgetList<IconThemeDialog>
+        class IconThemeDialog: public Dialog, public OptionWidgetList<IconThemeDialog>
         {
 
             Q_OBJECT
@@ -73,7 +73,7 @@ namespace
 
         //_________________________________________________________
         IconThemeDialog::IconThemeDialog( QWidget* parent ):
-            CustomDialog( parent, OkButton ),
+            Dialog( parent, OkButton ),
             OptionWidgetList( this )
         {
 
@@ -522,7 +522,7 @@ void BaseConfigurationDialog::_editPixmapPathList()
 
     if( !pixmapPathDialog_ )
     {
-        pixmapPathDialog_ = new CustomDialog( this, CustomDialog::CloseButton );
+        pixmapPathDialog_ = new Dialog( this, Dialog::CloseButton );
         auto listbox = new OptionListBox( pixmapPathDialog_, QStringLiteral("PIXMAP_PATH") );
         listbox->setBrowsable( true );
         listbox->setFileMode( QFileDialog::Directory );

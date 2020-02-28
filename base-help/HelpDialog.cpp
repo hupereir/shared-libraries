@@ -43,7 +43,7 @@ namespace Base
 
     //_________________________________________________________
     HelpDialog::HelpDialog( QWidget *parent ):
-        CustomDialog( parent, CloseButton )
+        Dialog( parent, CloseButton )
     {
 
         Debug::Throw( QStringLiteral("HelpDialog::HelpDialog.\n") );

@@ -1,5 +1,5 @@
-#ifndef CustomDialog_h
-#define CustomDialog_h
+#ifndef Dialog_h
+#define Dialog_h
 
 /******************************************************************************
 *
@@ -31,7 +31,7 @@
 #include <QLayout>
 
 //* customized QDialog
-class BASE_QT_EXPORT CustomDialog: public BaseDialog, private Base::Counter<CustomDialog>
+class BASE_QT_EXPORT Dialog: public BaseDialog, private Base::Counter<Dialog>
 {
 
     Q_OBJECT
@@ -51,7 +51,7 @@ class BASE_QT_EXPORT CustomDialog: public BaseDialog, private Base::Counter<Cust
     Q_DECLARE_FLAGS( Flags, Flag );
 
     //* constructor
-    explicit CustomDialog(
+    explicit Dialog(
         QWidget* = nullptr,
         Flags = Flags( OkButton | CancelButton ),
         Qt::WindowFlags = 0);
@@ -116,6 +116,6 @@ class BASE_QT_EXPORT CustomDialog: public BaseDialog, private Base::Counter<Cust
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( CustomDialog::Flags );
+Q_DECLARE_OPERATORS_FOR_FLAGS( Dialog::Flags );
 
 #endif
