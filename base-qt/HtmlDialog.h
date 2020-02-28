@@ -23,7 +23,7 @@
 #include "base_qt_export.h"
 #include "BrowsedLineEditor.h"
 #include "CustomDialog.h"
-#include "CustomComboBox.h"
+#include "ComboBox.h"
 #include "LineEditor.h"
 #include "File.h"
 
@@ -74,7 +74,7 @@ class BASE_QT_EXPORT HtmlDialog: public CustomDialog
     void _saveCommands();
 
     //* print command
-    CustomComboBox* commandEditor_ = nullptr;
+    ComboBox* commandEditor_ = nullptr;
 
     //* file
     BrowsedLineEditor *destinationEditor_ = nullptr;

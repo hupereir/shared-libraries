@@ -18,13 +18,13 @@
 *******************************************************************************/
 
 #include "BaseMainWindow.h"
-#include "CustomToolBar.h"
-#include "CustomToolButton.h"
+#include "ToolBar.h"
+#include "ToolButton.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
 //_______________________________________________________________
-const CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
+const ToolBar::AreaMap& ToolBar::_toolbarAreas()
 {
     static const AreaMap areas( {
         { tr( "None" ), Qt::NoToolBarArea },
@@ -37,14 +37,14 @@ const CustomToolBar::AreaMap& CustomToolBar::_toolbarAreas()
 }
 
 //_______________________________________________________________
-CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QString& optionName ):
+ToolBar::ToolBar( const QString& title, QWidget* parent, const QString& optionName ):
     QToolBar( title, parent ),
-    Counter( QStringLiteral("CustomToolBar") ),
+    Counter( QStringLiteral("ToolBar") ),
     optionName_( optionName ),
     locationOptionName_( optionName + "_LOCATION" ),
     appearsInMenu_( parent && qobject_cast<QMainWindow*>( parent ) )
 {
-    Debug::Throw( QStringLiteral("CustomToolBar::CustomToolBar.\n") );
+    Debug::Throw( QStringLiteral("ToolBar::ToolBar.\n") );
 
     // assign option name to object
     if( !optionName_.isEmpty() ) { setObjectName( optionName ); }
@@ -52,16 +52,16 @@ CustomToolBar::CustomToolBar( const QString& title, QWidget* parent, const QStri
     _installActions();
 
     // configuration
-    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &CustomToolBar::_updateConfiguration );
+    connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &ToolBar::_updateConfiguration );
     _updateConfiguration();
 }
 
 //_______________________________________________________________
-void CustomToolBar::paintEvent( QPaintEvent* event )
+void ToolBar::paintEvent( QPaintEvent* event )
 { if( !transparent_ ) QToolBar::paintEvent( event ); }
 
 //_______________________________________________________________
-void CustomToolBar::moveEvent( QMoveEvent* event )
+void ToolBar::moveEvent( QMoveEvent* event )
 {
     if( !( isFloating() || optionName_.isEmpty() ) )
     {
@@ -73,10 +73,10 @@ void CustomToolBar::moveEvent( QMoveEvent* event )
 }
 
 //_______________________________________________________________
-void CustomToolBar::_toggleVisibility( bool state )
+void ToolBar::_toggleVisibility( bool state )
 {
 
-    Debug::Throw() << "CustomToolBar::_toggleVisibility - name: " << optionName_ << " state: " << state << endl;
+    Debug::Throw() << "ToolBar::_toggleVisibility - name: " << optionName_ << " state: " << state << endl;
 
     if( !optionName_.isEmpty() )
     {
@@ -98,9 +98,9 @@ void CustomToolBar::_toggleVisibility( bool state )
 }
 
 //_______________________________________________________________
-void CustomToolBar::_updateConfiguration()
+void ToolBar::_updateConfiguration()
 {
-    Debug::Throw( QStringLiteral("CustomToolBar::_updateConfiguration.\n") );
+    Debug::Throw( QStringLiteral("ToolBar::_updateConfiguration.\n") );
 
     // pixmap size
     if( iconSizeFromOptions_ )
@@ -171,9 +171,9 @@ void CustomToolBar::_updateConfiguration()
 }
 
 //_______________________________________________________________
-void CustomToolBar::_installActions()
+void ToolBar::_installActions()
 {
-    Debug::Throw( QStringLiteral("CustomToolBar::_installActions.\n") );
+    Debug::Throw( QStringLiteral("ToolBar::_installActions.\n") );
     QString buffer;
     QTextStream( &buffer) << "&" << windowTitle();
     visibilityAction_ = new QAction( buffer, this );
@@ -186,5 +186,5 @@ void CustomToolBar::_installActions()
         visibilityAction_->setChecked( true );
     }
 
-    connect( visibilityAction_, &QAction::toggled, this, &CustomToolBar::_toggleVisibility );
+    connect( visibilityAction_, &QAction::toggled, this, &ToolBar::_toggleVisibility );
 }

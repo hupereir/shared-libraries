@@ -36,7 +36,7 @@
 namespace Svg
 {
     //! use to select background style
-    class StyleOptionWidget: public CustomComboBox, public OptionWidget
+    class StyleOptionWidget: public ComboBox, public OptionWidget
     {
 
         Q_OBJECT
@@ -45,7 +45,7 @@ namespace Svg
 
         //! constructor
         explicit StyleOptionWidget( QWidget* parent ):
-            CustomComboBox( parent ),
+            ComboBox( parent ),
             OptionWidget( QStringLiteral("DUMMY_OPTION") )
         {
 

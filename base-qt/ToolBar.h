@@ -1,5 +1,5 @@
-#ifndef CustomToolBar_h
-#define CustomToolBar_h
+#ifndef ToolBar_h
+#define ToolBar_h
 
 /******************************************************************************
 *
@@ -32,7 +32,7 @@
 #include <QHash>
 
 //* customized tool bar to handle position and visibility from Options
-class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<CustomToolBar>
+class BASE_QT_EXPORT ToolBar: public QToolBar, private Base::Counter<ToolBar>
 {
 
     Q_OBJECT
@@ -40,7 +40,7 @@ class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<Custo
     public:
 
     //* constructor
-    explicit CustomToolBar( const QString&, QWidget*, const QString& );
+    explicit ToolBar( const QString&, QWidget*, const QString& );
 
     // map toolbar area and name
     using AreaMap = QHash<QString, Qt::ToolBarArea>;
@@ -140,10 +140,10 @@ class BASE_QT_EXPORT CustomToolBar: public QToolBar, private Base::Counter<Custo
         explicit LocationComboBox( QWidget* parent, const QString& option ):
             OptionComboBox( parent, option )
         {
-            addItem( CustomToolBar::areaToName( Qt::TopToolBarArea ) );
-            addItem( CustomToolBar::areaToName( Qt::BottomToolBarArea ) );
-            addItem( CustomToolBar::areaToName( Qt::LeftToolBarArea ) );
-            addItem( CustomToolBar::areaToName( Qt::RightToolBarArea ) );
+            addItem( ToolBar::areaToName( Qt::TopToolBarArea ) );
+            addItem( ToolBar::areaToName( Qt::BottomToolBarArea ) );
+            addItem( ToolBar::areaToName( Qt::LeftToolBarArea ) );
+            addItem( ToolBar::areaToName( Qt::RightToolBarArea ) );
         }
 
     };

@@ -21,7 +21,7 @@
 
 #include "BaseFileInfo.h"
 #include "BaseFileInfoModel.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "FileIconProvider.h"
 #include "FileSystemIconNames.h"
 #include "FileRecordProperties.h"

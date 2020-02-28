@@ -17,18 +17,18 @@
 *
 *******************************************************************************/
 
-#include "CustomSlider.h"
+#include "Slider.h"
 #include "Debug.h"
 #include "InformationDialog.h"
 
 #include <QHBoxLayout>
 
 //_________________________________________________________
-CustomSlider::CustomSlider( QWidget* parent ):
+Slider::Slider( QWidget* parent ):
     QWidget( parent ),
-    Counter( QStringLiteral("CustomSlider") )
+    Counter( QStringLiteral("Slider") )
 {
-    Debug::Throw( QStringLiteral("CustomSlider::CustomSlider.\n") );
+    Debug::Throw( QStringLiteral("Slider::Slider.\n") );
 
     setLayout( new QHBoxLayout );
     layout()->setMargin(0);
@@ -37,15 +37,15 @@ CustomSlider::CustomSlider( QWidget* parent ):
     layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );
     layout()->addWidget( spinBox_ = new QSpinBox( this ) );
 
-    connect( spinBox_, QOverload<int>::of( &QSpinBox::valueChanged ), this, &CustomSlider::_updateSlider );
-    connect( spinBox_, QOverload<int>::of( &QSpinBox::valueChanged ), this, &CustomSlider::valueChanged );
-    connect( slider_, &QAbstractSlider::valueChanged,  this, &CustomSlider::_updateSpinBox );
-    connect( slider_, &QAbstractSlider::valueChanged,  this, &CustomSlider::valueChanged );
+    connect( spinBox_, QOverload<int>::of( &QSpinBox::valueChanged ), this, &Slider::_updateSlider );
+    connect( spinBox_, QOverload<int>::of( &QSpinBox::valueChanged ), this, &Slider::valueChanged );
+    connect( slider_, &QAbstractSlider::valueChanged,  this, &Slider::_updateSpinBox );
+    connect( slider_, &QAbstractSlider::valueChanged,  this, &Slider::valueChanged );
 
 }
 
 //_________________________________________________________
-void CustomSlider::setValue( int value )
+void Slider::setValue( int value )
 {
     if( value < slider_->minimum() || value > slider_->maximum() ) {
         InformationDialog( this, tr( "Invalid value" ) ).exec();
@@ -57,9 +57,9 @@ void CustomSlider::setValue( int value )
 }
 
 //_________________________________________________________
-void CustomSlider::_updateSlider( int value )
+void Slider::_updateSlider( int value )
 {
-    Debug::Throw( QStringLiteral("CustomSlider::_updateSlider.\n") );
+    Debug::Throw( QStringLiteral("Slider::_updateSlider.\n") );
 
     if( sliderLocked_ )
     {
@@ -79,7 +79,7 @@ void CustomSlider::_updateSlider( int value )
 }
 
 //_________________________________________________________
-void CustomSlider::_updateSpinBox( int value )
+void Slider::_updateSpinBox( int value )
 {
 
     if( spinBoxLocked_ )

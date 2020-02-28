@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "LineEditor.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "File.h"
 #include "IconSize.h"
 #include "BrowseIconButton.h"
@@ -32,7 +32,7 @@
 
 //_____________________________________________
 BrowseIconButton::BrowseIconButton( QWidget* parent, const QString& file):
-    CustomToolButton( parent )
+    ToolButton( parent )
 {
 
     setIconSize( IconSize::get( IconSize::Huge ) );
@@ -54,7 +54,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
     if( file.isEmpty() ) return false;
 
     // load pixmap
-    CustomPixmap pixmap( file );
+    Pixmap pixmap( file );
 
     // update file if pixmap is valid or current file is undefined
     if( !pixmap.isNull() || file_.isEmpty() )
@@ -66,7 +66,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 
         // resize pixmap
         if( pixmap.size() != IconSize::get( IconSize::Huge ) )
-        { pixmap = CustomPixmap( pixmap.scaled( IconSize::get( IconSize::Huge ), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
+        { pixmap = Pixmap( pixmap.scaled( IconSize::get( IconSize::Huge ), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
 
         setIcon( pixmap );
         return true;
@@ -78,7 +78,7 @@ bool BrowseIconButton::setFile( const QString& file, bool check )
 
     // if file, set pixmap to empty
     if( noIconPixmap_.isNull() ) {
-        noIconPixmap_ = CustomPixmap( IconSize::get( IconSize::Huge ), CustomPixmap::Flag::Transparent );
+        noIconPixmap_ = Pixmap( IconSize::get( IconSize::Huge ), Pixmap::Flag::Transparent );
         setIcon( noIconPixmap_ );
     }
 

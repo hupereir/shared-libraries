@@ -21,7 +21,6 @@
 #include "FileSystemModel.h"
 
 #include "BaseFileInfo.h"
-#include "CustomPixmap.h"
 #include "FileSystemIconNames.h"
 #include "IconEngine.h"
 

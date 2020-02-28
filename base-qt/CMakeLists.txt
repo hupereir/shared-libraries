@@ -76,18 +76,13 @@ set(base_qt_SOURCES
   ColorOptionModel.cpp
   ColumnSelectionMenu.cpp
   ColumnSortingMenu.cpp
+  ComboBox.cpp
   ContextMenu.cpp
   CounterDialog.cpp
   CounterModel.cpp
   CursorMonitor.cpp
-  CustomComboBox.cpp
   CustomDialog.cpp
   CustomMenu.cpp
-  CustomPixmap.cpp
-  CustomSlider.cpp
-  CustomTextDocument.cpp
-  CustomToolBar.cpp
-  CustomToolButton.cpp
   DebugMenu.cpp
   DefaultFolders.cpp
   DetailsDialog.cpp
@@ -149,6 +144,7 @@ set(base_qt_SOURCES
   PathEditor.cpp
   PathHistory.cpp
   PathHistoryConfiguration.cpp
+  Pixmap.cpp
   PixmapEngine.cpp
   PrinterOptionWidget.cpp
   PrintPreviewDialog.cpp
@@ -166,10 +162,12 @@ set(base_qt_SOURCES
   SelectLineWidget.cpp
   SingleTimeDialog.cpp
   SimpleListView.cpp
+  Slider.cpp
   StandardAction.cpp
   SystemEnvironmentDialog.cpp
   TabbedDialog.cpp
   TabWidget.cpp
+  TextDocument.cpp
   TextEditor.cpp
   TextEditorMarginWidget.cpp
   TextEditionDelegate.cpp
@@ -179,7 +177,9 @@ set(base_qt_SOURCES
   TextEncodingWidget.cpp
   TextPosition.cpp
   TextSeparator.cpp
+  ToolBar.cpp
   ToolBarMenu.cpp
+  ToolButton.cpp
   ToolButtonStyleMenu.cpp
   TreeItemBase.cpp
   TreeView.cpp

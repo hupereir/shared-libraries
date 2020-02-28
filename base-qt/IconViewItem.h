@@ -22,7 +22,7 @@
 
 #include "base_qt_export.h"
 #include "Counter.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 
 #include <QRect>
 
@@ -44,7 +44,7 @@ class BASE_QT_EXPORT IconViewItem final: private Base::Counter<IconViewItem>
     //@{
 
     //* icon
-    const CustomPixmap& pixmap() const
+    const Pixmap& pixmap() const
     { return pixmap_; }
 
     //* text
@@ -72,7 +72,7 @@ class BASE_QT_EXPORT IconViewItem final: private Base::Counter<IconViewItem>
     //@{
 
     //* set icon
-    void setPixmap( const CustomPixmap& pixmap )
+    void setPixmap( const Pixmap& pixmap )
     {
         const bool changed( pixmap_.size() != pixmap.size() );
         pixmap_ = pixmap;
@@ -127,7 +127,7 @@ class BASE_QT_EXPORT IconViewItem final: private Base::Counter<IconViewItem>
     bool dirty_ = true;
 
     //* pixmap
-    CustomPixmap pixmap_;
+    Pixmap pixmap_;
 
     //* text
     QString text_;

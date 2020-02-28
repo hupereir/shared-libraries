@@ -42,11 +42,11 @@ BaseReplaceWidget::BaseReplaceWidget( QWidget* parent, bool compact ):
     _editorLayout().addWidget( label, 1, 0, 1, 1 );
 
     // replacement editor
-    _editorLayout().addWidget( replaceEditor_ = new CustomComboBox( this ), 1, 1, 1, 1 );
+    _editorLayout().addWidget( replaceEditor_ = new ComboBox( this ), 1, 1, 1, 1 );
     label->setBuddy( replaceEditor_ );
 
     // disable callbacks on find editor
-    const auto editor = qobject_cast<CustomComboBox*>( &this->editor() );
+    const auto editor = qobject_cast<ComboBox*>( &this->editor() );
     if( editor )
     { disconnect( editor->lineEdit(), &QLineEdit::textChanged, this, &BaseReplaceWidget::_findNoIncrement ); }
 

@@ -17,7 +17,7 @@
 *
 *******************************************************************************/
 
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "Debug.h"
 #include "IconSize.h"
 #include "File.h"
@@ -31,20 +31,20 @@
 #include <QFileIconProvider>
 
 //_________________________________________________
-CustomPixmap::CustomPixmap( QSize size, Flags flags ):
+Pixmap::Pixmap( QSize size, Flags flags ):
     QPixmap( size*qApp->devicePixelRatio() ),
-    Counter( QStringLiteral("CustomPixmap") )
+    Counter( QStringLiteral("Pixmap") )
 {
     setDevicePixelRatio( qApp->devicePixelRatio() );
     if( flags&Flag::Transparent ) fill( Qt::transparent );
 }
 
 //_________________________________________________
-CustomPixmap::CustomPixmap( const QString& file ):
+Pixmap::Pixmap( const QString& file ):
     QPixmap( file ),
-    Counter( QStringLiteral("CustomPixmap") )
+    Counter( QStringLiteral("Pixmap") )
 {
-    Debug::Throw( QStringLiteral("CustomPixmap::CustomPixmap.\n") );
+    Debug::Throw( QStringLiteral("Pixmap::Pixmap.\n") );
 
     /*
     under windows, if pixmap is null, and file is an executable of a link
@@ -60,7 +60,7 @@ CustomPixmap::CustomPixmap( const QString& file ):
         if( icon.isNull() ) return;
 
         const QSize iconSize( IconSize::get( IconSize::Maximum ) );
-        CustomPixmap out( icon.pixmap( iconSize ) );
+        Pixmap out( icon.pixmap( iconSize ) );
         *this = out;
 
     }
@@ -69,23 +69,23 @@ CustomPixmap::CustomPixmap( const QString& file ):
 }
 
 //_________________________________________________
-CustomPixmap& CustomPixmap::find( const QString& file )
+Pixmap& Pixmap::find( const QString& file )
 {
 
-    Debug::Throw( QStringLiteral("CustomPixmap::find.\n") );
-    *this = CustomPixmap( PixmapEngine::get( file ) );
+    Debug::Throw( QStringLiteral("Pixmap::find.\n") );
+    *this = Pixmap( PixmapEngine::get( file ) );
     return *this;
 
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::rotated( CustomPixmap::Rotation rotation ) const
+Pixmap Pixmap::rotated( Pixmap::Rotation rotation ) const
 {
     if( rotation == Rotation::None ) return *this;
 
     const qreal dpiRatio( devicePixelRatio() );
 
-    CustomPixmap out( QSize( height(), width() ), Flag::Transparent );
+    Pixmap out( QSize( height(), width() ), Flag::Transparent );
     out.setDevicePixelRatio( dpiRatio );
     QPainter painter( &out );
 
@@ -105,11 +105,11 @@ CustomPixmap CustomPixmap::rotated( CustomPixmap::Rotation rotation ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::transparent( qreal intensity ) const
+Pixmap Pixmap::transparent( qreal intensity ) const
 {
     if( isNull() ) return *this;
 
-    CustomPixmap out( *this );
+    Pixmap out( *this );
     QPainter painter( &out );
 
     QColor color( Qt::black );
@@ -125,14 +125,14 @@ CustomPixmap CustomPixmap::transparent( qreal intensity ) const
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::desaturated() const
+Pixmap Pixmap::desaturated() const
 {
     if( isNull() ) return *this;
 
     QImage image( toImage() );
     if( image.format() != QImage::Format_ARGB32_Premultiplied )
     {
-        Debug::Throw(0) << "CustomPixmap::desaturate - wrong format." << endl;
+        Debug::Throw(0) << "Pixmap::desaturate - wrong format." << endl;
         return *this;
     }
 
@@ -149,14 +149,14 @@ CustomPixmap CustomPixmap::desaturated() const
         }
     }
 
-    return CustomPixmap( image );
+    return Pixmap( image );
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::colorized( const QColor& color ) const
+Pixmap Pixmap::colorized( const QColor& color ) const
 {
 
-    CustomPixmap out( desaturated() );
+    Pixmap out( desaturated() );
     QPainter painter( &out );
     painter.setCompositionMode(QPainter::CompositionMode_Screen);
     painter.fillRect(rect(), color);
@@ -171,7 +171,7 @@ CustomPixmap CustomPixmap::colorized( const QColor& color ) const
 
 
 //_________________________________________________
-CustomPixmap CustomPixmap::merged( const QPixmap& pixmap, Corner corner ) const
+Pixmap Pixmap::merged( const QPixmap& pixmap, Corner corner ) const
 {
     if( isNull() ) return *this;
 
@@ -205,19 +205,19 @@ CustomPixmap CustomPixmap::merged( const QPixmap& pixmap, Corner corner ) const
     }
 
     painter.end();
-    return CustomPixmap( fromImage( source ) );
+    return Pixmap( fromImage( source ) );
 }
 
 //_________________________________________________
-CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
+Pixmap Pixmap::highlighted( qreal opacity ) const
 {
 
-    Debug::Throw( QStringLiteral("CustomPixmap::highlighted.\n") );
+    Debug::Throw( QStringLiteral("Pixmap::highlighted.\n") );
     if( opacity <= 0 ) return *this;
     opacity = qMin<qreal>( opacity, 1.0 );
 
     // compute mask
-    CustomPixmap mask( *this );
+    Pixmap mask( *this );
     {
         QPainter painter( &mask );
 
@@ -237,7 +237,7 @@ CustomPixmap CustomPixmap::highlighted( qreal opacity ) const
     if( opacity == 1.0 ) return mask;
 
     // apply highlight
-    CustomPixmap out( *this );
+    Pixmap out( *this );
     {
         QPainter painter( &out );
         painter.drawPixmap( QPoint(0,0), mask );

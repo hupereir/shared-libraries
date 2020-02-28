@@ -33,7 +33,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     setLayout( new QHBoxLayout );
     layout()->setMargin(0);
     layout()->setSpacing(5);
-    layout()->addWidget( comboBox_ = new CustomComboBox( this ) );
+    layout()->addWidget( comboBox_ = new ComboBox( this ) );
 
     comboBox_->setMinimumSize( QSize( 100, 0 ) );
     comboBox_->setToolTip( tr( "User selection" ) );

@@ -21,13 +21,13 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomSlider.h"
+#include "Slider.h"
 #include "OptionWidget.h"
 
 #include <cmath>
 
 //* QSlider associated to an option for configuration dialogs
-class BASE_QT_EXPORT OptionSlider: public CustomSlider, public OptionWidget
+class BASE_QT_EXPORT OptionSlider: public Slider, public OptionWidget
 {
 
     Q_OBJECT
@@ -36,7 +36,7 @@ class BASE_QT_EXPORT OptionSlider: public CustomSlider, public OptionWidget
 
     //* constructor
     explicit OptionSlider( QWidget* parent, const QString& optionName ):
-        CustomSlider( parent ),
+        Slider( parent ),
         OptionWidget( optionName )
     {}
 
@@ -50,7 +50,7 @@ class BASE_QT_EXPORT OptionSlider: public CustomSlider, public OptionWidget
         setValue( static_cast<int>(round(scale_*options.get<double>( optionName() ))));
         if( !_connected() )
         {
-            connect( this, &CustomSlider::valueChanged, this, &OptionSlider::modified);
+            connect( this, &Slider::valueChanged, this, &OptionSlider::modified);
             _setConnected();
         }
     }

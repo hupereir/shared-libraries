@@ -61,10 +61,10 @@ HtmlDialog::HtmlDialog( QWidget* parent ):
     gridLayout->addLayout( hLayout );
 
     // command
-    hLayout->addWidget( commandEditor_ = new CustomComboBox( this ) );
+    hLayout->addWidget( commandEditor_ = new ComboBox( this ) );
     commandEditor_->setEditable( true );
 
-    // browse command button associated to the CustomComboBox
+    // browse command button associated to the ComboBox
     QToolButton* button = new QToolButton( this );
     button->setIcon( IconEngine::get( IconNames::Open ) );
     button->setAutoRaise( true );

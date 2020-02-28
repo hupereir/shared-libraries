@@ -1,5 +1,5 @@
-#ifndef CustomPixmap_h
-#define CustomPixmap_h
+#ifndef Pixmap_h
+#define Pixmap_h
 
 /******************************************************************************
 *
@@ -26,7 +26,7 @@
 #include <QPixmap>
 
 //* customized QPixmap to look for icon of given name in list of directory
-class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomPixmap>
+class BASE_QT_EXPORT Pixmap: public QPixmap, private Base::Counter<Pixmap>
 {
 
     public:
@@ -39,36 +39,36 @@ class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomP
     Q_DECLARE_FLAGS( Flags, Flag )
 
     //* constructor
-    explicit CustomPixmap( QSize , Flags flags = 0 );
+    explicit Pixmap( QSize , Flags flags = 0 );
 
     //* constructor
-    explicit CustomPixmap( const QPixmap& pixmap ):
+    explicit Pixmap( const QPixmap& pixmap ):
         QPixmap( pixmap ),
-        Counter( QStringLiteral("CustomPixmap") )
+        Counter( QStringLiteral("Pixmap") )
     {}
 
     //* constructor
-    explicit CustomPixmap( QPixmap&& pixmap ):
+    explicit Pixmap( QPixmap&& pixmap ):
         QPixmap( std::move(pixmap) ),
-        Counter( QStringLiteral("CustomPixmap") )
+        Counter( QStringLiteral("Pixmap") )
     {}
 
     //* constructor
-    explicit CustomPixmap( const QImage& image ):
+    explicit Pixmap( const QImage& image ):
         QPixmap( fromImage(image) ),
-        Counter( QStringLiteral("CustomPixmap") )
+        Counter( QStringLiteral("Pixmap") )
     {}
 
     //* constructor
-    explicit CustomPixmap():
-        Counter( QStringLiteral("CustomPixmap") )
+    explicit Pixmap():
+        Counter( QStringLiteral("Pixmap") )
     {}
 
     //* constructor
-    explicit CustomPixmap( const QString& );
+    explicit Pixmap( const QString& );
 
     //* find first file matching name in list of path
-    CustomPixmap& find( const QString& );
+    Pixmap& find( const QString& );
 
     //* rotation
     enum class Rotation
@@ -79,16 +79,16 @@ class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomP
     };
 
     //* rotation
-    CustomPixmap rotated( CustomPixmap::Rotation value ) const;
+    Pixmap rotated( Pixmap::Rotation value ) const;
 
     //* returns a transparent pixmap
-    CustomPixmap transparent( qreal ) const;
+    Pixmap transparent( qreal ) const;
 
     //* returns a desaturated pixmap
-    CustomPixmap desaturated() const;
+    Pixmap desaturated() const;
 
     //* colorize
-    CustomPixmap colorized( const QColor& ) const;
+    Pixmap colorized( const QColor& ) const;
 
     //* corner enumeration for merging pixmap
     enum class Corner
@@ -101,18 +101,18 @@ class BASE_QT_EXPORT CustomPixmap: public QPixmap, private Base::Counter<CustomP
     };
 
     //* merge pixmap, using the specified corner as an anchor
-    CustomPixmap merged( const QPixmap&, Corner = Corner::TopLeft ) const;
+    Pixmap merged( const QPixmap&, Corner = Corner::TopLeft ) const;
 
     //* return highlighted pixmap
-    CustomPixmap highlighted( qreal opacity ) const;
+    Pixmap highlighted( qreal opacity ) const;
 
     //* return highlighted (active) pixmap, build from the current
-    CustomPixmap active() const
+    Pixmap active() const
     { return highlighted( 0.2 ); }
 
 };
 
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( CustomPixmap::Flags )
+Q_DECLARE_OPERATORS_FOR_FLAGS( Pixmap::Flags )
 
 #endif

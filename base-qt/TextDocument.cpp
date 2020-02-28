@@ -18,4 +18,4 @@
 *
 *******************************************************************************/
 
-#include "CustomTextDocument.h"
+#include "TextDocument.h"

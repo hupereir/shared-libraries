@@ -20,7 +20,7 @@
 #include "ColorOptionModel.h"
 
 #include "CppUtil.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "IconSize.h"
 
 #include <QPainter>
@@ -58,7 +58,7 @@ const QIcon& ColorOptionModel::_icon( const Base::Color& color )
     else {
 
 
-        CustomPixmap pixmap( IconSize::get( IconSize::Large ), CustomPixmap::Flag::Transparent );
+        Pixmap pixmap( IconSize::get( IconSize::Large ), Pixmap::Flag::Transparent );
         QRect rect( QPoint(0,0), pixmap.size()/pixmap.devicePixelRatio() );
         rect.adjust( 2, 2, -2, -2 );
 

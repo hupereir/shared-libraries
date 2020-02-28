@@ -22,7 +22,7 @@
 
 #include "base_qt_export.h"
 #include "Counter.h"
-#include "CustomComboBox.h"
+#include "ComboBox.h"
 #include "File.h"
 
 #include <QAbstractButton>
@@ -201,7 +201,7 @@ class BASE_QT_EXPORT PathEditor: public QStackedWidget, private Base::Counter<Pa
     QWidget* editorContainer_ = nullptr;
 
     //* editor
-    CustomComboBox* editor_ = nullptr;
+    ComboBox* editor_ = nullptr;
 
     //* button layout
     QBoxLayout* buttonLayout_ = nullptr;

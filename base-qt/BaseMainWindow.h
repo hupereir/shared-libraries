@@ -21,7 +21,7 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomToolButton.h"
+#include "ToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
 #include "WidgetMonitor.h"

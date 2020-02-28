@@ -22,7 +22,7 @@
 
 #include "base_qt_export.h"
 #include "Counter.h"
-#include "CustomComboBox.h"
+#include "ComboBox.h"
 
 #include <QBasicTimer>
 #include <QSet>
@@ -48,7 +48,7 @@ class BASE_QT_EXPORT UserSelectionFrame: public QWidget, private Base::Counter<U
     QString user() const;
 
     //* editor
-    CustomComboBox& comboBox() const
+    ComboBox& comboBox() const
     { return *comboBox_; }
 
     //* update user list
@@ -80,7 +80,7 @@ class BASE_QT_EXPORT UserSelectionFrame: public QWidget, private Base::Counter<U
     QBasicTimer timer_;
 
     //* user line_edit
-    CustomComboBox* comboBox_ = nullptr;
+    ComboBox* comboBox_ = nullptr;
 
     //* current user
     /*! it is used to avoid emiting signal when user was changed but fall back to the current one*/

@@ -20,7 +20,7 @@
 #include "ColorComboBox.h"
 
 #include "BaseIconNames.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 
@@ -76,7 +76,7 @@ void ColorComboBox::setColors( const Base::Color::Set& colors )
     insertItem( QComboBox::count(), IconEngine::get( IconNames::Add ), tr( "New" ) );
 
     // insert default action
-    insertItem( QComboBox::count(), CustomPixmap( IconSize::get( IconSize::Huge ), CustomPixmap::Flag::Transparent ), tr( "Default" ) );
+    insertItem( QComboBox::count(), Pixmap( IconSize::get( IconSize::Huge ), Pixmap::Flag::Transparent ), tr( "Default" ) );
 
     // loop over colors
     for( const auto& color:colors )

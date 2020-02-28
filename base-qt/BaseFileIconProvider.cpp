@@ -19,7 +19,7 @@
 
 #include "BaseFileIconProvider.h"
 #include "BaseIconNames.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "DefaultFolders.h"
 #include "IconEngine.h"
 #include "Util.h"
@@ -60,7 +60,7 @@ const QIcon& BaseFileIconProvider::icon( const BaseFileInfo& fileInfo, int type 
 
 
 //____________________________________________________
-CustomPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
+Pixmap BaseFileIconProvider::linked( const Pixmap& source )
 {
 
     if( source.isNull() ) return source;
@@ -80,17 +80,17 @@ CustomPixmap BaseFileIconProvider::linked( const CustomPixmap& source )
     else if( size.width() <= 128 ) overlaySize = QSize( 48, 48 );
     else overlaySize = QSize( 64, 64 );
 
-    CustomPixmap overlayPixmap( linkOverlay.pixmap( overlaySize ) );
+    Pixmap overlayPixmap( linkOverlay.pixmap( overlaySize ) );
     return source.merged(
         overlayPixmap.scaled( overlaySize*overlayPixmap.devicePixelRatio(), Qt::KeepAspectRatio, Qt::SmoothTransformation ),
-        CustomPixmap::Corner::BottomRight );
+        Pixmap::Corner::BottomRight );
 
 }
 
 //____________________________________________________
-CustomPixmap BaseFileIconProvider::hidden( const CustomPixmap& source )
+Pixmap BaseFileIconProvider::hidden( const Pixmap& source )
 { return source.transparent( 0.6 ); }
 
 //____________________________________________________
-CustomPixmap BaseFileIconProvider::clipped( const CustomPixmap& source )
+Pixmap BaseFileIconProvider::clipped( const Pixmap& source )
 { return source.desaturated().transparent( 0.6 ); }

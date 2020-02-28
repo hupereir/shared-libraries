@@ -1,5 +1,5 @@
-#ifndef CustomComboBox_h
-#define CustomComboBox_h
+#ifndef ComboBox_h
+#define ComboBox_h
 
 /******************************************************************************
 *
@@ -32,7 +32,7 @@
 class LineEditor;
 
 //* Customized QCombobox to handle case sensitive auto completion
-class BASE_QT_EXPORT CustomComboBox: public QComboBox, private Base::Counter<CustomComboBox>
+class BASE_QT_EXPORT ComboBox: public QComboBox, private Base::Counter<ComboBox>
 {
 
     //* Qt meta object declaration
@@ -41,10 +41,10 @@ class BASE_QT_EXPORT CustomComboBox: public QComboBox, private Base::Counter<Cus
     public:
 
     //* constructor
-    explicit CustomComboBox( QWidget* = nullptr );
+    explicit ComboBox( QWidget* = nullptr );
 
     //* destructor
-    ~CustomComboBox() override;
+    ~ComboBox() override;
 
     //* editability
     void setEditable( bool value );

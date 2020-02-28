@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "ImageFileDialog.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "FileDialog.h"
 #include "File.h"
 #include "Debug.h"
@@ -153,22 +153,22 @@ void ImageFileDialog::_preview()
     if( !preview_ ) return;
 
     // try load svg
-    CustomPixmap pixmap;
+    Pixmap pixmap;
 
     if( currentPath_.endsWith( ".svg" ) || currentPath_.endsWith( ".svgz" ) )
     {
 
         QSize size( 0.8*preview_->width(), 0.8*preview_->height() );
-        pixmap = CustomPixmap( QIcon( currentPath_ ).pixmap( size ) );
+        pixmap = Pixmap( QIcon( currentPath_ ).pixmap( size ) );
 
-    } else pixmap = CustomPixmap( currentPath_ );
+    } else pixmap = Pixmap( currentPath_ );
 
     // check and scale
     if( pixmap.isNull() ) preview_->setPixmap( QPixmap() );
     else {
 
         if( pixmap.width() > preview_->width()*0.8 || pixmap.height() > preview_->height()*0.8 )
-        { pixmap = CustomPixmap( pixmap.scaled( int(preview_->width()*0.8), int(preview_->height()*0.8), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
+        { pixmap = Pixmap( pixmap.scaled( int(preview_->width()*0.8), int(preview_->height()*0.8), Qt::KeepAspectRatio, Qt::SmoothTransformation ) ); }
         preview_->setPixmap( pixmap );
 
     }

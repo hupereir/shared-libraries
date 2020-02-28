@@ -23,8 +23,8 @@
 #include "DockWidget.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
-#include "CustomToolBar.h"
-#include "CustomToolButton.h"
+#include "ToolBar.h"
+#include "ToolButton.h"
 #include "QtUtil.h"
 #include "Singleton.h"
 #include "ToolBarMenu.h"
@@ -320,7 +320,7 @@ bool BaseMainWindow::_hasHideableToolBars() const
     {
         if( toolbar->windowTitle().isEmpty() ) return false;
         else {
-            auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+            auto customToolbar( qobject_cast<const ToolBar*>( toolbar ) );
             if( !(customToolbar && customToolbar->appearsInMenu() ) ) return false;
         }
 
@@ -338,7 +338,7 @@ bool BaseMainWindow::_hasLockableToolBars() const
         if( toolbar->parentWidget() != this ) return false;
         else {
 
-            auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+            auto customToolbar( qobject_cast<const ToolBar*>( toolbar ) );
             return !customToolbar || customToolbar->lockFromOptions();
 
         }
@@ -354,7 +354,7 @@ bool BaseMainWindow::_hasIconSizeToolBars() const
     const auto toolbars( findChildren<QToolBar*>() );
     return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
-        auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+        auto customToolbar( qobject_cast<const ToolBar*>( toolbar ) );
         return !customToolbar || customToolbar->iconSizeFromOptions();
     } );
 
@@ -369,7 +369,7 @@ bool BaseMainWindow::_hasToolButtonStyleToolBars() const
     return std::any_of( toolbars.begin(), toolbars.end(), []( const QToolBar* toolbar )
     {
 
-        auto customToolbar( qobject_cast<const CustomToolBar*>( toolbar ) );
+        auto customToolbar( qobject_cast<const ToolBar*>( toolbar ) );
         return !customToolbar || customToolbar->toolButtonStyleFromOptions();
 
     } );
@@ -392,7 +392,7 @@ BaseMainWindow::ActionList BaseMainWindow::_toolBarsActions( QMenu* menu )
     {
 
         // try cast to custom
-        auto customToolbar( qobject_cast<CustomToolBar*>( toolbar ) );
+        auto customToolbar( qobject_cast<ToolBar*>( toolbar ) );
 
         // skip toolbars that are not direct children
         // or should not appear in menu
@@ -509,7 +509,7 @@ void BaseMainWindow::_lockToolBars( bool value )
         if( toolbar->window() != this ) continue;
 
         // try cast to custom toolbar and check lock
-        auto customToolBar( qobject_cast<CustomToolBar*>( toolbar ) );
+        auto customToolBar( qobject_cast<ToolBar*>( toolbar ) );
         if( customToolBar && !customToolBar->lockFromOptions() ) continue;
 
         // update movability

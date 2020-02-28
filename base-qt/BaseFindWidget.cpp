@@ -61,7 +61,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     auto label = new QLabel( tr( "Text to find:" ), this );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
     editorLayout_->addWidget( label, 0, 0, 1, 1 );
-    editorLayout_->addWidget( editor_ = new CustomComboBox( this ), 0, 1, 1, 1 );
+    editorLayout_->addWidget( editor_ = new ComboBox( this ), 0, 1, 1, 1 );
     label->setBuddy( editor_ );
     editor_->setEditable( true );
     editor_->setAutoCompletion( true, Qt::CaseSensitive );

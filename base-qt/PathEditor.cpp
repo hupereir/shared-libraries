@@ -391,7 +391,7 @@ PathEditor::PathEditor( QWidget* parent ):
         hLayout->setMargin(0);
         editorContainer_->setLayout( hLayout );
 
-        editor_ = new CustomComboBox( editorContainer_ );
+        editor_ = new ComboBox( editorContainer_ );
         editor_->setEditable( true );
         hLayout->addWidget( editor_ );
 

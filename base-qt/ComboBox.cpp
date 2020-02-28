@@ -17,7 +17,7 @@
 *
 *******************************************************************************/
 
-#include "CustomComboBox.h"
+#include "ComboBox.h"
 
 #include "LineEditor.h"
 
@@ -25,12 +25,12 @@
 #include <QCompleter>
 
 //___________________________________________________
-CustomComboBox::CustomComboBox( QWidget* parent ):
+ComboBox::ComboBox( QWidget* parent ):
     QComboBox( parent ),
-    Counter( QStringLiteral("CustomComboBox") )
+    Counter( QStringLiteral("ComboBox") )
 {
 
-    Debug::Throw( QStringLiteral("CustomComboBox::CustomComboBox.\n") );
+    Debug::Throw( QStringLiteral("ComboBox::ComboBox.\n") );
     setAutoCompletion( false );
 
     // size policy
@@ -39,12 +39,12 @@ CustomComboBox::CustomComboBox( QWidget* parent ):
 }
 
 //____________________________________________________
-CustomComboBox::~CustomComboBox() = default;
+ComboBox::~ComboBox() = default;
 
 //____________________________________________________
-void CustomComboBox::setEditable( bool value )
+void ComboBox::setEditable( bool value )
 {
-    Debug::Throw( QStringLiteral("CustomComboBox::setEditable.\n") );
+    Debug::Throw( QStringLiteral("ComboBox::setEditable.\n") );
     QComboBox::setEditable( value );
     if( !value ) editor_.reset();
     else if( !editor_ ) {
@@ -56,9 +56,9 @@ void CustomComboBox::setEditable( bool value )
 }
 
 //____________________________________________________
-void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSensitivity )
+void ComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSensitivity )
 {
-    Debug::Throw( QStringLiteral("CustomComboBox::setAutoCompletion.\n") );
+    Debug::Throw( QStringLiteral("ComboBox::setAutoCompletion.\n") );
 
     if( isEditable() )
     {
@@ -73,7 +73,7 @@ void CustomComboBox::setAutoCompletion( bool value, Qt::CaseSensitivity caseSens
 }
 
 //___________________________________________________
-void CustomComboBox::keyPressEvent( QKeyEvent* event )
+void ComboBox::keyPressEvent( QKeyEvent* event )
 {
     if( !navigationEnabled_ )
     {

@@ -22,7 +22,7 @@
 
 #include "base_qt_export.h"
 #include "Counter.h"
-#include "CustomToolButton.h"
+#include "ToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
 

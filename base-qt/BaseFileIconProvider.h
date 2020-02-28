@@ -23,7 +23,7 @@
 #include "base_qt_export.h"
 #include "BaseFileInfo.h"
 #include "Counter.h"
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 #include "File.h"
 
 #include <QHash>
@@ -89,13 +89,13 @@ class BASE_QT_EXPORT BaseFileIconProvider: public QObject, private Base::Counter
     //@{
 
     //* add link overlay icon
-    static CustomPixmap linked( const CustomPixmap& );
+    static Pixmap linked( const Pixmap& );
 
     //* add hidden effect
-    static CustomPixmap hidden( const CustomPixmap& );
+    static Pixmap hidden( const Pixmap& );
 
     //* add clipped effect
-    static CustomPixmap clipped( const CustomPixmap& );
+    static Pixmap clipped( const Pixmap& );
 
     //@}
 

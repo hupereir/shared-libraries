@@ -24,7 +24,7 @@
 #include "ColumnSortingMenu.h"
 #include "ColumnSelectionMenu.h"
 #include "ContextMenu.h"
-#include "CustomToolBar.h"
+#include "ToolBar.h"
 #include "FileInformationDialog.h"
 #include "FileRecordProperties.h"
 #include "FileRecordToolTipWidget.h"
@@ -51,7 +51,7 @@ namespace
     namespace Local
     {
 
-        class ToolBar: public CustomToolBar
+        class LocalToolBar: public ToolBar
         {
 
             Q_OBJECT
@@ -59,8 +59,8 @@ namespace
             public:
 
             //* constructor
-            ToolBar( const QString& title, QWidget* parent, const QString& option ):
-                CustomToolBar( title, parent, option )
+            LocalToolBar( const QString& title, QWidget* parent, const QString& option ):
+                ToolBar( title, parent, option )
             { setTransparent( true ); }
 
             protected:
@@ -107,7 +107,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     setLayout( layout );
 
     // toolbar
-    auto toolbar = new Local::ToolBar( tr( "Navigation Toolbar" ), this, QStringLiteral("NAVIGATION_TOOLBAR") );
+    auto toolbar = new Local::LocalToolBar( tr( "Navigation Toolbar" ), this, QStringLiteral("NAVIGATION_TOOLBAR") );
     layout->addWidget( toolbar );
 
     // path editor

@@ -1,5 +1,5 @@
-#ifndef CustomSlider_h
-#define CustomSlider_h
+#ifndef Slider_h
+#define Slider_h
 
 
 /******************************************************************************
@@ -29,7 +29,7 @@
 #include <QSpinBox>
 
 //* customized QSlider associated to a QSpinBox
-class BASE_QT_EXPORT CustomSlider: public QWidget, private Base::Counter<CustomSlider>
+class BASE_QT_EXPORT Slider: public QWidget, private Base::Counter<Slider>
 {
 
     //* Qt meta object declaration
@@ -38,7 +38,7 @@ class BASE_QT_EXPORT CustomSlider: public QWidget, private Base::Counter<CustomS
     public:
 
     //* creator
-    explicit CustomSlider( QWidget* parent );
+    explicit Slider( QWidget* parent );
 
     //*@name accessors
     //@{

@@ -102,7 +102,7 @@ void FileRecordToolTipWidget::setRecord( const FileRecord& record, const QIcon& 
     {
 
         // get pixmap
-        CustomPixmap pixmap( icon.pixmap( QSize( pixmapSize_, pixmapSize_ ) ) );
+        Pixmap pixmap( icon.pixmap( QSize( pixmapSize_, pixmapSize_ ) ) );
 
         // add effects
         const int type( record.flags() );

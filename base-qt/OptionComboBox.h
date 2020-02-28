@@ -21,11 +21,11 @@
 *******************************************************************************/
 
 #include "base_qt_export.h"
-#include "CustomComboBox.h"
+#include "ComboBox.h"
 #include "OptionWidget.h"
 
 //* QComboBox associated to an option for configuration dialogs
-class BASE_QT_EXPORT OptionComboBox: public CustomComboBox, public OptionWidget
+class BASE_QT_EXPORT OptionComboBox: public ComboBox, public OptionWidget
 {
 
     Q_OBJECT
@@ -34,7 +34,7 @@ class BASE_QT_EXPORT OptionComboBox: public CustomComboBox, public OptionWidget
 
     //* constructor
     explicit OptionComboBox( QWidget* parent, const QString& optionName ):
-        CustomComboBox( parent ),
+        ComboBox( parent ),
         OptionWidget( optionName )
     {}
 
@@ -62,7 +62,7 @@ class BASE_QT_EXPORT OptionComboBox: public CustomComboBox, public OptionWidget
         if( !_connected() )
         {
             connect( this, &QComboBox::editTextChanged, this, &OptionComboBox::modified );
-            connect( this, QOverload<int>::of(&CustomComboBox::currentIndexChanged), this, [this](int){ emit modified(); } );
+            connect( this, QOverload<int>::of(&ComboBox::currentIndexChanged), this, [this](int){ emit modified(); } );
             _setConnected();
         }
     }

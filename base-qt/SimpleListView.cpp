@@ -20,7 +20,7 @@
 #include "SimpleListView.h"
 #include "SimpleListView_p.h"
 
-#include "CustomPixmap.h"
+#include "Pixmap.h"
 
 #include <QAbstractItemDelegate>
 #include <QApplication>
@@ -48,7 +48,7 @@ void Private::SimpleListViewDelegate::paint( QPainter *painter, const QStyleOpti
 
     const QString text = index.model()->data( index, Qt::DisplayRole ).toString();
     const QIcon icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
-    const CustomPixmap pixmap( icon.pixmap( iconSize, iconSize ) );
+    const Pixmap pixmap( icon.pixmap( iconSize, iconSize ) );
     const QPen oldPen = painter->pen();
 
     auto fontMetrics = painter->fontMetrics();
@@ -135,7 +135,7 @@ QSize Private::SimpleListViewDelegate::sizeHint( const QStyleOptionViewItem &opt
     const int iconSize = QApplication::style()->pixelMetric(QStyle::PM_IconViewIconSize);
     auto text = index.model()->data( index, Qt::DisplayRole ).toString();
     auto icon = index.model()->data( index, Qt::DecorationRole ).value<QIcon>();
-    const CustomPixmap pixmap( icon.pixmap( iconSize, iconSize ) );
+    const Pixmap pixmap( icon.pixmap( iconSize, iconSize ) );
 
     auto fontMetrics = option.fontMetrics;
     int gap = fontMetrics.height();

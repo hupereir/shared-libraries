@@ -28,7 +28,7 @@
 #include "InformationDialog.h"
 #include "Color.h"
 #include "CppUtil.h"
-#include "CustomTextDocument.h"
+#include "TextDocument.h"
 #include "IconEngine.h"
 #include "KeyModifier.h"
 #include "LineEditor.h"
@@ -81,7 +81,7 @@ TextEditor::TextEditor( QWidget *parent ):
     Debug::Throw( QStringLiteral("TextEditor::TextEditor.\n") );
 
     // set customized document
-    auto document( new CustomTextDocument(0) );
+    auto document( new TextDocument(0) );
     Base::Key::associate( this, document );
 
     #ifdef QT_USE_PLAIN_TEXT_EDIT
@@ -130,7 +130,7 @@ TextEditor::~TextEditor()
     Debug::Throw() << "TextEditor::~TextEditor - key: " << key() << endl;
 
     // cast document
-    auto document( qobject_cast<CustomTextDocument*>( TextEditor::document() ) );
+    auto document( qobject_cast<TextDocument*>( TextEditor::document() ) );
     if( document && Base::KeySet<TextEditor>( document ).size() == 1 ) document->deleteLater();
 
     // update associates synchronization flags
@@ -434,14 +434,14 @@ void TextEditor::synchronize( TextEditor* editor )
     Debug::Throw( QStringLiteral("TextEditor::synchronize.\n") );
 
     // retrieve and cast old document
-    auto document( qobject_cast<CustomTextDocument*>( BaseEditor::document() ) );
+    auto document( qobject_cast<TextDocument*>( BaseEditor::document() ) );
 
     // set font
     setFont( editor->font() );
 
     // assign new document and associate
     setDocument( editor->document() );
-    Base::Key::associate( this, qobject_cast<CustomTextDocument*>( editor->document() ) );
+    Base::Key::associate( this, qobject_cast<TextDocument*>( editor->document() ) );
 
     // delete old document, if needed
     if( document && Base::KeySet<TextEditor>( document ).size() == 1 ) delete document;

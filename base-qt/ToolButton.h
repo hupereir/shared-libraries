@@ -1,5 +1,5 @@
-#ifndef CustomTextDocument_h
-#define CustomTextDocument_h
+#ifndef ToolButton_h
+#define ToolButton_h
 
 /******************************************************************************
 *
@@ -22,26 +22,51 @@
 
 #include "base_qt_export.h"
 #include "Counter.h"
+#include "Pixmap.h"
 #include "Debug.h"
-#include "Key.h"
 
-#include <QPlainTextDocumentLayout>
-#include <QTextDocument>
+#include <QLabel>
+#include <QToolButton>
 
-//* customized TextDocument to derive from Base::Key
-/** this is needed to easily handled multiple text editors that share the same document */
-class BASE_QT_EXPORT CustomTextDocument: public QTextDocument, public Base::Key, private Base::Counter<CustomTextDocument>
+class BASE_QT_EXPORT ToolButton: public QToolButton, private Base::Counter<ToolButton>
 {
 
     Q_OBJECT
 
     public:
 
-    //* constructor
-    explicit CustomTextDocument( QObject* parent = nullptr ):
-        QTextDocument( parent ),
-        Counter( QStringLiteral("CustomTextDocument") )
-    {}
+    //* default constructor
+    explicit ToolButton( QWidget* = nullptr );
+
+    //* update configuration from options
+    void setUpdateFromOptions( bool value )
+    { updateFromOptions_ = value; }
+
+    //* rotation
+    bool rotate( Pixmap::Rotation  );
+
+    //* size hint
+    QSize sizeHint() const override;
+
+    //* size hint
+    QSize minimumSizeHint() const override
+    { return sizeHint(); }
+
+    protected:
+
+    //* painting
+    void paintEvent( QPaintEvent* ) override;
+
+    private:
+
+    //* tool button configuration
+    void _updateConfiguration();
+
+    //* update configuration from options
+    bool updateFromOptions_ = true;
+
+    //* rotation
+    Pixmap::Rotation rotation_ = Pixmap::Rotation::None;
 
 };
 

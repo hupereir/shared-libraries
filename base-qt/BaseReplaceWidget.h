@@ -99,7 +99,7 @@ class BASE_QT_EXPORT BaseReplaceWidget: public BaseFindWidget
     void _replaceInSelection();
 
     //* replace editor
-    CustomComboBox& _replaceEditor() const
+    ComboBox& _replaceEditor() const
     { return *replaceEditor_; }
 
     //* replace all menu
@@ -115,7 +115,7 @@ class BASE_QT_EXPORT BaseReplaceWidget: public BaseFindWidget
     QBoxLayout* locationLayout_ = nullptr;
 
     //* line editor for text to replace
-    CustomComboBox* replaceEditor_ = nullptr;
+    ComboBox* replaceEditor_ = nullptr;
 
     //* replace all menu
     QMenu* replaceAllMenu_ = nullptr;

@@ -23,7 +23,7 @@
 #include "base_qt_export.h"
 #include "AbstractFindWidget.h"
 #include "Counter.h"
-#include "CustomComboBox.h"
+#include "ComboBox.h"
 #include "TextSelection.h"
 #include "QOrderedSet.h"
 
@@ -160,7 +160,7 @@ class BASE_QT_EXPORT BaseFindWidget: public AbstractFindWidget, private Base::Co
     QGridLayout* editorLayout_ = nullptr;
 
     //* line editor for text to find
-    CustomComboBox* editor_ = nullptr;
+    ComboBox* editor_ = nullptr;
 
     //* backward search if checked
     bool findBackward_ = false;
