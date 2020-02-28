@@ -46,7 +46,6 @@ class OptionWidgetList: public OptionWidget
     //* add option widget
     template< class T >
         void addOptionWidget( T* );
-    // void addOptionWidget( OptionWidget* );
 
     //* clear option widgets
     void clearOptionWidgets()
