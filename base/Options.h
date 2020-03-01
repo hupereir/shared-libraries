@@ -25,12 +25,11 @@
 #include "Debug.h"
 #include "Option.h"
 
-#include <QList>
 #include <QMap>
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
-
+#include <QVector>
 #include <algorithm>
 
 //* Option file parser based on Xml
