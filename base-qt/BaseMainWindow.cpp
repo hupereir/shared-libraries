@@ -30,6 +30,7 @@
 #include "ToolBarMenu.h"
 #include "ToolButtonStyleMenu.h"
 #include "Util.h"
+#include "WindowManager.h"
 
 #include <QMenuBar>
 #include <QTextStream>
@@ -72,6 +73,8 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
 
     connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &BaseMainWindow::_updateConfiguration );
     connect( this, &BaseMainWindow::toolbarConfigurationChanged, &Base::Singleton::get(), &Base::Singleton::requestConfigurationChanged );
+
+    WindowManager::get().registerWidget( this );
 
     _updateConfiguration();
 

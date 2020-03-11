@@ -218,7 +218,6 @@ xcb_atom_t* XcbUtil::Private::atom( AtomId atom )
 
 #endif
 
-
 //________________________________________________________________________
 XcbUtil& XcbUtil::get()
 {

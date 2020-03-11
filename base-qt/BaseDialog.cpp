@@ -25,6 +25,9 @@
 #include "XmlOptions.h"
 #include "XcbUtil.h"
 
+#include "WindowManager.h"
+
+
 #include <QTextStream>
 #include <QWindowStateChangeEvent>
 
@@ -36,6 +39,8 @@ BaseDialog::BaseDialog( QWidget* parent, Qt::WindowFlags flags ):
 {
     Debug::Throw( QStringLiteral("BaseDialog::BaseDialog.\n") );
     setSizeGripEnabled(false);
+
+    WindowManager::get().registerWidget( this );
 }
 
 //__________________________________________________
