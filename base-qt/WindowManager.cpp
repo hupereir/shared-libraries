@@ -143,7 +143,7 @@ class AddChildEventFilter: public QObject
     bool eventFilter( QObject* object, QEvent* event ) override
     {
 
-        if( event->type() == QEvent::ChildAdded )
+        if( event->type() == QEvent::ChildPolished )
         { parent_->registerWidget( qobject_cast<QWidget*>( static_cast<QChildEvent*>( event )->child() ) ); }
 
         return false;
@@ -196,7 +196,10 @@ void WindowManager::registerWidget( QWidget* widget )
 {
 
     if( widget )
-    { widget->installEventFilter( addChildEventFilter_ ); }
+    {
+        widget->removeEventFilter( addChildEventFilter_ );
+        widget->installEventFilter( addChildEventFilter_ );
+    }
 
     if( isDragable( widget ) )
     {
