@@ -19,6 +19,12 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+#include "ListModel.h"
+
+#include <QIcon>
+#include <QMimeData>
+
 namespace Private
 {
     //* item model
