@@ -66,7 +66,7 @@ macro(add_win32_executable target version)
   endif()
 
   ### get target location
-  GET_TARGET_PROPERTY(TARGET_PATH ${target} LOCATION)
+  get_target_property(TARGET_PATH ${target} LOCATION)
 
   ### Compress target
   if(NOT USE_SHARED_LIBS)
