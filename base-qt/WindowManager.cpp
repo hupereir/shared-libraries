@@ -628,7 +628,7 @@ void WindowManager::startDragX11( QWidget* widget, const QPoint& position )
     #if WITH_XCB
     XcbUtil::get().moveWidget( widget, position );
     #else
-    Q_UNUSED( window );
+    Q_UNUSED( widget );
     Q_UNUSED( position );
     #endif
 }
