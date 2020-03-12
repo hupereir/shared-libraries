@@ -427,7 +427,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
         void _initialize();
 
         //* contained editor
-        TextEditor* editor_;
+        TextEditor* editor_ = nullptr;
 
     };
 
