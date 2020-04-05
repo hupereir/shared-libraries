@@ -44,6 +44,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     buttonLayout().setMargin(5);
 
     tabWidget_ = new QTabWidget( this );
+    tabWidget_->setDocumentMode( true );
     mainLayout().addWidget( tabWidget_ );
 
     // general information
