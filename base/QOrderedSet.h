@@ -491,7 +491,7 @@ inline QDataStream& operator >> (QDataStream& stream, QOrderedSet<T>& set)
         stream >> value;
         if( stream.status() == QDataStream::Ok )
         {
-            set.insert( value );
+            set.insert( std::move( value ) );
         } else {
             set.clear();
             break;
