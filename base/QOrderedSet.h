@@ -22,6 +22,7 @@
 
 #include "base_export.h"
 #include <QMap>
+#include <QDataStream>
 
 QT_BEGIN_HEADER
 
@@ -350,13 +351,14 @@ class BASE_EXPORT QOrderedSet
 
     private:
     Map q_map;
+
 };
 
 template <class T>
-Q_INLINE_TEMPLATE void QOrderedSet<T>::reserve(int asize) { q_map.reserve(asize); }
+inline void QOrderedSet<T>::reserve(int asize) { q_map.reserve(asize); }
 
 template <class T>
-Q_INLINE_TEMPLATE QOrderedSet<T> &QOrderedSet<T>::unite(const QOrderedSet<T> &other)
+inline QOrderedSet<T> &QOrderedSet<T>::unite(const QOrderedSet<T> &other)
 {
     QOrderedSet<T> copy(other);
     typename QOrderedSet<T>::const_iterator i = copy.constEnd();
@@ -368,7 +370,7 @@ Q_INLINE_TEMPLATE QOrderedSet<T> &QOrderedSet<T>::unite(const QOrderedSet<T> &ot
 }
 
 template <class T>
-Q_INLINE_TEMPLATE QOrderedSet<T> &QOrderedSet<T>::intersect(const QOrderedSet<T> &other)
+inline QOrderedSet<T> &QOrderedSet<T>::intersect(const QOrderedSet<T> &other)
 {
     QOrderedSet<T> copy1(*this);
     QOrderedSet<T> copy2(other);
@@ -382,7 +384,7 @@ Q_INLINE_TEMPLATE QOrderedSet<T> &QOrderedSet<T>::intersect(const QOrderedSet<T>
 }
 
 template <class T>
-Q_INLINE_TEMPLATE QOrderedSet<T> &QOrderedSet<T>::subtract(const QOrderedSet<T> &other)
+inline QOrderedSet<T> &QOrderedSet<T>::subtract(const QOrderedSet<T> &other)
 {
     QOrderedSet<T> copy1(*this);
     QOrderedSet<T> copy2(other);
@@ -396,7 +398,7 @@ Q_INLINE_TEMPLATE QOrderedSet<T> &QOrderedSet<T>::subtract(const QOrderedSet<T> 
 }
 
 template <class T>
-Q_INLINE_TEMPLATE bool QOrderedSet<T>::contains(const QOrderedSet<T> &other) const
+inline bool QOrderedSet<T>::contains(const QOrderedSet<T> &other) const
 {
     typename QOrderedSet<T>::const_iterator i = other.constBegin();
     while (i != other.constEnd()) {
@@ -466,6 +468,37 @@ public:
     { while (c->constBegin() != i) if (*(n = --i) == t) return true;
       n = c->end(); return false;  }
 };
+
+//_______________________________________________________________________
+template<class T>
+inline QDataStream& operator << (QDataStream& stream, const QOrderedSet<T>& set )
+{
+    stream << quint32( set.size() );
+    for( const auto& value:set ) { stream << value; }
+    return stream;
+}
+
+//_______________________________________________________________________
+template<class T>
+inline QDataStream& operator >> (QDataStream& stream, QOrderedSet<T>& set)
+{
+    set.clear();
+    quint32 n;
+    stream >> n;
+    for( quint32 i = 0; i < n; ++i )
+    {
+        T value;
+        stream >> value;
+        if( stream.status() == QDataStream::Ok )
+        {
+            set.insert( value );
+        } else {
+            set.clear();
+            break;
+        }
+    }
+    return stream;
+}
 
 QT_END_NAMESPACE
 
