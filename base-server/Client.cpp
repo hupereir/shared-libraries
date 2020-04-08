@@ -19,13 +19,14 @@
 
 #include "Client.h"
 #include "Debug.h"
+#include "TypeId.h"
 
 #include <QDataStream>
 
+template<> class Base::TypeId<Server::ServerCommand> : public Base::RegisterTypeId<Server::ServerCommand, 1> {};
+
 namespace Server
 {
-
-    static const qint32 CommandType = 1;
 
     //_______________________________________________________
     quint32& Client::_counter()
@@ -47,13 +48,13 @@ namespace Server
         QByteArray array;
         QDataStream stream( &array, QIODevice::WriteOnly );
         stream << command;
-        sendBuffer( CommandType, array );
+        sendBuffer( Base::TypeId<ServerCommand>::value, array );
     }
 
     //_______________________________________________________
     void Client::_parseBuffer( qint32 bufferType, QByteArray buffer )
     {
-        if( bufferType == CommandType )
+        if( bufferType == Base::TypeId<ServerCommand>::value )
         {
             ServerCommand command;
             QDataStream stream( &buffer, QIODevice::ReadOnly );
