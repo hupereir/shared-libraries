@@ -108,7 +108,6 @@ namespace SpellCheck
         const QString& error() const
         { return error_; }
 
-
         //* retrieve current word being checked
         const QString& word() const
         { return word_; }
@@ -201,7 +200,7 @@ namespace SpellCheck
 
         //@}
 
-        protected:
+        private:
 
         //* load available dictionaries
         void _loadDictionaries();
@@ -216,8 +215,6 @@ namespace SpellCheck
         //* reset Aspell spell checker
         /** returns false on error */
         bool _resetSpellChecker();
-
-        private:
 
         //* set of available dictionaries
         /** loaded in constructor */
