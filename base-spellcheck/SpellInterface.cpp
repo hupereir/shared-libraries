@@ -174,6 +174,9 @@ namespace SpellCheck
     {
         Debug::Throw( QStringLiteral("SpellInterface::setText.\n") );
 
+        // check document checker
+        if( !documentChecker_ ) return true;
+
         // check text
         if( text.isEmpty() )
         {
