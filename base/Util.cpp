@@ -56,7 +56,7 @@ QString Util::domain()
 
 //_____________________________________________________
 QString Util::windowTitleSeparator()
-{ return QString::fromUtf8( " \u2014 " ); }
+{ return QStringLiteral( " \u2014 " ); }
 
 //_____________________________________________________
 QString Util::windowTitle( const QString& title )

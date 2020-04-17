@@ -67,6 +67,8 @@ class BASE_QT_EXPORT ClockTimer: public QObject, private Base::Counter<ClockTime
 class BASE_QT_EXPORT ClockLabel:public QLabel
 {
 
+    Q_OBJECT
+
     public:
 
     //* constructor

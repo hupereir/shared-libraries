@@ -91,5 +91,5 @@ void ComboBox::keyPressEvent( QKeyEvent* event )
         }
     }
 
-    return QComboBox::keyPressEvent( event );
+    QComboBox::keyPressEvent( event );
 }

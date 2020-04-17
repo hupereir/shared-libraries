@@ -95,7 +95,7 @@ namespace SpellCheck
         QString value_;
 
         //* position in text
-        const int position_;
+        const int position_ = 0;
 
     };
 
