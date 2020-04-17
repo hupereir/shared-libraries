@@ -17,43 +17,32 @@
 *
 *******************************************************************************/
 
-#include "MenuBarAction.h"
+#include "ApplicationMenu.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 
-#include <QToolButton>
-
 //_____________________________________________________
-MenuBarAction::MenuBarAction( QObject* parent, QWidget* target ):
-    QWidgetAction( parent ),
-    Counter( "MenuBarAction" ),
-    target_( target ),
-    menu_( new QMenu )
+ApplicationMenu::ApplicationMenu( QWidget* parent, QWidget* target ):
+    QMenu( parent ),
+    Counter( "ApplicationMenu" ),
+    target_( target )
 {
-    Debug::Throw( QStringLiteral( "MenuBarAction::MenuBarAction.\n" ) );
-
-    auto toolButton = new QToolButton;
-    toolButton->setText( tr( "Show menu" ) );
-    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
-    toolButton->setMenu( menu_ );
-    toolButton->setPopupMode(QToolButton::InstantPopup);
-    setDefaultWidget(toolButton);
-
-    connect( menu_, &QMenu::aboutToShow, this, &MenuBarAction::updateMenu );
+    Debug::Throw( QStringLiteral( "ApplicationMenu::ApplicationMenu.\n" ) );
+    connect( this, &ApplicationMenu::aboutToShow, this, &ApplicationMenu::updateMenu );
 }
 
 //_____________________________________________________
-void MenuBarAction::setTarget( QWidget* target )
+void ApplicationMenu::setTarget( QWidget* target )
 { target_ = target; }
 
 //_____________________________________________________
-void MenuBarAction::updateMenu()
+void ApplicationMenu::updateMenu()
 {
 
-    Debug::Throw( QStringLiteral("MenuBarAction::updateMenu.\n" ) );
+    Debug::Throw( QStringLiteral("ApplicationMenu::updateMenu.\n" ) );
 
     // clear
-    menu_->clear();
+    clear();
 
     // check target
     if( !target_ ) return;
@@ -72,10 +61,10 @@ void MenuBarAction::updateMenu()
 }
 
 //_____________________________________________________
-void MenuBarAction::updateFrom( QMenu* menu, bool needSeparator )
+void ApplicationMenu::updateFrom( QMenu* menu, bool needSeparator )
 {
 
-    Debug::Throw( QStringLiteral("MenuBarAction::updateFrom.\n") );
+    Debug::Throw( QStringLiteral("ApplicationMenu::updateFrom.\n") );
 
     // trigger menu update
     emit menu->aboutToShow();
@@ -85,8 +74,8 @@ void MenuBarAction::updateFrom( QMenu* menu, bool needSeparator )
     for( const auto& action:menu->actions() )
     {
         if( !action->isVisible() ) continue;
-        if( first && needSeparator ) menu_->addSeparator();
-        menu_->addAction( action );
+        if( first && needSeparator ) addSeparator();
+        addAction( action );
         first = false;
     }
     return;

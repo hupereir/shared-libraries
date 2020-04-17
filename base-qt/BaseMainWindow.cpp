@@ -19,11 +19,11 @@
 
 #include "BaseMainWindow.h"
 
+#include "ApplicationMenu.h"
 #include "BaseIconNames.h"
 #include "DockWidget.h"
 #include "IconEngine.h"
 #include "IconSizeMenu.h"
-#include "MenuBarAction.h"
 #include "QtUtil.h"
 #include "Singleton.h"
 #include "ToolBar.h"
@@ -73,8 +73,7 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     connect( showStatusBarAction_, &QAction::toggled, this, &BaseMainWindow::_toggleStatusBar );
 
     // menubar action
-    addAction( menuBarAction_ = new MenuBarAction( this ) );
-    menuBarAction_->setVisible( false );
+    applicationMenu_ = new ApplicationMenu( this );
 
     connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &BaseMainWindow::_updateConfiguration );
     connect( this, &BaseMainWindow::toolbarConfigurationChanged, &Base::Singleton::get(), &Base::Singleton::requestConfigurationChanged );
@@ -135,9 +134,8 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
     QMainWindow::setMenuBar( menu );
     if( !menu ) return;
 
-    menuBarAction_->setTarget( menu );
+    applicationMenu_->setTarget( menu );
     menu->setVisible( showMenuBarAction_->isChecked() );
-    menuBarAction_->setVisible( !showMenuBarAction_->isChecked() );
     showMenuBarAction_->setEnabled( true );
 }
 
@@ -167,8 +165,17 @@ QSize BaseMainWindow::sizeHint() const
 }
 
 //________________________________________________________________
-QAction& BaseMainWindow::menuBarAction() const
-{ return *menuBarAction_; }
+QToolButton* BaseMainWindow::applicationMenuButton() const
+{
+    auto toolButton = new ToolButton;
+    toolButton->setText( tr( "Show menu" ) );
+    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
+    toolButton->setMenu( applicationMenu_ );
+    toolButton->setPopupMode( QToolButton::InstantPopup );
+    toolButton->setVisible( !showMenuBarAction_->isChecked() );
+    connect( showMenuBarAction_, &QAction::toggled, toolButton, &ToolButton::setHidden );
+    return toolButton;
+}
 
 //________________________________________________________________
 void BaseMainWindow::centerOnDesktop()
@@ -548,9 +555,7 @@ void BaseMainWindow::_lockPanels( bool value )
 void BaseMainWindow::_toggleMenuBar( bool value )
 {
     Debug::Throw( QStringLiteral("BaseMainWindow::_toggleMenuBar.\n") );
-
     if( menuWidget() ) menuWidget()->setVisible( value );
-    if( menuBarAction_ ) menuBarAction_->setVisible( !value );
 
     // save option
     if( hasOptionName() ) XmlOptions::get().set<bool>( showMenuBarOptionName_, value );

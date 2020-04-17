@@ -42,6 +42,7 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 ########### next target ###############
 set(base_qt_SOURCES
   AbstractFindWidget.cpp
+  ApplicationMenu.cpp
   BaseContextMenu.cpp
   BaseFileIconProvider.cpp
   BaseFileInfo.cpp
@@ -120,7 +121,6 @@ set(base_qt_SOURCES
   LineEditor.cpp
   LineNumberDisplay.cpp
   LogWidget.cpp
-  MenuBarAction.cpp
   MessageWidget.cpp
   MimeTypeIconProvider.cpp
   MultipleClickCounter.cpp

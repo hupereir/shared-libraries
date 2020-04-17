@@ -35,7 +35,7 @@
 #include <QStyle>
 
 class ToolBarMenu;
-class MenuBarAction;
+class ApplicationMenu;
 
 /**
 \class BaseMainWindow
@@ -76,9 +76,6 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     QAction& showStatusBarAction() const
     { return *showStatusBarAction_; }
 
-    //* menubar action
-    QAction& menuBarAction() const;
-
     //* menu option name
     bool hasOptionName() const
     { return !lockToolBarsOptionName().isEmpty(); }
@@ -98,6 +95,9 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     //* status bar option name
     const QString& showStatusBarOptionName() const
     { return showStatusBarOptionName_; }
+
+    //* create a new application menu button
+    QToolButton* applicationMenuButton() const;
 
     //@}
 
@@ -244,7 +244,7 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     QAction* showStatusBarAction_ = nullptr;
 
     //* menubar action
-    MenuBarAction* menuBarAction_ = nullptr;
+    ApplicationMenu* applicationMenu_ = nullptr;
 
     //* window state prior to minimization
     bool wasMaximized_ = false;

@@ -1,5 +1,5 @@
-#ifndef MenuBarAction_h
-#define MenuBarAction_h
+#ifndef ApplicationMenu_h
+#define ApplicationMenu_h
 
 /******************************************************************************
 *
@@ -23,12 +23,12 @@
 #include "base_qt_export.h"
 #include "Counter.h"
 
-#include <QWidgetAction>
+#include <QAction>
 #include <QMenu>
 #include <QPointer>
 #include <QWidget>
 
-class BASE_QT_EXPORT MenuBarAction: public QWidgetAction, private Base::Counter<MenuBarAction>
+class BASE_QT_EXPORT ApplicationMenu: public QMenu, private Base::Counter<ApplicationMenu>
 {
 
     Q_OBJECT
@@ -36,8 +36,8 @@ class BASE_QT_EXPORT MenuBarAction: public QWidgetAction, private Base::Counter<
     public:
 
     //* constructor
-    explicit MenuBarAction(
-        QObject* parent = nullptr,
+    explicit ApplicationMenu(
+        QWidget* parent = nullptr,
         QWidget* target = nullptr );
 
     //* set target
