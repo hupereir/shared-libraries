@@ -176,6 +176,20 @@ void BaseMainWindow::setupApplicationMenu( QToolButton* toolButton ) const
 }
 
 //________________________________________________________________
+void BaseMainWindow::addApplicationMenu( QToolBar* toolbar ) const
+{
+    // application menu
+    auto toolButton = new QToolButton;
+    toolButton->setText( tr( "Show menu" ) );
+    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
+    toolButton->setMenu( applicationMenu_ );
+    toolButton->setPopupMode( QToolButton::InstantPopup );
+
+    auto action = toolbar->addWidget( toolButton );
+    connect( &showMenuBarAction(), &QAction::toggled, action, [action](bool checked) { action->setVisible( !checked ); } );
+}
+
+//________________________________________________________________
 void BaseMainWindow::centerOnDesktop()
 {
 

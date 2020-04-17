@@ -99,6 +99,9 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     //* setup application menu button
     void setupApplicationMenu( QToolButton* ) const;
 
+    //* setup application menu button
+    void addApplicationMenu( QToolBar* ) const;
+
     //@}
 
     //*@name modifiers
