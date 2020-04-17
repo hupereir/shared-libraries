@@ -85,6 +85,7 @@ void MenuBarAction::updateFrom( QMenu* menu, bool needSeparator )
     bool first = true;
     for( const auto& action:menu->actions() )
     {
+        if( !action->isVisible() ) continue;
         if( auto menu = action->menu() ) updateFrom( menu, needSeparator || !first );
         else {
             if( first && needSeparator ) menu_->addSeparator();
