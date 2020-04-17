@@ -120,6 +120,7 @@ set(base_qt_SOURCES
   LineEditor.cpp
   LineNumberDisplay.cpp
   LogWidget.cpp
+  MenuBarAction.cpp
   MessageWidget.cpp
   MimeTypeIconProvider.cpp
   MultipleClickCounter.cpp
