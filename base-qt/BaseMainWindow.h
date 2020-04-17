@@ -96,8 +96,8 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     const QString& showStatusBarOptionName() const
     { return showStatusBarOptionName_; }
 
-    //* create a new application menu button
-    QToolButton* applicationMenuButton() const;
+    //* setup application menu button
+    void setupApplicationMenu( QToolButton* ) const;
 
     //@}
 

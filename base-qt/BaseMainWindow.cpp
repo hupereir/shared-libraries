@@ -165,16 +165,14 @@ QSize BaseMainWindow::sizeHint() const
 }
 
 //________________________________________________________________
-QToolButton* BaseMainWindow::applicationMenuButton() const
+void BaseMainWindow::setupApplicationMenu( QToolButton* toolButton ) const
 {
-    auto toolButton = new ToolButton;
     toolButton->setText( tr( "Show menu" ) );
     toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
     toolButton->setMenu( applicationMenu_ );
     toolButton->setPopupMode( QToolButton::InstantPopup );
     toolButton->setVisible( !showMenuBarAction_->isChecked() );
     connect( showMenuBarAction_, &QAction::toggled, toolButton, &ToolButton::setHidden );
-    return toolButton;
 }
 
 //________________________________________________________________
