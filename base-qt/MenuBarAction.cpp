@@ -44,6 +44,10 @@ MenuBarAction::MenuBarAction( QObject* parent, QWidget* target ):
 }
 
 //_____________________________________________________
+void MenuBarAction::setTarget( QWidget* target )
+{ target_ = target; }
+
+//_____________________________________________________
 void MenuBarAction::updateMenu()
 {
 

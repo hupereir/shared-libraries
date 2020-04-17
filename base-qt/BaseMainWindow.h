@@ -35,6 +35,7 @@
 #include <QStyle>
 
 class ToolBarMenu;
+class MenuBarAction;
 
 /**
 \class BaseMainWindow
@@ -74,6 +75,9 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     //* show status bar
     QAction& showStatusBarAction() const
     { return *showStatusBarAction_; }
+
+    //* menubar action
+    QAction& menuBarAction() const;
 
     //* menu option name
     bool hasOptionName() const
@@ -238,6 +242,9 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
 
     //* toggle statusBar
     QAction* showStatusBarAction_ = nullptr;
+
+    //* menubar action
+    MenuBarAction* menuBarAction_ = nullptr;
 
     //* window state prior to minimization
     bool wasMaximized_ = false;

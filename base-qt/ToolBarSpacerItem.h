@@ -1,5 +1,5 @@
-#ifndef MenuBarAction_h
-#define MenuBarAction_h
+#ifndef ToolBarSpacerItem_h
+#define ToolBarSpacerItem_h
 
 /******************************************************************************
 *
@@ -23,40 +23,18 @@
 #include "base_qt_export.h"
 #include "Counter.h"
 
-#include <QWidgetAction>
-#include <QMenu>
-#include <QPointer>
 #include <QWidget>
 
-class BASE_QT_EXPORT MenuBarAction: public QWidgetAction, private Base::Counter<MenuBarAction>
+class BASE_QT_EXPORT ToolBarSpacerItem: public QWidget, private Base::Counter<ToolBarSpacerItem>
 {
-
-    Q_OBJECT
 
     public:
 
     //* constructor
-    explicit MenuBarAction(
-        QObject* parent = nullptr,
-        QWidget* target = nullptr );
-
-    //* set target
-    void setTarget( QWidget* );
-
-    private:
-
-    //* update menu before showing
-    void updateMenu();
-
-    //* update from menu
-    void updateFrom( QMenu*, bool needSeparator );
-
-    //* target menubar
-    using WidgetPointer = QPointer<QWidget>;
-    WidgetPointer target_;
-
-    //* menu
-    QMenu* menu_ = nullptr;
+    explicit ToolBarSpacerItem( QWidget* parent = nullptr ):
+        QWidget( parent ),
+        Counter( "ToolBarSpacerItem" )
+    { setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); }
 
 };
 
