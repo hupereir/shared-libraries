@@ -107,15 +107,25 @@ void ToolBar::_updateConfiguration()
     {
         int iconSize( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_ICON_SIZE") ) );
         if( iconSize <= 0 ) iconSize = style()->pixelMetric( QStyle::PM_ToolBarIconSize );
-        QToolBar::setIconSize( QSize( iconSize, iconSize ) );
+        const QSize size( iconSize, iconSize );
+        QToolBar::setIconSize( size );
+
+        // also apply to child toolbutton
+        for( const auto& button:findChildren<QToolButton*>( QString(), Qt::FindDirectChildrenOnly ) )
+        { button->setIconSize( QSize( iconSize, iconSize ) ); }
+
     }
 
     // text label for toolbars
     if( toolButtonStyleFromOptions_ )
     {
         const int toolButtonTextPosition( XmlOptions::get().get<int>( QStringLiteral("TOOLBUTTON_TEXT_POSITION") ) );
-        if( toolButtonTextPosition < 0 ) QToolBar::setToolButtonStyle(  (Qt::ToolButtonStyle) style()->styleHint( QStyle::SH_ToolButtonStyle ) );
-        else QToolBar::setToolButtonStyle(  (Qt::ToolButtonStyle) toolButtonTextPosition );
+        const auto buttonstyle = static_cast<Qt::ToolButtonStyle>( toolButtonTextPosition < 0 ? style()->styleHint( QStyle::SH_ToolButtonStyle ): toolButtonTextPosition );
+        QToolBar::setToolButtonStyle( buttonstyle );
+
+        // also apply to child toolbutton
+        for( const auto& button:findChildren<QToolButton*>( QString(), Qt::FindDirectChildrenOnly ) )
+        { button->setToolButtonStyle( buttonstyle ); }
     }
 
     // lock
