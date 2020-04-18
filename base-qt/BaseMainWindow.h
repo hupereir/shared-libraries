@@ -96,12 +96,6 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     const QString& showStatusBarOptionName() const
     { return showStatusBarOptionName_; }
 
-    //* setup application menu button
-    void setupApplicationMenu( QToolButton* ) const;
-
-    //* setup application menu button
-    void addApplicationMenu( QToolBar* ) const;
-
     //@}
 
     //*@name modifiers
@@ -128,6 +122,12 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
 
     //* create context menu (overloaded)
     QMenu* createPopupMenu() override;
+
+    //* setup application menu button
+    void setupApplicationMenu( QToolButton* );
+
+    //* setup application menu button
+    void addApplicationMenu( QToolBar* );
 
     //* toolbar menu
     ToolBarMenu* toolBarMenu( QWidget* = nullptr );

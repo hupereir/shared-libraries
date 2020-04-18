@@ -72,9 +72,6 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     showStatusBarAction_->setEnabled( false );
     connect( showStatusBarAction_, &QAction::toggled, this, &BaseMainWindow::_toggleStatusBar );
 
-    // menubar action
-    applicationMenu_ = new ApplicationMenu( this );
-
     connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &BaseMainWindow::_updateConfiguration );
     connect( this, &BaseMainWindow::toolbarConfigurationChanged, &Base::Singleton::get(), &Base::Singleton::requestConfigurationChanged );
 
@@ -134,7 +131,9 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
     QMainWindow::setMenuBar( menu );
     if( !menu ) return;
 
-    applicationMenu_->setTarget( menu );
+    if( applicationMenu_ )
+    { applicationMenu_->setTarget( menu ); }
+    
     menu->setVisible( showMenuBarAction_->isChecked() );
     showMenuBarAction_->setEnabled( true );
 }
@@ -162,31 +161,6 @@ QSize BaseMainWindow::sizeHint() const
 {
     const auto out( monitor_.sizeHint() );
     return out.isValid() ? out:QMainWindow::sizeHint();
-}
-
-//________________________________________________________________
-void BaseMainWindow::setupApplicationMenu( QToolButton* toolButton ) const
-{
-    toolButton->setText( tr( "Show menu" ) );
-    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
-    toolButton->setMenu( applicationMenu_ );
-    toolButton->setPopupMode( QToolButton::InstantPopup );
-    toolButton->setVisible( !showMenuBarAction_->isChecked() );
-    connect( showMenuBarAction_, &QAction::toggled, toolButton, &ToolButton::setHidden );
-}
-
-//________________________________________________________________
-void BaseMainWindow::addApplicationMenu( QToolBar* toolbar ) const
-{
-    // application menu
-    auto toolButton = new QToolButton;
-    toolButton->setText( tr( "Show menu" ) );
-    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
-    toolButton->setMenu( applicationMenu_ );
-    toolButton->setPopupMode( QToolButton::InstantPopup );
-
-    auto action = toolbar->addWidget( toolButton );
-    connect( &showMenuBarAction(), &QAction::toggled, action, [action](bool checked) { action->setVisible( !checked ); } );
 }
 
 //________________________________________________________________
@@ -231,9 +205,40 @@ QMenu* BaseMainWindow::createPopupMenu()
         connect( &menu->toolButtonStyleMenu(), &ToolButtonStyleMenu::styleSelected, this, &BaseMainWindow::_updateToolButtonStyle );
         connect( &menu->iconSizeMenu(), &IconSizeMenu::iconSizeSelected, this, &BaseMainWindow::_updateToolButtonIconSize );
         return menu;
-
     }
+}
 
+//________________________________________________________________
+void BaseMainWindow::setupApplicationMenu( QToolButton* toolButton )
+{
+    // create application menu if needed
+    if( !applicationMenu_ )
+    { applicationMenu_ = new ApplicationMenu( this, menuBar() ); }
+        
+    toolButton->setText( tr( "Show menu" ) );
+    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
+    toolButton->setMenu( applicationMenu_ );
+    toolButton->setPopupMode( QToolButton::InstantPopup );
+    toolButton->setVisible( !showMenuBarAction_->isChecked() );
+    connect( showMenuBarAction_, &QAction::toggled, toolButton, &ToolButton::setHidden );
+}
+
+//________________________________________________________________
+void BaseMainWindow::addApplicationMenu( QToolBar* toolbar )
+{    
+    // create application menu if needed
+    if( !applicationMenu_ )
+    { applicationMenu_ = new ApplicationMenu( this, menuBar() ); }
+
+    // application menu
+    auto toolButton = new QToolButton;
+    toolButton->setText( tr( "Show menu" ) );
+    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
+    toolButton->setMenu( applicationMenu_ );
+    toolButton->setPopupMode( QToolButton::InstantPopup );
+
+    auto action = toolbar->addWidget( toolButton );
+    connect( &showMenuBarAction(), &QAction::toggled, action, [action](bool checked) { action->setVisible( !checked ); } );
 }
 
 //________________________________________________________________
