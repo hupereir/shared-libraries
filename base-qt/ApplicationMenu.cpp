@@ -29,11 +29,15 @@ ApplicationMenu::ApplicationMenu( QWidget* parent, QWidget* target ):
 {
     Debug::Throw( QStringLiteral( "ApplicationMenu::ApplicationMenu.\n" ) );
     connect( this, &ApplicationMenu::aboutToShow, this, &ApplicationMenu::updateMenu );
+    updateMenu();
 }
 
 //_____________________________________________________
 void ApplicationMenu::setTarget( QWidget* target )
-{ target_ = target; }
+{
+    target_ = target;
+    updateMenu();
+}
 
 //_____________________________________________________
 void ApplicationMenu::updateMenu()
