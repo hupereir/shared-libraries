@@ -133,7 +133,7 @@ void BaseMainWindow::setMenuBar( QMenuBar* menu )
 
     if( applicationMenu_ )
     { applicationMenu_->setTarget( menu ); }
-    
+
     menu->setVisible( showMenuBarAction_->isChecked() );
     showMenuBarAction_->setEnabled( true );
 }
@@ -214,7 +214,7 @@ void BaseMainWindow::setupApplicationMenu( QToolButton* toolButton )
     // create application menu if needed
     if( !applicationMenu_ )
     { applicationMenu_ = new ApplicationMenu( this, menuBar() ); }
-        
+
     toolButton->setText( tr( "Show menu" ) );
     toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
     toolButton->setMenu( applicationMenu_ );
@@ -225,7 +225,7 @@ void BaseMainWindow::setupApplicationMenu( QToolButton* toolButton )
 
 //________________________________________________________________
 void BaseMainWindow::addApplicationMenu( QToolBar* toolbar )
-{    
+{
     // create application menu if needed
     if( !applicationMenu_ )
     { applicationMenu_ = new ApplicationMenu( this, menuBar() ); }
@@ -238,7 +238,8 @@ void BaseMainWindow::addApplicationMenu( QToolBar* toolbar )
     toolButton->setPopupMode( QToolButton::InstantPopup );
 
     auto action = toolbar->addWidget( toolButton );
-    connect( &showMenuBarAction(), &QAction::toggled, action, [action](bool checked) { action->setVisible( !checked ); } );
+    action->setVisible( !showMenuBarAction_->isChecked() );
+    connect( showMenuBarAction_, &QAction::toggled, action, [action](bool checked) { action->setVisible( !checked ); } );
 }
 
 //________________________________________________________________
