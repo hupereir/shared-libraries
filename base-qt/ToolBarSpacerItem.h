@@ -20,12 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 
 #include <QWidget>
 
-class BASE_QT_EXPORT ToolBarSpacerItem: public QWidget, private Base::Counter<ToolBarSpacerItem>
+class ToolBarSpacerItem: public QWidget, private Base::Counter<ToolBarSpacerItem>
 {
 
     public:
