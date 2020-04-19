@@ -49,22 +49,6 @@ class BASE_EXPORT TimeStamp:private Base::Counter<TimeStamp>
     //* destructor
     virtual ~TimeStamp() = default;
 
-    //* set time
-    bool setTime( time_t time )
-    {
-        valid_ = time >= 0;
-        time_ = time;
-        if( valid_ ) tm_ = *std::localtime( &time );
-        return valid_;
-    }
-
-    //* convert tm_ into time_
-    bool makeTime()
-    {
-        valid_ = (time_ = std::mktime( &tm_ ) ) >= 0;
-        return valid_;
-    }
-
     //*@name accessors
     //@{
 
@@ -164,6 +148,29 @@ class BASE_EXPORT TimeStamp:private Base::Counter<TimeStamp>
 
     //*@name modifiers
     //@{
+    
+    //* reset
+    void reset()
+    {
+        valid_ = false;
+        time_ = -1;
+    }
+    
+    //* set time
+    bool setTime( time_t time )
+    {
+        valid_ = time >= 0;
+        time_ = time;
+        if( valid_ ) tm_ = *std::localtime( &time );
+        return valid_;
+    }
+
+    //* convert tm_ into time_
+    bool makeTime()
+    {
+        valid_ = (time_ = std::mktime( &tm_ ) ) >= 0;
+        return valid_;
+    }
 
     //* seconds (between 0 and 59)
     TimeStamp& setSeconds( int value )
