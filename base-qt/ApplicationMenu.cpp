@@ -42,7 +42,6 @@ void ApplicationMenu::setTarget( QWidget* target )
 //_____________________________________________________
 void ApplicationMenu::updateMenu()
 {
-
     Debug::Throw( QStringLiteral("ApplicationMenu::updateMenu.\n" ) );
 
     // clear
@@ -61,7 +60,6 @@ void ApplicationMenu::updateMenu()
             needSeparator = !menu->isEmpty();
         }
     }
-
 }
 
 //_____________________________________________________

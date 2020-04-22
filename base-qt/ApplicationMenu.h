@@ -43,10 +43,10 @@ class BASE_QT_EXPORT ApplicationMenu: public QMenu, private Base::Counter<Applic
     //* set target
     void setTarget( QWidget* );
 
-    private:
-
     //* update menu before showing
     void updateMenu();
+
+    private:
 
     //* update from menu
     void updateFrom( QMenu*, bool needSeparator );

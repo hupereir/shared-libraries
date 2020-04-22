@@ -243,6 +243,13 @@ void BaseMainWindow::addApplicationMenu( QToolBar* toolbar )
 }
 
 //________________________________________________________________
+void BaseMainWindow::updateApplicationMenu()
+{
+    Debug::Throw( QStringLiteral( "BaseMainWindow::updateApplicationMenu.\n" ) );
+    if( applicationMenu_ )  applicationMenu_->updateMenu();
+}
+
+//________________________________________________________________
 ToolBarMenu* BaseMainWindow::toolBarMenu( QWidget* parent )
 {
 

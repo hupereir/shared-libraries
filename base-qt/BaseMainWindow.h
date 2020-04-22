@@ -129,6 +129,9 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     //* setup application menu button
     void addApplicationMenu( QToolBar* );
 
+    //* update application menu
+    void updateApplicationMenu();
+
     //* toolbar menu
     ToolBarMenu* toolBarMenu( QWidget* = nullptr );
 
