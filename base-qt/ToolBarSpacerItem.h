@@ -33,7 +33,7 @@ class ToolBarSpacerItem: public QWidget, private Base::Counter<ToolBarSpacerItem
     explicit ToolBarSpacerItem( QWidget* parent = nullptr ):
         QWidget( parent ),
         Counter( "ToolBarSpacerItem" )
-    { setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); }
+    { setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); }
 
 };
 
