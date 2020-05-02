@@ -29,6 +29,7 @@ ApplicationMenu::ApplicationMenu( QWidget* parent, QWidget* target ):
 {
     Debug::Throw( QStringLiteral( "ApplicationMenu::ApplicationMenu.\n" ) );
     connect( this, &ApplicationMenu::aboutToShow, this, &ApplicationMenu::updateMenu );
+    connect( this, &ApplicationMenu::aboutToShow, this, &ApplicationMenu::hideDisabledActions );
     updateMenu();
 }
 
@@ -60,6 +61,14 @@ void ApplicationMenu::updateMenu()
             needSeparator = !menu->isEmpty();
         }
     }
+}
+
+//_____________________________________________________
+void ApplicationMenu::hideDisabledActions()
+{
+    Debug::Throw( QStringLiteral("ApplicationMenu::hideDisabledActions.\n" ) );
+    for( const auto& action:actions() )
+    { action->setVisible( action->isEnabled() ); }
 }
 
 //_____________________________________________________

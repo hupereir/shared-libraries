@@ -46,6 +46,9 @@ class BASE_QT_EXPORT ApplicationMenu: public QMenu, private Base::Counter<Applic
     //* update menu before showing
     void updateMenu();
 
+    //* hide disable actions
+    void hideDisabledActions();
+
     private:
 
     //* update from menu
