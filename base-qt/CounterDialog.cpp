@@ -49,7 +49,6 @@ Dialog( parent, OkButton, Qt::Window )
     button->setAutoDefault( false );
 
     connect( new QShortcut( QKeySequence::Refresh, this ), &QShortcut::activated, this, &CounterDialog::updateCounters );
-
 }
 
 //__________________________________________________________________________

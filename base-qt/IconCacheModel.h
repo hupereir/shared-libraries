@@ -98,7 +98,7 @@ class BASE_QT_EXPORT IconCacheModel: public ListModel<Base::IconPair>, private B
     {{
         tr( "Icon" ),
         tr( "Files" ),
-        tr( "Sizes" )
+        tr( "Available Sizes" )
     }};
 
 };

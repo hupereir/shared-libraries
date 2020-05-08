@@ -86,13 +86,13 @@ void DebugMenu::_showCounterDialog()
 
         counterDialog_ = new CounterDialog( qApp->activeWindow() );
         counterDialog_->centerOnWidget( qApp->activeWindow() );
-        counterDialog_->update();
+        counterDialog_->updateCounters();
         counterDialog_->show();
 
     } else {
 
-        counterDialog_->update();
         counterDialog_->centerOnWidget( qApp->activeWindow() );
+        counterDialog_->updateCounters();
         counterDialog_->show();
         counterDialog_->uniconify();
 
@@ -110,13 +110,13 @@ void DebugMenu::_showIconCacheDialog()
 
         iconCacheDialog_ = new IconCacheDialog( this );
         iconCacheDialog_->centerOnWidget( qApp->activeWindow() );
-        iconCacheDialog_->update();
+        iconCacheDialog_->updateCache();
         iconCacheDialog_->show();
 
     } else {
 
-        iconCacheDialog_->update();
         iconCacheDialog_->centerOnWidget( qApp->activeWindow() );
+        iconCacheDialog_->updateCache();
         iconCacheDialog_->show();
         iconCacheDialog_->uniconify();
 
