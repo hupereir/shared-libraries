@@ -226,16 +226,9 @@ void BaseMainWindow::setupApplicationMenu( QToolButton* toolButton )
 //________________________________________________________________
 void BaseMainWindow::addApplicationMenu( QToolBar* toolbar )
 {
-    // create application menu if needed
-    if( !applicationMenu_ )
-    { applicationMenu_ = new ApplicationMenu( this, menuBar() ); }
-
     // application menu
     auto toolButton = new QToolButton;
-    toolButton->setText( tr( "Show menu" ) );
-    toolButton->setIcon( IconEngine::get( IconNames::Menu ) );
-    toolButton->setMenu( applicationMenu_ );
-    toolButton->setPopupMode( QToolButton::InstantPopup );
+    setupApplicationMenu( toolButton );
 
     auto action = toolbar->addWidget( toolButton );
     action->setVisible( !showMenuBarAction_->isChecked() );
