@@ -121,7 +121,6 @@ class BASE_EXPORT Option:private Base::Counter<Option>
         QTextStream s( const_cast<QByteArray*>(&value_), QIODevice::ReadOnly );
         T out;
         s >> out;
-        Q_ASSERT( s.status() == QTextStream::Ok );
         return out;
     }
 

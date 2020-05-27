@@ -52,7 +52,7 @@ void Options::installDefaultOptions()
     // style
 
     #if defined(Q_OS_WIN)
-    set<bool>( "FORCE_PLASTIQUE_STYLE", true );
+    set<bool>( QStringLiteral("FORCE_PLASTIQUE_STYLE"), true );
     #else
     set<bool>( QStringLiteral("FORCE_PLASTIQUE_STYLE"), false );
     #endif
