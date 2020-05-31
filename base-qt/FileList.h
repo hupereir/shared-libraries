@@ -25,6 +25,7 @@
 #include "Debug.h"
 #include "File.h"
 #include "FileRecord.h"
+#include "ThreadDeleter.h"
 #include "TimeStamp.h"
 #include "ValidFileThread.h"
 
@@ -166,7 +167,7 @@ class BASE_QT_EXPORT FileList: public QObject, private Base::Counter<FileList>
     bool cleanEnabled_ = false;
 
     //* thread to check file validity
-    ValidFileThread thread_;
+    std::unique_ptr<ValidFileThread, Base::ThreadDeleter> thread_;
 
     //* current list of files
     FileRecord::List records_;

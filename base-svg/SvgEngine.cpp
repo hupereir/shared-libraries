@@ -38,8 +38,8 @@ namespace Svg
 
     //__________________________________________________________
     SvgEngine::SvgEngine():
-        thread_( this )
-    { connect( &thread_, &SvgThread::imageCacheAvailable, this, &SvgEngine::_processImageCache ); }
+        thread_( new SvgThread(this) )
+    { connect( thread_.get(), &SvgThread::imageCacheAvailable, this, &SvgEngine::_processImageCache ); }
 
     //__________________________________________________________
     bool SvgEngine::needsReloadOnPaletteChange() const
@@ -96,24 +96,24 @@ namespace Svg
 
         if( ids.empty() ) return;
         if( !isValid() ) return;
-        if( thread_.isRunning() ) return;
+        if( thread_->isRunning() ) return;
 
         if( plasmaInterface_ && plasmaInterface_->hasThemePalette() )
         {
 
             auto palette( plasmaInterface_->themePalette() );
-            thread_.createStyleSheet( palette );
+            thread_->createStyleSheet( palette );
 
         } else {
 
             QPalette palette;
-            thread_.createStyleSheet( palette );
+            thread_->createStyleSheet( palette );
 
         }
 
-        thread_.setSvgFile( svgFile_ );
-        thread_.setSvgIdList( ids );
-        thread_.start();
+        thread_->setSvgFile( svgFile_ );
+        thread_->setSvgIdList( ids );
+        thread_->start();
 
     }
 

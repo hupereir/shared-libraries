@@ -253,6 +253,7 @@ namespace Private
                 QRect( 0, 0, arrowWidth, rect().height() ):
                 QRect( rect().right() - arrowWidth, 0, arrowWidth, rect().height() );
             option.palette = palette();
+            option.state &= ~QStyle::State_MouseOver;
             style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, painter, this );
         }
 

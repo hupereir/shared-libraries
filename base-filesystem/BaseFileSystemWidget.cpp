@@ -96,7 +96,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     showNavigator_( false ),
     homePath_( Util::home() ),
     fileSystemWatcher_( this ),
-    thread_( this )
+    thread_( new FileThread(this) )
 {
 
     Debug::Throw( QStringLiteral("BaseFileSystemWidget::BaseFileSystemWidget.\n") );
@@ -179,7 +179,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     connect( &fileSystemWatcher_, &QFileSystemWatcher::directoryChanged, this, QOverload<const QString&>::of( &BaseFileSystemWidget::_update ) );
 
     // connect thread
-    connect( &thread_, &FileThread::filesAvailable, this, &BaseFileSystemWidget::_processFiles );
+    connect( thread_.get(), &FileThread::filesAvailable, this, &BaseFileSystemWidget::_processFiles );
 
     connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &BaseFileSystemWidget::_updateConfiguration );
     _updateConfiguration();
@@ -241,7 +241,7 @@ void BaseFileSystemWidget::_processFiles( const File::List& files )
 {
 
     // check path
-    if( thread_.file() != pathEditor_->path() )
+    if( thread_->file() != pathEditor_->path() )
     {
         _update();
         return;
@@ -361,15 +361,15 @@ void BaseFileSystemWidget::_update()
 
     const File path( pathEditor_->path() );
     if( path.isEmpty() || !( path.exists() && path.isDirectory() ) ) return;
-    if( thread_.isRunning() ) thread_.wait();
+    if( thread_->isRunning() ) thread_->wait();
 
     // setup thread
-    thread_.setFile( path );
-    thread_.setCommand( FileThread::Command::List );
-    thread_.setFlags(  hiddenFilesAction_->isChecked() ? File::ListFlag::ShowHiddenFiles : File::ListFlag::None );
+    thread_->setFile( path );
+    thread_->setCommand( FileThread::Command::List );
+    thread_->setFlags(  hiddenFilesAction_->isChecked() ? File::ListFlag::ShowHiddenFiles : File::ListFlag::None );
     setCursor( Qt::WaitCursor );
 
-    thread_.start();
+    thread_->start();
 
 }
 

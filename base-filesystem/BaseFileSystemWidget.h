@@ -24,6 +24,7 @@
 #include "File.h"
 #include "FileSystemModel.h"
 #include "FileThread.h"
+#include "ThreadDeleter.h"
 
 #include <QFileSystemWatcher>
 #include <QIcon>
@@ -250,7 +251,7 @@ class BASE_FILESYSTEM_EXPORT BaseFileSystemWidget: public QWidget, private Base:
     QFileSystemWatcher fileSystemWatcher_;
 
     //* thread to list files
-    FileThread thread_;
+    std::unique_ptr<FileThread, Base::ThreadDeleter> thread_;
 
 };
 

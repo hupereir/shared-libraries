@@ -28,10 +28,10 @@
 FileList::FileList( QObject* parent ):
     QObject( parent ),
     Counter( QStringLiteral("FileList") ),
-    thread_( this )
+    thread_( new ValidFileThread( this ) )
 {
     // thread connection
-    connect( &thread_, &ValidFileThread::recordsAvailable, this, &FileList::_processRecords );
+    connect( thread_.get(), &ValidFileThread::recordsAvailable, this, &FileList::_processRecords );
 }
 
 //_______________________________________________
@@ -83,9 +83,9 @@ void FileList::checkValidFiles()
 {
     Debug::Throw( QStringLiteral("FileList::checkValidFiles.\n") );
     if( !check_ ) return;
-    if( thread_.isRunning() ) return;
-    thread_.setRecords( records_ );
-    thread_.start();
+    if( thread_->isRunning() ) return;
+    thread_->setRecords( records_ );
+    thread_->start();
 }
 
 //_______________________________________________

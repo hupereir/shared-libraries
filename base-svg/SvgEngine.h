@@ -24,6 +24,7 @@
 #include "Margins.h"
 #include "SvgRenderer.h"
 #include "SvgThread.h"
+#include "ThreadDeleter.h"
 
 #include <QSize>
 #include <QObject>
@@ -134,7 +135,7 @@ namespace Svg
         PixmapCache cache_;
 
         //* thread preload sizes
-        SvgThread thread_;
+        std::unique_ptr<SvgThread, Base::ThreadDeleter> thread_;
 
         //* margins
         Base::Margins margins_;
