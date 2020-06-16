@@ -56,8 +56,8 @@ namespace Base
         private:
 
         //* count
-        static  bool initialized;
-        static  int count;
+        static bool initialized;
+        static int count;
     };
 
 }
