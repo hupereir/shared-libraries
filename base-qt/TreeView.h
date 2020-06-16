@@ -319,9 +319,6 @@ class BASE_QT_EXPORT TreeView: public QTreeView, private Base::Counter<TreeView>
     //* find text from dialog
     void _findFromDialog();
 
-    //* hover index
-    void _indexEntered( const QModelIndex& );
-
     //* update alternate item color
     void _updateConfiguration();
 

@@ -75,9 +75,6 @@ TreeView::TreeView( QWidget* parent ):
     connect( header(), &QWidget::customContextMenuRequested, this, &TreeView::_raiseHeaderMenu );
     connect( header(), &QHeaderView::sortIndicatorChanged, this, &TreeView::saveSortOrder );
 
-    // hover
-    connect( this, &QAbstractItemView::entered, this, &TreeView::_indexEntered );
-
     // horizontal scrollbar range bug
     connect( horizontalScrollBar(), &QAbstractSlider::rangeChanged, this, &TreeView::_updateHorizontalScrollBarRange );
 
@@ -983,10 +980,6 @@ void TreeView::_findFromDialog()
 
     return;
 }
-
-//____________________________________________________________________
-void TreeView::_indexEntered( const QModelIndex& index )
-{ if( updatesEnabled() ) _setHoverIndex( index ); }
 
 //____________________________________________________________________
 void TreeView::_setHoverIndex( const QModelIndex& index )
