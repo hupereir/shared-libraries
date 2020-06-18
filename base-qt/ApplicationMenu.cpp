@@ -29,7 +29,6 @@ ApplicationMenu::ApplicationMenu( QWidget* parent, QWidget* target ):
 {
     Debug::Throw( QStringLiteral( "ApplicationMenu::ApplicationMenu.\n" ) );
     connect( this, &ApplicationMenu::aboutToShow, this, &ApplicationMenu::updateMenu );
-    connect( this, &ApplicationMenu::aboutToShow, this, &ApplicationMenu::hideDisabledActions );
     updateMenu();
 }
 
@@ -56,23 +55,12 @@ void ApplicationMenu::updateMenu()
     for( const auto& action:target_->actions() )
     {
         if( auto menu = action->menu() )
-        {
-            updateFrom( menu, needSeparator );
-            needSeparator = !menu->isEmpty();
-        }
+        { needSeparator = updateFrom( menu, needSeparator ); }
     }
 }
 
 //_____________________________________________________
-void ApplicationMenu::hideDisabledActions()
-{
-    Debug::Throw( QStringLiteral("ApplicationMenu::hideDisabledActions.\n" ) );
-    for( const auto& action:actions() )
-    { action->setVisible( action->isEnabled() ); }
-}
-
-//_____________________________________________________
-void ApplicationMenu::updateFrom( QMenu* menu, bool needSeparator )
+bool ApplicationMenu::updateFrom( QMenu* menu, bool needSeparator )
 {
 
     Debug::Throw( QStringLiteral("ApplicationMenu::updateFrom.\n") );
@@ -84,10 +72,10 @@ void ApplicationMenu::updateFrom( QMenu* menu, bool needSeparator )
     bool first = true;
     for( const auto& action:menu->actions() )
     {
-        if( !action->isVisible() ) continue;
+        if( !(action->isVisible() && action->isEnabled() ) ) continue;
         if( first && needSeparator ) addSeparator();
         addAction( action );
         first = false;
     }
-    return;
+    return !first;
 }

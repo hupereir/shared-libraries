@@ -46,13 +46,11 @@ class BASE_QT_EXPORT ApplicationMenu: public QMenu, private Base::Counter<Applic
     //* update menu before showing
     void updateMenu();
 
-    //* hide disable actions
-    void hideDisabledActions();
-
     private:
 
     //* update from menu
-    void updateFrom( QMenu*, bool needSeparator );
+    /* returns true if action was added */
+    bool updateFrom( QMenu*, bool needSeparator );
 
     //* target menubar
     using WidgetPointer = QPointer<QWidget>;
