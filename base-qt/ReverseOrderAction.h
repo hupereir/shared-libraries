@@ -1,5 +1,5 @@
-#ifndef ColumnSortingMenu_h
-#define ColumnSortingMenu_h
+#ifndef ReverseOrderAction_h
+#define ReverseOrderAction_h
 
 /******************************************************************************
 *
@@ -25,14 +25,11 @@
 #include "Debug.h"
 
 #include <QAction>
-#include <QActionGroup>
-#include <QMenu>
 #include <QTreeView>
 #include <QHeaderView>
-#include <QHash>
 
 //_______________________________________________________________
-class BASE_QT_EXPORT ColumnSortingMenu:public QMenu, private Base::Counter<ColumnSortingMenu>
+class BASE_QT_EXPORT ReverseOrderAction:public QAction, private Base::Counter<ReverseOrderAction>
 {
 
     //* Qt meta object declaration
@@ -41,36 +38,24 @@ class BASE_QT_EXPORT ColumnSortingMenu:public QMenu, private Base::Counter<Colum
     public:
 
     //* constructor
-    explicit ColumnSortingMenu( QWidget*, QTreeView*, const QString& = tr( "Sort By" ) );
+    explicit ReverseOrderAction( QWidget*, QTreeView*, const QString& = tr( "Reverse Sort Order" ) );
 
     //* constructor
-    explicit ColumnSortingMenu( QWidget*, QHeaderView*, const QString&  = tr( "Sort By" ) );
+    explicit ReverseOrderAction( QWidget*, QHeaderView*, const QString&  = tr( "Reverse Sort Order" ) );
 
     private:
 
     //* private constructor
-    explicit ColumnSortingMenu( QWidget*, const QString& );
+    explicit ReverseOrderAction( QWidget*, const QString& );
 
-    //* update actions
-    void _updateActions();
-
-    //* update mask when triggering actions
-    void _sort( QAction* action );
+    //* revert order
+    void _reverseOrder();
 
     //* target
     QTreeView* target_ = nullptr;
 
     //* header
     QHeaderView* header_ = nullptr;
-
-    //* action group
-    QActionGroup* group_ = nullptr;
-
-    //* map action to column index
-    using ActionMap = QHash< QAction*, int >;
-
-    //* map action to column index
-    ActionMap actions_;
 
 };
 

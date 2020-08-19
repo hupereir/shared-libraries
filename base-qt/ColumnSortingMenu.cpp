@@ -18,7 +18,9 @@
 *******************************************************************************/
 
 #include "ColumnSortingMenu.h"
+
 #include "Debug.h"
+#include "ReverseOrderAction.h"
 #include "TreeView.h"
 
 #include <QHeaderView>
@@ -34,21 +36,25 @@ ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, const QString& title ):
     connect( this, &QMenu::aboutToShow, this, &ColumnSortingMenu::_updateActions );
     connect( this, &QMenu::triggered, this, &ColumnSortingMenu::_sort );
     group_->setExclusive( true );
-
-    addSeparator();
-
-    addAction( tr( "Reverse Order" ), this, &ColumnSortingMenu::_revertOrder );
 }
 
 //_____________________________________________________
 ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QTreeView* target, const QString& title ):
     ColumnSortingMenu( parent, title )
-{ target_ = target; }
+{ 
+    target_ = target; 
+    addSeparator();
+    addAction( new ReverseOrderAction( this, target_ ) );
+}
 
 //_____________________________________________________
 ColumnSortingMenu::ColumnSortingMenu( QWidget* parent, QHeaderView* header, const QString& title ):
     ColumnSortingMenu( parent, title )
-{ header_ = header; }
+{ 
+    header_ = header; 
+    addSeparator();
+    addAction( new ReverseOrderAction( this, header_ ) );
+}
 
 //_____________________________________________________
 void ColumnSortingMenu::_updateActions()
@@ -62,14 +68,14 @@ void ColumnSortingMenu::_updateActions()
     actions_.clear();
 
     // check if the menu already has actions.
-    QList<QAction*> actions( ColumnSortingMenu::actions() );
-    QAction *firstAction( actions.isEmpty() ? 0:actions.front() );
+    auto actions( this->actions() );
+    auto firstAction( actions.isEmpty() ? nullptr:actions.front() );
 
     // retrieve parent header.
     if( target_ ) header_ = target_->header();
 
     // try cast to treeview
-    TreeView* treeView( qobject_cast<TreeView*>( header_->parentWidget() ) );
+    auto treeView = qobject_cast<TreeView*>( header_->parentWidget() );
 
     // loop over columns in header
     for( int index=0; index < header_->count(); index++ )
@@ -110,22 +116,5 @@ void ColumnSortingMenu::_sort( QAction* action )
 
     // retrieve parent tree_view
     if( target_ ) header_ = target_->header();
-    Q_ASSERT( header_ );
-
-    header_->setSortIndicator( iter.value(), header_->sortIndicatorOrder() );
-
-}
-
-//______________________________________________________________________________
-void ColumnSortingMenu::_revertOrder()
-{
-    Debug::Throw( QStringLiteral("ColumnSortingMenu::_sort.\n") );
-
-    // retrieve parent tree_view
-    if( target_ ) header_ = target_->header();
-    Q_ASSERT( header_ );
-
-    Qt::SortOrder order( header_->sortIndicatorOrder() == Qt::AscendingOrder ? Qt::DescendingOrder : Qt::AscendingOrder );
-    header_->setSortIndicator( header_->sortIndicatorSection(), order );
-
+    if( header_ ) header_->setSortIndicator( iter.value(), header_->sortIndicatorOrder() );
 }
