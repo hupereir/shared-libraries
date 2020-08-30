@@ -55,7 +55,6 @@ namespace Base
         } else {
             return map.insert( iterator, key, value );
         }
-
     }
 
     //* find iterator by value in map
