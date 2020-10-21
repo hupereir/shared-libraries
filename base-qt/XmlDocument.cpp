@@ -34,25 +34,19 @@ void XmlDocument::replaceChild( QDomElement& element )
 
     if( document_.documentElement().tagName() != topNodeTagName_ )
     {
-
         document_.clear();
         document_.appendChild( document_.createElement( topNodeTagName_ ) );
         document_.documentElement().appendChild( element );
         return;
-
     }
 
     // find previous options element
     auto&& children( document_.elementsByTagName( element.tagName() ) );
     if( !children.isEmpty() )
     {
-
         document_.documentElement().replaceChild( element, children.at(0) );
-
     } else {
-
         document_.documentElement().appendChild( element );
-
     }
 
     return;

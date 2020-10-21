@@ -40,7 +40,7 @@ class BASE_QT_EXPORT XmlDocument final: private Base::Counter<XmlDocument>
     //*@name accessors
     //@{
 
-    //* mutable accessor
+    //* immutable accessor
     const QDomDocument& get() const { return document_; }
 
     //* elements
