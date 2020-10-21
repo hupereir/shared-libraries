@@ -53,7 +53,7 @@ class BASE_QT_EXPORT MessageWidget: public QWidget, private Base::Counter<Messag
     };
 
     //* constructor
-    explicit MessageWidget( QWidget*, MessageType = MessageType::Information, const QString& = QString() );
+    explicit MessageWidget( QWidget* = nullptr, MessageType = MessageType::Information, const QString& = QString() );
 
     explicit MessageWidget( QWidget* parent, const QString& text ):
         MessageWidget( parent, MessageType::Information, text )
