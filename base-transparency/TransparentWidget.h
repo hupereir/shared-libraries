@@ -93,6 +93,10 @@ namespace Transparency
 
         protected:
 
+        //* device pixel ratio
+        virtual void _setDevicePixelRatio( qreal ratio )
+        { devicePixelRatio_ = ratio; }
+        
         //* foreground
         virtual void _setForegroundColor( const QColor& );
 
@@ -237,6 +241,9 @@ namespace Transparency
         //* tint color
         QColor tintColor_;
 
+        //* device pixel ratio
+        qreal devicePixelRatio_ = 1;
+        
         //* foreground intensity
         int foregroundIntensity_ = 255;
 

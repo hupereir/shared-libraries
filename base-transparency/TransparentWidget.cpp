@@ -292,10 +292,10 @@ namespace Transparency
             // update shape
             auto rect = outerPadding_.adjustedRect( this->rect() );
             xcb_rectangle_t xrect;
-            xrect.x = rect.x();
-            xrect.y = rect.y();
-            xrect.width = rect.width();
-            xrect.height = rect.height();
+            xrect.x = devicePixelRatio_*rect.x();
+            xrect.y = devicePixelRatio_*rect.y();
+            xrect.width = devicePixelRatio_*rect.width();
+            xrect.height = devicePixelRatio_*rect.height();
 
             auto connection = XcbUtil::get().connection<xcb_connection_t>();
             xcb_shape_rectangles(
@@ -324,12 +324,17 @@ namespace Transparency
         if( !XcbUtil::isX11() ) return;
 
         // create data
-        blurRegion_ = region;
-
+        blurRegion_ = region;        
         using Vector = QVector<int32_t>;
         Vector data;
         for( const auto& r:region )
-        { data << r.x() << r.y() << r.width() << r.height(); }
+        {
+            data 
+                << devicePixelRatio_*r.x() 
+                << devicePixelRatio_*r.y()
+                << devicePixelRatio_*r.width() 
+                << devicePixelRatio_*r.height(); 
+        }
 
         // get connection and atom
         auto connection = XcbUtil::get().connection<xcb_connection_t>();
