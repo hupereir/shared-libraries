@@ -29,6 +29,7 @@
 #include "XmlOptions.h"
 #include "XcbUtil.h"
 
+#include <QApplication>
 #include <QPainter>
 
 #if WITH_XCB
@@ -42,11 +43,12 @@ namespace Transparency
     //____________________________________________________________________
     TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
         QWidget( parent, flags ),
-        Counter( QStringLiteral("Transparency::TransparentWidget") )
+        Counter( QStringLiteral("Transparency::TransparentWidget") ),
+        devicePixelRatio_( qApp->devicePixelRatio() )
     {
 
         Debug::Throw( QStringLiteral("TransparentWidget::TransparentWidget.\n") );
-
+        
         /*
         disable all automatic background filling
         to optimize painting.
@@ -221,7 +223,7 @@ namespace Transparency
 
         } else widgetPixmap_ = QPixmap();
         #endif
-
+        
         // update input shape
         if( testAttribute(Qt::WA_WState_Created) || internalWinId() )
         { _updateInputShape(); }
