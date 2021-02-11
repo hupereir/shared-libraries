@@ -67,14 +67,14 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
 
         case QEvent::MouseButtonPress:
         {
-            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            auto mouseEvent( static_cast<QMouseEvent*>( event ) );
             if( mouseEvent->button() == Qt::LeftButton ) mouseDown_ = true;
             return true;
         }
 
         case QEvent::MouseMove:
         {
-            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            auto mouseEvent( static_cast<QMouseEvent*>( event ) );
             if( mouseDown_ ) _selectColorFromMouseEvent( mouseEvent );
             return true;
         }
@@ -87,7 +87,7 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
             // need to explicitely release cursor for Qt5
             qApp->restoreOverrideCursor();
 
-            QMouseEvent* mouseEvent( static_cast<QMouseEvent*>( event ) );
+            auto mouseEvent( static_cast<QMouseEvent*>( event ) );
             if( mouseEvent->button() == Qt::LeftButton )
             { _selectColorFromMouseEvent( mouseEvent ); }
 
@@ -107,11 +107,9 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
 
     // grab desktop window under cursor
     // convert to image.
-    QPoint globalPosition( event->globalPos() );
+    const auto globalPosition( event->globalPos() );
 
-    const auto dpiRatio( QGuiApplication::primaryScreen()->devicePixelRatio() );
-    globalPosition.rx()*=dpiRatio;
-    globalPosition.ry()*=dpiRatio;
+    // grab image
     QImage image( QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(), globalPosition.x(), globalPosition.y(), 2, 2 ).toImage() );
 
     // ensure image is deep enough
