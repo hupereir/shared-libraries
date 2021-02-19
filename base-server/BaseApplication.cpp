@@ -176,10 +176,7 @@ CommandLineParser BaseApplication::commandLineParser( const CommandLineArguments
 
 //____________________________________________
 void BaseApplication::busy()
-{
-    qApp->setOverrideCursor( Qt::WaitCursor );
-    qApp->processEvents();
-}
+{ qApp->setOverrideCursor( Qt::WaitCursor ); }
 
 //____________________________________________
 void BaseApplication::idle()
