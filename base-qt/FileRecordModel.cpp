@@ -62,7 +62,6 @@ int FileRecordModel::findColumn( const QString& value ) const
 //__________________________________________________________________
 Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
 {
-
     // default flags
     Qt::ItemFlags flags;
     if( !contains( index ) ) return flags;
@@ -76,13 +75,11 @@ Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
     if( index.column() == FileName ) flags |= Qt::ItemIsDragEnabled;
 
     return flags;
-
 }
 
 //__________________________________________________________________
 QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 {
-
     // check index
     if( !contains( index ) ) return QVariant();
 
@@ -134,15 +131,12 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         return record.hasProperty( iconPropertyId_ ) ? _icon( record.property( iconPropertyId_ ) ):_icon();
 
     }
-
     return QVariant();
-
 }
 
 //__________________________________________________________________
 QVariant FileRecordModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-
     if(
         orientation == Qt::Horizontal &&
         role == Qt::DisplayRole &&
@@ -152,29 +146,24 @@ QVariant FileRecordModel::headerData(int section, Qt::Orientation orientation, i
 
     // return empty
     return QVariant();
-
 }
 
 //______________________________________________________________________
 QMimeData* FileRecordModel::mimeData(const QModelIndexList &indexes) const
 {
-
     // get selected filenames
     QOrderedSet<QString> filenames;
     for( const auto& index:indexes )
     {
-
         if( !index.isValid() ) continue;
         const FileRecord record( get(index) );
         filenames.insert( record.file() );
-
     }
 
     if( filenames.empty() ) return nullptr;
     else {
-
-        QMimeData* mimeData = new QMimeData;
-
+        auto mimeData = new QMimeData;
+        
         // fill text data
         {
             QString fullText;
@@ -191,11 +180,8 @@ QMimeData* FileRecordModel::mimeData(const QModelIndexList &indexes) const
             { urlList.append( QUrl( QStringLiteral( "file://%1" ).arg(filename) ) ); }
             mimeData->setUrls( urlList );
         }
-
         return mimeData;
-
     }
-
 }
 
 //____________________________________________________________
@@ -219,9 +205,6 @@ void FileRecordModel::_updateConfiguration()
 //____________________________________________________________
 void FileRecordModel::_updateColumns( const ValueType& value )
 {
-
-    Debug::Throw( QStringLiteral("FileRecordModel::_updateColumns.\n") );
-
     // loop over available properties
     const FileRecord::PropertyMap& properties( value.properties() );
     for( auto iter = properties.begin(); iter != properties.end(); ++iter )
@@ -229,20 +212,15 @@ void FileRecordModel::_updateColumns( const ValueType& value )
         // look for property name in list of columns
         if( std::none_of( columnTitles_.begin(), columnTitles_.end(), Base::Functor::SameFTor<QString>(FileRecord::PropertyId::get( iter.key() )) ) )
         { columnTitles_.append( FileRecord::PropertyId::get( iter.key() ) ); }
-
     }
-
 }
 
 //________________________________________________________
 bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord second ) const
 {
-
     if( order_ == Qt::DescendingOrder ) std::swap( first, second );
-
     switch( type_ )
     {
-
         case FileName: return first.file().localName().get().compare( second.file().localName(), Qt::CaseInsensitive ) < 0;
         case Path: return first.file().path() < second.file().path();
         case Time: return (first.time() != second.time() ) ? (first.time() < second.time()):first.file().localName() < second.file().localName();
@@ -255,21 +233,15 @@ bool FileRecordModel::SortFTor::operator () ( FileRecord first, FileRecord secon
                 QString secondProperty( second.property( name ) );
                 return ( firstProperty != secondProperty ) ? firstProperty < secondProperty :  first.file().localName() < second.file().localName();
             } else return false;
-
         }
-
     }
-
 }
 
 //________________________________________________________
 const QIcon& FileRecordModel::_icon( const QString& name )
 {
-
     Debug::Throw( QStringLiteral("FileRecordModel::_icon.\n") );
-
     IconCache::const_iterator iter( _icons().find( name ) );
     if( iter != _icons().end() ) return iter.value();
     else return _icons().insert( name, IconEngine::get( name ) ).value();
-
 }
