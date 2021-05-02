@@ -82,12 +82,7 @@ class WindowManager: public QObject, private Base::NonCopyable<WindowManager>
     { enabled_ = value; }
 
     //* returns true if window manager is used for moving
-    bool useWMMoveResize() const
-    { return supportWMMoveResize() && useWMMoveResize_; }
-
-    //* use window manager for moving, when available
-    void setUseWMMoveResize( bool value )
-    { useWMMoveResize_ = value; }
+    bool useWMMoveResize() const;
 
     //* drag distance (pixels)
     void setDragDistance( int value )
@@ -118,10 +113,6 @@ class WindowManager: public QObject, private Base::NonCopyable<WindowManager>
     //* X11 specific implementation for startDrag
     void startDragX11( QWidget*, const QPoint& );
 
-    //* returns true if window manager is used for moving
-    /** right now this is true only for X11 */
-    bool supportWMMoveResize() const;
-
     //* utility function
     bool isDockWidgetTitle( const QWidget* ) const;
 
@@ -142,9 +133,6 @@ class WindowManager: public QObject, private Base::NonCopyable<WindowManager>
 
     //* enability
     bool enabled_ = true;
-
-    //* use WM moveResize
-    bool useWMMoveResize_ = true;
 
     //* drag distance
     /** this is copied from kwin::geometry */

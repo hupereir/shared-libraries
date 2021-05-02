@@ -184,7 +184,6 @@ void WindowManager::initialize()
 {
 
     setEnabled( true );
-    setUseWMMoveResize( true );
 
     setDragDistance( QApplication::startDragDistance() );
     setDragDelay( QApplication::startDragTime() );
@@ -608,16 +607,19 @@ void WindowManager::startDrag( QWidget* widget, const QPoint& position )
     // ungrab pointer
     if( useWMMoveResize() )
     {
-
+        #if QT_VERSION > QT_VERSION_CHECK(5, 15, 0)
+        Q_UNUSED( position );
+        widget->windowHandle()->startSystemMove();
+        #else
         if( XcbUtil::isX11() ) startDragX11( widget, position );
-
+        #endif
     } else if( !cursorOverride_ ) {
 
         qApp->setOverrideCursor( Qt::SizeAllCursor );
         cursorOverride_ = true;
 
     }
-
+    
     dragInProgress_ = true;
 
 }
@@ -634,8 +636,14 @@ void WindowManager::startDragX11( QWidget* widget, const QPoint& position )
 }
 
 //____________________________________________________________
-bool WindowManager::supportWMMoveResize() const
-{ return XcbUtil::isX11(); }
+bool WindowManager::useWMMoveResize() const
+{ 
+    #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+    return true;
+    #else
+    return XcbUtil::isX11(); 
+    #endif
+}
 
 //____________________________________________________________
 bool WindowManager::isDockWidgetTitle( const QWidget* widget ) const
