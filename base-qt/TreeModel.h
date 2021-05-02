@@ -79,7 +79,7 @@ class TreeModel : public ItemModel
         // check if index is valid
         if( !hasIndex( row, column, parent ) ) return QModelIndex();
 
-        // fid parent item
+        // find parent item
         const auto& parentItem = parent.isValid() ? _find( parent.internalId() ) : root_;
 
         // return new index if matching child is found, or invalid index
