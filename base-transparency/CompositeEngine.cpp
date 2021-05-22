@@ -21,6 +21,7 @@
 
 #include "Debug.h"
 #include "XcbUtil.h"
+#include "WaylandUtil.h"
 
 #if WITH_XCB
 #include <xcb/xcb.h>
@@ -66,8 +67,9 @@ namespace Transparency
         return true;
         #endif
 
+        if( WaylandUtil::isWayland() ) return true;
+        
         #if WITH_XCB
-
         if( !XcbUtil::isX11() ) return false;
 
         // connection

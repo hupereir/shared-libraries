@@ -189,6 +189,7 @@ set(base_qt_SOURCES
   TreeViewItemDelegate.cpp
   UserSelectionFrame.cpp
   ValidFileThread.cpp
+  WaylandUtil.cpp
   WarningDialog.cpp
   WidgetDragMonitor.cpp
   WidgetMonitor.cpp
