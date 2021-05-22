@@ -235,7 +235,7 @@ class BASE_EXPORT TimeStamp:private Base::Counter<TimeStamp>
     std::time_t time_ = -1;
 
     //* time structure from localtime()
-    struct std::tm tm_;
+    std::tm tm_ = std::tm();
 
     //*@name serializer
     //@{
