@@ -1908,7 +1908,7 @@ void TextEditor::_installActions()
     showLineNumberAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( showLineNumberAction_, &QAction::toggled, this, &TextEditor::_toggleShowLineNumbers );
 
-    addAction( copyLinkAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy Link Location" ), this ) );
+    addAction( copyLinkAction_ = new QAction( IconEngine::get( IconNames::Copy ), tr( "Copy Link" ), this ) );
     connect( copyLinkAction_, &QAction::triggered, this, &TextEditor::_copyLinkLocation );
 
     addAction( incrementFontSizeAction_ = new QAction( tr( "Increase Font Size" ), this ) );
