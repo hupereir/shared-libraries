@@ -20,20 +20,8 @@
 #include "WaylandUtil.h"
 #include "CppUtil.h"
 
-#include <QList>
-
-#if WITH_XCB
-
-#include <QWindow>
 #include <QGuiApplication>
-#include <qpa/qplatformnativeinterface.h>
-
-#include <QX11Info>
-
-#include <X11/Xlib-xcb.h>
-#include <xcb/xcb.h>
-
-#endif
+#include <QList>
 
 //________________________________________________________________________
 class WaylandUtil::Private
@@ -46,7 +34,7 @@ class WaylandUtil::Private
 
     //* true if running wayland
     bool isWayland_ = false;
-    
+
 };
 
 //________________________________________________________________________
