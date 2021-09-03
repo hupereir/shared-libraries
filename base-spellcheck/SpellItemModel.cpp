@@ -40,12 +40,10 @@ namespace SpellCheck
     }
 
     //__________________________________________________________________
-    QVariant SpellItemModel::headerData(int section, Qt::Orientation orientation, int role) const
+    QVariant SpellItemModel::headerData(int section, Qt::Orientation, int role) const
     {
 
-        if(
-            orientation == Qt::Horizontal &&
-            role == Qt::DisplayRole &&
+        if( role == Qt::DisplayRole &&
             section >= 0 &&
             section < nColumns )
         { return columnTitles_[section]; }

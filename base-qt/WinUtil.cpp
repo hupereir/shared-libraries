@@ -94,12 +94,15 @@ class WinUtilPrivate final
 
 };
 
+#if defined(Q_OS_WIN)
 //_______________________________________
 WinUtil::WinUtil( QWidget* target )
-    #if defined(Q_OS_WIN)
     : target_( target )
-    #endif
 {}
+#else
+WinUtil::WinUtil( QWidget*  )
+{}
+#endif
 
 //_______________________________________
 WinUtil::~WinUtil() = default;
@@ -107,7 +110,6 @@ WinUtil::~WinUtil() = default;
 //_______________________________________
 void WinUtil::makeTransparent( double opacity ) const
 {
-
     #if defined(Q_OS_WIN)
     if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
 
@@ -119,6 +121,8 @@ void WinUtil::makeTransparent( double opacity ) const
 
     // repaint
     // RedrawWindow(hwnd, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME | RDW_ALLCHILDREN);
+    #else
+    Q_UNUSED( opacity );
     #endif
 
 }
@@ -151,7 +155,9 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
         DeleteObject(hBitmap);
     }
     DeleteDC(memDc);
-
+    #else
+    Q_UNUSED( opacity );
+    Q_UNUSED( pixmap );
     #endif
 }
 
@@ -160,7 +166,6 @@ void WinUtil::enableBlurBehind( Base::Margins margins )
 {
 
     #if defined(Q_OS_WIN)
-
     // do nothing if windows version is too old
     if(QSysInfo::WindowsVersion < QSysInfo::WV_6_0) return;
 
@@ -184,7 +189,8 @@ void WinUtil::enableBlurBehind( Base::Margins margins )
 
     // assign blur to window
     private_->blurBehindFunction_( HWND(target_->winId()), &blurBehind);
-
+    #else
+    Q_UNUSED( margins );
     #endif
 
 }
@@ -192,9 +198,7 @@ void WinUtil::enableBlurBehind( Base::Margins margins )
 //_______________________________________
 bool WinUtil::toggleHideFromTaskBar( bool state ) const
 {
-
     #if defined(Q_OS_WIN)
-
     // check flag has changed
     if( hasFlag( WS_EX_TOOLWINDOW ) != state )
     {
@@ -209,12 +213,10 @@ bool WinUtil::toggleHideFromTaskBar( bool state ) const
         if( wasVisible ) target_->show();
         return true;
     }
-
-    #endif
-
-    // do nothing and return false
+    #else
+    Q_UNUSED( state );
     return false;
-
+    #endif
 }
 
 //_______________________________________
@@ -224,6 +226,7 @@ bool WinUtil::hasFlag( long int flag ) const
     #if defined(Q_OS_WIN)
     return GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) & flag;
     #else
+    Q_UNUSED( flag );
     return false;
     #endif
 
@@ -232,10 +235,11 @@ bool WinUtil::hasFlag( long int flag ) const
 //_______________________________________
 void WinUtil::setFlag( long int flag, bool value ) const
 {
-
     #if defined(Q_OS_WIN)
     if( value ) SetWindowLong( HWND(target_->winId()), GWL_EXSTYLE, GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) | flag);
     else SetWindowLong( HWND(target_->winId()), GWL_EXSTYLE, GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) & (~flag));
+    #else 
+    Q_UNUSED( flag );
+    Q_UNUSED( value );
     #endif
-
 }

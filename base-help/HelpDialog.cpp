@@ -119,7 +119,7 @@ namespace Base
     }
 
     //_________________________________________________________
-    void HelpDialog::_display( const QModelIndex& current, const QModelIndex& previous )
+    void HelpDialog::_display( const QModelIndex& current, const QModelIndex& )
     {
 
         Debug::Throw( QStringLiteral("HelpDialog::_Display.\n") );

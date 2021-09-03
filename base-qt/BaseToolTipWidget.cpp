@@ -168,7 +168,7 @@ void BaseToolTipWidget::paintEvent( QPaintEvent* event )
 }
 
 //_______________________________________________________
-void BaseToolTipWidget::mousePressEvent( QMouseEvent* event )
+void BaseToolTipWidget::mousePressEvent( QMouseEvent* )
 { hide(); }
 
 //_____________________________________________

@@ -132,7 +132,7 @@ namespace Svg
     }
 
     //__________________________________________________________
-    QPixmap SvgEngine::_get( const SvgId& id, bool fromCache )
+    QPixmap SvgEngine::_get( const SvgId& id, bool )
     {
 
         auto iter( cache_.lowerBound( id ) );

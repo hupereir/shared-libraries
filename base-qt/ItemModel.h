@@ -111,7 +111,7 @@ class BASE_QT_EXPORT ItemModel : public QAbstractItemModel
     { _sort( sortColumn(), sortOrder() ); }
 
     //* private sort, with no signals emitted
-    virtual void _sort( int column, Qt::SortOrder order )
+    virtual void _sort( int, Qt::SortOrder )
     {}
 
     //* used to sort items in list

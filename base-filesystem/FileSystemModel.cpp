@@ -53,11 +53,9 @@ Qt::ItemFlags FileSystemModel::flags(const QModelIndex &index) const
     Qt::ItemFlags flags;
     if( contains( index ) )
     {
-
         const FileRecord& record( get(index) );
         if( record.isValid() ) flags |=  Qt::ItemIsEnabled |  Qt::ItemIsSelectable;
         if( record.isValid() && index.column() == FileName ) flags |= Qt::ItemIsDragEnabled;
-
     }
 
     return flags;
@@ -156,12 +154,10 @@ QVariant FileSystemModel::data( const QModelIndex& index, int role ) const
 }
 
 //__________________________________________________________________
-QVariant FileSystemModel::headerData( int section, Qt::Orientation orientation, int role ) const
+QVariant FileSystemModel::headerData(int section, Qt::Orientation, int role) const
 {
 
-    if(
-        orientation == Qt::Horizontal &&
-        role == Qt::DisplayRole &&
+    if( role == Qt::DisplayRole &&
         section >= 0 &&
         section < (int) columnTitles_.size() )
     { return columnTitles_[section]; }

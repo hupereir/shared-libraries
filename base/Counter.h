@@ -46,9 +46,12 @@ namespace Base
         }
 
         //* copy constructor
-        explicit Counter(const Counter& other )
+        explicit Counter(const Counter&)
         { count++; }
 
+        //* assignment operator
+        Counter& operator=(const Counter&) = default;
+        
         //* destructor
         ~Counter()
         { count--; }

@@ -61,7 +61,7 @@ class BASE_QT_EXPORT CounterModel: public ListModel<CounterPair>
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
     //* number of columns for a given index
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override
+    int columnCount(const QModelIndex& = QModelIndex()) const override
     { return nColumns; }
 
     //@}

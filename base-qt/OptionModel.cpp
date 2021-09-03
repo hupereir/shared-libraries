@@ -98,12 +98,10 @@ bool OptionModel::setData(const QModelIndex &index, const QVariant& value, int r
 }
 
 //__________________________________________________________________
-QVariant OptionModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant OptionModel::headerData(int section, Qt::Orientation, int role) const
 {
 
-    if(
-        orientation == Qt::Horizontal &&
-        role == Qt::DisplayRole &&
+    if( role == Qt::DisplayRole &&
         section >= 0 &&
         section < nColumns )
     { return columnTitles_[section]; }

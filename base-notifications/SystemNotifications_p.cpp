@@ -212,7 +212,7 @@ namespace Private
     }
 
     //____________________________________________
-    void SystemNotificationsP::_notificationClosed( quint32 id, quint32 reason )
+    void SystemNotificationsP::_notificationClosed( quint32 id, quint32 )
     {
         emit notificationClosed( id );
         notificationIds_.remove( id );

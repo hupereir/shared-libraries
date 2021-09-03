@@ -47,7 +47,7 @@ TextEditionDelegate::TextEditionDelegate( QObject *parent ):
 { Debug::Throw( QStringLiteral("TextEditionDelegate::TextEditionDelegate.\n") ); }
 
 //______________________________________________________________
-QWidget* TextEditionDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
+QWidget* TextEditionDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&, const QModelIndex&) const
 {
     Debug::Throw( QStringLiteral("TextEditionDelegate::createEditor.\n") );
     auto editor = new Private::LocalEditor( parent );

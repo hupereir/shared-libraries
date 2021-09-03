@@ -207,7 +207,7 @@ namespace Private
     }
 
     //___________________________________________________________
-    void LocalDockWidget::resizeEvent( QResizeEvent *event )
+    void LocalDockWidget::resizeEvent( QResizeEvent* )
     {
 
         QStyleHintReturnMask menuMask;

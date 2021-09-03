@@ -334,7 +334,7 @@ namespace Private
     }
 
     //___________________________________________________________
-    void LocalTabWidget::resizeEvent( QResizeEvent *event )
+    void LocalTabWidget::resizeEvent( QResizeEvent* )
     {
 
         QStyleHintReturnMask menuMask;

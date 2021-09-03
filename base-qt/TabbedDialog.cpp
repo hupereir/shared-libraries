@@ -247,7 +247,7 @@ namespace Private
     }
 
     //__________________________________________________________________
-    bool TabbedDialogModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int row, int column, const QModelIndex& parent)
+    bool TabbedDialogModel::dropMimeData(const QMimeData* data , Qt::DropAction action, int row, int, const QModelIndex&)
     {
 
         Debug::Throw( QStringLiteral("TabbedDialogModel::dropMimeData\n") );

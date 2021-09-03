@@ -58,11 +58,11 @@ namespace Base
         QVariant data(const QModelIndex &index, int role) const override;
 
         //* header data
-        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override
+        QVariant headerData(int, Qt::Orientation, int = Qt::DisplayRole) const override
         { return QVariant(); }
 
         //* number of columns for a given index
-        int columnCount(const QModelIndex &parent = QModelIndex()) const override
+        int columnCount(const QModelIndex& = QModelIndex()) const override
         { return nColumns; }
 
         //@}

@@ -140,7 +140,7 @@ class AddChildEventFilter: public QObject
     {}
 
     //* event filter
-    bool eventFilter( QObject* object, QEvent* event ) override
+    bool eventFilter( QObject*, QEvent* event ) override
     {
 
         if( event->type() == QEvent::ChildPolished )

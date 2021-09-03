@@ -223,7 +223,7 @@ QVariant BaseFileInfoModel<T>::data( const QModelIndex& index, int role ) const
 
 //__________________________________________________________________
 template<typename T>
-QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation orientation, int role ) const
+QVariant BaseFileInfoModel<T>::headerData( int column, Qt::Orientation, int role ) const
 {
 
     switch( role )

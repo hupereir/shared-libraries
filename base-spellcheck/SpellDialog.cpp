@@ -632,6 +632,6 @@ namespace SpellCheck
     }
 
     //__________________________________________________________________
-    QVariant SpellDialog::Model::headerData(int section, Qt::Orientation orientation, int role) const
+    QVariant SpellDialog::Model::headerData(int, Qt::Orientation, int) const
     { return QVariant(); }
 }

@@ -48,7 +48,7 @@ FileRecordModel::FileRecordModel( QObject* parent ):
 }
 
 //__________________________________________________________________
-int FileRecordModel::columnCount(const QModelIndex &parent) const
+int FileRecordModel::columnCount(const QModelIndex&) const
 { return columnTitles_.size(); }
 
 //__________________________________________________________________
@@ -135,10 +135,9 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 }
 
 //__________________________________________________________________
-QVariant FileRecordModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant FileRecordModel::headerData(int section, Qt::Orientation, int role) const
 {
     if(
-        orientation == Qt::Horizontal &&
         role == Qt::DisplayRole &&
         section >= 0 &&
         section < (int) columnTitles_.size() )
