@@ -38,12 +38,11 @@ namespace TextFormat
         public:
 
         //* constructor
-        explicit Block( int begin = 0, int end = 0, Flags format = 0, const QColor& color = QColor() ):
+        explicit Block( int begin = 0, int end = 0, Flags format = 0 ):
             Counter( QStringLiteral("TextFormat::Block") ),
             begin_( begin ),
             end_( end ),
-            format_( format ),
-            color_( color )
+            format_( format )
         {}
 
         //* destructor
@@ -68,9 +67,13 @@ namespace TextFormat
         Flags format() const
         { return format_; }
 
-        //* color
-        const QColor& color() const
-        { return color_; }
+        //* foreground
+        const QColor& foreground() const
+        { return foreground_; }
+
+        //* background
+        const QColor& background() const
+        { return background_; }
 
         //* href
         const QString& href() const
@@ -93,13 +96,21 @@ namespace TextFormat
         void setFormat( Flags value )
         { format_ = value; }
 
-        //* color
-        void setColor( const QColor& value )
-        { color_ = value; }
+        //* foreground
+        void setForeground( const QColor& value )
+        { foreground_ = value; }
 
-        //* unset color (replace by invalid)
-        void unsetColor()
-        { color_ = QColor(); }
+        //* unset foreground (replace by invalid)
+        void unsetForeground()
+        { foreground_ = QColor(); }
+
+        //* background
+        void setBackground( const QColor& value )
+        { background_ = value; }
+
+        //* unset background (replace by invalid)
+        void unsetBackground()
+        { background_ = QColor(); }
 
         //* href
         void setHRef( const QString& value )
@@ -150,9 +161,12 @@ namespace TextFormat
         //* format (a bitwise or of the format bits above)
         Flags format_ = 0;
 
-        //* color
-        QColor color_;
+        //* foreground
+        QColor foreground_;
 
+        //* background
+        QColor background_;
+            
         //* href
         QString href_;
 
@@ -163,7 +177,8 @@ namespace TextFormat
                 << "begin: " << format.begin()
                 << " end: " << format.end()
                 << " format: " << format.format()
-                << " color: " << format.color().name();
+                << " foreground: " << format.foreground().name()
+                << " background: " << format.background().name();
 
             if( !format.href().isEmpty() ) out << " href: " << format.href();
             out << endl;

@@ -28,7 +28,8 @@ namespace TextFormat
     {
 
         static const QString Format = QStringLiteral("format");
-        static const QString Color = QStringLiteral("color");
+        static const QString Foreground = QStringLiteral("color");
+        static const QString Background = QStringLiteral("background");
         static const QString HRef = QStringLiteral("href");
         static const QString Begin = QStringLiteral("begin");
         static const QString End = QStringLiteral("end");
@@ -54,7 +55,8 @@ namespace TextFormat
 
             // format
             else if( name == Xml::Format ) setFormat( static_cast<Flags>(value.toInt()) );
-            else if( name == Xml::Color ) setColor( value );
+            else if( name == Xml::Foreground ) setForeground( value );
+            else if( name == Xml::Background ) setBackground( value );
             else if( name == Xml::HRef ) setHRef( value );
 
         }
@@ -68,7 +70,8 @@ namespace TextFormat
         out.setAttribute( Xml::Begin, QString::number(begin()) );
         out.setAttribute( Xml::End, QString::number(end()) );
         out.setAttribute( Xml::Format, QString::number(format()) );
-        if( color().isValid() ) out.setAttribute( Xml::Color, color().name() );
+        if( foreground().isValid() ) out.setAttribute( Xml::Foreground, foreground().name() );
+        if( background().isValid() ) out.setAttribute( Xml::Background, background().name() );
         if( !href().isEmpty() ) out.setAttribute( Xml::HRef, href() );
         return out;
     }
