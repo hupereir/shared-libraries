@@ -197,7 +197,7 @@ namespace Ssh
         qint64 fileSize_ = 0;
 
         //* permissions
-        QFile::Permissions permissions_ = 0;
+        QFile::Permissions permissions_ = {};
 
         //* bytes read
         qint64 bytesTransferred_ = 0;

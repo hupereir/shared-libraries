@@ -21,23 +21,25 @@
 
 #include "BaseFileInfo.h"
 #include "BaseFileInfoItemDelegate.h"
-#include "ColumnSortingMenu.h"
 #include "ColumnSelectionMenu.h"
+#include "ColumnSortingMenu.h"
 #include "ContextMenu.h"
-#include "ToolBar.h"
 #include "FileInformationDialog.h"
 #include "FileRecordProperties.h"
 #include "FileRecordToolTipWidget.h"
 #include "FileSystemIconNames.h"
 #include "IconEngine.h"
 #include "PathEditor.h"
+#include "QtUtil.h"
 #include "RemoveFilesDialog.h"
 #include "RenameFileDialog.h"
 #include "Singleton.h"
+#include "ToolBar.h"
 #include "ToolBarMenu.h"
 #include "TreeView.h"
 #include "Util.h"
 #include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QContextMenuEvent>
@@ -88,6 +90,8 @@ namespace
     }
 }
 
+#include "BaseFileSystemWidget.moc"
+
 //_____________________________________________
 BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
     QWidget( parent ),
@@ -103,7 +107,7 @@ BaseFileSystemWidget::BaseFileSystemWidget( QWidget *parent ):
 
     auto layout = new QVBoxLayout;
     layout->setSpacing(2);
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     setLayout( layout );
 
     // toolbar
@@ -593,4 +597,3 @@ void BaseFileSystemWidget::_installActions()
 
 }
 
-#include "BaseFileSystemWidget.moc"

@@ -36,7 +36,7 @@ namespace Ssh
         setOptionName( QStringLiteral("SSH_LOGIN_DIALOG") );
         setWindowTitle( tr( "SSH login" ) );
         auto gridLayout = new GridLayout;
-        gridLayout->setMargin(0);
+        QtUtil::setMargin(gridLayout, 0);
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         mainLayout().addLayout( gridLayout );

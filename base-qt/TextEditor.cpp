@@ -1182,7 +1182,7 @@ void TextEditor::mousePressEvent( QMouseEvent* event )
     }
 
     // for mid button, locate cursor at new position
-    if(  event->button() == Qt::MidButton )
+    if(  event->button() == Qt::MiddleButton )
     { setTextCursor( cursorForPosition( event->pos() ) ); }
 
 }
@@ -1323,7 +1323,7 @@ void TextEditor::mouseReleaseEvent( QMouseEvent* event )
         return;
     }
 
-    if( event->button() == Qt::MidButton  && boxSelection_.state() == BoxSelection::State::Finished )
+    if( event->button() == Qt::MiddleButton  && boxSelection_.state() == BoxSelection::State::Finished )
     { boxSelection_.clear(); }
 
     // process event
@@ -1339,7 +1339,7 @@ void TextEditor::wheelEvent( QWheelEvent* event )
         event->accept();
 
         // calculate delta
-        const auto offset = double(  event->delta() )/120;
+        const auto offset = double(event->angleDelta().y())/120;
 
         // check if direction has changed
         if( wheelOffsetAccumulated_ != 0 && Base::sign(offset) != Base::sign( wheelOffsetAccumulated_ ) )

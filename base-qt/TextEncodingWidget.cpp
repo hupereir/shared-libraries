@@ -17,12 +17,11 @@
 *
 *******************************************************************************/
 
+#include "TextEncodingWidget.h"
 #include "LineEditor.h"
 #include "ListModel.h"
 #include "QtUtil.h"
 #include "TextEncodingString.h"
-#include "TextEncodingWidget.h"
-#include "TextEncodingWidget.moc"
 #include "TextSelection.h"
 #include "TreeView.h"
 
@@ -111,6 +110,8 @@ class TextEncodingModel: public ListModel<TextEncodingString>
     { std::sort( _get().begin(), _get().end(), SortFTor( (ColumnType) column, order ) ); }
 
 };
+
+#include "TextEncodingWidget.moc"
 
 //______________________________________________________________________
 TextEncodingWidget::TextEncodingWidget( QWidget* parent ):

@@ -194,7 +194,7 @@ void Private::SimpleListViewDelegate::_drawFocus( QPainter *painter, const QStyl
         o.rect = rect;
         o.state |= QStyle::State_KeyboardFocusChange;
         QPalette::ColorGroup colorGroup = (option.state & QStyle::State_Enabled) ? QPalette::Normal : QPalette::Disabled;
-        o.backgroundColor = option.palette.color( colorGroup, (option.state & QStyle::State_Selected) ? QPalette::Highlight : QPalette::Background );
+        o.backgroundColor = option.palette.color( colorGroup, (option.state & QStyle::State_Selected) ? QPalette::Highlight : QPalette::Window );
 
         QApplication::style()->drawPrimitive( QStyle::PE_FrameFocusRect, &o, painter );
 

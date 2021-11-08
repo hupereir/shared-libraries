@@ -17,19 +17,20 @@
 *
 *******************************************************************************/
 
-#include "SpellDialog.h"
-
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
 #include "FilterSelectionButton.h"
 #include "GridLayout.h"
 #include "InformationDialog.h"
 #include "LineEditor.h"
+#include "QtUtil.h"
+#include "SpellDialog.h"
 #include "SpellInterface.h"
 #include "TextEditor.h"
 #include "TreeView.h"
 #include "Util.h"
 #include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QHeaderView>
@@ -53,19 +54,19 @@ namespace SpellCheck
 
         // horizontal layout for suggestions and buttons
         auto hLayout = new QHBoxLayout;
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         hLayout->setSpacing(10);
         mainLayout().addLayout( hLayout, 1 );
 
         // insert left vertical box
         auto vLayout = new QVBoxLayout;
-        vLayout->setMargin( 0 );
+        QtUtil::setMargin(vLayout, 0);
         vLayout->setSpacing(5);
         hLayout->addLayout( vLayout );
 
         // grid for text editors
         auto gridLayout = new GridLayout;
-        gridLayout->setMargin( 0 );
+        QtUtil::setMargin(gridLayout, 0);
         gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
@@ -90,7 +91,7 @@ namespace SpellCheck
 
         // grid layout for dictionary and filter
         gridLayout = new GridLayout;
-        gridLayout->setMargin( 0 );
+        QtUtil::setMargin(gridLayout, 0);
         gridLayout->setSpacing(5);
         gridLayout->setMaxCount( 3 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
@@ -104,7 +105,7 @@ namespace SpellCheck
         label->setBuddy( dictionariesComboBox_ );
         _updateDictionaries();
 
-        connect( dictionariesComboBox_, QOverload<const QString&>::of( &QComboBox::activated ), this, &SpellDialog::_selectDictionary );
+        connect( dictionariesComboBox_, &QComboBox::textActivated, this, &SpellDialog::_selectDictionary );
 
         // configuration
         DictionarySelectionButton* dictionarySelectionButton;
@@ -117,7 +118,7 @@ namespace SpellCheck
         _updateFilters();
         filterLabel_->setBuddy( dictionariesComboBox_ );
 
-        connect( filtersComboBox_, QOverload<const QString&>::of( &QComboBox::activated ), this, &SpellDialog::_selectFilter );
+        connect( filtersComboBox_, &QComboBox::textActivated, this, &SpellDialog::_selectFilter );
 
         // configuration
         FilterSelectionButton* filterSelectionButton;
@@ -129,7 +130,7 @@ namespace SpellCheck
 
         // right vbox
         vLayout = new QVBoxLayout;
-        vLayout->setMargin( 0 );
+        QtUtil::setMargin(vLayout, 0);
         vLayout->setSpacing(5);
         hLayout->addLayout( vLayout );
 

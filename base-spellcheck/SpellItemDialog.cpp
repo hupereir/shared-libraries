@@ -55,11 +55,17 @@ namespace SpellCheck
 
     //_______________________________________________
     void SpellItemDialog::setDisabledItems( const QString& items )
-    { model_.setDisabledItems( QSet<QString>::fromList( items.split( QLatin1Char(' ') ) ) ); }
+    { 
+        const auto list(items.split(QLatin1Char(' ')));
+        model_.setDisabledItems( {list.begin(), list.end()} );
+    }
 
     //_______________________________________________
     QString SpellItemDialog::disabledItems() const
-    { return QStringList( model_.disabledItems().toList() ).join( QStringLiteral(" ") ); }
+    {
+        const auto set(model_.disabledItems());
+        return QStringList( set.begin(), set.end() ).join(QLatin1Char(' '));
+    }
 
     //_______________________________________________
     void SpellItemDialog::_selectItem( const QModelIndex& index )

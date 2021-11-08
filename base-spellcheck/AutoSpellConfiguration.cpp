@@ -18,11 +18,12 @@
 *******************************************************************************/
 
 #include "AutoSpellConfiguration.h"
-#include "GridLayout.h"
 #include "Debug.h"
+#include "GridLayout.h"
 #include "OptionColorDisplay.h"
-#include "OptionSpinBox.h"
 #include "OptionFontInfo.h"
+#include "OptionSpinBox.h"
+#include "QtUtil.h"
 #include "XmlOptions.h"
 
 #include <QGridLayout>
@@ -40,7 +41,7 @@ namespace SpellCheck
 
         auto gridLayout( new GridLayout );
         gridLayout->setSpacing( 5 );
-        gridLayout->setMargin( 5 );
+        QtUtil::setMargin(gridLayout, 5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         setLayout( gridLayout );
@@ -64,7 +65,7 @@ namespace SpellCheck
 
         gridLayout->addWidget( new QLabel( tr( "Highlight font format:" ), this ), 2, 0 );
         auto fontinfo =  new OptionFontInfo( this, QStringLiteral("AUTOSPELL_FONT_FORMAT") );
-        fontinfo->layout()->setMargin(0);
+        QtUtil::setMargin(fontinfo->layout(), 0);
         gridLayout->addWidget( fontinfo, 2, 1, 5, 1 );
         fontinfo->setToolTip( tr( "Font format for misspelled words" ) );
         addOptionWidget( fontinfo );

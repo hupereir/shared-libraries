@@ -40,7 +40,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
     comboBox_->setToolTip( tr( "User selection" ) );
 
     // send appropriate signal directly
-    connect( comboBox_, QOverload<const QString&>::of( &QComboBox::activated ), this, [this](const QString&){ _userChanged(); } );
+    connect( comboBox_, QOverload<int>::of( &QComboBox::activated ), this, [this](int){ _userChanged(); } );
 
     // one must add a timer here so that the signal gets
     // emitted only after some delay, to avoid to many signals are sent when typing

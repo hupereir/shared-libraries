@@ -38,7 +38,7 @@ namespace TextFormat
         public:
 
         //* constructor
-        explicit Block( int begin = 0, int end = 0, Flags format = 0 ):
+        explicit Block( int begin = 0, int end = 0, Flags format = {} ):
             Counter( QStringLiteral("TextFormat::Block") ),
             begin_( begin ),
             end_( end ),
@@ -159,7 +159,7 @@ namespace TextFormat
         int end_ = 0;
 
         //* format (a bitwise or of the format bits above)
-        Flags format_ = 0;
+        Flags format_ = {};
 
         //* foreground
         QColor foreground_;

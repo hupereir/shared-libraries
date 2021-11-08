@@ -19,14 +19,16 @@
 
 #include "SvgConfiguration.h"
 
-#include "Dialog.h"
 #include "Debug.h"
+#include "Dialog.h"
 #include "GridLayout.h"
-#include "OptionListBox.h"
 #include "OptionCheckBox.h"
 #include "OptionComboBox.h"
+#include "OptionListBox.h"
+#include "QtUtil.h"
 #include "TransparencyConfiguration.h"
 #include "XmlOptions.h"
+
 
 #include <QGroupBox>
 #include <QButtonGroup>
@@ -122,11 +124,11 @@ namespace Svg
         Debug::Throw( QStringLiteral("SvgConfiguration::SvgConfiguration.\n") );
 
         QVBoxLayout* vLayout = new QVBoxLayout;
-        vLayout->setMargin(0);
+        QtUtil::setMargin(vLayout, 0);
         setLayout( vLayout );
 
         QHBoxLayout* hLayout = new QHBoxLayout;
-        hLayout->setMargin( 2 );
+        QtUtil::setMargin(hLayout, 2);
         vLayout->addLayout( hLayout );
 
         QLabel* label;
@@ -150,7 +152,7 @@ namespace Svg
 
         Transparency::TransparencyConfiguration* transparencyConfiguration;
         vLayout->addWidget( transparencyConfiguration = new Transparency::TransparencyConfiguration( box, Transparency::TransparencyConfiguration::Background ));
-        transparencyConfiguration->layout()->setMargin(0);
+        QtUtil::setMargin(transparencyConfiguration->layout(), 0);
         addOptionWidget( transparencyConfiguration );
         vLayout->addStretch(1);
 
@@ -174,12 +176,12 @@ namespace Svg
         box->setLayout( vLayout = new QVBoxLayout );
 
         hLayout = new QHBoxLayout;
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         vLayout->addLayout( hLayout );
 
         GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
-        gridLayout->setMargin(0);
+        QtUtil::setMargin(gridLayout, 0);
         gridLayout->setMaxCount(2);
         gridLayout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
         hLayout->addLayout( gridLayout );

@@ -470,7 +470,7 @@ namespace Server
 
         // connect client to port
         client_.reset( new Client( this ) );
-        connect( &client_->socket(), QOverload<QAbstractSocket::SocketError>::of( &QAbstractSocket::error ), this, &ApplicationManager::_error );
+        connect( &client_->socket(), QOverload<QAbstractSocket::SocketError>::of( &QAbstractSocket::errorOccurred ), this, &ApplicationManager::_error );
         connect( &client_->socket(), &QAbstractSocket::connected, this, &ApplicationManager::_startTimer );
         connect( &client_->socket(), &QAbstractSocket::disconnected, this, &ApplicationManager::_serverConnectionClosed );
         connect( client_.get(), &Client::commandAvailable, this, &ApplicationManager::_process );

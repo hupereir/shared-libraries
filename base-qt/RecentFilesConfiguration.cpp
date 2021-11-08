@@ -84,7 +84,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     layout->addWidget( box = new QGroupBox( tr( "Files" ), this ), 1 );
     box->setLayout( new QHBoxLayout );
     box->layout()->setSpacing(6);
-    box->QtUtil::setMargin(layout(), 6);
+    QtUtil::setMargin(box->layout(), 6);
 
     box->layout()->addWidget( list_ = new TreeView( box ) );
     list_->setModel( &model_ );

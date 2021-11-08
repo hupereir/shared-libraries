@@ -48,7 +48,7 @@ TabWidget::TabWidget( QTabWidget* parent ):
     // dock
     dock_.reset( new Private::LocalTabWidget(nullptr) );
     dock_->setWindowIcon( windowIcon() );
-    dock_->QtUtil::setMargin(mainLayout(), 0);
+    QtUtil::setMargin(dock_->mainLayout(), 0);
     dock_->mainLayout()->setSpacing(0);
     dock_->mainLayout()->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
 

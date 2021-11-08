@@ -40,7 +40,7 @@ class BASE_QT_EXPORT PrinterOptionWidget: public QWidget, private Base::Counter<
     explicit PrinterOptionWidget( QWidget* = nullptr );
 
     //* orientation
-    QPrinter::Orientation orientation() const
+    QPageLayout::Orientation orientation() const
     { return orientation_; }
 
     //* page mode
@@ -53,7 +53,7 @@ class BASE_QT_EXPORT PrinterOptionWidget: public QWidget, private Base::Counter<
     Q_SIGNALS:
 
     //* emitted when orientation is changed
-    void orientationChanged( QPrinter::Orientation );
+    void orientationChanged( QPageLayout::Orientation );
 
     //* emitted when pageMode is changed
     void pageModeChanged( BasePrintHelper::PageMode );
@@ -73,7 +73,7 @@ class BASE_QT_EXPORT PrinterOptionWidget: public QWidget, private Base::Counter<
     BasePrintHelper* helper_ = nullptr;
 
     //* orientation
-    QPrinter::Orientation orientation_ = QPrinter::Portrait;
+    QPageLayout::Orientation orientation_ = QPageLayout::Portrait;
 
     //* page mode
     BasePrintHelper::PageMode pageMode_ = BasePrintHelper::PageMode::SinglePage;
@@ -82,7 +82,7 @@ class BASE_QT_EXPORT PrinterOptionWidget: public QWidget, private Base::Counter<
     QPushButton* previewButton_;
 
     //* Buttons maps
-    using OrientationButtonMap = QHash<QAbstractButton*, QPrinter::Orientation>;
+    using OrientationButtonMap = QHash<QAbstractButton*, QPageLayout::Orientation>;
     OrientationButtonMap orientationButtons_;
 
     //* Buttons map

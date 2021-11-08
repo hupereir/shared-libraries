@@ -17,8 +17,6 @@
 *
 *******************************************************************************/
 
-#include "TransparencyConfiguration.h"
-
 #include "CompositeEngine.h"
 #include "Debug.h"
 #include "GridLayout.h"
@@ -26,6 +24,9 @@
 #include "OptionColorDisplay.h"
 #include "OptionSlider.h"
 #include "OptionSpinBox.h"
+#include "QtUtil.h"
+#include "TransparencyConfiguration.h"
+
 
 #include <QGroupBox>
 #include <QLabel>
@@ -46,7 +47,7 @@ namespace Transparency
         {
             setLayout( new QVBoxLayout );
             layout()->setSpacing(5);
-            layout()->setMargin(0);
+            QtUtil::setMargin(layout(), 0);
         }
 
         // generic widget
@@ -91,7 +92,7 @@ namespace Transparency
 
         GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
-        gridLayout->setMargin(5);
+        QtUtil::setMargin(gridLayout, 5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, (Qt::Alignment)(Qt::AlignRight|Qt::AlignVCenter));
         parent->setLayout( gridLayout );
@@ -144,7 +145,7 @@ namespace Transparency
 
         GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
-        gridLayout->setMargin(5);
+        QtUtil::setMargin(gridLayout, 5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         parent->setLayout( gridLayout );

@@ -17,10 +17,11 @@
 *
 *******************************************************************************/
 
-#include "GridLayout.h"
 #include "Debug.h"
+#include "GridLayout.h"
 #include "OptionLineEditor.h"
 #include "OptionSpinBox.h"
+#include "QtUtil.h"
 #include "ServerConfiguration.h"
 
 #include <QGroupBox>
@@ -39,7 +40,7 @@ namespace Server
 
         setLayout( new QVBoxLayout );
         layout()->setSpacing(5);
-        layout()->setMargin(0);
+        QtUtil::setMargin(layout(), 0);
 
         // generic objects
         QWidget *box;
@@ -52,7 +53,7 @@ namespace Server
 
         GridLayout* gridLayout = new GridLayout;
         gridLayout->setSpacing(5);
-        gridLayout->setMargin(5);
+        QtUtil::setMargin(gridLayout, 5);
         gridLayout->setMaxCount( 2 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         box->setLayout( gridLayout );

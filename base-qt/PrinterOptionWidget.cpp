@@ -53,13 +53,13 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
         QRadioButton* radioButton;
         QButtonGroup* buttonGroup = new QButtonGroup( this );
         vLayout->addWidget( radioButton = new QRadioButton( tr( "Portrait" ), groupBox ) );
-        orientationButtons_.insert( radioButton, QPrinter::Portrait );
+        orientationButtons_.insert( radioButton, QPageLayout::Portrait );
         buttonGroup->addButton( radioButton );
 
         radioButton->setChecked( true );
 
         vLayout->addWidget( radioButton = new QRadioButton( tr( "Landscape" ), groupBox ) );
-        orientationButtons_.insert( radioButton, QPrinter::Landscape );
+        orientationButtons_.insert( radioButton, QPageLayout::Landscape );
         buttonGroup->addButton( radioButton );
 
         connect( buttonGroup, QOverload<QAbstractButton*>::of( &QButtonGroup::buttonClicked ), this, &PrinterOptionWidget::_setOrientation );

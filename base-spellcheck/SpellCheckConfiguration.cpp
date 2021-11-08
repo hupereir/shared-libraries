@@ -17,17 +17,18 @@
 *
 *******************************************************************************/
 
-#include "SpellCheckConfiguration.h"
-
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
 #include "FilterSelectionButton.h"
 #include "GridLayout.h"
 #include "OptionBrowsedLineEditor.h"
 #include "OptionComboBox.h"
+#include "QtUtil.h"
+#include "SpellCheckConfiguration.h"
 #include "SpellInterface.h"
 #include "SpellItemDialog.h"
 #include "XmlOptions.h"
+
 
 #include <QLabel>
 #include <QToolButton>
@@ -45,7 +46,7 @@ namespace SpellCheck
 
         auto gridLayout( new GridLayout );
         gridLayout->setSpacing( 5 );
-        gridLayout->setMargin( 5 );
+        QtUtil::setMargin(gridLayout, 5);
         gridLayout->setMaxCount( 3 );
         gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
         setLayout( gridLayout );

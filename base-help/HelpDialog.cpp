@@ -19,12 +19,12 @@
 
 #include "HelpDialog.h"
 #include "HelpManager.h"
-#include "HelpManager.h"
 #include "HelpModel.h"
+#include "QtUtil.h"
 #include "QuestionDialog.h"
 #include "Singleton.h"
-#include "TextEditor.h"
 #include "TextEditionDelegate.h"
+#include "TextEditor.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
@@ -50,14 +50,14 @@ namespace Base
 
 
         // customize layout
-        layout()->setMargin(0);
+        QtUtil::setMargin(layout(), 0);
         layout()->setSpacing(0);
-        buttonLayout().setMargin(5);
+        QtUtil::setMargin(&buttonLayout(), 5);
 
         setOptionName( QStringLiteral("HELP_DIALOG") );
 
         auto layout = new QHBoxLayout;
-        layout->setMargin(0);
+        QtUtil::setMargin(layout, 0);
         layout->setSpacing(2);
         mainLayout().addLayout( layout );
 
@@ -75,7 +75,7 @@ namespace Base
 
         // vbox layout for editor and button
         auto vLayout = new QVBoxLayout;
-        vLayout->setMargin(0);
+        QtUtil::setMargin(vLayout, 0);
         htmlFrame_->setLayout( vLayout );
 
         vLayout->addWidget( htmlEditor_ = new TextEditor( htmlFrame_ ) );

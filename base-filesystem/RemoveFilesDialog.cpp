@@ -17,11 +17,12 @@
 *
 *******************************************************************************/
 
-#include "RemoveFilesDialog.h"
-
 #include "BaseIconNames.h"
 #include "IconEngine.h"
+#include "QtUtil.h"
+#include "RemoveFilesDialog.h"
 #include "TreeView.h"
+
 
 #include <QHeaderView>
 #include <QLabel>
@@ -54,7 +55,7 @@ RemoveFilesDialog::RemoveFilesDialog( QWidget* parent, const FileSystemModel::Li
     //! try load Question icon
     auto hLayout = new QHBoxLayout;
     hLayout->setSpacing(10);
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     mainLayout().addLayout( hLayout );
 
     auto label = new QLabel( this );
