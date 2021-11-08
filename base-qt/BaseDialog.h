@@ -21,8 +21,8 @@
 *******************************************************************************/
 
 
-#include "base_qt_export.h"
 #include "WidgetMonitor.h"
+#include "base_qt_export.h"
 
 #include <QDialog>
 

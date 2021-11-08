@@ -18,13 +18,13 @@
 *******************************************************************************/
 
 #include "ColorOptionListBox.h"
-
 #include "Color.h"
 #include "ColorDisplay.h"
 #include "ColorOptionModel.h"
 #include "Dialog.h"
 #include "QtUtil.h"
 #include "TreeView.h"
+
 
 
 //_______________________________________________________
@@ -155,4 +155,3 @@ void ColorOptionListBox::_edit()
     return;
 
 }
-

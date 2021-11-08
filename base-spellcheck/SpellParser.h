@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "SpellInterface.h"
 #include "TextFormat.h"
 #include "Word.h"
+#include "base_spellcheck_export.h"
 
 
 #include <QColor>

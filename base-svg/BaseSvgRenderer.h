@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_svg_export.h"
 #include "Counter.h"
+#include "base_svg_export.h"
 
 #include <QByteArray>
 #include <QIODevice>

@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "TextFormatBlock.h"
+#include "base_qt_export.h"
 #include <QDomElement>
 #include <QDomDocument>
 

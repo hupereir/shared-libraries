@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "OptionWidgetList.h"
+#include "base_spellcheck_export.h"
 
 #include <QWidget>
 

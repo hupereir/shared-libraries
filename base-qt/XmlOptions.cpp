@@ -18,12 +18,12 @@
 *******************************************************************************/
 
 #include "XmlOptions.h"
-#include "XmlOptions_p.h"
-
 #include "Operators.h"
 #include "Options.h"
 #include "XmlDocument.h"
 #include "XmlOption.h"
+#include "XmlOptions_p.h"
+
 
 #include <QFile>
 #include <QRegularExpression>

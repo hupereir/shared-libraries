@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "SshWriteFileSocket.h"
-
 #include "BaseFileInfo.h"
 #include "Debug.h"
+
 
 #include <QElapsedTimer>
 

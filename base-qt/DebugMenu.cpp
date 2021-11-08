@@ -17,9 +17,9 @@
 *
 *******************************************************************************/
 
+#include "DebugMenu.h"
 #include "CounterDialog.h"
 #include "Debug.h"
-#include "DebugMenu.h"
 #include "IconCacheDialog.h"
 #include "OptionDialog.h"
 #include "SystemEnvironmentDialog.h"

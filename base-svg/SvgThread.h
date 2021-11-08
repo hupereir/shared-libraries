@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_svg_export.h"
-#include "SvgRenderer.h"
 #include "Svg.h"
+#include "SvgRenderer.h"
+#include "base_svg_export.h"
 
 #include <QMutex>
 #include <QMutexLocker>

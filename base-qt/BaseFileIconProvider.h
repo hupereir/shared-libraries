@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseFileInfo.h"
 #include "Counter.h"
-#include "Pixmap.h"
 #include "File.h"
+#include "Pixmap.h"
+#include "base_qt_export.h"
 
 #include <QHash>
 #include <QIcon>

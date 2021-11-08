@@ -19,9 +19,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "Counter.h"
 #include "BasePrintHelper.h"
+#include "Counter.h"
+#include "base_qt_export.h"
 
 #include <QHash>
 #include <QAbstractButton>

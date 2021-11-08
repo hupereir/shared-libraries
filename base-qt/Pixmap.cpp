@@ -19,8 +19,8 @@
 
 #include "Pixmap.h"
 #include "Debug.h"
-#include "IconSize.h"
 #include "File.h"
+#include "IconSize.h"
 #include "PixmapEngine.h"
 #include "QtUtil.h"
 

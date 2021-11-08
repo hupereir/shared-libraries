@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "OpenWithDialog.h"
 #include "BaseFileInfo.h"
 #include "BaseFileInfoModel.h"
 #include "BaseIconNames.h"
@@ -25,7 +26,6 @@
 #include "ElidedLabel.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
-#include "OpenWithDialog.h"
 #include "QtUtil.h"
 #include "TreeView.h"
 #include "XmlOptions.h"

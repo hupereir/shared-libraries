@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "File.h"
 #include "Options.h"
+#include "base_qt_export.h"
 
 //* forward declaration
 class XmlDocument;

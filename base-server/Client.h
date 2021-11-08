@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_server_export.h"
+#include "BaseSocketInterface.h"
 #include "Counter.h"
 #include "Functors.h"
-#include "BaseSocketInterface.h"
 #include "ServerCommand.h"
+#include "base_server_export.h"
 
 #include <QTcpSocket>
 

@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "SpellInterface.h"
-
 #include "CustomProcess.h"
 #include "Debug.h"
 #include "Util.h"
 #include "XmlOptions.h"
+
 
 #include <QRegularExpression>
 

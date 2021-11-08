@@ -17,12 +17,12 @@
 *
 *******************************************************************************/
 
+#include "SelectLineWidget.h"
 #include "BaseIconNames.h"
 #include "Color.h"
 #include "IconEngine.h"
 #include "LineEditor.h"
 #include "QtUtil.h"
-#include "SelectLineWidget.h"
 
 
 #include <QLabel>

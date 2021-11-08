@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "BaseCoreApplication.h"
-
 #include "Debug.h"
 #include "ErrorHandler.h"
 #include "InterruptionHandler.h"
 #include "XmlOptions.h"
+
 
 #include <signal.h>
 

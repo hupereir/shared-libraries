@@ -17,11 +17,11 @@
 *
 *******************************************************************************/
 
+#include "LineEditor.h"
 #include "BaseContextMenu.h"
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
-#include "LineEditor.h"
 #include "LineEditor_p.h"
 #include "QtUtil.h"
 #include "StandardAction.h"

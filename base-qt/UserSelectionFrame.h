@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "Counter.h"
 #include "ComboBox.h"
+#include "Counter.h"
+#include "base_qt_export.h"
 
 #include <QBasicTimer>
 #include <QSet>

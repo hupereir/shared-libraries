@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Dialog.h"
 #include "File.h"
 #include "OpenWithComboBox.h"
+#include "base_qt_export.h"
 
 #include <QIcon>
 

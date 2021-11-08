@@ -17,9 +17,9 @@
 *
 *******************************************************************************/
 
+#include "TreeViewConfiguration.h"
 #include "Debug.h"
 #include "QtUtil.h"
-#include "TreeViewConfiguration.h"
 #include "XmlOptions.h"
 
 

@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
+#include "Slider.h"
 #include "Debug.h"
 #include "InformationDialog.h"
 #include "QtUtil.h"
-#include "Slider.h"
 
 #include <QHBoxLayout>
 

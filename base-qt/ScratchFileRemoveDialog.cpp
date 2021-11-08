@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "ScratchFileRemoveDialog.h"
 #include "BaseContextMenu.h"
 #include "BaseIconNames.h"
 #include "ColumnSelectionMenu.h"
@@ -24,7 +25,6 @@
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "QtUtil.h"
-#include "ScratchFileRemoveDialog.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 

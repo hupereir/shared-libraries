@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "XmlTextFormatBlock.h"
-#include "XmlColor.h"
 #include "Debug.h"
+#include "XmlColor.h"
 
 namespace TextFormat
 {

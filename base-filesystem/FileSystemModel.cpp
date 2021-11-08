@@ -18,16 +18,16 @@
 *******************************************************************************/
 
 #include "FileSystemModel.h"
-
 #include "BaseFileInfo.h"
 #include "BaseFileInfoModel.h"
-#include "Pixmap.h"
 #include "FileIconProvider.h"
-#include "FileSystemIconNames.h"
 #include "FileRecordProperties.h"
+#include "FileSystemIconNames.h"
 #include "IconEngine.h"
+#include "Pixmap.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QFont>

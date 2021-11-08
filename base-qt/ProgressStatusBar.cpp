@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "ProgressStatusBar.h"
-
 #include "Debug.h"
+
 
 //______________________________________________________
 ProgressStatusBar::ProgressStatusBar( QWidget* parent ):

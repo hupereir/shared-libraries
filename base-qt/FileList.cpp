@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "FileList.h"
+#include "Debug.h"
 #include "File.h"
 #include "Operators.h"
 

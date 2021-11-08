@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "BaseFileInfoIconView.h"
-
-#include "BaseFileInfoModel.h"
 #include "BaseFileIconProvider.h"
+#include "BaseFileInfoModel.h"
+
 
 //______________________________________________________________
 BaseFileInfoIconView::BaseFileInfoIconView( QWidget* parent ):

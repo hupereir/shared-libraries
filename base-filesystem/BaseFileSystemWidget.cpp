@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "BaseFileSystemWidget.h"
-
 #include "BaseFileInfo.h"
 #include "BaseFileInfoItemDelegate.h"
 #include "ColumnSelectionMenu.h"
@@ -39,6 +38,7 @@
 #include "TreeView.h"
 #include "Util.h"
 #include "XmlOptions.h"
+
 
 
 #include <QApplication>
@@ -596,4 +596,3 @@ void BaseFileSystemWidget::_installActions()
     filePropertiesAction_->setToolTip( tr( "Display current file properties" ) );
 
 }
-

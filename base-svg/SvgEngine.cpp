@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "SvgEngine.h"
-
 #include "CppUtil.h"
-#include "SvgPlasmaInterface.h"
 #include "Svg.h"
+#include "SvgPlasmaInterface.h"
 #include "XmlOptions.h"
+
 
 #include <QPainter>
 

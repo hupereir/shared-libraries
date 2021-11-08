@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseDialog.h"
 #include "Counter.h"
+#include "base_qt_export.h"
 
 #include <memory>
 

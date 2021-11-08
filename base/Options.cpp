@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "Options.h"
-
 #include "Color.h"
 #include "CppUtil.h"
 #include "Debug.h"
+
 
 #include <algorithm>
 

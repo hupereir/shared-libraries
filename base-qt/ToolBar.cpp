@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
-#include "BaseMainWindow.h"
 #include "ToolBar.h"
-#include "ToolButton.h"
+#include "BaseMainWindow.h"
 #include "Singleton.h"
+#include "ToolButton.h"
 #include "XmlOptions.h"
 
 //_______________________________________________________________

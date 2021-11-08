@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "ToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
+#include "ToolButton.h"
 #include "WidgetMonitor.h"
 #include "XmlOptions.h"
+#include "base_qt_export.h"
 
 #include <QAction>
 #include <QActionGroup>

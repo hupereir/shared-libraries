@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "CommandLineArguments.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Functors.h"
+#include "base_export.h"
 
 #include <QStringList>
 #include <QHash>

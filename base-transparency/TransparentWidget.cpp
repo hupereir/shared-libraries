@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "TransparentWidget.h"
-
 #include "BaseIconNames.h"
 #include "Color.h"
 #include "CompositeEngine.h"
@@ -26,8 +25,9 @@
 #include "IconEngine.h"
 #include "Singleton.h"
 #include "WinUtil.h"
-#include "XmlOptions.h"
 #include "XcbUtil.h"
+#include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QPainter>

@@ -21,9 +21,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "DetailsDialog.h"
 #include "Counter.h"
+#include "DetailsDialog.h"
+#include "base_qt_export.h"
 
 #include <QString>
 #include <QLabel>

@@ -19,9 +19,9 @@
 
 #include <QPaintEvent>
 
+#include "ShadowLabel.h"
 #include "Debug.h"
 #include "Effects.h"
-#include "ShadowLabel.h"
 
 namespace Transparency
 {

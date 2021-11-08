@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "OptionListBox.h"
 #include "BaseIconNames.h"
 #include "ContextMenu.h"
 #include "Debug.h"
@@ -24,7 +25,6 @@
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "LineEditor.h"
-#include "OptionListBox.h"
 #include "OptionModel.h"
 #include "QtUtil.h"
 #include "TextEditionDelegate.h"

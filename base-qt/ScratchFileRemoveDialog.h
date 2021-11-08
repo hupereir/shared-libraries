@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Dialog.h"
 #include "FileRecord.h"
 #include "FileRecordModel.h"
+#include "base_qt_export.h"
 
 #include <QLayout>
 #include <QPushButton>

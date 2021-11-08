@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
+#include "RemoveFilesDialog.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
-#include "RemoveFilesDialog.h"
 #include "TreeView.h"
 
 

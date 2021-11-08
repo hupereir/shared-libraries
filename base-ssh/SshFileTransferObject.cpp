@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "SshFileTransferObject.h"
-
 #include "Debug.h"
 #include "SshReadFileSocket.h"
 #include "SshWriteFileSocket.h"
+
 
 #include <QCoreApplication>
 #include <QElapsedTimer>

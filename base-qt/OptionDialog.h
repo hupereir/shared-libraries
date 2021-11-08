@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Dialog.h"
 #include "OptionModel.h"
 #include "XmlOptions.h"
+#include "base_qt_export.h"
 
 // forward declaration
 class TreeView;

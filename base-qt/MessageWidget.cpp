@@ -18,13 +18,13 @@
 *******************************************************************************/
 
 #include "MessageWidget.h"
-
 #include "BaseIconNames.h"
 #include "Color.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "QtUtil.h"
+
 
 
 #include <QPropertyAnimation>
@@ -411,4 +411,3 @@ void MessageWidgetPrivate::animationFinished()
     parent_->setMaximumHeight( QWIDGETSIZE_MAX );
 
 }
-

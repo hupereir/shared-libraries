@@ -19,9 +19,9 @@
 
 #include "BaseFileIconProvider.h"
 #include "BaseIconNames.h"
-#include "Pixmap.h"
 #include "DefaultFolders.h"
 #include "IconEngine.h"
+#include "Pixmap.h"
 #include "Util.h"
 
 //__________________________________________________________________________

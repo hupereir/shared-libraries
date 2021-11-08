@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "SuggestionMenu.h"
-
 #include "Debug.h"
 #include "TexString.h"
 #include "XmlOptions.h"
+
 
 namespace SpellCheck
 {

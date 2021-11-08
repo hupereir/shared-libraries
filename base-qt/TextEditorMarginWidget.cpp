@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "TextEditorMarginWidget.h"
-
 #include "Color.h"
 #include "Debug.h"
 #include "TextEditor.h"
+
 
 #include <QPainter>
 

@@ -18,12 +18,12 @@
 *******************************************************************************/
 
 #include "FileRecordModel.h"
-
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
 #include "Operators.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
+
 
 #include <QUrl>
 

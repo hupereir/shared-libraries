@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "Counter.h"
 #include "QOrderedSet.h"
+#include "base_export.h"
 
 #include <QColor>
 #include <QTextStream>

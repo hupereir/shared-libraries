@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "GridLayoutItem.h"
-
 #include "ElidedLabel.h"
 #include "GridLayout.h"
 #include "QtUtil.h"
+
 
 //____________________________________________________________________________
 GridLayoutItem::GridLayoutItem( QWidget* parent, GridLayout* layout, Flags flags ):

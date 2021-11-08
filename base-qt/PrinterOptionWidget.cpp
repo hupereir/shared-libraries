@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
+#include "PrinterOptionWidget.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "PrintPreviewDialog.h"
-#include "PrinterOptionWidget.h"
 #include "QtUtil.h"
 
 

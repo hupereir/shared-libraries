@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "SpellItemModel.h"
+#include "Debug.h"
 
 namespace SpellCheck
 {

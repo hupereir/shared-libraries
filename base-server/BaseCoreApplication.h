@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_server_export.h"
 #include "ApplicationManager.h"
 #include "CommandLineArguments.h"
 #include "Counter.h"
+#include "base_server_export.h"
 
 #include <QObject>
 

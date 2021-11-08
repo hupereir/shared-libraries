@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "TextEncodingDialog.h"
-
 #include "TextEncodingWidget.h"
+
 
 //__________________________________________________________________________
 TextEncodingDialog::TextEncodingDialog( QWidget* parent ):

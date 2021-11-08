@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "SpellCheckConfigurationDialog.h"
-
 #include "AutoSpellConfiguration.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "SpellCheckConfiguration.h"
+
 
 namespace SpellCheck
 {

@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Debug.h"
 #include "File.h"
 #include "Functors.h"
 #include "Operators.h"
 #include "TimeStamp.h"
+#include "base_qt_export.h"
 
 #include <QDomElement>
 #include <QDomDocument>

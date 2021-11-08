@@ -20,7 +20,6 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
@@ -28,6 +27,7 @@
 #include "ThreadDeleter.h"
 #include "TimeStamp.h"
 #include "ValidFileThread.h"
+#include "base_qt_export.h"
 
 #include <QObject>
 

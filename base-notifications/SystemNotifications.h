@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_notifications_export.h"
 #include "Counter.h"
 #include "Notification.h"
+#include "base_notifications_export.h"
 
 #include <QIcon>
 #include <QBasicTimer>

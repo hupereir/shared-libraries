@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "OptionListBox.h"
+#include "base_qt_export.h"
 
 
 class BASE_QT_EXPORT ColorOptionListBox: public OptionListBox

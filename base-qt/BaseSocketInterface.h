@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Functors.h"
+#include "base_qt_export.h"
 
 #include <QTcpSocket>
 

@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "QtUtil.h"
 #include "UserSelectionFrame.h"
+#include "QtUtil.h"
 #include "Util.h"
 
 #include <QLayout>

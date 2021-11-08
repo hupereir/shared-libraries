@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "ColorComboBox.h"
-
 #include "BaseIconNames.h"
-#include "Pixmap.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "Pixmap.h"
+
 
 #include <QColorDialog>
 #include <QPixmap>

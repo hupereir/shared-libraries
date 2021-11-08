@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "WidgetDragMonitor.h"
+#include "base_qt_export.h"
 
 #include <QAction>
 #include <QBasicTimer>

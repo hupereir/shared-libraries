@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "File.h"
 #include "QOrderedSet.h"
+#include "base_qt_export.h"
 
 #include <QObject>
 

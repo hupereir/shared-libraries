@@ -18,16 +18,16 @@
 *******************************************************************************/
 
 #include "DockPanel.h"
-#include "DockPanel_p.h"
-
 #include "BaseContextMenu.h"
 #include "Debug.h"
+#include "DockPanel_p.h"
 #include "File.h"
 #include "QtUtil.h"
 #include "Singleton.h"
+#include "XcbUtil.h"
 #include "XmlOptions.h"
 
-#include "XcbUtil.h"
+
 
 #include <QApplication>
 #include <QPainter>

@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Options.h"
+#include "base_qt_export.h"
 
 #include <QObject>
 #include <QString>

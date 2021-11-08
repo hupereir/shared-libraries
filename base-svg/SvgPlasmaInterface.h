@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_svg_export.h"
 #include "File.h"
+#include "base_svg_export.h"
 
 #include <QBasicTimer>
 #include <QFileSystemWatcher>

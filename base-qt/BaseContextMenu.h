@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
+#include "base_qt_export.h"
 
 #include <QMenu>
 #include <QPointer>

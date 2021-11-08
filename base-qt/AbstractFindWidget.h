@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "EmbeddedWidget.h"
 #include "TextSelection.h"
+#include "base_qt_export.h"
 
 #include <QAbstractButton>
 #include <QWidget>

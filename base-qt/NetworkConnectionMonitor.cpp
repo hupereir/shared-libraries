@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "NetworkConnectionMonitor.h"
-#include "NonCopyable.h"
 #include "Debug.h"
+#include "NonCopyable.h"
 
 #if !defined(Q_OS_WIN) && !defined(__OS2__)
 #include <sys/socket.h>

@@ -19,12 +19,12 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "ListModel.h"
 #include "OptionWidget.h"
 #include "XmlOptions.h"
+#include "base_qt_export.h"
 
 #include <QCloseEvent>
 #include <QDialog>

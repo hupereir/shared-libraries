@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "FileIconProvider.h"
-#include "FileSystemModel.h"
-
 #include "BaseFileInfo.h"
 #include "FileSystemIconNames.h"
+#include "FileSystemModel.h"
 #include "IconEngine.h"
+
 
 //__________________________________________________________________
 const QIcon& FileIconProvider::icon( const FileRecord& fileRecord )

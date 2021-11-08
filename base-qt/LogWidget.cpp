@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "LogWidget.h"
-#include "TextFormat.h"
 #include "QtUtil.h"
+#include "TextFormat.h"
 #include "XmlOptions.h"
 
 //______________________________________________________

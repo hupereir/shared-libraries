@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "FilePermissionsWidget.h"
+#include "Debug.h"
 #include "GridLayout.h"
 #include "QtUtil.h"
 

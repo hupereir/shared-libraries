@@ -17,11 +17,11 @@
 *
 *******************************************************************************/
 
+#include "PrintPreviewDialog.h"
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "PrintPreviewDialog.h"
 #include "PrintPreviewDialog_p.h"
 #include "QtUtil.h"
 

@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_filesystem_export.h"
 #include "BaseFileInformationDialog.h"
 #include "FileRecord.h"
+#include "base_filesystem_export.h"
 
 //* file informations
 class BASE_FILESYSTEM_EXPORT FileInformationDialog: public BaseFileInformationDialog

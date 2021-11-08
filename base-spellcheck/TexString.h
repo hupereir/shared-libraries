@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "NonCopyable.h"
+#include "base_spellcheck_export.h"
 
 #include <QString>
 #include <QList>

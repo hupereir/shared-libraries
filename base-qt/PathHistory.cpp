@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "PathHistory.h"
-
 #include "Debug.h"
+
 
 #include <algorithm>
 

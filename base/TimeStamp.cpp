@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "TimeStamp.h"
+#include "Debug.h"
 #include "Util.h"
 
 #include <QLocale>

@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "AbstractFindWidget.h"
 #include "BaseDialog.h"
 #include "Counter.h"
+#include "base_qt_export.h"
 
 //* find dialog for text editor widgets
 class BASE_QT_EXPORT BaseFindDialog: public BaseDialog, private Base::Counter<BaseFindDialog>

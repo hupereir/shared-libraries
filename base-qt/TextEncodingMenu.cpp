@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "TextEncodingMenu.h"
-
 #include "CppUtil.h"
 #include "Debug.h"
 #include "TextEncodingString.h"
+
 
 #include <QActionGroup>
 #include <QTextCodec>

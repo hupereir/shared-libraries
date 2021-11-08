@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "TextEditor.h"
 #include "TextFormat.h"
+#include "base_qt_export.h"
 
 #include <QString>
 #include <QColor>

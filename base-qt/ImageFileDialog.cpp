@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
+#include "ImageFileDialog.h"
 #include "Debug.h"
 #include "File.h"
 #include "FileDialog.h"
-#include "ImageFileDialog.h"
 #include "Pixmap.h"
 #include "QtUtil.h"
 #include "Util.h"

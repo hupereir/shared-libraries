@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_help_export.h"
 #include "Counter.h"
 #include "Dialog.h"
 #include "HelpModel.h"
+#include "base_help_export.h"
 
 #include <QPushButton>
 #include <QStackedWidget>

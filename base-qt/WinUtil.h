@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Margins.h"
+#include "base_qt_export.h"
 
 #include <QWidget>
 #include <QPixmap>

@@ -20,9 +20,7 @@
 *
 *******************************************************************************/
 
-#include "base_server_export.h"
 #include "ApplicationId.h"
-
 #include "CommandLineArguments.h"
 #include "Counter.h"
 #include "CppUtil.h"
@@ -30,6 +28,8 @@
 #include "Operators.h"
 #include "TimeStamp.h"
 #include "XmlOption.h"
+#include "base_server_export.h"
+
 
 #include <QDataStream>
 #include <QString>

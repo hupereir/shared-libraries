@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseStatusBar.h"
 #include "Debug.h"
+#include "base_qt_export.h"
 
 #include <QProgressBar>
 #include <QStackedWidget>

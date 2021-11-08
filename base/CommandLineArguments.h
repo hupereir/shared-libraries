@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "base_export.h"
 
 #include <QStringList>
 

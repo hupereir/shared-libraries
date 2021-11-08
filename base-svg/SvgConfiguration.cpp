@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "SvgConfiguration.h"
-
 #include "Debug.h"
 #include "Dialog.h"
 #include "GridLayout.h"
@@ -28,6 +27,7 @@
 #include "QtUtil.h"
 #include "TransparencyConfiguration.h"
 #include "XmlOptions.h"
+
 
 
 #include <QGroupBox>

@@ -17,12 +17,12 @@
 *
 *******************************************************************************/
 
+#include "ServerConfiguration.h"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "OptionLineEditor.h"
 #include "OptionSpinBox.h"
 #include "QtUtil.h"
-#include "ServerConfiguration.h"
 
 #include <QGroupBox>
 #include <QLabel>

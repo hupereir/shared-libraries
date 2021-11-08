@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "SpellDialog.h"
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
 #include "FilterSelectionButton.h"
@@ -24,7 +25,6 @@
 #include "InformationDialog.h"
 #include "LineEditor.h"
 #include "QtUtil.h"
-#include "SpellDialog.h"
 #include "SpellInterface.h"
 #include "TextEditor.h"
 #include "TreeView.h"

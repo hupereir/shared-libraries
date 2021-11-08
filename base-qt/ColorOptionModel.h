@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "OptionModel.h"
-
 #include "Color.h"
+#include "OptionModel.h"
+#include "base_qt_export.h"
+
 #include <QIcon>
 #include <QHash>
 

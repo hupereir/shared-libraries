@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "OpenWithComboBox.h"
-
 #include "File.h"
 #include "FileDialog.h"
+
 
 //___________________________________________________________
 OpenWithComboBox::OpenWithComboBox( QWidget* parent ):

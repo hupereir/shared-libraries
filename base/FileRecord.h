@@ -20,13 +20,13 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "Counter.h"
-#include "Functors.h"
 #include "Debug.h"
 #include "File.h"
+#include "Functors.h"
 #include "QOrderedSet.h"
 #include "TimeStamp.h"
+#include "base_export.h"
 
 #include <QHash>
 #include <QStringList>

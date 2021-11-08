@@ -39,9 +39,9 @@ class BASE_QT_EXPORT QtUtil
 
     //* add margins to layouts
     template<class T> 
-        static void setMargin(T* object, int margin )
+        inline static void setMargin(T* object, int margin )
     { object->setContentsMargins( margin, margin, margin, margin ); }
-    
+   
     //* move menu to position taking proper care of the screen borders
     static void moveWidget( QWidget* widget, QPoint position );
 

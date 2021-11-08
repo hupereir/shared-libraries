@@ -202,4 +202,3 @@ void TextEncodingWidget::_find(const QString &text )
     list_->find( selection );
     locked_ = false;
 }
-

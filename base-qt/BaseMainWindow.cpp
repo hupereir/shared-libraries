@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "BaseMainWindow.h"
-
 #include "ApplicationMenu.h"
 #include "BaseIconNames.h"
 #include "DockWidget.h"
@@ -28,10 +27,11 @@
 #include "Singleton.h"
 #include "ToolBar.h"
 #include "ToolBarMenu.h"
-#include "ToolButtonStyleMenu.h"
 #include "ToolButton.h"
+#include "ToolButtonStyleMenu.h"
 #include "Util.h"
 #include "WindowManager.h"
+
 
 #include <QMenuBar>
 #include <QTextStream>

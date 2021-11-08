@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "ColumnSortingMenu.h"
-
 #include "Debug.h"
 #include "ReverseOrderAction.h"
 #include "TreeView.h"
+
 
 #include <QHeaderView>
 

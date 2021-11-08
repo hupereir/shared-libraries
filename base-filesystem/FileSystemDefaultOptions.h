@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
+#include "FileSystemModel.h"
 #include "XmlOptions.h"
 
-#include "FileSystemModel.h"
 
 //_____________________________________________________
 //* default options installer

@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "PasswordEditor.h"
-
 #include "BaseIconNames.h"
 #include "IconEngine.h"
+
 
 //____________________________________________________________
 PasswordEditor::PasswordEditor( QWidget* parent ):

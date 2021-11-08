@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_ssh_export.h"
 #include "Dialog.h"
 #include "LineEditor.h"
 #include "SshConnectionAttributes.h"
+#include "base_ssh_export.h"
 
 #include <QCheckBox>
 #include <QSpinBox>

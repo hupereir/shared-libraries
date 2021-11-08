@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "Counter.h"
+#include "base_export.h"
 
 #include <QObject>
 

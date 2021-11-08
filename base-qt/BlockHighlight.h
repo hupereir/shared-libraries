@@ -20,13 +20,13 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+#include "Debug.h"
 #include "base_qt_export.h"
 #include <QApplication>
 #include <QBasicTimer>
 #include <QTimerEvent>
 
-#include "Counter.h"
-#include "Debug.h"
 
 class TextEditor;
 

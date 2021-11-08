@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "TreeView.h"
 #include "BaseFindDialog.h"
 #include "BaseFindWidget.h"
 #include "BaseIconNames.h"
@@ -32,7 +33,6 @@
 #include "ScrollBarMonitor.h"
 #include "Singleton.h"
 #include "TextEditor.h"
-#include "TreeView.h"
 #include "TreeViewItemDelegate.h"
 #include "XmlOptions.h"
 

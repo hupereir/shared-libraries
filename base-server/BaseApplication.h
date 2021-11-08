@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_server_export.h"
 #include "ApplicationManager.h"
 #include "BaseCoreApplication.h"
 #include "CommandLineArguments.h"
+#include "base_server_export.h"
 
 #include <QAction>
 #include <QObject>

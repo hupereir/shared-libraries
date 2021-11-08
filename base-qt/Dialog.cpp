@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "BaseIconNames.h"
 #include "Dialog.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
 

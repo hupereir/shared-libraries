@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "TextFormat.h"
+#include "base_qt_export.h"
 
 #include <QCheckBox>
 #include <QMap>

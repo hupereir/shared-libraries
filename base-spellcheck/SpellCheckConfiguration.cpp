@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "SpellCheckConfiguration.h"
 #include "Debug.h"
 #include "DictionarySelectionButton.h"
 #include "FilterSelectionButton.h"
@@ -24,7 +25,6 @@
 #include "OptionBrowsedLineEditor.h"
 #include "OptionComboBox.h"
 #include "QtUtil.h"
-#include "SpellCheckConfiguration.h"
 #include "SpellInterface.h"
 #include "SpellItemDialog.h"
 #include "XmlOptions.h"

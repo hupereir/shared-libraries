@@ -18,12 +18,12 @@
 *******************************************************************************/
 
 #include "FilterMenu.h"
-
-#include "CppUtil.h"
 #include "BaseIconNames.h"
+#include "CppUtil.h"
 #include "IconEngine.h"
 #include "SpellInterface.h"
 #include "XmlOptions.h"
+
 
 namespace SpellCheck
 {

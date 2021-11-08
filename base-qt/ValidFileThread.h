@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "FileRecord.h"
+#include "base_qt_export.h"
 
 #include <QMutex>
 #include <QMutexLocker>

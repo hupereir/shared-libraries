@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "ComboBox.h"
-
 #include "LineEditor.h"
+
 
 #include <QAbstractItemView>
 #include <QCompleter>

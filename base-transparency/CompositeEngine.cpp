@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "CompositeEngine.h"
-
 #include "Debug.h"
-#include "XcbUtil.h"
 #include "WaylandUtil.h"
+#include "XcbUtil.h"
+
 
 #if WITH_XCB
 #include <xcb/xcb.h>

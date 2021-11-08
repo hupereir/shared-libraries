@@ -19,11 +19,11 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "OptionWidget.h"
 #include "OptionWidgetList.h"
 #include "TabbedDialog.h"
 #include "XmlOptions.h"
+#include "base_qt_export.h"
 
 #include <QLayout>
 

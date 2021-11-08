@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Dialog.h"
 #include "OptionModel.h"
+#include "base_qt_export.h"
 
 //* displays Counter names and counts
 class BASE_QT_EXPORT SystemEnvironmentDialog: public Dialog

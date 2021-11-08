@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
-#include "ToolButton.h"
 #include "Debug.h"
 #include "IconSize.h"
+#include "ToolButton.h"
+#include "base_qt_export.h"
 
 #include <QMenu>
 #include <QHash>

@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "XmlOptions.h"
 #include "CursorMonitor.h"
+#include "XmlOptions.h"
 
 //_________________________________________________________
 CursorMonitor::CursorMonitor( QWidget* parent ):

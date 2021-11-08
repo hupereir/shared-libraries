@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "FileInformationDialog.h"
-
 #include "BaseFileInfo.h"
 #include "FileRecordProperties.h"
 #include "FileSystemModel.h"
+
 
 
 //_________________________________________________________

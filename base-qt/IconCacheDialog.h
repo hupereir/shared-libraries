@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "Dialog.h"
 #include "Counter.h"
+#include "Dialog.h"
 #include "IconCacheModel.h"
+#include "base_qt_export.h"
 
 class TreeView;
 

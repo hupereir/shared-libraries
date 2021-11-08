@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "QtUtil.h"
-
 #include "Color.h"
 #include "Debug.h"
 #include "Util.h"
+
 
 #include <QApplication>
 #include <QCursor>

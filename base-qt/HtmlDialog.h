@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BrowsedLineEditor.h"
-#include "Dialog.h"
 #include "ComboBox.h"
-#include "LineEditor.h"
+#include "Dialog.h"
 #include "File.h"
+#include "LineEditor.h"
+#include "base_qt_export.h"
 
 #include <QString>
 #include <QList>

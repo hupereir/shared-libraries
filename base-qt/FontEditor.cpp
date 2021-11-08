@@ -25,8 +25,8 @@
 \date $Date$
 */
 
-#include "BaseIconNames.h"
 #include "FontEditor.h"
+#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
 

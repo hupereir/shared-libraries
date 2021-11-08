@@ -21,10 +21,10 @@
 *******************************************************************************/
 
 
-#include "base_export.h"
-#include "Counter.h"
 #include "Command.h"
+#include "Counter.h"
 #include "ObjectDeleter.h"
+#include "base_export.h"
 
 #include <QProcess>
 #include <QObject>

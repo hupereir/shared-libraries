@@ -20,7 +20,6 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BlockHighlight.h"
 #include "BoxSelection.h"
 #include "Counter.h"
@@ -32,6 +31,7 @@
 #include "TextBlockData.h"
 #include "TextPosition.h"
 #include "TextSelection.h"
+#include "base_qt_export.h"
 
 #include <QAction>
 #include <QBasicTimer>

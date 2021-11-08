@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "StandardAction.h"
-
 #include "BaseIconNames.h"
 #include "IconEngine.h"
+
 
 //_________________________________________________________
 StandardAction::StandardAction( StandardAction::Type type, QObject* parent ):

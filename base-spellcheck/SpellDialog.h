@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "Dialog.h"
 #include "ListModel.h"
 #include "SpellInterface.h"
 #include "TextPosition.h"
+#include "base_spellcheck_export.h"
 
 #include <QComboBox>
 #include <QLabel>

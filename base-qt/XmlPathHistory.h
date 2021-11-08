@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "PathHistory.h"
 #include "File.h"
+#include "PathHistory.h"
+#include "base_qt_export.h"
 
 #include <QString>
 

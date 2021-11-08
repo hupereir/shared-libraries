@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_svg_export.h"
 #include "BaseSvgRenderer.h"
 #include "Margins.h"
+#include "base_svg_export.h"
 
 #include <QByteArray>
 #include <QIODevice>

@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "IconSizeComboBox.h"
 #include "OptionWidget.h"
+#include "base_qt_export.h"
 
 //* QComboBox associated to an option for configuration dialogs
 class BASE_QT_EXPORT OptionIconSizeComboBox: public IconSizeComboBox, public OptionWidget

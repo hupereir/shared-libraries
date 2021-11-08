@@ -17,9 +17,9 @@
 *
 *******************************************************************************/
 
+#include "SystemEnvironmentDialog.h"
 #include "CppUtil.h"
 #include "QtUtil.h"
-#include "SystemEnvironmentDialog.h"
 #include "TreeView.h"
 
 

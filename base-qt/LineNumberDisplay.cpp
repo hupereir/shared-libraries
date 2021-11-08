@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
-#include "TextEditor.h"
-#include "Debug.h"
 #include "LineNumberDisplay.h"
+#include "Debug.h"
 #include "TextBlockRange.h"
+#include "TextEditor.h"
 #include "XmlOptions.h"
 
 #include <QPainter>

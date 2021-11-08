@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_filesystem_export.h"
 #include "BaseFileIconProvider.h"
 #include "Counter.h"
 #include "FileRecord.h"
 #include "MimeTypeIconProvider.h"
+#include "base_filesystem_export.h"
 
 #include <QHash>
 #include <QIcon>

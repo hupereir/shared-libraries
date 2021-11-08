@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Options.h"
 #include "TreeModel.h"
+#include "base_qt_export.h"
 
 #include <array>
 

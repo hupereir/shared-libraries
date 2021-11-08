@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "BaseIconNames.h"
 #include "ColorDisplay.h"
+#include "BaseIconNames.h"
 #include "ColorGrabButton.h"
 #include "Debug.h"
 #include "IconEngine.h"

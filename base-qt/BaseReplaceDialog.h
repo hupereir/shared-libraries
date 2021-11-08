@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseFindDialog.h"
 #include "BaseReplaceWidget.h"
+#include "base_qt_export.h"
 
 //* replace_text dialogs
 class BASE_QT_EXPORT BaseReplaceDialog: public BaseFindDialog

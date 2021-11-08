@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "MultipleClickCounter.h"
 #include "XcbDefines.h"
+#include "base_qt_export.h"
 
 #include <QBasicTimer>
 #include <QSize>

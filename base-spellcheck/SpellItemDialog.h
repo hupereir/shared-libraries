@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "Dialog.h"
-#include "SpellItemModel.h"
 #include "QOrderedSet.h"
+#include "SpellItemModel.h"
+#include "base_spellcheck_export.h"
 
 #include <QStringList>
 

@@ -17,13 +17,13 @@
 *
 *******************************************************************************/
 
+#include "PathEditor.h"
 #include "BaseFileInfo.h"
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "DragMonitor.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "PathEditor.h"
 #include "PathEditor_p.h"
 #include "QtUtil.h"
 #include "Singleton.h"

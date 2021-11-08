@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "IconView.h"
 #include "BaseFindDialog.h"
 #include "BaseFindWidget.h"
 #include "BaseIconNames.h"
@@ -24,7 +25,6 @@
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "IconView.h"
 #include "InformationDialog.h"
 #include "ItemModel.h"
 #include "QtUtil.h"

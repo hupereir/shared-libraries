@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
 #include "IconCache.h"
 #include "NonCopyable.h"
+#include "base_qt_export.h"
 
 //* customized Icon factory to provide better looking disabled icons
 class BASE_QT_EXPORT IconEngine final: private Base::Counter<IconEngine>, private Base::NonCopyable<IconEngine>

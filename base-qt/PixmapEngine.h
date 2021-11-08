@@ -19,12 +19,12 @@
 * this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 *******************************************************************************/
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
 #include "NonCopyable.h"
 #include "PixmapCache.h"
+#include "base_qt_export.h"
 
 //* customized Icon factory to provide better looking disabled icons
 class BASE_QT_EXPORT PixmapEngine final: private Base::Counter<PixmapEngine>, private Base::NonCopyable<PixmapEngine>

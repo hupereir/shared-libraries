@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "ToolBarMenu.h"
-
 #include "Debug.h"
 #include "IconSizeMenu.h"
 #include "ToolButtonStyleMenu.h"
+
 
 //____________________________________________________
 ToolBarMenu::ToolBarMenu( QWidget* parent ):

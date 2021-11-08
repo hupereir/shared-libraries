@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "TreeViewItemDelegate.h"
+#include "base_qt_export.h"
 
 class BASE_QT_EXPORT TextEditionDelegate : public TreeViewItemDelegate, private Base::Counter<TextEditionDelegate>
 {

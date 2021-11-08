@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "Slider.h"
 #include "OptionWidget.h"
+#include "Slider.h"
+#include "base_qt_export.h"
 
 #include <cmath>
 

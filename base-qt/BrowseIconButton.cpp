@@ -17,15 +17,15 @@
 *
 *******************************************************************************/
 
-#include "LineEditor.h"
-#include "Pixmap.h"
+#include "BrowseIconButton.h"
 #include "File.h"
 #include "IconSize.h"
-#include "BrowseIconButton.h"
 #include "ImageFileDialog.h"
 #include "InformationDialog.h"
-#include "XmlOptions.h"
+#include "LineEditor.h"
+#include "Pixmap.h"
 #include "QtUtil.h"
+#include "XmlOptions.h"
 
 #include <QMimeData>
 #include <QUrl>

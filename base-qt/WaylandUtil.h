@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "XcbDefines.h"
 #include "NonCopyable.h"
+#include "XcbDefines.h"
+#include "base_qt_export.h"
 
 #include <QHash>
 #include <QIcon>

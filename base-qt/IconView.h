@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "IconViewItem.h"
 #include "TextSelection.h"
+#include "base_qt_export.h"
 
 #include <QBasicTimer>
 #include <QString>

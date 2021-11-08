@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_svg_export.h"
 #include "Margins.h"
 #include "SvgRenderer.h"
 #include "SvgThread.h"
 #include "ThreadDeleter.h"
+#include "base_svg_export.h"
 
 #include <QSize>
 #include <QObject>

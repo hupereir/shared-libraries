@@ -18,13 +18,13 @@
 *******************************************************************************/
 
 #include "TabWidget.h"
-#include "TabWidget_p.h"
-
 #include "BaseContextMenu.h"
 #include "File.h"
 #include "QtUtil.h"
-#include "XmlOptions.h"
+#include "TabWidget_p.h"
 #include "XcbUtil.h"
+#include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QGridLayout>

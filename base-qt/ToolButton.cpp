@@ -19,10 +19,10 @@
 
 
 #include "ToolButton.h"
-
 #include "IconSize.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
+
 
 #include <QIcon>
 #include <QPixmap>

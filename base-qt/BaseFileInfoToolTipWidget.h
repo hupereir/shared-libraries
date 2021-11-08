@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseFileInfo.h"
 #include "BaseToolTipWidget.h"
+#include "base_qt_export.h"
 
 #include <QIcon>
 #include <QFrame>

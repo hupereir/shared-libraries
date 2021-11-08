@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "File.h"
 #include "PixmapEngine.h"
+#include "File.h"
 #include "XmlOptions.h"
 
 #include <QFileInfo>

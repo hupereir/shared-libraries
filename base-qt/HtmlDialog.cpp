@@ -18,13 +18,13 @@
 *******************************************************************************/
 
 #include "HtmlDialog.h"
-
+#include "BaseIconNames.h"
 #include "FileDialog.h"
 #include "GridLayout.h"
-#include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"
+
 
 #include <QLabel>
 #include <QLayout>

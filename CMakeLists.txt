@@ -16,8 +16,6 @@ include(Macros)
 setup_cmake_settings()
 setup_compiler_flags()
 
-add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x050F00)
-
 if(WIN32)
 
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--enable-auto-import")

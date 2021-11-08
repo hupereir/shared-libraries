@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_filesystem_export.h"
 #include "File.h"
 #include "FileSystemModel.h"
 #include "FileThread.h"
 #include "ThreadDeleter.h"
+#include "base_filesystem_export.h"
 
 #include <QFileSystemWatcher>
 #include <QIcon>

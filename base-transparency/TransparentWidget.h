@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_transparency_export.h"
 #include "Counter.h"
 #include "Margins.h"
+#include "base_transparency_export.h"
 
 #include <QAction>
 #include <QPaintEvent>

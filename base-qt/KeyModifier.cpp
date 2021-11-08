@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "KeyModifier.h"
-
 #include "Debug.h"
 #include "XcbUtil.h"
+
 
 #if defined(Q_OS_WIN)
 #include <windows.h>

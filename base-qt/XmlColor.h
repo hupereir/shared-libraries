@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Color.h"
+#include "base_qt_export.h"
 
 #include <QDomDocument>
 #include <QDomElement>

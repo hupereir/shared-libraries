@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_help_export.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "base_help_export.h"
 
 #include <QVector>
 

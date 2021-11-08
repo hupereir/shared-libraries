@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "SimpleListView.h"
+#include "Pixmap.h"
 #include "SimpleListView_p.h"
 
-#include "Pixmap.h"
 
 #include <QAbstractItemDelegate>
 #include <QApplication>

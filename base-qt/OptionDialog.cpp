@@ -17,10 +17,10 @@
 *
 *******************************************************************************/
 
+#include "OptionDialog.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "OptionDialog.h"
 #include "QtUtil.h"
 #include "Singleton.h"
 #include "TextEditionDelegate.h"

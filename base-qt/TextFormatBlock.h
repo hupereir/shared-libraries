@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "Functors.h"
 #include "TextFormat.h"
+#include "base_qt_export.h"
 
 #include <QColor>
 #include <QList>

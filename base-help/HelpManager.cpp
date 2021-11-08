@@ -17,11 +17,11 @@
 *
 *******************************************************************************/
 
-#include "BaseIconNames.h"
-#include "Dialog.h"
-#include "Debug.h"
-#include "HelpDialog.h"
 #include "HelpManager.h"
+#include "BaseIconNames.h"
+#include "Debug.h"
+#include "Dialog.h"
+#include "HelpDialog.h"
 #include "IconEngine.h"
 #include "QtUtil.h"
 #include "XmlOptions.h"

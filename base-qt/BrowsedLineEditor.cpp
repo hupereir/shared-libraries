@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "BaseIconNames.h"
 #include "BrowsedLineEditor.h"
+#include "BaseIconNames.h"
 #include "Debug.h"
 #include "File.h"
 #include "FileDialog.h"

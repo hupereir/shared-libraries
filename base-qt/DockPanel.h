@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "base_qt_export.h"
 
 #include <QBasicTimer>
 #include <QTimerEvent>

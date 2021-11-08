@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "FileRecord.h"
+#include "base_qt_export.h"
 
 #include <QDomElement>
 #include <QDomDocument>

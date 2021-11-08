@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_transparency_export.h"
 #include "Counter.h"
+#include "base_transparency_export.h"
 
 #include <QColor>
 #include <QLabel>

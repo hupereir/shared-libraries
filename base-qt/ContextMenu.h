@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseContextMenu.h"
+#include "base_qt_export.h"
 
 #include <QAction>
 #include <QList>

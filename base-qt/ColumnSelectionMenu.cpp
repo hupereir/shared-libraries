@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "ColumnSelectionMenu.h"
-
 #include "Debug.h"
 #include "TreeView.h"
+
 
 #include <QHeaderView>
 

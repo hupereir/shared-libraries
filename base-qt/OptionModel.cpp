@@ -17,9 +17,9 @@
 *
 *******************************************************************************/
 
+#include "OptionModel.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
-#include "OptionModel.h"
 #include "XmlOptions.h"
 
 #include <QObject>

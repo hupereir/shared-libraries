@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "LineEditor.h"
+#include "base_qt_export.h"
 
 //* used to display colors and a choose button
 class BASE_QT_EXPORT ColorDisplay: public QWidget, private Base::Counter<ColorDisplay>

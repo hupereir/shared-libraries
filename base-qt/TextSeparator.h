@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "NonCopyable.h"
+#include "base_qt_export.h"
 
 #include <QSet>
 #include <QString>

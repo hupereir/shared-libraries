@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
-#include "Pixmap.h"
 #include "Debug.h"
+#include "Pixmap.h"
+#include "base_qt_export.h"
 
 #include <QLabel>
 #include <QToolButton>

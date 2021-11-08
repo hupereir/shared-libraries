@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "BaseApplication.h"
-
 #include "BaseIconNames.h"
 #include "Command.h"
 #include "CppUtil.h"
@@ -30,6 +29,7 @@
 #include "ServerSystemOptions.h"
 #include "Util.h"
 #include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QDialogButtonBox>

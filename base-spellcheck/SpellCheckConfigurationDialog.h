@@ -19,8 +19,8 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "BaseConfigurationDialog.h"
+#include "base_spellcheck_export.h"
 
 class OptionCheckBox;
 

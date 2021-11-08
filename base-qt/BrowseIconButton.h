@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "ToolButton.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "ToolButton.h"
+#include "base_qt_export.h"
 
 #include <QString>
 

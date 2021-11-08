@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "ListModel.h"
+#include "base_spellcheck_export.h"
 
 #include <QSet>
 #include <QString>

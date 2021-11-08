@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_ssh_export.h"
 #include "Counter.h"
+#include "base_ssh_export.h"
 
 #include <QAbstractSocket>
 #include <QByteArray>

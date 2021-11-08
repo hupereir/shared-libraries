@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_filesystem_export.h"
 #include "Dialog.h"
 #include "FileSystemModel.h"
+#include "base_filesystem_export.h"
 
 #include <QList>
 #include <QPushButton>

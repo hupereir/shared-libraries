@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "TextSelection.h"
+#include "base_qt_export.h"
 
 #include <QAbstractItemDelegate>
 #include <QMenu>

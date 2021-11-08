@@ -17,9 +17,9 @@
 *
 *******************************************************************************/
 
+#include "PathHistoryConfiguration.h"
 #include "OptionCheckBox.h"
 #include "OptionSpinBox.h"
-#include "PathHistoryConfiguration.h"
 #include "QtUtil.h"
 
 

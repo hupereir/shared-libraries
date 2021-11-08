@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
+#include "base_qt_export.h"
 
 //* used to wrap object T into tree structure
 class BASE_QT_EXPORT TreeItemBase: private Base::Counter<TreeItemBase>

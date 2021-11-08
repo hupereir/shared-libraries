@@ -22,10 +22,10 @@
 #include "IconSize.h"
 #include "QtUtil.h"
 #include "Util.h"
-#include "XmlOptions.h"
-#include "XcbUtil.h"
-
 #include "WindowManager.h"
+#include "XcbUtil.h"
+#include "XmlOptions.h"
+
 
 
 #include <QTextStream>

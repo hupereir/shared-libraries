@@ -18,13 +18,13 @@
 *******************************************************************************/
 
 #include "XmlPathHistory.h"
-
 #include "Debug.h"
-#include "Singleton.h"
 #include "Operators.h"
+#include "Singleton.h"
 #include "XmlDocument.h"
 #include "XmlFileRecord.h"
 #include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QFile>

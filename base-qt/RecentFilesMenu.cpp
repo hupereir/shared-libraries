@@ -18,12 +18,12 @@
 *******************************************************************************/
 
 #include "RecentFilesMenu.h"
-
 #include "BaseIconNames.h"
 #include "FileRecordBaseProperties.h"
 #include "IconEngine.h"
 #include "QuestionDialog.h"
 #include "XmlOptions.h"
+
 
 #include <algorithm>
 

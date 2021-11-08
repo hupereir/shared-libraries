@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "EmbeddedWidget.h"
+#include "base_qt_export.h"
 
 #include <QAbstractButton>
 #include <QPalette>

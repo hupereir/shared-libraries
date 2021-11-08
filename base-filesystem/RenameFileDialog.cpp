@@ -17,9 +17,9 @@
 *
 *******************************************************************************/
 
+#include "RenameFileDialog.h"
 #include "Debug.h"
 #include "LineEditor.h"
-#include "RenameFileDialog.h"
 
 #include <QLabel>
 

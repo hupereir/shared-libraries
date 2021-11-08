@@ -20,12 +20,12 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "AbstractFindWidget.h"
-#include "Counter.h"
 #include "ComboBox.h"
-#include "TextSelection.h"
+#include "Counter.h"
 #include "QOrderedSet.h"
+#include "TextSelection.h"
+#include "base_qt_export.h"
 
 #include <QAbstractButton>
 #include <QCheckBox>

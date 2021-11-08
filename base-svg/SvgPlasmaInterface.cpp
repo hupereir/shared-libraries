@@ -18,13 +18,13 @@
 *******************************************************************************/
 
 #include "SvgPlasmaInterface.h"
-
 #include "Command.h"
 #include "CustomProcess.h"
 #include "Debug.h"
 #include "Operators.h"
 #include "SvgSystemOptions.h"
 #include "Util.h"
+
 
 #include <QSettings>
 

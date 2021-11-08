@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "ListModel.h"
 #include "CounterMap.h"
 #include "Debug.h"
+#include "ListModel.h"
+#include "base_qt_export.h"
 
 #include <array>
 

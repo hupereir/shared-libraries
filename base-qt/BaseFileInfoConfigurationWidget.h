@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseFileInfoToolTipWidget.h"
 #include "OptionWidget.h"
+#include "base_qt_export.h"
 
 #include <QWidget>
 #include <QCheckBox>

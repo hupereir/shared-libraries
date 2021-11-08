@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "OptionWidget.h"
+#include "base_qt_export.h"
 
 #include <QCheckBox>
 

@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "BaseIconNames.h"
 #include "CounterDialog.h"
+#include "BaseIconNames.h"
 #include "CounterMap.h"
 #include "IconEngine.h"
 #include "QtUtil.h"

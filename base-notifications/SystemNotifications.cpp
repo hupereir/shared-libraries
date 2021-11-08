@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "SystemNotifications.h"
+#include "Debug.h"
 #include "SystemNotifications_p.h"
 
-#include "Debug.h"
 
 //____________________________________________
 SystemNotifications::SystemNotifications( QObject* parent, const QString& applicationName, const QIcon& applicationIcon ):

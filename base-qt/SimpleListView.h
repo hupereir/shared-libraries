@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "TreeView.h"
+#include "base_qt_export.h"
 #include <QListView>
 class BASE_QT_EXPORT SimpleListView: public QListView
 {

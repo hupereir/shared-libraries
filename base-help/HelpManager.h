@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_help_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "File.h"
 #include "HelpItem.h"
+#include "base_help_export.h"
 
 #include <QObject>
 #include <QAction>

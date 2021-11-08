@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "TimeStamp.h"
+#include "base_export.h"
 
 #include <QFile>
 #include <QString>

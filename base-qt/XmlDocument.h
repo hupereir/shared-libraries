@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Counter.h"
 #include "XmlError.h"
+#include "base_qt_export.h"
 
 #include <QByteArray>
 #include <QFile>

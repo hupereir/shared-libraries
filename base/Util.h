@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "File.h"
+#include "base_export.h"
 
 #include <QStringList>
 

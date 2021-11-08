@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "Functors.h"
+#include "base_export.h"
 
 #include <QTextStream>
 #include <QSet>

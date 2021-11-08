@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "Functors.h"
+#include "base_export.h"
 
 #include <QDataStream>
 #include <QString>

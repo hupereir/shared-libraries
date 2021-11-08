@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_svg_export.h"
 #include "Counter.h"
-#include "OptionWidgetList.h"
 #include "OptionCheckBox.h"
+#include "OptionWidgetList.h"
+#include "base_svg_export.h"
 
 #include <QWidget>
 

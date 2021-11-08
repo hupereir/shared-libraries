@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "SystemNotifications_p.h"
-
 #include "Debug.h"
 #include "IconSize.h"
+
 
 #ifndef QT_NO_DBUS
 #include <QDBusArgument>

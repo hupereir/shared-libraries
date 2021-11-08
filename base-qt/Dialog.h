@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "BaseDialog.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "base_qt_export.h"
 
 #include <QDialogButtonBox>
 #include <QPushButton>

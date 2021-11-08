@@ -23,8 +23,8 @@
  *
  */
 
-#include "base_notifications_export.h"
 #include "Counter.h"
+#include "base_notifications_export.h"
 
 #include <QObject>
 #include <QVariantMap>

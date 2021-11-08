@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "TextBlockFlags.h"
 #include "Counter.h"
 #include "Debug.h"
+#include "TextBlockFlags.h"
+#include "base_qt_export.h"
 
 #include <QTextBlockUserData>
 

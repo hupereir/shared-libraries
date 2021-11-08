@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_server_export.h"
 #include "Counter.h"
+#include "base_server_export.h"
 
 #include <QDataStream>
 #include <QString>

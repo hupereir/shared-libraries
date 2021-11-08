@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "Functors.h"
 #include "TimeStamp.h"
+#include "base_export.h"
 
 #include <QFileInfo>
 #include <QVector>

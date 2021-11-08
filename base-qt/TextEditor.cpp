@@ -18,18 +18,16 @@
 *******************************************************************************/
 
 #include "TextEditor.h"
-
-#include "BaseIconNames.h"
 #include "BaseContextMenu.h"
 #include "BaseFindDialog.h"
 #include "BaseFindWidget.h"
+#include "BaseIconNames.h"
 #include "BaseReplaceDialog.h"
 #include "BaseReplaceWidget.h"
-#include "InformationDialog.h"
 #include "Color.h"
 #include "CppUtil.h"
-#include "TextDocument.h"
 #include "IconEngine.h"
+#include "InformationDialog.h"
 #include "KeyModifier.h"
 #include "LineEditor.h"
 #include "LineNumberDisplay.h"
@@ -41,10 +39,12 @@
 #include "StandardAction.h"
 #include "TextBlockData.h"
 #include "TextBlockRange.h"
+#include "TextDocument.h"
 #include "TextEditorMarginWidget.h"
 #include "TextSeparator.h"
 #include "Util.h"
 #include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QAbstractTextDocumentLayout>

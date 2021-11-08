@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "OptionWidget.h"
+#include "base_spellcheck_export.h"
 
 #include <QToolButton>
 

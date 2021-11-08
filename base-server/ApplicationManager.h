@@ -20,13 +20,13 @@
 *
 *******************************************************************************/
 
-#include "base_server_export.h"
 #include "Client.h"
 #include "CommandLineArguments.h"
 #include "CommandLineParser.h"
 #include "Counter.h"
 #include "ObjectDeleter.h"
 #include "ServerCommand.h"
+#include "base_server_export.h"
 
 #include <QBasicTimer>
 #include <QHash>

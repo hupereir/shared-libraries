@@ -17,11 +17,11 @@
 *
 *******************************************************************************/
 
+#include "WarningDialog.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "QtUtil.h"
-#include "WarningDialog.h"
 
 
 #include <QLayout>

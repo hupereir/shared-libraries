@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "SpellItemDialog.h"
-
 #include "CppUtil.h"
 #include "TreeView.h"
+
 
 #include <QHeaderView>
 #include <QLabel>

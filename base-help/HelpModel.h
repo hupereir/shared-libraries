@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_help_export.h"
-#include "ListModel.h"
-#include "HelpItem.h"
 #include "Debug.h"
+#include "HelpItem.h"
+#include "ListModel.h"
+#include "base_help_export.h"
 
 #include <string.h>
 

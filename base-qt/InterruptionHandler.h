@@ -21,8 +21,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "NonCopyable.h"
+#include "base_qt_export.h"
 
 class BASE_QT_EXPORT InterruptionHandler: private Base::NonCopyable<InterruptionHandler>
 {

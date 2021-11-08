@@ -18,10 +18,10 @@
 *******************************************************************************/
 
 #include "ColorOptionModel.h"
-
 #include "CppUtil.h"
-#include "Pixmap.h"
 #include "IconSize.h"
+#include "Pixmap.h"
+
 
 #include <QPainter>
 #include <QPalette>

@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Dialog.h"
 #include "GridLayoutItem.h"
 #include "TimeStamp.h"
+#include "base_qt_export.h"
 
 #include <QFile>
 #include <QList>

@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "Command.h"
-
 #include "CppUtil.h"
 #include "Debug.h"
+
 
 #include <QProcess>
 #include <QRegularExpression>

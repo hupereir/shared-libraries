@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "Debug.h"
 #include "ElidedLabel.h"
+#include "Debug.h"
 
 #include <QApplication>
 #include <QClipboard>

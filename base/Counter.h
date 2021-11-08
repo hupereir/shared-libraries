@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_export.h"
 #include "CounterMap.h"
+#include "base_export.h"
 
 #include <QString>
 

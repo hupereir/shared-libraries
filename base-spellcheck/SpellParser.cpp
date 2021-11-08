@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "SpellInterface.h"
 #include "SpellParser.h"
+#include "SpellInterface.h"
 #include "TexString.h"
 #include "Word.h"
 

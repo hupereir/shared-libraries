@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "BaseFileInfoItemDelegate.h"
-
 #include "BaseFileIconProvider.h"
 #include "BaseFileInfoModel.h"
+
 
 #include <QAbstractItemView>
 #include <QStyleOptionViewItem>

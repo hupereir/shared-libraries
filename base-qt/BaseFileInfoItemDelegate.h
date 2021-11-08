@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "TreeViewItemDelegate.h"
+#include "base_qt_export.h"
 
 class BASE_QT_EXPORT BaseFileInfoItemDelegate: public TreeViewItemDelegate
 {

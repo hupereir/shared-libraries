@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "Options.h"
 #include "File.h"
+#include "Options.h"
 #include "XmlError.h"
 
 namespace Private

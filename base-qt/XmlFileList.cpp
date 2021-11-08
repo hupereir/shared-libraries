@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "XmlFileList.h"
-
 #include "Debug.h"
 #include "Operators.h"
 #include "XmlDocument.h"
 #include "XmlFileRecord.h"
+
 
 #include <QApplication>
 #include <QFile>

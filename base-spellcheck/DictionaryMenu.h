@@ -28,8 +28,8 @@
 \date $Date$
 */
 
-#include "base_spellcheck_export.h"
 #include "Counter.h"
+#include "base_spellcheck_export.h"
 
 #include <QAction>
 #include <QActionGroup>

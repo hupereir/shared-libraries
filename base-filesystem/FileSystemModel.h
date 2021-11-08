@@ -20,11 +20,11 @@
 *
 *******************************************************************************/
 
-#include "base_filesystem_export.h"
 #include "Counter.h"
 #include "Debug.h"
 #include "FileRecord.h"
 #include "ListModel.h"
+#include "base_filesystem_export.h"
 
 #include <QHash>
 #include <QMimeData>

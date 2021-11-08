@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "RecentFilesConfiguration.h"
 #include "BaseIconNames.h"
 #include "ContextMenu.h"
 #include "Debug.h"
@@ -27,7 +28,6 @@
 #include "OptionSpinBox.h"
 #include "QtUtil.h"
 #include "QuestionDialog.h"
-#include "RecentFilesConfiguration.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 

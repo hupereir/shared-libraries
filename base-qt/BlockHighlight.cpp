@@ -18,9 +18,9 @@
 *******************************************************************************/
 
 #include "BlockHighlight.h"
-#include "TextEditor.h"
 #include "TextBlockData.h"
 #include "TextBlockRange.h"
+#include "TextEditor.h"
 
 #include <QAbstractTextDocumentLayout>
 #include <QTextDocument>

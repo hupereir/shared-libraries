@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Color.h"
 #include "Counter.h"
+#include "base_qt_export.h"
 
 #include <QComboBox>
 

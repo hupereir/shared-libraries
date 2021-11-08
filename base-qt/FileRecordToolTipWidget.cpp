@@ -18,9 +18,8 @@
 *******************************************************************************/
 
 #include "FileRecordToolTipWidget.h"
-
-#include "BaseFileInfo.h"
 #include "BaseFileIconProvider.h"
+#include "BaseFileInfo.h"
 #include "Debug.h"
 #include "GridLayout.h"
 #include "GridLayoutItem.h"
@@ -28,6 +27,7 @@
 #include "Singleton.h"
 #include "TimeStamp.h"
 #include "XmlOptions.h"
+
 
 #include <QLayout>
 

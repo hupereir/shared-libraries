@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "Dialog.h"
+#include "base_qt_export.h"
 
 class TextEncodingWidget;
 

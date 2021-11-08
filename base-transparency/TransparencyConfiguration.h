@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_transparency_export.h"
 #include "Counter.h"
 #include "OptionWidgetList.h"
+#include "base_transparency_export.h"
 
 #include <QWidget>
 

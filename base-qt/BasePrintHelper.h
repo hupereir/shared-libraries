@@ -19,10 +19,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "TimeStamp.h"
 #include "Debug.h"
 #include "File.h"
+#include "TimeStamp.h"
+#include "base_qt_export.h"
 
 #include <QObject>
 #include <QPainter>

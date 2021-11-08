@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "LineEditor.h"
+#include "base_qt_export.h"
 
 class BASE_QT_EXPORT PasswordEditor: public LineEditor
 {

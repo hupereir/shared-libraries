@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "SshConnectionAttributes.h"
-
 #include "Functors.h"
+
 
 #include <algorithm>
 

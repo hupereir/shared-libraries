@@ -20,9 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "Counter.h"
 #include "SpellInterface.h"
+#include "base_spellcheck_export.h"
 
 #include <QMenu>
 #include <QHash>

@@ -17,9 +17,9 @@
 *
 *******************************************************************************/
 
+#include "SelectLineDialog.h"
 #include "Debug.h"
 #include "QtUtil.h"
-#include "SelectLineDialog.h"
 #include "SelectLineWidget.h"
 
 #include <QLayout>

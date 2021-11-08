@@ -18,11 +18,11 @@
 *******************************************************************************/
 
 #include "TabbedDialog.h"
-#include "TabbedDialog_p.h"
-
 #include "IconSize.h"
 #include "QtUtil.h"
 #include "SimpleListView.h"
+#include "TabbedDialog_p.h"
+
 
 #include <QApplication>
 #include <QMimeData>

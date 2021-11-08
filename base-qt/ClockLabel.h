@@ -20,13 +20,13 @@
 *
 *******************************************************************************/
 
+#include "Counter.h"
+#include "TimeStamp.h"
 #include "base_qt_export.h"
 #include <QDateTime>
 #include <QBasicTimer>
 #include <QLabel>
 
-#include "Counter.h"
-#include "TimeStamp.h"
 
 //* clock timer. Emit signal when current time is changed
 class BASE_QT_EXPORT ClockTimer: public QObject, private Base::Counter<ClockTimer>

@@ -20,10 +20,10 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
-#include "Counter.h"
 #include "ComboBox.h"
+#include "Counter.h"
 #include "File.h"
+#include "base_qt_export.h"
 
 #include <QAbstractButton>
 #include <QButtonGroup>

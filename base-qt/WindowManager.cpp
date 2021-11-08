@@ -18,9 +18,9 @@
  *************************************************************************/
 
 #include "WindowManager.h"
-
 #include "Debug.h"
 #include "XcbUtil.h"
+
 
 #include <QComboBox>
 #include <QDialog>

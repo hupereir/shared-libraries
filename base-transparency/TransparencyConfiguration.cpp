@@ -17,6 +17,7 @@
 *
 *******************************************************************************/
 
+#include "TransparencyConfiguration.h"
 #include "CompositeEngine.h"
 #include "Debug.h"
 #include "GridLayout.h"
@@ -25,7 +26,6 @@
 #include "OptionSlider.h"
 #include "OptionSpinBox.h"
 #include "QtUtil.h"
-#include "TransparencyConfiguration.h"
 
 
 #include <QGroupBox>

@@ -20,8 +20,8 @@
 *
 *******************************************************************************/
 
-#include "base_transparency_export.h"
 #include "NonCopyable.h"
+#include "base_transparency_export.h"
 
 namespace Transparency
 {

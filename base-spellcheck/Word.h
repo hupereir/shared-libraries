@@ -21,8 +21,8 @@
 *
 *******************************************************************************/
 
-#include "base_spellcheck_export.h"
 #include "TextPosition.h"
+#include "base_spellcheck_export.h"
 #include <QSet>
 
 namespace SpellCheck

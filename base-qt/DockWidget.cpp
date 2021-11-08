@@ -17,8 +17,8 @@
 *
 *******************************************************************************/
 
-#include "BaseMainWindow.h"
 #include "DockWidget.h"
+#include "BaseMainWindow.h"
 #include "DockWidget_p.h"
 #include "QtUtil.h"
 #include "Singleton.h"
