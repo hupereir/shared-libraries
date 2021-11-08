@@ -44,7 +44,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
     Debug::Throw( QStringLiteral("TabbedDialog::TabbedDialog.\n") );
 
     auto layout = new QVBoxLayout;
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     setLayout( layout );
 
     // horizontal layout
@@ -65,7 +65,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // button box
     stackedLayout->addWidget( buttonBox_ = new QDialogButtonBox( this ), 0 );
-    buttonBox_->layout()->setMargin(5);
+    QtUtil::setMargin(buttonBox_->layout(), 5);
 
     // connections
     connect( model_, &Private::TabbedDialogModel::itemOrderChanged, this, &TabbedDialog::_reorder );
@@ -81,18 +81,18 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
     // base widget
     auto base = new QWidget;
     base->setLayout( new QVBoxLayout );
-    base->layout()->setMargin(5);
+    QtUtil::setMargin(base->layout(), 5);
     base->layout()->setSpacing(10);
 
     auto hLayout = new QHBoxLayout;
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     hLayout->setSpacing(5);
     base->layout()->addItem( hLayout );
 
     // tooltip label
     auto label = new QLabel( base );
     label->setText( tooltip.isEmpty() ? title:tooltip );
-    label->setMargin(5);
+    QtUtil::setMargin(label, 5);
 
     // update font
     label->setFont( QtUtil::titleFont( label->font() ) );
@@ -125,7 +125,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
 
     auto layout = new QVBoxLayout;
     layout->setSpacing( 5 );
-    layout->setMargin( 0 );
+    QtUtil::setMargin(layout, 0);
     main->setLayout( layout );
 
     // in expanded mode, the main widget is returned directly
@@ -138,7 +138,7 @@ QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const Q
         auto contents = new QWidget( main );
         contents->setLayout( new QVBoxLayout );
         contents->layout()->setSpacing(5);
-        contents->layout()->setMargin(0);
+        QtUtil::setMargin(contents->layout(), 0);
 
         layout->addWidget( contents );
         layout->addStretch(1);
@@ -173,7 +173,7 @@ void TabbedDialog::_display( const QModelIndex& index )
 void TabbedDialog::_reorder( int oldRow, int newRow )
 {
 
-    Debug::Throw() << "TabbedDialog::_reorder - old: " << oldRow << " new: " << newRow << endl;
+    Debug::Throw() << "TabbedDialog::_reorder - old: " << oldRow << " new: " << newRow << Qt::endl;
     if( newRow > oldRow ) newRow--;
 
     auto dataList( model_->get() );
@@ -269,4 +269,3 @@ namespace Private
     }
 
 }
-

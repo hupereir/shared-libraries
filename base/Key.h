@@ -199,7 +199,7 @@ namespace Base
 
             }
 
-            out << endl;
+            out << Qt::endl;
             return out;
         }
 

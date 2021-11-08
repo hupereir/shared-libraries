@@ -181,17 +181,17 @@ namespace TextFormat
                 << " background: " << format.background().name();
 
             if( !format.href().isEmpty() ) out << " href: " << format.href();
-            out << endl;
+            out << Qt::endl;
             return out;
         }
 
         //* streamer
         friend QTextStream& operator << ( QTextStream& out, const Block::List& formats )
         {
-            out << "TextFormatList: " << endl;
+            out << "TextFormatList: " << Qt::endl;
             for( const auto& block:formats )
             { out << block; }
-            out << endl;
+            out << Qt::endl;
             return out;
         }
 

@@ -43,7 +43,7 @@ class BASE_QT_EXPORT PrintPreviewDialog: public Dialog
     public:
 
     //* constructor
-    explicit PrintPreviewDialog( QWidget* = nullptr, Dialog::Flags = 0 );
+    explicit PrintPreviewDialog( QWidget* = nullptr, Dialog::Flags = {} );
 
     //* set print helper
     void setHelper( BasePrintHelper* );

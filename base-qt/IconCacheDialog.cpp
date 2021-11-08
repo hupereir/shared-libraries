@@ -17,12 +17,13 @@
 *
 *******************************************************************************/
 
-#include "IconCacheDialog.h"
-
 #include "BaseIconNames.h"
+#include "IconCacheDialog.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "QtUtil.h"
 #include "TreeView.h"
+
 
 #include <QPushButton>
 #include <QLayout>
@@ -36,8 +37,8 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     setWindowTitle( tr( "Icon Cache" ) );
     setOptionName( QStringLiteral("ICON_CACHE_DIALOG") );
 
-    layout()->setMargin(0);
-    buttonLayout().setMargin(5);
+    QtUtil::setMargin(layout(), 0);
+    QtUtil::setMargin(&buttonLayout(), 5);
 
     // insert main vertical box
     list_ = new TreeView( this );

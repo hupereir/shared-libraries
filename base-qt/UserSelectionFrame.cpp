@@ -17,8 +17,9 @@
 *
 *******************************************************************************/
 
-#include "Util.h"
+#include "QtUtil.h"
 #include "UserSelectionFrame.h"
+#include "Util.h"
 
 #include <QLayout>
 #include <QLabel>
@@ -31,7 +32,7 @@ UserSelectionFrame::UserSelectionFrame( QWidget* parent ):
 
     Debug::Throw( QStringLiteral("UserSelectionFrame::UserSelectionFrame\n") );
     setLayout( new QHBoxLayout );
-    layout()->setMargin(0);
+    QtUtil::setMargin(layout(), 0);
     layout()->setSpacing(5);
     layout()->addWidget( comboBox_ = new ComboBox( this ) );
 
@@ -65,7 +66,7 @@ QStringList UserSelectionFrame::users() const
 //____________________________________________________________
 void UserSelectionFrame::setUser( const QString& user )
 {
-    Debug::Throw() << "UserSelectionFrame::set - user: " << user << endl;
+    Debug::Throw() << "UserSelectionFrame::set - user: " << user << Qt::endl;
     if( user.isNull() || user.isEmpty() ) return;
 
     for( int i=0; i< comboBox_->QComboBox::count(); i++ )

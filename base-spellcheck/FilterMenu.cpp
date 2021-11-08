@@ -47,7 +47,7 @@ namespace SpellCheck
     //____________________________________________________________________
     void FilterMenu::select( const QString& filter )
     {
-        Debug::Throw() << "FilterMenu::select - filter: " << filter << endl;
+        Debug::Throw() << "FilterMenu::select - filter: " << filter << Qt::endl;
         const auto iter = Base::findByValue( actions_, filter );
         if( iter != actions_.cend() ) iter.key()->setChecked( true );
     }

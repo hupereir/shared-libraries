@@ -505,11 +505,11 @@ namespace SpellCheck
             word = interface_.word();
             if( word.isEmpty() )
             {
-                Debug::Throw() << "SpellCheck::SpellDialog::NextWord - empty word " << endl;
+                Debug::Throw() << "SpellCheck::SpellDialog::NextWord - empty word " << Qt::endl;
                 break;
             }
 
-            Debug::Throw() << "SpellCheck::SpellDialog::NextWord - word: " << word << endl;
+            Debug::Throw() << "SpellCheck::SpellDialog::NextWord - word: " << word << Qt::endl;
 
             // see if word is in ignore list
             if( interface_.isWordIgnored( word ) ) continue;
@@ -571,7 +571,7 @@ namespace SpellCheck
     //_________________________________________________________________
     void SpellDialog::_updateSelection( int index, int length )
     {
-        Debug::Throw() << "SpellCheck::SpellDialog::_updateSelection - index=" << index << endl;
+        Debug::Throw() << "SpellCheck::SpellDialog::_updateSelection - index=" << index << Qt::endl;
         auto cursor( editor_->textCursor() );
         cursor.setPosition( index, QTextCursor::MoveAnchor );
         cursor.setPosition( index+length, QTextCursor::KeepAnchor );
@@ -583,7 +583,7 @@ namespace SpellCheck
     void SpellDialog::_replaceSelection( const QString& word )
     {
 
-        Debug::Throw() << "SpellCheck::SpellDialog::_ReplaceSelection - word: " << word << endl;
+        Debug::Throw() << "SpellCheck::SpellDialog::_ReplaceSelection - word: " << word << Qt::endl;
         editor_->setReadOnly( false );
         editor_->textCursor().insertText( word );
         editor_->setReadOnly( true );

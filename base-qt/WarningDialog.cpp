@@ -17,11 +17,12 @@
 *
 *******************************************************************************/
 
-#include "WarningDialog.h"
-
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "QtUtil.h"
+#include "WarningDialog.h"
+
 
 #include <QLayout>
 
@@ -35,7 +36,7 @@ WarningDialog::WarningDialog( QWidget* parent, const QString& text ):
     //! try load Question icon
     QHBoxLayout *hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     mainLayout().addLayout( hLayout );
 
     QLabel* label = new QLabel( this );

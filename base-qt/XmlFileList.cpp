@@ -55,7 +55,7 @@ void XmlFileList::setTagName( const QString& value )
 //_______________________________________________
 bool XmlFileList::setDBFile( const File& file )
 {
-    Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << endl;
+    Debug::Throw() << "XmlFileList::_setDBFile - file: " << file << Qt::endl;
 
     // check file
     if( dbFile_ == file && !_records().isEmpty() ) return false;
@@ -87,7 +87,7 @@ bool XmlFileList::read( File file )
     if ( !document.setContent( &qfile ) )
     {
 
-        Debug::Throw() << document.error() << endl;
+        Debug::Throw() << document.error() << Qt::endl;
         return false;
 
     } else if( _read( document ) ) {

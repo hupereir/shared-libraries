@@ -17,9 +17,10 @@
 *
 *******************************************************************************/
 
+#include "Debug.h"
+#include "QtUtil.h"
 #include "SelectLineDialog.h"
 #include "SelectLineWidget.h"
-#include "Debug.h"
 
 #include <QLayout>
 
@@ -36,7 +37,7 @@ SelectLineDialog::SelectLineDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // create vbox layout
     setLayout( new QVBoxLayout );
-    layout()->setMargin( 10 );
+    QtUtil::setMargin(layout(), 10);
     layout()->setSpacing( 5 );
 
     setSelectLineWidget( new SelectLineWidget( this, false ) );

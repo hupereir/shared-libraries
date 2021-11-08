@@ -17,9 +17,10 @@
 *
 *******************************************************************************/
 
-#include "FilePermissionsWidget.h"
 #include "Debug.h"
+#include "FilePermissionsWidget.h"
 #include "GridLayout.h"
+#include "QtUtil.h"
 
 #include <QHash>
 #include <QCheckBox>
@@ -36,7 +37,7 @@ FilePermissionsWidget::FilePermissionsWidget( QWidget* parent, QFile::Permission
     Debug::Throw( QStringLiteral("FilePermissionsWidget::FilePermissionsWidget\n") );
 
     GridLayout* gridLayout = new GridLayout;
-    gridLayout->setMargin(0);
+    QtUtil::setMargin(gridLayout, 0);
     gridLayout->setMaxCount( 4 );
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );
     setLayout( gridLayout );

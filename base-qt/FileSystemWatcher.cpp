@@ -44,7 +44,7 @@ void FileSystemWatcher::_addModifiedDirectory( const QString& directory )
     if( directories_.contains( directory ) ) return;
 
     // append to directory list
-    Debug::Throw() << "FileSystemWatcher::_addModifiedDirectory - " << directory << endl;
+    Debug::Throw() << "FileSystemWatcher::_addModifiedDirectory - " << directory << Qt::endl;
     directories_.append( directory );
 
     // restart timer

@@ -17,8 +17,6 @@
 *
 *******************************************************************************/
 
-#include "IconView.h"
-
 #include "BaseFindDialog.h"
 #include "BaseFindWidget.h"
 #include "BaseIconNames.h"
@@ -26,12 +24,15 @@
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "IconView.h"
 #include "InformationDialog.h"
 #include "ItemModel.h"
+#include "QtUtil.h"
 #include "RegExpUtil.h"
 #include "Singleton.h"
 #include "TextEditor.h"
 #include "XmlOptions.h"
+
 
 #include <QApplication>
 #include <QDrag>
@@ -170,7 +171,7 @@ TextSelection IconView::selection() const
 bool IconView::setOptionName( const QString& value )
 {
 
-    Debug::Throw() << "IconView::setOptionName - value: " << value << endl;
+    Debug::Throw() << "IconView::setOptionName - value: " << value << Qt::endl;
 
     QString tmp;
 
@@ -399,7 +400,7 @@ bool IconView::isIndexHidden( const QModelIndex& ) const
 QModelIndex IconView::moveCursor( CursorAction action, Qt::KeyboardModifiers )
 {
 
-    Debug::Throw() << "IconView::moveCursor - action: " << action << endl;
+    Debug::Throw() << "IconView::moveCursor - action: " << action << Qt::endl;
 
     // current index
     auto index = currentIndex();
@@ -840,7 +841,7 @@ void IconView::wheelEvent( QWheelEvent* event )
         event->accept();
 
         // calculate delta
-        const auto offset = double(  event->delta() )/120;
+        const auto offset = double(  event->angleDelta().y() )/120;
 
         // check if direction has changed
         if( wheelOffsetAccumulated_ != 0 && Base::sign(offset) != Base::sign( wheelOffsetAccumulated_ ) )
@@ -863,7 +864,7 @@ void IconView::wheelEvent( QWheelEvent* event )
 void IconView::dragEnterEvent( QDragEnterEvent *event )
 {
 
-    Debug::Throw() << "IconView::dragEnterEvent" << endl;
+    Debug::Throw() << "IconView::dragEnterEvent" << Qt::endl;
 
     if( acceptDrops() && event->isAccepted() )
     { dragInProgress_ = true; }
@@ -880,7 +881,7 @@ void IconView::dragMoveEvent( QDragMoveEvent *event )
     if( acceptDrops() && event->isAccepted() )
     { dragInProgress_ = true; }
 
-    Debug::Throw() << "IconView::dragMoveEvent" << endl;
+    Debug::Throw() << "IconView::dragMoveEvent" << Qt::endl;
 
     // update hover item
     if( showDropIndicator() ) _setHoverIndex( indexAt( event->pos() ) );
@@ -893,7 +894,7 @@ void IconView::dragMoveEvent( QDragMoveEvent *event )
 //____________________________________________________________________
 void IconView::dragLeaveEvent( QDragLeaveEvent *event )
 {
-    Debug::Throw() << "IconView::dragLeaveEvent" << endl;
+    Debug::Throw() << "IconView::dragLeaveEvent" << Qt::endl;
     dragInProgress_ = false;
     QAbstractItemView::dragLeaveEvent(event);
 }
@@ -1392,7 +1393,7 @@ void IconView::updateGeometries()
 //____________________________________________________________________
 void IconView::sortByColumn( int column, Qt::SortOrder order)
 {
-    Debug::Throw() << "IconView::sortByColumn - column: " << column << " order: " << order << endl;
+    Debug::Throw() << "IconView::sortByColumn - column: " << column << " order: " << order << Qt::endl;
     if( model_ ) model_->sort( column, order );
 }
 
@@ -1559,7 +1560,7 @@ void IconView::Container::_initialize()
 
     // setup layout
     auto vLayout = new QVBoxLayout;
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(2);
     setLayout( vLayout );
 

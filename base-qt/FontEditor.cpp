@@ -28,6 +28,7 @@
 #include "BaseIconNames.h"
 #include "FontEditor.h"
 #include "IconEngine.h"
+#include "QtUtil.h"
 
 #include <QLayout>
 #include <QToolButton>
@@ -41,7 +42,7 @@ FontEditor::FontEditor( QWidget *parent ):
 {
 
     QHBoxLayout *layout( new QHBoxLayout );
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     layout->setSpacing(2);
     setLayout( layout );
 

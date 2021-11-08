@@ -17,7 +17,6 @@
 *
 *******************************************************************************/
 
-#include "RecentFilesConfiguration.h"
 #include "BaseIconNames.h"
 #include "ContextMenu.h"
 #include "Debug.h"
@@ -26,7 +25,9 @@
 #include "IconEngine.h"
 #include "OptionCheckBox.h"
 #include "OptionSpinBox.h"
+#include "QtUtil.h"
 #include "QuestionDialog.h"
+#include "RecentFilesConfiguration.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
 
@@ -45,7 +46,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     QVBoxLayout* layout = new QVBoxLayout;
     setLayout( layout );
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     layout->setSpacing( 5 );
 
     QGroupBox* box;
@@ -53,13 +54,13 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     layout->addWidget( box = new QGroupBox( tr( "Options" ), this ) );
 
     QVBoxLayout* vLayout = new QVBoxLayout;
-    vLayout->setMargin(5);
+    QtUtil::setMargin(vLayout, 5);
     vLayout->setSpacing(6);
     box->setLayout( vLayout );
 
     QHBoxLayout* hLayout = new QHBoxLayout;
     hLayout->setSpacing(6);
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     vLayout->addLayout( hLayout );
 
     // previous file history size
@@ -83,7 +84,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
     layout->addWidget( box = new QGroupBox( tr( "Files" ), this ), 1 );
     box->setLayout( new QHBoxLayout );
     box->layout()->setSpacing(6);
-    box->layout()->setMargin(6);
+    box->QtUtil::setMargin(layout(), 6);
 
     box->layout()->addWidget( list_ = new TreeView( box ) );
     list_->setModel( &model_ );
@@ -95,7 +96,7 @@ RecentFilesConfiguration::RecentFilesConfiguration( QWidget* parent, FileList& r
 
     vLayout = new QVBoxLayout;
     vLayout->setSpacing(6);
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     box->layout()->addItem( vLayout );
 
     // list context menu

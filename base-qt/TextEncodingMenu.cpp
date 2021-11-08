@@ -66,7 +66,7 @@ TextEncodingMenu::TextEncodingMenu( QWidget* parent ):
 void TextEncodingMenu::select( const QByteArray& constValue )
 {
 
-    Debug::Throw() << "TextEncodingMenu::select - encoding: " << constValue << endl;
+    Debug::Throw() << "TextEncodingMenu::select - encoding: " << constValue << Qt::endl;
 
     // find codec matching value and check
     auto codec( QTextCodec::codecForName( constValue ) );

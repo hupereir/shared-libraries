@@ -54,7 +54,7 @@ class BASE_QT_EXPORT Dialog: public BaseDialog, private Base::Counter<Dialog>
     explicit Dialog(
         QWidget* = nullptr,
         Flags = Flags( OkButton | CancelButton ),
-        Qt::WindowFlags = 0);
+        Qt::WindowFlags = {});
 
     //* retrieve main vbox
     QBoxLayout& mainLayout() const

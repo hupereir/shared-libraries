@@ -67,7 +67,7 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
 
         // initialize columnAlignments
         for( int index = 0; index < maxCount; ++index )
-        { columnAlignments_ << 0; }
+        { columnAlignments_.append(Qt::Alignment()); }
 
     }
 
@@ -80,11 +80,11 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
     { orientation_ = orientation; }
 
     //* add widget
-    void addWidget( QWidget* widget, int row, int column, Qt::Alignment alignment = 0 )
+    void addWidget( QWidget* widget, int row, int column, Qt::Alignment alignment = {} )
     { GridLayout::addWidget( widget, row, column, 1, 1, alignment ); }
 
     //* add widget
-    void addWidget ( QWidget * widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
+    void addWidget ( QWidget * widget, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = {} )
     {
         Q_ASSERT( rowSpan > 0 );
         Q_ASSERT( columnSpan > 0 );
@@ -95,7 +95,7 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
     }
 
     //* add widget
-    void addWidget( QWidget* widget, Qt::Alignment alignment = 0 )
+    void addWidget( QWidget* widget, Qt::Alignment alignment = {} )
     {
         Q_ASSERT( maxCount_ > 0 );
         if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = columnAlignments_[column_];
@@ -104,11 +104,11 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
     }
 
     //* add layout
-    void addLayout( QLayout* layout, int row, int column, Qt::Alignment alignment = 0 )
+    void addLayout( QLayout* layout, int row, int column, Qt::Alignment alignment = {} )
     { GridLayout::addLayout( layout, row, column, 1, 1, alignment ); }
 
     //* add layout
-    void addLayout( QLayout* layout, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
+    void addLayout( QLayout* layout, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = {} )
     {
         Q_ASSERT( rowSpan > 0 );
         Q_ASSERT( columnSpan > 0 );
@@ -119,7 +119,7 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
     }
 
     //* add layout
-    void addLayout( QLayout* layout, Qt::Alignment alignment = 0 )
+    void addLayout( QLayout* layout, Qt::Alignment alignment = {} )
     {
         Q_ASSERT( maxCount_ > 0 );
         if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = columnAlignments_[column_];
@@ -130,11 +130,11 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
     using QGridLayout::addItem;
 
     //* add LayoutItem
-    void addItem( QLayoutItem* item, int row, int column, Qt::Alignment alignment = 0 )
+    void addItem( QLayoutItem* item, int row, int column, Qt::Alignment alignment = {} )
     { GridLayout::addItem( item, row, column, 1, 1, alignment ); }
 
     //* add LayoutItem
-    void addItem( QLayoutItem* item, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = 0 )
+    void addItem( QLayoutItem* item, int row, int column, int rowSpan, int columnSpan, Qt::Alignment alignment = {} )
     {
         Q_ASSERT( rowSpan > 0 );
         Q_ASSERT( columnSpan > 0 );
@@ -145,7 +145,7 @@ class BASE_QT_EXPORT GridLayout: public QGridLayout, private Base::Counter<GridL
     }
 
     //* add LayoutItem
-    void addItem( QLayoutItem* item, Qt::Alignment alignment = 0 )
+    void addItem( QLayoutItem* item, Qt::Alignment alignment = {} )
     {
         Q_ASSERT( maxCount_ > 0 );
         if( alignment == 0 &&  _boundCheck( column_ ) ) alignment = columnAlignments_[column_];

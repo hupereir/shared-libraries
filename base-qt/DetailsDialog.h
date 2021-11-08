@@ -39,7 +39,7 @@ class BASE_QT_EXPORT DetailsDialog: public Dialog
     //* constructor
     explicit DetailsDialog( QWidget* parent,
         Dialog::Flags flags = Dialog::Flags( OkButton | CancelButton ),
-        Qt::WindowFlags WindowFlags = 0 ):
+        Qt::WindowFlags WindowFlags = {} ):
         Dialog( parent, flags, WindowFlags )
     {}
 

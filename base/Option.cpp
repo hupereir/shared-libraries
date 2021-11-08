@@ -84,7 +84,7 @@ QDataStream &operator >> ( QDataStream &stream, Option& option )
         option.flags_ = Option::Flags( flags );
         option.defaultFlags_ = Option::Flags( defaultFlags );
 
-    } else Debug::Throw(0) << "Unrecognized Option version: " << version << endl;
+    } else Debug::Throw(0) << "Unrecognized Option version: " << version << Qt::endl;
     return stream;
 }
 

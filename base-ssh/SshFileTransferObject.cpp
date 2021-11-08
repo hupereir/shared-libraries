@@ -223,7 +223,7 @@ namespace Ssh
     {
         if( remoteDevice_ )
         {
-            Debug::Throw() << "Ssh::FileTransferObject::_processError - " << remoteDevice_->errorString() << endl;
+            Debug::Throw() << "Ssh::FileTransferObject::_processError - " << remoteDevice_->errorString() << Qt::endl;
             emit error( error_ = remoteDevice_->errorString() );
         }
 
@@ -351,7 +351,7 @@ namespace Ssh
             do
             {
                 i = remoteDevice_->write( buffer_.data() + bytesWritten, bytesRead-bytesWritten );
-                Debug::Throw() << "Ssh::FileTransferObject::_writeToSocket - written: " << i << endl;
+                Debug::Throw() << "Ssh::FileTransferObject::_writeToSocket - written: " << i << Qt::endl;
                 if (i < 0)
                 {
                     emit error( tr( "invalid write to socket: %1, error: %2" ).arg( i ).arg( remoteDevice_->errorString() ) );

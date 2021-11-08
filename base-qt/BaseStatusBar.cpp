@@ -20,6 +20,7 @@
 #include "BaseStatusBar.h"
 #include "ClockLabel.h"
 #include "Debug.h"
+#include "QtUtil.h"
 #include "XmlOptions.h"
 
 #include <QMainWindow>
@@ -37,12 +38,7 @@ BaseStatusBar::BaseStatusBar( QWidget* parent ):
 
     // if no size grip, still leaves some space to the right of the widget
     if( !isSizeGripEnabled() )
-    {
-        int left, right, top, bottom;
-        getContentsMargins( &left, &top, &right, &bottom );
-        setContentsMargins( left+2, top, right + 2, bottom );
-    }
-
+    { setContentsMargins( contentsMargins() + QMargins( 2, 0, 2, 0 )); }
 }
 
 
@@ -59,7 +55,7 @@ void BaseStatusBar::addLabel( int stretch )
     Debug::Throw( QStringLiteral("BaseStatusBar::addLabel.\n") );
 
     auto label = new StatusBarLabel( this );
-    label->setMargin(2);
+    QtUtil::setMargin(label, 2);
 
     addPermanentWidget( label, stretch );
     labels_.append( label );

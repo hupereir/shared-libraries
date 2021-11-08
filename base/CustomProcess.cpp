@@ -41,7 +41,7 @@ CustomProcess::~CustomProcess()
 void CustomProcess::start( const QString &arguments, OpenMode mode )
 {
     static const QRegularExpression regExp(QStringLiteral("\\s"));
-    start( arguments.split( regExp, QString::SkipEmptyParts ), mode );
+    start( arguments.split( regExp, Qt::SkipEmptyParts ), mode );
 }
 
 //____________________________________________________
@@ -53,9 +53,7 @@ void CustomProcess::start( const QStringList& arguments, OpenMode mode )
     QString program( arguments.front() );
     auto localArgs( arguments );
     localArgs.removeFirst();
-
-    if( localArgs.empty() ) QProcess::start( program, mode );
-    else QProcess::start( program, localArgs,  mode );
+    QProcess::start( program, localArgs,  mode );
 
 }
 

@@ -24,6 +24,8 @@
 #include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "QtUtil.h"
+
 
 #include <QPropertyAnimation>
 #include <QPainter>
@@ -77,6 +79,8 @@ class MessageWidgetPrivate: public QObject, private Base::Counter<MessageWidgetP
 
 };
 
+#include "MessageWidget.moc"
+
 //___________________________________________________________
 MessageWidget::MessageWidget( QWidget* parent, MessageType type, const QString& text ):
     QWidget( parent ),
@@ -93,18 +97,18 @@ MessageWidget::MessageWidget( QWidget* parent, MessageType type, const QString& 
 
     setLayout( new QVBoxLayout );
     layout()->setSpacing(0);
-    layout()->setMargin(0);
+    QtUtil::setMargin(layout(), 0);
     layout()->addWidget( private_->content_ = new QWidget( this ) );
 
     // create vbox layout
     auto layout=new QVBoxLayout;
     layout->setSpacing(10);
-    layout->setMargin(10);
+    QtUtil::setMargin(layout, 10);
     private_->content_->setLayout( layout );
 
     private_->textLayout_ = new QHBoxLayout;
     private_->textLayout_->setSpacing(10);
-    private_->textLayout_->setMargin(0);
+    QtUtil::setMargin(private_->textLayout_, 0);
     layout->addLayout( private_->textLayout_, 1 );
 
     // icon label
@@ -120,7 +124,7 @@ MessageWidget::MessageWidget( QWidget* parent, MessageType type, const QString& 
 
     // button layout
     private_->buttonLayout_ = new QHBoxLayout;
-    private_->buttonLayout_->setMargin(0);
+    QtUtil::setMargin(private_->buttonLayout_, 0);
     private_->buttonLayout_->setSpacing( 5 );
     layout->addLayout( private_->buttonLayout_, 0 );
     private_->buttonLayout_->addStretch( 1 );
@@ -408,4 +412,3 @@ void MessageWidgetPrivate::animationFinished()
 
 }
 
-#include "MessageWidget.moc"

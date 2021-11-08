@@ -39,7 +39,7 @@ class BASE_QT_EXPORT SelectLineDialog: public BaseDialog, private Base::Counter<
     public:
 
     //* constructor
-    explicit SelectLineDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = 0 );
+    explicit SelectLineDialog( QWidget* parent = nullptr, Qt::WindowFlags WindowFlags = {} );
 
     //* destructor
     ~SelectLineDialog() override;

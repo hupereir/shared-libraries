@@ -17,10 +17,11 @@
 *
 *******************************************************************************/
 
-#include "PathHistoryConfiguration.h"
-
 #include "OptionCheckBox.h"
 #include "OptionSpinBox.h"
+#include "PathHistoryConfiguration.h"
+#include "QtUtil.h"
+
 
 #include <QLabel>
 #include <QLayout>
@@ -35,7 +36,7 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
 
     QVBoxLayout* layout = new QVBoxLayout;
     setLayout( layout );
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     layout->setSpacing(5);
 
     OptionCheckBox* checkbox;
@@ -43,7 +44,7 @@ PathHistoryConfiguration::PathHistoryConfiguration( QWidget* parent ):
     addOptionWidget( checkbox );
 
     QHBoxLayout* hLayout = new QHBoxLayout;
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     hLayout->setSpacing(5);
     layout->addLayout( hLayout );
 

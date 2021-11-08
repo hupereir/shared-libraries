@@ -48,7 +48,7 @@ BrowseIconButton::BrowseIconButton( QWidget* parent, const QString& file):
 bool BrowseIconButton::setFile( const QString& file, bool check )
 {
 
-    Debug::Throw() << "BrowseIconButton::setFile - " << file << endl;
+    Debug::Throw() << "BrowseIconButton::setFile - " << file << Qt::endl;
 
     // do nothing for empty file
     if( file.isEmpty() ) return false;

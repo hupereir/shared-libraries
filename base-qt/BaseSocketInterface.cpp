@@ -55,7 +55,7 @@ void BaseSocketInterface::_sendPendingBuffers()
 void BaseSocketInterface::_sendBuffer( qint32 type, const QByteArray& buffer )
 {
     buffersize_t bufferSize( buffer.size() );
-    Debug::Throw(debugLevel) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << endl;
+    Debug::Throw(debugLevel) << "BaseSocketInterface::_sendBuffer - type: " << type << " size: " << bufferSize << Qt::endl;
     socket_->write( reinterpret_cast<const char*>( &type ), sizeof( buffertype_t ) );
     socket_->write( reinterpret_cast<const char*>( &bufferSize ), sizeof( buffersize_t ) );
     socket_->write( buffer );
@@ -67,7 +67,7 @@ void BaseSocketInterface::_read()
 
     if( !socket_->bytesAvailable() ) return;
 
-    Debug::Throw(debugLevel) << "BaseSocketInterface::_read - bytes: " << socket_->bytesAvailable() << endl;
+    Debug::Throw(debugLevel) << "BaseSocketInterface::_read - bytes: " << socket_->bytesAvailable() << Qt::endl;
     forever
     {
 
@@ -81,7 +81,7 @@ void BaseSocketInterface::_read()
                 << "BaseSocketInterface::_read -"
                 << " bufferType: " << bufferType_
                 << " bytes: " << socket_->bytesAvailable()
-                << endl;
+                << Qt::endl;
 
         }
 
@@ -94,7 +94,7 @@ void BaseSocketInterface::_read()
                 << "BaseSocketInterface::_read -"
                 << " bufferSize: " << bufferSize_
                 << " bytes: " << socket_->bytesAvailable()
-                << endl;
+                << Qt::endl;
         }
 
         if( bufferSize_ == 0 ) break;
@@ -111,7 +111,7 @@ void BaseSocketInterface::_read()
                 << "BaseSocketInterface::_read -"
                 << " array size: " << array.size()
                 << " bytes: " << socket_->bytesAvailable()
-                << endl;
+                << Qt::endl;
 
         } else break;
     }

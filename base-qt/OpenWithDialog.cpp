@@ -17,18 +17,19 @@
 *
 *******************************************************************************/
 
-#include "OpenWithDialog.h"
-
-#include "Command.h"
-#include "Debug.h"
 #include "BaseFileInfo.h"
 #include "BaseFileInfoModel.h"
 #include "BaseIconNames.h"
+#include "Command.h"
+#include "Debug.h"
 #include "ElidedLabel.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
+#include "OpenWithDialog.h"
+#include "QtUtil.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
+
 
 #include <QDesktopServices>
 #include <QHeaderView>
@@ -68,7 +69,7 @@ void OpenWithDialog::realizeWidget()
     // try load Question icon
     QHBoxLayout *hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     mainLayout().addLayout( hLayout );
     {
         // icon
@@ -83,7 +84,7 @@ void OpenWithDialog::realizeWidget()
     {
         // vertical layout for question etc.
         QVBoxLayout* vLayout = new QVBoxLayout;
-        vLayout->setMargin(0);
+        QtUtil::setMargin(vLayout, 0);
         hLayout->addLayout( vLayout, 1 );
 
         vLayout->addStretch();
@@ -154,7 +155,7 @@ void OpenWithDialog::realizeWidget()
     {
         // horizontal layout for combobox
         QHBoxLayout *hLayout( new QHBoxLayout );
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         mainLayout().addLayout( hLayout );
 
         QLabel* label;

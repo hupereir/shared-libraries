@@ -416,7 +416,7 @@ template<class T> class TreeItem: public TreeItemBase
         }
 
         // print job pid
-        out << item.id() << " " << item.get() << endl;
+        out << item.id() << " " << item.get() << Qt::endl;
 
         // print job children
         for( const auto& child:item.children_ )

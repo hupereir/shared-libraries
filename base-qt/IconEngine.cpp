@@ -71,7 +71,7 @@ const Base::IconCacheItem& IconEngine::_get( const QString& file, Base::IconCach
     }
 
     // debug
-    Debug::Throw() << "IconEngine::_get - file: " << file << endl;
+    Debug::Throw() << "IconEngine::_get - file: " << file << Qt::endl;
 
     // insert null icon for empty filename
     Base::IconCacheItem out;

@@ -17,10 +17,11 @@
 *
 *******************************************************************************/
 
-#include "SystemEnvironmentDialog.h"
-
 #include "CppUtil.h"
+#include "QtUtil.h"
+#include "SystemEnvironmentDialog.h"
 #include "TreeView.h"
+
 
 #include <QProcessEnvironment>
 
@@ -36,8 +37,8 @@ Dialog( parent, CloseButton )
     setWindowTitle( tr( "System Environment Variables" ) );
     setOptionName( QStringLiteral("SYSTEM_ENVIRONMENT_DIALOG") );
 
-    layout()->setMargin(0);
-    buttonLayout().setMargin(5);
+    QtUtil::setMargin(layout(), 0);
+    QtUtil::setMargin(&buttonLayout(), 5);
 
     // tell dialog to delete when close
     setAttribute( Qt::WA_DeleteOnClose );

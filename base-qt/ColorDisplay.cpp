@@ -17,13 +17,14 @@
 *
 *******************************************************************************/
 
-#include "ColorDisplay.h"
-
 #include "BaseIconNames.h"
+#include "ColorDisplay.h"
 #include "ColorGrabButton.h"
 #include "Debug.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
+#include "QtUtil.h"
+
 
 #include <QApplication>
 #include <QCursor>
@@ -41,7 +42,7 @@ ColorDisplay::ColorDisplay( QWidget* parent ):
     Debug::Throw( QStringLiteral("ColorDisplay::ColorDisplay.\n") );
 
     QHBoxLayout *layout = new QHBoxLayout;
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     layout->setSpacing(2);
     setLayout( layout );
 
@@ -98,7 +99,7 @@ QColor ColorDisplay::Editor::color() const
 //_________________________________________________________
 void ColorDisplay::Editor::setColor( QColor color )
 {
-    Debug::Throw() << "ColorDisplay::Editor::setColor - " << color.name() << endl;
+    Debug::Throw() << "ColorDisplay::Editor::setColor - " << color.name() << Qt::endl;
 
     // check color validity
     if( color.isValid() ) setText( color.name() );

@@ -103,7 +103,7 @@ bool ColorGrabObject::eventFilter( QObject* object, QEvent* event )
 //_____________________________________________________________
 void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
 {
-    Debug::Throw() << "ColorGrabObject::_selectColorFromMouseEvent - (" << event->globalX() << "," << event->globalY() << ")" << endl;
+    Debug::Throw() << "ColorGrabObject::_selectColorFromMouseEvent - (" << event->globalX() << "," << event->globalY() << ")" << Qt::endl;
 
     // grab desktop window under cursor
     // convert to image.

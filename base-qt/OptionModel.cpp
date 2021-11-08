@@ -35,7 +35,7 @@ namespace Base
 //_______________________________________________
 Qt::ItemFlags OptionModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid()) return 0;
+    if (!index.isValid()) return {};
     else if( !get( index ).second.hasFlag( Option::Flag::Recordable ) ) return Qt::ItemIsSelectable;
     else if( !( isReadOnly() || rowCount( index ) ) && index.column() == Value ) return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
     else return Qt::ItemIsEnabled | Qt::ItemIsSelectable;

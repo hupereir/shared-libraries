@@ -17,12 +17,13 @@
 *
 *******************************************************************************/
 
-#include "PrintPreviewDialog.h"
-#include "PrintPreviewDialog_p.h"
-#include "Debug.h"
 #include "BaseIconNames.h"
+#include "Debug.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "PrintPreviewDialog.h"
+#include "PrintPreviewDialog_p.h"
+#include "QtUtil.h"
 
 #include <QComboBox>
 #include <QGraphicsView>
@@ -45,8 +46,8 @@ namespace Private
             auto menu = addMenu( tr( "Orientation" ) );
             orientationActions_ =
             {
-                { menu->addAction( tr( "Portrait" ) ), QPrinter::Portrait },
-                { menu->addAction( tr( "Landscape" ) ), QPrinter::Landscape }
+                { menu->addAction( tr( "Portrait" ) ), QPageLayout::Portrait },
+                { menu->addAction( tr( "Landscape" ) ), QPageLayout::Landscape }
             };
 
             auto actionGroup = new QActionGroup( this );
@@ -85,7 +86,7 @@ namespace Private
     }
 
     //_________________________________________________________________
-    void OptionMenu::setOrientation( QPrinter::Orientation orientation ) const
+    void OptionMenu::setOrientation( QPageLayout::Orientation orientation ) const
     {
         for( OrientationActionMap::const_iterator iter = orientationActions_.constBegin(); iter != orientationActions_.constEnd(); ++iter )
         { if( iter.value() == orientation ) { iter.key()->setChecked( true ); break; } }
@@ -115,7 +116,7 @@ namespace Private
         Debug::Throw( QStringLiteral("NavigationWidget::NavigationWidget.\n") );
 
         QHBoxLayout* hLayout = new QHBoxLayout;
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         setLayout( hLayout );
 
         // previous page button
@@ -156,7 +157,7 @@ namespace Private
     void NavigationWidget::setPage( int page )
     {
 
-        Debug::Throw() << "NavigationWidget::setPage - " << page << endl;
+        Debug::Throw() << "NavigationWidget::setPage - " << page << Qt::endl;
         if( page == editor_->text().toInt() ) return;
 
         // update editor and buttons
@@ -205,7 +206,7 @@ namespace Private
 
                 // cast
                 QWheelEvent* wheelEvent( static_cast<QWheelEvent*>( event ) );
-                int increment( wheelEvent->delta()/120 );
+                int increment( wheelEvent->angleDelta().y()/120 );
 
                 // get page
                 const int page( editor_->text().toInt() );
@@ -284,10 +285,10 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, Dialog::Flags flags ):
     Debug::Throw( QStringLiteral("PrintPreviewDialog::PrintPreviewDialog.\n") );
     setOptionName( QStringLiteral("PRINT_PREVIEW_DIALOG") );
 
-    layout()->setMargin(0);
-    buttonLayout().setMargin(5);
+    QtUtil::setMargin(layout(), 0);
+    QtUtil::setMargin(&buttonLayout(), 5);
 
-    mainLayout().setMargin(0);
+    QtUtil::setMargin(&mainLayout(), 0);
     mainLayout().setSpacing(0);
 
     mainLayout().addWidget( optionMenu_ = new Private::OptionMenu( this ) );

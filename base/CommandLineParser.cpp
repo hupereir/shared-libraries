@@ -50,11 +50,11 @@ void CommandLineParser::usage() const
     {
         if( !groups_.contains( groupName ) ) continue;
 
-        stream << endl;
+        stream << Qt::endl;
 
         // header
-        if( groups_.size() == 1 || groupName.isEmpty() ) stream << QObject::tr( "Options:" ) << endl;
-        else stream << groupName << endl;
+        if( groups_.size() == 1 || groupName.isEmpty() ) stream << QObject::tr( "Options:" ) << Qt::endl;
+        else stream << groupName << Qt::endl;
 
         // retrieve group
         const Group& group( groups_[groupName] );
@@ -83,7 +83,7 @@ void CommandLineParser::usage() const
         {
             stream << "  ";
             stream << iter.key().toString().leftJustified( maxLength + maxTypeLength + 1 );
-            stream << iter.value().helpText_ << endl;
+            stream << iter.value().helpText_ << Qt::endl;
         }
 
         // print options
@@ -92,15 +92,15 @@ void CommandLineParser::usage() const
             stream << "  ";
             stream << iter.key().toString().leftJustified( maxLength );
             stream << iter.value().type_.leftJustified( maxTypeLength + 1 );
-            stream << iter.value().helpText_ << endl;
+            stream << iter.value().helpText_ << Qt::endl;
         }
 
     }
 
     stream
-        << endl
+        << Qt::endl
         << QObject::tr( "Special tag \"-\" can be added to separate options from the last list of arguments\n (e.g. list of files to be opened)" )
-        << endl;
+        << Qt::endl;
 
     return;
 }
@@ -205,7 +205,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
             {
                 QTextStream(stdout) << "CommandLineParser::parse -"
                     << " option delimiter \"-\" appears multiple times "
-                    << endl;
+                    << Qt::endl;
             }
 
             autoOrphan = true;
@@ -229,7 +229,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     << "CommandLineParser::parse -"
                     << " tag " << tagName
                     << " is ill-formed. It is ignored."
-                    << endl;
+                    << Qt::endl;
             }
             continue;
 
@@ -249,7 +249,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                             << "CommandLineParser::parse -"
                             << " tag " << tagName
                             << " appears after option delimiter \"-\". It is ignored."
-                            << endl;
+                            << Qt::endl;
                     }
 
                     continue;
@@ -286,7 +286,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                             << "CommandLineParser::parse -"
                             << " tag " << tagName
                             << " appears after option delimiter \"-\". It is ignored."
-                            << endl;
+                            << Qt::endl;
                     }
 
                     // also skip next entry
@@ -327,7 +327,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                     QTextStream( stdout )
                         << "CommandLineParser::parse -"
                         << " expected argument of type " << iter.value().type_
-                        << " after option " << iter.key().longName() << endl;
+                        << " after option " << iter.key().longName() << Qt::endl;
 
                 }
 
@@ -345,7 +345,7 @@ CommandLineParser& CommandLineParser::parse( const CommandLineArguments& argumen
                 QTextStream( stdout )
                     << "CommandLineParser::parse - unrecognized option "
                     << tagName
-                    << endl;
+                    << Qt::endl;
             }
 
             continue;
@@ -383,9 +383,9 @@ void CommandLineParser::_discardOrphans( bool ignoreWarnings )
 
     if( !ignoreWarnings )
     {
-        Debug::Throw(0) << "CommandLineParser::parse - following orphans are discarded: " << endl;
+        Debug::Throw(0) << "CommandLineParser::parse - following orphans are discarded: " << Qt::endl;
         for( const auto& orphan:orphans_ )
-        { QTextStream( stdout ) << "  " << orphan << endl; }
+        { QTextStream( stdout ) << "  " << orphan << Qt::endl; }
     }
 
     orphans_.clear();
@@ -400,7 +400,7 @@ CommandLineParser::Group::FlagMap CommandLineParser::_allFlags() const
 {
     Group::FlagMap out;
     for( auto&& iter = groups_.cbegin(); iter != groups_.cend(); ++iter )
-    { out.unite( iter.value().flags_ ); }
+    { out.insert( iter.value().flags_ ); }
 
     return out;
 }
@@ -410,7 +410,7 @@ CommandLineParser::Group::OptionMap CommandLineParser::_allOptions() const
 {
     Group::OptionMap out;
     for( auto&& iter = groups_.cbegin(); iter != groups_.cend(); ++iter )
-    { out.unite( iter.value().options_ ); }
+    { out.insert( iter.value().options_ ); }
 
     return out;
 }

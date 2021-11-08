@@ -18,9 +18,10 @@
 *******************************************************************************/
 
 #include "BaseIconNames.h"
-#include "CounterMap.h"
 #include "CounterDialog.h"
+#include "CounterMap.h"
 #include "IconEngine.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "TreeView.h"
 
@@ -38,8 +39,8 @@ Dialog( parent, OkButton, Qt::Window )
     setWindowTitle( tr( "Object Counters" ) );
     setOptionName( QStringLiteral("COUNTER_DIALOG") );
 
-    layout()->setMargin(0);
-    buttonLayout().setMargin(10);
+    QtUtil::setMargin(layout(), 0);
+    QtUtil::setMargin(&buttonLayout(), 10);
     mainLayout().addWidget( list_ = new TreeView( this ) );
     list_->setModel( &model_ );
 

@@ -57,7 +57,7 @@ namespace SpellCheck
 
         // retrieve list of suggestions
         const auto suggestions( interface_.suggestions( word ) );
-        Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << endl;
+        Debug::Throw() << "SuggestionMenu::_aboutToShow - suggestions: " << suggestions.size() << Qt::endl;
 
         // add words
         int max( XmlOptions::get().get<int>( QStringLiteral("MAX_SUGGESTIONS") ) );
@@ -68,7 +68,7 @@ namespace SpellCheck
             QString suggestion( suggestions[i] );
             if( interface_.filter() == SpellInterface::FilterTexWithNoAccents ) suggestion = TexString( suggestion ).toLatexAccents();
 
-            Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestion << endl;
+            Debug::Throw() << "SuggestionMenu::_aboutToShow - adding: " << suggestion << Qt::endl;
             suggestions_.insert( addAction( suggestions[i] ), suggestion );
         }
 

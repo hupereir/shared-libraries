@@ -90,7 +90,7 @@ void Debug::Throw( int level, const QString& str )
         _get().debugStream_.get()
             << TimeStamp::now().toString( QStringLiteral("yyyy/MM/dd HH:mm:ss") ) << " "
             << str
-            << flush;
+            << Qt::flush;
     }
 
 }

@@ -124,7 +124,7 @@ class BASE_QT_EXPORT FileDialog: public QObject, private Base::Counter<FileDialo
     QString filter_;
 
     //* options
-    QFileDialog::Options options_ = 0;
+    QFileDialog::Options options_ = {};
 
     //* needed to allow ImageFileDialog to acces working directory
     friend BASE_QT_EXPORT class ImageFileDialog;

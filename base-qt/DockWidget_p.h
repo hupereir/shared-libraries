@@ -20,6 +20,7 @@
 *
 *******************************************************************************/
 
+#include "QtUtil.h"
 #include "WidgetMonitor.h"
 
 #include <QLayout>
@@ -92,7 +93,7 @@ namespace Private
         {
             setLayout( new QVBoxLayout() );
             layout()->setSpacing(0);
-            layout()->setMargin(0);
+            QtUtil::setMargin(layout(), 0);
         }
 
     };

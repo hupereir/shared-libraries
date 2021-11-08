@@ -25,7 +25,7 @@
 //_______________________________________________________________________________________
 void ScratchFileMonitor::add( const File& file )
 {
-    Debug::Throw() << "ScratchFileMonitor::add - " << file << endl;
+    Debug::Throw() << "ScratchFileMonitor::add - " << file << Qt::endl;
     files_.insert( file );
 }
 

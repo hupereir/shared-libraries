@@ -17,14 +17,15 @@
 *
 *******************************************************************************/
 
-#include "LineEditor.h"
-#include "LineEditor_p.h"
-
 #include "BaseContextMenu.h"
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
+#include "LineEditor.h"
+#include "LineEditor_p.h"
+#include "QtUtil.h"
 #include "StandardAction.h"
+
 
 #include <QApplication>
 #include <QClipboard>
@@ -153,7 +154,7 @@ LineEditor::LineEditor( QWidget* parent ):
 
         // button layout
         auto layout = new QHBoxLayout;
-        layout->setMargin(0);
+        QtUtil::setMargin(layout, 0);
         layout->setSpacing(2);
 
         container->setLayout( layout );

@@ -26,6 +26,7 @@
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "QtUtil.h"
 
 #include <QShortcut>
 
@@ -39,9 +40,9 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     setIconSize( IconSize::get( IconSize::VeryHuge ) );
 
     // customize layout
-    layout()->setMargin(0);
+    QtUtil::setMargin(layout(), 0);
     layout()->setSpacing(0);
-    buttonLayout().setMargin(5);
+    QtUtil::setMargin(&buttonLayout(), 5);
 
     tabWidget_ = new QTabWidget( this );
     tabWidget_->setDocumentMode( true );
@@ -50,12 +51,12 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     // general information
     tabWidget_->addTab( mainPage_ = new QWidget, tr( "General" ) );
     pageLayout_ = new QVBoxLayout;
-    pageLayout_->setMargin(5);
+    QtUtil::setMargin(pageLayout_, 5);
     pageLayout_->setSpacing(5);
     mainPage_->setLayout( pageLayout_ );
 
     auto hLayout = new QHBoxLayout;
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     hLayout->setSpacing(5);
     pageLayout_->addLayout( hLayout );
     pageLayout_->addStretch();
@@ -67,7 +68,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     hLayout->addStretch();
 
     auto vLayout= new QVBoxLayout;
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(5);
     hLayout->addLayout( vLayout );
     hLayout->addStretch();
@@ -104,7 +105,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     tabWidget_->addTab( box = new QWidget, tr( "Permissions" ) );
 
     auto layout = new QVBoxLayout;
-    layout->setMargin(5);
+    QtUtil::setMargin(layout, 5);
     layout->setSpacing( 5 );
     box->setLayout( layout );
 
@@ -114,7 +115,7 @@ BaseFileInformationDialog::BaseFileInformationDialog( QWidget* parent ):
     layout->addWidget( new QLabel( tr( "Ownership:" ), box ) );
 
     auto gridLayout = new GridLayout;
-    gridLayout->setMargin(0);
+    QtUtil::setMargin(gridLayout, 0);
     gridLayout->setSpacing( 5 );
     gridLayout->setMaxCount( 2 );
     gridLayout->setColumnAlignment( 0, Qt::AlignRight|Qt::AlignVCenter );

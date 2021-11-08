@@ -72,7 +72,7 @@ bool LineNumberDisplay::updateWidth( int count )
     if( width() == newWidth ) return false;
     width_ = newWidth;
 
-    Debug::Throw() << "LineNumberDisplay::updateWidth - count: " << count << " newWidth: " << newWidth << endl;
+    Debug::Throw() << "LineNumberDisplay::updateWidth - count: " << count << " newWidth: " << newWidth << Qt::endl;
     return true;
 }
 

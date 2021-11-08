@@ -85,21 +85,21 @@ namespace SpellCheck
     void SpellInterface::listDictionaries() const
     {
         if( dictionaries_.isEmpty() ) return;
-        QTextStream(stdout) << QObject::tr( "Available dictionaries: " ) << endl;
+        QTextStream(stdout) << QObject::tr( "Available dictionaries: " ) << Qt::endl;
         for( const auto& dictionary:dictionaries_ )
-        { QTextStream(stdout) << "  " << dictionary << endl; }
+        { QTextStream(stdout) << "  " << dictionary << Qt::endl; }
     }
 
     //____________________________________________________
     void SpellInterface::listFilters() const
     {
         if( dictionaries_.isEmpty() ) return;
-        QTextStream(stdout) << QObject::tr( "Available filters: " ) << endl;
+        QTextStream(stdout) << QObject::tr( "Available filters: " ) << Qt::endl;
 
         // maximum length
         const int maxLength = std::max_element( filters_.constBegin(), filters_.constEnd(), MinLengthFTor() )->size();
         for( auto iter = filterMap_.constBegin(); iter != filterMap_.constEnd(); ++iter )
-        { QTextStream(stdout) << "  " << iter.key().leftJustified( maxLength + 1 ) <<  iter.value() << endl; }
+        { QTextStream(stdout) << "  " << iter.key().leftJustified( maxLength + 1 ) <<  iter.value() << Qt::endl; }
 
     }
 
@@ -392,7 +392,7 @@ namespace SpellCheck
     {
         if( !filters_.isEmpty() ) return;
 
-        Debug::Throw() << "SpellInterface::_loadFilters- this: " << this << endl;
+        Debug::Throw() << "SpellInterface::_loadFilters- this: " << this << Qt::endl;
 
         // TODO: use QProcess here instead of popen
         filters_.insert( FilterNone );

@@ -35,7 +35,7 @@ class BASE_QT_EXPORT BaseDialog: public QDialog
     public:
 
     //* constructor
-    explicit BaseDialog( QWidget* = nullptr, Qt::WindowFlags = 0);
+    explicit BaseDialog( QWidget* = nullptr, Qt::WindowFlags = {});
 
     //*@name accessors
     //@{

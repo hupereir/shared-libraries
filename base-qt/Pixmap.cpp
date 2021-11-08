@@ -132,7 +132,7 @@ Pixmap Pixmap::desaturated() const
     QImage image( toImage() );
     if( image.format() != QImage::Format_ARGB32_Premultiplied )
     {
-        Debug::Throw(0) << "Pixmap::desaturate - wrong format." << endl;
+        Debug::Throw(0) << "Pixmap::desaturate - wrong format." << Qt::endl;
         return *this;
     }
 

@@ -17,15 +17,16 @@
 *
 *******************************************************************************/
 
-#include "OptionDialog.h"
-
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "OptionDialog.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
+
 
 #include <QPushButton>
 #include <QLabel>
@@ -40,8 +41,8 @@ OptionDialog::OptionDialog( QWidget* parent ):
     setWindowTitle( tr( "Runtime Options" ) );
     setOptionName( QStringLiteral("OPTION_DIALOG") );
 
-    layout()->setMargin(0);
-    buttonLayout().setMargin(5);
+    QtUtil::setMargin(layout(), 0);
+    QtUtil::setMargin(&buttonLayout(), 5);
 
     // tell dialog to delete when close
     setAttribute( Qt::WA_DeleteOnClose );
@@ -51,7 +52,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
 
     QHBoxLayout* layout = new QHBoxLayout;
     layout->setSpacing(20);
-    layout->setMargin(5);
+    QtUtil::setMargin(layout, 5);
     mainLayout().addLayout( layout );
 
     //! try load Question icon
@@ -135,7 +136,7 @@ void OptionDialog::_reload()
 //______________________________________________________________
 void OptionDialog::_optionModified( const Options::Pair &option )
 {
-    Debug::Throw() << "OptionDialog::_optionModified - " << option.first << " value: " << option.second.raw() << endl;
+    Debug::Throw() << "OptionDialog::_optionModified - " << option.first << " value: " << option.second.raw() << Qt::endl;
     if( XmlOptions::get().raw( option.first ) != option.second.raw() )
     {
         XmlOptions::get().setRaw( option.first, option.second.raw() );
@@ -149,7 +150,7 @@ void OptionDialog::_optionModified( const Options::Pair &option )
 //______________________________________________________________
 void OptionDialog::_specialOptionModified( const Options::Pair &option )
 {
-    Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first << endl;
+    Debug::Throw() << "OptionDialog::_specialOptionModified - " << option.first << Qt::endl;
 
     // find all matching options from model
     QModelIndex index( model_.index( Options::Pair( option.first, Option() ) ) );

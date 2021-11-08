@@ -17,13 +17,15 @@
 *
 *******************************************************************************/
 
-#include "TextEncodingWidget.h"
-
 #include "LineEditor.h"
 #include "ListModel.h"
+#include "QtUtil.h"
 #include "TextEncodingString.h"
+#include "TextEncodingWidget.h"
+#include "TextEncodingWidget.moc"
 #include "TextSelection.h"
 #include "TreeView.h"
+
 
 #include <QHeaderView>
 #include <QLayout>
@@ -118,7 +120,7 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
 {
     // layout
     QVBoxLayout* layout( new QVBoxLayout );
-    layout->setMargin( 0 );
+    QtUtil::setMargin(layout, 0);
     setLayout( layout );
 
     layout->addWidget( list_ = new TreeView( this ) );
@@ -142,7 +144,7 @@ TextEncodingWidget::TextEncodingWidget( QWidget* parent ):
 void TextEncodingWidget::setEncoding( const QByteArray& constValue )
 {
 
-    Debug::Throw() << "TextEncodingMenu::setEncoding - encoding: " << constValue << endl;
+    Debug::Throw() << "TextEncodingMenu::setEncoding - encoding: " << constValue << Qt::endl;
 
     // find codec matching value and check
     QTextCodec* codec( QTextCodec::codecForName( constValue ) );
@@ -200,4 +202,3 @@ void TextEncodingWidget::_find(const QString &text )
     locked_ = false;
 }
 
-#include "TextEncodingWidget.moc"

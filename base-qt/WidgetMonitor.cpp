@@ -64,7 +64,7 @@ QSize WidgetMonitor::sizeHint() const
             << "WidgetMonitor::sizeHint - ("
             << size.width() << ","
             << size.height() << ")"
-            << endl;
+            << Qt::endl;
 
         return size;
 
@@ -88,7 +88,7 @@ QPoint WidgetMonitor::position() const
             << "WidgetMonitor::position - ("
             << position.x() << ","
             << position.y() << ")"
-            << endl;
+            << Qt::endl;
 
         return position;
 
@@ -139,7 +139,7 @@ void WidgetMonitor::_saveWindowSize() const
         << "WidgetMonitor::_saveWindowSize - ("
         << size.width() << ","
         << size.height() << ")"
-        << endl;
+        << Qt::endl;
 
     XmlOptions::get().set<int>( widthOptionName_, size.width() );
     XmlOptions::get().set<int>( heightOptionName_, size.height() );
@@ -155,7 +155,7 @@ void WidgetMonitor::_saveWindowPosition() const
         << "WidgetMonitor::_saveWindowPosition - ("
         << position.x() << ","
         << position.y() << ")"
-        << endl;
+        << Qt::endl;
 
     XmlOptions::get().set<int>( xOptionName_, position.x() );
     XmlOptions::get().set<int>( yOptionName_, position.y() );

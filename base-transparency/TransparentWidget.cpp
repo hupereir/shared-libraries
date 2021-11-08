@@ -319,7 +319,7 @@ namespace Transparency
     void TransparentWidget::_updateBlurRegion( const QRegion& region )
     {
 
-        Debug::Throw() << "TransparentWidget::_updateBlurRegion" << endl;
+        Debug::Throw() << "TransparentWidget::_updateBlurRegion" << Qt::endl;
 
         #if WITH_XCB
 

@@ -37,6 +37,11 @@ class BASE_QT_EXPORT QtUtil
     //* desktop geometry
     static QRect desktopGeometry( QWidget* = nullptr );
 
+    //* add margins to layouts
+    template<class T> 
+        static void setMargin(T* object, int margin )
+    { object->setContentsMargins( margin, margin, margin, margin ); }
+    
     //* move menu to position taking proper care of the screen borders
     static void moveWidget( QWidget* widget, QPoint position );
 
@@ -70,7 +75,7 @@ class BASE_QT_EXPORT QtUtil
     //* get 'title' font matching argument
     static QFont titleFont( QFont );
 
-    //* light text color
+        //* light text color
     static QColor lightTextColor( const QPalette& palette,
         QPalette::ColorRole role )
     { return lightTextColor( palette.color( role ) ); }

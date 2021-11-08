@@ -30,7 +30,7 @@ ItemModel::ItemModel( QObject* parent ):
 //____________________________________________________________
 void ItemModel::sort( int column, Qt::SortOrder order )
 {
-    Debug::Throw() << "ItemModel::sort - column: " << column << " order: " << order << endl;
+    Debug::Throw() << "ItemModel::sort - column: " << column << " order: " << order << Qt::endl;
 
     // store column and order
     sortColumn_ = column;

@@ -23,7 +23,9 @@
 #include "ColorDisplay.h"
 #include "ColorOptionModel.h"
 #include "Dialog.h"
+#include "QtUtil.h"
 #include "TreeView.h"
+
 
 //_______________________________________________________
 class EditDialog: public Dialog
@@ -53,6 +55,8 @@ class EditDialog: public Dialog
 
 };
 
+#include "ColorOptionListBox.moc"
+
 //_______________________________________________________
 EditDialog::EditDialog( QWidget* parent ):
     Dialog( parent )
@@ -60,7 +64,7 @@ EditDialog::EditDialog( QWidget* parent ):
 
     setOptionName( QStringLiteral("OPTIONLISTBOX_EDIT") );
     QVBoxLayout* vLayout = new QVBoxLayout;
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(5);
     mainLayout().addLayout( vLayout );
 
@@ -152,4 +156,3 @@ void ColorOptionListBox::_edit()
 
 }
 
-#include "ColorOptionListBox.moc"

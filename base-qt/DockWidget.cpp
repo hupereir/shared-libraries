@@ -17,9 +17,10 @@
 *
 *******************************************************************************/
 
+#include "BaseMainWindow.h"
 #include "DockWidget.h"
 #include "DockWidget_p.h"
-#include "BaseMainWindow.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 
@@ -45,7 +46,7 @@ DockWidget::DockWidget(const QString& title, QWidget* parent, const QString& opt
     main->windowMonitor().setMode( WidgetMonitor::Mode::Size );
     main->windowMonitor().setOptionName( optionName );
     main->setLayout( new QVBoxLayout );
-    main->layout()->setMargin(0);
+    QtUtil::setMargin(main->layout(), 0);
     main->layout()->setSpacing(0);
     setWidget( main );
 
@@ -68,7 +69,7 @@ void DockWidget::setUseScrollArea( bool value )
     // do nothing if unchanged
     if( container_ && value == useScrollArea_ ) return;
 
-    Debug::Throw() << "DockWidget::setUseScrollArea - value: " << value << endl;
+    Debug::Throw() << "DockWidget::setUseScrollArea - value: " << value << Qt::endl;
 
     useScrollArea_ = value;
     if( useScrollArea_ )
@@ -111,7 +112,7 @@ void DockWidget::setLocked( bool locked )
 
     if( locked == locked_ ) return;
 
-    Debug::Throw() << "DockWidget::setLocked - value: " << locked << endl;
+    Debug::Throw() << "DockWidget::setLocked - value: " << locked << Qt::endl;
 
     locked_ = locked;
     if( locked )
@@ -190,7 +191,7 @@ void DockWidget::_updateTitleBarWidget()
 void DockWidget::_toggleVisibility( bool state )
 {
 
-    Debug::Throw() << "DockWidget::_toggleVisibility - name: " << optionName_ << " state: " << state << endl;
+    Debug::Throw() << "DockWidget::_toggleVisibility - name: " << optionName_ << " state: " << state << Qt::endl;
     if( !optionName_.isEmpty() ) XmlOptions::get().set<bool>( optionName_, state );
 
     if( parentWidget()->isVisible() || !state )

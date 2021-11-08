@@ -148,7 +148,7 @@ namespace Base
     //_________________________________________________________
     void HelpDialog::_openLink( const QString &link )
     {
-        Debug::Throw() << "HelpDialog::_openLink - link: " << link << endl;
+        Debug::Throw() << "HelpDialog::_openLink - link: " << link << Qt::endl;
         QDesktopServices::openUrl( QUrl(link) );
     }
 }

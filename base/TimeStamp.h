@@ -94,11 +94,11 @@ class BASE_EXPORT TimeStamp:private Base::Counter<TimeStamp>
 
     //* if timestamp is valid, returns formated string
     QString toString( Qt::DateFormat format ) const
-    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : TimeStampUnknown; }
+    { return valid_ ? QDateTime::fromSecsSinceEpoch( time_ ).toString( format ) : TimeStampUnknown; }
 
     //* if timestamp is valid, returns formated string
     QString toString( const QString& format ) const
-    { return valid_ ? QDateTime::fromTime_t( time_ ).toString( format ) : TimeStampUnknown; }
+    { return valid_ ? QDateTime::fromSecsSinceEpoch( time_ ).toString( format ) : TimeStampUnknown; }
 
     //* returns time in second
     time_t unixTime() const

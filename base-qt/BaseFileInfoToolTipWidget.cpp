@@ -38,7 +38,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
 
     // layout
     auto hLayout = new QHBoxLayout;
-    hLayout->setMargin( 10 );
+    QtUtil::setMargin(hLayout, 10);
     hLayout->setSpacing( 10 );
     setLayout( hLayout );
 
@@ -46,7 +46,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     iconLabel_->setAlignment( Qt::AlignHCenter|Qt::AlignTop );
 
     auto vLayout = new QVBoxLayout;
-    vLayout->setMargin( 0 );
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing( 5 );
     hLayout->addLayout( vLayout );
 
@@ -55,7 +55,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     vLayout->addWidget( fileLabel_ = new QLabel( this ) );
     fileLabel_->setAlignment( Qt::AlignCenter );
     fileLabel_->setFont( QtUtil::titleFont( fileLabel_->font() ) );
-    fileLabel_->setMargin( 1 );
+    QtUtil::setMargin(fileLabel_, 1);
 
     // separator
     vLayout->addWidget( separator_ = new QFrame( this ) );
@@ -66,7 +66,7 @@ BaseFileInfoToolTipWidget::BaseFileInfoToolTipWidget( QWidget* parent ):
     gridLayout->setMaxCount( 2 );
     gridLayout->setColumnAlignment( 0, Qt::AlignVCenter|Qt::AlignRight );
     gridLayout->setColumnAlignment( 1, Qt::AlignVCenter|Qt::AlignLeft );
-    gridLayout->setMargin( 0 );
+    QtUtil::setMargin(gridLayout, 0);
     gridLayout->setSpacing( 5 );
     vLayout->addLayout( gridLayout );
 

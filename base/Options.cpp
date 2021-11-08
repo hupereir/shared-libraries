@@ -122,7 +122,7 @@ void Options::clearSpecialOptions( const QString& name )
 //________________________________________________
 void Options::set( const QString& name, const Option& constOption, bool isDefault )
 {
-    Debug::Throw() << "Options::set - name: " << name << endl;
+    Debug::Throw() << "Options::set - name: " << name << Qt::endl;
     auto option( constOption );
     if( isDefault || _autoDefault() ) option.setDefault();
 
@@ -134,7 +134,7 @@ void Options::set( const QString& name, const Option& constOption, bool isDefaul
 bool Options::add( const QString& name, const Option& constOption, bool isDefault )
 {
 
-    Debug::Throw() << "Options::add - name: " << name << " value: \"" << constOption.raw() << "\"" << endl;
+    Debug::Throw() << "Options::add - name: " << name << " value: \"" << constOption.raw() << "\"" << Qt::endl;
 
     // store option as special if requested
     auto iter( specialOptions_.find( name ) );
@@ -142,7 +142,7 @@ bool Options::add( const QString& name, const Option& constOption, bool isDefaul
     // check option
     if( iter == specialOptions_.end() )
     {
-        QTextStream( stdout ) << "Options::add - invalid option: " << name << endl;
+        QTextStream( stdout ) << "Options::add - invalid option: " << name << Qt::endl;
         return false;
     }
 
@@ -211,7 +211,7 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
 
     // print normal options
     for( auto&& iter = options.options().begin(); iter != options.options().end(); ++iter )
-    { out << "  " << iter.key() << ":" << iter.value() << endl; }
+    { out << "  " << iter.key() << ":" << iter.value() << Qt::endl; }
 
     // write special options
     for( auto&& iter = options.specialOptions().begin(); iter != options.specialOptions().end(); ++iter )
@@ -220,11 +220,11 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
         for( const auto& option:optionList )
         {
             if( option.hasFlag( Option::Flag::Recordable ) && option.isSet() )
-            { out << "  " << iter.key() << ":" << option << endl; }
+            { out << "  " << iter.key() << ":" << option << Qt::endl; }
         }
     }
 
-    out << endl;
+    out << Qt::endl;
     return out;
 }
 
@@ -232,6 +232,6 @@ QTextStream &operator << ( QTextStream &out,const Options &options)
 Options::Map::const_iterator Options::_find( const QString& name ) const
 {
     Map::const_iterator out( options_.find( name ) );
-    if( out == options_.end() ) { Debug::Throw(0) << "Options::_find - invalid option: " << name << endl; }
+    if( out == options_.end() ) { Debug::Throw(0) << "Options::_find - invalid option: " << name << Qt::endl; }
     return out;
 }

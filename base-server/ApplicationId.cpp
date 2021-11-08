@@ -63,7 +63,7 @@ namespace Server
         quint32 version;
         stream >> version;
         if( version == 0 ) stream >> id.name_ >> id.user_ >> id.pid_;
-        else Debug::Throw(0) << "Unrecognized ApplicationId version: " << version << endl;
+        else Debug::Throw(0) << "Unrecognized ApplicationId version: " << version << Qt::endl;
         return stream;
     }
 }

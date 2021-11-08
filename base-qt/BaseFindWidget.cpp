@@ -24,6 +24,7 @@
 #include "GridLayout.h"
 #include "IconEngine.h"
 #include "LineEditor.h"
+#include "QtUtil.h"
 
 #include <QFrame>
 #include <QPushButton>
@@ -49,12 +50,12 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     // create vbox layout
     auto vLayout = new QVBoxLayout;
     setLayout( vLayout );
-    vLayout->setMargin( compact ? 2:0 );
+    QtUtil::setMargin( vLayout, compact ? 2:0 );
     vLayout->setSpacing( 5 );
 
     // edition layout
     vLayout->addItem( editorLayout_ = new QGridLayout );
-    editorLayout_->setMargin( 0 );
+    QtUtil::setMargin(editorLayout_, 0);
     editorLayout_->setSpacing( 5 );
 
     // label and find editor
@@ -95,7 +96,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
 
     QHBoxLayout* hLayout( new QHBoxLayout );
     hLayout->setSpacing( 5 );
-    hLayout->setMargin( 0 );
+    QtUtil::setMargin(hLayout, 0);
     editorLayout_->addLayout( hLayout, 3, 1, 1, 3 );
 
     hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "C&ase sensitive" ), this ) );
@@ -134,7 +135,7 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     } else {
 
         auto hLayout = new QHBoxLayout;
-        hLayout->setMargin( 0 );
+        QtUtil::setMargin(hLayout, 0);
         hLayout->setSpacing( 5 );
         vLayout->addItem( hLayout );
 

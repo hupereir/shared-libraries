@@ -17,8 +17,6 @@
 *
 *******************************************************************************/
 
-#include "TreeView.h"
-
 #include "BaseFindDialog.h"
 #include "BaseFindWidget.h"
 #include "BaseIconNames.h"
@@ -29,13 +27,16 @@
 #include "IconEngine.h"
 #include "InformationDialog.h"
 #include "ItemModel.h"
+#include "QtUtil.h"
 #include "RegExpUtil.h"
-#include "Singleton.h"
 #include "ScrollBarMonitor.h"
+#include "Singleton.h"
 #include "TextEditor.h"
+#include "TreeView.h"
+#include "TreeViewItemDelegate.h"
 #include "XmlOptions.h"
 
-#include "TreeViewItemDelegate.h"
+
 
 #include <QCursor>
 #include <QHeaderView>
@@ -240,7 +241,7 @@ int TreeView::visibleColumnCount() const
 bool TreeView::setOptionName( const QString& value )
 {
 
-    Debug::Throw() << "TreeView::setOptionName - value: " << value << endl;
+    Debug::Throw() << "TreeView::setOptionName - value: " << value << Qt::endl;
 
     QString tmp;
 
@@ -441,7 +442,7 @@ void TreeView::findAgainBackward()
 void TreeView::_setItemMargin( int value )
 {
 
-    Debug::Throw() << "TreeView::_setItemMargin - value: " << value << endl;
+    Debug::Throw() << "TreeView::_setItemMargin - value: " << value << Qt::endl;
     itemMargin_ = value;
 
     if( TreeViewItemDelegate* delegate = qobject_cast<TreeViewItemDelegate*>( itemDelegate() ) )
@@ -1080,7 +1081,7 @@ QModelIndex TreeView::_indexAfter( const QModelIndex& current ) const
 //_________________________________________________________
 QModelIndex TreeView::_indexBefore( const QModelIndex& current ) const
 {
-    Debug::Throw() << "TreeView::_indexBefore - " << current.row() << "," << current.column() << "," << current.isValid() << endl;
+    Debug::Throw() << "TreeView::_indexBefore - " << current.row() << "," << current.column() << "," << current.isValid() << Qt::endl;
     QModelIndex out;
     if( !current.isValid() ) return out;
 
@@ -1136,7 +1137,7 @@ void TreeView::Container::_initialize()
 
     // setup layout
     auto vLayout = new QVBoxLayout;
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(2);
     setLayout( vLayout );
 

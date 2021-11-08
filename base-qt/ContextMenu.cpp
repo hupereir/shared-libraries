@@ -48,7 +48,7 @@ void ContextMenu::_raise( QPoint position )
 void ContextMenu::_hideActions()
 {
 
-    Debug::Throw() << "ContextMenu::_hideActions" << endl;
+    Debug::Throw() << "ContextMenu::_hideActions" << Qt::endl;
 
     // hidden actions
     hiddenActions_.clear();
@@ -59,7 +59,7 @@ void ContextMenu::_hideActions()
         {
             if( !action->isEnabled() && action->isVisible() )
             {
-                Debug::Throw() << "ContextMenu::_hideActions - hiding: " << action->text() << endl;
+                Debug::Throw() << "ContextMenu::_hideActions - hiding: " << action->text() << Qt::endl;
                 hiddenActions_.append( action );
                 action->setVisible( false );
             }
@@ -71,7 +71,7 @@ void ContextMenu::_hideActions()
 //___________________________________________________
 void ContextMenu::_showActions()
 {
-    Debug::Throw() << "ContextMenu::_showActions" << endl;
+    Debug::Throw() << "ContextMenu::_showActions" << Qt::endl;
     if( _hideDisabledActions() )
     {
 

@@ -17,18 +17,19 @@
 *
 *******************************************************************************/
 
-#include "OptionListBox.h"
-
-#include "ContextMenu.h"
-#include "Dialog.h"
-#include "Debug.h"
 #include "BaseIconNames.h"
+#include "ContextMenu.h"
+#include "Debug.h"
+#include "Dialog.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "LineEditor.h"
+#include "OptionListBox.h"
 #include "OptionModel.h"
+#include "QtUtil.h"
 #include "TextEditionDelegate.h"
 #include "TreeView.h"
+
 
 #include <QHBoxLayout>
 #include <QHeaderView>
@@ -68,7 +69,7 @@ EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode m
 
     setOptionName( QStringLiteral("OPTIONLISTBOX_EDIT") );
     QVBoxLayout* vLayout = new QVBoxLayout;
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(5);
     mainLayout().addLayout( vLayout );
 
@@ -104,7 +105,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 
     QHBoxLayout* layout( new QHBoxLayout );
     layout->setSpacing(5);
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     setLayout( layout );
 
     // set model editable
@@ -128,7 +129,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     layout->addWidget( list_, 1 );
 
     QVBoxLayout* buttonLayout = new QVBoxLayout;
-    buttonLayout->setMargin(0);
+    QtUtil::setMargin(buttonLayout, 0);
     buttonLayout->setSpacing( 5 );
     layout->addLayout( buttonLayout, 0 );
 

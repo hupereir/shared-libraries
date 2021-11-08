@@ -17,10 +17,11 @@
 *
 *******************************************************************************/
 
-#include "TreeViewConfiguration.h"
-
 #include "Debug.h"
+#include "QtUtil.h"
+#include "TreeViewConfiguration.h"
 #include "XmlOptions.h"
+
 
 #include <QHeaderView>
 #include <QLayout>
@@ -37,7 +38,7 @@ TreeViewConfiguration::TreeViewConfiguration( QWidget *parent, QTreeView *target
 
     // create vbox layout
     setLayout( new QVBoxLayout );
-    layout()->setMargin(5);
+    QtUtil::setMargin(layout(), 5);
     layout()->setSpacing( 2 );
 
     // size

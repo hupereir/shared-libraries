@@ -54,7 +54,7 @@ ToolButtonStyleMenu::ToolButtonStyleMenu( QWidget* parent ):
 //_____________________________________________________________________________
 void ToolButtonStyleMenu::select( int style )
 {
-    Debug::Throw() << "ToolButtonStyleMenu::select - style: " << style << endl;
+    Debug::Throw() << "ToolButtonStyleMenu::select - style: " << style << Qt::endl;
     if( style < 0 ) style = Qt::ToolButtonFollowStyle;
     const auto iter = Base::findByValue( actions_, style );
     if( iter != actions_.cend() ) iter.key()->setChecked( true );

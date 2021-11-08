@@ -17,11 +17,12 @@
 *
 *******************************************************************************/
 
-#include "PrinterOptionWidget.h"
-
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "PrintPreviewDialog.h"
+#include "PrinterOptionWidget.h"
+#include "QtUtil.h"
+
 
 #include <QApplication>
 #include <QButtonGroup>
@@ -40,7 +41,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     setLayout( layout );
 
     auto hLayout = new QHBoxLayout;
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     layout->addLayout( hLayout );
 
     QGroupBox* groupBox;
@@ -92,7 +93,7 @@ PrinterOptionWidget::PrinterOptionWidget( QWidget* parent ):
     }
 
     hLayout = new QHBoxLayout;
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     layout->addLayout( hLayout );
     hLayout->addStretch( 1 );
     hLayout->addWidget( previewButton_ = new QPushButton( IconEngine::get( IconNames::PrintPreview ), tr( "Preview" ), this ) );

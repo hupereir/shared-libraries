@@ -240,9 +240,9 @@ class BASE_EXPORT FileRecord: private Base::Counter<FileRecord>
     //* streamers
     friend QTextStream& operator << ( QTextStream& out, const FileRecord& record )
     {
-        out << record.file() << endl;
+        out << record.file() << Qt::endl;
         for( PropertyMap::const_iterator iter = record.properties().begin(); iter != record.properties().end(); iter++ )
-        { out << "  " << iter.key() << " (" << PropertyId::get( iter.key() ) << "): " << iter.value() << endl; }
+        { out << "  " << iter.key() << " (" << PropertyId::get( iter.key() ) << "): " << iter.value() << Qt::endl; }
         return out;
     }
 

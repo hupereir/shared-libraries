@@ -155,7 +155,7 @@ bool BaseApplication::realizeWidget()
 CommandLineParser BaseApplication::commandLineParser( const CommandLineArguments &arguments, bool ignoreWarnings ) const
 {
 
-    Debug::Throw() << "BaseApplication::commandLineParser" << endl;
+    Debug::Throw() << "BaseApplication::commandLineParser" << Qt::endl;
 
     CommandLineParser out( BaseCoreApplication::commandLineParser() );
 
@@ -319,7 +319,7 @@ void BaseApplication::_updateFonts()
             // check file existence
             if( !file.exists() ) continue;
 
-            Debug::Throw() << "BaseApplication::_updateFonts - file: " << file << endl;
+            Debug::Throw() << "BaseApplication::_updateFonts - file: " << file << Qt::endl;
 
             // load settings
             QSettings settings( file, QSettings::IniFormat );
@@ -335,7 +335,7 @@ void BaseApplication::_updateFonts()
                 qApp->setFont( font, "QTextEdit" );
                 qApp->setFont( font, "QPlainTextEdit" );
                 fontFound = true;
-                Debug::Throw() << "BaseApplication::_updateFonts - font: " << fontName << endl;
+                Debug::Throw() << "BaseApplication::_updateFonts - font: " << fontName << Qt::endl;
             }
 
             // fixed fonts
@@ -345,7 +345,7 @@ void BaseApplication::_updateFonts()
                 QFont font;
                 font.fromString( fixedFontName );
                 fixedFontFound = true;
-                Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << fixedFontName << endl;
+                Debug::Throw() << "BaseApplication::_updateFonts - fixed: " << fixedFontName << Qt::endl;
                 qApp->setFont( font, "QTextEdit" );
                 qApp->setFont( font, "QPlainTextEdit" );
             }

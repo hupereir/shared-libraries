@@ -95,7 +95,7 @@ namespace Server
             command.arguments_ = CommandLineArguments( arguments );
             command.option_ = XmlOption( optionName, option );
 
-        } else Debug::Throw(0) << "Unrecognized ServerCommand version: " << version << endl;
+        } else Debug::Throw(0) << "Unrecognized ServerCommand version: " << version << Qt::endl;
 
         return stream;
     }

@@ -34,7 +34,7 @@ class BASE_QT_EXPORT BaseReplaceDialog: public BaseFindDialog
     public:
 
     //* constructor
-    explicit BaseReplaceDialog( QWidget* = nullptr, Qt::WindowFlags = 0 );
+    explicit BaseReplaceDialog( QWidget* = nullptr, Qt::WindowFlags = {} );
 
     //*@name accessors
     //@{

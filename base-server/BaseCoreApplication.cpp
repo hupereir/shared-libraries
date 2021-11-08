@@ -58,7 +58,7 @@ BaseCoreApplication::~BaseCoreApplication()
 bool BaseCoreApplication::initApplicationManager()
 {
 
-    Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.get().join( QStringLiteral(" ") ) << endl;
+    Debug::Throw() << "BaseCoreApplication::initApplicationManager - arguments: " << arguments_.get().join( QStringLiteral(" ") ) << Qt::endl;
 
     // check if already initialized
     if( _hasApplicationManager() ) return true;
@@ -77,8 +77,8 @@ bool BaseCoreApplication::initApplicationManager()
     } else if( parser.hasFlag( QStringLiteral("--version") ) ) {
 
         QTextStream(stdout)
-            << "Qt: " << qVersion() << endl
-            <<  applicationName() << ": " << applicationVersion() << endl;
+            << "Qt: " << qVersion() << Qt::endl
+            <<  applicationName() << ": " << applicationVersion() << Qt::endl;
         return false;
 
     } else if( parser.hasFlag( QStringLiteral("--no-server") ) ) {
@@ -117,7 +117,7 @@ bool BaseCoreApplication::realizeWidget()
 CommandLineParser BaseCoreApplication::commandLineParser( const CommandLineArguments &arguments, bool ignoreWarnings ) const
 {
 
-    Debug::Throw() << "BaseCoreApplication::commandLineParser" << endl;
+    Debug::Throw() << "BaseCoreApplication::commandLineParser" << Qt::endl;
 
     CommandLineParser out( Server::ApplicationManager::commandLineParser() );
 
@@ -150,7 +150,7 @@ void BaseCoreApplication::sendServerCommand( const Server::ServerCommand &comman
 bool BaseCoreApplication::_processCommand( const Server::ServerCommand &command )
 {
 
-    Debug::Throw() << "BaseCoreApplication::_processCommand: " << command.commandName() << endl;
+    Debug::Throw() << "BaseCoreApplication::_processCommand: " << command.commandName() << Qt::endl;
     switch( command.command() )
     {
 
@@ -188,6 +188,6 @@ void BaseCoreApplication::_updateConfiguration()
 //_______________________________________________
 void BaseCoreApplication::_usage( const QString &application, const QString &options ) const
 {
-    QTextStream( stdout ) << tr( "Usage: " ) << endl;
-    QTextStream( stdout ) << "  " << application << " " << options << endl;
+    QTextStream( stdout ) << tr( "Usage: " ) << Qt::endl;
+    QTextStream( stdout ) << "  " << application << " " << options << Qt::endl;
 }

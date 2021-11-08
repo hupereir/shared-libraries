@@ -17,9 +17,10 @@
 *
 *******************************************************************************/
 
-#include "Slider.h"
 #include "Debug.h"
 #include "InformationDialog.h"
+#include "QtUtil.h"
+#include "Slider.h"
 
 #include <QHBoxLayout>
 
@@ -31,7 +32,7 @@ Slider::Slider( QWidget* parent ):
     Debug::Throw( QStringLiteral("Slider::Slider.\n") );
 
     setLayout( new QHBoxLayout );
-    layout()->setMargin(0);
+    QtUtil::setMargin(layout(), 0);
     layout()->setSpacing(5);
 
     layout()->addWidget( slider_ = new QSlider( Qt::Horizontal, this ) );

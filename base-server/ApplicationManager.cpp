@@ -52,7 +52,7 @@ namespace Server
     CommandLineParser ApplicationManager::commandLineParser( const CommandLineArguments &arguments, bool ignoreWarnings )
     {
 
-        Debug::Throw() << "ApplicationManager::commandLineParser" << endl;
+        Debug::Throw() << "ApplicationManager::commandLineParser" << Qt::endl;
 
         CommandLineParser out;
         out.setGroup( CommandLineParser::serverGroupName );
@@ -97,7 +97,7 @@ namespace Server
 
         } else port_ = XmlOptions::get().get<int>( QStringLiteral("SERVER_PORT") );
 
-        Debug::Throw() << "ApplicationManager::initialize - port: " << port_ << endl;
+        Debug::Throw() << "ApplicationManager::initialize - port: " << port_ << Qt::endl;
         _initializeClient();
 
         Debug::Throw( QStringLiteral("ApplicationManager::init. done.\n") );
@@ -107,7 +107,7 @@ namespace Server
     //_____________________________________________________
     void ApplicationManager::setApplicationName( const QString& name )
     {
-        Debug::Throw() << "ApplicationManager::setApplicationName - " << name << endl;
+        Debug::Throw() << "ApplicationManager::setApplicationName - " << name << Qt::endl;
         id_ = ApplicationId( name );
         id_.setProcessId( QCoreApplication::applicationPid() );
     }
@@ -158,7 +158,7 @@ namespace Server
         Debug::Throw() << "ApplicationManager::_redirect -"
             << " application:" << command.id().name()
             << " command: " << command.commandName()
-            << endl;
+            << Qt::endl;
 
         CommandLineParser parser( commandLineParser( command.arguments() ) );
         switch( command.command() )
@@ -282,7 +282,7 @@ namespace Server
     void ApplicationManager::_broadcast( const ServerCommand &command, ClientPtr sender )
     {
 
-        Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << endl;
+        Debug::Throw() << "ApplicationManager::_Broadcast - id: " << command.id().name() << " command: " << command.commandName() << Qt::endl;
         for( auto& client:connectedClients_ )
         { if( client != sender ) client->sendCommand( command ); }
 
@@ -341,7 +341,7 @@ namespace Server
     void ApplicationManager::_error( QAbstractSocket::SocketError error )
     {
 
-        Debug::Throw() << "ApplicationManager::_error - error:" << client_->socket().errorString() << endl;
+        Debug::Throw() << "ApplicationManager::_error - error:" << client_->socket().errorString() << Qt::endl;
 
         if( error == QAbstractSocket::ConnectionRefusedError )
         {
@@ -365,7 +365,7 @@ namespace Server
             }
 
         } else {
-            Debug::Throw() << "ApplicationManager::_error - unhandled error:" << client_->socket().errorString() << endl;
+            Debug::Throw() << "ApplicationManager::_error - unhandled error:" << client_->socket().errorString() << Qt::endl;
         }
 
         return;
@@ -389,7 +389,7 @@ namespace Server
         Debug::Throw() << "ApplicationManager::_process -"
             << " app:" << command.id().name()
             << " command: " << command.commandName()
-            << endl;
+            << Qt::endl;
 
         // check command id is valid
         if( !command.id().isValid() ) return;
@@ -466,7 +466,7 @@ namespace Server
     bool ApplicationManager::_initializeClient()
     {
 
-        Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << host_.toString() << " port: " << port_ << endl;
+        Debug::Throw() << "ApplicationManager::_initializeClient - connecting to host: " << host_.toString() << " port: " << port_ << Qt::endl;
 
         // connect client to port
         client_.reset( new Client( this ) );

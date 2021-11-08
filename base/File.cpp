@@ -46,21 +46,21 @@ bool File::isAbsolute( const QString& value )
 TimeStamp File::created() const
 {
     if( !exists() ) return TimeStamp();
-    return TimeStamp(QFileInfo( *this ).birthTime().toTime_t());
+    return TimeStamp(QFileInfo( *this ).birthTime().toSecsSinceEpoch());
 }
 
 //_____________________________________________________________________
 TimeStamp File::lastModified() const
 {
     if( !exists() ) return TimeStamp();
-    return TimeStamp( QFileInfo( *this ).lastModified().toTime_t() );
+    return TimeStamp( QFileInfo( *this ).lastModified().toSecsSinceEpoch() );
 }
 
 //_____________________________________________________________________
 TimeStamp File::lastAccessed() const
 {
     if( !exists() ) return TimeStamp();
-    return TimeStamp( QFileInfo( *this ).lastRead().toTime_t() );
+    return TimeStamp( QFileInfo( *this ).lastRead().toSecsSinceEpoch() );
 }
 
 //_____________________________________________________________________
@@ -153,12 +153,12 @@ QString File::sizeString( qint64 sizeInt )
     int power = log( size )/log( 1024 );
     QString out;
 
-    if( !power ) out.sprintf( "%.0f", size );
+    if( !power ) out.asprintf( "%.0f", size );
     else {
 
         if( power > 4 ) power = 4;
         size /= pow( static_cast<double>(1024), static_cast<double>(power) );
-        out.sprintf( "%.1f", size );
+        out.asprintf( "%.1f", size );
 
     }
 

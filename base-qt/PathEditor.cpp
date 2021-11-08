@@ -17,18 +17,19 @@
 *
 *******************************************************************************/
 
-#include "PathEditor.h"
-#include "PathEditor_p.h"
-
-#include "BaseIconNames.h"
 #include "BaseFileInfo.h"
+#include "BaseIconNames.h"
 #include "Debug.h"
 #include "DragMonitor.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "PathEditor.h"
+#include "PathEditor_p.h"
+#include "QtUtil.h"
 #include "Singleton.h"
 #include "XmlOptions.h"
 #include "XmlPathHistory.h"
+
 
 #include <QApplication>
 #include <QDrag>
@@ -349,7 +350,7 @@ PathEditor::PathEditor( QWidget* parent ):
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         browserContainer_->setLayout( hLayout );
 
         // prefix label
@@ -367,7 +368,7 @@ PathEditor::PathEditor( QWidget* parent ):
         // button layout
         hLayout->addLayout( buttonLayout_ = new QHBoxLayout );
         buttonLayout_->setSpacing(0);
-        buttonLayout_->setMargin(0);
+        QtUtil::setMargin(buttonLayout_, 0);
 
         // switch
         Private::PathEditorSwitch* editorSwitch = new Private::PathEditorSwitch( browserContainer_ );
@@ -389,7 +390,7 @@ PathEditor::PathEditor( QWidget* parent ):
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         editorContainer_->setLayout( hLayout );
 
         editor_ = new ComboBox( editorContainer_ );
@@ -557,7 +558,7 @@ void PathEditor::setDragEnabled( bool value )
 void PathEditor::setPath( const File& constPath, const File& file )
 {
 
-    Debug::Throw() << "PathEditor::setPath - " << constPath << endl;
+    Debug::Throw() << "PathEditor::setPath - " << constPath << Qt::endl;
 
     // upbate browser
     {
@@ -609,7 +610,7 @@ void PathEditor::setPath( const File& constPath, const File& file )
         index++;
 
         // create path items
-        const int sectionCount( path.split( QLatin1Char('/'), QString::SkipEmptyParts ).size() );
+        const int sectionCount( path.split( QLatin1Char('/'), Qt::SkipEmptyParts ).size() );
         for( int i=0; i < sectionCount; i++ )
         {
 
@@ -880,7 +881,7 @@ void PathEditor::_menuButtonClicked()
     // add path
     for( const auto& path:pathList )
     {
-        Debug::Throw() << "PathEditor::_menuButtonClicked - adding " << path << endl;
+        Debug::Throw() << "PathEditor::_menuButtonClicked - adding " << path << Qt::endl;
         menu->addAction( path )->setData( path.get() );
     }
 
@@ -894,7 +895,7 @@ void PathEditor::_menuButtonClicked()
 void PathEditor::_updatePath( QAction* action )
 {
     File path( action->data().toString() );
-    Debug::Throw() << "PathEditor::_updatePath - path: " << path << endl;
+    Debug::Throw() << "PathEditor::_updatePath - path: " << path << Qt::endl;
     setPath( path );
     emit pathChanged( path );
 }
@@ -919,7 +920,7 @@ void PathEditor::_buttonClicked( QAbstractButton* button )
 void PathEditor::_updateButtonVisibility()
 {
 
-    Debug::Throw() << "PathEditor::_updateButtonVisibility - path: " << path() << endl;
+    Debug::Throw() << "PathEditor::_updateButtonVisibility - path: " << path() << Qt::endl;
 
     // get widget width
     int maxWidth( this->width() );

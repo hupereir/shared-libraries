@@ -45,14 +45,14 @@ namespace Private
         explicit OptionMenu( QWidget* );
 
         //* set orientation
-        void setOrientation( QPrinter::Orientation ) const;
+        void setOrientation( QPageLayout::Orientation ) const;
 
         //* set page mode
         void setPageMode( BasePrintHelper::PageMode ) const;
 
         Q_SIGNALS:
 
-        void orientationChanged( QPrinter::Orientation );
+        void orientationChanged( QPageLayout::Orientation );
 
         void pageModeChanged( BasePrintHelper::PageMode );
 
@@ -65,7 +65,7 @@ namespace Private
         void _setPageMode( QAction* );
 
         //* actions maps
-        using OrientationActionMap = QHash<QAction*, QPrinter::Orientation>;
+        using OrientationActionMap = QHash<QAction*, QPageLayout::Orientation>;
         OrientationActionMap orientationActions_;
 
         //* actions map

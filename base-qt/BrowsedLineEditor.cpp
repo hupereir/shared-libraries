@@ -19,13 +19,14 @@
 
 #include "BaseIconNames.h"
 #include "BrowsedLineEditor.h"
+#include "Debug.h"
 #include "File.h"
 #include "FileDialog.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
 #include "LineEditor.h"
+#include "QtUtil.h"
 #include "Util.h"
-#include "Debug.h"
 
 #include <QLayout>
 #include <QToolButton>
@@ -42,7 +43,7 @@ BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
 
     // insert horizontal layout
     auto layout = new QHBoxLayout;
-    layout->setMargin(0);
+    QtUtil::setMargin(layout, 0);
     layout->setSpacing(2);
     setLayout( layout );
 

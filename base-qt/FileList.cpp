@@ -41,7 +41,7 @@ bool FileList::contains( const File& file ) const
 //_______________________________________________
 void FileList::remove( const File& file )
 {
-    Debug::Throw() << "FileList::remove - " << file << endl;
+    Debug::Throw() << "FileList::remove - " << file << Qt::endl;
     records_.erase(std::remove_if( records_.begin(), records_.end(), FileRecord::SameFileFTorUnary( file ) ), records_.end() );
     return;
 }
@@ -154,7 +154,7 @@ FileRecord& FileList::_add(
     if( iter != records_.end() )
     {
 
-        Debug::Throw() << "FileList::_add - updating: " << record.file() << endl;
+        Debug::Throw() << "FileList::_add - updating: " << record.file() << Qt::endl;
         if( updateTimeStamp && iter->time() != record.time() )
         {
             iter->setTime( TimeStamp(qMax( iter->time(), record.time() ) ) );
@@ -165,7 +165,7 @@ FileRecord& FileList::_add(
 
     } else {
 
-        Debug::Throw() << "FileList::_add - adding: " << record.file() << endl;
+        Debug::Throw() << "FileList::_add - adding: " << record.file() << Qt::endl;
         records_.append( record );
 
         if( emitSignal ) emit contentsChanged();

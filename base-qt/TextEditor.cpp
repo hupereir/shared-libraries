@@ -127,7 +127,7 @@ TextEditor::TextEditor( QWidget *parent ):
 TextEditor::~TextEditor()
 {
 
-    Debug::Throw() << "TextEditor::~TextEditor - key: " << key() << endl;
+    Debug::Throw() << "TextEditor::~TextEditor - key: " << key() << Qt::endl;
 
     // cast document
     auto document( qobject_cast<TextDocument*>( TextEditor::document() ) );
@@ -224,7 +224,7 @@ TextSelection TextEditor::selection() const
 
     } else if( textCursor().hasSelection() ) {
 
-        Debug::Throw() << "TextEditor::selection - from cursor: " << textCursor().selectedText() << endl;
+        Debug::Throw() << "TextEditor::selection - from cursor: " << textCursor().selectedText() << Qt::endl;
         out.setText( textCursor().selectedText() );
 
     } else {
@@ -954,7 +954,7 @@ int TextEditor::replaceInWindow( const TextSelection &selection, bool showDialog
 void TextEditor::selectLine( int index )
 {
 
-    Debug::Throw() << "TextEditor::selectLine - index: " << index << endl;
+    Debug::Throw() << "TextEditor::selectLine - index: " << index << Qt::endl;
     auto block = document()->begin();
     for( int localIndex = 0;localIndex < index && block.isValid(); block = block.next(), localIndex++ )
     {}
@@ -1618,7 +1618,7 @@ void TextEditor::keyPressEvent( QKeyEvent* event )
 //_______________________________________________________
 void TextEditor::focusInEvent( QFocusEvent* event )
 {
-    Debug::Throw() << "TextEditor::focusInEvent - " << key() << endl;
+    Debug::Throw() << "TextEditor::focusInEvent - " << key() << Qt::endl;
     if(
         _setModifier( Modifier::CapsLock, KeyModifier( Qt::Key_CapsLock ).state() == KeyModifier::State::On ) ||
         _setModifier( Modifier::NumLock, KeyModifier( Qt::Key_NumLock ).state() == KeyModifier::State::On ) )
@@ -2216,7 +2216,7 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
         << " position: " << cursor.position()
         << " selection: " << selection.text()
         << " replacement: " << selection.replaceText()
-        << endl;
+        << Qt::endl;
 
     // need to check for editability because apparently even if calling action is disabled,
     // the shortcut still can be called
@@ -2350,7 +2350,7 @@ void TextEditor::_synchronizeBoxSelection() const
 bool TextEditor::_setLeftMargin( int margin )
 {
 
-    Debug::Throw() << "TextEditor::_setLeftMargin - margin: " << margin << endl;
+    Debug::Throw() << "TextEditor::_setLeftMargin - margin: " << margin << Qt::endl;
     if( margin == leftMargin_ ) return false;
 
     leftMargin_ = margin;
@@ -2375,7 +2375,7 @@ void TextEditor::_toggleOverwriteMode()
 bool TextEditor::_setTabSize( int tabSize )
 {
 
-    Debug::Throw() << "TextEditor::_setTabSize - " << tabSize << endl;
+    Debug::Throw() << "TextEditor::_setTabSize - " << tabSize << Qt::endl;
     Q_ASSERT( tabSize > 0 );
 
     int stopWidth( tabSize * fontMetrics().horizontalAdvance( ' ' ) );
@@ -2586,7 +2586,7 @@ void TextEditor::_updateUndoRedoActions()
 void TextEditor::_updateSelectionActions( bool hasSelection )
 {
 
-    Debug::Throw() << "TextEditor::_updateSelectionActions - hasSelection: " << hasSelection << endl;
+    Debug::Throw() << "TextEditor::_updateSelectionActions - hasSelection: " << hasSelection << Qt::endl;
 
     bool editable( !isReadOnly() );
     cutAction_->setEnabled( hasSelection && editable );
@@ -2686,7 +2686,7 @@ void TextEditor::_toggleBlockHighlight( bool state )
 //________________________________________________
 bool TextEditor::_toggleWrapMode( bool state )
 {
-    Debug::Throw() << "TextEditor::_toggleWrapMode - " << (state ? "True":"false") << endl;
+    Debug::Throw() << "TextEditor::_toggleWrapMode - " << (state ? "True":"false") << Qt::endl;
     LineWrapMode mode( state ? BaseEditor::WidgetWidth : BaseEditor::NoWrap );
     if( mode == lineWrapMode() ) return false;
 
@@ -2714,7 +2714,7 @@ bool TextEditor::_toggleWrapMode( bool state )
 bool TextEditor::_toggleTabEmulation( bool state )
 {
 
-    Debug::Throw() << "TextEditor::_toggleTabEmulation - " << (state ? "True":"false") << endl;
+    Debug::Throw() << "TextEditor::_toggleTabEmulation - " << (state ? "True":"false") << Qt::endl;
 
     // check if changed
     if( hasTabEmulation_ == state ) return false;
@@ -2911,7 +2911,7 @@ void TextEditor::Container::_initialize()
     editor_->setParent( this );
 
     auto vLayout = new QVBoxLayout;
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(2);
     setLayout( vLayout );
 

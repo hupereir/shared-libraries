@@ -87,7 +87,7 @@ void ColorComboBox::setColors( const Base::Color::Set& colors )
 //_________________________________________________________
 void ColorComboBox::addColor( const QColor& color )
 {
-    Debug::Throw() << "ColorComboBox::addColor - color: " << color.name() << endl;
+    Debug::Throw() << "ColorComboBox::addColor - color: " << color.name() << Qt::endl;
 
     // create pixmap
     QPixmap pixmap = QPixmap( IconSize::get( IconSize::Huge ) );
@@ -113,7 +113,7 @@ void ColorComboBox::addColor( const QColor& color )
 void ColorComboBox::selectColor( const QColor&  color )
 {
 
-    Debug::Throw() << "ColorComboBox::selectColor - color: " << color.name() << endl;
+    Debug::Throw() << "ColorComboBox::selectColor - color: " << color.name() << Qt::endl;
     if( !color.isValid() ) setCurrentIndex( 1 );
     else {
 
@@ -143,7 +143,7 @@ void ColorComboBox::selectColor( const QColor&  color )
 //_________________________________________________________
 void ColorComboBox::_updateActiveIndex( int index )
 {
-    Debug::Throw() << "ColorComboBox::_updateActiveIndex - index: " << index << endl;
+    Debug::Throw() << "ColorComboBox::_updateActiveIndex - index: " << index << Qt::endl;
     if( index == 0 )
     {
 

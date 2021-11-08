@@ -106,7 +106,7 @@ bool BoxSelection::checkEnabled()
     */
     bool fixed( QFontInfo( parent_->font() ).fixedPitch() );
     enabled_ = fixed && color_.isValid();
-    Debug::Throw( debugLevel ) << "BoxSelection::updateConfiguration - isEnabled: " << isEnabled() << endl;
+    Debug::Throw( debugLevel ) << "BoxSelection::updateConfiguration - isEnabled: " << isEnabled() << Qt::endl;
     if( !isEnabled() ) return false;
 
     // read font attributes
@@ -286,7 +286,7 @@ bool BoxSelection::fromString( QString input )
 //________________________________________________________________________
 bool BoxSelection::toClipboard( QClipboard::Mode mode ) const
 {
-    Debug::Throw(debugLevel) << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << endl;
+    Debug::Throw(debugLevel) << "BoxSelection::toClipboard - mode: " << ( mode == QClipboard::Selection ? "Selection":"Clipboard" ) << Qt::endl;
 
     // check if selection mode is available
     if( mode == QClipboard::Selection && !qApp->clipboard()->supportsSelection() ) return false;
@@ -323,7 +323,7 @@ bool BoxSelection::fromClipboard( QClipboard::Mode mode )
     const QMimeData* data( qApp->clipboard()->mimeData() );
     if( !data )
     {
-        Debug::Throw(debugLevel) << "BoxSelection::fromClipboard - no mimeData" << endl;
+        Debug::Throw(debugLevel) << "BoxSelection::fromClipboard - no mimeData" << Qt::endl;
         return false;
     }
 
@@ -523,7 +523,7 @@ void BoxSelection::_store()
     int columns = rect().width() / fontWidth_;
     int rows = rect().height() / fontHeight_ + 1;
 
-    Debug::Throw() << "BoxSelection::_store - [" << firstColumn << "," << columns << "," << rows << "]" << endl;
+    Debug::Throw() << "BoxSelection::_store - [" << firstColumn << "," << columns << "," << rows << "]" << Qt::endl;
 
     // translate rect
     auto local( parent_->toViewport( rect() ) );
@@ -539,14 +539,14 @@ void BoxSelection::_store()
         Debug::Throw() << "BoxSelection::_store -"
             << " begin: (" << begin.x() << "," << begin.y() << ")"
             << " end: (" << end.x() << "," << end.y() << ")"
-            << endl;
+            << Qt::endl;
 
         auto cursor( parent_->cursorForPosition( begin ) );
         Debug::Throw()
             << "BoxSelection::_store -"
             << " begin: " << parent_->cursorForPosition( begin ).position()
             << " end: " << parent_->cursorForPosition( end ).position()
-            << endl;
+            << Qt::endl;
 
         // check if cursor is at end of block, and move at end
         if( !cursor.atBlockEnd() )

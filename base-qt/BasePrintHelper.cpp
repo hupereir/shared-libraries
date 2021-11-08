@@ -43,13 +43,13 @@ void BasePrintHelper::setupPage( QPrinter* printer )
     now_ = TimeStamp::now();
 
     // set printer orientation
-    printer->setOrientation( orientation_ );
+    printer->setPageOrientation( orientation_ );
 
     // get font
     const auto font( QTextDocument().defaultFont() );
     const QFontMetrics metrics( font, printer );
     const auto leading( metrics.leading() );
-    const auto printerRect( printer->pageRect() );
+    const auto printerRect( printer->pageLayout().paintRectPixels( printer->resolution())  );
     const int margin = 1.5*( metrics.height() + leading );
 
     QRect fullPageRect;
@@ -70,8 +70,8 @@ void BasePrintHelper::setupPage( QPrinter* printer )
             fullPageRect = QRect( 0, 0, printerRect.width(), printerRect.width()/scale );
 
             // change orientation and define viewports
-            printer->setOrientation( orientation_ == QPrinter::Portrait ? QPrinter::Landscape:QPrinter::Portrait );
-            const auto viewport = QRect( 0, 0, scale*printer->pageRect().width(), scale*printer->pageRect().height() );
+            printer->setPageOrientation( orientation_ == QPageLayout::Portrait ? QPageLayout::Landscape:QPageLayout::Portrait );
+            const auto viewport = QRect( 0, 0, scale*printerRect.width(), scale*printerRect.height() );
             pages_ = {
                 viewport,
                 viewport.translated( scale*fullPageRect.width() + margin, 0 )
@@ -86,7 +86,7 @@ void BasePrintHelper::setupPage( QPrinter* printer )
             fullPageRect = QRect( 0, 0, printerRect.width(), qreal(printerRect.height()-margin)/(2*scale) );
 
             // define viewports
-            const auto viewport = QRect( 0, 0, scale*printer->pageRect().width(), scale*printer->pageRect().height() );
+            const auto viewport = QRect( 0, 0, scale*printerRect.width(), scale*printerRect.height() );
             pages_ = {
                 viewport,
                 viewport.translated( scale*fullPageRect.width() + margin, 0 ),

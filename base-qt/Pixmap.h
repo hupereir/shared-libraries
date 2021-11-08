@@ -39,7 +39,7 @@ class BASE_QT_EXPORT Pixmap: public QPixmap, private Base::Counter<Pixmap>
     Q_DECLARE_FLAGS( Flags, Flag )
 
     //* constructor
-    explicit Pixmap( QSize , Flags flags = 0 );
+    explicit Pixmap( QSize , Flags flags = {} );
 
     //* constructor
     explicit Pixmap( const QPixmap& pixmap ):

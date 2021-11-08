@@ -17,11 +17,12 @@
 *
 *******************************************************************************/
 
-#include "QuestionDialog.h"
-
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "QtUtil.h"
+#include "QuestionDialog.h"
+
 
 //____________________________________________________________
 QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
@@ -33,7 +34,7 @@ QuestionDialog::QuestionDialog( QWidget* parent, const QString& text ):
     // try load Question icon
     auto hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     mainLayout().addLayout( hLayout );
 
     auto label = new QLabel( this );

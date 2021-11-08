@@ -49,7 +49,7 @@ class BASE_QT_EXPORT BaseMainWindow: public QMainWindow
     public:
 
     //* constructor
-    explicit BaseMainWindow( QWidget*, Qt::WindowFlags = 0);
+    explicit BaseMainWindow( QWidget*, Qt::WindowFlags = {});
 
     //*@name accessors
     //@{

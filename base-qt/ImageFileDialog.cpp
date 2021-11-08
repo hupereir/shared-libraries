@@ -17,11 +17,12 @@
 *
 *******************************************************************************/
 
+#include "Debug.h"
+#include "File.h"
+#include "FileDialog.h"
 #include "ImageFileDialog.h"
 #include "Pixmap.h"
-#include "FileDialog.h"
-#include "File.h"
-#include "Debug.h"
+#include "QtUtil.h"
 #include "Util.h"
 #include "XmlOptions.h"
 
@@ -47,7 +48,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
     if( !FileDialog::_workingDirectory().isEmpty() && QFileInfo( FileDialog::_workingDirectory() ).isDir() )
     { setDirectory( QDir( FileDialog::_workingDirectory() ) ); }
 
-    Debug::Throw() << "ImageFileDialog::ImageFileDialog - working directory: " << FileDialog::_workingDirectory() << endl;
+    Debug::Throw() << "ImageFileDialog::ImageFileDialog - working directory: " << FileDialog::_workingDirectory() << Qt::endl;
     connect( this, &QFileDialog::directoryEntered, this, &ImageFileDialog::saveWorkingDirectory );
 
     // add image display
@@ -60,14 +61,14 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
         auto vLayout = new QVBoxLayout;
         main->setLayout( vLayout );
         vLayout->setSpacing(5);
-        vLayout->setMargin(0);
+        QtUtil::setMargin(vLayout, 0);
         vLayout->addWidget( preview_ = new Label( main ), 1 );
         preview_->setAlignment( Qt::AlignCenter );
         preview_->setFrameStyle( QFrame::StyledPanel|QFrame::Sunken );
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(5);
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         vLayout->addLayout( hLayout );
 
         hLayout->addWidget( automaticPreview_ = new QCheckBox( tr( "Automatic preview" ), main ) );
@@ -77,7 +78,7 @@ ImageFileDialog::ImageFileDialog( QWidget* parent ):
         hLayout->addWidget( button );
         connect( button, &QAbstractButton::clicked, this, &ImageFileDialog::_preview );
 
-    } else Debug::Throw() << "ImageFileDialog::ImageFileDialog - unable to find splitter." << endl;
+    } else Debug::Throw() << "ImageFileDialog::ImageFileDialog - unable to find splitter." << Qt::endl;
 
     connect( this, QOverload<const QString&>::of( &ImageFileDialog::currentChanged ), this, &ImageFileDialog::_currentChanged );
 
@@ -131,7 +132,7 @@ void ImageFileDialog::Label::dropEvent( QDropEvent *event )
 //______________________________________________________________________
 void ImageFileDialog::saveWorkingDirectory( const QString &directory )
 {
-    Debug::Throw() << "ImageFileDialog::saveWorkingDirectory - directory: " << directory << endl;
+    Debug::Throw() << "ImageFileDialog::saveWorkingDirectory - directory: " << directory << Qt::endl;
     FileDialog::setWorkingDirectory( File( QFileInfo( directory ).absolutePath() ) );
 }
 

@@ -51,12 +51,12 @@ namespace Base
         // split strings that are not enclosed into quotes using white spaces as separator
         // by construction, the first part is not enclosed into quotes; the second is; the third is not, etc.
         bool split( true );
-        for( const auto& line:in.split( QLatin1Char('\"'), QString::KeepEmptyParts ) )
+        for( const auto& line:in.split( QLatin1Char('\"'), Qt::KeepEmptyParts ) )
         {
             if( !line.isEmpty() )
             {
                 static const QRegularExpression regExp( QStringLiteral("\\s+") );
-                if( split ) out.append( line.split( regExp, QString::SkipEmptyParts ) );
+                if( split ) out.append( line.split( regExp, Qt::SkipEmptyParts ) );
                 else out.append( QStringLiteral("\"") + line + "\"" );
             }
 
@@ -67,7 +67,7 @@ namespace Base
         if( Debug::level() >= 1 )
         {
             for( const auto& line:out )
-            { Debug::Throw(0) << "Command::parse - \"" << line << "\"" << endl; }
+            { Debug::Throw(0) << "Command::parse - \"" << line << "\"" << Qt::endl; }
         }
 
         return out;

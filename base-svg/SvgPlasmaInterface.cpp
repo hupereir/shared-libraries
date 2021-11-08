@@ -82,7 +82,7 @@ namespace Svg
     bool SvgPlasmaInterface::loadTheme()
     {
 
-        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme" << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme" << Qt::endl;
 
         File::List configurationFiles;
         if( XmlOptions::get().contains( QStringLiteral("KDE_CONFIG") ) )
@@ -128,7 +128,7 @@ namespace Svg
         {
             if( !file.exists() ) continue;
 
-            Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - checking: " << file << endl;
+            Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - checking: " << file << Qt::endl;
 
             // read group
             QSettings settings( file, QSettings::IniFormat );
@@ -141,7 +141,7 @@ namespace Svg
 
         }
 
-        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using theme: " << theme << Qt::endl;
 
         // reset colorFileName
         auto oldThemePaletteFileName = themePaletteFileName_;
@@ -149,11 +149,11 @@ namespace Svg
 
         // assign theme
         bool modified = _setTheme( theme );
-        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using color scheme: " << themePaletteFileName_ << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - using color scheme: " << themePaletteFileName_ << Qt::endl;
 
         // set as modified if themePaletteFile has changed
         modified |= (themePaletteFileName_ != oldThemePaletteFileName);
-        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - modified: " << modified << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::loadTheme - modified: " << modified << Qt::endl;
 
         // return modified state
         return modified;
@@ -185,7 +185,7 @@ namespace Svg
     //_________________________________________________
     void SvgPlasmaInterface::_configurationFileChanged( const QString& file )
     {
-        Debug::Throw(0) << "Svg::SvgPlasmaInterface::_configurationFileChanged - file: " << file << endl;
+        Debug::Throw(0) << "Svg::SvgPlasmaInterface::_configurationFileChanged - file: " << file << Qt::endl;
         if( !timer_.isActive() ) timer_.start( 100, this );
     }
 
@@ -206,7 +206,7 @@ namespace Svg
     bool SvgPlasmaInterface::_setTheme( const QString& theme )
     {
 
-        Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - theme:" << theme << endl;
+        Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - theme:" << theme << Qt::endl;
         File::List themePathList;
 
         if( XmlOptions::get().contains( QStringLiteral("KDE_CONFIG") ) )
@@ -245,7 +245,7 @@ namespace Svg
         themePathList.append( File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) ) );
         for( const auto& themePath:themePathList )
         {
-            Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - checking " << themePath << endl;
+            Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - checking " << themePath << Qt::endl;
             if( themePath.exists() )
             {
 

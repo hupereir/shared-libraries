@@ -76,7 +76,7 @@ void ToolBar::moveEvent( QMoveEvent* event )
 void ToolBar::_toggleVisibility( bool state )
 {
 
-    Debug::Throw() << "ToolBar::_toggleVisibility - name: " << optionName_ << " state: " << state << endl;
+    Debug::Throw() << "ToolBar::_toggleVisibility - name: " << optionName_ << " state: " << state << Qt::endl;
 
     if( !optionName_.isEmpty() )
     {

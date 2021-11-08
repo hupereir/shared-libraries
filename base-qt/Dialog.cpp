@@ -20,6 +20,7 @@
 #include "BaseIconNames.h"
 #include "Dialog.h"
 #include "IconEngine.h"
+#include "QtUtil.h"
 
 #include <QFrame>
 
@@ -35,11 +36,11 @@ Dialog::Dialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags):
     auto layout = new QVBoxLayout;
     setLayout( layout );
     layout->setSpacing(5);
-    layout->setMargin(10);
+    QtUtil::setMargin(layout, 10);
 
     mainLayout_ = new QVBoxLayout;
     mainLayout_->setSpacing(5);
-    mainLayout_->setMargin(0);
+    QtUtil::setMargin(mainLayout_, 0);
     layout->addLayout( mainLayout_, 1 );
 
     // separator

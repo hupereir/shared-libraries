@@ -63,7 +63,7 @@ bool XmlPathHistory::read( File file )
     // do nothing for invalid tagname
     if( tagName_.isEmpty() )
     {
-        Debug::Throw() << "XmlPathHistory::read - tag name is empty" << endl;
+        Debug::Throw() << "XmlPathHistory::read - tag name is empty" << Qt::endl;
         return false;
     }
 
@@ -79,7 +79,7 @@ bool XmlPathHistory::read( File file )
     if ( !document.setContent( &qfile ) )
     {
 
-        Debug::Throw() << document.error() << endl;
+        Debug::Throw() << document.error() << Qt::endl;
         return false;
 
     } else if( _read( document ) ) {
@@ -129,7 +129,7 @@ bool XmlPathHistory::write( File file )
     // do nothing for invalid tag name
     if( tagName_.isEmpty() )
     {
-        Debug::Throw() << "XmlPathHistory::write - tag name is empty" << endl;
+        Debug::Throw() << "XmlPathHistory::write - tag name is empty" << Qt::endl;
         return false;
     }
 
@@ -178,7 +178,7 @@ bool XmlPathHistory::write( File file )
 //_______________________________________________
 bool XmlPathHistory::_setDBFile( const File& file )
 {
-    Debug::Throw() << "XmlPathHistory::_setDBFile - file: " << file << endl;
+    Debug::Throw() << "XmlPathHistory::_setDBFile - file: " << file << Qt::endl;
 
     // check file
     if( dbFile_ == file && !pathList().isEmpty() ) return false;

@@ -48,12 +48,12 @@ TabWidget::TabWidget( QTabWidget* parent ):
     // dock
     dock_.reset( new Private::LocalTabWidget(nullptr) );
     dock_->setWindowIcon( windowIcon() );
-    dock_->mainLayout()->setMargin(0);
+    dock_->QtUtil::setMargin(mainLayout(), 0);
     dock_->mainLayout()->setSpacing(0);
     dock_->mainLayout()->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
 
     {
-        dockTitleLabel_->setMargin(5);
+        QtUtil::setMargin(dockTitleLabel_, 5);
         dockTitleLabel_->setAlignment( Qt::AlignHCenter );
         dockTitleLabel_->setFont( QtUtil::titleFont( dockTitleLabel_->font() ) );
     }
@@ -289,7 +289,7 @@ namespace Private
 
         // grid layout to overlay main layout and invisible grip
         QGridLayout *gridLayout( new QGridLayout );
-        gridLayout->setMargin(0);
+        QtUtil::setMargin(gridLayout, 0);
         gridLayout->setSpacing(0);
         setLayout( gridLayout );
 

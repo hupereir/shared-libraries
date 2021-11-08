@@ -68,7 +68,7 @@ XmlOption::XmlOption( const QDomElement& element )
 QDomElement XmlOption::domElement( QDomDocument& document ) const
 {
 
-    Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << endl;
+    Debug::Throw() << "XmlOption::DomElement - " << name() << " - " << raw() << Qt::endl;
 
     auto out = document.createElement( Base::Xml::Option );
     out.setAttribute( Base::Xml::Name, name() );

@@ -53,7 +53,7 @@ class BASE_QT_EXPORT BasePrintHelper: public QObject
     //*@name accessors
     //@{
         //* orientation
-    QPrinter::Orientation orientation() const
+    QPageLayout::Orientation orientation() const
     { return orientation_; }
 
     //* page mode
@@ -90,7 +90,7 @@ class BASE_QT_EXPORT BasePrintHelper: public QObject
     { sheetNumber_ = value; }
 
     //* orientation
-    void setOrientation( QPrinter::Orientation value )
+    void setOrientation( QPageLayout::Orientation value )
     { orientation_ = value; }
 
     //* mode
@@ -118,7 +118,7 @@ class BASE_QT_EXPORT BasePrintHelper: public QObject
     private:
 
     //* orientation
-    QPrinter::Orientation orientation_ = QPrinter::Portrait;
+    QPageLayout::Orientation orientation_ = QPageLayout::Portrait;
 
     //* page mode
     PageMode pageMode_ = PageMode::SinglePage;

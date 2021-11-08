@@ -134,7 +134,7 @@ namespace SpellCheck
 
             }
 
-            Debug::Throw() << "SpellParser::highlightParagraph - new word: " << word << " position: " << wordPosition << endl;
+            Debug::Throw() << "SpellParser::highlightParagraph - new word: " << word << " position: " << wordPosition << Qt::endl;
             words.insert( Word( word, wordPosition ) );
 
         }

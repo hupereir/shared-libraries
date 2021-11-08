@@ -53,7 +53,7 @@ IconSize::Size IconSizeComboBox::iconSize() const
 void IconSizeComboBox::selectIconSize( IconSize::Size iconSize )
 {
 
-    Debug::Throw() << "IconSizeComboBox::selectIconSize - size: " << iconSize << endl;
+    Debug::Throw() << "IconSizeComboBox::selectIconSize - size: " << iconSize << Qt::endl;
     for( int index = 0; index < QComboBox::count(); ++index )
     {
 

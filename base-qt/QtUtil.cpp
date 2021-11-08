@@ -91,7 +91,7 @@ QPoint QtUtil::centerOnWidget( QSize size, QWidget* widget )
     Debug::Throw( QStringLiteral("QtUtil::centerOnWidget.\n") );
     if( !widget ) return centerOnDesktop( size );
 
-    Debug::Throw() << "QtUtil::centerOnWidget - size: (" << size.width() << "," << size.height() << ")" << endl;
+    Debug::Throw() << "QtUtil::centerOnWidget - size: (" << size.width() << "," << size.height() << ")" << Qt::endl;
 
     // get parent position and size
     QPoint position( widget->pos() );

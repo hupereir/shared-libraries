@@ -144,7 +144,7 @@ class BASE_QT_EXPORT XmlError final: private Base::Counter<XmlError>
     //* dumper
     friend QTextStream& operator << ( QTextStream &out, const List& errors )
     {
-        out << XmlError::toString( errors ) << endl;
+        out << XmlError::toString( errors ) << Qt::endl;
         return out;
     }
 

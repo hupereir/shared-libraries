@@ -58,7 +58,7 @@ namespace Ssh
     //_______________________________________________________________________
     void ReadFileSocket::connect( void* session, const QString& file )
     {
-        Debug::Throw() << "Ssh::ReadFileSocket::connect - file: " << file << endl;
+        Debug::Throw() << "Ssh::ReadFileSocket::connect - file: " << file << Qt::endl;
 
         // store session, host and port
         session_ = session;
@@ -194,7 +194,7 @@ namespace Ssh
             fileSize_ = attributes->size;
             permissions_ = BaseFileInfo::permissions( attributes->permissions );
             sftp_attributes_free( attributes );
-            Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - file size: " << fileSize_ << endl;
+            Debug::Throw() << "Ssh::ReadFileSocket::_tryConnect - file size: " << fileSize_ << Qt::endl;
 
         }
 

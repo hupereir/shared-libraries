@@ -112,7 +112,7 @@ bool BaseToolTipWidget::eventFilter( QObject* object, QEvent* event )
 //_______________________________________________________
 void BaseToolTipWidget::setVisible( bool visible )
 {
-    Debug::Throw() << "BaseToolTipWidget::setVisible - visible: " << visible << endl;
+    Debug::Throw() << "BaseToolTipWidget::setVisible - visible: " << visible << Qt::endl;
     timer_.stop();
 
     if( !visible )

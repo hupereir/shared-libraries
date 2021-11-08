@@ -68,7 +68,7 @@ class TreeModel : public ItemModel
     //* flags
     Qt::ItemFlags flags(const QModelIndex &index) const override
     {
-        if (!index.isValid()) return 0;
+        if (!index.isValid()) return {};
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 

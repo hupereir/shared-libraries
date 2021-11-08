@@ -62,17 +62,17 @@ void ErrorHandler::_throw( QtMsgType type, const QMessageLogContext& context, co
         case QtDebugMsg: break;
 
         case QtWarningMsg:
-        if( !disabled ) what << "ErrorHandler::Throw - warning: " << message << endl;
+        if( !disabled ) what << "ErrorHandler::Throw - warning: " << message << Qt::endl;
         break;
 
         case QtFatalMsg:
-        what << "ErrorHandler::Throw - fatal: " << message << endl;
+        what << "ErrorHandler::Throw - fatal: " << message << Qt::endl;
         disabled = false;
         abort();
         break;
 
         default:
-        if( !disabled ) what << "ErrorHandler::Throw - unknown: " << message << endl;
+        if( !disabled ) what << "ErrorHandler::Throw - unknown: " << message << Qt::endl;
         break;
 
     }

@@ -48,13 +48,13 @@ DockPanel::DockPanel( QWidget* parent ):
     dock_.reset( new Private::LocalDockWidget(nullptr) );
     dock_->setWindowIcon( windowIcon() );
     QVBoxLayout* vLayout( new QVBoxLayout );
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(0);
     vLayout->addWidget( dockTitleLabel_ = new QLabel( dock_.get() ) );
     dock_->setLayout( vLayout );
 
     {
-        dockTitleLabel_->setMargin(5);
+        QtUtil::setMargin(dockTitleLabel_, 5);
         dockTitleLabel_->setAlignment( Qt::AlignHCenter );
         dockTitleLabel_->setFont( QtUtil::titleFont( dockTitleLabel_->font() ) );
     }
@@ -63,7 +63,7 @@ DockPanel::DockPanel( QWidget* parent ):
 
     // this layout
     setLayout( new QVBoxLayout );
-    layout()->setMargin(0);
+    QtUtil::setMargin(layout(), 0);
     layout()->setSpacing(0);
 
     // main widget
@@ -81,7 +81,7 @@ DockPanel::DockPanel( QWidget* parent ):
 
     // vertical layout for children
     mainLayout_ = new QVBoxLayout;
-    mainLayout_->setMargin( 5 );
+    QtUtil::setMargin(mainLayout_, 5);
     mainLayout_->setSpacing( 5 );
     panel_->setLayout( mainLayout_ );
 

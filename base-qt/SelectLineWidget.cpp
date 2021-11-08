@@ -17,12 +17,13 @@
 *
 *******************************************************************************/
 
-#include "SelectLineWidget.h"
-
 #include "BaseIconNames.h"
 #include "Color.h"
 #include "IconEngine.h"
 #include "LineEditor.h"
+#include "QtUtil.h"
+#include "SelectLineWidget.h"
+
 
 #include <QLabel>
 #include <QLayout>
@@ -45,13 +46,13 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     if( compact )
     {
         setLayout( layout = new QHBoxLayout );
-        layout->setMargin(2);
+        QtUtil::setMargin(layout, 2);
         layout->setSpacing(2);
 
     } else {
 
         setLayout( layout = new QVBoxLayout );
-        layout->setMargin(0);
+        QtUtil::setMargin(layout, 0);
         layout->setSpacing(5);
 
     }
@@ -96,7 +97,7 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
         // insert hbox layout for buttons
         QHBoxLayout* hLayout = new QHBoxLayout;
         hLayout->setSpacing(5);
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         layout->addLayout( hLayout, 0 );
 
         hLayout->addStretch( 1 );

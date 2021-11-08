@@ -77,7 +77,7 @@ namespace Ssh
             do
             {
                 i = sshSocket_->write( buffer_.data() + bytesWritten, bytesRead-bytesWritten );
-                Debug::Throw() << "Ssh::Tunnel::_readFromTcpSocket - written: " << i << endl;
+                Debug::Throw() << "Ssh::Tunnel::_readFromTcpSocket - written: " << i << Qt::endl;
 
                 if (i < 0)
                 {

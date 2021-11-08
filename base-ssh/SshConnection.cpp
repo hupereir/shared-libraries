@@ -101,7 +101,7 @@ namespace Ssh
                     .arg( attributes.localPort() )
                     .arg( tcpServer->errorString() );
 
-                Debug::Throw() << "Ssh::Connection::connectTunnels - " << message << endl;
+                Debug::Throw() << "Ssh::Connection::connectTunnels - " << message << Qt::endl;
                 _notifyError( message );
 
                 return false;
@@ -128,7 +128,7 @@ namespace Ssh
         auto session = ssh_new();
         if( !session )
         {
-            Debug::Throw() << "Ssh::Connection::connect - Cannot initialize session" << endl;
+            Debug::Throw() << "Ssh::Connection::connect - Cannot initialize session" << Qt::endl;
             _notifyError( tr( "cannot initialize ssh session" ) );
             return false;
         }
@@ -163,7 +163,7 @@ namespace Ssh
     bool Connection::authenticate( bool forceRequestIdentity )
     {
 
-        Debug::Throw() << "Ssh::Connection::authenticate - forceRequestIdentity: " << forceRequestIdentity << endl;
+        Debug::Throw() << "Ssh::Connection::authenticate - forceRequestIdentity: " << forceRequestIdentity << Qt::endl;
 
         CommandList commands( {
             Command::AuthenticateWithGssAPI,
@@ -228,7 +228,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::addCommands( const CommandList& commands )
     {
-        Debug::Throw() << "Ssh::Connection::AddCommand: " << commandMessage( commands ) << endl;
+        Debug::Throw() << "Ssh::Connection::AddCommand: " << commandMessage( commands ) << Qt::endl;
         commands_.append( commands );
         if( !( timer_.isActive() || timerLocked_ ) )
         { timer_.start( latency_, this ); }
@@ -237,7 +237,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::addCommand( Command command )
     {
-        Debug::Throw() << "Ssh::Connection::AddCommand: " << commandMessage( command ) << endl;
+        Debug::Throw() << "Ssh::Connection::AddCommand: " << commandMessage( command ) << Qt::endl;
         commands_.append( command );
         if( !( timer_.isActive() || timerLocked_ ) )
         { timer_.start( latency_, this ); }
@@ -350,7 +350,7 @@ namespace Ssh
         Debug::Throw() << "Ssh::Connection::_processCommands -"
             << " host: " << connectionAttributes_.host()
             << " processing command: " << commandMessage(commands_.front())
-            << endl;
+            << Qt::endl;
 
         // cast session. It is used for almost all commands
         auto session( static_cast<ssh_session>(session_.get()) );
@@ -374,7 +374,7 @@ namespace Ssh
                     << " Host: " << connectionAttributes_.host()
                     << " Port: " << connectionAttributes_.port()
                     << " User: " << connectionAttributes_.user()
-                    << endl;
+                    << Qt::endl;
 
                 auto result = ssh_connect(session);
                 if( result == SSH_OK )
@@ -500,7 +500,7 @@ namespace Ssh
                     << " Host: " << connectionAttributes_.host()
                     << " User: " << connectionAttributes_.user()
                     << " Password: " << connectionAttributes_.password()
-                    << endl;
+                    << Qt::endl;
 
                 auto result = ssh_userauth_publickey_auto( session, nullptr, qPrintable( connectionAttributes_.password() ) );
                 if( result == SSH_AUTH_SUCCESS )
@@ -533,7 +533,7 @@ namespace Ssh
                     << " Host: " << connectionAttributes_.host()
                     << " User: " << connectionAttributes_.user()
                     << " Password: " << connectionAttributes_.password()
-                    << endl;
+                    << Qt::endl;
 
                 auto result = ssh_userauth_password( session, qPrintable( connectionAttributes_.user() ), qPrintable( connectionAttributes_.password() ) );
                 if( result == SSH_AUTH_SUCCESS )
@@ -607,7 +607,7 @@ namespace Ssh
     //_______________________________________________
     void Connection::_notifyError( const QString &error )
     {
-        Debug::Throw(0) << "Ssh::Connection::_notifyError: " << error << endl;
+        Debug::Throw(0) << "Ssh::Connection::_notifyError: " << error << Qt::endl;
         error_ = error;
         emit this->error( error );
         emit disconnected();
@@ -616,13 +616,13 @@ namespace Ssh
     //_______________________________________________
     void Connection::_notifyMessage( const QString &message )
     {
-        Debug::Throw() << "Ssh::Connection::_notifyMessage: " << message << endl;
+        Debug::Throw() << "Ssh::Connection::_notifyMessage: " << message << Qt::endl;
         emit this->message( message );
     }
 
     //_______________________________________________
     void Connection::_notifyDebug( const QString &message )
-    { Debug::Throw() << message << endl; }
+    { Debug::Throw() << message << Qt::endl; }
 
     //_______________________________________________
     void Connection::_newConnection()
@@ -651,7 +651,7 @@ namespace Ssh
             const auto iter( tunnels.constFind( attributes ) );
             if( iter == tunnels.cend() )
             {
-                Debug::Throw(0) << "Ssh::Connection::_newConnection - unable to find tunnel attributes matching port " << tcpServer->serverPort() << endl;
+                Debug::Throw(0) << "Ssh::Connection::_newConnection - unable to find tunnel attributes matching port " << tcpServer->serverPort() << Qt::endl;
                 continue;
             }
 

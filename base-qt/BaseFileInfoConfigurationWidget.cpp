@@ -19,6 +19,7 @@
 
 #include "BaseFileInfoConfigurationWidget.h"
 #include "Debug.h"
+#include "QtUtil.h"
 #include "XmlOptions.h"
 
 #include <QLabel>
@@ -33,7 +34,7 @@ BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget( QWidget* paren
     Debug::Throw( QStringLiteral("BaseFileInfoConfigurationWidget::BaseFileInfoConfigurationWidget.\n") );
 
     QVBoxLayout* vLayout = new QVBoxLayout;
-    vLayout->setMargin(0);
+    QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(5);
     setLayout( vLayout );
 

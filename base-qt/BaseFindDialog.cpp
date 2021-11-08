@@ -18,8 +18,9 @@
 *******************************************************************************/
 
 #include "BaseFindDialog.h"
-
 #include "BaseFindWidget.h"
+#include "QtUtil.h"
+
 
 #include <QLayout>
 
@@ -36,7 +37,7 @@ BaseFindDialog::BaseFindDialog( QWidget* parent, Qt::WindowFlags flags ):
 
     // create vbox layout
     setLayout( new QVBoxLayout );
-    layout()->setMargin( 10 );
+    QtUtil::setMargin(layout(), 10);
     layout()->setSpacing( 5 );
 
     setBaseFindWidget( new BaseFindWidget( this, false ) );

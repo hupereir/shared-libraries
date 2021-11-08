@@ -20,8 +20,9 @@
 *
 *******************************************************************************/
 
-#include "base_qt_export.h"
 #include "OptionWidget.h"
+#include "QtUtil.h"
+#include "base_qt_export.h"
 
 #include <QSpinBox>
 #include <QLabel>
@@ -42,7 +43,7 @@ class BASE_QT_EXPORT OptionSpinBox: public QWidget, public OptionWidget
         OptionWidget( optionName )
     {
         auto layout = new QHBoxLayout();
-        layout->setMargin(0);
+        QtUtil::setMargin(layout, 0);
         setLayout( layout );
         layout->addWidget( spinBox_ = new QSpinBox( this ) );
         if( addStretch ) layout->addStretch( 1 );

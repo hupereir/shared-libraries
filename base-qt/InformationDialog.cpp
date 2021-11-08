@@ -17,10 +17,11 @@
 *
 *******************************************************************************/
 
-#include "InformationDialog.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "InformationDialog.h"
+#include "QtUtil.h"
 
 //____________________________________________________________
 InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
@@ -32,7 +33,7 @@ InformationDialog::InformationDialog( QWidget* parent, const QString& text ):
     // icon
     QHBoxLayout *hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     mainLayout().addLayout( hLayout );
 
     QLabel* label = new QLabel( this );

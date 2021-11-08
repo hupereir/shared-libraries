@@ -17,16 +17,17 @@
 *
 *******************************************************************************/
 
-#include "ScratchFileRemoveDialog.h"
-
 #include "BaseContextMenu.h"
 #include "BaseIconNames.h"
 #include "ColumnSelectionMenu.h"
 #include "ColumnSortingMenu.h"
 #include "IconEngine.h"
 #include "IconSize.h"
+#include "QtUtil.h"
+#include "ScratchFileRemoveDialog.h"
 #include "TreeView.h"
 #include "XmlOptions.h"
+
 
 #include <QLabel>
 #include <QHeaderView>
@@ -50,7 +51,7 @@ Dialog( parent )
     //! try load Question icon
     QHBoxLayout *hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
-    hLayout->setMargin(0);
+    QtUtil::setMargin(hLayout, 0);
     mainLayout().addLayout( hLayout );
     QLabel* label = new QLabel( this );
     label->setPixmap( IconEngine::get( IconNames::DialogWarning ).pixmap( iconSize() ) );

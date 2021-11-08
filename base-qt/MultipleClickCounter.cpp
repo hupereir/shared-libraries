@@ -29,7 +29,7 @@ MultipleClickCounter::MultipleClickCounter( QObject* parent, int maxCount ):
 //______________________________________________________________________________
 void MultipleClickCounter::increment( int position )
 {
-    Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << endl;
+    Debug::Throw() << "MultipleClickCounter::increment - count_: " << count_ << Qt::endl;
 
     // restart timer
     timer_.start( QApplication::doubleClickInterval(), this );
@@ -61,7 +61,7 @@ void MultipleClickCounter::timerEvent( QTimerEvent* event )
 {
     if( event->timerId() == timer_.timerId() )
     {
-        Debug::Throw() << "MultipleClickCounter::timerEvent" << endl;
+        Debug::Throw() << "MultipleClickCounter::timerEvent" << Qt::endl;
         timer_.stop();
         toReset_ = true;
     } else QObject::timerEvent( event );

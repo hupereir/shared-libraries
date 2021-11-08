@@ -51,7 +51,7 @@ namespace SpellCheck
     //____________________________________________________________________
     void DictionaryMenu::select( const QString& dictionary )
     {
-        Debug::Throw() << "DictionaryMenu::select - dictionary: " << dictionary << endl;
+        Debug::Throw() << "DictionaryMenu::select - dictionary: " << dictionary << Qt::endl;
         const auto iter = Base::findByValue( actions_, dictionary );
         if( iter != actions_.cend() ) iter.key()->setChecked( true );
     }

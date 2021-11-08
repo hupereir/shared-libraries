@@ -168,7 +168,7 @@ QMimeData* FileRecordModel::mimeData(const QModelIndexList &indexes) const
             QString fullText;
             QTextStream buffer( &fullText );
             for( const auto& filename:filenames )
-            { buffer << QStringLiteral( "file://%1" ).arg(filename) << endl; }
+            { buffer << QStringLiteral( "file://%1" ).arg(filename) << Qt::endl; }
             mimeData->setText( fullText );
         }
 

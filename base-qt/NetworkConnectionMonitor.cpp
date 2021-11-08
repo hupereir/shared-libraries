@@ -126,7 +126,7 @@ namespace Network
             }
 
             QString device( ifr.ifr_name );
-            Debug::Throw() << "Network::ConnectionMonitor::devices - adding " << device << endl;
+            Debug::Throw() << "Network::ConnectionMonitor::devices - adding " << device << Qt::endl;
             out.insert( device );
         }
 

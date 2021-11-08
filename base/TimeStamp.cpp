@@ -113,6 +113,6 @@ QDataStream& operator >> ( QDataStream& stream, TimeStamp& timestamp )
         stream >> time;
         timestamp.setTime( time );
 
-    } else Debug::Throw(0) << "Unrecognized TimeStamp version: " << version << endl;
+    } else Debug::Throw(0) << "Unrecognized TimeStamp version: " << version << Qt::endl;
     return stream;
 }

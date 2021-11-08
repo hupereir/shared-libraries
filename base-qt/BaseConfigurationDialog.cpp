@@ -18,11 +18,10 @@
 *******************************************************************************/
 
 #include "BaseConfigurationDialog.h"
-
 #include "BaseIconNames.h"
-#include "GridLayout.h"
-#include "Dialog.h"
 #include "Debug.h"
+#include "Dialog.h"
+#include "GridLayout.h"
 #include "IconEngine.h"
 #include "IconSize.h"
 #include "Operators.h"
@@ -34,10 +33,12 @@
 #include "OptionLineEditor.h"
 #include "OptionListBox.h"
 #include "OptionModel.h"
-#include "OptionSpinBox.h"
 #include "OptionSlider.h"
+#include "OptionSpinBox.h"
+#include "QtUtil.h"
 #include "QuestionDialog.h"
 #include "TreeView.h"
+
 
 #include <QApplication>
 #include <QScrollArea>
@@ -86,7 +87,7 @@ namespace
 
             auto gridLayout = new GridLayout;
             gridLayout->setMaxCount(2);
-            gridLayout->setMargin(0);
+            QtUtil::setMargin(gridLayout, 0);
             gridLayout->setSpacing(5);
             box->setLayout( gridLayout );
 
@@ -125,6 +126,8 @@ namespace
     }
 
 }
+
+#include "BaseConfigurationDialog.moc"
 
 //_________________________________________________________
 BaseConfigurationDialog::BaseConfigurationDialog( QWidget* parent, Flags flags ):
@@ -268,7 +271,7 @@ QWidget* BaseConfigurationDialog::baseConfiguration( QWidget* parent, Flags flag
         addOptionWidget( checkbox );
 
         auto gridLayout = new GridLayout;
-        gridLayout->setMargin(0);
+        QtUtil::setMargin(gridLayout, 0);
         gridLayout->setMaxCount(2);
         vLayout->addLayout( gridLayout );
 
@@ -354,7 +357,7 @@ QWidget* BaseConfigurationDialog::listConfiguration( QWidget* parent )
 
     // icon size in lists
     auto gridLayout = new GridLayout;
-    gridLayout->setMargin(0);
+    QtUtil::setMargin(gridLayout, 0);
     gridLayout->setMaxCount(3);
     gridLayout->setColumnStretch( 2, 1 );
     vLayout->addLayout( gridLayout );
@@ -413,7 +416,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         parent->layout()->addWidget( box );
 
         auto hLayout = new QHBoxLayout;
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         layout->addLayout( hLayout );
 
         auto checkbox = new OptionCheckBox( tr( "Emulate tabs" ), box, QStringLiteral("TAB_EMULATION") );
@@ -497,7 +500,7 @@ QWidget* BaseConfigurationDialog::textEditConfiguration( QWidget* parent, Flags 
         OptionSpinBox* spinbox;
         auto hLayout = new QHBoxLayout;
         layout->addLayout( hLayout );
-        hLayout->setMargin(0);
+        QtUtil::setMargin(hLayout, 0);
         hLayout->addWidget( label = new QLabel( tr( "Automatically hide mouse cursor after: " ), box ) );
         hLayout->addWidget( spinbox = new OptionSpinBox( box, QStringLiteral("AUTOHIDE_CURSOR_DELAY") ) );
         spinbox->setSuffix( tr( "s" ) );
@@ -532,8 +535,8 @@ void BaseConfigurationDialog::_editPixmapPathList()
         listbox->read( XmlOptions::get() );
 
         // customize layout
-        pixmapPathDialog_->layout()->setMargin(0);
-        pixmapPathDialog_->buttonLayout().setMargin(5);
+        QtUtil::setMargin(pixmapPathDialog_->layout(), 0);
+        QtUtil::setMargin(&pixmapPathDialog_->buttonLayout(), 5);
 
     }
 
@@ -581,7 +584,7 @@ bool BaseConfigurationDialog::_checkModified()
     Debug::Throw()
         << "BaseConfigurationDialog::_checkModified -"
         << " modified: " << modified
-        << endl;
+        << Qt::endl;
 
     if( modified && Debug::level() > 0 )
     {
@@ -604,7 +607,7 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
         // get matching options in the second set
         if( !second.isSpecialOption( firstIter.key() ) )
         {
-            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " not found in second list" << endl;
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " not found in second list" << Qt::endl;
             return true;
         }
 
@@ -616,10 +619,10 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
             if( options.indexOf( option ) < 0 )
             {
 
-                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " does not match" << endl;
-                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - could not find: " << option << endl;
-                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - first values: " << firstIter.value() << endl;
-                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - second values: " << options << endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - special option " << firstIter.key() << " does not match" << Qt::endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - could not find: " << option << Qt::endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - first values: " << firstIter.value() << Qt::endl;
+                Debug::Throw(0) << "BaseConfigurationDialog::_findModification - second values: " << options << Qt::endl;
                 return true;
             }
 
@@ -635,13 +638,13 @@ bool BaseConfigurationDialog::_findModification( const Options& first, const Opt
         if( secondIter == second.options().constEnd() )
         {
 
-            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " not found." << endl;
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " not found." << Qt::endl;
             return true;
 
         } else if( firstIter.value() != secondIter.value() ) {
 
-            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " does not match." << endl;
-            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - first: " << firstIter.value() << " second: " << secondIter.value() << endl;
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - option " << firstIter.key() << " does not match." << Qt::endl;
+            Debug::Throw(0) << "BaseConfigurationDialog::_findModification - first: " << firstIter.value() << " second: " << secondIter.value() << Qt::endl;
             return true;
 
         }
@@ -745,5 +748,3 @@ void BaseConfigurationDialog::_restoreDefaults()
     read();
     emit configurationChanged();
 }
-
-#include "BaseConfigurationDialog.moc"

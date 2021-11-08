@@ -63,7 +63,7 @@ namespace Ssh
     void Socket::connectToHost( void* session, const QString& host, quint16 port )
     {
 
-        Debug::Throw() << "Ssh::Socket::connectToHost - " << host << ":" << port << endl;
+        Debug::Throw() << "Ssh::Socket::connectToHost - " << host << ":" << port << Qt::endl;
 
         // store session, host and port
         session_ = session;

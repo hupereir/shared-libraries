@@ -59,7 +59,7 @@ void PathHistory::setPathList( const FileRecord::List& pathList )
 //__________________________________________________________________
 void PathHistory::add( const FileRecord& path )
 {
-    Debug::Throw() << "PathHistory::add - " << path << endl;
+    Debug::Throw() << "PathHistory::add - " << path << Qt::endl;
 
     // make sure path is valid
     if( path.file().isEmpty() ) return;

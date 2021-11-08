@@ -67,7 +67,7 @@ void InterruptionHandler::initialize()
 void InterruptionHandler::_handleInterruption( int signal )
 {
     #if !defined(Q_OS_WIN)
-    Debug::Throw(0) << "InterruptionHandler::_handleInterruption - recieved " << strsignal( signal ) << " (" << signal << ")" << endl;
+    Debug::Throw(0) << "InterruptionHandler::_handleInterruption - recieved " << strsignal( signal ) << " (" << signal << ")" << Qt::endl;
     #endif
     qApp->quit();
 }

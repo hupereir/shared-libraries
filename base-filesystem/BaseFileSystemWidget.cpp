@@ -223,7 +223,7 @@ void BaseFileSystemWidget::clear()
 void BaseFileSystemWidget::setPath( const File &path, bool forced )
 {
 
-    Debug::Throw() << "BaseFileSystemWidget::setPath - path: " << path << endl;
+    Debug::Throw() << "BaseFileSystemWidget::setPath - path: " << path << Qt::endl;
 
     // check if changed
     if( forced || pathEditor_->path() != path )
