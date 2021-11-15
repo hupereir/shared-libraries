@@ -48,4 +48,4 @@ else()
 endif()
 
 target_link_libraries(base-spellcheck ${ASPELL_LIBRARIES} base base-qt)
-target_link_libraries(base-spellcheck Qt5::Widgets)
+target_link_libraries(base-spellcheck Qt::Widgets)

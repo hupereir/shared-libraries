@@ -44,4 +44,4 @@ else()
   add_library(base STATIC ${base_SOURCES})
 endif()
 
-target_link_libraries(base Qt5::Widgets Qt5::Network)
+target_link_libraries(base Qt::Widgets Qt::Network)

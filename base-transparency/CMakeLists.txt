@@ -48,4 +48,4 @@ endif()
 
 target_link_libraries(base-transparency base-qt)
 target_link_libraries(base-transparency ${XCB_LIBRARIES})
-target_link_libraries(base-transparency Qt5::Widgets)
+target_link_libraries(base-transparency Qt::Widgets)

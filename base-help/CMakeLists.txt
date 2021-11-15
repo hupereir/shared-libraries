@@ -34,4 +34,4 @@ else()
 endif()
 
 target_link_libraries(base-help base base-qt)
-target_link_libraries(base-help Qt5::Widgets)
+target_link_libraries(base-help Qt::Widgets)

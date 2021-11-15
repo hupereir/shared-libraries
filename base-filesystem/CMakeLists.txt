@@ -35,4 +35,4 @@ else()
 endif()
 
 target_link_libraries(base-filesystem base-qt)
-target_link_libraries(base-filesystem Qt5::Widgets Qt5::Xml)
+target_link_libraries(base-filesystem Qt::Widgets Qt::Xml)

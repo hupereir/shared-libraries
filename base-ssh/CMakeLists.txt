@@ -55,7 +55,7 @@ else()
 endif()
 
 target_link_libraries(base-ssh base-qt)
-target_link_libraries(base-ssh Qt5::Widgets Qt5::Network)
+target_link_libraries(base-ssh Qt::Widgets Qt::Network)
 
 if(libssh_FOUND)
   target_link_libraries(base-ssh ssh)
