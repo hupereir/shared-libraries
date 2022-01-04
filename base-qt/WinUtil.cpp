@@ -21,6 +21,7 @@
 #include "Debug.h"
 
 #include <QLibrary>
+#include <QOperatingSystemVersion>
 
 #if defined(Q_OS_WIN)
 
@@ -167,7 +168,7 @@ void WinUtil::enableBlurBehind( Base::Margins margins )
 
     #if defined(Q_OS_WIN)
     // do nothing if windows version is too old
-    if(QSysInfo::WindowsVersion < QSysInfo::WV_6_0) return;
+    if( QOperatingSystemVersion::current() < QOperatingSystemVersion::Windows7 ) return;
 
     // initialize private
     if( !private_ ) private_.reset( new WinUtilPrivate );
@@ -212,6 +213,8 @@ bool WinUtil::toggleHideFromTaskBar( bool state ) const
         // show again
         if( wasVisible ) target_->show();
         return true;
+    } else {
+        return false;
     }
     #else
     Q_UNUSED( state );
@@ -238,7 +241,7 @@ void WinUtil::setFlag( long int flag, bool value ) const
     #if defined(Q_OS_WIN)
     if( value ) SetWindowLong( HWND(target_->winId()), GWL_EXSTYLE, GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) | flag);
     else SetWindowLong( HWND(target_->winId()), GWL_EXSTYLE, GetWindowLong( HWND(target_->winId()), GWL_EXSTYLE) & (~flag));
-    #else 
+    #else
     Q_UNUSED( flag );
     Q_UNUSED( value );
     #endif
