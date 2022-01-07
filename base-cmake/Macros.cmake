@@ -76,7 +76,7 @@ macro(add_win32_executable target version)
 
     find_program(UPX upx)
     if(UPX)
-      add_custom_command(TARGET ${target} POST_BUILD COMMAND ${UPX} ${TARGET_PATH})
+      add_custom_command(TARGET ${target} POST_BUILD COMMAND ${UPX} --force ${TARGET_PATH})
     else()
       message("-- Program 'upx' not found")
     endif()
