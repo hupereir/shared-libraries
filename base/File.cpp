@@ -153,12 +153,12 @@ QString File::sizeString( qint64 sizeInt )
     int power = log( size )/log( 1024 );
     QString out;
 
-    if( !power ) out.asprintf( "%.0f", size );
+    if( !power ) out = QString::asprintf( "%.0f", size );
     else {
 
         if( power > 4 ) power = 4;
         size /= pow( static_cast<double>(1024), static_cast<double>(power) );
-        out.asprintf( "%.1f", size );
+        out = QString::asprintf( "%.1f", size );
 
     }
 
