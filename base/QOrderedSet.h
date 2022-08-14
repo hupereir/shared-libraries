@@ -24,7 +24,9 @@
 #include <QMap>
 #include <QDataStream>
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 QT_BEGIN_HEADER
+#endif
 
 QT_BEGIN_NAMESPACE
 
@@ -502,6 +504,8 @@ inline QDataStream& operator >> (QDataStream& stream, QOrderedSet<T>& set)
 
 QT_END_NAMESPACE
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 QT_END_HEADER
+#endif
 
 #endif // QSET_H

@@ -7,14 +7,22 @@ set(BASE_QT_VERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR}.${BASE_QT_
 set(BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR})
 
 ########### Qt configuration #########
+if(USE_QT6)
+find_package(Qt6 COMPONENTS Widgets Network Xml PrintSupport REQUIRED)
+else()
 find_package(Qt5 COMPONENTS Widgets Network Xml PrintSupport REQUIRED)
+endif()
 
 if(WIN32)
+if(NOT USE_QT6)
   find_package(Qt5WinExtras REQUIRED)
+endif()
 endif()
 
 # needed to access QPA classes
-include_directories(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
+if(NOT USE_QT6)
+  include_directories(${Qt5Widgets_PRIVATE_INCLUDE_DIRS})
+endif()
 
 ########### X11 #########
 if(UNIX AND NOT APPLE)
@@ -23,7 +31,9 @@ if(UNIX AND NOT APPLE)
   find_package(X11_XCB)
   if( XCB_XCB_FOUND AND XCB_KEYSYMS_FOUND AND X11_XCB_FOUND )
     add_definitions(-DWITH_XCB=1)
-    find_package(Qt5X11Extras REQUIRED)
+    if(NOT USE_QT6)
+      find_package(Qt5X11Extras REQUIRED)
+    endif()
   else()
     add_definitions(-DWITH_XCB=0)
   endif()

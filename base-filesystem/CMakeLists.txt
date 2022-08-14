@@ -7,7 +7,11 @@ set(BASE_FILESYSTEM_VERSION ${BASE_FILESYSTEM_VERSION_MAJOR}.${BASE_FILESYSTEM_V
 set(BASE_FILESYSTEM_SOVERSION ${BASE_FILESYSTEM_VERSION_MAJOR}.${BASE_FILESYSTEM_VERSION_MINOR})
 
 ########### Qt configuration #########
+if(USE_QT6)
+find_package(Qt6 COMPONENTS Widgets Xml REQUIRED)
+else()
 find_package(Qt5 COMPONENTS Widgets Xml REQUIRED)
+endif()
 
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})

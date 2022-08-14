@@ -7,7 +7,11 @@ set(BASE_SERVER_VERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR
 set(BASE_SERVER_SOVERSION ${BASE_SERVER_VERSION_MAJOR}.${BASE_SERVER_VERSION_MINOR})
 
 ########### Qt configuration #########
+if(USE_QT6)
+find_package(Qt6 COMPONENTS Widgets Network Xml REQUIRED )
+else()
 find_package(Qt5 COMPONENTS Widgets Network Xml REQUIRED )
+endif()
 
 ########### kde config ###############
 find_program(KDE_CONFIG NAMES kf5-config kde4-config)

@@ -7,7 +7,11 @@ set(BASE_SSH_VERSION ${BASE_SSH_VERSION_MAJOR}.${BASE_SSH_VERSION_MINOR}.${BASE_
 set(BASE_SSH_SOVERSION ${BASE_SSH_VERSION_MAJOR}.${BASE_SSH_VERSION_MINOR})
 
 ########### Qt configuration #########
+if(USE_QT6)
+find_package(Qt6 COMPONENTS Widgets Network REQUIRED)
+else()
 find_package(Qt5 COMPONENTS Widgets Network REQUIRED)
+endif()
 
 ########### ssh #########
 find_package(libssh)

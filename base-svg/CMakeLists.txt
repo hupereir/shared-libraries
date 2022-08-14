@@ -7,7 +7,11 @@ set(BASE_SVG_VERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR}.${BASE_
 set(BASE_SVG_SOVERSION ${BASE_SVG_VERSION_MAJOR}.${BASE_SVG_VERSION_MINOR})
 
 ########### Qt configuration #########
+if(USE_QT6)
+find_package(Qt6 COMPONENTS Widgets Network Svg Xml REQUIRED)
+else()
 find_package(Qt5 COMPONENTS Widgets Network Svg Xml REQUIRED)
+endif()
 
 ########### kde config ###############
 find_program(KDE_CONFIG NAMES kf5-config kde4-config)

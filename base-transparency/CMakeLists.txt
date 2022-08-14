@@ -7,7 +7,11 @@ set(BASE_TRANSPARENCY_VERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPAR
 set(BASE_TRANSPARENCY_SOVERSION ${BASE_TRANSPARENCY_VERSION_MAJOR}.${BASE_TRANSPARENCY_VERSION_MINOR})
 
 ########### Qt configuration #########
+if(USE_QT6)
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
+else()
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+endif()
 
 # ########### X11 #######################
 if(UNIX AND NOT APPLE)

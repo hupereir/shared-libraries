@@ -9,6 +9,7 @@ set(SHARED_LIBRARIES_VERSION ${SHARED_LIBRARIES_VERSION_MAJOR}.${SHARED_LIBRARIE
 
 ########### options ###############
 option( USE_SHARED_LIBS "Use Shared Libraries" ON )
+option( USE_QT6 "Use QT6 Libraries" OFF )
 
 ########### modules #################
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/base-cmake")

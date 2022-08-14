@@ -7,7 +7,11 @@ set(BASE_SPELLCHECK_VERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_V
 set(BASE_SPELLCHECK_SOVERSION ${BASE_SPELLCHECK_VERSION_MAJOR}.${BASE_SPELLCHECK_VERSION_MINOR})
 
 ########### Qt configuration #########
+if(USE_QT6)
+find_package(Qt6 COMPONENTS Widgets REQUIRED)
+else()
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+endif()
 
 ########### aspell ###############
 include_directories(${ASPELL_INCLUDE_DIR})
