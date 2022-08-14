@@ -317,7 +317,7 @@ class ListModel : public ItemModel
         {
 
             // see if iterator is in list
-            auto foundIter( std::find_if( values.begin(), values.end(), std::bind2nd( EqualTo(), *iter ) ) );
+            auto foundIter( std::find_if( values.begin(), values.end(), [iter]( const ValueType& current ) {return EqualTo()(*iter,current); } ) );
             if( foundIter == values.end() ) removedValues.append( *iter );
             else {
                 *iter = *foundIter;
@@ -359,7 +359,7 @@ class ListModel : public ItemModel
     //* add, without update
     virtual void _add( const ValueType& value )
     {
-        auto iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
+        auto iter = std::find_if( values_.begin(), values_.end(), [&value]( const ValueType& current ){ return EqualTo()( value, current ); } );
         if( iter != values_.end() ) { *iter = value; }
         else values_.append( value );
     }
@@ -370,7 +370,7 @@ class ListModel : public ItemModel
 
         for( const auto& value: values )
         {
-            auto iter = std::find_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), value ) );
+            auto iter = std::find_if( values_.begin(), values_.end(), [&value]( const ValueType& current ){ return EqualTo()(value, current); } );
             if( iter != values_.end() ) { *iter = value; }
             else values_.append( value );
         }
@@ -398,8 +398,8 @@ class ListModel : public ItemModel
     {
         // need a copy of the passed value as it can be invalidated by the first erase, before comming to the second
         const auto copy( value );
-        values_.erase( std::remove_if( values_.begin(), values_.end(), std::bind2nd( EqualTo(), copy )), values_.end() );
-        selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), std::bind2nd( EqualTo(), copy ) ), selectedItems_.end() );
+        values_.erase( std::remove_if( values_.begin(), values_.end(), [&copy]( const ValueType& current ) { return EqualTo()( copy, current ); }), values_.end() );
+        selectedItems_.erase( std::remove_if( selectedItems_.begin(), selectedItems_.end(), [&copy]( const ValueType& current ) { return EqualTo()( copy, current ); }), selectedItems_.end() );
     }
 
     private:
