@@ -26,9 +26,10 @@
 
 #include <QWindow>
 #include <QGuiApplication>
-#include <qpa/qplatformnativeinterface.h>
 
-#include <QX11Info>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+#include <qpa/qplatformnativeinterface.h>
+#endif
 
 #include <X11/Xlib-xcb.h>
 #include <xcb/xcb.h>
@@ -137,15 +138,22 @@ xcb_connection_t* XcbUtil::Private::connection()
     {
 
         // get display
+        #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         auto nativeInterface = qApp->platformNativeInterface();
         auto display = reinterpret_cast<Display*>(nativeInterface->nativeResourceForScreen(QByteArray("display"), QGuiApplication::primaryScreen()) );
-
-        // get matching xcb connection
         if( !display ) return 0;
 
-        // assign
         connection_ = XGetXCBConnection( display );
+        #else
+        auto x11Application = qApp->nativeInterface<QNativeInterface::QX11Application>();
+        if( !x11Application ) return 0;
+        
+        auto display = x11Application->display();
+        if( !display ) return 0;
 
+        connection_ = x11Application->connection();
+        #endif
+        
         // also get default screen
         defaultScreenNumber_ = DefaultScreen( display );
 
@@ -237,7 +245,7 @@ XcbUtil::~XcbUtil() = default;
 bool XcbUtil::isX11()
 {
     #if WITH_XCB
-    static const bool isX11 = QX11Info::isPlatformX11();
+    static const bool isX11 = (QGuiApplication::platformName() == QLatin1String("xcb"));
     return isX11;
     #endif
 

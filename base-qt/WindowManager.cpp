@@ -51,7 +51,6 @@
 #include <QWindow>
 
 #if WITH_XCB
-#include <QX11Info>
 #include <xcb/xcb.h>
 #endif
 

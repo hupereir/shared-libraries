@@ -37,11 +37,9 @@ namespace Transparency
         public:
 
         //* construct from any args that make a QLabel
-        template< typename... Args >
-            explicit ShadowLabel( Args&&... args ):
-            QLabel( std::forward<Args>(args)... ),
-            Counter( QStringLiteral("Transparency::ShadowLabel") ),
-            shadowOffset_( 0 )
+        explicit ShadowLabel( QWidget* parent = nullptr ):
+            QLabel( parent ),
+            Counter( QStringLiteral("Transparency::ShadowLabel") )
         {}
 
         //* shadow
@@ -74,7 +72,7 @@ namespace Transparency
         { return shadowColor_; }
 
         //* shadow offset
-        int shadowOffset_;
+        int shadowOffset_ = 0;
 
         //* shadow color
         QColor shadowColor_;

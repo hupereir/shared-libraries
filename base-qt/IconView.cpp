@@ -1342,7 +1342,12 @@ QStyleOptionViewItem IconView::_viewOptions( const QModelIndex& index ) const
 {
 
     // setup option
-    auto option = viewOptions();
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    auto option = viewOptions();  
+    #else
+    QStyleOptionViewItem option;
+    initViewItemOption(&option);
+    #endif
     option.showDecorationSelected = true;
 
     // state
@@ -1493,22 +1498,22 @@ void IconView::_installActions()
     connect( findAction_, &QAction::triggered, this, &IconView::_findFromDialog );
 
     addAction( findAgainAction_ = new QAction( tr( "Find Again" ), this ) );
-    findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
+    findAgainAction_->setShortcut( Qt::CTRL|Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainAction_, &QAction::triggered, this, &IconView::findAgainForward );
 
     addAction( findAgainBackwardAction_ = new QAction( this ) );
-    findAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
+    findAgainBackwardAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_G );
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainBackwardAction_, &QAction::triggered, this, &IconView::findAgainBackward );
 
     addAction( findSelectionAction_ = new QAction( tr( "Find Selection" ), this ) );
-    findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
+    findSelectionAction_->setShortcut( Qt::CTRL|Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionAction_, &QAction::triggered, this, &IconView::findSelectionForward );
 
     addAction( findSelectionBackwardAction_ = new QAction( this ) );
-    findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
+    findSelectionBackwardAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_H );
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, &QAction::triggered, this, &IconView::findSelectionBackward );
 

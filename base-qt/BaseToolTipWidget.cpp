@@ -148,7 +148,11 @@ void BaseToolTipWidget::showDelayed( int delay )
 }
 
 //_______________________________________________________
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void BaseToolTipWidget::enterEvent( QEvent* )
+#else
+void BaseToolTipWidget::enterEvent( QEnterEvent* )
+#endif
 { hide(); }
 
 //_______________________________________________________
@@ -162,7 +166,8 @@ void BaseToolTipWidget::paintEvent( QPaintEvent* event )
     painter.setClipRegion( event->region() );
 
     QStyleOptionFrame opt;
-    opt.init(this);
+    opt.initFrom(this);
+    
     style()->drawPrimitive(QStyle::PE_PanelTipLabel, &opt, &painter, this );
     QWidget::paintEvent( event );
 }

@@ -107,8 +107,12 @@ class BASE_QT_EXPORT BaseToolTipWidget: public QWidget, private Base::Counter<Ba
     protected:
 
     //* enter
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void enterEvent( QEvent* ) override;
-
+    #else 
+    void enterEvent( QEnterEvent* ) override;
+    #endif 
+    
     //* leave
     void leaveEvent( QEvent* ) override;
 

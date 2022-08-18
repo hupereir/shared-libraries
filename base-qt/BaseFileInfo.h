@@ -73,7 +73,8 @@ class BASE_QT_EXPORT BaseFileInfo
         Hidden = 1<<5,
         Remote = 1<<6,
         Clipped = 1<<7,
-        Last = 1<<8
+        Last = 1<<8,
+        Any = Last-1
     };
 
     enum {Shift = 8};

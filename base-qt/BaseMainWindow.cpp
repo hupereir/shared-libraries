@@ -61,7 +61,7 @@ BaseMainWindow::BaseMainWindow( QWidget *parent, Qt::WindowFlags WindowFlags):
     addAction( showMenuBarAction_ = new QAction( IconEngine::get( IconNames::ShowMenu ), tr( "Show Menu Bar" ), this ) );
     showMenuBarAction_->setCheckable( true );
     showMenuBarAction_->setChecked( true );
-    showMenuBarAction_->setShortcut( Qt::CTRL + Qt::Key_M );
+    showMenuBarAction_->setShortcut( Qt::CTRL|Qt::Key_M );
     showMenuBarAction_->setEnabled( false );
     connect( showMenuBarAction_, &QAction::toggled, this, &BaseMainWindow::_toggleMenuBar );
 

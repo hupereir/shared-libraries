@@ -25,6 +25,7 @@
 #include "PrintPreviewDialog_p.h"
 #include "QtUtil.h"
 
+#include <QActionGroup>
 #include <QComboBox>
 #include <QGraphicsView>
 #include <QLayout>

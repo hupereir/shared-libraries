@@ -471,11 +471,11 @@ void LineEditor::_installActions()
     connect( selectAllAction_, &QAction::triggered, this, &QLineEdit::selectAll );
 
     addAction( upperCaseAction_ = new QAction( tr( "Upper Case" ), this ) );
-    upperCaseAction_->setShortcut( Qt::CTRL+Qt::Key_U );
+    upperCaseAction_->setShortcut( Qt::CTRL|Qt::Key_U );
     connect( upperCaseAction_, &QAction::triggered, this, &LineEditor::upperCase );
 
     addAction( lowerCaseAction_ = new QAction( tr( "Lower Case" ), this ) );
-    lowerCaseAction_->setShortcut( Qt::SHIFT+Qt::CTRL+Qt::Key_U );
+    lowerCaseAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_U );
     connect( lowerCaseAction_, &QAction::triggered, this, &LineEditor::lowerCase );
 
     // update actions that depend on the presence of a selection

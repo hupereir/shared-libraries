@@ -24,7 +24,7 @@
 #include "QuestionDialog.h"
 #include "XmlOptions.h"
 
-
+#include <QActionGroup>
 #include <algorithm>
 
 //_______________________________________________

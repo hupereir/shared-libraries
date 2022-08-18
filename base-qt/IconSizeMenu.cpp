@@ -21,6 +21,8 @@
 #include "CppUtil.h"
 #include "Debug.h"
 
+#include <QActionGroup>
+
 //_____________________________________________________________________________
 IconSizeMenu::IconSizeMenu( QWidget* parent, bool custom ):
     QMenu( tr( "Icon size" ), parent ),

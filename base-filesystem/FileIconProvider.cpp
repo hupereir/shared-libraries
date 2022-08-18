@@ -27,7 +27,6 @@
 //__________________________________________________________________
 const QIcon& FileIconProvider::icon( const FileRecord& fileRecord )
 {
-
     // get relevant file info type
     int type( fileRecord.flags() );
     if( type & BaseFileInfo::Folder )
@@ -45,7 +44,7 @@ const QIcon& FileIconProvider::icon( const FileRecord& fileRecord )
     }
 
     if( type & BaseFileInfo::Navigator ) type = BaseFileInfo::Navigator;
-    else type &= (BaseFileInfo::Last-1);
+    else type &= BaseFileInfo::Any;
 
     // build key
     Key key( fileRecord.file().extension(), type );

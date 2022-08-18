@@ -316,7 +316,9 @@ namespace Private
             option.state = QStyle::State_None;
             option.checkType = QStyleOptionMenuItem::NotCheckable;
             option.maxIconWidth = 0;
+            #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             option.tabWidth = 0;
+            #endif
             style()->drawPrimitive(QStyle::PE_PanelMenu, &option, &painter, this);
         }
 

@@ -44,10 +44,16 @@ class ListModel : public ItemModel
     using Pointer = T*;
 
     //* value list
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)    
     using List = QVector<ValueType>;
     using ListIterator = QVectorIterator<ValueType>;
     using MutableListIterator = QMutableVectorIterator<ValueType>;
-
+    #else
+    using List = QList<ValueType>;
+    using ListIterator = QListIterator<ValueType>;
+    using MutableListIterator = QMutableListIterator<ValueType>;
+    #endif
+    
     //* constructor
     explicit ListModel(QObject* parent = nullptr ):
         ItemModel( parent )

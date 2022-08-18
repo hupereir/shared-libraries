@@ -8,13 +8,15 @@ set(BASE_QT_SOVERSION ${BASE_QT_VERSION_MAJOR}.${BASE_QT_VERSION_MINOR})
 
 ########### Qt configuration #########
 if(USE_QT6)
-find_package(Qt6 COMPONENTS Widgets Network Xml PrintSupport REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Network Xml PrintSupport Core5Compat REQUIRED)
 else()
 find_package(Qt5 COMPONENTS Widgets Network Xml PrintSupport REQUIRED)
 endif()
 
 if(WIN32)
-if(NOT USE_QT6)
+if(USE_QT6)
+  find_package( QT6 COMPONENTS GuiPrivate REQUIRED )
+else()
   find_package(Qt5WinExtras REQUIRED)
 endif()
 endif()
@@ -236,10 +238,16 @@ if(XCB_FOUND)
 endif()
 
 target_link_libraries(base-qt Qt::Widgets Qt::Network Qt::PrintSupport Qt::Xml)
+
+if(USE_QT6)
+  # needed for QTextCodec
+  target_link_libraries(base-qt Qt::Core5Compat)
+endif()
+
 if(WIN32)
   target_link_libraries(base-qt Qt::WinExtras)
 endif()
 
-if(XCB_FOUND)
+if(XCB_FOUND AND NOT USE_QT6)
   target_link_libraries(base-qt Qt::X11Extras)
 endif()

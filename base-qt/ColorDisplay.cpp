@@ -29,7 +29,6 @@
 #include <QApplication>
 #include <QCursor>
 #include <QColorDialog>
-#include <QDesktopWidget>
 #include <QHBoxLayout>
 #include <QPainter>
 #include <QToolButton>

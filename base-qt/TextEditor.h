@@ -530,8 +530,12 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     //* generic event
     bool event( QEvent* ) override;
 
-    //* enter event handler
-    void enterEvent( QEvent *event ) override;
+    //* enter event
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    void enterEvent( QEvent* ) override;
+    #else 
+    void enterEvent( QEnterEvent* ) override;
+    #endif 
 
     //* mouse release event [overloaded]
     void mousePressEvent( QMouseEvent* ) override;

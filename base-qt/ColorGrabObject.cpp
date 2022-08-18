@@ -21,7 +21,11 @@
 #include "Debug.h"
 
 #include <QApplication>
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDesktopWidget>
+#endif
+
 #include <QCursor>
 #include <QMouseEvent>
 #include <QScreen>
@@ -110,8 +114,12 @@ void ColorGrabObject::_selectColorFromMouseEvent( QMouseEvent *event )
     const auto globalPosition( event->globalPos() );
 
     // grab image
+    #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QImage image( QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(), globalPosition.x(), globalPosition.y(), 2, 2 ).toImage() );
-
+    #else
+    QImage image( QGuiApplication::primaryScreen()->grabWindow(0, globalPosition.x(), globalPosition.y(), 2, 2 ).toImage() );
+    #endif
+    
     // ensure image is deep enough
     if(image.depth() != 32) image = image.convertToFormat(QImage::Format_RGB32);
 

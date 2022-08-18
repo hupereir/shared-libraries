@@ -1084,7 +1084,11 @@ bool TextEditor::event( QEvent* event )
 }
 
 //________________________________________________
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 void TextEditor::enterEvent( QEvent* event )
+#else
+void TextEditor::enterEvent( QEnterEvent* event )
+#endif
 {
     _updateClipboardActions( QClipboard::Clipboard );
     _updateClipboardActions( QClipboard::Selection );
@@ -1816,12 +1820,12 @@ void TextEditor::_installActions()
     connect( selectAllAction_, &QAction::triggered, this, &QTextEdit::selectAll );
 
     addAction( upperCaseAction_ = new QAction( tr( "Upper Case" ), this ) );
-    upperCaseAction_->setShortcut( Qt::CTRL + Qt::Key_U );
+    upperCaseAction_->setShortcut( Qt::CTRL|Qt::Key_U );
     upperCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( upperCaseAction_, &QAction::triggered, this, &TextEditor::upperCase );
 
     addAction( lowerCaseAction_ = new QAction( tr( "Lower Case" ), this ) );
-    lowerCaseAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_U );
+    lowerCaseAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_U );
     lowerCaseAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( lowerCaseAction_, &QAction::triggered, this, &TextEditor::lowerCase );
 
@@ -1831,22 +1835,22 @@ void TextEditor::_installActions()
     connect( findAction_, &QAction::triggered, this, &TextEditor::_findFromDialog );
 
     addAction( findAgainAction_ = new QAction( tr( "Find Again" ), this ) );
-    findAgainAction_->setShortcut( Qt::CTRL + Qt::Key_G );
+    findAgainAction_->setShortcut( Qt::CTRL|Qt::Key_G );
     findAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainAction_, &QAction::triggered, this, &TextEditor::findAgainForward );
 
     addAction( findAgainBackwardAction_ = new QAction( this ) );
-    findAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_G );
+    findAgainBackwardAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_G );
     findAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findAgainBackwardAction_, &QAction::triggered, this, &TextEditor::findAgainBackward );
 
     addAction( findSelectionAction_ = new QAction( tr( "Find Selection" ), this ) );
-    findSelectionAction_->setShortcut( Qt::CTRL + Qt::Key_H );
+    findSelectionAction_->setShortcut( Qt::CTRL|Qt::Key_H );
     findSelectionAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionAction_, &QAction::triggered, this, &TextEditor::findSelectionForward );
 
     addAction( findSelectionBackwardAction_ = new QAction( this ) );
-    findSelectionBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_H );
+    findSelectionBackwardAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_H );
     findSelectionBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( findSelectionBackwardAction_, &QAction::triggered, this, &TextEditor::findSelectionBackward );
 
@@ -1856,24 +1860,24 @@ void TextEditor::_installActions()
     connect( replaceAction_, &QAction::triggered, this, &TextEditor::_replaceFromDialog );
 
     addAction( replaceAgainAction_ = new QAction( tr( "Replace Again" ), this ) );
-    replaceAgainAction_->setShortcut( Qt::CTRL + Qt::Key_T );
+    replaceAgainAction_->setShortcut( Qt::CTRL|Qt::Key_T );
     replaceAgainAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAgainAction_, &QAction::triggered, this, &TextEditor::replaceAgainForward );
 
     addAction( replaceAgainBackwardAction_ = new QAction( this ) );
-    replaceAgainBackwardAction_->setShortcut( Qt::SHIFT + Qt::CTRL + Qt::Key_T );
+    replaceAgainBackwardAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_T );
     replaceAgainBackwardAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( replaceAgainBackwardAction_, &QAction::triggered, this, &TextEditor::replaceAgainBackward );
 
     addAction( gotoLineAction_ = new QAction( tr( "Goto Line Number..." ), this ) );
-    gotoLineAction_->setShortcut( Qt::CTRL + Qt::Key_L );
+    gotoLineAction_->setShortcut( Qt::CTRL|Qt::Key_L );
     gotoLineAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( gotoLineAction_, &QAction::triggered, this, &TextEditor::_selectLineFromDialog );
 
     // remove line action
     QAction* remove_line_action( new QAction( tr( "Remove Current Line" ), this ) );
     addAction( remove_line_action );
-    remove_line_action->setShortcut( Qt::CTRL + Qt::Key_K );
+    remove_line_action->setShortcut( Qt::CTRL|Qt::Key_K );
     remove_line_action->setShortcutContext( Qt::WidgetShortcut );
     connect( remove_line_action, &QAction::triggered, this, &TextEditor::removeLine );
 
@@ -1922,7 +1926,7 @@ void TextEditor::_installActions()
     connect( decrementFontSizeAction_, &QAction::triggered, this, &TextEditor::_decrementFontSize );
 
     addAction( restoreDefaultFontAction_ = new QAction( tr( "Restore Default Font Size" ), this ) );
-    restoreDefaultFontAction_->setShortcut( Qt::CTRL + Qt::Key_0 );
+    restoreDefaultFontAction_->setShortcut( Qt::CTRL|Qt::Key_0 );
     restoreDefaultFontAction_->setShortcutContext( Qt::WidgetShortcut );
     connect( restoreDefaultFontAction_, &QAction::triggered, this, &TextEditor::_restoreDefaultFont );
 
@@ -2149,8 +2153,8 @@ bool TextEditor::_findBackward( const TextSelection& selection, bool rewind )
 
         // parse text
         QRegularExpressionMatch match;
-        text.lastIndexOf( regexp, -1, &match );
-        if( !match.hasMatch() )
+        const auto index = text.lastIndexOf( regexp, -1, &match );
+        if( index < 0 || !match.hasMatch() )
         {
             // no match found
             // if not rewind, stop here

@@ -22,6 +22,19 @@
 #include "File.h"
 #include "Util.h"
 
+namespace 
+{
+    
+    inline constexpr bool isDirectory( QFileDialog::FileMode fileMode )
+    { 
+        #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        return ( fileMode == QFileDialog::DirectoryOnly || fileMode == QFileDialog::Directory );
+        #else
+        return ( fileMode == QFileDialog::Directory );
+        #endif
+    }
+}
+
 //_______________________________________________________
 FileDialog::FileDialog( QWidget* parent ):
     QObject( parent ),
@@ -46,7 +59,7 @@ File FileDialog::getFile()
     const auto caption = caption_.isEmpty() ? _defaultCaption() : Util::windowTitle( caption_ );
     if( acceptMode_ == QFileDialog::AcceptOpen )
     {
-        if( fileMode_ == QFileDialog::DirectoryOnly || fileMode_ == QFileDialog::Directory )
+        if( isDirectory( fileMode_ ) )
         {
 
             options_ |= QFileDialog::ShowDirsOnly;
@@ -93,8 +106,12 @@ QString FileDialog::_defaultCaption() const
     if( acceptMode_ == QFileDialog::AcceptOpen )
     {
 
-        if( fileMode_ == QFileDialog::DirectoryOnly || fileMode_ == QFileDialog::Directory ) return Util::windowTitle( tr( "Open Directory" ) );
-        else return Util::windowTitle( tr( "Open File" ) );
+        if( isDirectory( fileMode_ ) )
+        { 
+            return Util::windowTitle( tr( "Open Directory" ) ); 
+        } else {
+            return Util::windowTitle( tr( "Open File" ) );
+        }
 
     } else {
 

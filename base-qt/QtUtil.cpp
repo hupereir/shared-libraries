@@ -201,7 +201,7 @@ QAction* QtUtil::addMenuSection( QMenu* menu, const QIcon& icon, const QString& 
     if( !icon.isNull() )
     {
         QStyleOption opt;
-        opt.init( menu );
+        opt.initFrom( menu );
         const int iconSize = menu->style()->pixelMetric(QStyle::PM_SmallIconSize, &opt, menu);
         width += iconSize;
     }
