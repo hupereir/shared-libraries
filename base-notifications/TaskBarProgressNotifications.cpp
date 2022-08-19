@@ -91,6 +91,8 @@ void TaskBarProgressNotifications::_update(std::initializer_list<typename std::p
 
     message.setArguments({launcherId_, QVariantMap(properties)});
     QDBusConnection::sessionBus().send(message);
+    #else
+    Q_UNUSED( properties )
     #endif
 
 }

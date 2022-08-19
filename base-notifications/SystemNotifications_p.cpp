@@ -189,7 +189,10 @@ namespace Private
 
         auto watcher = new QDBusPendingCallWatcher( pendingCall, this );
         connect( watcher, &QDBusPendingCallWatcher::finished, this, &SystemNotificationsP::_pendingCallFinished);
-
+        #else
+        
+        Q_UNUSED( notification );
+        
         #endif
 
     }

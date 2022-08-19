@@ -121,7 +121,8 @@ bool XmlOptions::read()
 
     // parse the file
     XmlDocument document;
-    QFile qtfile( _singleton().file() );
+    QFile qtfile(_singleton().file());
+    qtfile.open(QIODevice::ReadOnly);
     if ( !document.setContent( &qtfile, _singleton().error_ ) ) return false;
     else return _read( document, _singleton().options_ );
 
@@ -137,7 +138,8 @@ bool XmlOptions::write()
     // create document and read
     XmlDocument document;
     {
-        QFile qtfile( _singleton().file() );
+        QFile qtfile(_singleton().file());
+        qtfile.open(QIODevice::ReadOnly);
         document.setContent( &qtfile );
     }
 
