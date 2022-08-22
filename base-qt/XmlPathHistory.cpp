@@ -76,6 +76,7 @@ bool XmlPathHistory::read( File file )
     // parse the file
     XmlDocument document;
     QFile qfile( file );
+    qfile.open( QIODevice::ReadOnly );
     if ( !document.setContent( &qfile ) )
     {
 
@@ -140,8 +141,9 @@ bool XmlPathHistory::write( File file )
     // create document and read
     XmlDocument document;
     {
-        QFile qtfile( file );
-        document.setContent( &qtfile );
+        QFile qfile( file );
+        qfile.open( QIODevice::ReadOnly );
+        document.setContent( &qfile );
     }
 
     // get path list

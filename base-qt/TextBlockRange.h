@@ -96,6 +96,13 @@ class BASE_QT_EXPORT TextBlockRange
         }
 
         //@}
+        
+        // needed to be use in range loops since c++17
+        using difference_type = long;
+        using value_type = long;
+        using pointer = const long*;
+        using reference = const long&;
+        using iterator_category = std::forward_iterator_tag;
 
         private:
 

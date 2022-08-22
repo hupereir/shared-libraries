@@ -39,9 +39,8 @@ endif()
 
 target_link_libraries(base-notifications base base-qt)
 target_link_libraries(base-notifications Qt::Widgets)
-if( USE_QT6 AND Qt6DBus_FOUND)
-  target_link_libraries(base-notifications Qt::DBus)
-elseif(Qt5DBus_FOUND )
+
+if(Qt5DBus_FOUND OR Qt6DBus_FOUND)
   target_link_libraries(base-notifications Qt::DBus)
 else()
   add_definitions("-DQT_NO_DBUS")
