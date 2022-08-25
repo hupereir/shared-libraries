@@ -35,6 +35,9 @@ QT_MODULE(Core)
 struct QOrderedSetDummyValue
 {};
 
+inline bool operator == ( const QOrderedSetDummyValue&, const QOrderedSetDummyValue& )
+{ return true; }
+
 template <class T>
 class BASE_EXPORT QOrderedSet
 {
