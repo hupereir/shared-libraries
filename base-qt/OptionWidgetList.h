@@ -75,7 +75,6 @@ class OptionWidgetList: public OptionWidget
 
 };
 
-
 //______________________________________________________________________
 template<class W>
 template<class T>

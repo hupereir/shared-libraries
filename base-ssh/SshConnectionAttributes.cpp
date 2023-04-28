@@ -59,6 +59,7 @@ namespace Ssh
             first.name_ == second.name_ &&
             first.host_ == second.host_ &&
             first.user_ == second.user_ &&
+            first.proxyCommand_ == second.proxyCommand_ &&
             first.tunnels_ == second.tunnels_;
     }
 

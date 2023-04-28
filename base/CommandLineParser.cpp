@@ -30,14 +30,9 @@ const QString CommandLineParser::qtGroupName( QObject::tr( "Qt Options:" ) );
 
 //________________________________________________________
 CommandLineParser::CommandLineParser():
-    Counter( QStringLiteral("CommandLineParser") )
-{
-    // insert default groups
-    groupNames_.append( applicationGroupName );
-    groupNames_.append( serverGroupName );
-    groupNames_.append( qtGroupName );
-
-}
+    Counter( QStringLiteral("CommandLineParser") ),
+    groupNames_( {applicationGroupName, serverGroupName, qtGroupName} )
+{}
 
 //________________________________________________________
 void CommandLineParser::usage() const
@@ -57,12 +52,12 @@ void CommandLineParser::usage() const
         else stream << groupName << Qt::endl;
 
         // retrieve group
-        const Group& group( groups_[groupName] );
+        const auto& group( groups_[groupName] );
 
         int maxFlagLength(0);
         if( !group.flags_.isEmpty() )
         {
-            const QList<Tag> flagKeys( group.flags_.keys() );
+            const auto flagKeys( group.flags_.keys() );
             maxFlagLength = std::max_element( flagKeys.cbegin(), flagKeys.cend(), MinLengthFTor() )->size();
         }
 
@@ -70,8 +65,8 @@ void CommandLineParser::usage() const
         int maxTypeLength(0);
         if( !group.options_.isEmpty() )
         {
-            const QList<Tag> optionKeys( group.options_.keys() );
-            const QList<Option> optionValues( group.options_.values() );
+            const auto optionKeys( group.options_.keys() );
+            const auto optionValues( group.options_.values() );
             maxOptionLength = std::max_element( optionKeys.cbegin(), optionKeys.cend(), MinLengthFTor() )->size();
             maxTypeLength = 1 + std::max_element( optionValues.cbegin(), optionValues.cend(), MinTypeLengthFTor() )->type_.size();
         }
@@ -136,7 +131,7 @@ CommandLineArguments CommandLineParser::arguments() const
 //_______________________________________________________
 bool CommandLineParser::hasFlag( const QString& tag ) const
 {
-    const Group::FlagMap flags( _allFlags() );
+    const auto flags( _allFlags() );
     auto&& iter( _findTag( flags, tag ) );
     return iter != flags.end() && iter.value().set_;
 }
@@ -144,7 +139,7 @@ bool CommandLineParser::hasFlag( const QString& tag ) const
 //_______________________________________________________
 bool CommandLineParser::hasOption( const QString& tag ) const
 {
-    const Group::OptionMap options( _allOptions() );
+    const auto options( _allOptions() );
     auto&& iter( _findTag( options, tag ) );
     return iter != options.end() && iter.value().set_ && !iter.value().value_.isEmpty();
 }
@@ -152,7 +147,7 @@ bool CommandLineParser::hasOption( const QString& tag ) const
 //_______________________________________________________
 QString CommandLineParser::option( const QString& tag ) const
 {
-    const Group::OptionMap options( _allOptions() );
+    const auto options( _allOptions() );
     auto&& iter( _findTag( options, tag ) );
     return iter.value().value_;
 }

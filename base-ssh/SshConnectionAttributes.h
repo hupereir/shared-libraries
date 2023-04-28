@@ -72,6 +72,10 @@ namespace Ssh
         bool rememberPassword() const
         { return rememberPassword_; }
 
+        //* proxy command
+        const QString& proxyCommand() const
+        { return proxyCommand_; }
+        
         //* true if auto connect
         bool autoConnect() const
         { return autoConnect_; }
@@ -112,6 +116,10 @@ namespace Ssh
         void setRememberPassword( bool value )
         { rememberPassword_ = value; }
 
+        //* proxy command
+        void setProxyCommand( const QString& command )
+        { proxyCommand_ = command; }
+        
         //* set auto connect
         void setAutoConnect( bool value )
         { autoConnect_ = value; }
@@ -144,6 +152,9 @@ namespace Ssh
 
         //* password
         QString password_;
+        
+        //* proxy command
+        QString proxyCommand_;
 
         //* remember password
         bool rememberPassword_ = false;

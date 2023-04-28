@@ -368,6 +368,9 @@ namespace Ssh
                 if( !connectionAttributes_.user().isEmpty() )
                 { ssh_options_set( session, SSH_OPTIONS_USER, qPrintable( connectionAttributes_.user() ) ); }
 
+                if( !connectionAttributes_.proxyCommand().isEmpty() )
+                { ssh_options_set( session, SSH_OPTIONS_PROXYCOMMAND, qPrintable( connectionAttributes_.proxyCommand() ) ); }
+                
                 ssh_options_set( session, SSH_OPTIONS_PORT, &port );
 
                 Debug::Throw() << "Ssh::Connection::_processCommands - connection."
