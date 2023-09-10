@@ -35,8 +35,8 @@ namespace Ssh
 {
 
     //* max buffer size
-    static const qint64 bufferSize = 1024*64;
-    static const qint64 maxBufferSize = 1<<16;
+    static constexpr qint64 bufferSize = 1024*64;
+    static constexpr qint64 maxBufferSize = 1<<16;
 
     //_______________________________________________________________________
     ReadFileSocket::ReadFileSocket( QObject* parent ):

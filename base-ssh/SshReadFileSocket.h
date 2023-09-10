@@ -163,8 +163,8 @@ namespace Ssh
         //* bytes available
         qint64 bytesAvailable_ = 0;
 
-        enum
-        { nParallel = 16 };
+        //* number of parallel processes to read remote object
+        static constexpr unsigned short nParallel = 16;
 
         std::array<int, nParallel> idList_;
         int currentIndex_ = 0;
