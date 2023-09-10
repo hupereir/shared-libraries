@@ -27,6 +27,6 @@ ColorGrabButton::ColorGrabButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( QStringLiteral("ColorGrabButton") )
 {
-    ColorGrabObject* object = new ColorGrabObject( this );
+    auto object = new ColorGrabObject( this );
     connect( object, &ColorGrabObject::colorSelected, this, &ColorGrabButton::colorSelected );
 }
