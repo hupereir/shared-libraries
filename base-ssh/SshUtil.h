@@ -47,7 +47,7 @@ namespace Ssh
 
             private:
 
-            void* session_;
+            void* session_ = nullptr;
 
         };
 
