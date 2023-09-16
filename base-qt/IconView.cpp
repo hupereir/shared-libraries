@@ -1142,6 +1142,7 @@ void IconView::_createFindWidget( bool compact )
 
     // create Widget
     auto findWidget = new BaseFindWidget( this, compact );
+    findWidget->enableHighlightAll( false );
     findWidget->enableEntireWord( false );
     findWidget->enableRegExp( true );
 

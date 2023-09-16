@@ -648,6 +648,7 @@ void TreeView::_createFindWidget( bool compact )
 
     // create dialog
     auto findWidget =  new BaseFindWidget( this, compact );
+    findWidget->enableHighlightAll( false );
     findWidget->enableEntireWord( false );
     findWidget->enableRegExp( true );
     setFindWidget( findWidget );

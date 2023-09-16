@@ -35,11 +35,12 @@ class BASE_QT_EXPORT TextSelection
     {
         None = 0,
         Backward = 1<<0,
-        CaseSensitive = 1<<1,
-        EntireWord = 1<<2,
-        RegExp = 1<<3,
-        NoIncrement = 1<<4,
-        BeginOfWord = 1<<5
+        HighlightAll = 1<<1,
+        CaseSensitive = 1<<2,
+        EntireWord = 1<<3,
+        RegExp = 1<<4,
+        NoIncrement = 1<<5,
+        BeginOfWord = 1<<6
     };
 
     Q_DECLARE_FLAGS( Flags, Flag );

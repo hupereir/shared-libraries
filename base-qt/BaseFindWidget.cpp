@@ -94,22 +94,24 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     editorLayout_->addWidget( label = new QLabel( tr( "Options:" ), this ), 3, 0, 1, 1 );
     label->setAlignment( Qt::AlignRight|Qt::AlignVCenter );
 
-    QHBoxLayout* hLayout( new QHBoxLayout );
+    auto hLayout( new QHBoxLayout );
     hLayout->setSpacing( 5 );
     QtUtil::setMargin(hLayout, 0);
     editorLayout_->addLayout( hLayout, 3, 1, 1, 3 );
 
+    hLayout->addWidget( highlightAllCheckbox_ = new QCheckBox( tr( "&Highlight all" ), this ) );
     hLayout->addWidget( caseSensitiveCheckbox_ = new QCheckBox( tr( "C&ase sensitive" ), this ) );
-    hLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "Regular expresion" ), this ) );
-    hLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "Entire word" ), this ) );
+    hLayout->addWidget( regexpCheckbox_ = new QCheckBox( tr( "&Regular expresion" ), this ) );
+    hLayout->addWidget( entireWordCheckbox_ = new QCheckBox( tr( "&Entire word" ), this ) );
     hLayout->addStretch(1);
 
     connect( regexpCheckbox_, &QAbstractButton::toggled, this, &BaseFindWidget::_regExpChecked );
 
     // tooltips
-    // backwardCheckbox_->setToolTip( tr( "Perform search backward" ) );
+    highlightAllCheckbox_->setToolTip( tr( "Highlight all occurences of the phrase" ) );
     caseSensitiveCheckbox_->setToolTip( tr( "Case sensitive search" ) );
     regexpCheckbox_->setToolTip( tr( "Search text using regular expression" ) );
+    entireWordCheckbox_->setToolTip( tr( "Search entire words only" ) );
 
     if( !compact )
     {
@@ -152,6 +154,7 @@ TextSelection BaseFindWidget::selection( bool noIncrement ) const
 {
     TextSelection out( editor_->currentText() );
     out.setFlag( TextSelection::Backward, findBackward_ );
+    out.setFlag( TextSelection::HighlightAll, highlightAllCheckbox_->isChecked() );
     out.setFlag( TextSelection::CaseSensitive, caseSensitiveCheckbox_->isChecked() );
     out.setFlag( TextSelection::EntireWord, entireWordCheckbox_->isChecked() );
     out.setFlag( TextSelection::RegExp, regexpCheckbox_->isChecked() );
@@ -172,6 +175,13 @@ void BaseFindWidget::enableEntireWord( bool value )
 {
     if( !value ) entireWordCheckbox_->setChecked( false );
     entireWordCheckbox_->setVisible( value );
+}
+
+//________________________________________________________________________
+void BaseFindWidget::enableHighlightAll( bool value )
+{
+    if( !value ) highlightAllCheckbox_->setChecked( false );
+    highlightAllCheckbox_->setVisible( value );
 }
 
 //________________________________________________________________________

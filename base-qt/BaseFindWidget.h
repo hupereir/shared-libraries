@@ -78,6 +78,9 @@ class BASE_QT_EXPORT BaseFindWidget: public AbstractFindWidget, private Base::Co
     //* synchronize searched strings and ComboBox
     void synchronize() override;
 
+    //! enable/disable highlight all
+    void enableHighlightAll( bool );
+    
     //* enable/disable entire word
     void enableEntireWord( bool );
 
@@ -165,6 +168,9 @@ class BASE_QT_EXPORT BaseFindWidget: public AbstractFindWidget, private Base::Co
     //* backward search if checked
     bool findBackward_ = false;
 
+    //* highlight all checkbox
+    QCheckBox* highlightAllCheckbox_ = nullptr;
+    
     //* case sensitive search if checked
     QCheckBox* caseSensitiveCheckbox_ = nullptr;
 
