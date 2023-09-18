@@ -27,12 +27,12 @@ QTextStream &operator << (QTextStream &out,const TextSelection &selection)
         << "TextSelection -"
         << " text: " << selection.text()
         << " replacement: " << selection.replaceText()
-        << " highlight all: " << (selection.hasFlag(HighlightAll) ? "true":"false" )
-        << " backward: " << (selection.hasFlag(Backward) ? "true":"false")
-        << " case sensitive: " << (selection.hasFlag(CaseSensitive) ? "true":"false")
-        << " entire word: " << (selection.hasFlag(EntireWord) ? "true":"false")
-        << " regex: " << (selection.hasFlag(RegExp) ? "true":"false")
-        << " no increment: " << (selection.hasFlag(NoIncrement) ? "true":"false");
+        << " highlight all: " << (selection.hasFlag(TextSelection::HighlightAll) ? "true":"false" )
+        << " backward: " << (selection.hasFlag(TextSelection::Backward) ? "true":"false")
+        << " case sensitive: " << (selection.hasFlag(TextSelection::CaseSensitive) ? "true":"false")
+        << " entire word: " << (selection.hasFlag(TextSelection::EntireWord) ? "true":"false")
+        << " regex: " << (selection.hasFlag(TextSelection::RegExp) ? "true":"false")
+        << " no increment: " << (selection.hasFlag(TextSelection::NoIncrement) ? "true":"false");
     return out;
 }
 
