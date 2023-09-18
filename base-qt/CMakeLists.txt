@@ -190,6 +190,7 @@ set(base_qt_SOURCES
   TextEncodingString.cpp
   TextEncodingWidget.cpp
   TextPosition.cpp
+  TextSelection.cpp
   TextSeparator.cpp
   ToolBar.cpp
   ToolBarMenu.cpp

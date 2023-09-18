@@ -112,21 +112,10 @@ class BASE_QT_EXPORT TextSelection
     Flags flags_ = None;
 
     //* streamer
-    friend QTextStream &operator << (QTextStream &out,const TextSelection &selection)
-    {
-        out
-            << "TextSelection -"
-            << " text: " << selection.text()
-            << " replacement: " << selection.replaceText()
-            << " highlight all: " << (selection.hasFlag(HighlightAll) ? "true":"false" )
-            << " backward: " << (selection.hasFlag(Backward) ? "true":"false")
-            << " case sensitive: " << (selection.hasFlag(CaseSensitive) ? "true":"false")
-            << " entire word: " << (selection.hasFlag(EntireWord) ? "true":"false")
-            << " regex: " << (selection.hasFlag(RegExp) ? "true":"false")
-            << " no increment: " << (selection.hasFlag(NoIncrement) ? "true":"false");
-        return out;
-    }
+    friend QTextStream &operator << (QTextStream &,const TextSelection &);
 
+    //* equal to operator
+    friend bool operator == ( const TextSelection&, const TextSelection& );
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS( TextSelection::Flags )
