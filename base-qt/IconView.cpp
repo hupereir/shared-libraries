@@ -149,8 +149,8 @@ TextSelection IconView::selection() const
 
     // copy last selection
     TextSelection out;
-    out.setFlag( TextSelection::CaseSensitive, TextEditor::lastSelection().flag( TextSelection::CaseSensitive ) );
-    out.setFlag( TextSelection::EntireWord, TextEditor::lastSelection().flag( TextSelection::EntireWord ) );
+    out.setFlag( TextSelection::CaseSensitive, TextEditor::lastSelection().hasFlag( TextSelection::CaseSensitive ) );
+    out.setFlag( TextSelection::EntireWord, TextEditor::lastSelection().hasFlag( TextSelection::EntireWord ) );
 
     QString text;
     if( !( text = qApp->clipboard()->text( QClipboard::Selection ) ).isEmpty() ) out.setText( text );
@@ -350,7 +350,7 @@ void IconView::doItemsLayout()
 void IconView::find( const TextSelection &selection )
 {
     Debug::Throw( QStringLiteral("IconView::find.\n") );
-    bool found( selection.flag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
+    bool found( selection.hasFlag( TextSelection::Backward ) ? _findBackward( selection, true ):_findForward( selection, true ) );
     if( found ) emit matchFound();
     else emit noMatchFound();
 }
@@ -1162,7 +1162,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
     if( !( model_ && selectionModel() ) ) return false;
 
     QRegularExpression regexp;
-    if( selection.flag( TextSelection::RegExp ) )
+    if( selection.hasFlag( TextSelection::RegExp ) )
     {
 
         // construct regexp and check
@@ -1174,13 +1174,13 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
+        Base::setCaseSensitivity( regexp, selection.hasFlag( TextSelection::CaseSensitive ) );
 
     }
 
     // set first index
     const auto current( selectionModel()->currentIndex() );
-    auto index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexAfter( current ) );
+    auto index( ( selection.hasFlag( TextSelection::NoIncrement ) ) ? current:_indexAfter( current ) );
 
     // if index index is invalid and rewind, set index index of the model
     if( (!index.isValid()) && rewind )
@@ -1205,7 +1205,7 @@ bool IconView::_findForward( const TextSelection& selection, bool rewind )
 
             // check if text match
             if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.match( text ).hasMatch() ) accepted = true; }
-            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+            else if( text.indexOf( selection.text(), 0, selection.hasFlag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
             { accepted = true; }
 
         }
@@ -1258,7 +1258,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
     if( !( model_ && selectionModel() ) ) return false;
 
     QRegularExpression regexp;
-    if( selection.flag( TextSelection::RegExp ) )
+    if( selection.hasFlag( TextSelection::RegExp ) )
     {
 
         // construct regexp and check
@@ -1270,13 +1270,13 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
         }
 
         // case sensitivity
-        Base::setCaseSensitivity( regexp, selection.flag( TextSelection::CaseSensitive ) );
+        Base::setCaseSensitivity( regexp, selection.hasFlag( TextSelection::CaseSensitive ) );
 
     }
 
     // set first index
     const auto current( selectionModel()->currentIndex() );
-    auto index( ( selection.flag( TextSelection::NoIncrement ) ) ? current:_indexBefore( current ) );
+    auto index( ( selection.hasFlag( TextSelection::NoIncrement ) ) ? current:_indexBefore( current ) );
 
     // if index index is invalid and rewind, set index index of the model
     if( (!index.isValid()) && rewind ) {
@@ -1301,7 +1301,7 @@ bool IconView::_findBackward( const TextSelection& selection, bool rewind )
 
             // check if text match
             if( regexp.isValid() && !regexp.pattern().isEmpty() ) { if( regexp.match( text ).hasMatch() ) accepted = true; }
-            else if( text.indexOf( selection.text(), 0, selection.flag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
+            else if( text.indexOf( selection.text(), 0, selection.hasFlag( TextSelection::CaseSensitive ) ? Qt::CaseSensitive : Qt::CaseInsensitive ) >= 0 )
             { accepted = true; }
 
         }

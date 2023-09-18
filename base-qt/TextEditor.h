@@ -447,7 +447,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     virtual void lowerCase();
 
     //* find next occurence of TextSelection
-    virtual void find( const TextSelection &selection );
+    virtual void find( const TextSelection& );
 
     //* find current selection forward
     virtual void findSelectionForward();

@@ -55,33 +55,41 @@ class BASE_QT_EXPORT TextSelection
         flags_( flags )
     {}
 
+    //!@name accessors 
+    //@{
+    
     //* text
     const QString& text() const
     { return text_; }
 
-    //* test
-    void setText( const QString& text )
-    { text_ = text; }
-
     //* replace text
     const QString& replaceText() const
     { return replaceText_; }
-
-    //* replace text
-    void setReplaceText( const QString& text )
-    { replaceText_ = text; }
 
     //* flags
     Flags flags() const
     { return flags_; }
 
     //* flags
-    void setFlags( Flags flags )
-    { flags_ = flags; }
+    bool hasFlag( TextSelection::Flag flag ) const
+    { return flags_ & flag; }
+
+    //@}
+    
+    //!@name modifiers
+    //@{
+    
+    //* text
+    void setText( const QString& text )
+    { text_ = text; }
+
+    //* replace text
+    void setReplaceText( const QString& text )
+    { replaceText_ = text; }
 
     //* flags
-    bool flag( TextSelection::Flag flag ) const
-    { return flags_ & flag; }
+    void setFlags( Flags flags )
+    { flags_ = flags; }
 
     //* flags
     void setFlag( TextSelection::Flag flag, bool value )
@@ -89,6 +97,8 @@ class BASE_QT_EXPORT TextSelection
         if( value ) flags_ |= flag;
         else flags_ &= (~flag);
     }
+    
+    //@}
 
     private:
 
@@ -108,11 +118,12 @@ class BASE_QT_EXPORT TextSelection
             << "TextSelection -"
             << " text: " << selection.text()
             << " replacement: " << selection.replaceText()
-            << " backward: " << (selection.flag(Backward) ? "true":"false")
-            << " case sensitive: " << (selection.flag(CaseSensitive) ? "true":"false")
-            << " entire word: " << (selection.flag(EntireWord) ? "true":"false")
-            << " regex: " << (selection.flag(RegExp) ? "true":"false")
-            << " no increment: " << (selection.flag(NoIncrement) ? "true":"false");
+            << " highlight all: " << (selection.hasFlag(HighlightAll) ? "true":"false" )
+            << " backward: " << (selection.hasFlag(Backward) ? "true":"false")
+            << " case sensitive: " << (selection.hasFlag(CaseSensitive) ? "true":"false")
+            << " entire word: " << (selection.hasFlag(EntireWord) ? "true":"false")
+            << " regex: " << (selection.hasFlag(RegExp) ? "true":"false")
+            << " no increment: " << (selection.hasFlag(NoIncrement) ? "true":"false");
         return out;
     }
 
