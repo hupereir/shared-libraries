@@ -113,6 +113,10 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
     regexpCheckbox_->setToolTip( tr( "Search text using regular expression" ) );
     entireWordCheckbox_->setToolTip( tr( "Search entire words only" ) );
 
+    // changing options triggers a find
+    for( const auto& checkbox: {highlightAllCheckbox_, caseSensitiveCheckbox_, regexpCheckbox_, entireWordCheckbox_} )
+    { connect( checkbox, &QAbstractButton::toggled,  this, &BaseFindWidget::_findNoIncrement ); } 
+    
     if( !compact )
     {
         // stretch
