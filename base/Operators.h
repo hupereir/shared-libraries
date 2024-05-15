@@ -20,13 +20,16 @@
 *
 *******************************************************************************/
 
+#include <QFont>
+
 //* different from operator
 template<class T, class U>
     inline bool operator != (const T& lhs, const U& rhs)
 { return !(lhs == rhs); }
 
-//* more than
-template<class T, class U>
+//* more than 
+/* for Qt6, this needs to be disabled for QFont::Tag */
+template<class T, class U, typename = typename std::enable_if<!std::is_same<T,QFont::Tag>::value>::type>
     inline bool operator > (const T& lhs, const U& rhs)
 { return rhs < lhs; }
 
