@@ -21,7 +21,7 @@
 #include "Color.h"
 #include "Debug.h"
 #include "Util.h"
-
+#include "WaylandUtil.h"
 
 #include <QApplication>
 #include <QCursor>
@@ -67,7 +67,11 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
 
     const auto geometry( desktopGeometry( widget ) );
     bindToGeometry( position, widget->size(), geometry );
+ 
     widget->move( position );
+    if( WaylandUtil::isWayland() ) 
+    { WaylandUtil::moveWidget(widget, position); }
+    
 }
 
 //____________________________________________________________

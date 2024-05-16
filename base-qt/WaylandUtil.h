@@ -47,6 +47,9 @@ class BASE_QT_EXPORT WaylandUtil: private Base::NonCopyable<WaylandUtil>
     //* true if platform is X11
     static bool isWayland();
 
+    //* move a top level widget to a given position
+    static void moveWidget( QWidget*, const QPoint& );
+    
     //@}
     
     private:

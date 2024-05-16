@@ -43,6 +43,18 @@ else()
   add_definitions(-DWITH_XCB=0)
 endif()
 
+########### KWayland #########
+if(UNIX AND NOT APPLE)
+  find_package(KWayland)
+  if( KWayland_FOUND )
+    add_definitions(-DWITH_KWAYLAND=1)
+  else()
+    add_definitions(-DWITH_KWAYLAND=0)
+  endif()
+else()
+  add_definitions(-DWITH_KWAYLAND=0)
+endif()
+
 ########### includes ###############
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/base)
@@ -251,4 +263,8 @@ endif()
 
 if(XCB_FOUND AND NOT USE_QT6)
   target_link_libraries(base-qt Qt::X11Extras)
+endif()
+
+if(KWayland_FOUND)
+  target_link_libraries(base-qt Plasma::KWaylandClient)
 endif()
