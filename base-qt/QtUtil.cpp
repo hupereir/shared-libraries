@@ -59,6 +59,17 @@ QRect QtUtil::desktopGeometry( QWidget* widget )
 }
 
 //____________________________________________________________
+void QtUtil::setWidgetGeometry( QWidget* widget, const QRect& geometry )
+{
+
+    Debug::Throw( QStringLiteral("QtUtil::setWidgetGeometry.\n") );
+    if( !widget ) return;
+
+    widget->resize( geometry.size() );
+    moveWidget( widget, geometry.topLeft() );
+}
+
+//____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )
 {
 

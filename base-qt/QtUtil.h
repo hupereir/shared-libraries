@@ -41,33 +41,36 @@ class BASE_QT_EXPORT QtUtil
     template<class T> 
         inline static void setMargin(T* object, int margin )
     { object->setContentsMargins( margin, margin, margin, margin ); }
+
+    //* move menu to position taking proper care of the screen borders
+    static void setWidgetGeometry( QWidget*, const QRect& );
    
     //* move menu to position taking proper care of the screen borders
-    static void moveWidget( QWidget* widget, QPoint position );
+    static void moveWidget( QWidget*, QPoint );
 
     //* center widget on pointer
-    static QPoint centerOnPointer( QSize size );
+    static QPoint centerOnPointer( QSize );
 
     //* return topleft point so that size is centered on widget
-    static QPoint centerOnWidget( QSize size, QWidget* parent );
+    static QPoint centerOnWidget( QSize, QWidget* );
 
     //* return topleft point so that size is centered on pointer
-    static QPoint centerOnDesktop( QSize size );
+    static QPoint centerOnDesktop( QSize );
 
     //* center widget on pointer
-    static QWidget* centerOnPointer( QWidget* widget );
+    static QWidget* centerOnPointer( QWidget* );
 
     //* center widget on parent top level widget
-    static QWidget* centerOnParent( QWidget* widget );
+    static QWidget* centerOnParent( QWidget* );
 
     //* center widget on parent top level widget
-    static QWidget* centerOnWidget( QWidget* widget, QWidget* parent );
+    static QWidget* centerOnWidget( QWidget*, QWidget* );
 
     //* center widget on desktop widget
-    static QWidget* centerOnDesktop( QWidget* widget );
+    static QWidget* centerOnDesktop( QWidget* );
 
     //* uniconify a top level widget
-    static QWidget* uniconify( QWidget* widget );
+    static QWidget* uniconify( QWidget* );
 
     //* title font point size
     static int titleFontPointSize( const QFont& );
@@ -76,14 +79,11 @@ class BASE_QT_EXPORT QtUtil
     static QFont titleFont( QFont );
 
         //* light text color
-    static QColor lightTextColor( const QPalette& palette,
-        QPalette::ColorRole role )
+    static QColor lightTextColor( const QPalette& palette, QPalette::ColorRole role )
     { return lightTextColor( palette.color( role ) ); }
 
     //* light text color
-    static QColor lightTextColor( const QPalette& palette,
-        QPalette::ColorGroup group = QPalette::Normal,
-        QPalette::ColorRole role = QPalette::WindowText )
+    static QColor lightTextColor( const QPalette& palette, QPalette::ColorGroup group = QPalette::Normal, QPalette::ColorRole role = QPalette::WindowText )
     { return lightTextColor( palette.color( group, role ) ); }
 
     //* light text color
