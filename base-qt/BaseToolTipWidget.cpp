@@ -167,7 +167,7 @@ void BaseToolTipWidget::paintEvent( QPaintEvent* event )
 
     QStyleOptionFrame opt;
     opt.initFrom(this);
-    
+
     style()->drawPrimitive(QStyle::PE_PanelTipLabel, &opt, &painter, this );
     QWidget::paintEvent( event );
 }
@@ -251,8 +251,9 @@ void BaseToolTipWidget::_adjustPosition()
 
     }
 
-    move( QPoint( left, top ) );
-
+    const QPoint position( left, top );
+    Debug::Throw() << "BaseToolTipWidget - position: " << position.x() << ", " << position.y() << Qt::endl;
+    move( position );
 }
 
 //_____________________________________________
