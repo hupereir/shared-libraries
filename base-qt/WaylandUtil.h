@@ -53,7 +53,12 @@ class BASE_QT_EXPORT WaylandUtil: private Base::NonCopyable<WaylandUtil>
     //* hide widget from taskbar
     static void toggleHideWidgetFromTaskbar( QWidget*, bool );
     
-    
+    //* hide widget from taskbar
+    static void toggleShowWidgetOnAllDesktops( QWidget*, bool );
+
+    //* stay on top
+    static void toggleWidgetStaysOnTop( QWidget*, bool );
+
     //@}
     
     private:

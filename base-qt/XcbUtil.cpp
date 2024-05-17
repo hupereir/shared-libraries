@@ -253,6 +253,69 @@ bool XcbUtil::isX11()
 
 }
 
+
+//____________________________________________________________
+void XcbUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
+{
+    // check that widget is top level
+    if( w->parentWidget() ) return;
+
+    #if WITH_XCB
+    if( isX11() )
+    {
+        // TODO: move to XcbUtil
+        if( get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_SKIP_TASKBAR ) ) get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_SKIP_TASKBAR, value );
+        if( get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_SKIP_PAGER ) ) get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_SKIP_PAGER, value );
+    }
+    #endif    
+}
+ 
+//____________________________________________________________
+void XcbUtil::toggleShowWidgetOnAllDesktops( QWidget* w, bool value )
+{
+    // check that widget is top level
+    if( w->parentWidget() ) return;
+
+    #if WITH_XCB
+    if( isX11() )
+    {
+        // TODO: move to XcbUtil
+        if( get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_STICKY ) )
+        {
+            // change property depending on state
+            get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_STICKY, value);
+            
+        } else if( get().isSupported( XcbDefines::AtomId::_NET_WM_DESKTOP ) ) {
+            
+            if( value ) get().changeCardinal( w, XcbDefines::AtomId::_NET_WM_DESKTOP, XcbDefines::ALL_DESKTOPS );
+            else if( get().isSupported( XcbDefines::AtomId::_NET_CURRENT_DESKTOP ) ) 
+            {
+                auto desktop = get().cardinal( get().appRootWindow(), XcbDefines::AtomId::_NET_CURRENT_DESKTOP );
+                get().changeCardinal( w, XcbDefines::AtomId::_NET_WM_DESKTOP, desktop );
+            }
+        }
+    }
+    #endif
+}
+
+//____________________________________________________________
+void XcbUtil::toggleWidgetStaysOnTop( QWidget* w, bool value )
+{
+    // check that widget is top level
+    if( w->parentWidget() ) return;
+
+    #if WITH_XCB
+    if( isX11() )
+    {
+        // change property
+        // TODO: move to XcbUtil
+        if( get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_STAYS_ON_TOP ) ) get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_STAYS_ON_TOP, value );
+        if( get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_ABOVE ) ) get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_ABOVE, value );
+        return;
+    }
+    #endif
+}
+
 //________________________________________________________________________
 int XcbUtil::defaultScreenNumber() const
 {

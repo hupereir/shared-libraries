@@ -50,7 +50,13 @@ class BASE_QT_EXPORT QtUtil
 
     //* hide widget from taskbar
     static void toggleHideWidgetFromTaskbar( QWidget*, bool );
+
+    //* hide widget from taskbar
+    static void toggleShowWidgetOnAllDesktops( QWidget*, bool );
     
+    //* stay on top
+    static void toggleWidgetStaysOnTop( QWidget*, bool );
+
     //* center widget on pointer
     static QPoint centerOnPointer( QSize );
 

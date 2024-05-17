@@ -48,6 +48,12 @@ class WaylandUtil::Private
     //* hide from taskbar
     void toggleHideWidgetFromTaskbar( QWidget*, bool );
 
+    //* show on all desktops
+    void toggleShowWidgetOnAllDesktops( QWidget*, bool );
+
+    //* stay on top
+    void toggleWidgetStaysOnTop( QWidget*, bool );
+
     private:
     
     #if WITH_KWAYLAND
@@ -135,10 +141,8 @@ KWayland::Client::PlasmaShellSurface* WaylandUtil::Private::_getSurface( QWidget
     if (auto surface = Surface::fromWindow(w->windowHandle())) 
     {
         auto shell_surface = shell->createSurface(surface, w);
-//         shell_surface->setSkipTaskbar(true);
-//         shell_surface->setSkipSwitcher(true);       
-//         shell_surface->setRole( PlasmaShellSurface::Role::Panel );
-//         shell_surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::AlwaysVisible );
+        shell_surface->setRole( PlasmaShellSurface::Role::Normal );
+        shell_surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::WindowsCanCover );
         m_plasmaSurfaceMap.insert(w, shell_surface);
         QObject::connect( w, &QObject::destroyed, [this,w](){ 
             delete m_plasmaSurfaceMap[w];
@@ -175,6 +179,36 @@ void WaylandUtil::Private::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
     }
     #endif
 }
+
+//________________________________________________________________________
+void WaylandUtil::Private::toggleShowWidgetOnAllDesktops( QWidget* w, bool value )
+{    
+    // get surface
+    #if WITH_KWAYLAND
+    using namespace KWayland::Client;
+    if( const auto surface = _getSurface( w ) )
+    { 
+        if( value ) surface->setRole( PlasmaShellSurface::Role::Panel );
+        else surface->setRole( PlasmaShellSurface::Role::Normal );
+    }
+    #endif
+}
+
+//________________________________________________________________________
+void WaylandUtil::Private::toggleWidgetStaysOnTop( QWidget* w, bool value )
+{    
+    // get surface
+    #if WITH_KWAYLAND
+    using namespace KWayland::Client;
+    if( const auto surface = _getSurface( w ) )
+    { 
+        Debug::Throw(0) << "WaylandUtil::Private::toggleWidgetStaysOnTop - value: " << value << Qt::endl;
+        if( value ) surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::AlwaysVisible );
+        else surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::WindowsCanCover );
+    }
+    #endif
+}
+
 //________________________________________________________________________
 WaylandUtil& WaylandUtil::get()
 {
@@ -198,3 +232,11 @@ void WaylandUtil::moveWidget( QWidget* w, const QPoint& position )
 //________________________________________________________________________
 void WaylandUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
 { get().d->toggleHideWidgetFromTaskbar( w, value ); }
+
+//________________________________________________________________________
+void WaylandUtil::toggleShowWidgetOnAllDesktops( QWidget* w, bool value )
+{ get().d->toggleShowWidgetOnAllDesktops( w, value ); }
+
+//________________________________________________________________________
+void WaylandUtil::toggleWidgetStaysOnTop( QWidget* w, bool value )
+{ get().d->toggleWidgetStaysOnTop( w, value ); }

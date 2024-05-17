@@ -60,6 +60,15 @@ class BASE_QT_EXPORT XcbUtil: private XcbDefines, private Base::NonCopyable<XcbU
     //* true if platform is X11
     static bool isX11();
 
+    //* hide widget from taskbar
+    static void toggleHideWidgetFromTaskbar( QWidget*, bool );
+
+    //* hide widget from taskbar
+    static void toggleShowWidgetOnAllDesktops( QWidget*, bool );
+    
+    //* stay on top
+    static void toggleWidgetStaysOnTop( QWidget*, bool );
+
     //* connection
     template <typename T> T* connection() const;
 

@@ -96,13 +96,17 @@ void QtUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
     #if WITH_XCB
     if( XcbUtil::isX11() )
     {
-        if(  XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_SKIP_TASKBAR ) ) XcbUtil::get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_SKIP_TASKBAR, value );
-        if(  XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_SKIP_PAGER ) ) XcbUtil::get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_SKIP_PAGER, value );
+        XcbUtil::toggleHideWidgetFromTaskbar( w, value );
+        return;
     }
     #endif
 
     #if WITH_KWAYLAND
-    if( WaylandUtil::isWayland() ) WaylandUtil::toggleHideWidgetFromTaskbar( w, value );
+    if( WaylandUtil::isWayland() ) 
+    {
+        WaylandUtil::toggleHideWidgetFromTaskbar( w, value );
+        return;
+    }
     #endif
     
     #if defined(Q_OS_WIN)
@@ -110,7 +114,68 @@ void QtUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
     #endif
     
 }
+ 
+//____________________________________________________________
+void QtUtil::toggleShowWidgetOnAllDesktops( QWidget* w, bool value )
+{
+    // check that widget is top level
+    if( w->parentWidget() ) return;
+
+    #if WITH_XCB
+    if( XcbUtil::isX11() )
+    {
+        XcbUtil::toggleShowWidgetOnAllDesktops( w, value );
+        return;
+    }
+    #endif
     
+    #if WITH_KWAYLAND
+    if( WaylandUtil::isWayland() ) 
+    {
+        WaylandUtil::toggleShowWidgetOnAllDesktops( w, value );
+        return;
+    }
+    #endif
+
+}
+
+//____________________________________________________________
+void QtUtil::toggleWidgetStaysOnTop( QWidget* w, bool value )
+{
+    // check that widget is top level
+    if( w->parentWidget() ) return;
+
+    #if WITH_XCB
+    if( XcbUtil::isX11() )
+    {
+        XcbUtil::toggleWidgetStaysOnTop( w, value );
+        return;
+    }
+    #endif
+
+    #if WITH_KWAYLAND
+    if( WaylandUtil::isWayland() )
+    {
+        WaylandUtil::toggleWidgetStaysOnTop( w, value );
+        return;
+    }
+    #endif
+   
+    // try Qt API
+    const bool visible( !w->isHidden() );
+    if( visible )
+    {
+        w->hide();
+        qApp->processEvents();
+    }
+
+    // Qt implementation
+    if( value ) w->setWindowFlags( w->windowFlags() | Qt::WindowStaysOnTopHint );
+    else w->setWindowFlags( w->windowFlags() & ~Qt::WindowStaysOnTopHint );
+
+    if( visible ) w->show();
+}
+
 //____________________________________________________________
 QPoint QtUtil::centerOnPointer( QSize size )
 {
