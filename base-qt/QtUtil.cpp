@@ -82,8 +82,10 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
 
     #if WITH_KWAYLAND
     if( WaylandUtil::isWayland() ) 
-    { WaylandUtil::moveWidget(widget, position); }
-    return;
+    {
+        WaylandUtil::moveWidget(widget, position); 
+        return;
+    }
     #endif
 
     // default implementation
