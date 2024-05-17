@@ -49,6 +49,9 @@ class BASE_QT_EXPORT WaylandUtil: private Base::NonCopyable<WaylandUtil>
 
     //* move a top level widget to a given position
     static void moveWidget( QWidget*, const QPoint& );
+
+    //* map a position to global coordinates
+    static QPoint mapToGlobal( QWidget*, const QPoint& );
     
     //* hide widget from taskbar
     static void toggleHideWidgetFromTaskbar( QWidget*, bool );

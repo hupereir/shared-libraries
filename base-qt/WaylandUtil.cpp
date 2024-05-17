@@ -45,6 +45,9 @@ class WaylandUtil::Private
     //* move a top level widget to a given position
     void moveWidget( QWidget*, const QPoint& );
    
+    //* map to global coordinates
+    QPoint mapToGlobal( QWidget*, const QPoint& );
+
     //* hide from taskbar
     void toggleHideWidgetFromTaskbar( QWidget*, bool );
 
@@ -55,21 +58,40 @@ class WaylandUtil::Private
     void toggleWidgetStaysOnTop( QWidget*, bool );
 
     private:
+      
+    //* store relevant wayland information for a given widget
+    class WidgetInformation
+    {
+        public:
+        
+        //* initialize wayland
+        void initWayland( QWidget* );
+        
+        //* global position
+        QPoint m_position;
+        
+        #if WITH_KWAYLAND
+        KWayland::Client::PlasmaShell* m_plasmaShell = nullptr;
+        KWayland::Client::PlasmaShellSurface* m_plasmaShellSurface = nullptr;
+        #endif
+        
+    };
+
+    //* get widget information for a given widget
+    WidgetInformation& _getWidgetInformation( QWidget* );
     
     #if WITH_KWAYLAND
     
-    // return shell associated to a given widget
+    //* return shell associated to a given widget
     KWayland::Client::PlasmaShell* _getShell( QWidget* );
     
-    // return shell surface associated to a given widget
+    //* return shell surface associated to a given widget
     KWayland::Client::PlasmaShellSurface* _getSurface( QWidget* );
     
-    // map widget to shell
-    QMap<QWidget*, KWayland::Client::PlasmaShell*> m_plasmaShellMap;
-
-    // map widget to surface
-    QMap<QWidget*, KWayland::Client::PlasmaShellSurface*> m_plasmaSurfaceMap;
     #endif
+  
+    //* map widget to widget information
+    QMap<QWidget*, WidgetInformation> m_widgetInformationMap;
     
 };
 
@@ -80,102 +102,99 @@ WaylandUtil::Private::Private()
     m_isWayland = platformName.startsWith(QLatin1String("wayland"), Qt::CaseInsensitive);
 }
 
-#if WITH_KWAYLAND
 //________________________________________________________________________
-KWayland::Client::PlasmaShell* WaylandUtil::Private::_getShell( QWidget* w )
+WaylandUtil::Private::WidgetInformation& WaylandUtil::Private::_getWidgetInformation( QWidget* w )
 {
-    if( !m_isWayland ) return nullptr;
-    
-    const auto iter = m_plasmaShellMap.find(w);
-    if( iter != m_plasmaShellMap.end() )
-    { return iter.value(); }
-    
-    using namespace KWayland::Client;
-    
-    auto connection = ConnectionThread::fromApplication(w);
-    if (!connection) return nullptr;
-
-    auto registry = new Registry(w);
-    registry->create(connection);
-
-    KWayland::Client::PlasmaShell* shell;
-    
-    QObject::connect(registry, &Registry::interfacesAnnounced, w, [&shell, registry, w] 
+    auto iter = m_widgetInformationMap.find( w );
+    if( iter == m_widgetInformationMap.end() ) 
     {
-        const auto interface = registry->interface(Registry::Interface::PlasmaShell);
-        if (interface.name != 0) 
-        { shell = registry->createPlasmaShell(interface.name, interface.version, w); }
-    });
-
-    registry->setup();
-    connection->roundtrip();
-    
-    if( shell ) 
-    { 
-        m_plasmaShellMap.insert( w, shell ); 
-        QObject::connect( w, &QObject::destroyed, [this,w]()
-        {
-            delete m_plasmaShellMap[w];
-            m_plasmaShellMap.remove( w ); 
-        } );
+        iter = m_widgetInformationMap.insert( w, WidgetInformation() );
+        iter.value().initWayland(w);
+        QObject::connect( w, &QObject::destroyed, [this,w]() { m_widgetInformationMap.remove( w ); } );
     }
     
-    return shell;
-    
+    return iter.value();
 }
 
 //________________________________________________________________________
-KWayland::Client::PlasmaShellSurface* WaylandUtil::Private::_getSurface( QWidget* w )
+void WaylandUtil::Private::WidgetInformation::initWayland( QWidget* w )
 {
-    if( !m_isWayland ) return nullptr;
-    
-    // check if surface already exists
-    const auto iter = m_plasmaSurfaceMap.find(w);
-    if( iter != m_plasmaSurfaceMap.end() )
-    { return iter.value(); }
-    
-    auto shell = _getShell( w );
-    if( !shell ) return nullptr;
+    #if WITH_KWAYLAND
 
-    using namespace KWayland::Client;
-    if (auto surface = Surface::fromWindow(w->windowHandle())) 
+    // initialize shell
+    if( !m_plasmaShell )
     {
-        auto shell_surface = shell->createSurface(surface, w);
-        shell_surface->setRole( PlasmaShellSurface::Role::Normal );
-        shell_surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::WindowsCanCover );
-        m_plasmaSurfaceMap.insert(w, shell_surface);
-        QObject::connect( w, &QObject::destroyed, [this,w](){ 
-            delete m_plasmaSurfaceMap[w];
-            m_plasmaSurfaceMap.remove( w ); 
-        } );
+        using namespace KWayland::Client;
         
-        return shell_surface;
-    } else { 
-        return nullptr;
-    }    
-}
+        // get connection and check
+        auto connection = ConnectionThread::fromApplication(w);
+        if (!connection) return;
+ 
+        // create registry
+        auto registry = new Registry(w);
+        registry->create(connection);
+   
+        QObject::connect(registry, &Registry::interfacesAnnounced, w, [this, registry, w] 
+        {
+            const auto interface = registry->interface(Registry::Interface::PlasmaShell);
+            if (interface.name != 0) 
+            { m_plasmaShell = registry->createPlasmaShell(interface.name, interface.version, w); }
+        });
+ 
+        registry->setup();
+        connection->roundtrip();
+        if( m_plasmaShell )
+        { QObject::connect( w, &QObject::destroyed, [this]() { delete m_plasmaShell; } ); }
 
-#endif
+    }
+    
+    // initialize shell surface
+    if( !m_plasmaShellSurface && m_plasmaShell )
+    {
+        using namespace KWayland::Client;
+        if (auto surface = Surface::fromWindow(w->windowHandle())) 
+        {
+            m_plasmaShellSurface = m_plasmaShell->createSurface(surface, w);
+            m_plasmaShellSurface->setRole( PlasmaShellSurface::Role::Normal );
+            m_plasmaShellSurface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::WindowsCanCover );
+            QObject::connect( w, &QObject::destroyed, [this]() { delete m_plasmaShellSurface; } );
+        }
+    }
+    
+    #endif
+}
 
 //________________________________________________________________________
 void WaylandUtil::Private::moveWidget( QWidget* w, const QPoint& position )
 {    
-    // get surface
-    #if WITH_KWAYLAND
-    if( const auto surface = _getSurface( w ) )
-    { surface->setPosition( position ); }
+    if( !isWayland() ) return;
+    
+    #if WITH_KWAYLAND        
+    auto&& winfo = _getWidgetInformation(w);
+    winfo.m_position = position;
+    if( winfo.m_plasmaShellSurface ) 
+    { winfo.m_plasmaShellSurface->setPosition( position ); }
     #endif
+}
+
+//________________________________________________________________________
+QPoint WaylandUtil::Private::mapToGlobal( QWidget* w, const QPoint& position )
+{    
+    if( isWayland() ) return position + _getWidgetInformation(w).m_position;
+    else return position;
 }
 
 //________________________________________________________________________
 void WaylandUtil::Private::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
 {    
-    // get surface
+    if( !isWayland() ) return;
+
     #if WITH_KWAYLAND
-    if( const auto surface = _getSurface( w ) )
+    auto&& winfo = _getWidgetInformation(w);
+    if( winfo.m_plasmaShellSurface ) 
     { 
-        surface->setSkipTaskbar(value);
-        surface->setSkipSwitcher(value);       
+        winfo.m_plasmaShellSurface->setSkipTaskbar(value);
+        winfo.m_plasmaShellSurface->setSkipSwitcher(value);       
     }
     #endif
 }
@@ -186,10 +205,11 @@ void WaylandUtil::Private::toggleShowWidgetOnAllDesktops( QWidget* w, bool value
     // get surface
     #if WITH_KWAYLAND
     using namespace KWayland::Client;
-    if( const auto surface = _getSurface( w ) )
+    auto&& winfo = _getWidgetInformation(w);
+    if( winfo.m_plasmaShellSurface ) 
     { 
-        if( value ) surface->setRole( PlasmaShellSurface::Role::Panel );
-        else surface->setRole( PlasmaShellSurface::Role::Normal );
+        if( value ) winfo.m_plasmaShellSurface->setRole( PlasmaShellSurface::Role::Panel );
+        else winfo.m_plasmaShellSurface->setRole( PlasmaShellSurface::Role::Normal );
     }
     #endif
 }
@@ -200,11 +220,11 @@ void WaylandUtil::Private::toggleWidgetStaysOnTop( QWidget* w, bool value )
     // get surface
     #if WITH_KWAYLAND
     using namespace KWayland::Client;
-    if( const auto surface = _getSurface( w ) )
+    auto&& winfo = _getWidgetInformation(w);
+    if( winfo.m_plasmaShellSurface ) 
     { 
-        Debug::Throw(0) << "WaylandUtil::Private::toggleWidgetStaysOnTop - value: " << value << Qt::endl;
-        if( value ) surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::AlwaysVisible );
-        else surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::WindowsCanCover );
+        if( value ) winfo.m_plasmaShellSurface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::AlwaysVisible );
+        else winfo.m_plasmaShellSurface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::WindowsCanCover );
     }
     #endif
 }
@@ -228,6 +248,10 @@ bool WaylandUtil::isWayland()
 //________________________________________________________________________
 void WaylandUtil::moveWidget( QWidget* w, const QPoint& position )
 { get().d->moveWidget( w, position ); }
+
+//________________________________________________________________________
+QPoint WaylandUtil::mapToGlobal( QWidget* w, const QPoint& position )
+{ return get().d->mapToGlobal( w, position ); }
 
 //________________________________________________________________________
 void WaylandUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
