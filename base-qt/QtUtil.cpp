@@ -74,19 +74,29 @@ void QtUtil::setWidgetGeometry( QWidget* widget, const QRect& geometry )
 //____________________________________________________________
 void QtUtil::moveWidget( QWidget* widget, QPoint position )
 {
-
     Debug::Throw( QStringLiteral("QtUtil::moveWidget.\n") );
     if( !widget ) return;
 
     const auto geometry( desktopGeometry( widget ) );
     bindToGeometry( position, widget->size(), geometry );
- 
-    widget->move( position );
+
+    #if WITH_KWAYLAND
     if( WaylandUtil::isWayland() ) 
     { WaylandUtil::moveWidget(widget, position); }
-    
+    return;
+    #endif
+
+    // default implementation
+    widget->move( position );        
 }
 
+//____________________________________________________________
+QPoint QtUtil::mapToGlobal( QWidget* widget, const QPoint& position )
+{
+    Debug::Throw( QStringLiteral("QtUtil::mapToGlobal.\n") );   
+    return widget->mapToGlobal(position);
+}
+    
 //____________________________________________________________
 void QtUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
 {
