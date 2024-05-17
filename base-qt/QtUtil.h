@@ -48,6 +48,9 @@ class BASE_QT_EXPORT QtUtil
     //* move menu to position taking proper care of the screen borders
     static void moveWidget( QWidget*, QPoint );
 
+    //* hide widget from taskbar
+    static void toggleHideWidgetFromTaskbar( QWidget*, bool );
+    
     //* center widget on pointer
     static QPoint centerOnPointer( QSize );
 

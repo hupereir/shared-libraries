@@ -42,15 +42,12 @@ class WaylandUtil::Private
     //* true if running wayland
     bool m_isWayland = false;
 
-//     //* inialize wayland for a given widdget
-//     void initWayland( QWidget* );
-//     
-//     //* initialize wayland surface for a given widget
-//     void initWaylandSurface( QWidget* );
- 
     //* move a top level widget to a given position
     void moveWidget( QWidget*, const QPoint& );
    
+    //* hide from taskbar
+    void toggleHideWidgetFromTaskbar( QWidget*, bool );
+
     private:
     
     #if WITH_KWAYLAND
@@ -167,6 +164,18 @@ void WaylandUtil::Private::moveWidget( QWidget* w, const QPoint& position )
 }
 
 //________________________________________________________________________
+void WaylandUtil::Private::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
+{    
+    // get surface
+    #if WITH_KWAYLAND
+    if( const auto surface = _getSurface( w ) )
+    { 
+        surface->setSkipTaskbar(value);
+        surface->setSkipSwitcher(value);       
+    }
+    #endif
+}
+//________________________________________________________________________
 WaylandUtil& WaylandUtil::get()
 {
     static WaylandUtil singleton;
@@ -186,3 +195,6 @@ bool WaylandUtil::isWayland()
 void WaylandUtil::moveWidget( QWidget* w, const QPoint& position )
 { get().d->moveWidget( w, position ); }
 
+//________________________________________________________________________
+void WaylandUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
+{ get().d->toggleHideWidgetFromTaskbar( w, value ); }

@@ -21,7 +21,9 @@
 #include "Color.h"
 #include "Debug.h"
 #include "Util.h"
+#include "XcbUtil.h"
 #include "WaylandUtil.h"
+#include "WinUtil.h"
 
 #include <QApplication>
 #include <QCursor>
@@ -85,6 +87,30 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
     
 }
 
+//____________________________________________________________
+void QtUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
+{
+    // check that widget is top level
+    if( w->parentWidget() ) return;
+
+    #if WITH_XCB
+    if( XcbUtil::isX11() )
+    {
+        if(  XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_SKIP_TASKBAR ) ) XcbUtil::get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_SKIP_TASKBAR, value );
+        if(  XcbUtil::get().isSupported( XcbDefines::AtomId::_NET_WM_STATE_SKIP_PAGER ) ) XcbUtil::get().changeState( w, XcbDefines::AtomId::_NET_WM_STATE_SKIP_PAGER, value );
+    }
+    #endif
+
+    #if WITH_KWAYLAND
+    if( WaylandUtil::isWayland() ) WaylandUtil::toggleHideWidgetFromTaskbar( w, value );
+    #endif
+    
+    #if defined(Q_OS_WIN)
+    WinUtil( w ).toggleHideFromTaskBar( value );
+    #endif
+    
+}
+    
 //____________________________________________________________
 QPoint QtUtil::centerOnPointer( QSize size )
 {
