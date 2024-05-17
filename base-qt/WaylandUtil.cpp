@@ -108,7 +108,14 @@ KWayland::Client::PlasmaShell* WaylandUtil::Private::_getShell( QWidget* w )
     connection->roundtrip();
     
     if( shell ) 
-    { m_plasmaShellMap.insert( w, shell ); }
+    { 
+        m_plasmaShellMap.insert( w, shell ); 
+        QObject::connect( w, &QObject::destroyed, [this,w]()
+        {
+            delete m_plasmaShellMap[w];
+            m_plasmaShellMap.remove( w ); 
+        } );
+    }
     
     return shell;
     
@@ -136,6 +143,11 @@ KWayland::Client::PlasmaShellSurface* WaylandUtil::Private::_getSurface( QWidget
 //         shell_surface->setRole( PlasmaShellSurface::Role::Panel );
 //         shell_surface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::AlwaysVisible );
         m_plasmaSurfaceMap.insert(w, shell_surface);
+        QObject::connect( w, &QObject::destroyed, [this,w](){ 
+            delete m_plasmaSurfaceMap[w];
+            m_plasmaSurfaceMap.remove( w ); 
+        } );
+        
         return shell_surface;
     } else { 
         return nullptr;
