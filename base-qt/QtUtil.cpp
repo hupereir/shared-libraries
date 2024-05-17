@@ -81,24 +81,29 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
     bindToGeometry( position, widget->size(), geometry );
 
     #if WITH_KWAYLAND
-    if( WaylandUtil::isWayland() ) 
+    if( WaylandUtil::isWayland() )
     {
-        WaylandUtil::moveWidget(widget, position); 
+        WaylandUtil::moveWidget(widget, position);
         return;
     }
     #endif
 
     // default implementation
-    widget->move( position );        
+    widget->move( position );
 }
 
 //____________________________________________________________
-QPoint QtUtil::mapToGlobal( QWidget* widget, const QPoint& position )
+QPoint QtUtil::mapToGlobal( QWidget* w, const QPoint& position )
 {
-    Debug::Throw( QStringLiteral("QtUtil::mapToGlobal.\n") );   
-    return widget->mapToGlobal(position);
+    Debug::Throw( QStringLiteral("QtUtil::mapToGlobal.\n") );
+
+    #if WITH_KWAYLAND
+    if(WaylandUtil::isWayland()) return WaylandUtil::mapToGlobal( w, position);
+    #endif
+
+    return w->mapToGlobal(position);
 }
-    
+
 //____________________________________________________________
 void QtUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
 {
@@ -114,19 +119,19 @@ void QtUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
     #endif
 
     #if WITH_KWAYLAND
-    if( WaylandUtil::isWayland() ) 
+    if( WaylandUtil::isWayland() )
     {
         WaylandUtil::toggleHideWidgetFromTaskbar( w, value );
         return;
     }
     #endif
-    
+
     #if defined(Q_OS_WIN)
     WinUtil( w ).toggleHideFromTaskBar( value );
     #endif
-    
+
 }
- 
+
 //____________________________________________________________
 void QtUtil::toggleShowWidgetOnAllDesktops( QWidget* w, bool value )
 {
@@ -140,9 +145,9 @@ void QtUtil::toggleShowWidgetOnAllDesktops( QWidget* w, bool value )
         return;
     }
     #endif
-    
+
     #if WITH_KWAYLAND
-    if( WaylandUtil::isWayland() ) 
+    if( WaylandUtil::isWayland() )
     {
         WaylandUtil::toggleShowWidgetOnAllDesktops( w, value );
         return;
@@ -172,7 +177,7 @@ void QtUtil::toggleWidgetStaysOnTop( QWidget* w, bool value )
         return;
     }
     #endif
-   
+
     // try Qt API
     const bool visible( !w->isHidden() );
     if( visible )
