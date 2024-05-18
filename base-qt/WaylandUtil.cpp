@@ -45,9 +45,6 @@ class WaylandUtil::Private
     //* move a top level widget to a given position
     void moveWidget( QWidget*, const QPoint& );
    
-    //* map to global coordinates
-    QPoint mapToGlobal( QWidget*, const QPoint& );
-
     //* hide from taskbar
     void toggleHideWidgetFromTaskbar( QWidget*, bool );
 
@@ -178,13 +175,6 @@ void WaylandUtil::Private::moveWidget( QWidget* w, const QPoint& position )
 }
 
 //________________________________________________________________________
-QPoint WaylandUtil::Private::mapToGlobal( QWidget* w, const QPoint& position )
-{    
-    if( isWayland() ) return position + _getWidgetInformation(w).m_position;
-    else return position;
-}
-
-//________________________________________________________________________
 void WaylandUtil::Private::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
 {    
     if( !isWayland() ) return;
@@ -248,10 +238,6 @@ bool WaylandUtil::isWayland()
 //________________________________________________________________________
 void WaylandUtil::moveWidget( QWidget* w, const QPoint& position )
 { get().d->moveWidget( w, position ); }
-
-//________________________________________________________________________
-QPoint WaylandUtil::mapToGlobal( QWidget* w, const QPoint& position )
-{ return get().d->mapToGlobal( w, position ); }
 
 //________________________________________________________________________
 void WaylandUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )

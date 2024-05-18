@@ -93,18 +93,6 @@ void QtUtil::moveWidget( QWidget* widget, QPoint position )
 }
 
 //____________________________________________________________
-QPoint QtUtil::mapToGlobal( QWidget* w, const QPoint& position )
-{
-    Debug::Throw( QStringLiteral("QtUtil::mapToGlobal.\n") );
-
-    #if WITH_KWAYLAND
-    if(WaylandUtil::isWayland()) return WaylandUtil::mapToGlobal( w, position);
-    #endif
-
-    return w->mapToGlobal(position);
-}
-
-//____________________________________________________________
 void QtUtil::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
 {
     // check that widget is top level

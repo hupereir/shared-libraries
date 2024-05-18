@@ -48,9 +48,6 @@ class BASE_QT_EXPORT QtUtil
     //* move menu to position taking proper care of the screen borders
     static void moveWidget( QWidget*, QPoint );
 
-    //* map a position to global coordinates
-    static QPoint mapToGlobal( QWidget*, const QPoint& );
-    
     //* hide widget from taskbar
     static void toggleHideWidgetFromTaskbar( QWidget*, bool );
 

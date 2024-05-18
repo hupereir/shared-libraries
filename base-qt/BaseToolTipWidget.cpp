@@ -19,8 +19,10 @@
 
 #include "BaseToolTipWidget.h"
 #include "Debug.h"
+#include "IntegralType.h"
 #include "QtUtil.h"
 #include "Singleton.h"
+#include "WaylandUtil.h"
 #include "XmlOptions.h"
 
 #include <QApplication>
@@ -206,7 +208,10 @@ void BaseToolTipWidget::_adjustPosition()
 
     // desktop size
     const auto desktopGeometry( QtUtil::desktopGeometry( this ) );
-
+    
+    // checking desktop geometry is broken in wayland
+    const bool checkDesktopGeometry = !WaylandUtil::isWayland();
+    
     // set geometry
     int top(0);
     int left(0);
@@ -214,45 +219,51 @@ void BaseToolTipWidget::_adjustPosition()
     if( preferredPosition_ == Position::Top || preferredPosition_ == Position::Bottom )
     {
         left = followMouse_ ? QCursor::pos().x():rect_.left() + ( rect_.width() - size.width() )/2;
-        left = qMax( left, desktopGeometry.left() );
-        left = qMin( left, desktopGeometry.right() - size.width() );
-
+        if( checkDesktopGeometry )
+        {
+            left = qMax( left, desktopGeometry.left() );
+            left = qMin( left, desktopGeometry.right() - size.width() );
+        }
+        
         if( preferredPosition_ == Position::Bottom )
         {
 
             top = rect_.bottom() + margin;
-            if( top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
+            if( checkDesktopGeometry && top > desktopGeometry.bottom() - size.height() ) top = rect_.top() - margin - size.height();
 
         } else {
 
             top = rect_.top() - margin - size.height();
-            if( top < desktopGeometry.top() ) top = rect_.bottom() + margin;
+            if( checkDesktopGeometry && top < desktopGeometry.top() ) top = rect_.bottom() + margin;
 
         }
 
     } else {
 
         top = followMouse_ ? QCursor::pos().y():rect_.top() + ( rect_.height() - size.height() )/2;
-        top = qMax( top, desktopGeometry.top() );
-        top = qMin( top, desktopGeometry.bottom() - size.height() );
-
+        if( checkDesktopGeometry )
+        {
+            top = qMax( top, desktopGeometry.top() );
+            top = qMin( top, desktopGeometry.bottom() - size.height() );
+        }
+        
         if( preferredPosition_ == Position::Right )
         {
 
             left = rect_.right()+margin;
-            if( left > desktopGeometry.right() - size.width() ) left = rect_.left() - margin - size.width();
+            if( checkDesktopGeometry && left > desktopGeometry.right() - size.width() ) left = rect_.left() - margin - size.width();
 
         } else {
 
             left = rect_.left() - margin - size.width();
-            if( left < desktopGeometry.left() ) left = rect_.right()+margin;
+            if( checkDesktopGeometry && left < desktopGeometry.left() ) left = rect_.right()+margin;
 
         }
 
     }
 
     const QPoint position( left, top );
-    Debug::Throw() << "BaseToolTipWidget - position: " << position.x() << ", " << position.y() << Qt::endl;
+    Debug::Throw() << "BaseToolTipWidget::_adjustPosition - preferred: " << Base::toIntegralType( preferredPosition_ ) << " position: " << position.x() << "," << position.y() << Qt::endl;
     move( position );
 }
 
