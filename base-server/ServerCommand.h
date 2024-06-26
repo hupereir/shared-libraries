@@ -165,6 +165,13 @@ namespace Server
         friend BASE_SERVER_EXPORT QDataStream& operator << (QDataStream&, const ServerCommand& );
         friend BASE_SERVER_EXPORT QDataStream& operator >> (QDataStream&, ServerCommand& );
         //@}
+
+        //* streamer
+        friend BASE_EXPORT QTextStream& operator << (QTextStream& out, const ServerCommand& command )
+        {
+            out << command.commandName() << " " << command.arguments_;
+            return out;
+        }
     };
 
     using ::qHash;
