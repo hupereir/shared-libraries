@@ -27,9 +27,13 @@ template<class T, class U>
     inline bool operator != (const T& lhs, const U& rhs)
 { return !(lhs == rhs); }
 
-//* more than 
+//* more than
 /* for Qt6, this needs to be disabled for QFont::Tag */
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+template<class T, class U>
+#else
 template<class T, class U, typename = typename std::enable_if<!std::is_same<T,QFont::Tag>::value>::type>
+#endif
     inline bool operator > (const T& lhs, const U& rhs)
 { return rhs < lhs; }
 

@@ -167,7 +167,7 @@ namespace Server
         //@}
 
         //* streamer
-        friend BASE_EXPORT QTextStream& operator << (QTextStream& out, const ServerCommand& command )
+        friend QTextStream& operator << (QTextStream& out, const ServerCommand& command )
         {
             out << command.commandName() << " " << command.arguments_;
             return out;

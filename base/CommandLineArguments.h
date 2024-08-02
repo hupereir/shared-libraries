@@ -86,7 +86,7 @@ class BASE_EXPORT CommandLineArguments: private Base::Counter<CommandLineArgumen
     QStringList arguments_;
 
     //* streamer
-    friend BASE_EXPORT QTextStream& operator << (QTextStream& out, const CommandLineArguments& argument )
+    friend QTextStream& operator << (QTextStream& out, const CommandLineArguments& argument )
     {
         for( const auto& arg:argument.arguments_ )
         { out << arg << " "; }
