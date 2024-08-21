@@ -49,10 +49,10 @@ class BASE_QT_EXPORT WaylandUtil: private Base::NonCopyable<WaylandUtil>
 
     //* move a top level widget to a given position
     static void moveWidget( QWidget*, const QPoint& );
-    
+
     //* hide widget from taskbar
     static void toggleHideWidgetFromTaskbar( QWidget*, bool );
-    
+
     //* hide widget from taskbar
     static void toggleShowWidgetOnAllDesktops( QWidget*, bool );
 
@@ -60,7 +60,7 @@ class BASE_QT_EXPORT WaylandUtil: private Base::NonCopyable<WaylandUtil>
     static void toggleWidgetStaysOnTop( QWidget*, bool );
 
     //@}
-    
+
     private:
 
     //* constructor

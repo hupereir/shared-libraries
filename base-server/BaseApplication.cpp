@@ -70,11 +70,9 @@ bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
             messageBox->setStandardButtons( QMessageBox::Close );
 
         } else if( auto buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
-
             // insert separator
-            if( QGridLayout* gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
+            if( auto gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
             {
-
                 gridLayout->setVerticalSpacing( 5 );
 
                 // create separator
@@ -84,7 +82,6 @@ bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
                 gridLayout->addWidget( frame, 2, 0, 1, columnCount );
                 gridLayout->addWidget( buttonBox, 3, 0, 1, columnCount );
             }
-
         }
         break;
 

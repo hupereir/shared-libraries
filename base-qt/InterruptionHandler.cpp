@@ -26,10 +26,6 @@
 #include <cstring>
 
 //_____________________________________________________________
-InterruptionHandler::InterruptionHandler()
-{}
-
-//_____________________________________________________________
 InterruptionHandler& InterruptionHandler::get()
 {
     static  InterruptionHandler singleton;

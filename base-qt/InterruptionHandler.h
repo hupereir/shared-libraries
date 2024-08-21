@@ -41,7 +41,7 @@ class BASE_QT_EXPORT InterruptionHandler: private Base::NonCopyable<Interruption
     private:
 
     //* constructor
-    explicit InterruptionHandler();
+    explicit InterruptionHandler() = default;
 
     //* interruption handler
     static void _handleInterruption( int );
