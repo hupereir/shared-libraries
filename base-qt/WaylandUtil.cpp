@@ -162,6 +162,8 @@ void WaylandUtil::Private::WidgetInformation::initWayland( QWidget* w )
         }
     }
 
+    #else
+    Q_UNUSED(w)
     #endif
 }
 
@@ -175,6 +177,9 @@ void WaylandUtil::Private::moveWidget( QWidget* w, const QPoint& position )
     winfo.m_position = position;
     if( winfo.m_plasmaShellSurface )
     { winfo.m_plasmaShellSurface->setPosition( position ); }
+    #else
+    Q_UNUSED(w)
+    Q_UNUSED(position)
     #endif
 }
 
@@ -190,6 +195,9 @@ void WaylandUtil::Private::toggleHideWidgetFromTaskbar( QWidget* w, bool value )
         winfo.m_plasmaShellSurface->setSkipTaskbar(value);
         winfo.m_plasmaShellSurface->setSkipSwitcher(value);
     }
+    #else
+    Q_UNUSED(w)
+    Q_UNUSED(value)
     #endif
 }
 
@@ -205,6 +213,9 @@ void WaylandUtil::Private::toggleShowWidgetOnAllDesktops( QWidget* w, bool value
         if( value ) winfo.m_plasmaShellSurface->setRole( PlasmaShellSurface::Role::Panel );
         else winfo.m_plasmaShellSurface->setRole( PlasmaShellSurface::Role::Normal );
     }
+    #else
+    Q_UNUSED(w)
+    Q_UNUSED(value)
     #endif
 }
 
@@ -220,6 +231,9 @@ void WaylandUtil::Private::toggleWidgetStaysOnTop( QWidget* w, bool value )
         if( value ) winfo.m_plasmaShellSurface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::AlwaysVisible );
         else winfo.m_plasmaShellSurface->setPanelBehavior( PlasmaShellSurface::PanelBehavior::WindowsCanCover );
     }
+    #else
+    Q_UNUSED(w)
+    Q_UNUSED(value)
     #endif
 }
 
