@@ -121,7 +121,7 @@ void WinUtil::makeTransparent( double opacity ) const
     UpdateLayeredWindow( hwnd, nullptr,  nullptr,  nullptr, nullptr,  nullptr, 0, &blend, ULW_ALPHA);
 
     // repaint
-    // RedrawWindow(hwnd, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME | RDW_ALLCHILDREN);
+    RedrawWindow(hwnd, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME | RDW_ALLCHILDREN);
     #else
     Q_UNUSED( opacity );
     #endif
