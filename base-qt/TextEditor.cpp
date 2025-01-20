@@ -55,6 +55,7 @@
 #include <QProgressDialog>
 #include <QRegularExpression>
 #include <QTextBlock>
+#include <QTextDocumentFragment>
 #include <QTextStream>
 #include <QToolTip>
 
@@ -564,6 +565,9 @@ void TextEditor::installContextMenuActions( BaseContextMenu* menu, bool allActio
     menu->addAction( cutAction_ );
     menu->addAction( copyAction_ );
     menu->addAction( pasteAction_ );
+    if( acceptRichText() )
+    { menu->addAction( pasteUnformatedAction_ ); }
+
     menu->addAction( clearAction_ );
     menu->addSeparator();
 
@@ -733,6 +737,41 @@ void TextEditor::paste()
         boxSelection_.clear();
 
     } else BaseEditor::paste();
+
+}
+
+
+//________________________________________________
+void TextEditor::pasteUnformated()
+{
+
+    Debug::Throw( QStringLiteral("TextEditor::pasteUnformated.\n") );
+
+    // need to check for editability because apparently even if calling action is disabled,
+    // the shortcut still can be called
+    if( isReadOnly() ) return;
+
+    if( boxSelection_.state() == BoxSelection::State::Finished )
+    {
+
+        boxSelection_.fromClipboard( QClipboard::Clipboard );
+        boxSelection_.clear();
+
+    } else {
+
+        const auto md = QGuiApplication::clipboard()->mimeData(QClipboard::Clipboard);
+        if( md && md->hasText() )
+        {
+            const auto text = md->text();
+            if( !text.isNull() )
+            {
+                const auto fragment = QTextDocumentFragment::fromPlainText(text);
+                textCursor().insertFragment(fragment);
+                ensureCursorVisible();
+
+            }
+        }
+    }
 
 }
 
@@ -1809,6 +1848,11 @@ void TextEditor::_installActions()
 
     addAction( pasteAction_ = new StandardAction( StandardAction::Type::Paste, this ) );
     connect( pasteAction_, &QAction::triggered, this, &TextEditor::paste );
+
+    addAction( pasteUnformatedAction_ = new QAction( IconEngine::get( IconNames::Paste ), tr( "Paste Without Formatting" ), this ) );
+    connect( pasteUnformatedAction_, &QAction::triggered, this, &TextEditor::pasteUnformated );
+    pasteUnformatedAction_->setShortcut( Qt::SHIFT|Qt::CTRL|Qt::Key_V );
+    pasteUnformatedAction_->setShortcutContext( Qt::WidgetShortcut );
     _updatePasteAction();
 
     addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
@@ -2650,7 +2694,7 @@ void TextEditor::_updatePasteAction()
 
     Debug::Throw( QStringLiteral("TextEditor::_updatePasteAction.\n") );
     pasteAction_->setEnabled( !isReadOnly() );
-
+    pasteUnformatedAction_->setEnabled( !isReadOnly() );
 }
 
 //_________________________________________________

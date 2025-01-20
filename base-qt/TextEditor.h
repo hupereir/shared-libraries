@@ -339,6 +339,10 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     QAction& pasteAction() const
     { return *pasteAction_;  }
 
+    //* paste clipboard
+    QAction& pasteUnformatedAction() const
+    { return *pasteUnformatedAction_;  }
+
     //* select all
     QAction& selectAllAction() const
     { return *selectAllAction_; }
@@ -440,6 +444,9 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     //* paste
     virtual void paste();
 
+    //* paste
+    virtual void pasteUnformated();
+
     //* changes selection to uppercase
     virtual void upperCase();
 
@@ -533,9 +540,9 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     //* enter event
     #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     void enterEvent( QEvent* ) override;
-    #else 
+    #else
     void enterEvent( QEnterEvent* ) override;
-    #endif 
+    #endif
 
     //* mouse release event [overloaded]
     void mousePressEvent( QMouseEvent* ) override;
@@ -911,6 +918,9 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
 
     //* paste clipboard
     QAction* pasteAction_ = nullptr;
+
+    //* paste clipboard
+    QAction* pasteUnformatedAction_ = nullptr;
 
     //* clear document
     QAction* clearAction_ = nullptr;
