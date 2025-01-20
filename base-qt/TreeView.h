@@ -47,9 +47,6 @@ class BASE_QT_EXPORT TreeView: public QTreeView, private Base::Counter<TreeView>
     //* constructor
     explicit TreeView( QWidget* = nullptr );
 
-    //* destructor
-    ~TreeView() override;
-
     //*@name accessors
     //@{
 

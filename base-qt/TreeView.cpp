@@ -82,11 +82,7 @@ TreeView::TreeView( QWidget* parent ):
     // configuration
     connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &TreeView::_updateConfiguration );
     _updateConfiguration();
-
 }
-
-//______________________________________________________________________
-TreeView::~TreeView() = default;
 
 //______________________________________________________________________
 void TreeView::setItemMargin( int value )
