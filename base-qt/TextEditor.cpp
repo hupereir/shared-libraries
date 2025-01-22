@@ -1855,7 +1855,7 @@ void TextEditor::_installActions()
     pasteUnformatedAction_->setShortcutContext( Qt::WidgetShortcut );
     _updatePasteAction();
 
-    addAction( clearAction_ = new QAction( tr( "Clear" ), this ) );
+    addAction( clearAction_ = new QAction( IconEngine::get( IconNames::EditClear ), tr( "Clear" ), this ) );
     connect( clearAction_, &QAction::triggered, this, &TextEditor::clear );
 
     addAction( selectAllAction_ = new QAction( tr( "Select All" ), this ) );
