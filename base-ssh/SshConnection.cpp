@@ -154,6 +154,7 @@ namespace Ssh
 
         return true;
         #else
+	Q_UNUSED(forceRequestIdentity);
         return false;
         #endif
 

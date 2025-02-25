@@ -128,6 +128,8 @@ namespace Ssh
 
         #else
 
+	Q_UNUSED(data);
+	Q_UNUSED(maxSize);
         setErrorString( "invalid channel" );
         return -1;
 
@@ -138,7 +140,7 @@ namespace Ssh
     //_______________________________________________________________________
     void Socket::timerEvent( QTimerEvent* event )
     {
-
+ 
         // check timer id
         if( event->timerId() == timer_.timerId() )
         {

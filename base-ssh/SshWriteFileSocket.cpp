@@ -137,6 +137,8 @@ namespace Ssh
 
         #else
 
+	Q_UNUSED(data);
+	Q_UNUSED(maxSize);
         setErrorString( "invalid channel" );
         return -1;
 

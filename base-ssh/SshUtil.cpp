@@ -19,12 +19,12 @@
 
 #include "SshUtil.h"
 
-
 #if WITH_SSH
 #include <libssh/libssh.h>
 #include <libssh/sftp.h>
 #endif
 
+#include <QtGlobal>
 
 namespace Ssh
 {
@@ -38,6 +38,8 @@ namespace Ssh
             auto session( static_cast<ssh_session>(ptr) );
             ssh_disconnect( session );
             ssh_free( session );
+	    #else
+	    Q_UNUSED(ptr);
             #endif
         }
 
@@ -47,6 +49,8 @@ namespace Ssh
         {
             #if WITH_SSH
             ssh_set_blocking( static_cast<ssh_session>(session), true);
+	    #else
+	    Q_UNUSED(session);
             #endif
         }
 
@@ -65,6 +69,8 @@ namespace Ssh
             auto channel( static_cast<ssh_channel>(ptr) );
             if( ssh_channel_is_open( channel ) ) ssh_channel_close( channel );
             ssh_channel_free( channel );
+	    #else
+	    Q_UNUSED(ptr)
             #endif
         }
 
@@ -74,6 +80,8 @@ namespace Ssh
             #if WITH_SSH
             auto sftp = static_cast<sftp_session>( ptr );
             sftp_free( sftp );
+	    #else
+	    Q_UNUSED(ptr)
             #endif
         }
 
@@ -83,6 +91,8 @@ namespace Ssh
             #if WITH_SSH
             auto file = static_cast<sftp_file>( ptr );
             sftp_close( file );
+	    #else
+	    Q_UNUSED(ptr)
             #endif
         }
     }
