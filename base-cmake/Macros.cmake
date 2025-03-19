@@ -12,8 +12,8 @@ endmacro()
 
 ###################### setup compiler flags #########################
 macro(setup_compiler_flags)
-  
-  if(USE_QT6) 
+
+  if(USE_QT6)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
   elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
@@ -67,7 +67,8 @@ macro(add_win32_executable target version)
     if(USE_SHARED_LIBS)
       set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -static-libstdc++ -lpthread -s")
     else()
-      set_target_properties(${target} PROPERTIES LINK_FLAGS " -static-libgcc -static-libstdc++ -static -lpthread -s")
+      # set_target_properties(${target} PROPERTIES LINK_FLAGS " -static -static-libgcc -static-libstdc++ -lpthread -s")
+      set_target_properties(${target} PROPERTIES LINK_FLAGS "-static -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -s")
     endif()
   endif()
 
