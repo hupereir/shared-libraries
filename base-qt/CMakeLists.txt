@@ -231,7 +231,6 @@ set(base_qt_SOURCES
   XmlPathHistory.cpp
   XmlTextFormatBlock.cpp
   XmlTimeStamp.cpp
-  basePixmaps.qrc
 )
 
 set(base_qt_RESOURCES basePixmaps.qrc)
