@@ -43,7 +43,6 @@ namespace Svg
     //_________________________________________________
     QPalette SvgPlasmaInterface::themePalette() const
     {
-
         QPalette out;
 
         QSettings settings( themePaletteFileName_, QSettings::IniFormat );
@@ -106,8 +105,8 @@ namespace Svg
         if( configurationFiles.isEmpty() )
         {
             // add some files manually in case the above failed
-            configurationFiles.append( File( ".kde/share/config/plasmarc" ).addPath( Util::home() ) );
-            configurationFiles.append( File( ".kde4/share/config/plasmarc" ).addPath( Util::home() ) );
+            for( const auto& path: { ".kde/share/config/plasmarc", ".kde4/share/config/plasmarc", ".config/plasmarc" } )
+            { configurationFiles.append( File( path ).addPath( Util::home() ) ); }
         }
 
         // make sure fileSystemWatcher is valid
@@ -235,14 +234,15 @@ namespace Svg
 
         if( themePathList.empty() )
         {
-            // add local path
-            static const std::array<QString,2> localPath = {{ ".kde/share/apps/desktoptheme/", ".kde4/share/apps/desktoptheme/" }};
-            std::transform( localPath.begin(), localPath.end(), std::back_inserter( themePathList ),
-                [&theme]( const QString& pathName ) { return File( theme ).addPath( File( pathName ).addPath( Util::home() ) ); } );
+            // add known local paths
+            for( const auto& path: { ".local/share/apps/desktoptheme/", ".kde/share/apps/desktoptheme/", ".kde4/share/apps/desktoptheme/", } )
+            { themePathList.append(  File( theme ).addPath( File( path ).addPath( Util::home() ) ) ); }
+
+            // add known global paths
+            for( const auto& path: { "/usr/share/plasma/desktoptheme/" , "/usr/share/apps/desktoptheme/" } )
+            { themePathList.append(  File( theme ).addPath( File( path ) ) ); }
         }
 
-        // add local path
-        themePathList.append( File( theme ).addPath( File( "/usr/share/apps/desktoptheme/" ) ) );
         for( const auto& themePath:themePathList )
         {
             Debug::Throw() << "Svg::SvgPlasmaInterface::_setTheme - checking " << themePath << Qt::endl;
