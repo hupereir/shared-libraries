@@ -113,6 +113,8 @@ void BaseDialog::toggleSticky( bool state )
         const auto desktop = XcbUtil::get().cardinal( XcbUtil::get().appRootWindow(), XcbDefines::AtomId::_NET_CURRENT_DESKTOP );
         XcbUtil::get().changeCardinal( this, XcbDefines::AtomId::_NET_WM_DESKTOP, state ? XcbDefines::ALL_DESKTOPS:desktop );
     }
+    #else
+    Q_UNUSED(state)
     #endif
 }
 
