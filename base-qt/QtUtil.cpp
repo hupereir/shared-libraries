@@ -46,6 +46,12 @@ void bindToGeometry( QPoint& position, QSize size, QRect geometry )
 }
 
 //____________________________________________________________
+void QtUtil::initializeResources()
+{
+    Q_INIT_RESOURCE( basePixmaps );
+}
+
+//____________________________________________________________
 QRect QtUtil::desktopGeometry( QWidget* widget )
 {
 

@@ -38,13 +38,16 @@ class BASE_QT_EXPORT QtUtil
     static QRect desktopGeometry( QWidget* = nullptr );
 
     //* add margins to layouts
-    template<class T> 
+    template<class T>
         inline static void setMargin(T* object, int margin )
     { object->setContentsMargins( margin, margin, margin, margin ); }
 
+    //* initializes library resources
+    static void initializeResources();
+
     //* move menu to position taking proper care of the screen borders
     static void setWidgetGeometry( QWidget*, const QRect& );
-   
+
     //* move menu to position taking proper care of the screen borders
     static void moveWidget( QWidget*, QPoint );
 
@@ -53,7 +56,7 @@ class BASE_QT_EXPORT QtUtil
 
     //* hide widget from taskbar
     static void toggleShowWidgetOnAllDesktops( QWidget*, bool );
-    
+
     //* stay on top
     static void toggleWidgetStaysOnTop( QWidget*, bool );
 
