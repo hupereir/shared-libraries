@@ -24,7 +24,6 @@
 #include "CppUtil.h"
 #include "IconEngine.h"
 #include "Singleton.h"
-#include "WinUtil.h"
 #include "XcbUtil.h"
 #include "XmlOptions.h"
 
@@ -48,7 +47,7 @@ namespace Transparency
     {
 
         Debug::Throw( QStringLiteral("TransparentWidget::TransparentWidget.\n") );
-        
+
         /*
         disable all automatic background filling
         to optimize painting.
@@ -143,15 +142,8 @@ namespace Transparency
     {
 
         Debug::Throw( QStringLiteral("TransparentWidget::paintEvent.\n") );
-
-        #if defined(Q_OS_WIN)
-        _paintBackground( widgetPixmap_, event->rect() );
-        _paint( widgetPixmap_, event->rect() );
-        WinUtil( this ).update( widgetPixmap_ );
-        #else
         _paintBackground( *this, event->rect() );
         _paint( *this, event->rect() );
-        #endif
 
     }
 
@@ -223,7 +215,7 @@ namespace Transparency
 
         } else widgetPixmap_ = QPixmap();
         #endif
-        
+
         // update input shape
         if( testAttribute(Qt::WA_WState_Created) || internalWinId() )
         { _updateInputShape(); }
@@ -326,16 +318,16 @@ namespace Transparency
         if( !XcbUtil::isX11() ) return;
 
         // create data
-        blurRegion_ = region;        
+        blurRegion_ = region;
         using Vector = QVector<int32_t>;
         Vector data;
         for( const auto& r:region )
         {
-            data 
-                << devicePixelRatio_*r.x() 
+            data
+                << devicePixelRatio_*r.x()
                 << devicePixelRatio_*r.y()
-                << devicePixelRatio_*r.width() 
-                << devicePixelRatio_*r.height(); 
+                << devicePixelRatio_*r.width()
+                << devicePixelRatio_*r.height();
         }
 
         // get connection and atom
