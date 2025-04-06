@@ -106,29 +106,6 @@ WinUtil::WinUtil( QWidget*  )
 #endif
 
 //_______________________________________
-WinUtil::~WinUtil() = default;
-
-//_______________________________________
-void WinUtil::makeTransparent( double opacity ) const
-{
-    #if defined(Q_OS_WIN)
-    if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
-
-    auto hwnd = HWND( target_->winId());
-
-    // SetLayeredWindowAttributes(hwnd, 0, 255*opacity, LWA_ALPHA);
-    BLENDFUNCTION blend = { AC_SRC_OVER, 0, static_cast<BYTE>(opacity*255), AC_SRC_ALPHA };
-    UpdateLayeredWindow( hwnd, nullptr,  nullptr,  nullptr, nullptr,  nullptr, 0, &blend, ULW_ALPHA);
-
-    // repaint
-    RedrawWindow(hwnd, nullptr, nullptr, RDW_ERASE | RDW_INVALIDATE | RDW_FRAME | RDW_ALLCHILDREN);
-    #else
-    Q_UNUSED( opacity );
-    #endif
-
-}
-
-//_______________________________________
 void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 {
 
