@@ -106,6 +106,9 @@ WinUtil::WinUtil( QWidget*  )
 #endif
 
 //_______________________________________
+WinUtil::~WinUtil() = default;
+
+//_______________________________________
 void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 {
 

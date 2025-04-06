@@ -38,6 +38,9 @@ class BASE_QT_EXPORT WinUtil final
     //* constructor
     explicit WinUtil( QWidget* );
 
+    //* destructor
+    ~WinUtil();
+
     //* update layered widget using pixmap
     void update( const QPixmap&, double = 1.0 ) const;
 
