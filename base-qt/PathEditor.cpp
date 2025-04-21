@@ -166,8 +166,8 @@ namespace Private
         size.rheight() += 4*BorderWidth;
 
         // arrow width
-        const int arrowWidth( _arrowWidth() );
-        if( arrowWidth > 0 ) size.rwidth() += arrowWidth + 2*BorderWidth;
+        const int separatorWidth( _separatorWidth() );
+        if( separatorWidth > 0 ) size.rwidth() += separatorWidth + 2*BorderWidth;
 
         // update
         setMinimumSize( size );
@@ -250,11 +250,11 @@ namespace Private
 
         // render text
         auto textRect( rect().adjusted( 3*BorderWidth, 2*BorderWidth, -3*BorderWidth, -2*BorderWidth ) );
-        const auto arrowWidth( _arrowWidth() + 2*BorderWidth );
+        const auto separatorWidth( _separatorWidth() + 2*BorderWidth );
         if( !isLast_ )
         {
-            if( isRightToLeft ) textRect.adjust( arrowWidth, 0, 0, 0 );
-            else textRect.adjust( 0, 0, -arrowWidth, 0 );
+            if( isRightToLeft ) textRect.adjust( separatorWidth, 0, 0, 0 );
+            else textRect.adjust( 0, 0, -separatorWidth, 0 );
         }
 
         const auto text = isLast_ ?
@@ -266,14 +266,17 @@ namespace Private
         // render arrow
         if( !isLast_ )
         {
-            QStyleOption option;
-            option.initFrom(this);
+            painter->setPen( palette().color(QPalette::Text) );
+            const auto rect( this->rect() );
+
+            QStyleOptionFrame option;
+            option.initFrom( this );
             option.rect = isRightToLeft ?
-                QRect( 0, 0, arrowWidth, rect().height() ):
-                QRect( rect().right() - arrowWidth, 0, arrowWidth, rect().height() );
-            option.palette = palette();
-            option.state &= ~QStyle::State_MouseOver;
-            style()->drawPrimitive( isRightToLeft ? QStyle::PE_IndicatorArrowLeft:QStyle::PE_IndicatorArrowRight, &option, painter, this );
+                QRect( rect.topLeft(), QSize(1,rect.height() )):
+                QRect( rect.topRight(), QSize(1,rect.height() ));
+            option.frameShape = QFrame::VLine;
+
+            style()->drawControl(QStyle::CE_ShapedFrame, &option, painter, this );
         }
 
     }
