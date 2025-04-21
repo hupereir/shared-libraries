@@ -64,13 +64,10 @@ namespace Private
         {
             QPainter painter( this );
             painter.setClipRegion( event->region() );
-            painter.setRenderHints( QPainter::Antialiasing);
-            painter.setPen(Qt::black);
-            painter.drawRect(rect());
-//             QStyleOption o;
-//             o.initFrom(this);
-//             o.state &=~(QStyle::State_MouseOver|QStyle::State_HasFocus);
-//             QApplication::style()->drawPrimitive( QStyle::PE_FrameLineEdit, &o, &painter, this );
+            QStyleOption o;
+            o.initFrom(this);
+            o.state &=~(QStyle::State_MouseOver|QStyle::State_HasFocus);
+            QApplication::style()->drawPrimitive( QStyle::PE_FrameLineEdit, &o, &painter, this );
         }
     };
 
@@ -83,7 +80,7 @@ namespace Private
     {
         Debug::Throw( QStringLiteral("PathEditorButton::PathEditorButton.\n") );
         setAttribute( Qt::WA_Hover );
-        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Expanding );
+        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
         setMinimumHeight(parent->minimumHeight());
     }
 
@@ -229,12 +226,6 @@ namespace Private
     {
         QPainter painter( this );
         painter.setClipRegion( event->region() );
-
-        painter.save();
-        painter.setPen(Qt::black);
-        painter.setRenderHints(QPainter::Antialiasing );
-        painter.drawRect(rect());
-        painter.restore();
         _paint( &painter );
         painter.end();
     }
@@ -364,7 +355,7 @@ PathEditor::PathEditor( QWidget* parent ):
     Debug::Throw( QStringLiteral("PathEditor::PathEditor.\n") );
 
     // size policy
-    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Expanding );
+    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
 
     {
         // browser
@@ -373,7 +364,7 @@ PathEditor::PathEditor( QWidget* parent ):
         itemView_->hide();
 
         browserContainer_ = new Private::Widget;
-        browserContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+        browserContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
@@ -412,7 +403,7 @@ PathEditor::PathEditor( QWidget* parent ):
     {
         // editor
         editorContainer_ = new QWidget;
-        editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+        editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
