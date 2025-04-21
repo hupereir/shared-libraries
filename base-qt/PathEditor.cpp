@@ -51,6 +51,29 @@ const QString PathEditor::MimeType( QStringLiteral("internal/path-editor-item") 
 namespace Private
 {
 
+    class Widget: public QWidget
+    {
+
+        public:
+        Widget( QWidget* parent = nullptr ):
+            QWidget(parent)
+            {}
+
+        protected:
+        void paintEvent( QPaintEvent* event )
+        {
+            QPainter painter( this );
+            painter.setClipRegion( event->region() );
+            painter.setRenderHints( QPainter::Antialiasing);
+            painter.setPen(Qt::black);
+            painter.drawRect(rect());
+//             QStyleOption o;
+//             o.initFrom(this);
+//             o.state &=~(QStyle::State_MouseOver|QStyle::State_HasFocus);
+//             QApplication::style()->drawPrimitive( QStyle::PE_FrameLineEdit, &o, &painter, this );
+        }
+    };
+
     //___________________________________________________________________
     const qreal PathEditorButton::BorderWidth = 1.5;
 
@@ -60,7 +83,7 @@ namespace Private
     {
         Debug::Throw( QStringLiteral("PathEditorButton::PathEditorButton.\n") );
         setAttribute( Qt::WA_Hover );
-        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
+        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Expanding );
         setMinimumHeight(parent->minimumHeight());
     }
 
@@ -207,6 +230,11 @@ namespace Private
         QPainter painter( this );
         painter.setClipRegion( event->region() );
 
+        painter.save();
+        painter.setPen(Qt::black);
+        painter.setRenderHints(QPainter::Antialiasing );
+        painter.drawRect(rect());
+        painter.restore();
         _paint( &painter );
         painter.end();
     }
@@ -214,7 +242,6 @@ namespace Private
     //____________________________________________________________________________
     void PathEditorItem::_paint( QPainter* painter )
     {
-
         // render mouse over
         if( _mouseOver() && isSelectable() )
         {
@@ -337,7 +364,7 @@ PathEditor::PathEditor( QWidget* parent ):
     Debug::Throw( QStringLiteral("PathEditor::PathEditor.\n") );
 
     // size policy
-    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Fixed );
+    setSizePolicy( QSizePolicy::Minimum, QSizePolicy::Expanding );
 
     {
         // browser
@@ -345,12 +372,11 @@ PathEditor::PathEditor( QWidget* parent ):
         itemView_ = new QListView( this );
         itemView_->hide();
 
-        browserContainer_ = new QWidget;
-        browserContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+        browserContainer_ = new Private::Widget;
+        browserContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
-        QtUtil::setMargin(hLayout, 0);
         browserContainer_->setLayout( hLayout );
 
         // prefix label
@@ -386,7 +412,7 @@ PathEditor::PathEditor( QWidget* parent ):
     {
         // editor
         editorContainer_ = new QWidget;
-        editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
+        editorContainer_->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
