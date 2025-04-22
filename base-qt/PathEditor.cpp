@@ -395,6 +395,7 @@ PathEditor::PathEditor( QWidget* parent ):
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
+        QtUtil::setMargin( hLayout, 0 );
         browserContainer_->setLayout( hLayout );
 
         // prefix label
