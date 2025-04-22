@@ -233,14 +233,7 @@ namespace Private
         public:
 
         //* constructor
-        explicit PathEditorSwitch( QWidget* parent ):
-            PathEditorButton( parent ),
-            Counter( QStringLiteral("PathEditorSwitch") )
-        {
-            Debug::Throw( QStringLiteral("PathEditorItem::PathEditorItem.\n") );
-            setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
-            setCursor( Qt::IBeamCursor );
-        }
+        explicit PathEditorSwitch(QWidget*);
 
         protected:
 

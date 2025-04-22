@@ -165,7 +165,7 @@ namespace Private
         size.rwidth() += 6*BorderWidth;
         size.rheight() += 4*BorderWidth;
 
-        // arrow width
+        // separator width
         const int separatorWidth( _separatorWidth() );
         if( separatorWidth > 0 ) size.rwidth() += separatorWidth + 2*BorderWidth;
 
@@ -328,17 +328,41 @@ namespace Private
     }
 
     //________________________________________________________________________
+    PathEditorSwitch::PathEditorSwitch( QWidget* parent ):
+        PathEditorButton( parent ),
+        Counter( QStringLiteral("PathEditorSwitch") )
+    {
+        Debug::Throw( QStringLiteral("PathEditorItem::PathEditorItem.\n") );
+        setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding );
+        setCursor( Qt::IBeamCursor );
+        setIcon(IconEngine::get(IconNames::Edit));
+    }
+
+    //________________________________________________________________________
     void PathEditorSwitch::paintEvent( QPaintEvent* event )
     {
 
+        if( icon().isNull() ) return;
         if( _mouseOver() && isEnabled() )
         {
+            QStyleOptionButton option;
+            option.initFrom( this );
+
+            const int iconWidth( style()->pixelMetric( QStyle::PM_ToolBarIconSize, &option, this ) );
+            const QSize iconSize( iconWidth, iconWidth );
+            const auto pixmap( icon().pixmap( iconSize ) );
+
+            const bool isRightToLeft( qApp->isRightToLeft() );
+
+            const auto rect( this->rect() );
+            const auto iconRect = isRightToLeft ?
+                QRect(QPoint( rect.left(), rect.y() + (rect.height() - iconWidth)/2 ), iconSize ):
+                QRect(QPoint( rect.right() - iconWidth, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
+
             QPainter painter( this );
             painter.setClipRegion( event->region() );
+            painter.drawPixmap( iconRect, pixmap );
 
-            painter.setPen( QPen( palette().color( foregroundRole() ), 2 ) );
-            painter.setBrush( Qt::NoBrush );
-            painter.drawLine( rect().topLeft() + QPoint( 1, 2*BorderWidth ), rect().bottomLeft() + QPoint( 1, -2*BorderWidth ) );
         }
 
     }
