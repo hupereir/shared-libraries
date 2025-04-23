@@ -255,7 +255,7 @@ namespace Private
 
         // render text
         auto textRect( rect().adjusted( 3*BorderWidth, 2*BorderWidth, -3*BorderWidth, -2*BorderWidth ) );
-        const auto separatorWidth( _separatorWidth() + 2*BorderWidth );
+        const auto separatorWidth( _separatorWidth() );
         if( !isLast_ )
         {
             if( isRightToLeft ) textRect.adjust( separatorWidth, 0, 0, 0 );
@@ -266,7 +266,7 @@ namespace Private
             fontMetrics().elidedText( this->text(), Qt::ElideRight, textRect.width() ):
             this->text();
 
-        painter->drawText( QRectF( textRect ), Qt::AlignLeft|Qt::AlignVCenter|Qt::TextHideMnemonic, text );
+        painter->drawText( QRectF( textRect ), Qt::AlignCenter|Qt::TextHideMnemonic, text );
 
     }
 
