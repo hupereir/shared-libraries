@@ -223,6 +223,23 @@ namespace Private
     //____________________________________________________________________________
     void PathEditorItem::_paint( QPainter* painter )
     {
+
+        const bool isRightToLeft( qApp->isRightToLeft() );
+
+        // render separator
+        if( !isLast_ )
+        {
+            const auto rect( this->rect() );
+            QStyleOptionFrame option;
+            option.initFrom( this );
+            option.rect = isRightToLeft ?
+                QRect( rect.topLeft(), QSize(1,rect.height() )):
+                QRect( rect.topRight(), QSize(1,rect.height() ));
+            option.frameShape = QFrame::VLine;
+
+            style()->drawControl(QStyle::CE_ShapedFrame, &option, painter, this );
+        }
+
         // render mouse over
         if( _mouseOver() && isSelectable() )
         {
@@ -230,14 +247,11 @@ namespace Private
             QStyleOptionViewItem option;
             option.initFrom( this );
             option.showDecorationSelected = true;
-            option.rect = rect().adjusted(0, 1, 0, -1);
+            option.rect = rect().adjusted(0, 1, -1, -1);
             if( isFirst_ ) option.rect.adjust(1,0,0,0);
-            if( isLast_ ) option.rect.adjust(9,0,-1,0);
             option.state |= QStyle::State_MouseOver;
             style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, _itemView() );
         }
-
-        const bool isRightToLeft( qApp->isRightToLeft() );
 
         // render text
         auto textRect( rect().adjusted( 3*BorderWidth, 2*BorderWidth, -3*BorderWidth, -2*BorderWidth ) );
@@ -253,20 +267,6 @@ namespace Private
             this->text();
 
         painter->drawText( QRectF( textRect ), Qt::AlignLeft|Qt::AlignVCenter|Qt::TextHideMnemonic, text );
-
-        // render separator
-        if( !isLast_ )
-        {
-            const auto rect( this->rect() );
-            QStyleOptionFrame option;
-            option.initFrom( this );
-            option.rect = isRightToLeft ?
-                QRect( rect.topLeft(), QSize(1,rect.height() )):
-                QRect( rect.topRight(), QSize(1,rect.height() ));
-            option.frameShape = QFrame::VLine;
-
-            style()->drawControl(QStyle::CE_ShapedFrame, &option, painter, this );
-        }
 
     }
 
