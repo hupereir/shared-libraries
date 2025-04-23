@@ -101,10 +101,7 @@ namespace Private
     //____________________________________________________________________________
     PathEditorItem::PathEditorItem( QWidget* parent ):
         PathEditorButton( parent ),
-        Counter( QStringLiteral("PathEditorItem") ),
-        isLocal_( true ),
-        isSelectable_( true ),
-        isLast_( false )
+        Counter( QStringLiteral("PathEditorItem") )
     {
         Debug::Throw( QStringLiteral("PathEditorItem::PathEditorItem.\n") );
         dragMonitor_ = new DragMonitor( this );
@@ -233,10 +230,11 @@ namespace Private
             QStyleOptionViewItem option;
             option.initFrom( this );
             option.showDecorationSelected = true;
-            option.rect = rect();
+            option.rect = rect().adjusted(0, 1, 0, -1);
+            if( isFirst_ ) option.rect.adjust(1,0,0,0);
+            if( isLast_ ) option.rect.adjust(9,0,-1,0);
             option.state |= QStyle::State_MouseOver;
             style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, _itemView() );
-
         }
 
         const bool isRightToLeft( qApp->isRightToLeft() );
@@ -294,7 +292,7 @@ namespace Private
             QStyleOptionViewItem option;
             option.initFrom( this );
             option.showDecorationSelected = true;
-            option.rect = rect();
+            option.rect = rect().adjusted(1, 1, 0, -1);
             option.state |= QStyle::State_MouseOver;
             style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
 
@@ -396,7 +394,7 @@ PathEditor::PathEditor( QWidget* parent ):
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
-        hLayout->setContentsMargins(4,0,4,0);
+        QtUtil::setMargin(hLayout,0);
         browserContainer_->setLayout(hLayout);
 
         // prefix label
@@ -1021,6 +1019,9 @@ void PathEditor::_updateButtonVisibility()
 
     // show menu button if required
     menuButton_->setVisible( menuButtonVisible );
+
+    if( !items_.isEmpty() )
+    { items_.front()->setIsFirst( !menuButtonVisible ); }
 
     // effectively hide buttons
     {
