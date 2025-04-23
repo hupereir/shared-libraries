@@ -90,7 +90,6 @@ namespace Private
 
         switch( event->type() )
         {
-
             case QEvent::HoverEnter: mouseOver_ = true; break;
             case QEvent::HoverLeave: mouseOver_ = false; break;
             default: break;
@@ -119,18 +118,13 @@ namespace Private
     {
 
         Debug::Throw( QStringLiteral("PathEditorItem::setPath.\n") );
-
         path_ = path;
-
         if( name.isEmpty() )
         {
-
             // get local name
             File localName( path.localName().removeTrailingSlash() );
             setText( localName );
-
         } else setText( name );
-
         updateMinimumSize();
 
     }
@@ -263,12 +257,10 @@ namespace Private
 
         painter->drawText( QRectF( textRect ), Qt::AlignLeft|Qt::AlignVCenter|Qt::TextHideMnemonic, text );
 
-        // render arrow
+        // render separator
         if( !isLast_ )
         {
-            painter->setPen( palette().color(QPalette::Text) );
             const auto rect( this->rect() );
-
             QStyleOptionFrame option;
             option.initFrom( this );
             option.rect = isRightToLeft ?
@@ -395,8 +387,8 @@ PathEditor::PathEditor( QWidget* parent ):
 
         auto hLayout = new QHBoxLayout;
         hLayout->setSpacing(0);
-        QtUtil::setMargin( hLayout, 0 );
-        browserContainer_->setLayout( hLayout );
+        hLayout->setContentsMargins(4,0,4,0);
+        browserContainer_->setLayout(hLayout);
 
         // prefix label
         prefixLabel_ = new QLabel( browserContainer_ );
