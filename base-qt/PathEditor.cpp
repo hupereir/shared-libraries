@@ -57,18 +57,32 @@ namespace Private
         public:
         Widget( QWidget* parent = nullptr ):
             QWidget(parent)
-            {}
+        {
+            QLineEdit editor;
+            QStyleOptionFrame panel;
+            panel.initFrom(&editor);
+            lineWidth_ = style()->pixelMetric(QStyle::PM_DefaultFrameWidth, &panel, &editor);
+        }
 
         protected:
-        void paintEvent( QPaintEvent* event )
+        void paintEvent( QPaintEvent* event ) override
         {
+
             QPainter painter( this );
             painter.setClipRegion( event->region() );
-            QStyleOption o;
-            o.initFrom(this);
-            o.state &=~(QStyle::State_MouseOver|QStyle::State_HasFocus);
-            QApplication::style()->drawPrimitive( QStyle::PE_FrameLineEdit, &o, &painter, this );
+            QStyleOptionFrame panel;
+            panel.initFrom(this);
+            panel.lineWidth = lineWidth_;
+            panel.midLineWidth = 0;
+            panel.state |= QStyle::State_Sunken;
+            panel.state &=~(QStyle::State_MouseOver|QStyle::State_HasFocus);
+            style()->drawPrimitive(QStyle::PE_PanelLineEdit, &panel, &painter, this);
+            style()->drawPrimitive(QStyle::PE_FrameLineEdit, &panel, &painter, this);
         }
+
+        private:
+
+        int lineWidth_ = 0;
     };
 
     //___________________________________________________________________
