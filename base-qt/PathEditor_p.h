@@ -204,15 +204,8 @@ namespace Private
 
         public:
 
-        //* constructor
-        explicit PathEditorMenuButton( QWidget* parent ):
-            PathEditorButton( parent ),
-            Counter( QStringLiteral("PathEditorMenuButton") )
-        {
-            Debug::Throw( QStringLiteral("PathEditorMenuButton::PathEditorMenuButton.\n") );
-            setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
-            updateMinimumSize();
-        }
+        //! constructor
+        explicit PathEditorMenuButton( QWidget* );
 
         // minimum size
         void updateMinimumSize();

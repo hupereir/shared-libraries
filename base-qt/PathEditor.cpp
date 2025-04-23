@@ -80,8 +80,7 @@ namespace Private
     {
         Debug::Throw( QStringLiteral("PathEditorButton::PathEditorButton.\n") );
         setAttribute( Qt::WA_Hover );
-        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Fixed );
-        setMinimumHeight(parent->minimumHeight());
+        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Expanding );
     }
 
     //____________________________________________________________________________
@@ -271,6 +270,16 @@ namespace Private
             style()->drawControl(QStyle::CE_ShapedFrame, &option, painter, this );
         }
 
+    }
+
+    //____________________________________________________________________________
+    PathEditorMenuButton::PathEditorMenuButton( QWidget* parent ):
+        PathEditorButton( parent ),
+        Counter( QStringLiteral("PathEditorMenuButton") )
+    {
+        Debug::Throw( QStringLiteral("PathEditorMenuButton::PathEditorMenuButton.\n") );
+        setSizePolicy( QSizePolicy::Maximum, QSizePolicy::Expanding );
+        updateMinimumSize();
     }
 
     //____________________________________________________________________________

@@ -45,7 +45,7 @@ namespace Private
 
 class PathHistory;
 
-//* path editor
+//! path editor
 class BASE_QT_EXPORT PathEditor: public QStackedWidget, private Base::Counter<PathEditor>
 {
 
@@ -53,127 +53,127 @@ class BASE_QT_EXPORT PathEditor: public QStackedWidget, private Base::Counter<Pa
 
     public:
 
-    //* dragging
+    //! dragging
     static const QString MimeType;
 
-    //* constructor
+    //! constructor
     explicit PathEditor( QWidget* );
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* path
+    //! path
     File path() const;
 
-    //* pretty path (for window title)
+    //! pretty path (for window title)
     QString prettyPath() const;
 
-    //* true if parent directory is available
+    //! true if parent directory is available
     bool hasParent() const;
 
-    //* true if previous path is available in history
+    //! true if previous path is available in history
     bool hasPrevious() const;
 
-    //* true if next path available in history
+    //! true if next path available in history
     bool hasNext() const;
 
-    //* minimum size hint
+    //! minimum size hint
     QSize minimumSizeHint() const override;
 
-    //* size hint
+    //! size hint
     QSize sizeHint() const override
     { return minimumSizeHint(); }
 
-    //* previous path menu
+    //! previous path menu
     QMenu& previousPathMenu() const
     { return *previousPathMenu_; }
 
-    //* next path menu
+    //! next path menu
     QMenu& nextPathMenu() const
     { return *nextPathMenu_; }
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* prefix
+    //! prefix
     void setPrefix( const QString& );
 
-    //* history tag name
+    //! history tag name
     void setHistoryTagName( const QString& );
 
-    //* home
+    //! home
     void setHomePath( const File& );
 
-    //* root
+    //! root
     void setRootPathList( const File::List& );
 
-    //* true if filesystem is local
+    //! true if filesystem is local
     void setIsLocal( bool );
 
-    //* set dragEnabled
+    //! set dragEnabled
     void setDragEnabled( bool );
 
-    //* set path
+    //! set path
     void setPath( const File&, const File& = File() );
 
-    //* select parent path
+    //! select parent path
     void selectParent();
 
-    //* select previous path in history
+    //! select previous path in history
     void selectPrevious();
 
-    //* select next path in history
+    //! select next path in history
     void selectNext();
 
-    //* select from action
+    //! select from action
     void selectFromMenu( QAction* );
 
     //@}
 
     Q_SIGNALS:
 
-    //* path changed
+    //! path changed
     void pathChanged( const File& );
 
     protected:
 
-    //* resize events
+    //! resize events
     void resizeEvent( QResizeEvent* ) override;
 
     private:
 
-    //* show browser
+    //! show browser
     void _showBrowser()
     { setCurrentWidget( browserContainer_ ); }
 
-    //* show editor
+    //! show editor
     void _showEditor()
     { setCurrentWidget( editorContainer_ ); }
 
-    //* return pressed in editor
+    //! return pressed in editor
     void _returnPressed();
 
-    //* menu button clicked
+    //! menu button clicked
     void _menuButtonClicked();
 
-    //* update path from menu action
+    //! update path from menu action
     void _updatePath( QAction* );
 
-    //* button clicked
+    //! button clicked
     void _buttonClicked( QAbstractButton* );
 
-    //* update button visibility
+    //! update button visibility
     void _updateButtonVisibility();
 
-    //* update previous and next path menus
+    //! update previous and next path menus
     void _updatePathMenus();
 
-    //* configuration
+    //! configuration
     void _updateConfiguration();
 
-    //* prefix
+    //! prefix
     void _setUsePrefix( bool value )
     {
         if( usePrefix_ == value ) return;
@@ -181,76 +181,76 @@ class BASE_QT_EXPORT PathEditor: public QStackedWidget, private Base::Counter<Pa
         _updatePrefix();
     }
 
-    //* update prefix
+    //! update prefix
     void _updatePrefix();
 
-    //* truncation
+    //! truncation
     void _setUseTruncation( bool );
 
-    //* reload
+    //! reload
     void _reload()
     { setPath( path() ); }
 
-    //* dummy treeview, needed for rendering items
+    //! dummy treeview, needed for rendering items
     QAbstractItemView* itemView_ = nullptr;
 
-    //* path browser container
+    //! path browser container
     QWidget* browserContainer_ = nullptr;
 
-    //* editor container
+    //! editor container
     QWidget* editorContainer_ = nullptr;
 
-    //* editor
+    //! editor
     ComboBox* editor_ = nullptr;
 
-    //* button layout
+    //! button layout
     QBoxLayout* buttonLayout_ = nullptr;
 
-    //* button group
+    //! button group
     QButtonGroup* group_ = nullptr;
 
-    //*@name prefix
+    //!@name prefix
     //@{
 
-    //* use prefix
+    //! use prefix
     bool usePrefix_ = true;
 
-    //* prefix
+    //! prefix
     QString prefix_;
 
-    //* prefix
+    //! prefix
     QLabel* prefixLabel_ = nullptr;
 
     //@}
 
-    //* true if editor corresponds to local file system
+    //! true if editor corresponds to local file system
     bool isLocal_ = true;
 
-    //* truncation
+    //! truncation
     bool truncate_ = true;
 
-    //* true if drag and drop is enabled (false by default)
+    //! true if drag and drop is enabled (false by default)
     bool dragEnabled_ = false;
 
-    //* home directory
+    //! home directory
     File home_;
 
-    //* root directories
+    //! root directories
     File::List rootPathList_;
 
-    //* menu button
+    //! menu button
     Private::PathEditorMenuButton* menuButton_ = nullptr;
 
-    //* previous path menu
+    //! previous path menu
     QMenu* previousPathMenu_ = nullptr;
 
-    //* nex path menu
+    //! nex path menu
     QMenu* nextPathMenu_ = nullptr;
 
-    //* item buttons
+    //! item buttons
     QList<Private::PathEditorItem*> items_;
 
-    //* path history
+    //! path history
     PathHistory* history_ = nullptr;
 
 };
