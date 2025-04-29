@@ -25,6 +25,7 @@
 #include "Counter.h"
 #include "CursorMonitor.h"
 #include "Debug.h"
+#include "IntegralType.h"
 #include "Key.h"
 #include "MultipleClickCounter.h"
 #include "RemoveLineBuffer.h"
@@ -73,7 +74,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     public:
 
     //* modifiers
-    enum Modifier
+    enum Modifier:uint16_t
     {
         None = 0,
         CapsLock = 1<<0,
@@ -82,7 +83,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
         Wrap = 1<<3
     };
 
-    Q_DECLARE_FLAGS( Modifiers, Modifier );
+    using Modifiers = Base::underlying_type_t<Modifier>;
 
     //* constructor
     explicit TextEditor( QWidget* = nullptr );
@@ -1027,7 +1028,5 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     friend BASE_QT_EXPORT class Container;
 
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS( TextEditor::Modifiers )
 
 #endif
