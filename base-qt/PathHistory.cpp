@@ -40,10 +40,14 @@ FileRecord::List PathHistory::previousPathList() const
 //__________________________________________________________________
 FileRecord::List PathHistory::nextPathList() const
 {
-    FileRecord::List out;
-    std::copy( pathList_.begin() + index_ +1, pathList_.end(), std::back_inserter( out ) );
-
-    return out;
+   if( nextAvailable() )
+    {
+        FileRecord::List out;
+        std::copy( pathList_.begin() + index_ +1, pathList_.end(), std::back_inserter( out ) );
+        return out;
+    } else {
+        return FileRecord::List();
+    }
 }
 
 //__________________________________________________________________
