@@ -29,14 +29,14 @@ class BASE_QT_EXPORT EmbeddedWidget: public QWidget
 
     public:
 
-    //* constructor
+    //! constructor
     explicit EmbeddedWidget( QWidget* parent = nullptr ):
         QWidget( parent )
     {}
 
     protected:
 
-    //* show event
+    //! show event
     /** used to automatically hide other embedded widgets when this one is shown */
     void showEvent( QShowEvent* ) override;
 
