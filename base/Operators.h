@@ -24,7 +24,7 @@
 
 //* different from operator
 template<class T, class U>
-    inline bool operator != (const T& lhs, const U& rhs)
+inline constexpr bool operator != (const T& lhs, const U& rhs)
 { return !(lhs == rhs); }
 
 //* more than
@@ -34,12 +34,12 @@ template<class T, class U>
 #else
 template<class T, class U, typename = typename std::enable_if<!std::is_same<T,QFont::Tag>::value>::type>
 #endif
-    inline bool operator > (const T& lhs, const U& rhs)
+    inline constexpr bool operator > (const T& lhs, const U& rhs)
 { return rhs < lhs; }
 
 //* less or equal
 template<class T, class U>
-    inline bool operator <= (const T& lhs, const U& rhs)
+    inline constexpr bool operator <= (const T& lhs, const U& rhs)
 { return !(rhs < lhs); }
 
 //* more or equal
