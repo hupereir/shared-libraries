@@ -20,7 +20,7 @@
 *
 *******************************************************************************/
 
-#include <QFlags>
+#include "IntegralType.h"
 
 namespace TextFormat
 {
@@ -38,11 +38,9 @@ namespace TextFormat
 
     };
 
-    Q_DECLARE_FLAGS( Flags, Flag )
-
+    using Flags = Base::underlying_type_t<Flag>;
 }
 
-Q_DECLARE_OPERATORS_FOR_FLAGS( TextFormat::Flags )
 
 
 #endif

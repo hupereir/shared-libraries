@@ -74,7 +74,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     public:
 
     //* modifiers
-    enum Modifier:uint16_t
+    enum Modifier
     {
         None = 0,
         CapsLock = 1<<0,

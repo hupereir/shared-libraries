@@ -166,7 +166,7 @@ namespace TextFormat
 
         //* background
         QColor background_;
-            
+
         //* href
         QString href_;
 
