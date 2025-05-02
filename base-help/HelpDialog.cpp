@@ -63,6 +63,8 @@ namespace Base
 
         // add help list
         list_ = new TreeView( this );
+        QtUtil::setWidgetSides( list_, Qt::TopEdge|Qt::BottomEdge );
+
         list_->setMaximumWidth(150);
         layout->addWidget( list_ );
         list_->setModel( &model_ );
@@ -79,6 +81,7 @@ namespace Base
         htmlFrame_->setLayout( vLayout );
 
         vLayout->addWidget( htmlEditor_ = new TextEditor( htmlFrame_ ) );
+        QtUtil::setWidgetSides( htmlEditor_, Qt::TopEdge|Qt::BottomEdge );
         htmlEditor_->setReadOnly( true );
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );
@@ -90,7 +93,6 @@ namespace Base
 
         // add close accelerator
         connect( new QShortcut( QKeySequence::Quit, this ), &QShortcut::activated, this, &HelpDialog::close );
-
 
         connect( &Base::Singleton::get(), &Base::Singleton::configurationChanged, this, &HelpDialog::_updateConfiguration );
         _updateConfiguration();
