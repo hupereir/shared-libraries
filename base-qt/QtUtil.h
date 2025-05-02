@@ -28,84 +28,90 @@
 #include <QPalette>
 #include <QString>
 
-//* some convernience methods
+//! some convernience methods
 class BASE_QT_EXPORT QtUtil
 {
 
     public:
 
-    //* desktop geometry
+    //! desktop geometry
     static QRect desktopGeometry( QWidget* = nullptr );
 
-    //* add margins to layouts
+    //! add margins to layouts
     template<class T>
         inline static void setMargin(T* object, int margin )
     { object->setContentsMargins( margin, margin, margin, margin ); }
 
-    //* initializes library resources
+    //! specify widget sides, for Breeze style rendering
+    static void setWidgetSides( QWidget*, Qt::Edges );
+
+    //! get widget sides from breeze style property
+    static Qt::Edges widgetSides( QWidget* );
+
+    //! initializes library resources
     static void initializeResources();
 
-    //* move menu to position taking proper care of the screen borders
+    //! move menu to position taking proper care of the screen borders
     static void setWidgetGeometry( QWidget*, const QRect& );
 
-    //* move menu to position taking proper care of the screen borders
+    //! move menu to position taking proper care of the screen borders
     static void moveWidget( QWidget*, QPoint );
 
-    //* hide widget from taskbar
+    //! hide widget from taskbar
     static void toggleHideWidgetFromTaskbar( QWidget*, bool );
 
-    //* hide widget from taskbar
+    //! hide widget from taskbar
     static void toggleShowWidgetOnAllDesktops( QWidget*, bool );
 
-    //* stay on top
+    //! stay on top
     static void toggleWidgetStaysOnTop( QWidget*, bool );
 
-    //* center widget on pointer
+    //! center widget on pointer
     static QPoint centerOnPointer( QSize );
 
-    //* return topleft point so that size is centered on widget
+    //! return topleft point so that size is centered on widget
     static QPoint centerOnWidget( QSize, QWidget* );
 
-    //* return topleft point so that size is centered on pointer
+    //! return topleft point so that size is centered on pointer
     static QPoint centerOnDesktop( QSize );
 
-    //* center widget on pointer
+    //! center widget on pointer
     static QWidget* centerOnPointer( QWidget* );
 
-    //* center widget on parent top level widget
+    //! center widget on parent top level widget
     static QWidget* centerOnParent( QWidget* );
 
-    //* center widget on parent top level widget
+    //! center widget on parent top level widget
     static QWidget* centerOnWidget( QWidget*, QWidget* );
 
-    //* center widget on desktop widget
+    //! center widget on desktop widget
     static QWidget* centerOnDesktop( QWidget* );
 
-    //* uniconify a top level widget
+    //! uniconify a top level widget
     static QWidget* uniconify( QWidget* );
 
-    //* title font point size
+    //! title font point size
     static int titleFontPointSize( const QFont& );
 
-    //* get 'title' font matching argument
+    //! get 'title' font matching argument
     static QFont titleFont( QFont );
 
-        //* light text color
+        //! light text color
     static QColor lightTextColor( const QPalette& palette, QPalette::ColorRole role )
     { return lightTextColor( palette.color( role ) ); }
 
-    //* light text color
+    //! light text color
     static QColor lightTextColor( const QPalette& palette, QPalette::ColorGroup group = QPalette::Normal, QPalette::ColorRole role = QPalette::WindowText )
     { return lightTextColor( palette.color( group, role ) ); }
 
-    //* light text color
+    //! light text color
     static QColor lightTextColor( const QColor& );
 
-    //* menu section
+    //! menu section
     static QAction* addMenuSection( QMenu* menu, const QString& text )
     { return addMenuSection( menu, QIcon(), text ); }
 
-    //* menu section
+    //! menu section
     static QAction* addMenuSection( QMenu*, const QIcon&, const QString& );
 
 };

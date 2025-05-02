@@ -54,6 +54,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // add widgets
     hLayout->addWidget( list_ = new SimpleListView( this ) );
+    QtUtil::setWidgetSides(list_, Qt::TopEdge|Qt::RightEdge);
 
     auto stackedLayout = new QVBoxLayout;
     hLayout->addLayout( stackedLayout );

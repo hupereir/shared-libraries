@@ -35,6 +35,14 @@
 #include <QStyleOption>
 #include <QWindow>
 
+namespace
+{
+    namespace PropertyNames
+    {
+        static constexpr char bordersSides[] = "_breeze_borders_sides";
+    }
+}
+
 //____________________________________________________________
 void bindToGeometry( QPoint& position, QSize size, QRect geometry )
 {
@@ -44,6 +52,28 @@ void bindToGeometry( QPoint& position, QSize size, QRect geometry )
     if( position.x() < 0 ) position.setX(0);
     if( position.y() < 0 ) position.setY(0);
 }
+
+//____________________________________________________________
+void QtUtil::setWidgetSides( QWidget* w, Qt::Edges edges )
+{
+    if(w)
+    { w->setProperty( PropertyNames::bordersSides, Qt::Edges::Int(edges) ); }
+}
+
+//____________________________________________________________
+Qt::Edges QtUtil::widgetSides( QWidget* w )
+{
+    if( !w ) { return {}; }
+
+    const auto borders = w->property(PropertyNames::bordersSides);
+    if (borders.isValid() && borders.canConvert<Qt::Edges>())
+    {
+        return borders.value<Qt::Edges>();
+    } else {
+        return {};
+    }
+}
+
 
 //____________________________________________________________
 void QtUtil::initializeResources()
