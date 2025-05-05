@@ -131,6 +131,14 @@ void SelectLineWidget::noMatchFound()
 }
 
 //________________________________________________________________________
+void SelectLineWidget::setVisible( bool value )
+{
+    const bool changed = (value != isVisible());
+    EmbeddedWidget::setVisible(value);
+    if( changed ) emit visibilityChanged(value);
+}
+
+//________________________________________________________________________
 void SelectLineWidget::changeEvent( QEvent* event )
 {
     switch( event->type() )

@@ -37,7 +37,7 @@ class BASE_QT_EXPORT GridLayoutItem: public QObject, private Base::Counter<GridL
 
     public:
 
-    //* flags
+    //! flags
     enum Flag
     {
         None = 0,
@@ -49,51 +49,51 @@ class BASE_QT_EXPORT GridLayoutItem: public QObject, private Base::Counter<GridL
 
     Q_DECLARE_FLAGS( Flags, Flag );
 
-    //* constructor
+    //! constructor
     explicit GridLayoutItem( QWidget*, GridLayout*, Flags = Flag::None );
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* visibility
+    //! visibility
     bool isVisible() const
     { return visible_; }
 
-    //* key
+    //! key
     QString key() const
     { return key_->text(); }
 
-    //* value
+    //! value
     QString text() const
     { return value_->text(); }
 
-    //* value label
+    //! value label
     QLabel& label() const
     { return *value_; }
 
-    //*@}
+    //!@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* set key
+    //! set key
     void setKey( const QString& );
 
-    //* set text
+    //! set text
     void setText( const QString& );
 
     //@}
 
-    //*@name visibility
+    //!@name visibility
     //@{
 
-    //* set visible
+    //! set visible
     void setVisible( bool value );
 
-    //* show
+    //! show
     void show();
 
-    //* hide
+    //! hide
     void hide();
 
     //@}
@@ -102,7 +102,7 @@ class BASE_QT_EXPORT GridLayoutItem: public QObject, private Base::Counter<GridL
 
     Q_SIGNALS:
 
-    //* visibility changed
+    //! visibility changed
     void visibilityChanged( bool );
 
     private:

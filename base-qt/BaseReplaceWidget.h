@@ -25,105 +25,105 @@
 
 #include <QMenu>
 
-//* find dialog for text editor widgets
+//! find dialog for text editor widgets
 class BASE_QT_EXPORT BaseReplaceWidget: public BaseFindWidget
 {
 
-    //* Qt meta object declaration
+    //! Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //* constructor
+    //! constructor
     explicit BaseReplaceWidget( QWidget* = nullptr, bool compact = true );
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* string to replace
+    //! string to replace
     QString replaceText() const
     { return replaceEditor_->currentText(); }
 
-    //* retrieve text selection from dialog
+    //! retrieve text selection from dialog
     TextSelection selection( bool ) const override;
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* enable replace in selection
+    //! enable replace in selection
     void enableReplaceInSelection( bool value )
     { replaceInSelectionAction_->setEnabled( value ); }
 
-    //* string to replace
+    //! string to replace
     void setReplaceText( const QString& text )
     { replaceEditor_->setEditText( text ); }
 
-    //* synchronize searched strings and ComboBox
+    //! synchronize searched strings and ComboBox
     void synchronize() override;
 
     //@}
 
     Q_SIGNALS:
 
-    //* emitted when replace all menu is about to show
+    //! emitted when replace all menu is about to show
     void menuAboutToShow();
 
-    //* emitted when Replace is pressed
+    //! emitted when Replace is pressed
     void replace( TextSelection );
 
-    //* emitted when Replace_in_window is pressed
+    //! emitted when Replace_in_window is pressed
     void replaceInWindow( TextSelection );
 
-    //* emitted when Replace_in_selection is pressed
+    //! emitted when Replace_in_selection is pressed
     void replaceInSelection( TextSelection );
 
-    //* emitted when text replacement is changed
+    //! emitted when text replacement is changed
     void replaceTextChanged( QString text_replace );
 
     protected:
 
-    //* update combo box with current text
+    //! update combo box with current text
     void _updateReplaceComboBox()
     { _addReplacedString( replaceEditor_->currentText() ); }
 
-    //* create Selection object when replace button is pressed
+    //! create Selection object when replace button is pressed
     void _replace()
     { emit replace( selection( false ) ); }
 
-    //* create Selection object when replace button is pressed
+    //! create Selection object when replace button is pressed
     void _replaceInWindow();
 
-    //* create Selection object when replace button is pressed
+    //! create Selection object when replace button is pressed
     void _replaceInSelection();
 
-    //* replace editor
+    //! replace editor
     ComboBox& _replaceEditor() const
     { return *replaceEditor_; }
 
-    //* replace all menu
+    //! replace all menu
     QMenu& _replaceAllMenu() const
     { return *replaceAllMenu_; }
 
-    //* add string to both combo box and static set
+    //! add string to both combo box and static set
     void _addReplacedString( const QString& );
 
     private:
 
-    //* location layout
+    //! location layout
     QBoxLayout* locationLayout_ = nullptr;
 
-    //* line editor for text to replace
+    //! line editor for text to replace
     ComboBox* replaceEditor_ = nullptr;
 
-    //* replace all menu
+    //! replace all menu
     QMenu* replaceAllMenu_ = nullptr;
 
-    //* replace in selection action
+    //! replace in selection action
     QAction* replaceInSelectionAction_ = nullptr;
 
-    //* replaced strings
+    //! replaced strings
     static QOrderedSet<QString>& _replacedStrings();
 
 };

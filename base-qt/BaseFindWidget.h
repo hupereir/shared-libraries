@@ -34,7 +34,7 @@
 #include <QList>
 #include <QPalette>
 
-//* find widget for text editors and lists
+//! find widget for text editors and lists
 class BASE_QT_EXPORT BaseFindWidget: public AbstractFindWidget, private Base::Counter<BaseFindWidget>
 {
 
@@ -42,160 +42,168 @@ class BASE_QT_EXPORT BaseFindWidget: public AbstractFindWidget, private Base::Co
 
     public:
 
-    //* constructor
+    //! constructor
     explicit BaseFindWidget( QWidget* = nullptr, bool compact = true );
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* string to find
+    //! string to find
     QString text() const override
     { return editor_->currentText(); }
 
-    //* get selection
+    //! get selection
     TextSelection selection( bool ) const override;
 
-    //* retrieve editor
+    //! retrieve editor
     QWidget& editor() const override
     { return *editor_; }
 
-    //* close button
+    //! close button
     QAbstractButton& closeButton() const override
     { return *closeButton_; }
 
-    //* list of disabled buttons
+    //! list of disabled buttons
     QList<QAbstractButton*>& disabledButtons()
     { return buttons_; }
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* string to find
+    //! string to find
     void setText( const QString& ) override;
 
-    //* synchronize searched strings and ComboBox
+    //! synchronize searched strings and ComboBox
     void synchronize() override;
 
     //! enable/disable highlight all
     void enableHighlightAll( bool );
-    
-    //* enable/disable entire word
+
+    //! enable/disable entire word
     void enableEntireWord( bool );
 
-    //* enable/disable RegExp
+    //! enable/disable RegExp
     void enableRegExp( bool );
 
-    //* take action when at least one match is found
+    //! take action when at least one match is found
     void matchFound() override;
 
-    //* take action when no match is found
+    //! take action when no match is found
     void noMatchFound() override;
+
+    //! visibility
+    void setVisible(bool) override;
 
     //@}
 
+    Q_SIGNALS:
+
+    //! emitted when widget visibility is changed
+    void visibilityChanged(bool);
+
     protected:
 
-    //* update combo box with current text
+    //! update combo box with current text
     void _updateFindComboBox()
     { _addSearchedString( editor_->currentText() ); }
 
-    //* create Selection object when find button is pressed
+    //! create Selection object when find button is pressed
     void _find()
     { emit find( selection( false ) ); }
 
-    //* create Selection object when find button is pressed
+    //! create Selection object when find button is pressed
     void _findPrevious()
     {
         findBackward_ = true;
         emit find( selection( false ) );
     }
 
-    //* create Selection object when find button is pressed
+    //! create Selection object when find button is pressed
     void _findNext()
     {
         findBackward_ = false;
         emit find( selection( false ) );
     }
 
-    //* create Selection object when find button is pressed
+    //! create Selection object when find button is pressed
     void _findNoIncrement()
     { if( !regexpCheckbox_->isChecked() ) emit find( selection( true ) ); }
 
-    //* update button state when regexp checkbox is checked
+    //! update button state when regexp checkbox is checked
     void _regExpChecked( bool );
 
-    //* update button state depending on the string to find
+    //! update button state depending on the string to find
     void _updateButtons( const QString& text = QString() );
 
-    //* change event
+    //! change event
     void changeEvent( QEvent* ) override;
 
-    //* "entire word" checkbox
+    //! "entire word" checkbox
     QCheckBox& _entireWordCheckBox() const
     { return *entireWordCheckbox_; }
 
-    //* edition layout
+    //! edition layout
     QGridLayout& _editorLayout() const
     { return *editorLayout_; }
 
-    //* find next button
+    //! find next button
     QAbstractButton& _findNextButton() const
     { return *findNextButton_; }
 
-    //* find previous button
+    //! find previous button
     QAbstractButton& _findPreviousButton() const
     { return *findPreviousButton_; }
 
-    //* add button to disabled button list
+    //! add button to disabled button list
     void _addDisabledButton( QAbstractButton* );
 
-    //* add string to both combo box and static set
+    //! add string to both combo box and static set
     void _addSearchedString( const QString& );
 
     private:
 
-    //* create not found palette
+    //! create not found palette
     void _updateNotFoundPalette();
 
-    //* editor layout
+    //! editor layout
     QGridLayout* editorLayout_ = nullptr;
 
-    //* line editor for text to find
+    //! line editor for text to find
     ComboBox* editor_ = nullptr;
 
-    //* backward search if checked
+    //! backward search if checked
     bool findBackward_ = false;
 
-    //* highlight all checkbox
+    //! highlight all checkbox
     QCheckBox* highlightAllCheckbox_ = nullptr;
-    
-    //* case sensitive search if checked
+
+    //! case sensitive search if checked
     QCheckBox* caseSensitiveCheckbox_ = nullptr;
 
-    //* entire word check box
+    //! entire word check box
     QCheckBox* entireWordCheckbox_ = nullptr;
 
-    //* regular expression search if checked
+    //! regular expression search if checked
     QCheckBox* regexpCheckbox_ = nullptr;
 
-    //* find button
+    //! find button
     QAbstractButton* findNextButton_ = nullptr;
 
-    //* find button
+    //! find button
     QAbstractButton* findPreviousButton_ = nullptr;
 
-    //* close button
+    //! close button
     QAbstractButton* closeButton_ = nullptr;
 
-    //* list of buttons to enable/disable depending of the editor text
+    //! list of buttons to enable/disable depending of the editor text
     QList<QAbstractButton*> buttons_;
 
-    //* not found palette
+    //! not found palette
     QPalette notFoundPalette_;
 
-    //* set of previously searched strings
+    //! set of previously searched strings
     static QOrderedSet<QString>& _searchedStrings();
 
 };

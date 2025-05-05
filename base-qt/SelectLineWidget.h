@@ -30,64 +30,80 @@
 
 class LineEditor;
 
-//* find_text dialog for text editor widgets
+//! find_text dialog for text editor widgets
 class BASE_QT_EXPORT SelectLineWidget: public EmbeddedWidget, private Base::Counter<SelectLineWidget>
 {
 
-    //* Qt meta object declaration
+    //! Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //* constructor
+    //! constructor
     explicit SelectLineWidget( QWidget* = nullptr, bool compact = true );
 
-    //* retrieve editor
+    //!@name accessors
+    //@{
+
+    //! retrieve editor
     LineEditor& editor() const
     { return *editor_; }
 
-    //* ok button
+    //! ok button
     QAbstractButton& okButton() const
     { return *okButton_; }
 
-    //* close button
+    //! close button
     QAbstractButton& closeButton() const
     { return *closeButton_; }
 
-    //* take action when at least one match is found
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //! take action when at least one match is found
     void matchFound();
 
-    //* take action when no match is found
+    //! take action when no match is found
     void noMatchFound();
+
+    //! visibility
+    void setVisible(bool) override;
+
+    //@}
 
     Q_SIGNALS:
 
-    //* emitted when pressing the Ok button
+    //! emitted when widget visibility is changed
+    void visibilityChanged(bool);
+
+    //! emitted when pressing the Ok button
     void lineSelected( int );
 
     protected:
 
-    //* change event
+    //! change event
     void changeEvent( QEvent* ) override;
 
     private:
 
-    //* retrieve line number and emit signal
+    //! retrieve line number and emit signal
     void _selectLine();
 
-    //* create not found palette
+    //! create not found palette
     void _updateNotFoundPalette();
 
-    //* line editor for text to find
+    //! line editor for text to find
     LineEditor* editor_ = nullptr;
 
-    //* ok button
+    //! ok button
     QAbstractButton* okButton_ = nullptr;
 
-    //* cancel button
+    //! cancel button
     QAbstractButton* closeButton_ = nullptr;
 
-    //* not found palette
+    //! not found palette
     QPalette notFoundPalette_;
 
 };

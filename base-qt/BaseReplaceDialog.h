@@ -24,35 +24,35 @@
 #include "BaseReplaceWidget.h"
 #include "base_qt_export.h"
 
-//* replace_text dialogs
+//! replace_text dialogs
 class BASE_QT_EXPORT BaseReplaceDialog: public BaseFindDialog
 {
 
-    //* Qt meta object declaration
+    //! Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //* constructor
+    //! constructor
     explicit BaseReplaceDialog( QWidget* = nullptr, Qt::WindowFlags = {} );
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* string to replace
+    //! string to replace
     QString replaceText() const
     { return static_cast<BaseReplaceWidget*>(&baseFindWidget())->replaceText(); }
 
-    //* get selection
+    //! get selection
     virtual TextSelection selection( bool value ) const
     { return static_cast<BaseReplaceWidget*>(&baseFindWidget())->selection( value ); }
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* string to replace
+    //! string to replace
     void setReplaceText( const QString& text )
     { static_cast<BaseReplaceWidget*>(&baseFindWidget())->setReplaceText( text ); }
 
@@ -60,16 +60,16 @@ class BASE_QT_EXPORT BaseReplaceDialog: public BaseFindDialog
 
     Q_SIGNALS:
 
-    //* emitted when Replace is pressed
+    //! emitted when Replace is pressed
     void replace( TextSelection );
 
-    //* emitted when Replace_in_window is pressed
+    //! emitted when Replace_in_window is pressed
     void replaceInWindow( TextSelection );
 
-    //* emitted when Replace_in_selection is pressed
+    //! emitted when Replace_in_selection is pressed
     void replaceInSelection( TextSelection );
 
-    //* emitted when text replacement is changed
+    //! emitted when text replacement is changed
     void replaceTextChanged( QString );
 
 };

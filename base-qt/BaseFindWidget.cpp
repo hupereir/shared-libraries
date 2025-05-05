@@ -115,8 +115,8 @@ BaseFindWidget::BaseFindWidget( QWidget* parent, bool compact ):
 
     // changing options triggers a find
     for( const auto& checkbox: {highlightAllCheckbox_, caseSensitiveCheckbox_, regexpCheckbox_, entireWordCheckbox_} )
-    { connect( checkbox, &QAbstractButton::toggled,  this, &BaseFindWidget::_findNoIncrement ); } 
-    
+    { connect( checkbox, &QAbstractButton::toggled,  this, &BaseFindWidget::_findNoIncrement ); }
+
     if( !compact )
     {
         // stretch
@@ -204,6 +204,14 @@ void BaseFindWidget::noMatchFound()
 {
     if( !editor_->currentText().isEmpty() )
     { editor_->setPalette( notFoundPalette_ ); }
+}
+
+//________________________________________________________________________
+void BaseFindWidget::setVisible( bool value )
+{
+    const bool changed = (value != isVisible());
+    EmbeddedWidget::setVisible(value);
+    if( changed ) emit visibilityChanged(value);
 }
 
 //________________________________________________________________________
