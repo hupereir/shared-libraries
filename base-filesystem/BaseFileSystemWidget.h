@@ -53,6 +53,10 @@ class BASE_FILESYSTEM_EXPORT BaseFileSystemWidget: public QWidget, private Base:
     //! current path
     File path() const;
 
+    //! path editor
+    PathEditor& pathEditor() const
+    { return *pathEditor_; }
+
     //! file list
     TreeView& list() const
     { return *list_; }
