@@ -46,6 +46,9 @@ class BASE_QT_EXPORT QtUtil
     static void setWidgetSides( QWidget*, Qt::Edges );
 
     //! get widget sides from breeze style property
+    static bool hasWidgetSides( QWidget* );
+
+    //! get widget sides from breeze style property
     static Qt::Edges widgetSides( QWidget* );
 
     //! initializes library resources

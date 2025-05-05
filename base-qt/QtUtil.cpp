@@ -61,6 +61,14 @@ void QtUtil::setWidgetSides( QWidget* w, Qt::Edges edges )
 }
 
 //____________________________________________________________
+bool QtUtil::hasWidgetSides( QWidget* w )
+{
+    if( !w ) { return false; }
+    const auto borders = w->property(PropertyNames::bordersSides);
+    return borders.isValid() && borders.canConvert<Qt::Edges>();
+}
+
+//____________________________________________________________
 Qt::Edges QtUtil::widgetSides( QWidget* w )
 {
     if( !w ) { return {}; }

@@ -97,6 +97,9 @@ class BASE_QT_EXPORT PathEditor: public QStackedWidget, private Base::Counter<Pa
     //!@name modifiers
     //@{
 
+    //! change widge sides
+    void setWidgetSides( Qt::Edges );
+
     //! prefix
     void setPrefix( const QString& );
 

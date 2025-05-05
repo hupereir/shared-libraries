@@ -261,8 +261,20 @@ namespace Private
             QStyleOptionViewItem option;
             option.initFrom( this );
             option.showDecorationSelected = true;
-            option.rect = rect().adjusted(0, 1, -1, -1);
-            if( isFirst_ ) option.rect.adjust(1,0,0,0);
+
+            option.rect = rect();
+            auto parent(parentWidget());
+            if( QtUtil::hasWidgetSides(parent) )
+            {
+                const auto sides = QtUtil::widgetSides(parent);
+                if( sides&Qt::TopEdge ) { option.rect.adjust(0,1,0,0); }
+                if( sides&Qt::BottomEdge ) { option.rect.adjust(0,0,0,-1); }
+                if( sides&Qt::RightEdge ) { option.rect.adjust(0,0,-1,0); }
+                if( sides&Qt::LeftEdge && isFirst_ ) { option.rect.adjust(1,0,0,0); }
+            } else {
+                option.rect.adjust(0,1,-1,-1);
+                if( isFirst_ ) option.rect.adjust(1,0,0,0);
+            }
             option.state |= QStyle::State_MouseOver;
             style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, painter, _itemView() );
         }
@@ -306,7 +318,17 @@ namespace Private
             QStyleOptionViewItem option;
             option.initFrom( this );
             option.showDecorationSelected = true;
-            option.rect = rect().adjusted(1, 1, 0, -1);
+            option.rect = rect();
+            auto parent(parentWidget());
+            if( QtUtil::hasWidgetSides(parent) )
+            {
+                const auto sides = QtUtil::widgetSides(parent);
+                if( sides&Qt::TopEdge ) { option.rect.adjust(0,1,0,0); }
+                if( sides&Qt::BottomEdge ) { option.rect.adjust(0,0,0,-1); }
+                if( sides&Qt::LeftEdge ) { option.rect.adjust(1,0,0,0); }
+            } else {
+                option.rect.adjust(1,1,0,-1);
+            }
             option.state |= QStyle::State_MouseOver;
             style()->drawPrimitive( QStyle::PE_PanelItemViewItem, &option, &painter, _itemView() );
 
@@ -553,6 +575,14 @@ QSize PathEditor::minimumSizeHint() const
     { minWidth += items_.back()->minimumSizeHint().width(); }
 
     return QSize( minWidth, QStackedWidget::minimumSizeHint().height() );
+}
+
+//____________________________________________________________________________
+void PathEditor::setWidgetSides( Qt::Edges edges )
+{
+    Debug::Throw( QStringLiteral("PathEditor::setWidgetSides.\n") );
+    QtUtil::setWidgetSides(editor_,edges);
+    QtUtil::setWidgetSides(browserContainer_,edges);
 }
 
 //____________________________________________________________________________
