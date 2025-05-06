@@ -143,6 +143,7 @@ set(base_qt_SOURCES
   ItemModel.cpp
   KeyModifier.cpp
   LineEditor.cpp
+  LineEditorButton.cpp
   LineNumberDisplay.cpp
   LogWidget.cpp
   MessageWidget.cpp

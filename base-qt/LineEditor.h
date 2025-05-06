@@ -32,61 +32,9 @@
 #include <QPointer>
 #include <QProxyStyle>
 #include <QStyleOptionButton>
-#include <QToolButton>
 
 class BaseContextMenu;
-
-//! used to insert buttons into a line editor
-class BASE_QT_EXPORT LineEditorButton: public QToolButton, private Base::Counter<LineEditorButton>
-{
-
-    Q_OBJECT
-
-    public:
-
-    //! constructor
-    explicit LineEditorButton( QWidget* = nullptr );
-
-    //!@name accessors
-    //@{
-
-    //! size hint
-    QSize sizeHint() const override;
-
-    //! flags
-    enum Flag
-    {
-        None = 0,
-        ShowWhenEmpty = 1<<0,
-        ShowWhenReadOnly = 1<<1
-    };
-
-    Q_DECLARE_FLAGS( Flags, Flag );
-    Flags flags() const
-    { return flags_; }
-
-    //@}
-
-    //!@name modifiers
-    //@{
-
-    //! flags
-    void setFlags( Flags value )
-    { flags_ = value; }
-
-    //@}
-
-    protected:
-
-    //! paint
-    void paintEvent( QPaintEvent* ) override;
-
-    private:
-
-    //! flags
-    Flags flags_ = None;
-
-};
+class LineEditorButton;
 
 class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 {
@@ -111,7 +59,7 @@ class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEdi
     { return showClearButton_; }
 
     //! clear button
-    QAbstractButton& clearButton() const
+    LineEditorButton& clearButton() const
     { return *clearButton_; }
 
     //! buttons width
@@ -275,7 +223,5 @@ class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEdi
     QPointer<QProxyStyle> proxyStyle_;
 
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS( LineEditorButton::Flags )
 
 #endif

@@ -20,7 +20,7 @@
 #include "PasswordEditor.h"
 #include "BaseIconNames.h"
 #include "IconEngine.h"
-
+#include "LineEditorButton.h"
 
 //____________________________________________________________
 PasswordEditor::PasswordEditor( QWidget* parent ):

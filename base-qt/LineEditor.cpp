@@ -22,6 +22,7 @@
 #include "BaseIconNames.h"
 #include "Debug.h"
 #include "IconEngine.h"
+#include "LineEditorButton.h"
 #include "LineEditor_p.h"
 #include "QtUtil.h"
 #include "StandardAction.h"
@@ -32,7 +33,6 @@
 #include <QPainter>
 #include <QStyle>
 #include <QStyleOption>
-#include <QStyleOptionButton>
 #include <QStyleOptionFrame>
 
 #include <QEvent>
@@ -87,50 +87,6 @@ namespace Private
 }
 
 //____________________________________________________________
-LineEditorButton::LineEditorButton( QWidget* parent ):
-    QToolButton( parent ),
-    Counter( QStringLiteral("LineEditorButton") )
-{
-
-    QStyleOptionButton option;
-    option.initFrom( this );
-    const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-    setIconSize( QSize( iconSize, iconSize ) );
-}
-
-//____________________________________________________________
-QSize LineEditorButton::sizeHint() const
-{
-    QStyleOptionButton option;
-    option.initFrom( this );
-
-    const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-    const int margin( 2 );
-    const int dimension = iconSize + 2*margin;
-    return QSize( dimension, dimension );
-}
-
-//____________________________________________________________
-void LineEditorButton::paintEvent( QPaintEvent* event )
-{
-    if( icon().isNull() ) return;
-
-    QStyleOptionButton option;
-    option.initFrom( this );
-
-    const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-    const QSize iconSize( iconWidth, iconWidth );
-    const auto pixmap( icon().pixmap( iconSize ) );
-
-    const auto rect( this->rect() );
-    const QRect iconRect( QPoint( rect.x() + (rect.width() - iconWidth)/2, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
-
-    QPainter painter( this );
-    painter.setClipRegion( event->region() );
-    painter.drawPixmap( iconRect, pixmap );
-}
-
-//____________________________________________________________
 LineEditor::LineEditor( QWidget* parent ):
     QLineEdit( parent ),
     Counter( QStringLiteral("LineEditor") ),
@@ -177,7 +133,7 @@ LineEditor::LineEditor( QWidget* parent ):
     setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed );
 
     _updateButtonsVisibility();
-    _updateButtonsGeometry();
+    // _updateButtonsGeometry();
 
 }
 
@@ -194,7 +150,7 @@ void LineEditor::setReadOnly( bool value )
 {
     QLineEdit::setReadOnly( value );
     _updateButtonsVisibility();
-    _updateButtonsGeometry();
+    // _updateButtonsGeometry();
     return;
 }
 
@@ -216,7 +172,7 @@ void LineEditor::setShowClearButton( bool value )
 
     showClearButton_ = value;
     _updateButtonsVisibility();
-    _updateButtonsGeometry();
+    // _updateButtonsGeometry();
 
 }
 
@@ -349,13 +305,13 @@ void LineEditor::_addWidget( QWidget* widget, QWidget* parent )
 
     if( auto button = qobject_cast<LineEditorButton*>( widget ) )
     {
+        connect( button, &LineEditorButton::visibilityChanged, this, &LineEditor::_updateButtonsGeometry );
         const bool empty( text().isEmpty() );
         const bool readOnly( isReadOnly() );
         button->setVisible(
             ((button->flags()&LineEditorButton::ShowWhenEmpty) || !empty ) &&
             ((button->flags()&LineEditorButton::ShowWhenReadOnly) || !readOnly ) );
     }
-
 }
 
 //____________________________________________________________
@@ -367,6 +323,7 @@ void LineEditor::_updateButtonsVisibility()
 
     for( auto& button:findChildren<LineEditorButton*>() )
     {
+        if( button->flags()&LineEditorButton::Unmanaged ) { continue; }
         bool isVisible =
             ((button->flags()&LineEditorButton::ShowWhenEmpty) || !empty ) &&
             ((button->flags()&LineEditorButton::ShowWhenReadOnly) || !readOnly );
@@ -427,7 +384,7 @@ void LineEditor::_modified( const QString& text )
 
     // update buttons
     _updateButtonsVisibility();
-    _updateButtonsGeometry();
+    // _updateButtonsGeometry();
 
     // emit cleared signal
     if( text.isEmpty() ) emit cleared();
