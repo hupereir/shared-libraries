@@ -113,6 +113,9 @@ class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEdi
     //! changes selection to uppercase
     void upperCase();
 
+    //! update inline buttons geometry
+    void updateButtonsGeometry();
+
     //@}
 
     Q_SIGNALS:
@@ -161,10 +164,7 @@ class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEdi
     void _addWidget( QWidget*, QWidget* );
 
     //! update inline buttons visibility
-    void _updateButtonsVisibility();
-
-    //! update inline buttons geometry
-    void _updateButtonsGeometry();
+    void _updateClearButtonsVisibility();
 
     //! install actions
     void _installActions();
