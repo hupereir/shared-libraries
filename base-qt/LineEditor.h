@@ -36,7 +36,7 @@
 
 class BaseContextMenu;
 
-//* used to insert buttons into a line editor
+//! used to insert buttons into a line editor
 class BASE_QT_EXPORT LineEditorButton: public QToolButton, private Base::Counter<LineEditorButton>
 {
 
@@ -44,16 +44,16 @@ class BASE_QT_EXPORT LineEditorButton: public QToolButton, private Base::Counter
 
     public:
 
-    //* constructor
+    //! constructor
     explicit LineEditorButton( QWidget* = nullptr );
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* size hint
+    //! size hint
     QSize sizeHint() const override;
 
-    //* flags
+    //! flags
     enum Flag
     {
         None = 0,
@@ -67,10 +67,10 @@ class BASE_QT_EXPORT LineEditorButton: public QToolButton, private Base::Counter
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* flags
+    //! flags
     void setFlags( Flags value )
     { flags_ = value; }
 
@@ -78,12 +78,12 @@ class BASE_QT_EXPORT LineEditorButton: public QToolButton, private Base::Counter
 
     protected:
 
-    //* paint
+    //! paint
     void paintEvent( QPaintEvent* ) override;
 
     private:
 
-    //* flags
+    //! flags
     Flags flags_ = None;
 
 };
@@ -91,187 +91,187 @@ class BASE_QT_EXPORT LineEditorButton: public QToolButton, private Base::Counter
 class BASE_QT_EXPORT LineEditor: public QLineEdit, private Base::Counter<LineEditor>
 {
 
-    //* Qt meta object declaration
+    //! Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    //* constructor
+    //! constructor
     explicit LineEditor( QWidget* parent );
 
-    //* destructor
+    //! destructor
     ~LineEditor() override
     { delete proxyStyle_.data(); }
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* clear button
+    //! clear button
     bool showClearButton() const
     { return showClearButton_; }
 
-    //* clear button
+    //! clear button
     QAbstractButton& clearButton() const
     { return *clearButton_; }
 
-    //* buttons width
+    //! buttons width
     QSize leftButtonsSize() const;
 
-    //* buttons width
+    //! buttons width
     QSize rightButtonsSize() const;
 
-    //* modification state
+    //! modification state
     bool isModified() const
     { return modified_; }
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* read-only state
+    //! read-only state
     void setReadOnly( bool );
 
-    //* set editor as modified
+    //! set editor as modified
     void setModified( bool value );
 
-    //* set clear button
+    //! set clear button
     void setShowClearButton( bool );
 
-    //* add a button
+    //! add a button
     void addLeftWidget( QWidget* widget )
     { _addWidget( widget, leftContainer_ ); }
 
-    //* add a button
+    //! add a button
     void addRightWidget( QWidget* widget )
     { _addWidget( widget, rightContainer_ ); }
 
-    //* install actions in context menu
+    //! install actions in context menu
     virtual void installContextMenuActions( BaseContextMenu* );
 
-    //* set text
+    //! set text
     /** copy base class method to make it virtual */
     virtual void setText( const QString& value )
     { QLineEdit::setText( value ); }
 
-    //* clear
+    //! clear
     /** copy base class method to make it virtual */
     virtual void clear()
     { QLineEdit::clear(); }
 
-    //* changes selection to uppercase
+    //! changes selection to uppercase
     void lowerCase();
 
-    //* changes selection to uppercase
+    //! changes selection to uppercase
     void upperCase();
 
     //@}
 
     Q_SIGNALS:
 
-    //* signal emitted when the cursor changes position
+    //! signal emitted when the cursor changes position
     void cursorPositionChanged( int position );
 
-    //* modification state changed
+    //! modification state changed
     void modificationChanged( bool );
 
-    //* emitted when clear button is pressed
+    //! emitted when clear button is pressed
     void cleared();
 
     protected:
 
-    //*@name event handlers
+    //!@name event handlers
     //@{
 
-    //* generic event
+    //! generic event
     bool event( QEvent* ) override;
 
-    //* context menu (overloaded)
+    //! context menu (overloaded)
     void contextMenuEvent( QContextMenuEvent* ) override;
 
-    //* overloaded key press event
+    //! overloaded key press event
     void keyPressEvent( QKeyEvent* ) override;
 
     //@}
 
     private:
 
-    //* update modification state
+    //! update modification state
     void _modified( const QString& text );
 
-    //* update action status
+    //! update action status
     void _updateSelectionActions();
 
-    //* update paste action
+    //! update paste action
     /** depends on clipboard status and editability */
     void _updatePasteAction();
 
-    //* update undo/redo actions
+    //! update undo/redo actions
     void _updateUndoRedoActions();
 
-    //* add widget to parent
+    //! add widget to parent
     void _addWidget( QWidget*, QWidget* );
 
-    //* update inline buttons visibility
+    //! update inline buttons visibility
     void _updateButtonsVisibility();
 
-    //* update inline buttons geometry
+    //! update inline buttons geometry
     void _updateButtonsGeometry();
 
-    //* install actions
+    //! install actions
     void _installActions();
 
-    //* modification state
+    //! modification state
     bool modified_ = false;
 
-    //* backup string to track modifications
+    //! backup string to track modifications
     QString backup_;
 
-    //*@name default actions
+    //!@name default actions
     //@{
 
-    //* undo
+    //! undo
     QAction* undoAction_ = nullptr;
 
-    //* redo
+    //! redo
     QAction* redoAction_ = nullptr;
 
-    //* cut selection
+    //! cut selection
     QAction* cutAction_ = nullptr;
 
-    //* copy selection
+    //! copy selection
     QAction* copyAction_ = nullptr;
 
-    //* paste clipboard
+    //! paste clipboard
     QAction* pasteAction_ = nullptr;
 
-    //* clear document
+    //! clear document
     QAction* clearAction_ = nullptr;
 
-    //* select all document
+    //! select all document
     QAction* selectAllAction_ = nullptr;
 
-    //* convert selection to upper case
+    //! convert selection to upper case
     QAction* upperCaseAction_ = nullptr;
 
-    //* convert selection to lower case
+    //! convert selection to lower case
     QAction* lowerCaseAction_ = nullptr;
 
     //@}
 
-    //* true if clear button must be shown
+    //! true if clear button must be shown
     bool showClearButton_ = true;
 
-    //* left buttons container
+    //! left buttons container
     QWidget* leftContainer_ = nullptr;
 
-    //* right buttons container
+    //! right buttons container
     QWidget* rightContainer_ = nullptr;
 
-    //* clear button
+    //! clear button
     LineEditorButton* clearButton_ = nullptr;
 
-    //* style proxy
+    //! style proxy
     QPointer<QProxyStyle> proxyStyle_;
 
 };
