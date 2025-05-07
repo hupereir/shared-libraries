@@ -22,6 +22,7 @@
 #include "Color.h"
 #include "IconEngine.h"
 #include "LineEditor.h"
+#include "LineEditorButton.h"
 #include "QtUtil.h"
 
 
@@ -76,15 +77,14 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
     {
 
         // ok button
-        layout->addWidget( okButton_ = new QToolButton( this ), 0 );
+        okButton_ = new LineEditorButton;
         okButton_->setIcon( IconEngine::get( IconNames::Find ) );
-        static_cast<QToolButton*>( okButton_ )->setAutoRaise( true );
+        editor_->addRightWidget(okButton_ );
 
         // close button
-        layout->addWidget( closeButton_ = new QToolButton( this ), 0 );
+        closeButton_ = new LineEditorButton;
         closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
-        static_cast<QToolButton*>( closeButton_ )->setAutoRaise( true );
-
+        editor_->addRightWidget(closeButton_);
         connect( closeButton_, &QAbstractButton::clicked, this, &QWidget::hide );
 
     } else {
