@@ -27,8 +27,6 @@
 #include "XcbUtil.h"
 #include "XmlOptions.h"
 
-
-
 #include <QApplication>
 #include <QPainter>
 #include <QStyleHintReturnMask>
@@ -166,11 +164,9 @@ namespace Private
         QWidget( parent, Qt::FramelessWindowHint|Qt::Window ),
         Counter( QStringLiteral("Private::LocalDockWidget") )
     {
-
         setAttribute(Qt::WA_TranslucentBackground);
         setAttribute(Qt::WA_StyledBackground);
         setProperty( "_KDE_NET_WM_FORCE_SHADOW", true );
-
     }
 
     //___________________________________________________________
@@ -189,11 +185,11 @@ namespace Private
             option.state = QStyle::State_None;
             option.checkType = QStyleOptionMenuItem::NotCheckable;
             option.maxIconWidth = 0;
-            
+
             #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
             option.tabWidth = 0;
             #endif
-            
+
             style()->drawPrimitive(QStyle::PE_PanelMenu, &option, &painter, this);
         }
 
@@ -213,13 +209,11 @@ namespace Private
     //___________________________________________________________
     void LocalDockWidget::resizeEvent( QResizeEvent* )
     {
-
         QStyleHintReturnMask menuMask;
         QStyleOption option;
         option.initFrom(this);
         if( style()->styleHint(QStyle::SH_Menu_Mask, &option, this, &menuMask) )
         { setMask(menuMask.region); }
-
     }
 
     //___________________________________________________________
