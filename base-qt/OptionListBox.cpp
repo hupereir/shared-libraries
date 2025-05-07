@@ -24,7 +24,6 @@
 #include "Dialog.h"
 #include "IconEngine.h"
 #include "IconSize.h"
-#include "LineEditor.h"
 #include "OptionModel.h"
 #include "QtUtil.h"
 #include "TextEditionDelegate.h"
@@ -45,7 +44,7 @@ class EditDialog: public Dialog
     explicit EditDialog( QWidget*, bool, QFileDialog::FileMode );
 
     //! editor
-    BrowsedLineEditor::Editor& editor() const
+    LineEditor& editor() const
     { return *editor_; }
 
     //! checkbox
@@ -55,10 +54,10 @@ class EditDialog: public Dialog
     private:
 
     //! editor
-    BrowsedLineEditor::Editor* editor_;
+    LineEditor* editor_ = nullptr;
 
     //! default checkbox
-    QCheckBox* checkbox_;
+    QCheckBox* checkbox_ = nullptr;
 
 };
 
@@ -68,22 +67,21 @@ EditDialog::EditDialog( QWidget* parent, bool browsable, QFileDialog::FileMode m
 {
 
     setOptionName( QStringLiteral("OPTIONLISTBOX_EDIT") );
-    QVBoxLayout* vLayout = new QVBoxLayout;
+    auto vLayout = new QVBoxLayout;
     QtUtil::setMargin(vLayout, 0);
     vLayout->setSpacing(5);
     mainLayout().addLayout( vLayout );
 
     if( browsable )
     {
-
-        BrowsedLineEditor* browseEditor = new BrowsedLineEditor( this );
-        vLayout->addWidget( browseEditor );
-        browseEditor->setFileMode( mode );
-        editor_ = &browseEditor->editor();
+        auto browsedEditor = new BrowsedLineEditor( this );
+        browsedEditor->setFileMode( mode );
+        vLayout->addWidget( browsedEditor );
+        editor_ = browsedEditor;
 
     } else {
 
-        editor_ = new BrowsedLineEditor::Editor( this );
+        editor_ = new LineEditor( this );
         vLayout->addWidget( editor_ );
 
     }
@@ -103,7 +101,7 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
 
     Debug::Throw( QStringLiteral("OptionListBox::OptionListBox.\n") );
 
-    QHBoxLayout* layout( new QHBoxLayout );
+    auto layout( new QHBoxLayout );
     layout->setSpacing(5);
     QtUtil::setMargin(layout, 0);
     setLayout( layout );
@@ -128,23 +126,23 @@ OptionListBox::OptionListBox( QWidget* parent, const QString& name ):
     list_->setIconSize( IconSize::get( IconSize::Small ) );
     layout->addWidget( list_, 1 );
 
-    QVBoxLayout* buttonLayout = new QVBoxLayout;
+    auto buttonLayout = new QVBoxLayout;
     QtUtil::setMargin(buttonLayout, 0);
     buttonLayout->setSpacing( 5 );
     layout->addLayout( buttonLayout, 0 );
 
     // list context menu
-    QMenu* menu( new ContextMenu( list_ ) );
+    auto menu = new ContextMenu( list_ );
 
     // Add button
-    QPushButton *button;
-    buttonLayout->addWidget( button = new QPushButton( tr( "Add" ), this ) );
+    auto button = new QPushButton( tr( "Add" ), this );
     button->setIcon( IconEngine::get( IconNames::Add ) );
+    buttonLayout->addWidget( button );
     connect( button, &QAbstractButton::clicked, this, &OptionListBox::_add );
 
     // Add action
-    QAction* action;
-    addAction( action = new QAction( IconEngine::get( IconNames::Add ), tr( "Add" ), this ) );
+    auto action = new QAction( IconEngine::get( IconNames::Add ), tr( "Add" ), this );
+    addAction( action );
     connect( action, &QAction::triggered, this, &OptionListBox::_add );
     action->setShortcut( QKeySequence::New );
     menu->addAction( action );

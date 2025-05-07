@@ -25,7 +25,7 @@
 #include "OptionWidget.h"
 #include "base_qt_export.h"
 
-//* QLineEdit associated to an option for configuration dialogs
+//! QLineEdit associated to an option for configuration dialogs
 class BASE_QT_EXPORT OptionBrowsedLineEditor: public BrowsedLineEditor, public OptionWidget
 {
 
@@ -33,31 +33,31 @@ class BASE_QT_EXPORT OptionBrowsedLineEditor: public BrowsedLineEditor, public O
 
     public:
 
-    //* constructor
+    //! constructor
     explicit OptionBrowsedLineEditor( QWidget* parent, const QString& optionName ):
         BrowsedLineEditor( parent ),
         OptionWidget( optionName )
     {}
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* write value to option
+    //! write value to option
     void write( Options& options ) const override
-    { options.setRaw( optionName(), editor().text() ); }
+    { options.setRaw( optionName(), text() ); }
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* read value from option
+    //! read value from option
     void read( const Options& options ) override
     {
         setFile( options.raw( optionName() ) );
         if( !_connected() )
         {
-            connect( &editor(), &QLineEdit::textChanged, this, &OptionBrowsedLineEditor::modified );
+            connect( this, &QLineEdit::textChanged, this, &OptionBrowsedLineEditor::modified );
             _setConnected();
         }
     }
@@ -66,7 +66,7 @@ class BASE_QT_EXPORT OptionBrowsedLineEditor: public BrowsedLineEditor, public O
 
     Q_SIGNALS:
 
-    //* modified signal
+    //! modified signal
     void modified();
 
 };

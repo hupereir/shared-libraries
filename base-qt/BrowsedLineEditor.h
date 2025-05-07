@@ -22,95 +22,81 @@
 
 #include "Counter.h"
 #include "File.h"
+#include "LineEditor.h"
 #include "base_qt_export.h"
 
 #include <QFileDialog>
-#include <QWidget>
 
 #include <memory>
 
 class LineEditor;
 
-class BASE_QT_EXPORT BrowsedLineEditor: public QWidget, private Base::Counter<BrowsedLineEditor>
+class BASE_QT_EXPORT BrowsedLineEditor: public LineEditor
 {
 
-    //* Qt meta object declaration
+    //! Qt meta object declaration
     Q_OBJECT
 
     public:
 
-    using Editor = LineEditor;
+    //! constructor;
+    explicit BrowsedLineEditor( QWidget* = nullptr );
 
-    //* constructor;
-    explicit BrowsedLineEditor( QWidget* parent );
-
-    //*@name accessors
+    //!@name modifiers
     //@{
 
-    //* retrieve line editor
-    Editor& editor() const
-    { return *lineEditor_; }
-
-    //*}
-
-    //*@name modifiers
-    //@{
-
-    //* set target application
+    //! set target application
     /** it is used to browse application path and update, if not found */
     void setTargetApplication( const File &);
 
-    //* native dialogs
+    //! native dialogs
     void setUseNativeFileDialog( bool value )
     { useNativeFileDialog_ = value; }
 
-    //* open mode
+    //! open mode
     void setAcceptMode( const QFileDialog::AcceptMode mode )
     { acceptMode_ = mode; }
 
-    //* file mode
+    //! file mode
     void setFileMode( QFileDialog::FileMode mode )
     { fileMode_ = mode; }
 
     //@}
 
-    //* set lineEditor_file
+    //! set lineEditor_file
     void setFile( const QString& file );
 
     protected:
 
-    //* accept mode
+    //! accept mode
     QFileDialog::AcceptMode _acceptMode() const
     { return acceptMode_; }
 
-    //* file mode
+    //! file mode
     QFileDialog::FileMode _fileMode() const
     { return fileMode_; }
 
     private:
 
-    //* opens a file dialog, stores result in line edit
+    //! opens a file dialog, stores result in line edit
     virtual void _browse();
 
-    //* target
+    //! target
     void _findTargetApplication();
 
-    //* line editor widget
-    Editor *lineEditor_ = nullptr;
-
-    //* use native dialogs
+    //! use native dialogs
     bool useNativeFileDialog_ = true;
 
-    //* accept mode
+    //! accept mode
     QFileDialog::AcceptMode acceptMode_ = QFileDialog::AcceptOpen;
 
-    //* File dialog mode
+    //! File dialog mode
     QFileDialog::FileMode fileMode_ = QFileDialog::ExistingFile;
 
-    //* target application
+    //! target application
     File targetApplication_;
 
-    //* update target button
+    //! update target button
     std::unique_ptr<QWidget> findTargetButton_;
 
 };

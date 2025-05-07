@@ -24,7 +24,7 @@
 #include "FileDialog.h"
 #include "IconEngine.h"
 #include "InformationDialog.h"
-#include "LineEditor.h"
+#include "LineEditorButton.h"
 #include "QtUtil.h"
 #include "Util.h"
 
@@ -35,29 +35,16 @@
 
 //____________________________________________________________
 BrowsedLineEditor::BrowsedLineEditor( QWidget *parent ):
-    QWidget( parent ),
-    Counter( QStringLiteral("BrowsedLineEditor") )
+    LineEditor( parent )
 {
 
     Debug::Throw( QStringLiteral("BrowsedLineEditor::BrowsedLineEditor.\n") );
 
-    // insert horizontal layout
-    auto layout = new QHBoxLayout;
-    QtUtil::setMargin(layout, 0);
-    layout->setSpacing(2);
-    setLayout( layout );
-
-    // create line editor
-    lineEditor_ = new Editor( this );
-    layout->addWidget( lineEditor_, 1 );
-
     // create button
-    auto button = new QToolButton( this );
-    button->setAutoRaise( true );
-
+    auto button = new LineEditorButton;
     button->setIcon( IconEngine::get( IconNames::Open ) );
     button->setToolTip( tr( "Browse file system" ) );
-    layout->addWidget( button, 0 );
+    addRightWidget(button);
 
     // connect button
     connect( button, &QAbstractButton::clicked, this, &BrowsedLineEditor::_browse );
@@ -70,22 +57,22 @@ void BrowsedLineEditor::setTargetApplication( const File &target )
     if( target.isEmpty() ) findTargetButton_.reset();
     else if( !findTargetButton_ )
     {
-        auto button = new QToolButton( this );
-        button->setAutoRaise( true );
+        // create button
+        auto button = new LineEditorButton;
         button->setIcon( IconEngine::get( IconNames::Reload ) );
         button->setText( tr( "Refresh" ) );
-        layout()->addWidget( button );
+        addRightWidget( button );
         connect( button, &QAbstractButton::clicked, this, &BrowsedLineEditor::_findTargetApplication );
 
+        // assign
         findTargetButton_.reset( button );
-
     }
 
 }
 
 //____________________________________________________________
 void BrowsedLineEditor::setFile( const QString& file )
-{ editor().setText( file ); }
+{ setText( file ); }
 
 //____________________________________________________________
 void BrowsedLineEditor::_browse()
@@ -97,37 +84,33 @@ void BrowsedLineEditor::_browse()
     {
 
         Debug::Throw( 0, QStringLiteral("BrowsedLineEditor::_browse - using FileDialog.\n") );
-
         FileDialog dialog( this );
         dialog.setAcceptMode( acceptMode_ );
         dialog.setFileMode( fileMode_ );
-        if( !editor().text().isNull() ) dialog.selectFile( File( editor().text() ) );
+        if( !text().isNull() ) dialog.selectFile( File( text() ) );
         QString file( dialog.getFile() );
         if( !file.isNull() ) setFile( file );
 
     } else {
 
         Debug::Throw( 0, QStringLiteral("BrowsedLineEditor::_browse - using QFileDialog.\n") );
-
         QFileDialog dialog(this);
         dialog.setAcceptMode( acceptMode_ );
         dialog.setFileMode( fileMode_ );
-        if( !editor().text().isNull() ) dialog.selectFile( File( editor().text() ) );
+        if( !text().isNull() ) dialog.selectFile( File( text() ) );
         if( !dialog.exec() ) return;
 
         auto filenames( dialog.selectedFiles() );
         if( filenames.size() == 1 ) setFile( filenames.front() );
-
     }
-
 }
 
 //_____________________________________________________________
 void BrowsedLineEditor::_findTargetApplication()
 {
     // check if current text is valid
-    File current( editor().text() );
+    File current( text() );
     if( current.exists() ) return;
 
-    editor().setText( QStandardPaths::findExecutable( targetApplication_ ) );
+    setText( QStandardPaths::findExecutable( targetApplication_ ) );
 }
