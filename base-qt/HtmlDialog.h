@@ -60,7 +60,7 @@ class BASE_QT_EXPORT HtmlDialog: public Dialog
 
     //* file
     File file() const
-    { return File( destinationEditor_->editor().text() ); }
+    { return File( destinationEditor_->text() ); }
 
     // options
     void setOptionWidgets( const QList<QWidget*> &);
