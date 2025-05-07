@@ -28,7 +28,6 @@ LineEditorButton::LineEditorButton( QWidget* parent ):
     QToolButton( parent ),
     Counter( QStringLiteral("LineEditorButton") )
 {
-
     QStyleOptionButton option;
     option.initFrom( this );
     const int iconSize( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
@@ -59,18 +58,13 @@ void LineEditorButton::setVisible(bool value)
 void LineEditorButton::paintEvent( QPaintEvent* event )
 {
     if( icon().isNull() ) return;
-
-    QStyleOptionButton option;
+    QStyleOptionToolButton option;
     option.initFrom( this );
-
+    option.icon = icon();
     const int iconWidth( style()->pixelMetric( QStyle::PM_SmallIconSize, &option, this ) );
-    const QSize iconSize( iconWidth, iconWidth );
-    const auto pixmap( icon().pixmap( iconSize ) );
-
-    const auto rect( this->rect() );
-    const QRect iconRect( QPoint( rect.x() + (rect.width() - iconWidth)/2, rect.y() + (rect.height() - iconWidth)/2 ), iconSize );
+    option.iconSize = QSize(iconWidth,iconWidth);
 
     QPainter painter( this );
     painter.setClipRegion( event->region() );
-    painter.drawPixmap( iconRect, pixmap );
+    style()->drawControl( QStyle::CE_ToolButtonLabel, &option, &painter, this );
 }
