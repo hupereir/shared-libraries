@@ -81,6 +81,10 @@ SelectLineWidget::SelectLineWidget( QWidget* parent, bool compact ):
         okButton_->setIcon( IconEngine::get( IconNames::Find ) );
         editor_->addRightWidget(okButton_ );
 
+        connect( editor_, &QLineEdit::textChanged, this,
+            [this]( const QString& text ) {okButton_->setVisible( !text.isEmpty()); } );
+        okButton_->hide();
+
         // close button
         closeButton_ = new LineEditorButton;
         closeButton_->setIcon( IconEngine::get( IconNames::DialogClose ) );
