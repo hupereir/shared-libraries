@@ -313,6 +313,8 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, Dialog::Flags flags ):
         // hide horizontal scrollbar
         graphicsViews.front()->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
+        QtUtil::setWidgetSides(graphicsViews.front(), Qt::TopEdge|Qt::BottomEdge);
+
     }
 
     // customize buttons
