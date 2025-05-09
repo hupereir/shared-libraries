@@ -70,6 +70,7 @@ bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
             messageBox->setStandardButtons( QMessageBox::Close );
 
         } else if( auto buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
+
             // insert separator
             if( auto gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
             {
@@ -185,7 +186,7 @@ void BaseApplication::_aboutQt()
     Debug::Throw( QStringLiteral("BaseApplication::aboutQt.\n") );
     Server::AppEventFilter eventFilter;
     qApp->installEventFilter( &eventFilter );
-    QMessageBox::aboutQt(0);
+    QMessageBox::aboutQt(nullptr);
 }
 
 //_______________________________________________
