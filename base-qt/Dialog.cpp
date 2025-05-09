@@ -35,8 +35,8 @@ Dialog::Dialog( QWidget *parent, Flags flags, Qt::WindowFlags wflags):
     // create vbox layout
     auto layout = new QVBoxLayout;
     setLayout( layout );
-    layout->setSpacing(5);
-    QtUtil::setMargin(layout, 10);
+    layout->setSpacing(defaultMargin());
+    QtUtil::setMargin(layout, defaultMargin());
 
     mainLayout_ = new QVBoxLayout;
     mainLayout_->setSpacing(5);

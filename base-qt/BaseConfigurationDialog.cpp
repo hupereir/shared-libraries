@@ -536,7 +536,7 @@ void BaseConfigurationDialog::_editPixmapPathList()
 
         // customize layout
         QtUtil::setMargin(pixmapPathDialog_->layout(), 0);
-        QtUtil::setMargin(&pixmapPathDialog_->buttonLayout(), 5);
+        QtUtil::setMargin(&pixmapPathDialog_->buttonLayout(), defaultMargin());
 
     }
 

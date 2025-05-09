@@ -38,13 +38,15 @@ IconCacheDialog::IconCacheDialog( QWidget* parent ):
     setOptionName( QStringLiteral("ICON_CACHE_DIALOG") );
 
     QtUtil::setMargin(layout(), 0);
-    QtUtil::setMargin(&buttonLayout(), 5);
+    QtUtil::setMargin(&buttonLayout(), defaultMargin());
 
     // insert main vertical box
     list_ = new TreeView( this );
     mainLayout().addWidget( list_ );
     list_->setModel( &model_ );
     list_->setIconSize( IconSize::get( IconSize::Large ) );
+
+    QtUtil::setWidgetSides(list_, Qt::TopEdge|Qt::BottomEdge);
 
     QPushButton *button;
     buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Update" ), this ) );

@@ -59,36 +59,39 @@ class BASE_QT_EXPORT TabbedDialog: public BaseDialog, private Base::Counter<Tabb
     QDialogButtonBox& buttonBox() const
     { return *buttonBox_; }
 
-    //* retrieve button layout
+    //* button layout
     QBoxLayout& buttonLayout() const
     { return *(qobject_cast<QBoxLayout*>(buttonBox_->layout())); }
 
-    //* returns true if OK button is valid
+    //* true if OK button is valid
     bool hasOkButton() const
     { return buttonBox_->button(QDialogButtonBox::Ok)||buttonBox_->button(QDialogButtonBox::Close); }
 
-    //* retrieve OK button
+    //* OK button
     QPushButton& okButton() const
     {
         if( QPushButton* button = buttonBox_->button(QDialogButtonBox::Ok) ) return *button;
         else return *buttonBox_->button(QDialogButtonBox::Close);
     }
 
-    //* returns true if close button is valid
+    //* true if close button is valid
     bool hasCloseButton() const
     { return hasOkButton(); }
 
-    //* retrieve close button
+    //* close button
     QPushButton& closeButton() const
     { return okButton(); }
 
-    //* returns true if Cancel button is valid
+    //* true if Cancel button is valid
     bool hasCancelButton() const
     { return buttonBox_->button(QDialogButtonBox::Cancel); }
 
-    //* retrieve CANCEL button
+    //* CANCEL button
     QPushButton& cancelButton() const
     { return *buttonBox_->button(QDialogButtonBox::Cancel); }
+
+    //! default margin
+    int defaultMargin() const override;
 
     //@}
 

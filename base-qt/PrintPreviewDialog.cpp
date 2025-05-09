@@ -287,7 +287,7 @@ PrintPreviewDialog::PrintPreviewDialog( QWidget* parent, Dialog::Flags flags ):
     setOptionName( QStringLiteral("PRINT_PREVIEW_DIALOG") );
 
     QtUtil::setMargin(layout(), 0);
-    QtUtil::setMargin(&buttonLayout(), 5);
+    QtUtil::setMargin(&buttonLayout(), defaultMargin());
 
     QtUtil::setMargin(&mainLayout(), 0);
     mainLayout().setSpacing(0);

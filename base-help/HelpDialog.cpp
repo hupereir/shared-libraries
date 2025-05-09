@@ -52,7 +52,7 @@ namespace Base
         // customize layout
         QtUtil::setMargin(layout(), 0);
         layout()->setSpacing(0);
-        QtUtil::setMargin(&buttonLayout(), 5);
+        QtUtil::setMargin(&buttonLayout(), defaultMargin());
 
         setOptionName( QStringLiteral("HELP_DIALOG") );
 

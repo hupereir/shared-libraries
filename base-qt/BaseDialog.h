@@ -26,7 +26,7 @@
 
 #include <QDialog>
 
-//* base dialog
+//! base dialog
 class BASE_QT_EXPORT BaseDialog: public QDialog
 {
 
@@ -34,77 +34,84 @@ class BASE_QT_EXPORT BaseDialog: public QDialog
 
     public:
 
-    //* constructor
+    //! constructor
     explicit BaseDialog( QWidget* = nullptr, Qt::WindowFlags = {});
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* restore window size
+    //! restore window size
     QSize minimumSizeHint() const override;
 
-    //* restore window size
+    //! restore window size
     QSize sizeHint() const override;
 
-    //* iconsize
+    //! iconsize
     QSize iconSize() const
     { return iconSize_; }
 
+    //! default margin
+    /** assumes that all margins are equal to leftMargin */
+    virtual int defaultMargin() const;
+
+    //! default margins
+    virtual QMargins defaultMargins() const;
+
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* window title
+    //! window title
     void setWindowTitle( const QString& );
 
-    //* center widget on pointer
+    //! center widget on pointer
     BaseDialog& centerOnPointer();
 
-    //* center widget on argument widget
+    //! center widget on argument widget
     BaseDialog& centerOnDesktop();
 
-    //* center on parent widget
+    //! center on parent widget
     BaseDialog& centerOnParent()
     { return centerOnWidget( parentWidget() ); }
 
-    //* center widget on argument widget
+    //! center widget on argument widget
     BaseDialog& centerOnWidget( QWidget* );
 
-    //* size option name
+    //! size option name
     void setOptionName( const QString& name )
     { monitor_.setOptionName( name ); }
 
-    //* set icon size
+    //! set icon size
     void setIconSize( QSize size )
     { iconSize_ = size; }
 
-    //* uniconify
+    //! uniconify
     void uniconify();
 
-    //* stickyness
+    //! stickyness
     void toggleSticky( bool );
 
     //@}
 
     protected:
 
-    //* generic event
+    //! generic event
     bool event( QEvent* ) override;
 
-    //* maximize state prior to minimization
+    //! maximize state prior to minimization
     void _setWasMaximized( bool value )
     { wasMaximized_ = value; }
 
     private:
 
-    //* size watch
+    //! size watch
     WidgetMonitor monitor_;
 
-    //* icon size
+    //! icon size
     QSize iconSize_;
 
-    //* window state prior to minimization
+    //! window state prior to minimization
     bool wasMaximized_ = false;
 
 };

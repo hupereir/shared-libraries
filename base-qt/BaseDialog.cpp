@@ -26,8 +26,8 @@
 #include "XcbUtil.h"
 #include "XmlOptions.h"
 
-
-
+#include <QStyle>
+#include <QStyleOption>
 #include <QTextStream>
 #include <QWindowStateChangeEvent>
 
@@ -55,6 +55,27 @@ QSize BaseDialog::sizeHint() const
 {
     auto&& out( monitor_.sizeHint() );
     return out.isValid() ? out:QDialog::sizeHint();
+}
+
+//__________________________________________________
+int BaseDialog::defaultMargin() const
+{
+    QStyleOption option;
+    option.initFrom(this);
+    return style()->pixelMetric( QStyle::PM_LayoutLeftMargin, &option, this );
+}
+
+//__________________________________________________
+QMargins BaseDialog::defaultMargins() const
+{
+    QStyleOption option;
+    option.initFrom(this);
+    return {
+        style()->pixelMetric( QStyle::PM_LayoutLeftMargin, &option, this ),
+        style()->pixelMetric( QStyle::PM_LayoutTopMargin, &option, this ),
+        style()->pixelMetric( QStyle::PM_LayoutRightMargin, &option, this ),
+        style()->pixelMetric( QStyle::PM_LayoutBottomMargin, &option, this )
+    };
 }
 
 //__________________________________________________

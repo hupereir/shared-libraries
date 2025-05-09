@@ -38,7 +38,7 @@ Dialog( parent, CloseButton )
     setOptionName( QStringLiteral("SYSTEM_ENVIRONMENT_DIALOG") );
 
     QtUtil::setMargin(layout(), 0);
-    QtUtil::setMargin(&buttonLayout(), 5);
+    QtUtil::setMargin(&buttonLayout(), defaultMargin());
 
     // tell dialog to delete when close
     setAttribute( Qt::WA_DeleteOnClose );
@@ -49,6 +49,8 @@ Dialog( parent, CloseButton )
     list->setModel( &model_ );
     list->setRootIsDecorated( false );
     list->setMask( (1<<OptionModel::Name)|(1<<OptionModel::Value) );
+
+    QtUtil::setWidgetSides( list, Qt::TopEdge|Qt::BottomEdge);
 
     // retrieve environment variables from QProcess
     OptionModel::List options;

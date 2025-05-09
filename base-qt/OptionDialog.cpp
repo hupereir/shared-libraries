@@ -42,7 +42,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     setOptionName( QStringLiteral("OPTION_DIALOG") );
 
     QtUtil::setMargin(layout(), 0);
-    QtUtil::setMargin(&buttonLayout(), 5);
+    QtUtil::setMargin(&buttonLayout(), defaultMargin());
 
     // tell dialog to delete when close
     setAttribute( Qt::WA_DeleteOnClose );
@@ -50,7 +50,7 @@ OptionDialog::OptionDialog( QWidget* parent ):
     // set model editable
     model_.setReadOnly( false );
 
-    QHBoxLayout* layout = new QHBoxLayout;
+    auto layout = new QHBoxLayout;
     layout->setSpacing(20);
     QtUtil::setMargin(layout, 5);
     mainLayout().addLayout( layout );
@@ -71,6 +71,8 @@ OptionDialog::OptionDialog( QWidget* parent ):
     mainLayout().addWidget( list_ = new TreeView( this ) );
     list_->setModel( &model_ );
     list_->setRootIsDecorated( true );
+
+    QtUtil::setWidgetSides( list_, Qt::TopEdge|Qt::BottomEdge);
 
     // replace delegate
     if( list_->itemDelegate() ) list_->itemDelegate()->deleteLater();

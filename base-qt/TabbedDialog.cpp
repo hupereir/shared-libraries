@@ -66,7 +66,7 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 
     // button box
     stackedLayout->addWidget( buttonBox_ = new QDialogButtonBox( this ), 0 );
-    QtUtil::setMargin(buttonBox_->layout(), 5);
+    QtUtil::setMargin(buttonBox_->layout(), defaultMargin());
 
     // connections
     connect( model_, &Private::TabbedDialogModel::itemOrderChanged, this, &TabbedDialog::_reorder );
@@ -76,13 +76,17 @@ TabbedDialog::TabbedDialog( QWidget* parent ):
 }
 
 //_________________________________________________________
+int TabbedDialog::defaultMargin() const
+{ return 5; }
+
+//_________________________________________________________
 QWidget& TabbedDialog::addPage( const QIcon& icon, const QString& title, const QString& tooltip, bool expand )
 {
 
     // base widget
     auto base = new QWidget;
     base->setLayout( new QVBoxLayout );
-    QtUtil::setMargin(base->layout(), 5);
+    QtUtil::setMargin(base->layout(), defaultMargin());
     base->layout()->setSpacing(10);
 
     auto hLayout = new QHBoxLayout;

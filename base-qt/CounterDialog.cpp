@@ -40,12 +40,14 @@ Dialog( parent, OkButton, Qt::Window )
     setOptionName( QStringLiteral("COUNTER_DIALOG") );
 
     QtUtil::setMargin(layout(), 0);
-    QtUtil::setMargin(&buttonLayout(), 10);
+    QtUtil::setMargin(&buttonLayout(), defaultMargin());
     mainLayout().addWidget( list_ = new TreeView( this ) );
     list_->setModel( &model_ );
 
-    QPushButton *button;
-    buttonLayout().insertWidget( 1, button = new QPushButton( IconEngine::get( IconNames::Reload ), tr( "Reload" ), this ) );
+    QtUtil::setWidgetSides(list_, Qt::TopEdge|Qt::BottomEdge);
+
+    auto button = new QPushButton(IconEngine::get( IconNames::Reload), tr( "Reload" ), this );
+    buttonLayout().insertWidget( 1, button );
     connect( button, &QPushButton::clicked, this, [this](bool){ updateCounters(); } );
     button->setAutoDefault( false );
 
