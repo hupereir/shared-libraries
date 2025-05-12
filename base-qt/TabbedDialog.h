@@ -40,7 +40,7 @@ namespace Private
     class TabbedDialogModel;
 }
 
-//* tabbed dialog
+//! tabbed dialog
 /** a list of tab names appear on the left. The contents of the corresponding tag appear on the right */
 class BASE_QT_EXPORT TabbedDialog: public BaseDialog, private Base::Counter<TabbedDialog>
 {
@@ -49,44 +49,44 @@ class BASE_QT_EXPORT TabbedDialog: public BaseDialog, private Base::Counter<Tabb
 
     public:
 
-    //* creator
+    //! creator
     explicit TabbedDialog( QWidget* );
 
-    //*@name accessors
+    //!@name accessors
     //@{
 
-    //* button box
+    //! button box
     QDialogButtonBox& buttonBox() const
     { return *buttonBox_; }
 
-    //* button layout
+    //! button layout
     QBoxLayout& buttonLayout() const
     { return *(qobject_cast<QBoxLayout*>(buttonBox_->layout())); }
 
-    //* true if OK button is valid
+    //! true if OK button is valid
     bool hasOkButton() const
     { return buttonBox_->button(QDialogButtonBox::Ok)||buttonBox_->button(QDialogButtonBox::Close); }
 
-    //* OK button
+    //! OK button
     QPushButton& okButton() const
     {
         if( QPushButton* button = buttonBox_->button(QDialogButtonBox::Ok) ) return *button;
         else return *buttonBox_->button(QDialogButtonBox::Close);
     }
 
-    //* true if close button is valid
+    //! true if close button is valid
     bool hasCloseButton() const
     { return hasOkButton(); }
 
-    //* close button
+    //! close button
     QPushButton& closeButton() const
     { return okButton(); }
 
-    //* true if Cancel button is valid
+    //! true if Cancel button is valid
     bool hasCancelButton() const
     { return buttonBox_->button(QDialogButtonBox::Cancel); }
 
-    //* CANCEL button
+    //! CANCEL button
     QPushButton& cancelButton() const
     { return *buttonBox_->button(QDialogButtonBox::Cancel); }
 
@@ -95,61 +95,61 @@ class BASE_QT_EXPORT TabbedDialog: public BaseDialog, private Base::Counter<Tabb
 
     //@}
 
-    //*@name modifiers
+    //!@name modifiers
     //@{
 
-    //* adds a new Item, returns associated Box
+    //! adds a new Item, returns associated Box
     QWidget& addPage( const QString& title, const QString& tooltip = QString(), bool expand = false )
     { return addPage( QIcon(), title, tooltip, expand ); }
 
-    //* adds a new Item, returns associated Box
+    //! adds a new Item, returns associated Box
     QWidget& addPage( const QIcon&, const QString&, const QString& tooltip = QString(), bool expand = false );
 
     //@}
 
     protected:
 
-    //* retrieve list
+    //! retrieve list
     const SimpleListView& _list() const
     { return *list_; }
 
-    //* retrieve list
+    //! retrieve list
     SimpleListView& _list()
     { return *list_; }
 
-    //* retrieve stack
+    //! retrieve stack
     const QStackedWidget& _stackedWidget() const
     { return *stackedWidget_; }
 
-    //* retrieve stack
+    //! retrieve stack
     QStackedWidget& _stackedWidget()
     { return *stackedWidget_; }
 
-    //* get page matching a given index
+    //! get page matching a given index
     QWidget* _findPage( const QModelIndex& ) const;
 
-    //* clear
+    //! clear
     /** this will clear the model and delete all pages */
     void _clear();
 
     private:
 
-    //* display item page
+    //! display item page
     void _display( const QModelIndex& );
 
-    //* reorder items using drag and drop from the list
+    //! reorder items using drag and drop from the list
     void _reorder( int, int );
 
-    //* model
+    //! model
     Private::TabbedDialogModel* model_ = nullptr;
 
-    //* Configuration list
+    //! Configuration list
     SimpleListView* list_ = nullptr;
 
-    //* Widget stack
+    //! Widget stack
     QStackedWidget* stackedWidget_ = nullptr;
 
-    //* button layout (needed to add extra buttons)
+    //! button layout (needed to add extra buttons)
     QDialogButtonBox* buttonBox_ = nullptr;
 
 };
