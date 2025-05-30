@@ -48,7 +48,6 @@ namespace Base
 
         Debug::Throw( QStringLiteral("HelpDialog::HelpDialog.\n") );
 
-
         // customize layout
         QtUtil::setMargin(layout(), 0);
         layout()->setSpacing(0);
@@ -58,7 +57,7 @@ namespace Base
 
         auto layout = new QHBoxLayout;
         QtUtil::setMargin(layout, 0);
-        layout->setSpacing(2);
+        layout->setSpacing(0);
         mainLayout().addLayout( layout );
 
         // add help list
@@ -81,7 +80,7 @@ namespace Base
         htmlFrame_->setLayout( vLayout );
 
         vLayout->addWidget( htmlEditor_ = new TextEditor( htmlFrame_ ) );
-        QtUtil::setWidgetSides( htmlEditor_, Qt::TopEdge|Qt::BottomEdge );
+        QtUtil::setWidgetSides( htmlEditor_, Qt::TopEdge|Qt::BottomEdge|Qt::LeftEdge );
         htmlEditor_->setReadOnly( true );
         htmlEditor_->setWrapFromOptions( false );
         htmlEditor_->wrapModeAction().setChecked( true );

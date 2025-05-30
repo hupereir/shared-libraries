@@ -34,22 +34,27 @@
 
 //____________________________________________________________________________
 ScratchFileRemoveDialog::ScratchFileRemoveDialog( QWidget* parent, const FileRecordModel::List& files ):
-Dialog( parent )
+    Dialog( parent )
 {
 
     Debug::Throw( QStringLiteral("ScratchFileRemoveDialog::ScratchFileRemoveDialog.\n") );
 
+    // customize layout
+    QtUtil::setMargin(layout(), 0);
+    layout()->setSpacing(0);
+    QtUtil::setMargin(&buttonLayout(), defaultMargin());
+
     setOptionName( QStringLiteral("SCRATCH_DIALOG") );
 
     // label
-    QLabel* textLabel = new QLabel(
+    auto textLabel = new QLabel(
         tr( "Following temporary files have been created by the application. Select the ones you want to remove:"),
         this );
 
     textLabel->setWordWrap( true );
 
-    //! try load Question icon
-    QHBoxLayout *hLayout( new QHBoxLayout );
+    // try load Question icon
+    auto hLayout( new QHBoxLayout );
     hLayout->setSpacing(10);
     QtUtil::setMargin(hLayout, 0);
     mainLayout().addLayout( hLayout );
@@ -60,6 +65,7 @@ Dialog( parent )
 
     // file list
     mainLayout().addWidget( list_ = new TreeView( this ), 1 );
+    QtUtil::setWidgetSides( list_, Qt::TopEdge|Qt::BottomEdge );
     list_->setModel( &model_ );
     list_->sortByColumn( FileRecordModel::FileName, Qt::DescendingOrder );
     list_->setSelectionMode( QAbstractItemView::MultiSelection );

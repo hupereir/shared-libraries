@@ -39,6 +39,11 @@ RemoveFilesDialog::RemoveFilesDialog( QWidget* parent, const FileSystemModel::Li
     Debug::Throw( QStringLiteral("RemoveFilesDialog::RemoveFilesDialog.\n") );
     Q_ASSERT( !files.empty() );
 
+    // customize layout
+    QtUtil::setMargin(layout(), 0);
+    layout()->setSpacing(0);
+    QtUtil::setMargin(&buttonLayout(), defaultMargin());
+
     // options
     setOptionName( QStringLiteral("REMOVE_FILES_DIALOG") );
 
@@ -66,7 +71,7 @@ RemoveFilesDialog::RemoveFilesDialog( QWidget* parent, const FileSystemModel::Li
     // file list
     mainLayout().addWidget( list_ = new TreeView( this ), 1 );
     list_->setSelectionMode( QAbstractItemView::NoSelection );
-
+    QtUtil::setWidgetSides( list_, Qt::TopEdge|Qt::BottomEdge );
     model_.setShowIcons( false );
     model_.setUseLocalNames( false );
     model_.add( files );
