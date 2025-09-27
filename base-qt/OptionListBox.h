@@ -46,15 +46,23 @@ class BASE_QT_EXPORT OptionListBox: public QWidget, public OptionWidget
     //* constructor
     explicit OptionListBox( QWidget*, const QString& );
 
+    //!@name accessors
+    //@{
+
     //* list
     TreeView& list() const
     { return *list_; }
 
-    //* read value from option
-    void read( const Options& options ) override;
-
     //* write value to option
     void write( Options& options ) const override;
+
+    //@}
+
+    //!@name modifiers
+    //@{
+
+    //* read value from option
+    void read( const Options& options ) override;
 
     //* browsability
     void setBrowsable( bool value )
@@ -63,6 +71,8 @@ class BASE_QT_EXPORT OptionListBox: public QWidget, public OptionWidget
     //* set file dialog mode
     void setFileMode( QFileDialog::FileMode mode )
     { fileMode_ = mode; }
+
+    //@}
 
     Q_SIGNALS:
 

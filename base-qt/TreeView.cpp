@@ -36,8 +36,6 @@
 #include "TreeViewItemDelegate.h"
 #include "XmlOptions.h"
 
-
-
 #include <QCursor>
 #include <QHeaderView>
 #include <QPainter>
