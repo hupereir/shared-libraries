@@ -411,7 +411,7 @@ bool File::createDirectory( const File& constPath ) const
 void File::setHidden() const
 {
     #if defined(Q_OS_WIN)
-    if( !value_.isEmpty() ) SetFileAttributes( value_.toLatin1(), FILE_ATTRIBUTE_HIDDEN );
+    if( !value_.isEmpty() ) SetFileAttributes( value_.toStdWString().c_str(), FILE_ATTRIBUTE_HIDDEN );
     #endif
 }
 
