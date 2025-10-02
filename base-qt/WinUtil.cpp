@@ -33,7 +33,7 @@
 #define WINVER 0x0500
 #endif
 
-#include <QtWinExtras>
+// #include <QtWinExtras>
 
 #include <windows.h>
 #endif
@@ -112,6 +112,10 @@ WinUtil::~WinUtil() = default;
 void WinUtil::update( const QPixmap& pixmap, double opacity ) const
 {
 
+    Q_UNUSED( opacity );
+    Q_UNUSED( pixmap );
+
+/*
     #if defined(Q_OS_WIN)
     if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
 
@@ -140,6 +144,7 @@ void WinUtil::update( const QPixmap& pixmap, double opacity ) const
     Q_UNUSED( opacity );
     Q_UNUSED( pixmap );
     #endif
+*/
 }
 
 //_______________________________________
