@@ -56,7 +56,7 @@ Pixmap::Pixmap( const QString& file ):
     if( info.isExecutable() || info.isSymLink() )
     {
 
-        QIcon icon( QFileIconProvider().icon( file ) );
+        QIcon icon( QFileIconProvider().icon( info ) );
         if( icon.isNull() ) return;
 
         const QSize iconSize( IconSize::get( IconSize::Maximum ) );
