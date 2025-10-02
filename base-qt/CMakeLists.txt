@@ -255,10 +255,10 @@ target_link_libraries(base-qt Qt::Widgets Qt::Network Qt::PrintSupport Qt::Xml)
 if(USE_QT6)
   # needed for QTextCodec
   target_link_libraries(base-qt Qt::Core5Compat)
-endif()
-
+else()
 if(WIN32)
   target_link_libraries(base-qt Qt::WinExtras)
+endif()
 endif()
 
 if(XCB_FOUND AND NOT USE_QT6)
