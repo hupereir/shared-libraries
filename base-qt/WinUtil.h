@@ -41,9 +41,6 @@ class BASE_QT_EXPORT WinUtil final
     //* destructor
     ~WinUtil();
 
-    //* update layered widget using pixmap
-    void update( const QPixmap&, double = 1.0 ) const;
-
     //* enable blur behind
     void enableBlurBehind( Base::Margins  = Base::Margins() );
 

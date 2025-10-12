@@ -109,45 +109,6 @@ WinUtil::WinUtil( QWidget*  )
 WinUtil::~WinUtil() = default;
 
 //_______________________________________
-void WinUtil::update( const QPixmap& pixmap, double opacity ) const
-{
-
-    Q_UNUSED( opacity );
-    Q_UNUSED( pixmap );
-
-/*
-    #if defined(Q_OS_WIN)
-    if( !hasFlag( WS_EX_LAYERED) ) { setFlag( WS_EX_LAYERED, true ); }
-
-    SIZE size = { pixmap.width(), pixmap.height() };
-    POINT pointSource = {0,0};
-    POINT topPos = { target_->x(),  target_->y() };
-    BLENDFUNCTION blend = { AC_SRC_OVER, 0, static_cast<BYTE>(opacity*255), AC_SRC_ALPHA };
-
-    HBITMAP hBitmap = QtWin::toHBITMAP(pixmap, QtWin::HBitmapPremultipliedAlpha);
-
-    auto screenDc = GetDC(nullptr);
-    auto memDc = CreateCompatibleDC(screenDc);
-
-    HBITMAP oldBitmap =static_cast<HBITMAP>( SelectObject(memDc, hBitmap) );
-
-    UpdateLayeredWindow( HWND(target_->winId()), screenDc,  &topPos,  &size, memDc,  &pointSource, 0, &blend, ULW_ALPHA);
-
-    ReleaseDC( nullptr, screenDc);
-    if (hBitmap != nullptr)
-    {
-        SelectObject(memDc, oldBitmap);
-        DeleteObject(hBitmap);
-    }
-    DeleteDC(memDc);
-    #else
-    Q_UNUSED( opacity );
-    Q_UNUSED( pixmap );
-    #endif
-*/
-}
-
-//_______________________________________
 void WinUtil::enableBlurBehind( Base::Margins margins )
 {
 
