@@ -84,7 +84,7 @@ bool XmlFileList::read( File file )
     // parse the file
     XmlDocument document;
     QFile qfile( file );
-    qfile.open( QIODevice::ReadOnly );
+    if( !qfile.open( QIODevice::ReadOnly ) ) return false;
     if ( !document.setContent( &qfile ) )
     {
 
@@ -138,7 +138,7 @@ bool XmlFileList::write( File file )
     XmlDocument document;
     {
         QFile qfile( file );
-        qfile.open( QIODevice::ReadOnly );
+        if( !qfile.open( QIODevice::ReadOnly ) ) return false;
         document.setContent( &qfile );
     }
 

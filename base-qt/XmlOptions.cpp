@@ -122,7 +122,7 @@ bool XmlOptions::read()
     // parse the file
     XmlDocument document;
     QFile qtfile(_singleton().file());
-    qtfile.open(QIODevice::ReadOnly);
+    if ( !qtfile.open(QIODevice::ReadOnly) ) return false;
     if ( !document.setContent( &qtfile, _singleton().error_ ) ) return false;
     else return _read( document, _singleton().options_ );
 
@@ -139,7 +139,7 @@ bool XmlOptions::write()
     XmlDocument document;
     {
         QFile qtfile(_singleton().file());
-        qtfile.open(QIODevice::ReadOnly);
+        if( !qtfile.open(QIODevice::ReadOnly) ) return false;
         document.setContent( &qtfile );
     }
 

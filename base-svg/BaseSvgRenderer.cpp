@@ -68,7 +68,7 @@ namespace Svg
 
         // open file
         QFile in( filename );
-        in.open( QIODevice::ReadOnly );
+        if( !in.open( QIODevice::ReadOnly ) ) return false;
         if( !( in.isOpen() && in.isReadable() ) ) return false;
 
         // when zlib is available we try to uncompress the file manually before passing to QSvgRenderer

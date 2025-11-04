@@ -74,12 +74,18 @@ class BASE_EXPORT Debug final
         //* file name
         void setFileName( const QString& );
 
+        //* opened
+        bool isOpened() const { return isOpened_; }
+
         //@}
 
         private:
 
         //* debug level
         bool enabled_ = false;
+
+        //* true if device is opened
+        bool isOpened_ = false;
 
         //* internal device
         QFile device_;
@@ -91,7 +97,7 @@ class BASE_EXPORT Debug final
         template< class T >
         friend Stream& operator << ( Stream& stream, const T& t )
         {
-            if( stream.enabled_ ) stream.stream_ << t;
+            if( stream.enabled_ && stream.isOpened_ ) stream.stream_ << t;
             return stream;
         }
 

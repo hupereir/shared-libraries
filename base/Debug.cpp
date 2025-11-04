@@ -54,18 +54,18 @@ class Debug::Private final: private Base::NonCopyable<Debug::Private>
 Debug::Stream::Stream( bool enabled ):
     enabled_( enabled ),
     stream_( &device_ )
-{ device_.open( stdout, QIODevice::WriteOnly ); }
+{ isOpened_ = device_.open( stdout, QIODevice::WriteOnly ); }
 
 //_________________________________________________________________
 void Debug::Stream::setFileName( const QString& filename )
 {
 
     if( device_.isOpen() ) device_.close();
-    if( filename.isEmpty() ) device_.open( stdout, QIODevice::WriteOnly );
+    if( filename.isEmpty() ) isOpened_ = device_.open( stdout, QIODevice::WriteOnly );
     else {
 
         device_.setFileName( filename );
-        device_.open( QIODevice::WriteOnly );
+        isOpened_ = device_.open( QIODevice::WriteOnly );
 
     }
 }
@@ -85,7 +85,7 @@ void Debug::setFileName( const QString& filename )
 //_________________________________________________________________
 void Debug::Throw( int level, const QString& str )
 {
-    if( _get().level_ >= level )
+    if( _get().level_ >= level && _get().debugStream_.isOpened() )
     {
         _get().debugStream_.get()
             << TimeStamp::now().toString( QStringLiteral("yyyy/MM/dd HH:mm:ss") ) << " "
@@ -98,7 +98,7 @@ void Debug::Throw( int level, const QString& str )
 //______________________________________
 Debug::Stream& Debug::Throw( int level )
 {
-    if( _get().level_ >= level )
+    if( _get().level_ >= level && _get().debugStream_.isOpened() )
     {
 
         // add timestamp
