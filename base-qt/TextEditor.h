@@ -288,7 +288,7 @@ class BASE_QT_EXPORT TextEditor: public BaseEditor, public Base::Key, private Ba
     virtual void resetUndoRedoStack();
 
     //* install actions in context menu
-    virtual void installContextMenuActions( BaseContextMenu*, bool = true );
+    virtual void installContextMenuActions( BaseContextMenu*, bool /* all actions */= true );
 
     //* use embedded widgets
     //** TODO: should delete widgets in case value has changed */
