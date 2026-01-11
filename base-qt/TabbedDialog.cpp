@@ -201,7 +201,7 @@ namespace Private
     {
 
         // check index
-        if( !contains( index ) ) return QVariant();
+        if( !contains( index ) ) return {};
 
         // retrieve associated file info
         auto item( get()[index.row()] );
@@ -215,7 +215,7 @@ namespace Private
             case Qt::DecorationRole:
             return item.icon().isNull() ? QVariant():item.icon();
 
-            default: return QVariant();
+            default: return {};
         }
 
     }

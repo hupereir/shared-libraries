@@ -81,7 +81,7 @@ Qt::ItemFlags FileRecordModel::flags( const QModelIndex& index ) const
 QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
 {
     // check index
-    if( !contains( index ) ) return QVariant();
+    if( !contains( index ) ) return {};
 
     // retrieve associated file info
     const FileRecord& record( get(index) );
@@ -121,7 +121,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
             default:
             if( index.column() < (int) columnTitles_.size() && record.hasProperty( columnTitles_[index.column()] ) )
             { return record.property( columnTitles_[index.column()] ); }
-            else return QVariant();
+            else return {};
 
         }
 
@@ -131,7 +131,7 @@ QVariant FileRecordModel::data( const QModelIndex& index, int role ) const
         return record.hasProperty( iconPropertyId_ ) ? _icon( record.property( iconPropertyId_ ) ):_icon();
 
     }
-    return QVariant();
+    return {};
 }
 
 //__________________________________________________________________
@@ -144,7 +144,7 @@ QVariant FileRecordModel::headerData(int section, Qt::Orientation, int role) con
     { return columnTitles_[section]; }
 
     // return empty
-    return QVariant();
+    return {};
 }
 
 //______________________________________________________________________
@@ -162,7 +162,7 @@ QMimeData* FileRecordModel::mimeData(const QModelIndexList &indexes) const
     if( filenames.empty() ) return nullptr;
     else {
         auto mimeData = new QMimeData;
-        
+
         // fill text data
         {
             QString fullText;

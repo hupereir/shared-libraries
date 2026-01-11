@@ -38,7 +38,7 @@ QVariant ColorOptionModel::data( const QModelIndex& index, int role ) const
 {
 
     // check index, role and column
-    if( !index.isValid() ) return QVariant();
+    if( !index.isValid() ) return {};
 
     // retrieve associated color
     auto color( get( index ).second.get<Base::Color>() );

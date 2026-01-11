@@ -60,31 +60,31 @@ bool Server::AppEventFilter::eventFilter( QObject* object, QEvent* event )
 
     switch( event->type() )
     {
-
         case QEvent::Show:
-
-        if( auto messageBox = qobject_cast<QMessageBox*>( object ) )
         {
-
-            // try cast to message box and change buttons
-            messageBox->setStandardButtons( QMessageBox::Close );
-
-        } else if( auto buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
-
-            // insert separator
-            if( auto gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
+            if( auto messageBox = qobject_cast<QMessageBox*>( object ) )
             {
-                gridLayout->setVerticalSpacing( 5 );
 
-                // create separator
-                QFrame* frame( new QFrame( buttonBox->parentWidget() ) );
-                frame->setFrameStyle( QFrame::HLine );
-                const int columnCount( gridLayout->columnCount() );
-                gridLayout->addWidget( frame, 2, 0, 1, columnCount );
-                gridLayout->addWidget( buttonBox, 3, 0, 1, columnCount );
+                // try cast to message box and change buttons
+                messageBox->setStandardButtons( QMessageBox::Close );
+
+            } else if( auto buttonBox = qobject_cast<QDialogButtonBox*>( object ) ) {
+
+                // insert separator
+                if( auto gridLayout = qobject_cast<QGridLayout*>( buttonBox->parentWidget()->layout() ) )
+                {
+                    gridLayout->setVerticalSpacing( 5 );
+
+                    // create separator
+                    auto frame( new QFrame( buttonBox->parentWidget() ) );
+                    frame->setFrameStyle( QFrame::HLine );
+                    const int columnCount( gridLayout->columnCount() );
+                    gridLayout->addWidget( frame, 2, 0, 1, columnCount );
+                    gridLayout->addWidget( buttonBox, 3, 0, 1, columnCount );
+                }
             }
+            break;
         }
-        break;
 
         default: break;
 

@@ -24,7 +24,7 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
 {
 
     // check index
-    if( !contains( index ) ) return QVariant();
+    if( !contains( index ) ) return {};
 
     // associated icon pair
     const Base::IconPair& iconPair( get(index) );
@@ -47,7 +47,7 @@ QVariant IconCacheModel::data( const QModelIndex& index, int role ) const
 
     }
 
-    return QVariant();
+    return {};
 
 }
 
@@ -62,7 +62,7 @@ QVariant IconCacheModel::headerData(int section, Qt::Orientation, int role) cons
     { return columnTitles_[section]; }
 
     // return empty
-    return QVariant();
+    return {};
 
 }
 

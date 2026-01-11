@@ -46,7 +46,7 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
 {
 
     // check index, role and column
-    if( !index.isValid() ) return QVariant();
+    if( !index.isValid() ) return {};
 
     const Options::Pair& option( get( index ) );
 
@@ -59,14 +59,14 @@ QVariant OptionModel::data( const QModelIndex& index, int role ) const
             case Value: return option.second.raw();
             case DefaultValue: return option.second.defaultValue();
             case Flags: return static_cast<int>(option.second.flags());
-            default: return QVariant();
+            default: return {};
         }
     }
 
     if( role == Qt::DecorationRole && index.column() == Current )
     { return option.second.isCurrent() ? IconEngine::get( IconNames::DialogAccept ):QVariant(); }
 
-    return QVariant();
+    return {};
 
 }
 
@@ -107,7 +107,7 @@ QVariant OptionModel::headerData(int section, Qt::Orientation, int role) const
     { return columnTitles_[section]; }
 
     // return empty
-    return QVariant();
+    return {};
 
 }
 

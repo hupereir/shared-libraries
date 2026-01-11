@@ -67,7 +67,7 @@ QVariant FileSystemModel::data( const QModelIndex& index, int role ) const
 {
 
     // check index
-    if( !contains( index ) ) return QVariant();
+    if( !contains( index ) ) return {};
 
     // return text associated to file and column
     switch( role )
@@ -90,18 +90,18 @@ QVariant FileSystemModel::data( const QModelIndex& index, int role ) const
                 {
                     const FileRecord& record( get(index) );
                     if( record.hasFlag( BaseFileInfo::Document ) ) return QString( record.property( sizePropertyId_ ) );
-                    else return QVariant();
+                    else return {};
                 }
 
                 case Time:
                 {
                     const FileRecord& record( get(index) );
                     if( record.hasFlag( BaseFileInfo::Document ) ) return QString( TimeStamp( record.time() ).toString() );
-                    else return QVariant();
+                    else return {};
                 }
 
                 default:
-                return QVariant();
+                return {};
 
             }
 
@@ -149,7 +149,7 @@ QVariant FileSystemModel::data( const QModelIndex& index, int role ) const
 
     }
 
-    return QVariant();
+    return {};
 
 }
 
@@ -163,7 +163,7 @@ QVariant FileSystemModel::headerData(int section, Qt::Orientation, int role) con
     { return columnTitles_[section]; }
 
     // return empty
-    return QVariant();
+    return {};
 
 }
 

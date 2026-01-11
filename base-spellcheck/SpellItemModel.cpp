@@ -29,13 +29,13 @@ namespace SpellCheck
         Debug::Throw( QStringLiteral("SpellItemModel::data.\n") );
 
         // check index
-        if( !contains( index ) ) return QVariant();
+        if( !contains( index ) ) return {};
 
         // retrieve associated file info
         const auto text( get(index) );
         if( role == Qt::DisplayRole ) return text;
         else if( role == Qt::CheckStateRole ) return disabledItems_.contains( text ) ?  Qt::Unchecked : Qt::Checked;
-        else return QVariant();
+        else return {};
 
     }
 
@@ -49,7 +49,7 @@ namespace SpellCheck
         { return columnTitles_[section]; }
 
         // return empty
-        return QVariant();
+        return {};
 
     }
 

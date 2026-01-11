@@ -64,13 +64,13 @@ class TextEncodingModel: public ListModel<TextEncodingString>
 
             return get()[index.row()].get();
 
-        } else return QVariant();
+        } else return {};
 
     }
 
     //! header data
     virtual QVariant headerData( int, Qt::Orientation, int = Qt::DisplayRole ) const
-    { return QVariant(); }
+    { return {}; }
 
 
     //! number of columns for a given index

@@ -621,18 +621,18 @@ namespace SpellCheck
     {
 
         // check index
-        if( !contains( index ) ) return QVariant();
+        if( !contains( index ) ) return {};
 
         // retrieve associated file info
         const QString& word( get(index) );
 
         // return text associated to file and column
         if( role == Qt::DisplayRole ) return word;
-        else return QVariant();
+        else return {};
 
     }
 
     //__________________________________________________________________
     QVariant SpellDialog::Model::headerData(int, Qt::Orientation, int) const
-    { return QVariant(); }
+    { return {}; }
 }

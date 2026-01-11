@@ -37,7 +37,7 @@ namespace Base
     {
         // check index
         if( contains( index ) && role == Qt::DisplayRole ) return get(index).label();
-        else return QVariant();
+        else return {};
     }
 
 }

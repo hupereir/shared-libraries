@@ -24,7 +24,7 @@ QVariant CounterModel::data( const QModelIndex& index, int role ) const
 {
 
     // check index
-    if( !contains( index ) ) return QVariant();
+    if( !contains( index ) ) return {};
 
     // retrieve associated file info
     const CounterPair& counter( get(index) );
@@ -36,11 +36,11 @@ QVariant CounterModel::data( const QModelIndex& index, int role ) const
         {
             case Name: return counter.first;
             case Count: return counter.second;
-            default: return QVariant();
+            default: return {};
         }
     }
 
-    return QVariant();
+    return {};
 
 }
 
@@ -55,7 +55,7 @@ QVariant CounterModel::headerData(int section, Qt::Orientation, int role) const
     { return columnTitles_[section]; }
 
     // return empty
-    return QVariant();
+    return {};
 
 }
 
