@@ -40,6 +40,7 @@ namespace IconNames
     static const QString DialogInformation = QStringLiteral("dialog-information");
     static const QString DialogOk = QStringLiteral("dialog-ok");
     static const QString DialogWarning = QStringLiteral("dialog-warning");
+    static const QString DocumentClose = QStringLiteral("document-close");
     static const QString Edit = QStringLiteral("document-edit");
     static const QString EditClear = QStringLiteral("edit-clear-locationbar-rtl");
     static const QString Exit = QStringLiteral("application-exit");
