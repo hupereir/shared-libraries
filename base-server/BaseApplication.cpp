@@ -214,18 +214,17 @@ void BaseApplication::_about()
     if( !version.isEmpty() ) { in << tr( "Version %1 " ).arg( version ); }
 
     in <<
-        tr( "<p>Suggestions, comments and bug reports are welcome. "
-        "Please use the following e-mail address:"
-        "<p><a href=\"mailto:hugo.pereira.da.costa@gmail.com\">hugo.pereira.da.costa@gmail.com</a>"
+        tr( "<p>Contact: "
+        "<a href=\"mailto:hugo.pereira.da.costa@gmail.com\">hugo.pereira.da.costa@gmail.com</a>"
         "<p>"
-        "<p>License: <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License Version 2</a>");
+        "<p>License: <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License Version 2</a><p>");
 
     QMessageBox dialog;
     dialog.setWindowTitle( tr( "About %1" ).arg( name ) );
     auto icon( applicationIcon() );
     dialog.setWindowIcon( icon );
 
-    const auto& size = IconSize::get( IconSize::Maximum );
+    const auto& size = IconSize::get( IconSize::Huge );
     dialog.setIconPixmap( icon.pixmap( size ) );
     dialog.setText( buffer );
     dialog.adjustSize();
