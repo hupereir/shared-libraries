@@ -24,7 +24,6 @@ might cause the application to hang, notably when process crashes
 */
 
 #include "CustomProcess.h"
-
 #include <QRegularExpression>
 
 //____________________________________________________
@@ -47,14 +46,11 @@ void CustomProcess::start( const QString &arguments, OpenMode mode )
 //____________________________________________________
 void CustomProcess::start( const QStringList& arguments, OpenMode mode )
 {
-
     if( arguments.empty() ) return;
-
     QString program( arguments.front() );
     auto localArgs( arguments );
     localArgs.removeFirst();
     QProcess::start( program, localArgs,  mode );
-
 }
 
 //______________________________________________________________
@@ -66,7 +62,6 @@ QString CustomProcess::errorMessage( ProcessError error )
 {
     switch( error )
     {
-
         case FailedToStart: return tr("Process failed to start");
         case Crashed: return tr("Process crashed");
         case Timedout: return tr("Process timed out");
@@ -74,5 +69,4 @@ QString CustomProcess::errorMessage( ProcessError error )
         case ReadError: return tr("Process ended du to read error");
         default: return tr("Process ended with unknown error");
     }
-
 }

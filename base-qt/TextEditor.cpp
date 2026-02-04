@@ -1698,13 +1698,11 @@ void TextEditor::resizeEvent( QResizeEvent* event )
 
     // tell line number display to update at next draw
     lineNumberDisplay_->needUpdate();
-
 }
 
 //______________________________________________________________
 void TextEditor::paintEvent( QPaintEvent* event )
 {
-
     // create painter and translate from widget to viewport coordinates
     QPainter painter( viewport() );
     painter.setClipRect( event->rect() );
@@ -1976,13 +1974,11 @@ void TextEditor::_installActions()
 
     // update actions that depend on the presence of a selection
     _updateSelectionActions( textCursor().hasSelection() );
-
 }
 
 //______________________________________________________________________
 void TextEditor::_createFindDialog()
 {
-
     Debug::Throw( QStringLiteral("TextEditor::_createFindDialog.\n") );
     if( !findDialog_ )
     {
@@ -1991,15 +1987,11 @@ void TextEditor::_createFindDialog()
         findDialog_->setWindowTitle( tr( "Find in Text" ) );
         findDialog_->setBaseFindWidget( findWidget_ );
     }
-
-    return;
-
 }
 
 //______________________________________________________________________
 void TextEditor::_createReplaceDialog()
 {
-
     Debug::Throw( QStringLiteral("TextEditor::_createReplaceDialog.\n") );
     if( !replaceDialog_ )
     {
@@ -2008,9 +2000,6 @@ void TextEditor::_createReplaceDialog()
         replaceDialog_->setWindowTitle( tr( "Replace in Text" ) );
         replaceDialog_->setBaseFindWidget( replaceWidget_ );
     }
-
-    return;
-
 }
 
 //________________________________________________
@@ -2023,14 +2012,11 @@ void TextEditor::_createSelectLineDialog()
         if( !selectLineWidget_ ) createSelectLineWidget( false );
         selectLineDialog_->setSelectLineWidget( selectLineWidget_ );
     }
-
-    return;
 }
 
 //__________________________________________________
 void TextEditor::_createProgressDialog()
 {
-
     Debug::Throw( QStringLiteral("TextEditor::_createProgressDialog.\n") );
 
     // create dialog
@@ -2046,7 +2032,6 @@ void TextEditor::_createProgressDialog()
 
     QtUtil::centerOnWidget( dialog, this );
     dialog->show();
-
 }
 
 //______________________________________________________________________
@@ -2384,20 +2369,17 @@ int TextEditor::_replaceInRange( const TextSelection& selection, QTextCursor& cu
 //_____________________________________________________________
 void TextEditor::_synchronizeBoxSelection() const
 {
-
     if( !isSynchronized() ) return;
 
     // Debug::Throw( QStringLiteral("TextEditor::_synchronizeBoxSelection.\n") );
     Base::KeySet<TextEditor> displays( this );
     for( const auto& editor:Base::KeySet<TextEditor>(this) )
     { editor->boxSelection_.synchronize( boxSelection_ ); }
-
 }
 
 //_____________________________________________________________
 bool TextEditor::_setLeftMargin( int margin )
 {
-
     Debug::Throw() << "TextEditor::_setLeftMargin - margin: " << margin << Qt::endl;
     if( margin == leftMargin_ ) return false;
 
@@ -2405,7 +2387,6 @@ bool TextEditor::_setLeftMargin( int margin )
     setViewportMargins( leftMargin_, 0, 0, 0 );
     marginWidget_->resize( leftMargin_, marginWidget_->height() );
     return true;
-
 }
 
 //_____________________________________________________________

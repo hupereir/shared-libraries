@@ -60,7 +60,6 @@ void TextEditorMarginWidget::setDirty()
 //________________________________________________
 void TextEditorMarginWidget::paintEvent( QPaintEvent* event )
 {
-
     // paint margins
     QPainter painter( this );
     painter.setClipRect( event->rect() );
@@ -69,5 +68,4 @@ void TextEditorMarginWidget::paintEvent( QPaintEvent* event )
 
     // clear dirty flag
     dirty_ = false;
-
 }
