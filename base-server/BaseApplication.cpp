@@ -30,7 +30,6 @@
 #include "Util.h"
 #include "XmlOptions.h"
 
-
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QLayout>
@@ -214,10 +213,8 @@ void BaseApplication::_about()
     if( !version.isEmpty() ) { in << tr( "Version %1 " ).arg( version ); }
 
     in <<
-        tr( "<p>Contact: "
-        "<a href=\"mailto:hugo.pereira.da.costa@gmail.com\">hugo.pereira.da.costa@gmail.com</a>"
-        "<p>"
-        "<p>License: <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License Version 2</a><p>");
+        tr( "<p>Contact: <a href=\"mailto:hugo.pereira.da.costa@gmail.com\">hugo.pereira.da.costa@gmail.com</a><br/>"
+        "License: <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License Version 2</a><br/>");
 
     QMessageBox dialog;
     dialog.setWindowTitle( tr( "About %1" ).arg( name ) );
