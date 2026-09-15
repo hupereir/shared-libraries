@@ -28,13 +28,14 @@
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include <QShowEvent>
-#include <QWidget>
+#include <QMainWindow>
 
 namespace Transparency
 {
 
     //* transparent widget
-    class BASE_TRANSPARENCY_EXPORT TransparentWidget: public QWidget, private Base::Counter<TransparentWidget>
+    // class BASE_TRANSPARENCY_EXPORT TransparentWidget: public QWidget, private Base::Counter<TransparentWidget>
+    class BASE_TRANSPARENCY_EXPORT TransparentWidget: public QMainWindow, private Base::Counter<TransparentWidget>
     {
 
         //* Qt meta object declaration
@@ -96,7 +97,7 @@ namespace Transparency
         //* device pixel ratio
         virtual void _setDevicePixelRatio( qreal ratio )
         { devicePixelRatio_ = ratio; }
-        
+
         //* foreground
         virtual void _setForegroundColor( const QColor& );
 
@@ -243,7 +244,7 @@ namespace Transparency
 
         //* device pixel ratio
         qreal devicePixelRatio_ = 1;
-        
+
         //* foreground intensity
         int foregroundIntensity_ = 255;
 

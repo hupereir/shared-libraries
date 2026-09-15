@@ -41,7 +41,7 @@ namespace Transparency
 
     //____________________________________________________________________
     TransparentWidget::TransparentWidget( QWidget *parent, Qt::WindowFlags flags ):
-        QWidget( parent, flags ),
+        QMainWindow( parent, flags ),
         Counter( QStringLiteral("Transparency::TransparentWidget") ),
         devicePixelRatio_( qApp->devicePixelRatio() )
     {
